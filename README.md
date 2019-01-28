@@ -31,6 +31,12 @@ This project repo is organized in 3 branches:
 ### Git Workflow
 Using this repository you should follow this workflow: [Atlassian Git-flow](https://it.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow), by using _**features**_, _**hotfix**_ and _**releases**_ throuth previous mentioned branches.
 
+## Environment setup
+This project uses a `.env` file in order to please [follow the instructions here](https://facebook.github.io/create-react-app/docs/adding-custom-environment-variables) and create this file based on your needs.
+
+> **NOTE** : only constants definition prefixed by `REACT_APP_` will be available in React App.
+
+_**You can find the environment configuration template [here](.env.template).**_
 
 ## Running Test Network
 To run a test ethereum network, in a separate terminal execute:
@@ -38,6 +44,8 @@ To run a test ethereum network, in a separate terminal execute:
 
 
 ## Available Scripts
+
+> **NOTE** : see the [_Environment setup_](#environment-setup) section for further details before first run of the following scripts.
 
 In the project directory, you can run:
 
