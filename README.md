@@ -13,6 +13,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 ### Global (host) dependencies
 - **Truffle** as EVM framework _([more info here](https://truffleframework.com/docs/truffle/getting-started/installation))_;
 - **Ganache CLI** for ETH test network _([more info here](https://github.com/trufflesuite/ganache-cli))_;
+- **Dot Env** for environment configuration _([more info here](https://github.com/motdotla/dotenv#readme))_;
 
 ### Developmnent
 - **prettier** for coding style format _([more info here](https://prettier.io))_;
