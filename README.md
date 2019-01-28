@@ -21,6 +21,16 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 Your code editor should be compatible with [.editorconfig](https://editorconfig.org) or [Prettier](https://prettier.io).
 _Please note: this project supports both._
 
+## Branches
+This project repo is organized in 3 branches:
+- **master** : is a mirror of _production_ environment;
+- **beta** : is a mirror of _stage_ environment;
+- **develop** : for development purposes;
+
+### Git Workflow
+Using this repository you should follow this workflow: [Atlassian Git-flow](https://it.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow), by using _**features**_, _**hotfix**_ and _**releases**_ throuth previous mentioned branches.
+
+
 ## Running Test Network
 To run a test ethereum network, in a separate terminal execute:
 `ganache-cli --gasLimit 7000000`
