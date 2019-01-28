@@ -2,6 +2,9 @@
 
 JUR MVP will be available at https://jur.io/mvp/
 
+[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 
@@ -10,6 +13,13 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 ### Global (host) dependencies
 - **Truffle** as EVM framework _([more info here](https://truffleframework.com/docs/truffle/getting-started/installation))_;
 - **Ganache CLI** for ETH test network _([more info here](https://github.com/trufflesuite/ganache-cli))_;
+
+### Developmnent
+- **prettier** for coding style format _([more info here](https://prettier.io))_;
+
+### Editor
+Your code editor should be compatible with [.editorconfig](https://editorconfig.org) or [Prettier](https://prettier.io).
+_Please note: this project supports both._
 
 ## Running Test Network
 To run a test ethereum network, in a separate terminal execute:
