@@ -13,7 +13,9 @@ web3.eth.getAccounts((err, accounts) => {
 })
 
 // provider change handler
-web3.currentProvider.connection.publicConfigStore.on('update', (ev) => console.log('MetaMask update', ev));
+if (web3.currentProvider.host === 'metamask') { // only if current provider is hosted by MetaMask
+  web3.currentProvider.connection.publicConfigStore.on('update', (ev) => console.log('MetaMask update', ev));
+}
 
 class App extends Component {
   state = {
