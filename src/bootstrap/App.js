@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Blockies from 'react-blockies';
-import './App.css';
+import './App.scss';
 
 // Web3 dapp utilities
 import { web3 } from './Dapp'
@@ -41,8 +41,8 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
+      <div className="jur">
+        <header className="jur--header">
           {
             this.state.logged
             ?
