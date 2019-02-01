@@ -1,0 +1,3 @@
+// Wallet
+export const SET_WALLET_ADDRESS = 'SET_WALLET_ADDRESS';
+export const RESET_WALLET = 'RESET_WALLET';

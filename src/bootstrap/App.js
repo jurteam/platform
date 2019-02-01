@@ -1,20 +1,28 @@
-import React, { Component } from 'react';
-import Blockies from 'react-blockies';
-import './App.scss';
+import React, { Component } from "react";
+import Blockies from "react-blockies";
+
+import { Provider } from "react-redux";
+import { ConnectedRouter } from "connected-react-router";
+
+// Initializer
+import Initializer from "./Initializer";
 
 // Web3 dapp utilities
-import { web3 } from './Dapp'
+import { web3 } from "./Dapp";
 var wallet = null;
 
 web3.eth.getAccounts((err, accounts) => {
   console.log(accounts);
   console.log(err);
   wallet = accounts[0];
-})
+});
 
 // provider change handler
-if (web3.currentProvider.host === 'metamask') { // only if current provider is hosted by MetaMask
-  web3.currentProvider.connection.publicConfigStore.on('update', (ev) => console.log('MetaMask update', ev));
+if (web3.currentProvider.host === "metamask") {
+  // only if current provider is hosted by MetaMask
+  web3.currentProvider.connection.publicConfigStore.on("update", ev =>
+    console.log("MetaMask update", ev)
+  );
 }
 
 class App extends Component {
@@ -22,11 +30,10 @@ class App extends Component {
     metamask: false,
     logged: false,
     wallet: null
-  }
+  };
 
   componentDidMount() {
-
-    this.setState({ metamask: web3.currentProvider.host === 'metamask' })
+    this.setState({ metamask: web3.currentProvider.host === "metamask" });
 
     web3.eth.getAccounts((err, wallets) => {
       console.log(wallets);
@@ -35,27 +42,52 @@ class App extends Component {
       this.setState({
         logged: true,
         wallet
-      })
-    })
+      });
+    });
   }
 
   render() {
+    const { store, history, testElement } = this.props;
     return (
-      <div className="jur">
-        <header className="jur--header">
-          {
-            this.state.logged
-            ?
-              <div>
-                <p>Your current account is <Blockies seed={this.state.wallet} size={8} scale={6} bgColor="#486aad" color="#37cda9" spotColor="#96f490" /> <code>{this.state.wallet}</code></p>
-              </div>
-            :
-              <p>Please unlock <a href="https://metamask.io/">MetaMask</a></p>
-          }
-        </header>
-      </div>
+      <Provider store={store}>
+        <Initializer>
+          <ConnectedRouter history={history}>
+            <div className="jur">
+              <header className="jur--header">
+                {this.state.logged ? (
+                  <div>
+                    <p>
+                      Your current account is{" "}
+                      <Blockies
+                        seed={this.state.wallet}
+                        size={8}
+                        scale={6}
+                        bgColor="#486aad"
+                        color="#37cda9"
+                        spotColor="#96f490"
+                      />{" "}
+                      <code>{this.state.wallet}</code>
+                    </p>
+                  </div>
+                ) : (
+                  <p>
+                    Please unlock <a href="https://metamask.io/">MetaMask</a>
+                  </p>
+                )}
+              </header>
+
+              {testElement}
+            </div>
+          </ConnectedRouter>
+        </Initializer>
+      </Provider>
     );
   }
+}
+
+App.defaultProps = {
+  // Testing
+  testElement: null
 }
 
 export default App;
