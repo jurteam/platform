@@ -1,83 +1,41 @@
 import React, { Component } from "react";
-import Blockies from "react-blockies";
 
 import { Provider } from "react-redux";
+import { Route, Switch } from "react-router"; // react-router v4
 import { ConnectedRouter } from "connected-react-router";
 
 // Initializer
 import Initializer from "./Initializer";
 
-// Web3 dapp utilities
-import { web3 } from "./Dapp";
-var wallet = null;
-
-web3.eth.getAccounts((err, accounts) => {
-  console.log(accounts);
-  console.log(err);
-  wallet = accounts[0];
-});
-
-// provider change handler
-if (web3.currentProvider.host === "metamask") {
-  // only if current provider is hosted by MetaMask
-  web3.currentProvider.connection.publicConfigStore.on("update", ev =>
-    console.log("MetaMask update", ev)
-  );
-}
+// Sections
+import NotFound from "../components/sections/NotFound"
+import Home from "../components/sections/Home"
 
 class App extends Component {
-  state = {
-    metamask: false,
-    logged: false,
-    wallet: null
-  };
+  constructor(props) {
+    super(props);
 
-  componentDidMount() {
-    this.setState({ metamask: web3.currentProvider.host === "metamask" });
+    this.renderTestReport = this.renderTestReport.bind(this);
+  }
 
-    web3.eth.getAccounts((err, wallets) => {
-      console.log(wallets);
-      console.log(err);
-      wallet = wallets[0];
-      this.setState({
-        logged: true,
-        wallet
-      });
-    });
+  renderTestReport() {
+    const { testElement } = this.props;
+    return process.env.NODE_ENV === "development" ? testElement : null;
   }
 
   render() {
-    const { store, history, testElement } = this.props;
+    const { store, history } = this.props;
     return (
       <Provider store={store}>
         <Initializer>
           <ConnectedRouter history={history}>
-            <div className="jur">
-              <header className="jur--header">
-                {this.state.logged ? (
-                  <div>
-                    <p>
-                      Your current account is{" "}
-                      <Blockies
-                        seed={this.state.wallet}
-                        size={8}
-                        scale={6}
-                        bgColor="#486aad"
-                        color="#37cda9"
-                        spotColor="#96f490"
-                      />{" "}
-                      <code>{this.state.wallet}</code>
-                    </p>
-                  </div>
-                ) : (
-                  <p>
-                    Please unlock <a href="https://metamask.io/">MetaMask</a>
-                  </p>
-                )}
-              </header>
-
-              {testElement}
-            </div>
+            <>
+              <Switch>
+                <Route exact path="/" render={() => <Home />} />
+                <Route render={() => <NotFound />} />
+              </Switch>
+              {this.renderTestReport()}
+            </>
           </ConnectedRouter>
         </Initializer>
       </Provider>
@@ -88,6 +46,6 @@ class App extends Component {
 App.defaultProps = {
   // Testing
   testElement: null
-}
+};
 
 export default App;
