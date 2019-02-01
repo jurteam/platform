@@ -6,7 +6,6 @@
     "connected-react-router": "^6.2.2",
     "dotenv": "^6.2.0",
     "history": "^4.7.2",
-    "lessdux": "^0.8.3",
     "node-sass": "^4.11.0",
     "react": "^16.7.0",
     "react-blockies": "^1.4.0",
