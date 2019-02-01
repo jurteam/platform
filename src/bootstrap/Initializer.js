@@ -18,11 +18,11 @@ class Initializer extends PureComponent {
     if (web3.currentProvider.host === "metamask") {
       // only if current provider is hosted by MetaMask
       web3.currentProvider.connection.publicConfigStore.on("update", evm => {
-        log("MetaMask update", evm);
         if (
           typeof evm.selectedAddress !== "undefined" &&
           wallet.address !== evm.selectedAddress
         ) {
+          log("MetaMask update", evm);
           setWalletConnection(true);
           setWalletAddress(evm.selectedAddress);
         }
