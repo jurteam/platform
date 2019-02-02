@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import Blockies from "react-blockies";
 
+import Unlock from "../auth/Unlock";
+
 class Home extends Component {
   render() {
     const { wallet } = this.props;
@@ -25,14 +27,7 @@ class Home extends Component {
                 <code>{wallet.address}</code>
               </p>
             </div>
-          ) : (
-            <p>
-              Please unlock
-              <a href="https://metamask.io/" style={{ marginLeft: "10px" }}>
-                MetaMask
-              </a>
-            </p>
-          )}
+          ) : <Unlock />}
         </header>
       </div>
     );

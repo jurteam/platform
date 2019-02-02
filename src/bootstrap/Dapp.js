@@ -1,13 +1,14 @@
-import Web3 from 'web3'
+import Web3 from "web3";
+import MetaMask from "../hooks/MetaMask"; // MetaMask hook
 
-const ETHEREUM_PROVIDER = process.env.REACT_APP_ETHEREUM_PROVIDER
+const ETHEREUM_PROVIDER = process.env.REACT_APP_ETHEREUM_PROVIDER;
 
-let web3
-if (process.env.NODE_ENV === 'test')
-  web3 = new Web3(require('ganache-cli').provider())
+let web3;
+if (process.env.NODE_ENV === "test")
+  web3 = new Web3(require("ganache-cli").provider());
 else if (window.web3 && window.web3.currentProvider)
-  web3 = new Web3(window.web3.currentProvider)
-else web3 = new Web3(new Web3.providers.HttpProvider(ETHEREUM_PROVIDER))
+  web3 = new Web3(window.web3.currentProvider);
+else web3 = new Web3(new Web3.providers.HttpProvider(ETHEREUM_PROVIDER));
 
 const network =
   web3.eth &&
@@ -16,22 +17,28 @@ const network =
     .then(networkID => {
       switch (networkID) {
         case 1:
-          return 'main'
+          return "main";
         case 3:
-          return 'ropsten'
+          return "ropsten";
         case 4:
-          return 'rinkeby'
+          return "rinkeby";
         case 42:
-          return 'kovan'
+          return "kovan";
         default:
-          return null
+          return null;
       }
     })
-    .catch(() => null)
+    .catch(() => null);
 
-const ETHAddressRegExpCaptureGroup = '(0x[a-fA-F0-9]{40})'
-const ETHAddressRegExp = /0x[a-fA-F0-9]{40}/
-const strictETHAddressRegExp = /^0x[a-fA-F0-9]{40}$/
+// provider change handler
+if (web3.currentProvider.host === "metamask") {
+  // MetaMask handler
+  MetaMask.setProvider(web3.currentProvider);
+}
+
+const ETHAddressRegExpCaptureGroup = "(0x[a-fA-F0-9]{40})";
+const ETHAddressRegExp = /0x[a-fA-F0-9]{40}/;
+const strictETHAddressRegExp = /^0x[a-fA-F0-9]{40}$/;
 
 export {
   web3,
@@ -39,4 +46,4 @@ export {
   ETHAddressRegExpCaptureGroup,
   ETHAddressRegExp,
   strictETHAddressRegExp
-}
+};
