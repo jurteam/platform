@@ -1,3 +1,7 @@
+// App
+export const SET_LOADED = 'SET_LOADED';
+export const RESET_APP_STATE = 'RESET_APP_STATE';
+
 // Wallet
 export const SET_WALLET_ADDRESS = 'SET_WALLET_ADDRESS';
 export const SET_WALLET_CONNECTION = 'SET_WALLET_CONNECTION';
