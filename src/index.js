@@ -10,6 +10,7 @@ import * as serviceWorker from "./bootstrap/serviceWorker";
 // destructuring store config
 const { store, history } = configureStore();
 export default store;
+
 // Random number is used so hot reloading works with `react-loadable`
 const render = Component => {
   ReactDOM.render(

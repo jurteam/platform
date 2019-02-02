@@ -1,51 +1,19 @@
-body {
-  margin: 0;
-  padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
-}
-
-// variables definition
-$cyan   : #61dafb;
-$white  : white;
-$dark   : #282c34;
+@import './variables';
+@import './reset';
 
 .jur {
-
-  text-align: center;
-
-  &--header {
-    background-color: $dark;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: calc(10px + 2vmin);
-    color: $white;
-  }
-
-  &--link {
-    color: $cyan;
-  }
-}
-
-p {
-  display: flex;
-  flex: 1;
-  align-items: center;
-  justify-content: space-around;
-}
-
-canvas {
-  margin: 0 12px;
-  border-radius: 50%;
+    text-align: center;
+    &--header {
+        background-color: $dark;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        font-size: calc(10px + 2vmin);
+        color: $white;
+    }
+    &--link {
+        color: $cyan;
+    }
 }
