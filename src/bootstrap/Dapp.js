@@ -1,5 +1,18 @@
 import Web3 from "web3";
+import { log } from "../utils/helpers"; // helpers
 import MetaMask from "../hooks/MetaMask"; // MetaMask hook
+
+// Actions
+import {
+  setWalletAddress,
+  setWalletConnection,
+  resetWallet
+} from "../actions/Wallet";
+
+// get store config
+import configureStore from "./Store";
+const { store } = configureStore();
+log("store", store);
 
 const ETHEREUM_PROVIDER = process.env.REACT_APP_ETHEREUM_PROVIDER;
 
@@ -34,6 +47,40 @@ const network =
 if (web3.currentProvider.host === "metamask") {
   // MetaMask handler
   MetaMask.setProvider(web3.currentProvider);
+
+  const { wallet } = store.getState();
+
+  // only if current provider is hosted by MetaMask
+  web3.currentProvider.connection.publicConfigStore.on("update", evm => {
+    log("MetaMask", MetaMask.isEnabled());
+    log("MetaMask update data", evm);
+
+    if (
+      typeof evm.selectedAddress !== "undefined" &&
+      evm.selectedAddress !== undefined
+    ) {
+      // TODO: refers to web3 properties
+      store.dispatch(setWalletConnection(true)); // is connected
+
+      // Update address when needed
+      if (wallet.address !== evm.selectedAddress) {
+        log("wallet.address !== evm.selectedAddress", evm);
+        store.dispatch(setWalletAddress(evm.selectedAddress));
+      }
+    } else {
+      // TODO: refers to web3 properties
+      store.dispatch(resetWallet()); // is considered disconnected
+    }
+  });
+
+  // Heartbeat for connection
+  // TODO: Evaluate a Service Worker for this purpose
+  setInterval(() => {
+    log("Heartbeat", MetaMask.isEnabled());
+    if (!MetaMask.isEnabled()) {
+      store.dispatch(resetWallet()); // is considered disconnected
+    }
+  }, process.env.REACT_APP_HEARTBEAT_DELAY);
 }
 
 const ETHAddressRegExpCaptureGroup = "(0x[a-fA-F0-9]{40})";
