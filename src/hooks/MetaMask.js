@@ -17,9 +17,9 @@ class MetaMaskProvider {
   }
 
   // ask for approve
-  auth() {
+  async auth() {
     const { connection } = this.provider;
-    return connection.enable(); // promise
+    return await connection.enable(); // promise
   }
 
   // enabled checker
