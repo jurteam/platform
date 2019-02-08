@@ -3,7 +3,16 @@ import ReduxThunk from 'redux-thunk';
 import { createBrowserHistory } from "history";
 import { routerMiddleware } from "connected-react-router";
 
+// Drizzle
+import { generateContractsInitialState } from 'drizzle'
+import drizzleOptions from "../config/drizzleOptions"
+
 import createRootReducer from "../reducers";
+
+// Helpers
+import { log } from "../utils/helpers"; // log helpers
+
+log('Drizzle - Initial state', generateContractsInitialState(drizzleOptions));
 
 export const history = createBrowserHistory();
 let store;
@@ -15,7 +24,7 @@ let store;
  * @returns {{ store: object, history: object }} - An object with the store and the history objects.
  */
 export default function configureStore(
-  initialState = {},
+  initialState = generateContractsInitialState(drizzleOptions),
   { dispatchSpy } = {}
 ) {
   const enhancers = [];

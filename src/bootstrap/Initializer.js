@@ -1,6 +1,8 @@
 /* eslint-disable no-unused-vars */
 import React, { PureComponent } from "react";
 import { connect } from "react-redux";
+import { DrizzleProvider } from "drizzle-react";
+import drizzleOptions from "../config/drizzleOptions"
 
 import { log } from "../utils/helpers"; // log helpers
 import MetaMask from "../hooks/MetaMask"; // MetaMask hook
@@ -17,22 +19,22 @@ class Initializer extends PureComponent {
     // First load
     if (!MetaMask.isEnabled()) {
       MetaMask.auth()
-        .then((addresses) => {
-          log('MetaMask is authorized', addresses);
+        .then(addresses => {
+          log("MetaMask is authorized", addresses);
           setWalletConnection(true); // is connected
           setWalletAddress(addresses[0]); // only the first
           setLoaded();
         })
-        .catch((e) => {
-          log('MetaMask authorization denied', e);
+        .catch(e => {
+          log("MetaMask authorization denied", e);
           setWalletConnection(false); // is connected
           setLoaded();
-        })
-    };
+        });
+    }
   }
   render() {
     const { children } = this.props;
-    return (<div className="jur-app" data-loaded={this.props.app.loaded}>{children}</div>);
+    return (<DrizzleProvider options={drizzleOptions}>{children}</DrizzleProvider>);
   }
 }
 
