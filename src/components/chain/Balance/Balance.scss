@@ -1,0 +1,11 @@
+
+@import '../../../assets/scss/variables'; // get global variables
+
+.jur {
+
+    &--balance {
+
+        display: flex;
+        flex-direction: column;
+    }
+}
