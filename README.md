@@ -32,6 +32,12 @@ This project repo is organized in 3 branches:
 ### Git Workflow
 Using this repository you should follow this workflow: [Atlassian Git-flow](https://it.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow), by using _**features**_, _**hotfix**_ and _**releases**_ throuth previous mentioned branches.
 
+## Architecture
+This project is structured as following:
+
+- **Frontend** build with [React.js](https://reactjs.org) + [Drizzle](https://truffleframework.com/drizzle)
+- **REST API** built with [Laravel Lumen](https://lumen.laravel.com)
+
 ## Environment setup
 This project uses a `.env` file in order to please [follow the instructions here](https://facebook.github.io/create-react-app/docs/adding-custom-environment-variables) and create this file based on your needs.
 
