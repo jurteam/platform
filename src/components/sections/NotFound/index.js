@@ -1,4 +1,4 @@
 import React from "react";  // eslint-disable-line no-unused-vars
-import { Header } from "./Header";
+import { NotFound } from "./NotFound";
 
-export default Header;
+export default NotFound;

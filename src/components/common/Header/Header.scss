@@ -1,10 +1,6 @@
-
 @import '../../../assets/scss/variables'; // get global variables
-
 .jur {
-
     &--header {
-
         background-color: $dark;
         width: 100vw;
         height: 70px;
@@ -14,12 +10,44 @@
         box-sizing: border-box;
         color: $white;
         align-items: center;
-        justify-content: flex-end;
+        justify-content: space-between;
 
-        img {
-            position: absolute;
-            top: 0;
-            left: 25px;
+        aside.user {
+            display: flex;
+            align-items: center;
+        }
+    }
+    &--logo {
+        position: absolute;
+        top: 0;
+        left: 25px;
+    }
+    &--navbar {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        color: $white;
+        padding: 0;
+        a {
+            color: $white;
+            text-transform: capitalize;
+            font-weight: bold;
+            text-decoration: none;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+
+        li {
+            list-style: none;
+            padding: 0;
+            margin-right: 30px;
+
+            &:last-child {
+
+                margin: 0;
+            }
         }
     }
 }

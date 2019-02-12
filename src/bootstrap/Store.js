@@ -5,12 +5,12 @@ import { routerMiddleware } from "connected-react-router";
 
 // Drizzle
 import { generateContractsInitialState } from 'drizzle'
-import drizzleOptions from "../config/drizzleOptions"
+import drizzleOptions from "./../config/drizzleOptions"
 
-import createRootReducer from "../reducers";
+import createRootReducer from "./../reducers";
 
 // Helpers
-import { log } from "../utils/helpers"; // log helpers
+import { log } from "./../utils/helpers"; // log helpers
 
 log('Drizzle - Initial state', generateContractsInitialState(drizzleOptions));
 
@@ -24,7 +24,9 @@ let store;
  * @returns {{ store: object, history: object }} - An object with the store and the history objects.
  */
 export default function configureStore(
-  initialState = generateContractsInitialState(drizzleOptions),
+  initialState = {
+    contracts: generateContractsInitialState(drizzleOptions)
+  },
   { dispatchSpy } = {}
 ) {
   const enhancers = [];

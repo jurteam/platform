@@ -5,7 +5,7 @@ import Blockies from "react-blockies";
 import style from "./Account.scss"; // load scss properly
 
 export const Account = ({ app, wallet, history }) =>
-  app.loaded == true ? (
+  app.loaded === true ? (
     <div className="jur--account" onClick={() => history.push("/profile")}>
       {wallet.address && (
         <div>

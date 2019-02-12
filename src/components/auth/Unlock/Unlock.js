@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component } from "react";  // eslint-disable-next-line no-unused-vars
 import MetaMask from "../../../hooks/MetaMask"; // MetaMask hook
 import Button from "../../../components/common/Button";
 
@@ -37,7 +37,7 @@ export class Unlock extends Component {
         />
         <Button
           onClick={() => {
-            window.location.href = "https://metamask.io";
+            history.location = "https://metamask.io";
           }}
           style={{ marginLeft: "10px" }}
           name="Get Chrome Extension"

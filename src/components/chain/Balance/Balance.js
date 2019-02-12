@@ -1,30 +1,61 @@
 /* eslint-disable no-unused-vars */
-import React from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { ContractData } from "drizzle-react-components";
+import Amount from "./../../common/Amount";
 
+// Style
 import style from "./Balance.scss"; // load scss properly
 
-// export const Balance = ({ amount, symbol }) => (
-//   <div className="jur--balance">
-//     <p><strong>Jur Balance</strong></p>
-//     <p className="amount">{symbol} {amount}</p>
-//   </div>
-// );
+export class Balance extends Component {
+  constructor(props, context) {
+    super(props);
 
-export const Balance = ({ drizzleStatus, accounts }) =>
-  drizzleStatus.initialized ? (
-    <div className="jur--balance">
-      <strong>Total Supply</strong>:{" "}
-      <ContractData
-        contract="JURToken"
-        method="totalSupply"
-        // methodArgs={[{ from: accounts[0] }]}
-      />{" "}
-      <ContractData
-        contract="JURToken"
-        method="balanceOf"
-        // methodArgs={[accounts[0]]}
-      />
-      <ContractData contract="JURToken" method="symbol" hideIndicator />
-    </div>
-  ) : null;
+    // this.contract = "JURToken"
+
+    // console.log('balance context', context);
+
+    // const { drizzle } = context;
+    // const { contracts } = drizzle;
+
+    // this.contracts = context.drizzle.contracts
+    // console.log('balance contracts', contracts);
+    // console.log('balance this.contracts', this.contracts);
+    // console.log('balance typeof this.contracts', typeof this.contracts);
+    // console.log('balance Object.keys(this.contracts).length', Object.keys(this.contracts).length);
+
+    // // Get the contract ABI
+    // // const abi = this.contracts[this.contract].abi;
+    // // console.log('abi', abi);
+
+    // // // Fetch initial value from chain and return cache key for reactive updates.
+    // const methodArgs = []
+    // // this.dataKey = this.contracts[this.props.contract].methods[this.props.method].cacheCall(...methodArgs)
+
+    // console.log('balance props', this.props);
+    // // console.log('this.dataKey', this.dataKey);
+  }
+
+  componentDidMount() {}
+  render() {
+    return (this.props.drizzleStatus.initialized &&
+      <div className="jur--balance">
+        <h5>Jur Balance</h5>
+        <Amount
+          value={
+            <ContractData
+              contract="JURToken"
+              method="balanceOf"
+              methodArgs={[this.props.accounts[0]]}
+              hideIndicator={true}
+            />
+          }
+        />
+      </div>
+    );
+  }
+}
+
+Balance.contextTypes = {
+  drizzle: PropTypes.object
+}
