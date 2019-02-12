@@ -13,22 +13,7 @@ class Home extends Component {
         {app.loaded && (
           <header className="jur--body">
             {wallet.isConnected ? (
-              <div>
-                <p>
-                  Your current account is{" "}
-                  {wallet.address && (
-                    <Blockies
-                      seed={wallet.address}
-                      size={8}
-                      scale={6}
-                      bgColor="#486aad"
-                      color="#37cda9"
-                      spotColor="#96f490"
-                    />
-                  )}{" "}
-                  <code>{wallet.address}</code>
-                </p>
-              </div>
+              "Home Section"
             ) : (
               <Unlock />
             )}

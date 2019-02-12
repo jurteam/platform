@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React from "react";
-import { AccountData, ContractData, ContractForm } from "drizzle-react-components";
+import { ContractData } from "drizzle-react-components";
 
 import style from "./Balance.scss"; // load scss properly
 
@@ -11,40 +11,20 @@ import style from "./Balance.scss"; // load scss properly
 //   </div>
 // );
 
-export const Balance = ({ drizzleStatus, accounts }) => (drizzleStatus.initialized) ?(
-    <div className="App">
-      <header className="App-header">
-        <AccountData accountIndex="0" units="ether" precision="3" />
-        <h1 className="App-title">Tutorial Token</h1>
-        <p>
-          <strong>Total Supply</strong>:{" "}
-          <ContractData
-            contract="JURToken"
-            method="totalSupply"
-            methodArgs={[{ from: accounts[0] }]}
-          />{" "}
-          <ContractData
-            contract="JURToken"
-            method="symbol"
-            hideIndicator
-          />
-        </p>
-        <p>
-          <strong>My Balance</strong>:{" "}
-          <ContractData
-            contract="JURToken"
-            method="balanceOf"
-            methodArgs={[accounts[0]]}
-          />
-        </p>
-        <h3>Send Tokens</h3>
-      </header>
-      <div className="App-intro">
-        <ContractForm
-          contract="JURToken"
-          method="transfer"
-          labels={["To Address", "Amount to Send"]}
-        />
-      </div>
+export const Balance = ({ drizzleStatus, accounts }) =>
+  drizzleStatus.initialized ? (
+    <div className="jur--balance">
+      <strong>Total Supply</strong>:{" "}
+      <ContractData
+        contract="JURToken"
+        method="totalSupply"
+        // methodArgs={[{ from: accounts[0] }]}
+      />{" "}
+      <ContractData
+        contract="JURToken"
+        method="balanceOf"
+        // methodArgs={[accounts[0]]}
+      />
+      <ContractData contract="JURToken" method="symbol" hideIndicator />
     </div>
-  ) : (<div>Loading dapp...</div>);
+  ) : null;
