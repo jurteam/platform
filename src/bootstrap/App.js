@@ -10,6 +10,7 @@ import Initializer from "./Initializer";
 // Sections
 import NotFound from "../components/sections/NotFound"
 import Home from "../components/sections/Home"
+import Profile from "../components/sections/Profile"
 
 class App extends Component {
   constructor(props) {
@@ -32,6 +33,7 @@ class App extends Component {
             <>
               <Switch>
                 <Route exact path="/" render={() => <Home />} />
+                <Route exact path="/profile" render={() => <Profile />} />
                 <Route render={() => <NotFound />} />
               </Switch>
               {this.renderTestReport()}
