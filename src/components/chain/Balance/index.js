@@ -4,7 +4,7 @@ import { Balance } from "./Balance";
 const mapStateToProps = state => ({
   accounts: state.accounts,
   drizzleStatus: state.drizzleStatus,
-  TutorialToken: state.contracts.TutorialToken
+  JURToken: state.contracts.JURToken
 });
 
 export default drizzleConnect(Balance, mapStateToProps);

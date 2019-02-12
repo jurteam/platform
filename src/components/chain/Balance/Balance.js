@@ -19,12 +19,12 @@ export const Balance = ({ drizzleStatus, accounts }) => (drizzleStatus.initializ
         <p>
           <strong>Total Supply</strong>:{" "}
           <ContractData
-            contract="TutorialToken"
+            contract="JURToken"
             method="totalSupply"
             methodArgs={[{ from: accounts[0] }]}
           />{" "}
           <ContractData
-            contract="TutorialToken"
+            contract="JURToken"
             method="symbol"
             hideIndicator
           />
@@ -32,7 +32,7 @@ export const Balance = ({ drizzleStatus, accounts }) => (drizzleStatus.initializ
         <p>
           <strong>My Balance</strong>:{" "}
           <ContractData
-            contract="TutorialToken"
+            contract="JURToken"
             method="balanceOf"
             methodArgs={[accounts[0]]}
           />
@@ -41,7 +41,7 @@ export const Balance = ({ drizzleStatus, accounts }) => (drizzleStatus.initializ
       </header>
       <div className="App-intro">
         <ContractForm
-          contract="TutorialToken"
+          contract="JURToken"
           method="transfer"
           labels={["To Address", "Amount to Send"]}
         />
