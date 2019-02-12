@@ -14,6 +14,8 @@ import Header from "../components/common/Header";
 import NotFound from "../components/sections/NotFound";
 import Home from "../components/sections/Home";
 import Profile from "../components/sections/Profile";
+import Contracts from "../components/sections/Contracts";
+import Disputes from "../components/sections/Disputes";
 
 // Drizzle
 import { DrizzleProvider } from "drizzle-react";
@@ -44,6 +46,8 @@ class App extends Component {
                 <Switch>
                   <Route exact path="/" render={() => <Home />} />
                   <Route exact path="/profile" render={() => <Profile />} />
+                  <Route exact path="/contracts" render={() => <Contracts />} />
+                  <Route exact path="/disputes" render={() => <Disputes />} />
                   <Route render={() => <NotFound />} />
                 </Switch>
                 {this.renderTestReport()}
