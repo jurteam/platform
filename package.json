@@ -10,6 +10,7 @@
     "drizzle-react-components": "^1.2.1",
     "history": "^4.7.2",
     "node-sass": "^4.11.0",
+    "prop-types": "^15.7.1",
     "react": "^16.8.1",
     "react-blockies": "^1.4.0",
     "react-dom": "^16.8.1",
