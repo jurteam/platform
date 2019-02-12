@@ -20,7 +20,7 @@
     "redux": "^4.0.1",
     "redux-saga": "^1.0.1",
     "redux-thunk": "^2.3.0",
-    "web3": "^1.0.0-beta.39"
+    "web3": "^1.0.0-beta.46"
   },
   "scripts": {
     "start": "react-scripts start",
