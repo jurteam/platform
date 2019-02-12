@@ -4,6 +4,9 @@ import PropTypes from "prop-types";
 import { ContractData } from "drizzle-react-components";
 import Amount from "./../../common/Amount";
 
+// i18n
+import lang from "./../../../assets/i18n/en.json";
+
 // Style
 import style from "./Balance.scss"; // load scss properly
 
@@ -40,7 +43,7 @@ export class Balance extends Component {
   render() {
     return (this.props.drizzleStatus.initialized &&
       <div className="jur--balance">
-        <h5>Jur Balance</h5>
+        <h5>{lang.jurBalance}</h5>
         <Amount
           value={
             <ContractData
