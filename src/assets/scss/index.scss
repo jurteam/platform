@@ -3,15 +3,18 @@
 
 .jur {
     text-align: center;
-    &--header {
-        background-color: $dark;
+    &--body {
+        background-color: $white;
         min-height: 100vh;
+        box-sizing: border-box;
+        padding: 20px 25px;
+        padding-top: 90px; // fixed header margin
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
         font-size: calc(10px + 2vmin);
-        color: $white;
+        color: $dark;
     }
     &--link {
         color: $cyan;

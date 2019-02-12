@@ -7,6 +7,9 @@ import { ConnectedRouter } from "connected-react-router";
 // Initializer
 import Initializer from "./Initializer";
 
+// Commons
+import Header from "../components/common/Header"
+
 // Sections
 import NotFound from "../components/sections/NotFound"
 import Home from "../components/sections/Home"
@@ -31,6 +34,7 @@ class App extends Component {
         <Initializer>
           <ConnectedRouter history={history}>
             <>
+              <Header />
               <Switch>
                 <Route exact path="/" render={() => <Home />} />
                 <Route exact path="/profile" render={() => <Profile />} />

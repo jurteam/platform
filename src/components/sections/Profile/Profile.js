@@ -4,6 +4,6 @@ export class Profile extends Component {
 
     render() {
 
-        return "Profile Section";
+        return <div className="jur--body">Profile Section</div>;
     }
 }

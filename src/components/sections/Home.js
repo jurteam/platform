@@ -11,7 +11,7 @@ class Home extends Component {
     return (
       <div className="jur">
         {app.loaded && (
-          <header className="jur--header">
+          <header className="jur--body">
             {wallet.isConnected ? (
               <div>
                 <p>
