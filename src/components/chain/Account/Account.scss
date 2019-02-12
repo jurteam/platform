@@ -1,0 +1,43 @@
+
+@import '../../../assets/scss/variables'; // get global variables
+
+.jur {
+
+    &--account {
+
+        font-size: 14px;
+        cursor: pointer;
+
+        & > div {
+
+            display: flex;
+            align-items: center;
+
+            & > canvas {
+
+                width: 30px !important;
+                height: 30px !important;
+            }
+
+            & > aside {
+
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+
+                strong {
+
+                    margin-bottom: 5px;
+                }
+
+                code {
+
+                    font-size: 10px;
+                    text-overflow: ellipsis;
+                    width: 140px;
+                    overflow: hidden;
+                }
+            }
+        }
+    }
+}
