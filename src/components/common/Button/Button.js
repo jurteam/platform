@@ -8,16 +8,18 @@ const btnAttrs = ['size', 'variant', 'color', 'fullWidth'];
 export class Button extends Component {
 
   static propTypes = {
-    color: PropTypes.string,
-    variant: PropTypes.string,
-    size: PropTypes.string,
+    color: PropTypes.oneOf(['info', 'dispute', 'success', 'friendly', 'muted', 'dark-blue', 'gradient']),
+    variant: PropTypes.oneOf(['contained', 'outlined']),
+    size: PropTypes.oneOf(['small', 'medium', 'big']),
     className: PropTypes.string,
-    disabled: PropTypes.bool
+    disabled: PropTypes.bool,
+    fullWidth: PropTypes.bool,
+    children: PropTypes.node.isRequired
   };
 
   static defaultProps = {
     className: '',
-    color: 'default',
+    color: '',
     variant: 'outlined',
     size: 'small',
     disabled: false,
@@ -38,7 +40,7 @@ export class Button extends Component {
     let cls = btnAttrs.reduce((acc, attr) => {
       let value = this.props[attr];
 
-      if (!value || value === 'default') {
+      if (!value) {
         return acc;
       }
 
