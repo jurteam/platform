@@ -14,7 +14,19 @@ $heliotrope: #9657FF;
 $cerulean: #00B6F2;
 $robin-blue: #00E0B7;
 
-// Buttons colors
+$orange-peel: #FF9B00;
+$serenade: #FFF5E5;
+$electric-violet: #9013FE;
+$blue-chalk: #F3E7FE;
+$caribbean-green: #00CE7D;
+$white-ice: #E5FAF2;
+$scarlet: #FF2500;
+$pippin:#FFE5E5;
+$tundora: #4A4A4A;
+$gallery: #ECECEC;
+
+
+// Buttons
 $btn-primary-color: $dodger-blue;
 $btn-secondary-color: $turquoise;
 $btn-friendly-color: $heliotrope;
@@ -24,8 +36,19 @@ $btn-dark-blue-color: $prussian-blue;
 $btn-muted-color: $gull-gray;
 $btn-gradient-color: linear-gradient(to right, $cerulean, $robin-blue);
 $btn-shadow: 0 3px 9px rgba($black, .10);
-
 $btn-font-size-default: 12px;
+
+// Tag
+$tag-waiting-text-color: $orange-peel;
+$tag-waiting-bg-color: $serenade;
+$tag-draft-text-color: $electric-violet;
+$tag-draft-bg-color: $blue-chalk;
+$tag-ongoing-text-color: $caribbean-green;
+$tag-ongoing-bg-color: $white-ice;
+$tag-open-dispute-text-color: $scarlet;
+$tag-open-dispute-bg-color: $pippin;
+$tag-closed-dispute-text-color: $tundora;
+$tag-closed-dispute-bg-color: $gallery;
 
 // Fonts
 $font-poppins: 'Poppins', Arial, sans-serif;
