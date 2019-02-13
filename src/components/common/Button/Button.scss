@@ -1,0 +1,55 @@
+@import '../../../assets/scss/variables';
+
+.jur {
+    &-btn {
+        color: inherit;
+        border: 0;
+        margin: 0;
+        cursor: pointer;
+        display: inline-flex;
+        outline: none;
+        position: relative;
+        align-items: center;
+        user-select: none;
+        border-radius: 0;
+        vertical-align: middle;
+        justify-content: center;
+        -moz-appearance: none;
+        text-decoration: none;
+        background-color: transparent;
+        -webkit-appearance: none;
+        -webkit-tap-highlight-color: transparent;
+        padding: 0 10px;
+        font-size: $btn-font-size-default;
+        font-weight: 600;
+        font-family: $font-poppins;
+        letter-spacing: 0.5px;
+        border: 1px solid $btn-border-color;
+        border-radius: 4px;
+        color: $btn-primary-color;
+
+        &[disabled] {
+            opacity: 0.5;
+            cursor: default;
+        }
+
+        &--small {
+            height: 31px;
+            min-width: 180px;
+        }
+
+        &--medium {
+            height: 36px;
+            min-width: 162px;
+        }
+        
+        &--big {
+            height: 41px;
+            min-width: 141px;
+        }
+
+        &--primary {}
+        
+        &--secondary {}
+    }
+}
