@@ -15,7 +15,6 @@ $prussian-blue: #002257;
 $heliotrope: #9657FF;
 $cerulean: #00B6F2;
 $robin-blue: #00E0B7;
-
 $orange-peel: #FF9B00;
 $serenade: #FFF5E5;
 $electric-violet: #9013FE;
@@ -26,6 +25,7 @@ $scarlet: #FF2500;
 $pippin:#FFE5E5;
 $tundora: #4A4A4A;
 $gallery: #ECECEC;
+$cloud-burst: #233250;
 
 
 // Buttons
@@ -51,6 +51,9 @@ $tag-open-dispute-text-color: $scarlet;
 $tag-open-dispute-bg-color: $pippin;
 $tag-closed-dispute-text-color: $tundora;
 $tag-closed-dispute-bg-color: $gallery;
+
+// Header
+$header-bg-color: $cloud-burst;
 
 // Fonts
 $font-poppins: 'Poppins', Arial, sans-serif;
