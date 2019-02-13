@@ -5,7 +5,6 @@ import { action } from '@storybook/addon-actions';
 import { linkTo } from '@storybook/addon-links';
 
 import Button from './Button';
-import './Button.scss';
 
 storiesOf('Button', module)
   .add('default', () => <Button>Default Button</Button>)
