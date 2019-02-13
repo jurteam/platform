@@ -3,12 +3,7 @@ import PropTypes from 'prop-types';
 import './Button.scss';
 
 const btnClass = 'jur-btn';
-const btnAttrs = {
-  size: 1,
-  variant: 1,
-  color: 1,
-  fullWidth: 1
-};
+const btnAttrs = ['size', 'variant', 'color', 'fullWidth'];
 
 export class Button extends Component {
 
@@ -40,17 +35,22 @@ export class Button extends Component {
       fullWidth,
       ...buttonProps
     } = this.props;
-    let cls = btnClass,
-        v,
-        k;
 
     buttonProps.disabled = disabled;
 
-    for(k in btnAttrs) {
-      v = this.props[k];
-      if (v && k === 'fullWidth') cls += ' ' + btnClass + '--full-width';
-      if (v !== 'default' && k !== 'fullWidth') cls += ' ' + btnClass + '--' + v;
-    }
+    let cls = btnAttrs.reduce((acc, attr) => {
+      let value = this.props[attr];
+
+      if (!value || value === 'default') {
+        return acc;
+      }
+
+      if (attr === 'fullWidth') {
+        value = 'full-width';
+      }
+
+      return `${acc} ${btnClass}--${value}`;
+    }, btnClass);
 
     return (
       <button
