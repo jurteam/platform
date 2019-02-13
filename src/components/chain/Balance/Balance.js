@@ -4,8 +4,8 @@ import PropTypes from "prop-types";
 import { ContractData } from "drizzle-react-components";
 import Amount from "./../../common/Amount";
 
-// i18n
-import lang from "./../../../assets/i18n/en.json";
+// Context
+import { AppContext } from "./../../../bootstrap/AppProvider";
 
 // Style
 import style from "./Balance.scss"; // load scss properly
@@ -41,19 +41,23 @@ export class Balance extends Component {
 
   componentDidMount() {}
   render() {
-    return (this.props.drizzleStatus.initialized &&
+    return (
       <div className="jur--balance">
-        <h5>{lang.jurBalance}</h5>
+      {this.props.drizzleStatus.initialized && <>
+        <h5>
+          <AppContext.Consumer>{context => context.labels.jurBalance}</AppContext.Consumer>
+        </h5>
         <Amount
           value={
             <ContractData
               contract="JURToken"
               method="balanceOf"
               methodArgs={[this.props.accounts[0]]}
-              hideIndicator={true}
+              hideIndicator
             />
           }
-        />
+        /></>
+        }
       </div>
     );
   }

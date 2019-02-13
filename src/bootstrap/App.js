@@ -4,6 +4,9 @@ import { Provider } from "react-redux";
 import { Route, Switch } from "react-router"; // react-router v4
 import { ConnectedRouter } from "connected-react-router";
 
+// Context
+import AppProvider from "./AppProvider";
+
 // Initializer
 import Initializer from "./Initializer"; // eslint-disable-line no-unused-vars
 
@@ -37,6 +40,7 @@ class App extends Component {
     const { store, history, drizzle } = this.props;
 
     return (
+      <AppProvider>
       <DrizzleProvider options={drizzleOptions} drizzle={drizzle}>
         <Provider store={store}>
           <Initializer>
@@ -56,6 +60,7 @@ class App extends Component {
           </Initializer>
         </Provider>
       </DrizzleProvider>
+        </AppProvider>
     );
   }
 }
