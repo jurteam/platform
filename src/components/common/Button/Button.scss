@@ -24,7 +24,6 @@
         font-weight: 600;
         font-family: $font-poppins;
         letter-spacing: 0.5px;
-        border: 1px solid $btn-border-color;
         border-radius: 4px;
         color: $btn-primary-color;
 
@@ -49,7 +48,23 @@
         }
 
         &--primary {}
-        
-        &--secondary {}
+
+        &--success {}
+
+        &--dispute {}
+
+        &--friendly {}
+
+        &--contained {
+            border: 1px solid inherit;
+        }
+
+        &--outlined {
+            border: 1px solid $btn-border-color;
+        }
+
+        &--full-width {
+            width: 100%;
+        }
     }
 }
