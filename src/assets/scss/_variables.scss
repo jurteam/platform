@@ -1,6 +1,7 @@
 // variables definition
 $cyan   : #61dafb;
 $white  : white;
+$black  : black;
 $dark   : #282c34;
 
 $dodger-blue: #33ADFF;
@@ -21,6 +22,8 @@ $btn-dispute-color: $rose;
 $btn-border-color: $mercury;
 $btn-dark-blue-color: $prussian-blue;
 $btn-muted-color: $gull-gray;
+$btn-gradient-color: linear-gradient(to right, $cerulean, $robin-blue);
+$btn-shadow: 0 3px 9px rgba($black, .10);
 
 $btn-font-size-default: 12px;
 
