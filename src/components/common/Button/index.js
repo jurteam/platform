@@ -5,7 +5,8 @@ const btnClass = 'jur-btn';
 const btnAttrs = {
   size: 1,
   variant: 1,
-  color: 1
+  color: 1,
+  fullWidth: 1
 };
 
 class Button extends Component {
@@ -21,9 +22,10 @@ class Button extends Component {
   static defaultProps = {
     className: '',
     color: 'default',
-    variant: 'default',
+    variant: 'outlined',
     size: 'small',
-    disabled: false
+    disabled: false,
+    fullWidth: false
   };
 
   render() {
@@ -34,6 +36,7 @@ class Button extends Component {
       variant,
       className,
       disabled,
+      fullWidth,
       ...buttonProps
     } = this.props;
     let cls = btnClass,
@@ -44,6 +47,7 @@ class Button extends Component {
 
     for(k in btnAttrs) {
       v = this.props[k];
+      if (v && k === 'fullWidth') cls += ' ' + btnClass + '--full-width';
       if (v !== 'default') cls += ' ' + btnClass + '--' + v;
     }
 
