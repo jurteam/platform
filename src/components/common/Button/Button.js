@@ -10,7 +10,7 @@ const btnAttrs = {
   fullWidth: 1
 };
 
-class Button extends Component {
+export class Button extends Component {
 
   static propTypes = {
     color: PropTypes.string,
@@ -57,10 +57,8 @@ class Button extends Component {
         className={ cls + ' ' + className }
         { ...buttonProps }
       >
-        <span>{ children }</span>  
+        <span>{ children }</span>
       </button>
     );
   }
 }
-
-export default Button;

@@ -4,7 +4,7 @@ import { storiesOf } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 import { linkTo } from '@storybook/addon-links';
 
-import Tag from './Tag';
+import Tag from './index';
 
 storiesOf('Tag', module)
   .add('Waiting', () => <Tag statusId={0}>Waiting for counterparty</Tag>)
