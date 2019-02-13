@@ -31,12 +31,9 @@ export class Button extends Component {
       size,
       variant,
       className,
-      disabled,
       fullWidth,
       ...buttonProps
     } = this.props;
-
-    buttonProps.disabled = disabled;
 
     let cls = btnAttrs.reduce((acc, attr) => {
       let value = this.props[attr];
