@@ -1,0 +1,40 @@
+@import "../../../assets/scss/variables";
+
+.jur {
+    &-tag {
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 10px;
+        height: 19px;
+        border-radius: 9.5px;
+        padding: 0 8px;
+        font-family: $font-opensans;
+        font-weight: 600;
+
+        span {
+            line-height: 1;
+        }
+
+        &--waiting {
+            color: $tag-waiting-text-color;
+            background-color: $tag-waiting-bg-color;
+        }
+        &--draft {
+            color: $tag-draft-text-color;
+            background-color: $tag-draft-bg-color;
+        }
+        &--ongoing {
+            color: $tag-ongoing-text-color;
+            background-color: $tag-ongoing-bg-color;
+        }
+        &--open-dispute {
+            color: $tag-open-dispute-text-color;
+            background-color: $tag-open-dispute-bg-color;
+        }
+        &--closed-dispute {
+            color: $tag-closed-dispute-text-color;
+            background-color: $tag-closed-dispute-bg-color;
+        }
+    }
+}

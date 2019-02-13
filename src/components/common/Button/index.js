@@ -1,4 +1,2 @@
-import React from "react";  // eslint-disable-line no-unused-vars
-import { Button } from "./Button";
-
-export default Button
+import Button from './index'
+export default Button;
