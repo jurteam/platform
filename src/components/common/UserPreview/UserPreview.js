@@ -9,7 +9,7 @@ export const UserPreview = ({ name, seed, shouldRenderName, balance, currency })
   
   return (
     <div className="jur-user-preview">
-      <div class="jur-user-preview__info">
+      <div class="jur-user-preview__item jur-user-preview__info">
         <Avatar seed={ seed } size="medium" variant="circle" />
         <div class="jur-user-preview__info__details">
           {shouldRenderName && !!name ?
@@ -18,9 +18,9 @@ export const UserPreview = ({ name, seed, shouldRenderName, balance, currency })
           <span class="jur-user-preview__info__seed">{ seed }</span>
         </div>
       </div>
-      <div class="jur-user-preview__balance">
+      <div class="jur-user-preview__item jur-user-preview__balance">
         <span class="jur-user-preview__balance__title">{ currency } Balance:</span>
-        <span class="jur-user-preview__balance__value">{ toCurrencyFormat(balance) } { currency.toUpperCase() }</span>
+        <span class="jur-user-preview__balance__value">{ `${toCurrencyFormat(balance)}${currency.toUpperCase()}` }</span>
       </div>
     </div>
   )

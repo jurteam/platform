@@ -5,6 +5,15 @@
         display: flex;
         font-family: $font-poppins;
 
+        &__item {
+            padding: 5px 20px;
+            border-right: 3px solid $user-preview-border-color;
+            
+            &:last-child {
+                border: none;
+            }
+        }
+
         &__info {
             display: flex;
             align-items: center;
@@ -29,6 +38,10 @@
             &__seed {
                 font-size: 10px;
                 color: $gray;
+                width: 100px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
             }
         }
 

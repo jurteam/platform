@@ -13,9 +13,9 @@ storiesOf('UserPreview', module)
       header: false
     }
   })
-  .add('should render name', () => <UserPreview name="Alice" seed="0x3954939439" shouldRenderName balance="7546857" currency="Jur" />)
-  .add('name unavailable', () => <UserPreview name="" seed="0x3954939439" shouldRenderName balance="7546857" currency="Jur" />)
-  .add('should render name is false', () => <UserPreview name="Alice" seed="0x3954939439" balance="7546857" currency="Jur" />)
-  .add('currency as number', () => <UserPreview name="Alice" seed="0x3954939439" balance={2423} currency="Jur" />)
+  .add('should render name', () => <UserPreview name="Alice" seed="0x3954939439487573664374" shouldRenderName balance="7546857" currency="Jur" />)
+  .add('name unavailable', () => <UserPreview name="" seed="0x3954939439487573664374" shouldRenderName balance="7546857" currency="Jur" />)
+  .add('should render name is false', () => <UserPreview name="Alice" seed="0x3954939439487573664374" balance="7546857" currency="Jur" />)
+  .add('currency as number', () => <UserPreview name="Alice" seed="0x3954939439487573664374" balance={2423} currency="Jur" />)
 
 
