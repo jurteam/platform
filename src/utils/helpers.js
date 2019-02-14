@@ -8,3 +8,7 @@ export const log = (mixed, obj) => {
     }
   }
 };
+
+export const toCurrencyFormat = (value) => {
+  return parseFloat(value).toFixed(2);
+};
