@@ -21,7 +21,7 @@ export const Avatar = ({ seed, size, variant }) => {
   };
 
   return (
-    <div className={`jur-avatar ${variants[variant]}`}>
+    <div className={`jur-avatar ${!!variant ? variants[variant]: ''}`}>
       <Blockies seed={seed} { ...sizes[size] }/>
     </div>
   );
