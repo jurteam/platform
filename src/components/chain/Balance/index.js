@@ -6,6 +6,7 @@ const mapStateToProps = state => {
   console.log("balance state", state);
 
   return {
+    wallet: state.wallet,
     accounts: state.accounts,
     contracts: state.contracts,
     drizzleStatus: state.drizzleStatus,

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
 import { Provider } from "react-redux";
-import { Route, Switch } from "react-router"; // react-router v4
+import { Route, Switch, Router } from "react-router"; // react-router v4
 import { ConnectedRouter } from "connected-react-router";
 
 // Context
@@ -37,16 +37,15 @@ class App extends Component {
   }
 
   render() {
-    const { store, history, drizzle } = this.props;
+    const { store, history } = this.props;
 
     return (
       <AppProvider>
-      <DrizzleProvider options={drizzleOptions} drizzle={drizzle}>
-        <Provider store={store}>
+        <DrizzleProvider options={drizzleOptions} store={store}>
           <Initializer>
-            <ConnectedRouter history={history}>
+            <Router history={history}>
               <>
-                <Header context={drizzle} />
+                <Header />
                 <Switch>
                   <Route exact path="/" render={() => <Home />} />
                   <Route exact path="/profile" render={() => <Profile />} />
@@ -56,9 +55,8 @@ class App extends Component {
                 </Switch>
                 {this.renderTestReport()}
               </>
-            </ConnectedRouter>
+            </Router>
           </Initializer>
-        </Provider>
       </DrizzleProvider>
         </AppProvider>
     );

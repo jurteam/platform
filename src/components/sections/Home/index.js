@@ -1,5 +1,5 @@
 import React from "react";  // eslint-disable-line no-unused-vars
-import { connect } from "react-redux";
+import { drizzleConnect } from "drizzle-react";
 
 // Components
 import { Home } from "./Home";
@@ -14,7 +14,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = () => ({ setTutorialViewed });
 
-export default connect(
+export default drizzleConnect(Home,
   mapStateToProps,
-  mapDispatchToProps
-)(Home);
+  mapDispatchToProps);

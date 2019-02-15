@@ -1,21 +1,32 @@
 import { applyMiddleware, compose, createStore } from "redux";
-import ReduxThunk from 'redux-thunk';
+import ReduxThunk from "redux-thunk";
 import { createBrowserHistory } from "history";
 import { routerMiddleware } from "connected-react-router";
 
 // Drizzle
-import { generateContractsInitialState } from 'drizzle'
-import drizzleOptions from "./../config/drizzleOptions"
+import { generateContractsInitialState } from "drizzle";
+import drizzleOptions from "./../config/drizzleOptions";
 
 import createRootReducer from "./../reducers";
+
+// Redux Saga
+import createSagaMiddleware from "redux-saga";
+import rootSaga from "./../sagas";
 
 // Helpers
 import { log } from "./../utils/helpers"; // log helpers
 
-log('Drizzle - Initial state', generateContractsInitialState(drizzleOptions));
+log("Drizzle - Initial state", generateContractsInitialState(drizzleOptions));
 
-export const history = createBrowserHistory();
 let store;
+const history = createBrowserHistory();
+const sagaMiddleware = createSagaMiddleware();  // Redux Saga Middleware
+
+const composeEnhancers =
+  process.env.NODE_ENV === "development" &&
+  window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+    ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+    : compose;
 
 /**
  * Sets up the redux store.
@@ -25,17 +36,19 @@ let store;
  */
 export default function configureStore(
   initialState = {
+    accounts: {},
+    accountBalances: {},
+    currentBlock: {},
+    drizzleStatus: {},
+    transactions: {},
+    transactionStack: {},
+    web3: {},
     contracts: generateContractsInitialState(drizzleOptions)
   },
   { dispatchSpy } = {}
 ) {
-  const enhancers = [];
+
   const middleware = [];
-  const composeEnhancers =
-    process.env.NODE_ENV === "development" &&
-    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
-      ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
-      : compose;
 
   // Development Tools
   if (process.env.NODE_ENV === "development") {
@@ -61,13 +74,16 @@ export default function configureStore(
     });
   }
 
-  middleware.push(routerMiddleware(history), ReduxThunk);
-  enhancers.unshift(applyMiddleware(...middleware));
+  middleware.push(sagaMiddleware, ReduxThunk);
+
   store = createStore(
     createRootReducer(history),
     initialState,
-    composeEnhancers(...enhancers)
+    composeEnhancers(applyMiddleware(...middleware))
   );
+
+  sagaMiddleware.run(rootSaga); // run sagas
+
   return { store, history };
 }
 

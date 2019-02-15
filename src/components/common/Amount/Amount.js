@@ -10,6 +10,6 @@ export class Amount extends Component {
         let { symbol } = this.props
         if (typeof symbol === 'undefined') symbol = "JUR"
 
-        return <p className="jur--amount">{value} <span>{symbol}</span></p>
+        return <p className="jur--amount"><span>{value}</span> <span>{symbol}</span></p>
     }
 }

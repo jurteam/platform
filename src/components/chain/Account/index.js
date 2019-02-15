@@ -1,5 +1,5 @@
 import React from "react";  // eslint-disable-line no-unused-vars
-import { connect } from "react-redux";
+import { drizzleConnect } from "drizzle-react";
 import { withRouter } from "react-router-dom";
 import { Account } from "./Account";
 
@@ -8,4 +8,4 @@ const mapStateToProps = state => ({
   wallet: state.wallet
 });
 
-export default connect(mapStateToProps)(withRouter(Account));
+export default drizzleConnect(withRouter(Account), mapStateToProps);

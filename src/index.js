@@ -7,29 +7,17 @@ import App from "./bootstrap/App";
 
 import * as serviceWorker from "./bootstrap/serviceWorker";
 
-// Drizzle
-import { Drizzle, generateStore } from "drizzle";
-import drizzleOptions from "./config/drizzleOptions"
-
 // destructuring store config
 const { store, history } = configureStore();
-console.log('store', store);
 export default store;
-
-//initialise drizzle object, passing options and store
-const drizzleStore = generateStore(drizzleOptions);
-console.log('drizzleStore', drizzleStore);
-
-export const drizzle = new Drizzle(drizzleOptions, drizzleStore);
 
 // Random number is used so hot reloading works with `react-loadable`
 const render = Component => {
   ReactDOM.render(
     <Component
       key={process.env.NODE_ENV === 'development' ? Math.random() : undefined}
-      store={store}
       history={history}
-      drizzle={drizzle}
+      store={store}
     />,
     document.getElementById('root')
   )
