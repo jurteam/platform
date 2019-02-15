@@ -1,12 +1,18 @@
 import React from 'react';
 
 import { storiesOf } from '@storybook/react';
-import { action } from '@storybook/addon-actions';
-import { linkTo } from '@storybook/addon-links';
+import { withInfo } from '@storybook/addon-info';
 
 import Tag from './index';
 
 storiesOf('Tag', module)
+  .addDecorator(withInfo)
+  .addParameters({ 
+    info: { 
+      inline: true,
+      header: false
+    }
+  })
   .add('Waiting', () => <Tag statusId={0}>Waiting for counterparty</Tag>)
   .add('draft', () => <Tag statusId={1}>Draft</Tag>)
   .add('ongoing', () => <Tag statusId={2}>Ongoing</Tag>)

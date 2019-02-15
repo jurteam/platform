@@ -1,6 +1,8 @@
 
 @import '../../../assets/scss/variables'; // get global variables
 
+$shadowAmount: 30px;
+
 .jur {
 
     &--account {
@@ -17,6 +19,8 @@
 
                 width: 30px !important;
                 height: 30px !important;
+                box-shadow: 0 0 $shadowAmount $cerulean;
+                margin: 0 10px 0 0;
             }
 
             & > aside {
@@ -24,10 +28,12 @@
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
+                text-shadow: 0 0 $shadowAmount $cerulean;
 
                 strong {
 
-                    margin-bottom: 5px;
+                    font-size: 14px;
+                    margin-bottom: 1px;
                 }
 
                 code {

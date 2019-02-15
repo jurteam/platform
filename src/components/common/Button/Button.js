@@ -3,26 +3,23 @@ import PropTypes from 'prop-types';
 import './Button.scss';
 
 const btnClass = 'jur-btn';
-const btnAttrs = {
-  size: 1,
-  variant: 1,
-  color: 1,
-  fullWidth: 1
-};
+const btnAttrs = ['size', 'variant', 'color', 'fullWidth'];
 
 export class Button extends Component {
 
   static propTypes = {
-    color: PropTypes.string,
-    variant: PropTypes.string,
-    size: PropTypes.string,
+    color: PropTypes.oneOf(['info', 'dispute', 'success', 'friendly', 'muted', 'dark-blue', 'gradient']),
+    variant: PropTypes.oneOf(['contained', 'outlined']),
+    size: PropTypes.oneOf(['small', 'medium', 'big']),
     className: PropTypes.string,
-    disabled: PropTypes.bool
+    disabled: PropTypes.bool,
+    fullWidth: PropTypes.bool,
+    children: PropTypes.node.isRequired
   };
 
   static defaultProps = {
     className: '',
-    color: 'default',
+    color: '',
     variant: 'outlined',
     size: 'small',
     disabled: false,
@@ -36,21 +33,23 @@ export class Button extends Component {
       size,
       variant,
       className,
-      disabled,
       fullWidth,
       ...buttonProps
     } = this.props;
-    let cls = btnClass,
-        v,
-        k;
 
-    buttonProps.disabled = disabled;
+    let cls = btnAttrs.reduce((acc, attr) => {
+      let value = this.props[attr];
 
-    for(k in btnAttrs) {
-      v = this.props[k];
-      if (v && k === 'fullWidth') cls += ' ' + btnClass + '--full-width';
-      if (v !== 'default' && k !== 'fullWidth') cls += ' ' + btnClass + '--' + v;
-    }
+      if (!value) {
+        return acc;
+      }
+
+      if (attr === 'fullWidth') {
+        value = 'full-width';
+      }
+
+      return `${acc} ${btnClass}--${value}`;
+    }, btnClass);
 
     return (
       <button

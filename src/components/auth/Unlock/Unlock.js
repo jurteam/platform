@@ -32,16 +32,17 @@ export class Unlock extends Component {
           onClick={() => {
             this.unlock();
           }}
-          style={{ marginLeft: "10px" }}
-          name="Unlock MetaMask"
-        />
+          style={{ marginLeft: "10px", width: "230px" }}
+          size="big"
+          color="info" variant="contained"
+        >Unlock MetaMask</Button>
         <Button
           onClick={() => {
-            history.location = "https://metamask.io";
+            window.open("https://metamask.io");
           }}
-          style={{ marginLeft: "10px" }}
-          name="Get Chrome Extension"
-        />
+          style={{ marginLeft: "10px", width: "230px" }}
+          size="big"
+        >Get Chrome Extension</Button>
       </div>
     );
   }
