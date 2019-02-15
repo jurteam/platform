@@ -24,6 +24,9 @@ import Disputes from "../components/sections/Disputes";
 import { DrizzleProvider } from "drizzle-react";
 import drizzleOptions from "./../config/drizzleOptions";
 
+// Helpers
+import { log, redirect, checkConnection } from "./../utils/helpers";
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -48,17 +51,32 @@ class App extends Component {
                 <Header />
                 <Switch>
                   <Route exact path="/" render={() => <Home />} />
-                  <Route exact path="/profile" render={() => <Profile />} />
-                  <Route exact path="/contracts" render={() => <Contracts />} />
-                  <Route exact path="/disputes" render={() => <Disputes />} />
+                  <Route
+                    exact
+                    path="/profile"
+                    onEnter={redirect(checkConnection)}
+                    render={() => <Profile />}
+                  />
+                  <Route
+                    exact
+                    path="/contracts"
+                    onEnter={redirect(checkConnection)}
+                    render={() => <Contracts />}
+                  />
+                  <Route
+                    exact
+                    path="/disputes"
+                    onEnter={redirect(checkConnection)}
+                    render={() => <Disputes />}
+                  />
                   <Route render={() => <NotFound />} />
                 </Switch>
                 {this.renderTestReport()}
               </>
             </Router>
           </Initializer>
-      </DrizzleProvider>
-        </AppProvider>
+        </DrizzleProvider>
+      </AppProvider>
     );
   }
 }
