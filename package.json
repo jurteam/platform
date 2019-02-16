@@ -36,6 +36,9 @@
   "eslintConfig": {
     "extends": "react-app"
   },
+  "jshintConfig": {
+    "esnext": true
+  },
   "browserslist": [
     ">0.2%",
     "not dead",
