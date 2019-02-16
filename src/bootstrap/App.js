@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 
-import { Provider } from "react-redux";
 import { Route, Switch, Router } from "react-router"; // react-router v4
-import { ConnectedRouter } from "connected-react-router";
 
 // Context
 import AppProvider from "./AppProvider";

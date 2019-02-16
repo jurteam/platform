@@ -1,12 +1,15 @@
 import { all, fork } from 'redux-saga/effects'
 import { drizzleSagas } from 'drizzle'
-// import walletSagas from './Wallet'
+import walletSagas from './Wallet'
 
-console.log('drizzleSagas', drizzleSagas);
+// Join all sagas
+const sagas = [...drizzleSagas]
+sagas.push(walletSagas)
+
+console.log('sagas', sagas);
 
 export default function* rootSaga() {
   yield all(
-    drizzleSagas.map(saga => fork(saga))
-    // walletSagas,
+    sagas.map(saga => fork(saga))
   )
 }
