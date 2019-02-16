@@ -12,3 +12,5 @@ export const log = (mixed, obj) => {
 export const toCurrencyFormat = (value) => {
   return parseFloat(value).toFixed(2);
 };
+
+export const capitalize = string => (string.charAt(0).toUpperCase() + string.slice(1));

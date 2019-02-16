@@ -5,7 +5,7 @@ import { withInfo } from '@storybook/addon-info';
 
 import Header from './';
 import Logo from '../Logo';
-import UserPreview from '../UserPreview';
+import ProfilePreview from '../ProfilePreview';
 
 storiesOf('Header', module)
   .addDecorator(withInfo)
@@ -17,27 +17,15 @@ storiesOf('Header', module)
   })
   .add('Header', () => <Header />)
   .add('Logo', () => <Header><Logo /></Header>)
-  .add('UserPreview with name', () => (
+  .add('ProfilePreview with name', () => (
     <Header>
       <Logo />
-      <UserPreview name="Alice" seed="0x3954939439487573664374" shouldRenderName balance="7546857" currency="Jur" />
+      <ProfilePreview name="Alice" seed="0x3954939439487573664374" shouldRenderName balance="7546857" currency="Jur" />
     </Header>
   ))
-  .add('UserPreview without name', () => (
+  .add('ProfilePreview without name', () => (
     <Header>
       <Logo />
-      <UserPreview name="" seed="0x3954939439487573664374" shouldRenderName balance="7546857" currency="Jur" />
+      <ProfilePreview name="" seed="0x3954939439487573664374" shouldRenderName balance="7546857" currency="Jur" />
     </Header>
   ))
-  .add('UserPreview with shouldrendername false', () => (
-    <Header>
-      <Logo />
-      <UserPreview name="Alice" seed="0x3954939439487573664374" balance="7546857" currency="Jur" />
-    </Header>
-  ))
-  .add('UserPreview with currency as number', () => (
-    <Header>
-      <Logo />
-      <UserPreview name="Alice" seed="0x3954939439487573664374" balance={2423} currency="Jur" />
-    </Header>
-  ));
