@@ -5,9 +5,9 @@ import { toCurrencyFormat } from '../../../utils/helpers';
 
 import './Amount.scss';
 
-export const Amount = ({ value, currency }) => {
+export const Amount = ({ value, currency, className }) => {
   return (
-    <span class="jur-amount">
+    <span className={ `jur-amount ${className}`} >
       { `${toCurrencyFormat(value)} ${currency.toUpperCase()}` }
     </span>
   )
@@ -15,7 +15,8 @@ export const Amount = ({ value, currency }) => {
 
 Amount.PropTypes = {
   amount: PropTypes.number.isRequired,
-  currency: PropTypes.string
+  currency: PropTypes.string,
+  className: PropTypes.string
 };
 
 Amount.defaultProps = {
