@@ -27,6 +27,8 @@ $tundora: #4A4A4A;
 $gallery: #ECECEC;
 $cloud-burst: #233250;
 $big-stone: #1E2B45;
+$black-haze: #EAEBEC;
+$crimson: #ED1C24;
 
 
 // Buttons
@@ -56,6 +58,11 @@ $tag-closed-dispute-bg-color: $gallery;
 // Header
 $header-bg-color: $cloud-burst;
 $profile-preview-border-color: $big-stone;
+
+// MetaMask Alert
+$metamask-title-border-color: $black-haze;
+$metamask-alert-color: $crimson;
+$metamask-description-color: $prussian-blue;
 
 // Fonts
 $font-poppins: 'Poppins', Arial, sans-serif;

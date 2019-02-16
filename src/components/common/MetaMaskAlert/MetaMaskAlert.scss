@@ -1,0 +1,41 @@
+@import "../../../assets/scss/variables";
+
+.jur {
+    &-meta-mask-alert {
+        width: 100%;
+        max-width: 920px;
+        min-height: 160px;
+        font-family: $font-poppins;
+
+        &__title {
+            color: $metamask-alert-color;
+            padding-bottom: 10px;
+            border-bottom: 1px solid $metamask-title-border-color;
+            display: flex;
+            align-items: center;
+            font-size: 20px;
+
+            svg {
+                margin-right: 9px;
+                width: 16px;
+                fill: currentColor;
+            }
+        }
+        
+        &__content {
+            padding: 25px 0 0 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        &__description {
+            flex-basis: 100%;
+            margin: 0;
+            padding-bottom: 20px;
+            line-height: 22px;
+            font-size: 13px;
+            color: $metamask-description-color;
+        }
+    }
+}
