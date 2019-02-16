@@ -17,7 +17,7 @@ class AppProvider extends Component {
 
   componentDidMount() {
     log("AppProvider", "loaded");
-    this.setState({ labels: i18n, version: appReference.version })
+    this.setState({ labels: i18n, version: appReference.version });
   }
 
   render() {

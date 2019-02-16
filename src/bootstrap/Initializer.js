@@ -17,15 +17,11 @@ class Initializer extends PureComponent {
   constructor(props, context) {
     super(props);
 
-    const { drizzle } = context
-    this.drizzle = drizzle
+    const { drizzle } = context;
+    this.drizzle = drizzle;
   }
   componentDidMount() {
-    const {
-      setLoaded,
-      setWalletConnection,
-      setWalletAddress,
-    } = this.props;
+    const { setLoaded, setWalletConnection, setWalletAddress } = this.props;
 
     // Drizzle init
 
