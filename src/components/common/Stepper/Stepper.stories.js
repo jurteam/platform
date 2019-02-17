@@ -7,11 +7,8 @@ import { State, Store } from "@sambego/storybook-state";
 import Stepper from './';
 import Step from '../Step';
 import Button from '../Button';
-import ModalHeader from '../ModalHeader';
-import ModalBody from '../ModalBody';
-import ModalFooter from '../ModalFooter';
 
-const defaultStore = new Store({
+const store = new Store({
   steps: [
     {
       id: '1',
@@ -30,49 +27,52 @@ const defaultStore = new Store({
 });
 
 const handleBack = () => {
-  const currentActiveStep = defaultStore.get('activeStep');
+  const currentActiveStep = store.get('activeStep');
   if (currentActiveStep - 1 < 0) return;
-  defaultStore.set()
-  defaultStore.set({ activeStep: defaultStore.get('activeStep') - 1 });
+  store.set()
+  store.set({ activeStep: store.get('activeStep') - 1 });
 }
 
 const handleNext = () => {
-  if (defaultStore.get('activeStep') + 1 >= defaultStore.get('steps').length) {
+  if (store.get('activeStep') + 1 >= store.get('steps').length) {
     alert('Finish event fired');
   } else {
-    defaultStore.set({ activeStep: defaultStore.get('activeStep') + 1 });
+    store.set({ activeStep: store.get('activeStep') + 1 });
   }
 }
 
 storiesOf('Stepper', module)
+  .addDecorator(withInfo)
+  .addParameters({ 
+    info: { 
+      inline: true,
+      header: false
+    }
+  })
   .add('Default', () => (
-    <State defaultStore={ defaultStore }>
-      { state => (
-        <Fragment>
-          <Stepper activeStep={ defaultStore.get('activeStep') }>
-            {defaultStore.get('steps').map((step, index) => (
+    <State store={ store }>
+      { state => {
+        const activeStep = store.get('activeStep');
+        const last = activeStep + 1 === store.get('steps').length;
+        return (
+          <>
+          <Stepper activeStep={ activeStep }>
+            {store.get('steps').map((step, index) => (
               <Step key={ step.id.toString() }>{ step.label }</Step>
             ))}
           </Stepper>
-          { defaultStore.get('activeStep') !== 0 &&
-            defaultStore.get('activeStep') + 1 !== defaultStore.get('activeStep').length &&
+          { activeStep !== 0 &&
+            activeStep + 1 !== store.get('steps').length &&
             <Button onClick={ handleBack }>Previous</Button>
           }
-          <Button onClick={ handleNext }>
-            { defaultStore.get('activeStep') + 1 === defaultStore.get('steps').length ?
+          <Button onClick={ handleNext } variant={ last ? 'gradient' : 'contained' }>
+            { last ?
               'Finish'
               : 'Next'
             }
           </Button>
-        </Fragment>
-      )}
-    </State>
-  ))
-  .add('Welcome Presentation', () => (
-    <State store={ store }>
-      { state => (
-        <Fragment>
-        </Fragment>
-      )}
+        </>
+        )
+      }}
     </State>
   ))
