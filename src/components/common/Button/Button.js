@@ -19,7 +19,7 @@ export class Button extends Component {
 
   static defaultProps = {
     className: '',
-    color: '',
+    color: 'info',
     variant: 'outlined',
     size: 'small',
     disabled: false,
