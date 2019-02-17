@@ -13,8 +13,8 @@ export const Amount = ({ value, currency, className }) => {
   )
 };
 
-Amount.PropTypes = {
-  amount: PropTypes.number.isRequired,
+Amount.propTypes = {
+  value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
   currency: PropTypes.string,
   className: PropTypes.string
 };
