@@ -1,0 +1,15 @@
+@import "../../../assets/scss/variables";
+
+.jur {
+    &-modal {
+        width: 100%;
+        text-align: center;
+
+        h2 {
+            color: $modal-title-color;
+            font-weight: 600;
+            font-size: 24px;
+            margin: 0;
+        }
+    }
+}

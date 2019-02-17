@@ -1,13 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-export const ModalContent = ({ children, className }) => (
+import './ModalBody.scss';
+
+export const ModalBody = ({ children, className }) => (
   <div className={`jur-modal__content ${className || ''}`}>
     { children }
   </div>
 );
 
-ModalContent.propTypes = {
+ModalBody.propTypes = {
   children: PropTypes.node.isRequired,
   className: PropTypes.string
 };
