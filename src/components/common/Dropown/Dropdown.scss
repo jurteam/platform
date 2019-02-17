@@ -50,6 +50,7 @@
             cursor: pointer;
             font-family: $font-poppins;
             border-bottom: 1px solid $dropdown-list-border-color;
+            white-space: nowrap;
 
             &:last-child {
                 border: none;
