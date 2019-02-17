@@ -18,3 +18,9 @@
         color: $cyan;
     }
 }
+
+.ReactModal__Body--open {
+    #root {
+        filter: blur(2px);
+    }
+}
