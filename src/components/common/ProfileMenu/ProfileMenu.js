@@ -15,3 +15,8 @@ export const ProfileMenu = ({ className, menuList }) => (
     ))}
   </ul>
 );
+
+ProfileMenu.propTypes = {
+  className: PropTypes.string,
+  menuList: PropTypes.array.isRequired
+};
