@@ -1,0 +1,79 @@
+@import "../../../assets/scss/variables";
+
+.jur {
+    &-disclaimer {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: $font-poppins;
+        background-color: $disclaimer-bg-color;
+        border: 2px solid $disclaimer-border-color;
+        border-bottom: 0;
+        border-radius: 4px;
+        width: 107px;
+        height: 40px;
+        box-sizing: border-box;
+
+        &--is-open {
+            display: block;
+            border-radius: 0;
+            border: none;
+            border-top: 2px solid $disclaimer-border-color;
+            width: 100%;
+            height: auto;
+            padding: 13px 30px;
+
+            h3 {
+                padding-bottom: 5px;
+            }
+        }
+
+        h3 {
+            font-size: 12px;
+            color: $disclaimer-title-icon-color;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            
+            svg {
+                display: inline-block;
+                margin-left: 5px;
+                width: 12px;
+                
+            }
+            
+            span {
+                color: $disclaimer-title-color;
+            }
+        }
+
+        &__content {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        &__description {
+            color: $disclaimer-description-color;
+            font-size: 13px;
+            line-height: 22px;
+
+        }
+
+        &__cta {
+            display: flex;
+            flex-direction: column;
+            margin-left: 30px;
+
+            .jur-btn {
+                margin-bottom: 5px;
+
+                &:last-child {
+                    margin: 0;
+                }
+            }
+        }
+    }
+}
