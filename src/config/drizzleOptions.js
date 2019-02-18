@@ -7,16 +7,16 @@ import JURToken from "./../build/contracts/JURToken.json";
 // import Migrations from "../build/contracts/Migrations.json";
 
 const options = {
-  // web3: {
-  //   block: false,
-  //   fallback: {
-  //     type: "ws",
-  //     url: "ws://127.0.0.1:8545"
-  //   }
-  // },
+  web3: {
+    block: false,
+    fallback: {
+      type: "ws",
+      url: "ws://127.0.0.1:8545"
+    }
+  },
   contracts: [JURToken, ArbitrationFactory],
   // events: {
-  //   SimpleStorage: ["StorageSet"],
+  //   JURToken: ["balanceOf"],
   // },
   // polls: {
   //   accounts: 1500
