@@ -4,10 +4,12 @@ import MetaMask from "../hooks/MetaMask"; // MetaMask hook
 
 // Actions
 import {
-  setWalletAddress,
-  setWalletConnection,
   resetWallet
 } from "../actions/Wallet";
+
+import {
+  setWalletAddress
+} from "../sagas/Wallet";
 
 const ETHEREUM_PROVIDER = process.env.REACT_APP_ETHEREUM_PROVIDER;
 
@@ -60,7 +62,7 @@ export const init = (store) => {
         evm.selectedAddress !== undefined
       ) {
         // TODO: refers to web3 properties
-        store.dispatch(setWalletConnection(true)); // is connected
+        // store.dispatch(setWalletConnection(true)); // is connected
 
         // Update address when needed
         if (wallet.address !== evm.selectedAddress) {
