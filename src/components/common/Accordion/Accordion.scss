@@ -1,0 +1,42 @@
+@import "../../../assets/scss/variables";
+
+.jur {
+    &-accordion {
+        font-family: $font-poppins;
+
+        &__list {
+            list-style: none;
+            margin: none;
+            padding: 0;
+            font-size: 14px;
+        }
+
+        &__item {
+            $item: &;
+            
+            &--active {
+                #{$item}__header {
+                    color: $accordion-header-active-color;
+                }
+
+                #{$item}__content {
+                    display: block;
+                }
+            }
+
+            &__header {
+                color: $accordion-header-color;
+                font-weight: 600;
+                cursor: pointer;
+                padding: 10px 0;
+                line-height: 1;
+            }
+
+            &__content {
+                display: none;
+                color: $accordion-header-color;
+                padding: 20px;
+            }
+        }
+    }
+}
