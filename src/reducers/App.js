@@ -1,28 +1,33 @@
 import {
-    SET_LOADED,
-    SET_TUTORIAL_VIEWED,
-    RESET_APP_STATE
-  } from "./types";
+  SET_READY,
+  SET_LOADING,
+  SET_TUTORIAL_VIEWED,
+  RESET_APP_STATE
+} from "./types";
 
-  const INITIAL_STATE = {
-    loaded: false,
-    tutorial: false
-  };
+const INITIAL_STATE = {
+  ready: false,
+  loading: true,
+  tutorial: false
+};
 
-  export default (state = INITIAL_STATE, action) => {
-    switch (action.type) {
-      // Setters
-      case SET_LOADED:
-        return { ...state, loaded: true };
+export default (state = INITIAL_STATE, action) => {
+  switch (action.type) {
+    // Setters
+    case SET_LOADING:
+      return { ...state, loading: action.payload };
 
-      case SET_TUTORIAL_VIEWED:
-        return { ...state, tutorial: true };
+    case SET_READY:
+      return { ...state, ready: action.payload };
 
-      // Reset
-      case RESET_APP_STATE:
-        return { ...INITIAL_STATE };
+    case SET_TUTORIAL_VIEWED:
+      return { ...state, tutorial: true };
 
-      default:
-        return state;
-    }
-  };
+    // Reset
+    case RESET_APP_STATE:
+      return { ...INITIAL_STATE };
+
+    default:
+      return state;
+  }
+};
