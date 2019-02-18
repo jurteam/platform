@@ -4,9 +4,17 @@
     &-accordion {
         font-family: $font-poppins;
 
+        h3 {
+            font-size: 20px;
+            color: $accordion-title-color;
+            font-weight: 400;
+            margin: 0;
+            padding: 0 0 10px 0;
+        }
+
         &__list {
             list-style: none;
-            margin: none;
+            margin: 0;
             padding: 0;
             font-size: 14px;
         }
