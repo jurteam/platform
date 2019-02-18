@@ -44,3 +44,13 @@ storiesOf('UserAction', module)
       </UserActionFooter>
     </UserAction>
   ))
+  .add('Without USerActionHeader', () => (
+    <UserAction>
+      <UserActionBody>
+        MetaMask is an extension for accessing Ethereum enabled distributed applications, or "Dapps" in your normal browser! The extension injects the Ethereum web3 API into every website's javascript context, so that dapps can read from the blockchain.
+      </UserActionBody>
+      <UserActionFooter>
+        <Button size="big">Get Chrome Extension</Button>
+      </UserActionFooter>
+    </UserAction>
+  ))
