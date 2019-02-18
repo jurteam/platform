@@ -23,17 +23,17 @@ export const createRoutes = withComponents => {
       component: withComponents && Home
     },
     {
-      path: "/profile",
-      onEnter: () => redirect(checkConnection, "/profile"),
-      component: withComponents && Profile,
-      title: i18n.profileSettings
-    },
-    {
       exact: true,
       path: "/profile/faq",
       onEnter: () => redirect(checkConnection, "/profile/faq"),
       component: withComponents && Profile,
       title: i18n.faq
+    },
+    {
+      path: "/profile",
+      onEnter: () => redirect(checkConnection, "/profile"),
+      component: withComponents && Profile,
+      title: i18n.profileSettings
     },
     {
       exact: true,
