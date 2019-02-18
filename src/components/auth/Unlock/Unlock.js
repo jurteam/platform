@@ -42,6 +42,7 @@ export class Unlock extends Component {
           }}
           style={{ marginLeft: "10px", width: "230px" }}
           size="big"
+          color="info"
         >Get Chrome Extension</Button>
       </div>
     );
