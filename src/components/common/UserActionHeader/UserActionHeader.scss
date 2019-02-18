@@ -1,0 +1,27 @@
+@import "../../../assets/scss/variables";
+
+.jur {
+    &-user-action {
+        &__header {
+            padding-bottom: 10px;
+            border-bottom: 1px solid $user-action-border-color;
+            display: flex;
+            align-items: center;
+            font-size: 20px;
+
+            svg {
+                margin-right: 9px;
+                width: 16px;
+                fill: currentColor;
+            }
+
+            &--error {
+                color: $user-action-alert-color;
+
+                svg {
+                    fill: $user-action-alert-color;
+                }
+            }
+        }
+    }
+}
