@@ -1,0 +1,14 @@
+@import "../../../assets/scss/variables";
+
+.jur {
+    &-user-action {
+        &__footer {
+            display: flex;
+            justify-content: flex-end;
+
+            .jur-btn {
+                width: 229px;
+            }
+        }
+    }
+}
