@@ -8,22 +8,17 @@ import AppProvider from "./AppProvider";
 // Initializer
 import Initializer from "./Initializer"; // eslint-disable-line no-unused-vars
 
+// Routes
+import { createRoutes } from "./Routing";
+
 // Commons
 import Header from "../components/common/Header";
-
-// Sections
-import NotFound from "../components/sections/NotFound";
-import Home from "../components/sections/Home";
-import Profile from "../components/sections/Profile";
-import Contracts from "../components/sections/Contracts";
-import Disputes from "../components/sections/Disputes";
 
 // Drizzle
 import { DrizzleProvider } from "drizzle-react";
 import drizzleOptions from "./../config/drizzleOptions";
 
-// Helpers
-import { log, redirect, checkConnection } from "./../utils/helpers";
+const Routes = createRoutes();
 
 class App extends Component {
   constructor(props) {
@@ -48,26 +43,9 @@ class App extends Component {
               <>
                 <Header />
                 <Switch>
-                  <Route exact path="/" render={() => <Home />} />
-                  <Route
-                    exact
-                    path="/profile"
-                    onEnter={redirect(checkConnection)}
-                    render={() => <Profile />}
-                  />
-                  <Route
-                    exact
-                    path="/contracts"
-                    onEnter={redirect(checkConnection)}
-                    render={() => <Contracts />}
-                  />
-                  <Route
-                    exact
-                    path="/disputes"
-                    onEnter={redirect(checkConnection)}
-                    render={() => <Disputes />}
-                  />
-                  <Route render={() => <NotFound />} />
+                  {Routes.map((params, key) => (
+                    <Route {...params} key={key} />
+                  ))}
                 </Switch>
                 {this.renderTestReport()}
               </>
