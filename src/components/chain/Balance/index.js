@@ -3,14 +3,9 @@ import { drizzleConnect } from "drizzle-react";
 import { Balance } from "./Balance";
 
 const mapStateToProps = state => {
-  console.log("balance state", state);
 
   return {
-    wallet: state.wallet,
-    accounts: state.accounts,
-    contracts: state.contracts,
-    drizzleStatus: state.drizzleStatus,
-    JURToken: state.contracts.JURToken
+    wallet: state.wallet
   };
 };
 

@@ -1,23 +1,24 @@
 import {
   SET_WALLET_ADDRESS,
-  SET_WALLET_CONNECTION,
+  SET_BALANCE,
   RESET_WALLET
 } from "./types";
 
 const INITIAL_STATE = {
   address: null,
-  isConnected: false,
+  balance: 0,
   user: {}
 };
 
 export default (state = INITIAL_STATE, action) => {
+
   switch (action.type) {
     // Setters
     case SET_WALLET_ADDRESS:
       return { ...state, address: action.payload };
 
-    case SET_WALLET_CONNECTION:
-      return { ...state, isConnected: action.payload };
+    case SET_BALANCE:
+      return { ...state, balance: action.payload };
 
     // Reset
     case RESET_WALLET:
