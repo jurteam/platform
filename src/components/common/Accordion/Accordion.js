@@ -4,11 +4,14 @@ import './Accordion.scss';
 
 export class Accordion extends Component {
   state = {
-    activeAccordionIndex: null
+    currentIndex: null
   }
 
-  onAccordionItemClick = (activeAccordionIndex) => {
-    this.setState({ activeAccordionIndex });
+  onAccordionItemClick = (activeIndex) => {
+    if (this.state.currentIndex === activeIndex) {
+      activeIndex = null;
+    }
+    this.setState({ currentIndex: activeIndex });
   }
 
   render() {
@@ -20,7 +23,7 @@ export class Accordion extends Component {
     const childrenArray = React.Children.toArray(children);
     const accordionItems = childrenArray.map((accordionItem, index) => {
       const state = {
-        active: this.state.activeAccordionIndex === index
+        active: this.state.currentIndex === index
       };
       return React.cloneElement(accordionItem, { onClick: this.onAccordionItemClick.bind(this, index), ...state, ...accordionItem.props });
     });
