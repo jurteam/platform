@@ -1,4 +1,4 @@
-import React from "react";  // eslint-disable-line no-unused-vars
+import React from "react"; // eslint-disable-line no-unused-vars
 import { drizzleConnect } from "drizzle-react";
 
 // Components
@@ -7,13 +7,12 @@ import { Home } from "./Home";
 // Actions
 import { setTutorialViewed } from "../../../actions/App";
 
-const mapStateToProps = state => {
-  const { app, wallet } = state;
-  return { app, wallet };
-};
+const mapStateToProps = state => ({
+  app: state.app,
+  wallet: state.wallet,
+  drizzleStatus: state.drizzleStatus
+});
 
-const mapDispatchToProps = () => ({ setTutorialViewed });
+const mapDispatchToProps = { setTutorialViewed };
 
-export default drizzleConnect(Home,
-  mapStateToProps,
-  mapDispatchToProps);
+export default drizzleConnect(Home, mapStateToProps, mapDispatchToProps);

@@ -2,24 +2,35 @@ import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
 
 import Unlock from "../../auth/Unlock";
-import Spinner from "../../common/Spinner";
+import Button from "../../common/Button";
 
 export class Home extends Component {
+  constructor(props) {
+    super(props)
+
+    this.closeTutorial = this.closeTutorial.bind(this)
+  }
   componentDidMount() {
+  }
+
+  closeTutorial() {
     const { setTutorialViewed } = this.props;
     setTutorialViewed();
   }
+
   render() {
-    const { app, wallet } = this.props;
-    const { isConnected } = wallet;
-    const { loaded, tutorial } = app;
+    const { app, wallet, drizzleStatus } = this.props;
+    const { loading, tutorial } = app;
     return (
       <div className="jur">
-        {loaded && (
+        {loading === false && (
           <header className="jur--body">
-            {isConnected ? (
+            {drizzleStatus.initialized ? (
               !tutorial ? (
-                "Tutorial"
+                <>
+                  Tutorial
+                  <Button onClick={this.closeTutorial} color="info" size="big">Got it!</Button>
+                </>
               ) : (
                 <Redirect to="/contracts" />
               )
@@ -28,7 +39,6 @@ export class Home extends Component {
             )}
           </header>
         )}
-        <Spinner />
       </div>
     );
   }
