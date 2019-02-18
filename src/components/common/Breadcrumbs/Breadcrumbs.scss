@@ -1,0 +1,25 @@
+@import '../../../assets/scss/variables'; // get global variables
+
+.jur {
+
+    &--breadcrumbs {
+
+        display: flex;
+        flex: 1;
+        position: absolute;
+        top: 70px;
+        left: 0;
+        right: 0;
+        font-size: 14px;
+        align-items: center;
+        box-sizing: border-box;
+        padding: 0 30px;
+
+        color: $cerulean;
+        font-weight: bold;
+        text-transform: uppercase;
+
+        min-height: 50px;
+        background: $gallery;
+    }
+}
