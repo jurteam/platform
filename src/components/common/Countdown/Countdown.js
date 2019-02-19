@@ -73,21 +73,21 @@ export class Countdown extends Component {
     return (
       <div className="jur-countdown">
         <div className="jur-countdown__item jur-countdown__days">
-          <span className="value">{ this.addLeadingZeros(days) }</span>  
-          <span className="label">{ daysLabel }</span>  
+          <span className="value">{ this.addLeadingZeros(days) }</span>
+          <span className="label">{ daysLabel }</span>
         </div>
         <div className="jur-countdown__item jur-countdown__hours">
-          <span className="value">{ this.addLeadingZeros(hours) }</span>  
-          <span className="label">{ hoursLabel }</span>  
+          <span className="value">{ this.addLeadingZeros(hours) }</span>
+          <span className="label">{ hoursLabel }</span>
         </div>
         <div className="jur-countdown__item jur-countdown__minutes">
-          <span className="value">{ this.addLeadingZeros(minutes) }</span>  
-          <span className="label">{ minutesLabel }</span>  
+          <span className="value">{ this.addLeadingZeros(minutes) }</span>
+          <span className="label">{ minutesLabel }</span>
         </div>
         {showSeconds ?
           <div className="jur-countdown__item jur-countdown__seconds">
-            <span className="value">{ this.addLeadingZeros(seconds) }</span>  
-            <span className="label">{ secondsLabel }</span>  
+            <span className="value">{ this.addLeadingZeros(seconds) }</span>
+            <span className="label">{ secondsLabel }</span>
           </div>
           : null
         }
@@ -95,3 +95,10 @@ export class Countdown extends Component {
     );
   }
 }
+
+Countdown.defaultProps = {
+  daysLabel: 'Days',
+  hoursLabel: 'Hours',
+  minutesLabel: 'Minutes',
+  secondsLabel: 'Seconds',
+};
