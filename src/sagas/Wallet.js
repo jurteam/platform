@@ -2,6 +2,7 @@ import { put, select, takeEvery } from "redux-saga/effects";
 import {
   getAccounts,
   getDrizzleStatus,
+  getJURToken,
   getWallet
 } from "./Selectors";
 import {
@@ -11,7 +12,7 @@ import {
   GOT_CONTRACT_VAR
 } from "./../reducers/types";
 
-import { log } from "./../utils/helpers" // log helper
+import { log } from "./../utils/helpers"; // log helper
 
 // set wallet address from data retrievied via blockchain
 export function* setWalletAddress() {
@@ -33,7 +34,6 @@ export function* getBalance(args) {
 
   // cache call on address set
   if (type === SET_WALLET_ADDRESS) {
-
     const drizzleStatus = yield select(getDrizzleStatus, true);
     log("getBalance - drizzleStatus", drizzleStatus);
 
@@ -43,18 +43,33 @@ export function* getBalance(args) {
       const wallet = yield select(getWallet);
 
       // Fetch initial value from chain and return cache key for reactive updates.
-      yield contracts[contract].methods[method].cacheCall(wallet.address);
+      const dataKey = yield contracts[contract].methods[method].cacheCall(
+        wallet.address
+      );
+
+      // If hash retrived and set balanche only if there is already a value in store
+      if (dataKey) {
+        const JURToken = yield select(getJURToken);
+
+        if (JURToken.balanceOf[dataKey]) {
+          yield put({
+            type: SET_BALANCE,
+            amount: JURToken.balanceOf[dataKey].value,
+            argsHash: dataKey
+          });
+        }
+      }
     }
   }
 
   // when contract var is available
   if (type === GOT_CONTRACT_VAR) {
     // destructuring call params
-    const { name, variable, value } = args;
+    const { name, variable, value, argsHash } = args;
     if (name === contract && variable === method) {
       // only if
 
-      yield put({ type: SET_BALANCE, payload: value });
+      yield put({ type: SET_BALANCE, amount: value, argsHash });
     }
   }
 }

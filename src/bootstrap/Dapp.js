@@ -2,14 +2,8 @@ import Web3 from "web3";
 import { log } from "../utils/helpers"; // helpers
 import MetaMask from "../hooks/MetaMask"; // MetaMask hook
 
-// Actions
-import {
-  resetWallet
-} from "../actions/Wallet";
-
-import {
-  setWalletAddress
-} from "../sagas/Wallet";
+// Actions types
+import { NETWORK_UPDATE } from "../reducers/types";
 
 const ETHEREUM_PROVIDER = process.env.REACT_APP_ETHEREUM_PROVIDER;
 
@@ -17,8 +11,29 @@ let web3;
 let network;
 
 // Dapp init
-export const init = (store) => {
+export const init = () => {
+  const { web3, store } = global.drizzle;
 
+  log("Dapp - web3", web3);
+  log("Dapp - web3.currentProvider", web3.currentProvider);
+  log("Dapp - web3.currentProvider._metamask", web3.currentProvider._metamask);
+
+  // provider change handler
+  if (web3.currentProvider._metamask) {
+
+    // MetaMask handler
+    // MetaMask.setProvider(web3.currentProvider);
+
+    // const { wallet } = store.getState();
+
+    // only if current provider is hosted by MetaMask
+    web3.currentProvider.publicConfigStore.on("update", evm => {
+      log("Dapp - evm", evm);
+      store.dispatch({ type: NETWORK_UPDATE, payload: evm });
+    });
+  }
+};
+/*
   if (process.env.NODE_ENV === "test")
     web3 = new Web3(require("ganache-cli").provider());
   else if (window.web3 && window.web3.currentProvider)
@@ -97,3 +112,4 @@ export {
   ETHAddressRegExp,
   strictETHAddressRegExp
 };
+*/

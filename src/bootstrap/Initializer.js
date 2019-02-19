@@ -29,13 +29,13 @@ class Initializer extends PureComponent {
     super(props);
 
     const { drizzle } = context;
-    this.drizzle = drizzle;
+
+    // Load Drizzle context globally for actions
+    global.drizzle = drizzle;
 
     this.renderTestReport = this.renderTestReport.bind(this);
   }
   componentDidMount() {
-    const { setLoaded, setWalletConnection, setWalletAddress } = this.props;
-
     // Drizzle init
 
     // // subscribe to changes in the store
@@ -49,16 +49,8 @@ class Initializer extends PureComponent {
     //   }
     // });
 
-    // Load Drizzle context globally for actions
-    global.drizzle = this.drizzle;
-
-    // init(this.drizzle.store); // Dapp init
-
     log("Initializer - componentDidMount", {
-      MetaMask,
-      setLoading,
-      setWalletConnection,
-      setWalletAddress
+      MetaMask
     });
 
     // TODO: centralize auth promise actions
@@ -89,8 +81,7 @@ class Initializer extends PureComponent {
   }
 
   render() {
-    const { children, web3, wallet, history } = this.props;
-    log("Initializer - web3", web3);
+    const { history } = this.props;
     return (
       <Router history={history}>
         <>
@@ -113,14 +104,4 @@ Initializer.contextTypes = {
   drizzle: PropTypes.object
 };
 
-const mapStateToProps = state => ({
-  wallet: state.wallet,
-  web3: state.web3
-});
-
-const mapDispatchToProps = {
-  setLoading,
-  setWalletAddress
-};
-
-export default drizzleConnect(Initializer, mapStateToProps, mapDispatchToProps);
+export default Initializer;
