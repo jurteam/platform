@@ -9,7 +9,7 @@ export class Button extends Component {
 
   static propTypes = {
     color: PropTypes.oneOf(['info', 'dispute', 'success', 'friendly', 'muted', 'dark-blue', 'gradient']),
-    variant: PropTypes.oneOf(['contained', 'outlined']),
+    variant: PropTypes.oneOf(['contained', 'outlined', 'raised', 'gradient']),
     size: PropTypes.oneOf(['small', 'medium', 'big']),
     className: PropTypes.string,
     disabled: PropTypes.bool,
@@ -19,7 +19,7 @@ export class Button extends Component {
 
   static defaultProps = {
     className: '',
-    color: '',
+    color: 'info',
     variant: 'outlined',
     size: 'small',
     disabled: false,

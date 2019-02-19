@@ -1,15 +1,24 @@
-import React, { Component } from "react"
+import React from 'react';
+import PropTypes from 'prop-types';
 
-export class Amount extends Component {
+import { toCurrencyFormat } from '../../../utils/helpers';
 
-    render() {
+import './Amount.scss';
 
-        const { value } = this.props
+export const Amount = ({ value, currency, className }) => {
+  return (
+    <span className={ `jur-amount ${className}`} >
+      { `${toCurrencyFormat(value)} ${currency.toUpperCase()}` }
+    </span>
+  )
+};
 
-        // handle symbol
-        let { symbol } = this.props
-        if (typeof symbol === 'undefined') symbol = "JUR"
+Amount.propTypes = {
+  value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+  currency: PropTypes.string,
+  className: PropTypes.string
+};
 
-        return <p className="jur--amount"><span>{value}</span> <span>{symbol}</span></p>
-    }
-}
+Amount.defaultProps = {
+  currency: 'JUR'
+};

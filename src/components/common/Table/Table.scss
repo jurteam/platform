@@ -1,0 +1,31 @@
+@import "../../../assets/scss/variables";
+
+.jur {
+    &-table {
+        box-sizing: border-box;
+        width: 100%;
+        font-family: $font-poppins;
+        color: $user-notification-color;
+        font-size: 13px;
+
+        &__head {
+            font-weight: 400;
+            border-bottom: 2px solid $table-border;
+        }
+
+        &__cell {
+            &--sortable {
+                display: inline-flex;
+                align-items: center;
+                cursor: pointer;
+
+                svg {
+                    display: inline-block;
+                    margin-left: 10px;
+                    width: 10px;
+                }
+            }
+        }
+    }
+
+}

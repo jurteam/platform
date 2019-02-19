@@ -1,0 +1,16 @@
+.jur {
+    &-avatar {
+        display: inline-flex;
+        justify-content: center;
+        align-content: center;
+        overflow: hidden;
+
+        &--rounded {
+            border-radius: 8px;
+        }
+
+        &--circle {
+            border-radius: 50%;
+        }
+    }
+}

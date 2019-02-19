@@ -1,0 +1,46 @@
+@import "../../../assets/scss/variables";
+
+.jur {
+    &-main-nav {
+        list-style: none;
+        display: flex;
+        align-items: center;
+        margin: 0 0 0 80px;
+        padding: 0;
+
+        &__item {
+            margin-right: 40px;
+
+            &:last-child {
+                margin-right: 0;
+            }
+
+            img {
+                display: inline-block;
+                width: 40px;
+            }
+
+            a {
+                color: $main-nav-muted-color;
+                display: flex;
+                align-items: center;
+                text-decoration: none;
+                font-family: $font-poppins;
+                font-size: 14px;
+                font-weight: 400;
+            }
+
+            span {
+                display: inline-block;
+                margin-left: 15px;
+            }
+
+            &--active {
+                a {
+                    color: $main-nav-active-color;
+                    font-weight: 600;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,26 @@
+@import '../../../assets/scss/variables';
+
+.jur {
+    &-avatar-chart {
+        width: 70px;
+        height: 70px;
+        position: relative;
+
+        svg {
+            &.green {
+                stroke: $turquoise;
+            }
+
+            &.blue {
+                stroke: $dodger-blue;
+            }
+        }
+
+        .jur-avatar {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+    }
+}

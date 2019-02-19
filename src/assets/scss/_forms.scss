@@ -1,0 +1,29 @@
+@import "./variables";
+
+label {
+    display: block;
+    color: $label-color;
+    font-size: 13px;
+    font-family: $font-poppins;
+    margin-bottom: 2px;
+
+    span {
+        color: $label-option;
+    }
+
+    sup {
+        color: $label-sup;
+    }
+}
+
+input,
+select {
+    width: 100%;
+    height: 36px;
+    border: 1px solid $input-border-color;
+    color: $label-color;
+    font-size: 13px;
+    border-radius: 2px;
+    background-color: $white;
+    outline: none;
+}
