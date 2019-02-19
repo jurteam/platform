@@ -1,0 +1,21 @@
+@import "../../../assets/scss/variables";
+
+.jur {
+    &-contracts {
+        &__empty {
+            text-align: center;
+            
+            p {
+                color: $contracts-empty-text-color;
+                font-family: $font-poppins;
+                font-weight: $poppins-semibold;
+                font-size: 13px;
+                margin: 40px 0 20px;
+            }
+
+            .jur-btn {
+                width: 253px;
+            }
+        }
+    }
+}
