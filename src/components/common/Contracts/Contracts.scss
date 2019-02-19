@@ -1,0 +1,41 @@
+@import "../../../assets/scss/variables";
+
+.jur {
+    &-contracts {
+        &__table {
+            .jur-table__cell {
+                &:not(th) {
+                    vertical-align: top;
+                    padding: 15px 0 20px;
+                    border-bottom: 1px solid $table-border;
+                }
+            }
+
+            .jur-avatar-info {
+                &:first-child {
+                    margin-bottom: 10px;
+                }
+            }
+
+            .jur-amount {
+                color: $contracts-value-color;
+                font-weight: $poppins-semibold;
+            }
+        }
+        &__empty {
+            text-align: center;
+            
+            p {
+                color: $contracts-empty-text-color;
+                font-family: $font-poppins;
+                font-weight: $poppins-semibold;
+                font-size: 13px;
+                margin: 40px 0 20px;
+            }
+
+            .jur-btn {
+                width: 253px;
+            }
+        }
+    }
+}

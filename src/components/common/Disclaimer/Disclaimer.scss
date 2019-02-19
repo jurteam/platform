@@ -2,6 +2,9 @@
 
 .jur {
     &-disclaimer {
+        position: fixed;
+        bottom: 0;
+        left: 20px;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -9,12 +12,13 @@
         background-color: $disclaimer-bg-color;
         border: 2px solid $disclaimer-border-color;
         border-bottom: 0;
-        border-radius: 4px;
+        border-radius: 4px 4px 0 0;
         width: 107px;
         height: 40px;
         box-sizing: border-box;
 
         &--is-open {
+            left: 0;
             display: block;
             border-radius: 0;
             border: none;

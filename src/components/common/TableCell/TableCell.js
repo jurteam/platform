@@ -14,10 +14,10 @@ export const TableCell = ({ className, parentComponent, children, onClick, align
     <Component
       align={ align }
       className={`jur-table__cell ${Component === 'th' ? 'jur-table__head' : ''}  ${className || ''} ${Component === 'th' && onClick ? 'jur-table__cell--sortable' : ''}`}
-      onClick={ handleClick }
+      {...(typeof onClick === 'function' && {onClick: handleClick})}
     >
-        { children }
-        { onClick ? desc ? <CaretDownIcon /> : <CaretUpIcon /> : null }
+        { Component === 'th' ? <span dangerouslySetInnerHTML={{__html: children}} /> : children }
+        { onClick ? desc ? <CaretUpIcon /> : <CaretDownIcon /> : null }
     </Component>
   )
 };

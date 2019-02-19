@@ -12,6 +12,7 @@
         &__head {
             font-weight: 400;
             border-bottom: 2px solid $table-border;
+            padding: 7px 0;
         }
 
         &__cell {
@@ -21,7 +22,9 @@
                 svg {
                     display: inline-block;
                     margin-left: 10px;
-                    width: 10px;
+                    width: 7px;
+                    position: relative;
+                    top: -3px;
                 }
             }
         }

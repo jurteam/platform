@@ -12,6 +12,9 @@ import Dropdown from '../Dropown';
 import DropdownItem from '../DropdownItem';
 import { EllipsisVIcon } from '../Icons/EllipsisVIcon';
 import Button from '../Button';
+import Amount from '../Amount';
+
+import './Contracts.scss';
 
 export class Contracts extends Component {
   render() {
@@ -29,11 +32,11 @@ export class Contracts extends Component {
               ))}
             </TableRow>
           </TableHead>
-          <TableBody>
-            { data.length > 0 ?
-              data.map(contract => (
-                <TableRow key={ contract.id } className="jur-user-notification__table__row">
-                  <TableCell className="jur-user-notification__table__cell" key={ contract.statusId.toString() }>
+          { data.length > 0 ?
+            <TableBody>
+              {data.map(contract => (
+                <TableRow key={ contract.id }>
+                  <TableCell>
                     <Tag statusId={contract.statusId}>
                       { contract.statusLabel }
                     </Tag>
@@ -50,7 +53,7 @@ export class Contracts extends Component {
                     ))}
                   </TableCell>
                   <TableCell>
-                    { contract.value }
+                    <Amount value={ contract.value } />
                   </TableCell>
                   { !contract.archived ?
                     <TableCell>
@@ -60,20 +63,18 @@ export class Contracts extends Component {
                         </DropdownItem>
                       </Dropdown>
                     </TableCell>
-                    : null
-                  }
+                    : null }
                 </TableRow>
-              ))
-              :
-              <TableRow>
-                <TableCell class="jur-contracts__table--empty">
-                  <p>It seems you did not create any contract!</p>
-                  <Button variant="gradient">Create your first contract</Button>
-                </TableCell>
-              </TableRow>
-            }
-          </TableBody>
-        </Table>
+              ))}
+              </TableBody>
+              : null }
+          </Table>
+          {data.length === 0 &&
+            <div className="jur-contracts__empty">
+              <p>It seems you did not create any contract!</p>
+              <Button variant="gradient">Create your first contract</Button>
+            </div>
+          }
       </div>
     )
   }  
