@@ -10,36 +10,48 @@ import { log } from "../utils/helpers"; // log helpers
 class MetaMaskProvider {
   static provider = null;
 
+  constructor() {
+    if (window.web3) {
+      this.provider = window.web3.currentProvider;
+      log("MetaMaskProvider - constructor", this.provider);
+    }
+  }
+
   setProvider(provider) {
     this.provider = provider;
-    const {connection} = this.provider;
-    log('provider', connection.enable());
+    log("MetaMaskProvider - provider", provider);
   }
 
   // ask for approve
-  async auth() {
-    const { connection } = this.provider;
-    return await connection.enable(); // promise
+  async auth(onSuccess, onError) {
+    const { enable } = this.provider;
+    log("MetaMaskProvider", "enable()");
+    return await enable()
+      .then(res => {
+        log("MetaMaskProvider - enable then", res);
+        if (typeof onSuccess === "function") onSuccess(res);
+      })
+      .catch(err => {
+        log("MetaMaskProvider - enable catch", err);
+        if (typeof onError === "function") onError(err);
+      }); // promise
   }
 
   // enabled checker
   isEnabled() {
-    const { connection } = this.provider;
-    const { _metamask } = connection;
+    const { _metamask } = this.provider;
     return _metamask.isEnabled();
   }
 
   // approved checker
   isApproved() {
-    const { connection } = this.provider;
-    const { _metamask } = connection;
+    const { _metamask } = this.provider;
     return _metamask.isApproved();
   }
 
   // unlocked checker
   isUnlocked() {
-    const { connection } = this.provider;
-    const { _metamask } = connection;
+    const { _metamask } = this.provider;
     return _metamask.isUnlocked();
   }
 }
