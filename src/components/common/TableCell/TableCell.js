@@ -16,7 +16,7 @@ export const TableCell = ({ className, parentComponent, children, onClick, align
       className={`jur-table__cell ${Component === 'th' ? 'jur-table__head' : ''}  ${className || ''} ${Component === 'th' && onClick ? 'jur-table__cell--sortable' : ''}`}
       {...(typeof onClick === 'function' && {onClick: handleClick})}
     >
-        { children }
+        { Component === 'th' ? <span dangerouslySetInnerHTML={{__html: children}} /> : children }
         { onClick ? desc ? <CaretUpIcon /> : <CaretDownIcon /> : null }
     </Component>
   )
