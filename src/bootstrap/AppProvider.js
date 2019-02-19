@@ -15,6 +15,7 @@ class AppProvider extends Component {
     super(props);
     this.auth = this.auth.bind(this);
     this.exit = this.exit.bind(this);
+    global.exit = this.exit // available everywhere for sync purposes
 
     this.store = props.store;
 
@@ -57,7 +58,7 @@ class AppProvider extends Component {
   }
 
   exit() {
-    this.setState({ onNetwork: false });
+    this.setState({ onNetwork: false, metamaskLoading: false });
   }
 
   render() {

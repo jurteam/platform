@@ -5,7 +5,7 @@ import { drizzleConnect } from "drizzle-react";
 import { Home } from "./Home";
 
 // Actions
-import { setTutorialViewed } from "../../../actions/App";
+import { setTutorialViewed } from "../../../sagas/App";
 
 const mapStateToProps = state => ({
   app: state.app,

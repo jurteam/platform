@@ -32,11 +32,7 @@ export function* resetAppState() {
 }
 
 // Tutorial viewed
-export function* setTutorialViewed() {
-  log("dispatch", { type: SET_TUTORIAL_VIEWED });
-
-  yield put({ type: SET_TUTORIAL_VIEWED });
-}
+export const setTutorialViewed = () => ({ type: SET_TUTORIAL_VIEWED })
 
 // app loading disable
 export function* disableLoading() {
@@ -54,7 +50,7 @@ export function* handleNetworkUpdate(data) {
   const { web3 } = global.drizzle;
   log("handleNetworkUpdate - web3", web3);
 
-  const { address, hash } = yield select(getWallet);
+  const { address } = yield select(getWallet);
   log("handleNetworkUpdate - current address", address);
   log("handleNetworkUpdate - current address LOWER", address.toLowerCase());
 
@@ -67,9 +63,15 @@ export function* handleNetworkUpdate(data) {
   // should be checked via lowercase due the MetaMask returned value
   // TODO: check if this can be an issue on long term basis
   if (address && address.toLowerCase() !== selectedAddress) {
-    yield put({ type: APP_SHOULD_RESET });
     yield put({ type: SET_WALLET_ADDRESS, payload: selectedAddress });
   }
+}
+
+// handle app reset when needed
+export function* handleAppReset() {
+
+  const { exit } = global;
+  yield exit();
 }
 
 // spawn a new actions task
@@ -78,4 +80,5 @@ export default function* appSagas() {
   yield takeEvery(DRIZZLE_INITIALIZED, init);
   yield takeEvery(NETWORK_ID_FAILED, disableLoading);
   yield takeEvery(NETWORK_UPDATE, handleNetworkUpdate);
+  yield takeEvery(APP_SHOULD_RESET, handleAppReset);
 }
