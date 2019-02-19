@@ -14,7 +14,7 @@ export const UserNotification = ({ title, headers, data, className }) => {
         <TableHead>
           <TableRow>
             {headers.map(header => (
-              <TableCell {...(header.sortable && {onClick: header.sortable})}>
+              <TableCell key={ header.label.toString() } {...(header.sortable && {onClick: header.sortable})}>
                 { header.label }
               </TableCell>
             ))}
@@ -22,8 +22,8 @@ export const UserNotification = ({ title, headers, data, className }) => {
         </TableHead>
         <TableBody>
           {data.map(row => (
-            <TableRow>
-              <TableCell>
+            <TableRow key={ row.id }>
+              <TableCell key={ row.date.toString() }>
                 {row.date}
               </TableCell>
               <TableCell>
