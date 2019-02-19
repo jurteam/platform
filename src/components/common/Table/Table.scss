@@ -2,7 +2,13 @@
 
 .jur {
     &-table {
-        &-cell {
+
+        &__head {
+            font-weight: 400;
+            border-bottom: 2px solid $table-border;
+        }
+
+        &__cell {
             &--sortable {
                 display: flex;
                 align-items: center;
