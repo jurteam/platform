@@ -9,6 +9,7 @@ import { log } from "../utils/helpers"; // log helpers
 
 class MetaMaskProvider {
   static provider = null;
+  static enableCall = null;
 
   constructor() {
     if (window.web3) {
@@ -26,7 +27,7 @@ class MetaMaskProvider {
   async auth(onSuccess, onError) {
     const { enable } = this.provider;
     log("MetaMaskProvider", "enable()");
-    return await enable()
+    this.enableCall = await enable()
       .then(res => {
         log("MetaMaskProvider - enable then", res);
         if (typeof onSuccess === "function") onSuccess(res);
@@ -35,6 +36,8 @@ class MetaMaskProvider {
         log("MetaMaskProvider - enable catch", err);
         if (typeof onError === "function") onError(err);
       }); // promise
+
+    return this.enableCall;
   }
 
   // enabled checker
@@ -53,6 +56,17 @@ class MetaMaskProvider {
   isUnlocked() {
     const { _metamask } = this.provider;
     return _metamask.isUnlocked();
+  }
+
+  // stops all operations
+  cancel() {
+
+    // end enable call if defined
+    if (
+      typeof this.enableCall === "undefined" &&
+      typeof this.enableCall.then === "function"
+    )
+      this.enableCall.reject();
   }
 }
 
