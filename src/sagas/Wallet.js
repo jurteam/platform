@@ -40,7 +40,7 @@ export function* getBalance(args) {
 
   // cache call on address set
   if (type === SET_WALLET_ADDRESS) {
-    const drizzleStatus = yield select(getDrizzleStatus, true);
+    const drizzleStatus = yield select(getDrizzleStatus);
     log("getBalance - drizzleStatus", drizzleStatus);
 
     if (drizzleStatus.initialized && global.drizzle) {
