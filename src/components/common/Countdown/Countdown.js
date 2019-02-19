@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+
+import './Countdown.scss';
 
 export class Countdown extends Component {
   constructor(props) {
@@ -69,20 +72,20 @@ export class Countdown extends Component {
     const { showSeconds, daysLabel, hoursLabel, minutesLabel, secondsLabel } = this.props;
     return (
       <div className="jur-countdown">
-        <div className="jur-countdown__days">
+        <div className="jur-countdown__item jur-countdown__days">
           <span className="value">{ this.addLeadingZeros(days) }</span>  
           <span className="label">{ daysLabel }</span>  
         </div>
-        <div className="jur-countdown__hours">
+        <div className="jur-countdown__item jur-countdown__hours">
           <span className="value">{ this.addLeadingZeros(hours) }</span>  
           <span className="label">{ hoursLabel }</span>  
         </div>
-        <div className="jur-countdown__minutes">
+        <div className="jur-countdown__item jur-countdown__minutes">
           <span className="value">{ this.addLeadingZeros(minutes) }</span>  
           <span className="label">{ minutesLabel }</span>  
         </div>
         {showSeconds ?
-          <div className="jur-countdown__seconds">
+          <div className="jur-countdown__item jur-countdown__seconds">
             <span className="value">{ this.addLeadingZeros(seconds) }</span>  
             <span className="label">{ secondsLabel }</span>  
           </div>
