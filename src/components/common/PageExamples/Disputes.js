@@ -4,16 +4,16 @@ import PageLayout from '../PageLayout';
 import Main from '../Main';
 import Aside from '../Aside';
 
-class ProfilePage extends Component {
+export class DisputesPage extends Component {
   render() {
     return(
-      <PageLayout showBreadcrumbs={ false }>
-        <Aside>
-          {/* Aside Content here */}
-        </Aside>
+      <PageLayout showBreadcrumbs={ true }>
         <Main>
-          {/* Main Content here */}
+          MAIN CONTENT WILL BE HERE
         </Main>
+        <Aside>
+          ASIDE CONTENT WILL BE HERE
+        </Aside>
       </PageLayout>
     );
   }
