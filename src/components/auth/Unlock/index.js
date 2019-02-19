@@ -1,4 +1,3 @@
-import { withRouter } from "react-router-dom";
-import { Unlock } from "./Unlock";
+import Unlock from "./Unlock";
 
-export default withRouter(Unlock);
+export default Unlock;
