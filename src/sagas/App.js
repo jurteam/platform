@@ -3,10 +3,12 @@ import {
   DRIZZLE_INITIALIZED,
   SET_WALLET_ADDRESS,
   NETWORK_ID_FAILED,
+  NETWORK_UPDATE,
+  APP_SHOULD_RESET,
   SET_READY,
   SET_LOADING,
-  NETWORK_UPDATE,
-  APP_SHOULD_RESET
+  RESET_APP_STATE,
+  SET_TUTORIAL_VIEWED
 } from "./../reducers/types";
 
 import { getWallet } from "./Selectors"; // selectors
@@ -15,6 +17,26 @@ import { getWallet } from "./Selectors"; // selectors
 import { init } from "./../bootstrap/Dapp";
 
 import { log } from "./../utils/helpers"; // log helper
+
+// First load
+export function* setLoading(loading) {
+  log("dispatch", { type: SET_LOADING, payload: loading });
+  yield put({ type: SET_READY, payload: loading });
+}
+
+// Reset
+export function* resetAppState() {
+  log("dispatch", { type: RESET_APP_STATE });
+
+  yield put({ type: RESET_APP_STATE });
+}
+
+// Tutorial viewed
+export function* setTutorialViewed() {
+  log("dispatch", { type: SET_TUTORIAL_VIEWED });
+
+  yield put({ type: SET_TUTORIAL_VIEWED });
+}
 
 // app loading disable
 export function* disableLoading() {
