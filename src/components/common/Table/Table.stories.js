@@ -17,11 +17,27 @@ storiesOf('Table', module)
       header: false
     }
   })
-  .add('Default', () => (
+  .add('No Styles', () => (
     <Table>
       <TableHead>
         <TableRow>
           <TableCell>Name</TableCell>
+          <TableCell>Age</TableCell>
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        <TableRow>
+          <TableCell>Jur</TableCell>
+          <TableCell>1</TableCell>
+        </TableRow>
+      </TableBody>
+    </Table>
+  ))
+  .add('Click on thead cell to sort', () => (
+    <Table>
+      <TableHead>
+        <TableRow>
+          <TableCell onClick={ (e, desc) => alert(desc) }>Name (click me to sort)</TableCell>
           <TableCell>Age</TableCell>
         </TableRow>
       </TableHead>

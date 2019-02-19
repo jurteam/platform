@@ -10,7 +10,8 @@ export const TableCell = ({ className, parentComponent, children, onClick }) => 
   const Component = parentComponent === 'thead' ? 'th' : 'td';
   return (
     <Component
-      className={`jur-table-cell ${className || ''}`}
+
+      className={`jur-table__cell ${className || ''} ${Component === 'th' && onClick ? 'jur-table-cell--sortable' : ''}`}
       onClick={ handleClick }
     >
         { children }

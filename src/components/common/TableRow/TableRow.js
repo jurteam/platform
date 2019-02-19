@@ -6,5 +6,5 @@ export const TableRow = ({ parentComponent, children }) => {
   const cells = childrenArray.map(cell => (
     React.cloneElement(cell, { parentComponent, ...cell.props })
   ));
-  return <tr>{ cells }</tr>;
+  return <tr className="jur-table__row">{ cells }</tr>;
 }
