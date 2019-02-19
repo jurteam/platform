@@ -1,0 +1,33 @@
+@import "../../../assets/scss/variables";
+
+.jur {
+    &-user-notification {
+        font-family: $font-poppins;
+        color: $user-notification-color;
+
+        h3 {
+            font-size: 20px;
+            font-weight: 400;
+            margin: 0;
+            padding: 0 0 10px 0;
+        }
+
+        &__table {
+            font-size: 13px;
+            
+            &__cell {
+                width: 230px;
+                white-space: nowrap;
+                
+                &:first-child {
+                    padding: 20px 0 20px 12px;
+                }
+
+                &:last-child {
+                    padding: 20px 12px 20px 0;
+                }
+                
+            }
+        }
+    }
+}

@@ -6,6 +6,8 @@ import TableCell from '../TableCell';
 import TableBody from '../TableBody';
 import TableHead from '../TableHead';
 
+import './UserNotification.scss';
+
 export const UserNotification = ({ title, headers, data, className }) => {
   return (
     <div className={`jur-user-notification ${className || ''}`}>
@@ -22,8 +24,8 @@ export const UserNotification = ({ title, headers, data, className }) => {
         </TableHead>
         <TableBody>
           {data.map(row => (
-            <TableRow key={ row.id }>
-              <TableCell key={ row.date.toString() }>
+            <TableRow key={ row.id } className="jur-user-notification__table__row">
+              <TableCell className="jur-user-notification__table__cell" key={ row.date.toString() }>
                 {row.date}
               </TableCell>
               <TableCell>
