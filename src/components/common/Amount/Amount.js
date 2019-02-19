@@ -8,7 +8,7 @@ import './Amount.scss';
 export const Amount = ({ value, currency, className }) => {
   return (
     <span className={ `jur-amount ${className}`} >
-      { `${toCurrencyFormat(value)} ${currency.toUpperCase()}` }
+      { `${toCurrencyFormat(value)}${currency.toUpperCase()}` }
     </span>
   )
 };
