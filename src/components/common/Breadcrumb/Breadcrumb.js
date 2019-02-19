@@ -8,7 +8,7 @@ export const Breadcrumb = ({ crumbList, className }) => (
     {crumbList.map((crumb, index) => (
       <li
         className={`jur-breadcrumb__item ${crumb.active ? 'jur-breadcrumb__item--active' : ''}`}
-        key={crumb.id.toString()}
+        key={(crumb.id) ? crumb.id.toString() : `bread-${index}`}
       >
         <a href={ crumb.to }>{ crumb.label }</a>
       </li>
