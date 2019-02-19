@@ -2,7 +2,8 @@
 
 .jur {
     &-table {
-        width: 100;
+        box-sizing: border-box;
+        width: 100%;
         font-family: $font-poppins;
         color: $user-notification-color;
         font-size: 13px;

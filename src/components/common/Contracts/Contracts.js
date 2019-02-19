@@ -33,8 +33,10 @@ export class Contracts extends Component {
             { data.length > 0 ?
               data.map(contract => (
                 <TableRow key={ contract.id } className="jur-user-notification__table__row">
-                  <TableCell className="jur-user-notification__table__cell" key={ contract.date.toString() }>
-                    <Tag statusId={contract.statusId} />
+                  <TableCell className="jur-user-notification__table__cell" key={ contract.statusId.toString() }>
+                    <Tag statusId={contract.statusId}>
+                      { contract.statusLabel }
+                    </Tag>
                   </TableCell>
                   <TableCell>
                     {contract.contractName}
@@ -44,7 +46,7 @@ export class Contracts extends Component {
                   </TableCell>
                   <TableCell>
                     {contract.counterParties.map(counterParty => (
-                      <AvatarInfo userName={counterParty.name} userWallet={counterParty.wallet} renderName={ counterParty.renderName } />
+                      <AvatarInfo key={counterParty.wallet} userName={counterParty.name} userWallet={counterParty.wallet} renderName={ counterParty.renderName } />
                     ))}
                   </TableCell>
                   <TableCell>

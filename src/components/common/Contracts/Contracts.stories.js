@@ -31,7 +31,32 @@ const headers = [
   }
 ];
 
-const contractsData = [];
+const noContracts = [];
+
+const contractsData = [
+  {
+    id: 1,
+    statusId: 2,
+    statusLabel: 'ongoing',
+    contractName: 'Logo Design',
+    duration: 1000*60*60*24*3,
+    expireDate: 1000*60*60*24*2,
+    counterParties: [
+      {
+        wallet: '0x496730954769357609478509674309',
+        name: 'Alice',
+        renderName: true
+      },
+      {
+        wallet: '0x4967309547693576094785674309',
+        name: 'Bob',
+        renderName: false
+      }
+    ],
+    value: 854667,
+    archived: false
+  }
+];
 
 storiesOf('Contracts', module)
   .addDecorator(withInfo)
@@ -41,29 +66,17 @@ storiesOf('Contracts', module)
       header: false
     }
   })
-  .add('Default', () => (
+  .add('No contracts', () => (
+    <Contracts
+      headers={ headers }
+      data={ noContracts }
+      handleArchive={contractId => alert('Contractid archived') }
+    />
+  ))
+  .add('Contract list', () => (
     <Contracts
       headers={ headers }
       data={ contractsData }
       handleArchive={contractId => alert('Contractid archived') }
     />
   ))
-
-// const data = [
-//   {
-//     id: 1,
-//     statusId: '',
-//     contractName: '',
-//     duration: '',
-//     expireDate: '',
-//     counterParties: [
-//       {
-//         wallet: '',
-//         name: '',
-//         renderName: ''
-//       }
-//     ],
-//     value,
-//     archived: 
-//   }
-// ]
