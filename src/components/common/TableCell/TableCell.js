@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import PropsTypes from 'prop-types';
+import { CaretDownIcon } from '../Icons/CaretDownIcon';
+import { CaretUpIcon } from '../Icons/CaretUpIcon';
 
 export const TableCell = ({ className, parentComponent, children, onClick }) => {
   const [desc, setDesc] = useState(false);
@@ -15,6 +17,7 @@ export const TableCell = ({ className, parentComponent, children, onClick }) => 
       onClick={ handleClick }
     >
         { children }
+        { onClick ? desc ? <CaretDownIcon /> : <CaretUpIcon /> : null }
     </Component>
   )
 }

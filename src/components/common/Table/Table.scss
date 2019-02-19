@@ -4,7 +4,15 @@
     &-table {
         &-cell {
             &--sortable {
+                display: flex;
+                align-items: center;
                 cursor: pointer;
+
+                svg {
+                    display: inline-block;
+                    margin-left: 10px;
+                    width: 10px;
+                }
             }
         }
     }
