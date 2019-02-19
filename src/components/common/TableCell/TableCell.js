@@ -17,7 +17,7 @@ export const TableCell = ({ className, parentComponent, children, onClick, align
       {...(typeof onClick === 'function' && {onClick: handleClick})}
     >
         { children }
-        { onClick ? desc ? <CaretDownIcon /> : <CaretUpIcon /> : null }
+        { onClick ? desc ? <CaretUpIcon /> : <CaretDownIcon /> : null }
     </Component>
   )
 };
