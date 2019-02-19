@@ -5,29 +5,39 @@ import { withInfo } from '@storybook/addon-info';
 
 import Header from './';
 import Logo from '../Logo';
-import ProfilePreview from '../ProfilePreview';
-import MainNav from '../MainNav';
+import NavigationWrapper from '../NavigationWrapper';
 
 storiesOf('Header', module)
   .addDecorator(withInfo)
-  .addParameters({ 
-    info: { 
+  .addParameters({
+    info: {
       inline: true,
       header: false
     }
   })
   .add('Header', () => <Header />)
-  .add('ProfilePreview with name', () => (
-    <Header>
-      <Logo />
-      <MainNav />
-      <ProfilePreview name="Alice" seed="0x3954939439487573664374" shouldRenderName balance="7546857" currency="Jur" />
-    </Header>
-  ))
-  .add('ProfilePreview without name', () => (
-    <Header>
-      <Logo />
-      <MainNav />
-      <ProfilePreview name="" seed="0x3954939439487573664374" shouldRenderName balance="7546857" currency="Jur" />
-    </Header>
-  ))
+  .add('User logged', () => {
+    const userIdLogged = true;
+    return (
+      <Header>
+        <Logo />
+        {userIdLogged ?
+          <NavigationWrapper name="Alice" seed="0x3954939439487573664374" shouldRenderName balance="7546857" currency="Jur" />
+          : null
+        }
+      </Header>
+    )
+  })
+  .add('User not logged', () => {
+    const userIdLogged = false;
+    return (
+      <Header>
+        <Logo />
+        {userIdLogged ?
+          <NavigationWrapper seed="0x3954939439487573664374" shouldRenderName balance="7546857" currency="Jur" />
+          : null
+        }
+      </Header>
+    )
+  })
+

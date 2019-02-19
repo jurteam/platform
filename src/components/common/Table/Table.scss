@@ -7,6 +7,7 @@
         font-family: $font-poppins;
         color: $user-notification-color;
         font-size: 13px;
+        border-collapse: collapse;
 
         &__head {
             font-weight: 400;
@@ -15,8 +16,6 @@
 
         &__cell {
             &--sortable {
-                display: inline-flex;
-                align-items: center;
                 cursor: pointer;
 
                 svg {
