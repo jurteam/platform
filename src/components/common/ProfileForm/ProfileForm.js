@@ -124,7 +124,7 @@ export class ProfileForm extends Component {
                   <InfoIcon />
                   Show Full Name instead of Wallet address
                 </label>
-                <div class="jur-profile-form__options__show-name__input">
+                <div className="jur-profile-form__options__show-name__input">
                   <Switch
                     name="showFullName"
                     value={ this.state.showFullName }
