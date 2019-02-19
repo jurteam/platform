@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
 
-import Unlock from "../../auth/Unlock";
 import Button from "../../common/Button";
 
 export class Home extends Component {
@@ -19,26 +18,20 @@ export class Home extends Component {
   }
 
   render() {
-    const { app, wallet, drizzleStatus } = this.props;
-    const { loading, tutorial } = app;
+    const { app } = this.props;
+    const { tutorial } = app;
     return (
       <div className="jur">
-        {loading === false && (
           <header className="jur--body">
-            {drizzleStatus.initialized ? (
-              !tutorial ? (
+            {!tutorial ? (
                 <>
                   Tutorial
                   <Button onClick={this.closeTutorial} color="info" size="big">Got it!</Button>
                 </>
               ) : (
                 <Redirect to="/contracts" />
-              )
-            ) : (
-              <Unlock />
-            )}
+              )}
           </header>
-        )}
       </div>
     );
   }
