@@ -1,8 +1,8 @@
 import React, { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 
-import { AppContext } from "./../../../bootstrap/AppProvider";
-import { createRoutes } from "./../../../bootstrap/Routing";
+import { AppContext } from "../../../bootstrap/AppProvider";
+import { createRoutes } from "../../../bootstrap/Routing";
 
 import "./Breadcrumbs.scss";
 

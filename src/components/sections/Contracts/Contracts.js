@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import Breadcrumbs from "./../../../components/common/Breadcrumbs";
+import Breadcrumbs from "../../../components/common/Breadcrumbs";
 
 export class Contracts extends Component {
   render() {

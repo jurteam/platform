@@ -6,7 +6,7 @@ import ErrorBoundary from "./ErrorBoundary"; // Errors
 
 // Drizzle
 import { DrizzleProvider } from "drizzle-react";
-import drizzleOptions from "./../config/drizzleOptions";
+import drizzleOptions from "../config/drizzleOptions";
 
 // Components
 import Spinner from "../components/common/Spinner";

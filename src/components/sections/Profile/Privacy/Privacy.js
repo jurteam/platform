@@ -1,8 +1,8 @@
 import React, { useState, useContext } from "react"; // eslint-disable-line no-unused-vars
 import { drizzleConnect } from "drizzle-react";
 
-import { AppContext } from "./../../../../bootstrap/AppProvider";
-import Button from "./../../../../components/common/Button";
+import { AppContext } from "../../../../bootstrap/AppProvider";
+import Button from "../../../../components/common/Button";
 
 const Privacy = (props) => {
 

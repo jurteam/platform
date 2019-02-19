@@ -9,7 +9,7 @@ import Faq from "./Faq";
 import Notification from "./Notification";
 import Terms from "./Terms";
 
-import i18n from "./../../../assets/i18n/en.json"; // i18n
+import i18n from "../../../assets/i18n/en.json"; // i18n
 
 // Section Context
 export const ProfileContext = React.createContext();

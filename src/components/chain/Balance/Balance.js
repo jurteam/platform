@@ -1,9 +1,9 @@
 /* eslint-disable no-unused-vars */
 import React, { Component } from "react";
-import Amount from "./../../common/Amount";
+import Amount from "../../common/Amount";
 
 // Context
-import { AppContext } from "./../../../bootstrap/AppProvider";
+import { AppContext } from "../../../bootstrap/AppProvider";
 
 // Style
 import "./Balance.scss"; // load scss properly

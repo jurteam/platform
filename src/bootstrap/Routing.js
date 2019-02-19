@@ -1,4 +1,4 @@
-import i18n from "./../assets/i18n/en.json"; // i18n
+import i18n from "../assets/i18n/en.json"; // i18n
 
 // Sections
 import NotFound from "../components/sections/NotFound";
@@ -10,7 +10,7 @@ import Contracts from "../components/sections/Contracts";
 import Disputes from "../components/sections/Disputes";
 
 // Helpers
-import { redirect, checkConnection } from "./../utils/helpers";
+import { redirect, checkConnection } from "../utils/helpers";
 
 export const createRoutes = withComponents => {
   // handle empty params

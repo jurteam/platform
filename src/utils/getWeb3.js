@@ -1,6 +1,6 @@
 import Web3 from "web3";
 import { log } from "./helpers" // log helper
-import drizzleOptions from "./../config/drizzleOptions"
+import drizzleOptions from "../config/drizzleOptions"
 
 const getWeb3 = () =>
   new Promise((resolve, reject) => {

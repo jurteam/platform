@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
-import appReference from "./../../package.json"; // config
-import i18n from "./../assets/i18n/en.json"; // i18n
+import appReference from "../../package.json"; // config
+import i18n from "../assets/i18n/en.json"; // i18n
 
 // MetaMask
 import MetaMask from "../hooks/MetaMask";

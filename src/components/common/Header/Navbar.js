@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
 // Context
-import { AppContext } from "./../../../bootstrap/AppProvider";
+import { AppContext } from "../../../bootstrap/AppProvider";
 
 export class Navbar extends Component {
   render() {

@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react"; // eslint-disable-line no-u
 import { drizzleConnect } from "drizzle-react";
 import Blockies from "react-blockies";
 
-import { AppContext } from "./../../../../bootstrap/AppProvider";
+import { AppContext } from "../../../../bootstrap/AppProvider";
 
 import "./ProfileSettings.scss"; // style
 

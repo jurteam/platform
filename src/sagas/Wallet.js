@@ -11,9 +11,9 @@ import {
   SET_BALANCE,
   SET_WALLET_ADDRESS,
   RESET_WALLET
-} from "./../reducers/types";
+} from "../reducers/types";
 
-import { log } from "./../utils/helpers"; // log helper
+import { log } from "../utils/helpers"; // log helper
 
 // Reset
 export function* resetWallet() {

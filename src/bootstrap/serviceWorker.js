@@ -10,7 +10,7 @@
 // To learn more about the benefits of this model and instructions on how to
 // opt-in, read http://bit.ly/CRA-PWA
 
-import { log } from "./../utils/helpers" // log helper
+import { log } from "../utils/helpers" // log helper
 
 const isLocalhost = Boolean(
   window.location.hostname === "localhost" ||

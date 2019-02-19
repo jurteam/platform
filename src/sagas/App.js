@@ -9,14 +9,14 @@ import {
   SET_LOADING,
   RESET_APP_STATE,
   SET_TUTORIAL_VIEWED
-} from "./../reducers/types";
+} from "../reducers/types";
 
 import { getWallet } from "./Selectors"; // selectors
 
 // Dapp utilities
-import { init } from "./../bootstrap/Dapp";
+import { init } from "../bootstrap/Dapp";
 
-import { log } from "./../utils/helpers"; // log helper
+import { log } from "../utils/helpers"; // log helper
 
 // First load
 export function* setLoading(loading) {

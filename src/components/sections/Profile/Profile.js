@@ -3,8 +3,8 @@ import { withRouter } from "react-router";
 
 import { ProfileContext } from "./";
 
-import Breadcrumbs from "./../../../components/common/Breadcrumbs";
-import Side from "./../../../components/common/Side";
+import Breadcrumbs from "../../../components/common/Breadcrumbs";
+import Side from "../../../components/common/Side";
 
 import ProfileSettings from "./ProfileSettings";
 
