@@ -7,12 +7,18 @@ import {
 } from "./Selectors";
 import {
   DRIZZLE_INITIALIZED,
+  GOT_CONTRACT_VAR,
   SET_BALANCE,
   SET_WALLET_ADDRESS,
-  GOT_CONTRACT_VAR
+  RESET_WALLET
 } from "./../reducers/types";
 
 import { log } from "./../utils/helpers"; // log helper
+
+// Reset
+export function* resetWallet() {
+  yield put({ type: RESET_WALLET });
+}
 
 // set wallet address from data retrievied via blockchain
 export function* setWalletAddress() {
