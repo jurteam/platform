@@ -2,6 +2,10 @@
 
 .jur {
     &-table {
+        width: 100;
+        font-family: $font-poppins;
+        color: $user-notification-color;
+        font-size: 13px;
 
         &__head {
             font-weight: 400;
@@ -10,7 +14,7 @@
 
         &__cell {
             &--sortable {
-                display: flex;
+                display: inline-flex;
                 align-items: center;
                 cursor: pointer;
 
