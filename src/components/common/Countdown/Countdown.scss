@@ -13,6 +13,14 @@
             margin: 0 10px;
             line-height: 1;
 
+            &:first-child {
+                margin-left: 0;
+            }
+
+            &:last-child {
+                margin-right: 0;
+            }
+
             .value {
                 font-size: 20px;
                 color: $countdown-value-muted-color;
