@@ -63,13 +63,20 @@ storiesOf('DisputesTable', module)
       header: false
     }
   })
-  .add('No data', () => (
+  .add('Disputes unavailable', () => (
     <DisputesTable
       headers={ headers }
       data={ [] }
     />
   ))
-  .add('With data', () => (
+  .add('My Disputes unavailable', () => (
+    <DisputesTable
+      headers={ headers }
+      data={ [] }
+      myDisputes
+    />
+  ))
+  .add('Disputes available', () => (
     <DisputesTable
       headers={ headers }
       data={ disputesData }

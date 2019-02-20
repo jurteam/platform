@@ -16,5 +16,19 @@
         &__earning {
             color: $disputes-earning-color;
         }
+
+        .jur-table__empty {
+            p {
+                margin-bottom: 5px;
+            }
+
+            a {
+                font-family: $font-poppins;
+                font-weight: $poppins-semibold;
+                color: $disputes-empty-link-color;
+                font-size: 13px;
+                text-decoration: none;
+            }
+        }
     }
 }
