@@ -11,9 +11,15 @@
 |
 */
 
-$factory->define(App\User::class, function (Faker\Generator $faker) {
+$factory->define(App\Models\User::class, function (Faker\Generator $faker) {
     return [
         'name' => $faker->name,
         'email' => $faker->email,
+        'birth_date' => $faker->date('Y-m-d', 'now'),
+        'gender' => '',
+        'location' => '',
+        'category' => '',
+        'show_fullname' => false,
+        'accept_terms' => true
     ];
 });
