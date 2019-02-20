@@ -22,7 +22,7 @@ storiesOf('Header', module)
       <Header>
         <Logo />
         {userIdLogged ?
-          <NavigationWrapper name="Alice" seed="0x3954939439487573664374" shouldRenderName balance="7546857" currency="Jur" />
+          <NavigationWrapper to="/profile" name="Alice" seed="0x3954939439487573664374" shouldRenderName balance="7546857" currency="Jur" />
           : null
         }
       </Header>
