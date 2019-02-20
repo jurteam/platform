@@ -9,7 +9,6 @@ import './ProfileForm.scss';
 
 export class ProfileForm extends Component {
   state = {
-    wallet: '0x70aec4b9cffa7b55c0711b82dd719049d615e21d',
     fullName: 'Alice',
     gender: '',
     email: 'alice@domain.com',
@@ -38,13 +37,14 @@ export class ProfileForm extends Component {
   render() {
 
     const {
-      className
+      className,
+      wallet
     } = this.props;
 
     return (
       <form className={`jur-profile-form ${className || ''}`} onSubmit={ this.onSubmit }>
         <div className="jur-profile-form__header">
-          <Avatar size="xxlarge" variant="rounded" seed={ this.state.wallet } />
+          <Avatar size="xxlarge" variant="rounded" seed={ wallet.address } />
           <div className="form-group">
             <label htmlFor="wallet">Wallet <sup>*</sup></label>
             <input
@@ -52,7 +52,7 @@ export class ProfileForm extends Component {
               className="form-control"
               name="wallet"
               id="wallet"
-              defaultValue={ this.state.wallet }
+              defaultValue={ wallet.address }
               disabled
             />
           </div>

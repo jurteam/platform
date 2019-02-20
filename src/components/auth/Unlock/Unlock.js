@@ -30,35 +30,33 @@ const Unlock = () => {
   };
 
   return (
-    <div className="jur--body">
-      <UserAction>
-        <UserActionHeader variant="error">
-          {labels.metamaskRequired}
-        </UserActionHeader>
-        <UserActionBody>{labels.metamaskRequiredDesc}</UserActionBody>
-        <UserActionFooter>
-          {shouldUnlock && (
-            <Button
-              onClick={() => {
-                unlock();
-              }}
-              size="big"
-              variant="contained"
-            >
-              {labels.unlockMetamask}
-            </Button>
-          )}
+    <UserAction>
+      <UserActionHeader variant="error">
+        {labels.metamaskRequired}
+      </UserActionHeader>
+      <UserActionBody>{labels.metamaskRequiredDesc}</UserActionBody>
+      <UserActionFooter>
+        {shouldUnlock && (
           <Button
             onClick={() => {
-              window.open("https://metamask.io");
+              unlock();
             }}
             size="big"
+            variant="contained"
           >
-            {labels.getChromeExtension}
+            {labels.unlockMetamask}
           </Button>
-        </UserActionFooter>
-      </UserAction>
-    </div>
+        )}
+        <Button
+          onClick={() => {
+            window.open("https://metamask.io");
+          }}
+          size="big"
+        >
+          {labels.getChromeExtension}
+        </Button>
+      </UserActionFooter>
+    </UserAction>
   );
 };
 

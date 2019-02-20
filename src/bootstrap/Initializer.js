@@ -1,13 +1,17 @@
 /* eslint-disable no-unused-vars */
 import React, { PureComponent } from "react";
 import { Route, Switch, Router } from "react-router"; // react-router v4
+
 import PropTypes from "prop-types";
+
+// Connector
+import { drizzleConnect } from "drizzle-react"
 
 // Routes
 import { createRoutes } from "./Routing";
 
 // Commons
-import Header from "../components/common/Header";
+import Disclaimer from "../components/common/Disclaimer";
 
 const Routes = createRoutes();
 
@@ -29,16 +33,28 @@ class Initializer extends PureComponent {
   }
 
   render() {
-    const { history } = this.props;
+    const { history, wallet } = this.props;
     return (
       <Router history={history}>
         <>
-          <Header />
           <Switch>
             {Routes.map((params, key) => (
               <Route {...params} key={key} />
             ))}
           </Switch>
+
+          <Disclaimer
+            isOpen={false}
+            title="Disclaimer"
+            description="Jur is an interface on the blockchain. Jur can als…"
+            accepted={false}
+            declineLabel="Decline"
+            acceptLabel="Accept"
+            closeLabel="Close"
+            onAccept={() => null}
+            onClose={() => null}
+            onDecline={() => null}
+          />
 
           {this.renderTestReport()}
         </>

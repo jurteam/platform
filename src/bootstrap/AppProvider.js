@@ -15,7 +15,7 @@ class AppProvider extends Component {
     super(props);
     this.auth = this.auth.bind(this);
     this.exit = this.exit.bind(this);
-    global.exit = this.exit // available everywhere for sync purposes
+    global.exit = this.exit; // available everywhere for sync purposes
 
     this.store = props.store;
 
@@ -30,13 +30,16 @@ class AppProvider extends Component {
   }
 
   componentDidMount() {
-    if(
-    typeof window.web3 === 'object') {
-    this.auth();
+    if (typeof window.web3 === "object") {
+      this.auth();
     } else {
-      this.setState({metamaskLoading: false})
+      this.setState({ metamaskLoading: false });
       this.store.dispatch({ type: SET_LOADING, payload: false });
     }
+  }
+
+  componentWillUnmount() {
+    MetaMask.cancel()
   }
 
   auth() {

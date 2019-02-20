@@ -11,7 +11,8 @@ export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     // Setters
     case SET_WALLET_ADDRESS:
-      return { ...state, address: action.payload };
+      return { ...state, address: action.payload.toLowerCase() }; // always lower case
+      // TODO: should be checked if is a issue when using another provider instead of Metamask
 
     case SET_BALANCE:
       return { ...state, balance: action.amount, hash: action.argsHash };

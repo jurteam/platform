@@ -1,14 +1,27 @@
-import React, { Component } from "react";
+import React, { useContext } from "react";
 
-import Breadcrumbs from "../../../components/common/Breadcrumbs";
+// Context
+import { AppContext } from "../../../bootstrap/AppProvider";
 
-export class Disputes extends Component {
-  render() {
-    return (
-      <div className="jur--body">
-        <Breadcrumbs />
-        Disputes Section
-      </div>
-    );
-  }
-}
+// Components
+import PageLayout from "../../../components/common/PageLayout";
+import Main from "../../../components/common/Main";
+import Aside from "../../../components/common/Aside";
+
+export const Disputes = () => {
+  const { labels } = useContext(AppContext);
+
+  const breadcrumbs = [
+    {
+      label: labels.disputes,
+      active: true
+    }
+  ];
+
+  return (
+    <PageLayout breadcrumbs={breadcrumbs}>
+      <Main>Disputes Section</Main>
+      <Aside>Disputes Aside</Aside>
+    </PageLayout>
+  );
+};

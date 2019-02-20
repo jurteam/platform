@@ -1,16 +1,18 @@
 import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
 
+import Page from "../../common/Page";
+import Header from "../../common/Header";
+import Content from "../../common/Content";
 import Button from "../../common/Button";
 
 export class Home extends Component {
   constructor(props) {
-    super(props)
+    super(props);
 
-    this.closeTutorial = this.closeTutorial.bind(this)
+    this.closeTutorial = this.closeTutorial.bind(this);
   }
-  componentDidMount() {
-  }
+  componentDidMount() {}
 
   closeTutorial() {
     const { setTutorialViewed } = this.props;
@@ -21,18 +23,21 @@ export class Home extends Component {
     const { app } = this.props;
     const { tutorial } = app;
     return (
-      <div className="jur">
-          <header className="jur--body">
-            {!tutorial ? (
-                <>
-                  Tutorial
-                  <Button onClick={this.closeTutorial} color="info" size="big">Got it!</Button>
-                </>
-              ) : (
-                <Redirect to="/contracts" />
-              )}
-          </header>
-      </div>
+      <Page>
+        <Header />
+        <Content>
+          {!tutorial ? (
+            <>
+              Tutorial
+              <Button onClick={this.closeTutorial} color="info" size="big">
+                Got it!
+              </Button>
+            </>
+          ) : (
+            <Redirect to="/contracts" />
+          )}
+        </Content>
+      </Page>
     );
   }
 }
