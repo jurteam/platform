@@ -3,14 +3,6 @@
 .jur {
     &-contracts {
         &__table {
-            .jur-table__cell {
-                &:not(th) {
-                    vertical-align: top;
-                    padding: 15px 0 20px;
-                    border-bottom: 1px solid $table-border;
-                }
-            }
-
             .jur-avatar-info {
                 &:first-child {
                     margin-bottom: 10px;
