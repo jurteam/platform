@@ -1,7 +1,7 @@
 @import "../../../assets/scss/variables";
 
 .jur {
-    &-breadcrumb {
+    &-breadcrumbs {
         list-style: none;
         margin: 0;
         padding: 0;
@@ -38,11 +38,8 @@
                 font-family: $font-poppins;
                 text-decoration: none;
                 text-transform: uppercase;
-            }
 
-
-            &--active {
-                a {
+                &.active {
                     color: $breadcrumb-active-color;
                 }
             }
