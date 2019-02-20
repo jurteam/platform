@@ -14,10 +14,8 @@
                 font-family: $font-poppins;
                 font-size: 14px;
                 color: $profile-menu-color;
-            }
-            
-            &--active {
-                a {
+
+                &.active {
                     color: $profile-menu-active-color;
                     font-weight: 600;
                 }
