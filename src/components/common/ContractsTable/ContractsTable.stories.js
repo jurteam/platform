@@ -3,7 +3,7 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { withInfo } from '@storybook/addon-info';
 
-import Contracts from './';
+import ContractsTable from '.';
 
 const headers = [
   {
@@ -174,7 +174,7 @@ const contractsData = [
   },
 ];
 
-storiesOf('Contracts', module)
+storiesOf('ContractsTable', module)
   .addDecorator(withInfo)
   .addParameters({ 
     info: { 
@@ -183,14 +183,14 @@ storiesOf('Contracts', module)
     }
   })
   .add('No contracts', () => (
-    <Contracts
+    <ContractsTable
       headers={ headers }
       data={ noContracts }
       handleArchive={contractId => alert('Contractid archived') }
     />
   ))
   .add('Contract list', () => (
-    <Contracts
+    <ContractsTable
       headers={ headers }
       data={ contractsData }
       handleArchive={contractId => alert('Contractid archived') }
