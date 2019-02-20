@@ -13,6 +13,11 @@ storiesOf('Avatar', module)
       header: false
     }
   })
+  .add('No seed', () => (
+    <div>
+      <Avatar />
+    </div>
+  ))
   .add('Avatar', () => (
     <div>
       <Avatar seed="0x70aec4b9cffa7b" size="xxsmall" />
