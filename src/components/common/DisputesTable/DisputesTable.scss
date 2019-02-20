@@ -1,0 +1,20 @@
+@import "../../../assets/scss/variables";
+
+.jur-disputes {
+    &__table {
+        &__dispute-name {
+            div {
+                max-width: 260px;
+            }
+        }
+
+        &__contract-value,
+        &__earning {
+            font-weight: $poppins-semibold;
+        }
+
+        &__earning {
+            color: $disputes-earning-color;
+        }
+    }
+}
