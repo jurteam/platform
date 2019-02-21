@@ -1,5 +1,6 @@
 import { put, takeEvery, select } from "redux-saga/effects";
 import {
+  DRIZZLE_INITIALIZING,
   DRIZZLE_INITIALIZED,
   SET_WALLET_ADDRESS,
   NETWORK_ID_FAILED,
@@ -32,7 +33,10 @@ export function* resetAppState() {
 }
 
 // Tutorial viewed
-export const setTutorialViewed = () => ({ type: SET_TUTORIAL_VIEWED })
+export const setTutorialViewed = () => {
+  localStorage.setItem("jur_welcome", true);
+  return { type: SET_TUTORIAL_VIEWED };
+};
 
 // app loading disable
 export function* disableLoading() {
@@ -69,13 +73,29 @@ export function* handleNetworkUpdate(data) {
 
 // handle app reset when needed
 export function* handleAppReset() {
-
   const { exit } = global;
   yield exit();
 }
 
+// handles app initialization
+export function* handleAppInit() {
+  log("handleAppInit", "run");
+
+  // tutorial info from local storage
+  let tutorialViewed = yield localStorage.getItem("jur_welcome");
+  log("hadleAppInit - tutorialViewed", tutorialViewed)
+  if (typeof tutorialViewed === "undefined" || !tutorialViewed) {
+    // handle local storage init
+    tutorialViewed = false;
+    localStorage.setItem("jur_welcome", tutorialViewed);
+  } else if (tutorialViewed === "true") {
+    yield put({ type: SET_TUTORIAL_VIEWED });
+  }
+}
+
 // spawn a new actions task
 export default function* appSagas() {
+  yield takeEvery(DRIZZLE_INITIALIZING, handleAppInit);
   yield takeEvery(DRIZZLE_INITIALIZED, disableLoading);
   yield takeEvery(DRIZZLE_INITIALIZED, init);
   yield takeEvery(NETWORK_ID_FAILED, disableLoading);
