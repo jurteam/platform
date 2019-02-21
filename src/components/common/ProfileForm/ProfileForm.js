@@ -1,58 +1,64 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types';
-import Avatar from '../Avatar';
-import Button from '../Button';
-import Switch from '../Switch';
-import { InfoIcon } from '../Icons/InfoIcon';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import Avatar from "../Avatar";
+import Button from "../Button";
+import Switch from "../Switch";
+import { InfoIcon } from "../Icons/InfoIcon";
 
-import './ProfileForm.scss';
+import "./ProfileForm.scss";
+
+// TODO: eval startup call for this informations in the future
+// TODO: use { translations } param due process.env.REACT_APP_LANGUAGE change
+import locations from "../../../assets/locations"; // locations
+console.log("locations", locations);
 
 export class ProfileForm extends Component {
   state = {
-    wallet: '0x70aec4b9cffa7b55c0711b82dd719049d615e21d',
-    fullName: 'Alice',
-    gender: '',
-    email: 'alice@domain.com',
-    location: '',
-    birthday: '',
-    category: '',
+    fullName: "Alice",
+    gender: "",
+    email: "alice@domain.com",
+    location: "",
+    birthday: "",
+    category: "",
     showFullName: false,
     terms: true
-  }
+  };
 
-  onInputChange = (ev) => {
+  onInputChange = ev => {
     const target = ev.target;
-    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const value = target.type === "checkbox" ? target.checked : target.value;
     const name = target.name;
 
     this.setState({
       [name]: value
     });
-  }
+  };
 
   onSubmit = ev => {
     ev.preventDefault();
     this.props.onSubmit();
-  }
+  };
 
   render() {
-
-    const {
-      className
-    } = this.props;
+    const { className, wallet } = this.props;
 
     return (
-      <form className={`jur-profile-form ${className || ''}`} onSubmit={ this.onSubmit }>
+      <form
+        className={`jur-profile-form ${className || ""}`}
+        onSubmit={this.onSubmit}
+      >
         <div className="jur-profile-form__header">
-          <Avatar size="xxlarge" variant="rounded" seed={ this.state.wallet } />
+          <Avatar size="xxlarge" variant="rounded" seed={wallet.address} />
           <div className="form-group">
-            <label htmlFor="wallet">Wallet <sup>*</sup></label>
+            <label htmlFor="wallet">
+              Wallet <sup>*</sup>
+            </label>
             <input
               type="text"
               className="form-control"
               name="wallet"
               id="wallet"
-              defaultValue={ this.state.wallet }
+              defaultValue={wallet.address}
               disabled
               readOnly
             />
@@ -61,57 +67,87 @@ export class ProfileForm extends Component {
         <div className="jur-profile-form__body">
           <div className="jur-profile-form__row">
             <div className="form-group">
-              <label htmlFor="fullname">Full Name <span>(Optional)</span></label>
+              <label htmlFor="fullname">
+                Full Name <span>(Optional)</span>
+              </label>
               <input
                 type="text"
                 className="form-control"
                 name="fullname"
                 id="fullname"
-                value={ this.state.fullName }
-                onChange={ this.onInputChange }
+                value={this.state.fullName}
+                onChange={this.onInputChange}
               />
             </div>
             <div className="form-group">
-              <label htmlFor="gender">Gender <span>(Optional)</span></label>
-              <select name="gender" id="gender" value={ this.state.gender } onChange={ this.onInputChange }>
+              <label htmlFor="gender">
+                Gender <span>(Optional)</span>
+              </label>
+              <select
+                name="gender"
+                id="gender"
+                value={this.state.gender}
+                onChange={this.onInputChange}
+              >
                 <option>Select...</option>
               </select>
             </div>
           </div>
           <div className="jur-profile-form__row">
             <div className="form-group">
-              <label htmlFor="email">Email <span>(Optional)</span></label>
+              <label htmlFor="email">
+                Email <span>(Optional)</span>
+              </label>
               <input
                 type="text"
                 className="form-control"
                 name="email"
                 id="email"
-                value={ this.state.email }
-                onChange={ this.onInputChange }
+                value={this.state.email}
+                onChange={this.onInputChange}
               />
             </div>
             <div className="form-group">
-              <label htmlFor="location">Location <span>(Optional)</span></label>
-              <select name="location" id="location" value={ this.state.location } onChange={ this.onInputChange }>
+              <label htmlFor="location">
+                Location <span>(Optional)</span>
+              </label>
+              <select
+                name="location"
+                id="location"
+                value={this.state.location}
+                onChange={this.onInputChange}
+              >
                 <option>Select...</option>
+                {locations.map((location, index) => (
+                  <option key={`loc-${index}`}>{location.name}</option>
+                ))}
               </select>
             </div>
           </div>
           <div className="jur-profile-form__row">
             <div className="form-group">
-              <label htmlFor="birthday">Date of Birth <span>(Optional)</span></label>
+              <label htmlFor="birthday">
+                Date of Birth <span>(Optional)</span>
+              </label>
               <input
                 type="text"
                 className="form-control"
                 name="birthday"
                 id="birthday"
-                value={ this.state.birthday }
-                onChange={ this.onInputChange }
+                value={this.state.birthday}
+                onChange={this.onInputChange}
               />
             </div>
             <div className="form-group">
-              <label htmlFor="category">Category <span>(Optional)</span></label>
-              <select name="category" id="category" value={ this.state.category } onChange={ this.onInputChange }>
+              <label htmlFor="category">
+                Category <span>(Optional)</span>
+              </label>
+              <select
+                name="category"
+                id="category"
+                value={this.state.category}
+                onChange={this.onInputChange}
+              >
                 <option>Select...</option>
               </select>
             </div>
@@ -128,26 +164,33 @@ export class ProfileForm extends Component {
                 <div className="jur-profile-form__options__show-name__input">
                   <Switch
                     name="showFullName"
-                    value={ this.state.showFullName }
-                    onChange={ this.onInputChange }
-                    checked={ this.state.showFullName }
+                    value={this.state.showFullName}
+                    onChange={this.onInputChange}
+                    checked={this.state.showFullName}
                   />
-                  <span>
-                    {this.state.showFullName ? 'Yes' : 'No'}
-                  </span>
+                  <span>{this.state.showFullName ? "Yes" : "No"}</span>
                 </div>
               </div>
               <div className="jur-profile-form__options__terms">
-                <input type="checkbox" name="terms" value={ this.state.terms } onChange={ this.onInputChange }/>
-                <label>Accept <a href="#">Terms and Condition</a></label>
+                <input
+                  type="checkbox"
+                  name="terms"
+                  value={this.state.terms}
+                  onChange={this.onInputChange}
+                />
+                <label>
+                  Accept <a href="#">Terms and Condition</a>
+                </label>
               </div>
             </div>
             <div className="jur-profile-form__submit">
-              <Button type="submit" variant="contained" size="big">Update</Button>
+              <Button type="submit" variant="contained" size="big">
+                Update
+              </Button>
             </div>
           </div>
         </div>
       </form>
-    )
+    );
   }
 }
