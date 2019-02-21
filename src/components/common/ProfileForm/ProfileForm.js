@@ -54,6 +54,7 @@ export class ProfileForm extends Component {
               id="wallet"
               defaultValue={ wallet.address }
               disabled
+              readOnly
             />
           </div>
         </div>
@@ -91,7 +92,7 @@ export class ProfileForm extends Component {
             </div>
             <div className="form-group">
               <label htmlFor="location">Location <span>(Optional)</span></label>
-              <select name="location" id="location" value={ this.state.location } onChange={ this.handleChange }>
+              <select name="location" id="location" value={ this.state.location } onChange={ this.onInputChange }>
                 <option>Select...</option>
               </select>
             </div>
@@ -110,7 +111,7 @@ export class ProfileForm extends Component {
             </div>
             <div className="form-group">
               <label htmlFor="category">Category <span>(Optional)</span></label>
-              <select name="category" id="category" value={ this.state.category } onChange={ this.handleChange }>
+              <select name="category" id="category" value={ this.state.category } onChange={ this.onInputChange }>
                 <option>Select...</option>
               </select>
             </div>
