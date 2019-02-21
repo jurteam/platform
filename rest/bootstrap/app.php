@@ -24,6 +24,7 @@ $app = new Laravel\Lumen\Application(
 );
 
 $app->configure('app');
+$app->configure('database');
 $app->configure('auth');
 $app->configure('api');
 
