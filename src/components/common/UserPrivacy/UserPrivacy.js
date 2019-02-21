@@ -19,7 +19,7 @@ export const UserPrivacy = ({ data, className, disclaimerAccepted }) => (
           { item.description }
         </UserActionBody>
         <UserActionFooter>
-          <Button size="big" onClick={ () => item.handler() }>
+          <Button size="big" variant={item.buttonVariant || "outlined"} onClick={ () => item.handler() }>
             { item.buttonLabel }
           </Button>
         </UserActionFooter>
