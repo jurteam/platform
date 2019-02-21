@@ -16,12 +16,12 @@ import Amount from '../Amount';
 
 import './ContractsTable.scss';
 
-export const ContractsTable = ({ headers, data, handleArchive }) => {
+export const ContractsTable = ({ headers, data, handleArchive, newContract }) => {
   const emptyMessage = (
     data.length === 0 &&
     <div className="jur-table__empty">
       <p>It seems you did not create any contract!</p>
-      <Button variant="gradient">Create your first contract</Button>
+      <Button variant="gradient" onClick={newContract}>Create your first contract</Button>
     </div>
   );
 
