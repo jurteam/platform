@@ -8,6 +8,7 @@ import UserActionHeader from '../UserActionHeader';
 import UserActionBody from '../UserActionBody';
 import UserActionFooter from '../UserActionFooter';
 import Button from '../Button';
+import MetaMaskWrapper from '../MetaMaskWrapper';
 
 
 storiesOf('UserAction', module)
@@ -32,17 +33,20 @@ storiesOf('UserAction', module)
     </UserAction>
   ))
   .add('error', () => (
-    <UserAction>
-      <UserActionHeader variant="error">
-        MetaMask is Required
-      </UserActionHeader>
-      <UserActionBody>
-        MetaMask is an extension for accessing Ethereum enabled distributed applications, or "Dapps" in your normal browser! The extension injects the Ethereum web3 API into every website's javascript context, so that dapps can read from the blockchain.
-      </UserActionBody>
-      <UserActionFooter>
-        <Button size="big">Get Chrome Extension</Button>
-      </UserActionFooter>
-    </UserAction>
+    <MetaMaskWrapper>
+      <UserAction>
+        <UserActionHeader variant="error">
+          MetaMask is Required
+        </UserActionHeader>
+        <UserActionBody>
+          MetaMask is an extension for accessing Ethereum enabled distributed applications, or "Dapps" in your normal browser! The extension injects the Ethereum web3 API into every website's javascript context, so that dapps can read from the blockchain.
+        </UserActionBody>
+        <UserActionFooter>
+          <Button size="big">Get Chrome Extension</Button>
+          <Button size="big">Get Chrome Extension</Button>
+        </UserActionFooter>
+      </UserAction>
+    </MetaMaskWrapper>
   ))
   .add('Without USerActionHeader', () => (
     <UserAction>

@@ -1,25 +1,48 @@
-@import '../../../assets/scss/variables'; // get global variables
+@import "../../../assets/scss/variables";
 
 .jur {
-
-    &--breadcrumbs {
-
+    &-breadcrumbs {
+        list-style: none;
+        margin: 0;
+        padding: 0;
         display: flex;
-        flex: 1;
-        position: absolute;
-        top: 70px;
-        left: 0;
-        right: 0;
-        font-size: 14px;
         align-items: center;
-        box-sizing: border-box;
-        padding: 0 30px;
 
-        color: $cerulean;
-        font-weight: bold;
-        text-transform: uppercase;
+        &__item {
+            margin-right: 7px;
 
-        min-height: 50px;
-        background: $gallery;
+            &::before {
+                content: "";
+                display: inline-block;
+                width: 2px;
+                height: 9px;
+                background-color: $breadcrumb-muted-color;
+                margin-right: 7px;
+            }
+
+            &:last-child {
+                padding-right: 0;
+            }
+
+            &:first-child {
+                &::before {
+                    display: none;
+                }
+            }
+
+            a {
+                position: relative;
+                color: $breadcrumb-muted-color;
+                font-weight: 600;
+                font-size: 12px;
+                font-family: $font-poppins;
+                text-decoration: none;
+                text-transform: uppercase;
+
+                &.active {
+                    color: $breadcrumb-active-color;
+                }
+            }
+        }
     }
 }

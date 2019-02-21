@@ -2,12 +2,38 @@
 
 .jur {
     &-profile-preview {
-        display: flex;
-        font-family: $font-poppins;
+        a {
+            display: flex;
+            font-family: $font-poppins;
+            text-decoration: none;
+            color: $white;
+
+            &.active {
+                position: relative;
+
+                &::before {
+                    content: "";
+                    position: absolute;
+                    z-index: 1;
+                    top: 2px;
+                    left: 4px;
+                    width: 139px;
+                    height: 94%;
+                    background-color: #233250;
+                    background-color: #233250;
+                    background-image: radial-gradient( rgba(22,255,255,1), transparent);
+                    filter: blur(10px);
+                    background-blend-mode: overlay;
+                }
+            }
+
+        }
 
         &__item {
             padding: 5px 20px;
             border-right: 3px solid $profile-preview-border-color;
+            position: relative;
+            z-index: 2;
             
             &:last-child {
                 border: none;

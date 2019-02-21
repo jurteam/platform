@@ -2,13 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Page from '../Page';
 import Header from '../Header';
-import Breadcrumb from '../Breadcrumb';
+import Breadcrumbs from '../Breadcrumbs';
 import Content from '../Content';
 
 export const PageLayout = ({ showBreadcrumbs, breadcrumbs, children }) => (
   <Page>
     <Header />
-    { showBreadcrumbs && <Breadcrumb crumbList={breadcrumbs} /> }
+    { showBreadcrumbs && <Breadcrumbs crumbList={breadcrumbs} /> }
     <Content>
       { children }
     </Content>
