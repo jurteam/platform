@@ -63,7 +63,7 @@ class MetaMaskProvider {
 
     // end enable call if defined
     if (
-      typeof this.enableCall === "undefined" &&
+      typeof this.enableCall !== "undefined" &&
       typeof this.enableCall.then === "function"
     )
       this.enableCall.reject();

@@ -1,6 +1,7 @@
 import React, { useContext } from "react"; // eslint-disable-next-line no-unused-vars
 import { AppContext } from "../../../bootstrap/AppProvider"; // App context
 
+import MetaMaskWrapper from "../../../components/common/MetaMaskWrapper";
 import UserAction from "../../../components/common/UserAction";
 import UserActionHeader from "../../../components/common/UserActionHeader";
 import UserActionBody from "../../../components/common/UserActionBody";
@@ -30,33 +31,35 @@ const Unlock = () => {
   };
 
   return (
-    <UserAction>
-      <UserActionHeader variant="error">
-        {labels.metamaskRequired}
-      </UserActionHeader>
-      <UserActionBody>{labels.metamaskRequiredDesc}</UserActionBody>
-      <UserActionFooter>
-        {shouldUnlock && (
+    <MetaMaskWrapper>
+      <UserAction>
+        <UserActionHeader variant="error">
+          {labels.metamaskRequired}
+        </UserActionHeader>
+        <UserActionBody>{labels.metamaskRequiredDesc}</UserActionBody>
+        <UserActionFooter>
+          {shouldUnlock && (
+            <Button
+              onClick={() => {
+                unlock();
+              }}
+              size="big"
+              variant="contained"
+            >
+              {labels.unlockMetamask}
+            </Button>
+          )}
           <Button
             onClick={() => {
-              unlock();
+              window.open("https://metamask.io");
             }}
             size="big"
-            variant="contained"
           >
-            {labels.unlockMetamask}
+            {labels.getChromeExtension}
           </Button>
-        )}
-        <Button
-          onClick={() => {
-            window.open("https://metamask.io");
-          }}
-          size="big"
-        >
-          {labels.getChromeExtension}
-        </Button>
-      </UserActionFooter>
-    </UserAction>
+        </UserActionFooter>
+      </UserAction>
+    </MetaMaskWrapper>
   );
 };
 

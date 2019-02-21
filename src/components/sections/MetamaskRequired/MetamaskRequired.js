@@ -4,8 +4,7 @@ import { AppContext } from "../../../bootstrap/AppProvider"; // App Context
 
 import Page from "../../../components/common/Page";
 import Content from "../../../components/common/Content";
-import {FakeHeader} from "../../../components/common/Header";
-import Logo from "../../../components/common/Logo";
+import { FakeHeader } from "../../../components/common/Header";
 import Unlock from "../../../components/auth/Unlock";
 
 const MetamaskRequired = () => {
@@ -13,7 +12,7 @@ const MetamaskRequired = () => {
 
   return !metamaskLoading ? (
     <Page>
-      <FakeHeader/>
+      <FakeHeader />
       <Content>
         <Unlock />
       </Content>
