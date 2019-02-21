@@ -7,6 +7,8 @@ contract JURToken is MintableToken {
 
   mapping (bytes4 => bool) allowedFunctions;
 
+  string public constant symbol = "JUR";
+  uint8 public constant decimals = 2;
 
   /**
    * @dev Constructor
