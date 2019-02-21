@@ -9,7 +9,7 @@ import "./ProfileForm.scss";
 
 // TODO: eval startup call for this informations in the future
 // TODO: use { translations } param due process.env.REACT_APP_LANGUAGE change
-import locations from "../../../assets/locations"; // locations
+import locations from "../../../assets/locations.json"; // locations
 console.log("locations", locations);
 
 export class ProfileForm extends Component {
