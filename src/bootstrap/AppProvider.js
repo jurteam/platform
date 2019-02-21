@@ -5,7 +5,7 @@ import i18n from "../assets/i18n/en.json"; // i18n
 
 // MetaMask
 import MetaMask from "../hooks/MetaMask";
-import { SET_LOADING } from "../reducers/types.js";
+import { SET_LOADING, APP_EXIT } from "../reducers/types.js";
 
 // Application Context
 export const AppContext = React.createContext();
@@ -61,7 +61,9 @@ class AppProvider extends Component {
   }
 
   exit() {
-    this.setState({ onNetwork: false, metamaskLoading: false });
+    const exitState = { onNetwork: false, metamaskLoading: false };
+    this.store.dispatch({ type: APP_EXIT, exitState });
+    this.setState(exitState);
   }
 
   render() {

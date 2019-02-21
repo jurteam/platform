@@ -6,6 +6,7 @@ export const RESET_APP_STATE = "RESET_APP_STATE";
 
 export const SET_TUTORIAL_VIEWED = "SET_TUTORIAL_VIEWED";
 export const APP_SHOULD_RESET = "APP_SHOULD_RESET";
+export const APP_EXIT = "APP_EXIT";
 export const HEARTBEAT = "HEARTBEAT";
 
 // Wallet

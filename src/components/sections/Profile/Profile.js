@@ -23,7 +23,8 @@ const Profile = props => {
   let breadcrumbs = [
     {
       label: labels.profileSettings,
-      active: true
+      active: true,
+      to: "/profile"
     }
   ];
 

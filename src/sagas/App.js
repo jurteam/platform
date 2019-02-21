@@ -74,6 +74,7 @@ export function* handleNetworkUpdate(data) {
 // handle app reset when needed
 export function* handleAppReset() {
   const { exit } = global;
+  localStorage.setItem("jur_welcome", false);
   yield exit();
 }
 
