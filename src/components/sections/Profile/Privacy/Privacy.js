@@ -1,34 +1,48 @@
 import React, { useState, useContext } from "react"; // eslint-disable-line no-unused-vars
-import { drizzleConnect } from "drizzle-react";
 
-import { AppContext } from "../../../../bootstrap/AppProvider";
-import Button from "../../../../components/common/Button";
+import { AppContext } from "../../../../bootstrap/AppProvider"; // context
 
-const Privacy = (props) => {
+import UserPrivacy from "../../../../components/common/UserPrivacy"; // components
 
+const Privacy = props => {
   // Context
   const { labels } = useContext(AppContext);
 
-  return (
-    <div>
-      <div className="jur--block">
-        <strong>{labels.disclamer}</strong>
-        <hr />
-        <p style={{fontSize:"14px",padding:"10px"}}>{labels.disclamerText}</p>
-        <Button size="big" color="info">{labels.decline}</Button>
-      </div>
-      <br />
-      <div className="jur--block">
-        <strong>{labels.dataManagement}</strong>
-        <hr />
-        <p style={{fontSize:"14px",padding:"10px"}}>{labels.deleteAllYourContractsText}</p>
-        <Button size="big" color="info">{labels.deleteAllYourContracts}</Button>
-        <hr />
-        <p style={{fontSize:"14px",padding:"10px"}}>{labels.deleteAllYourDisputesText}</p>
-        <Button size="big" color="info">{labels.deleteAllYourDisputes}</Button>
-      </div>
-    </div>
-  );
-}
+  const { disclaimer } = props.user;
+
+  let privacyData = [];
+
+  if (disclaimer) {
+    privacyData.push({
+      title: labels.disclamer,
+      description: labels.disclamerText,
+      buttonLabel: labels.decline,
+      handler: props.disclaimerDecline
+    });
+  } else {
+    privacyData.push({
+      title: labels.disclamer,
+      description: labels.disclamerText,
+      buttonLabel: labels.accept,
+      buttonVariant: "contained",
+      handler: props.disclaimerAccept
+    });
+  }
+
+  // Data Management
+  privacyData.push({
+    title: labels.dataManagement,
+    description: labels.deleteAllYourContractsText,
+    buttonLabel: labels.deleteAllYourContracts,
+    handler: props.deleteContracts
+  });
+  privacyData.push({
+    description: labels.deleteAllYourDisputesText,
+    buttonLabel: labels.deleteAllYourDisputes,
+    handler: props.deleteDisputes
+  });
+
+  return <UserPrivacy data={privacyData} />;
+};
 
 export default Privacy;

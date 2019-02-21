@@ -4,7 +4,7 @@ import Profile from "./Profile";
 
 // Inner pages
 import ProfileForm from "../../common/ProfileForm";
-import UserPrivacy from "../../common/UserPrivacy";
+import Privacy from "./Privacy";
 import UserNotification from "../../common/UserNotification";
 import Faq from "./Faq";
 import Terms from "./Terms";
@@ -26,30 +26,7 @@ class ProfileProvider extends Component {
         {
           label: i18n.privacy,
           path: "/profile/privacy",
-          component: (
-            <UserPrivacy
-              data={[
-                {
-                  title: "Disclaimer",
-                  description:
-                    "Jur is an interface on the blockchain. Jur can als…",
-                  buttonLabel: "Decline"
-                },
-                {
-                  title: "Data Management",
-                  description:
-                    "Remove all your offchain data related to your cont…",
-                  buttonLabel: "Delete all your contracts"
-                },
-                {
-                  title: "",
-                  description:
-                    "Remove all your offchain data related to your disp…",
-                  buttonLabel: "Delete all your disputes"
-                }
-              ]}
-            />
-          )
+          component: <Privacy />
         },
         {
           label: i18n.notification,

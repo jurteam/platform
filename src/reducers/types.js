@@ -9,10 +9,18 @@ export const APP_SHOULD_RESET = "APP_SHOULD_RESET";
 export const APP_EXIT = "APP_EXIT";
 export const HEARTBEAT = "HEARTBEAT";
 
+// User
+export const DISCLAIMER_OPTIN = "DISCLAIMER_OPTIN";
+export const RESET_USER = "RESET_USER";
+
 // Wallet
 export const SET_BALANCE = "SET_BALANCE";
 export const SET_WALLET_ADDRESS = "SET_WALLET_ADDRESS";
 export const RESET_WALLET = "RESET_WALLET";
+
+// Contracts
+export const DELETE_ALL_CONTRACTS = "DELETE_ALL_CONTRACTS";
+export const DELETE_ALL_DISPUTES = "DELETE_ALL_DISPUTES";
 
 // Drizzle
 export const DRIZZLE_INITIALIZING = "DRIZZLE_INITIALIZING";
