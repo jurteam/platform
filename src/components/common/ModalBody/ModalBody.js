@@ -5,11 +5,11 @@ import './ModalBody.scss';
 
 export const ModalBody = ({ children, className, dangerouslySetInnerHTML }) => (
   <div className={`jur-modal__content ${className || ''}`} dangerouslySetInnerHTML={dangerouslySetInnerHTML}>
-    { children }
+    { children || null }
   </div>
 );
 
 ModalBody.propTypes = {
-  children: PropTypes.node.isRequired,
+  children: PropTypes.node,
   className: PropTypes.string
 };
