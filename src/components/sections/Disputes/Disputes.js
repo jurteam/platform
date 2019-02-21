@@ -14,7 +14,8 @@ export const Disputes = () => {
   const breadcrumbs = [
     {
       label: labels.disputes,
-      active: true
+      active: true,
+      to: "/disputes"
     }
   ];
 
