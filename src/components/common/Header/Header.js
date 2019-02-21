@@ -7,14 +7,21 @@ import Logo from "../Logo";
 import MainNav from "../MainNav";
 import ProfilePreview from "../ProfilePreview";
 
-export const Header = ({ wallet }) => {
+export const Header = ({ wallet, app }) => {
+  const renderLogo = () => {
+    const { tutorial } = app
+    if (typeof app === 'undefined' || tutorial) return <Logo />;
+    return (
+      <Link to="/">
+        <Logo />
+      </Link>
+    );
+  };
   return (
     <header className="jur-header">
       {typeof wallet !== "undefined" ? (
         <>
-          <Link to="/">
-            <Logo />
-          </Link>
+          {renderLogo()}
           <MainNav />
           <ProfilePreview
             name={wallet.user.name || null}

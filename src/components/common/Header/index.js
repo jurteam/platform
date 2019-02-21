@@ -3,7 +3,7 @@ import { drizzleConnect } from "drizzle-react";
 import { Header } from "./Header";
 import Logo from "../Logo";
 
-const mapStateToProps = state => ({ wallet: state.wallet });
+const mapStateToProps = state => ({ wallet: state.wallet, app: state.app });
 
 export default drizzleConnect(Header, mapStateToProps);
 
