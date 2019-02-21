@@ -4,8 +4,6 @@
 import ArbitrationFactory from "../build/contracts/ArbitrationFactory.json";
 import JURToken from "../build/contracts/JURToken.json";
 
-// import Migrations from "../build/contracts/Migrations.json";
-
 const options = {
   web3: {
     block: false,
@@ -15,9 +13,9 @@ const options = {
     }
   },
   contracts: [JURToken, ArbitrationFactory],
-  // events: {
-  //   JURToken: ["balanceOf"],
-  // },
+  events: {
+    ArbitrationFactory: ["ArbitrationCreated"],
+  },
   // polls: {
   //   accounts: 1500
   // }
