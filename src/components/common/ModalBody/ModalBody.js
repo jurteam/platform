@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 
 import './ModalBody.scss';
 
-export const ModalBody = ({ children, className }) => (
-  <div className={`jur-modal__content ${className || ''}`}>
+export const ModalBody = ({ children, className, dangerouslySetInnerHTML }) => (
+  <div className={`jur-modal__content ${className || ''}`} dangerouslySetInnerHTML={dangerouslySetInnerHTML}>
     { children }
   </div>
 );
