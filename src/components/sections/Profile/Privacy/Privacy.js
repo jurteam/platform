@@ -14,15 +14,15 @@ const Privacy = props => {
 
   if (disclaimer) {
     privacyData.push({
-      title: labels.disclamer,
-      description: labels.disclamerText,
+      title: labels.disclaimer,
+      description: labels.disclaimerText,
       buttonLabel: labels.decline,
       handler: props.disclaimerDecline
     });
   } else {
     privacyData.push({
-      title: labels.disclamer,
-      description: labels.disclamerText,
+      title: labels.disclaimer,
+      description: labels.disclaimerText,
       buttonLabel: labels.accept,
       buttonVariant: "contained",
       handler: props.disclaimerAccept
