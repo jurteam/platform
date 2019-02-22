@@ -6,16 +6,15 @@ import { AppContext } from "../../../bootstrap/AppProvider";
 import { ProfileContext } from "./";
 
 // Components
-import PageLayout from "../../../components/common/PageLayout";
-import Main from "../../../components/common/Main";
-import Aside from "../../../components/common/Aside";
-import Side from "../../../components/common/Side";
+import PageLayout from "../../common/PageLayout";
+import Main from "../../common/Main";
+import Aside from "../../common/Aside";
+import Side from "../../common/Side";
 import ProfileForm from "../../common/ProfileForm";
 
 const Profile = props => {
-  const context = useContext(ProfileContext);
+  const { navigation } = useContext(ProfileContext);
   const { labels } = useContext(AppContext);
-  const { navigation } = context;
   const {
     location: { pathname }
   } = props;
