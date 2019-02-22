@@ -10,7 +10,10 @@ export const log = (mixed, obj) => {
 };
 
 export const toCurrencyFormat = (value) => {
-  return parseFloat(value).toFixed(2);
+  var num = Number(value) / 100;
+  var res = num.toString().split('.');
+  if (res.length === 1 || res[1].length < 2) return num.toFixed(2);
+  return num;
 };
 
 export const capitalize = string => (string.charAt(0).toUpperCase() + string.slice(1));
