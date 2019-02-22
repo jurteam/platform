@@ -66,7 +66,7 @@ export function* handleNetworkUpdate(data) {
   // if current address is different from network address
   // should be checked via lowercase due the MetaMask returned value
   // TODO: check if this can be an issue on long term basis
-  if (address && address.toLowerCase() !== selectedAddress) {
+  if (address && address.toLowerCase() !== selectedAddress.toLowerCase()) {
     yield put({ type: SET_WALLET_ADDRESS, payload: selectedAddress });
   }
 }
