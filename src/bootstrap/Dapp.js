@@ -1,5 +1,6 @@
 import { log } from "../utils/helpers"; // helpers
 import MetaMask from "../hooks/MetaMask"; // MetaMask hook
+import API from "./Api"; // Axios
 
 // Actions types
 import {
@@ -50,5 +51,7 @@ export const init = () => {
         );
       }, process.env.REACT_APP_HEARTBEAT_DELAY);
     }
+
+    global.API = API // use a axios api istance globally
   }
 };
