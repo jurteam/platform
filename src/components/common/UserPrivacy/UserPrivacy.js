@@ -8,8 +8,8 @@ import Button from '../Button';
 
 import './UserPrivacy.scss';
 
-export const UserPrivacy = ({ data, className }) => (
-  <div className={`jur-user-privacy ${className || ''}`}>
+export const UserPrivacy = ({ data, className, disclaimerAccepted }) => (
+  <div className={`jur-user-privacy ${className || ''} ${disclaimerAccepted ? '' : 'jur-user-privacy--disclaimer-not-accepted'}`}>
     {data.map((item, i) => (
       <UserAction key={i.toString()}>
         <UserActionHeader>
