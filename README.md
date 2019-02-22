@@ -14,11 +14,11 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 - **Truffle** as EVM framework _([more info here](https://truffleframework.com/docs/truffle/getting-started/installation))_;
 - **Ganache CLI** for ETH test network _([more info here](https://github.com/trufflesuite/ganache-cli))_;
 - **Dot Env** for environment configuration _([more info here](https://github.com/motdotla/dotenv#readme))_;
+- **Composer** as PHP package manager for Lumen/Laravel framework _([more info here](https://getcomposer.org/))_
+- **Docker** for service containers management _([more info here](https://docs.docker.com/))_
 
 ### Direct Dependencies
 - **react-blockies** for users ident icons _(based on ETH Blockies [more info here](https://github.com/ethereum/blockies))_
-- **Composer** as PHP package manager for Lumen/Laravel framework _([more info here](https://getcomposer.org/))_
-- **Docker** for service containers management _([more info here](https://docs.docker.com/))_
 
 
 ### Developmnent
