@@ -4,14 +4,8 @@ import { Route, Switch, Router } from "react-router"; // react-router v4
 
 import PropTypes from "prop-types";
 
-// Connector
-import { drizzleConnect } from "drizzle-react"
-
 // Routes
 import { createRoutes } from "./Routing";
-
-// Commons
-import Disclaimer from "../components/common/Disclaimer";
 
 const Routes = createRoutes();
 
@@ -33,7 +27,7 @@ class Initializer extends PureComponent {
   }
 
   render() {
-    const { history, wallet } = this.props;
+    const { history } = this.props;
     return (
       <Router history={history}>
         <>
@@ -42,19 +36,6 @@ class Initializer extends PureComponent {
               <Route {...params} key={key} />
             ))}
           </Switch>
-
-          <Disclaimer
-            isOpen={false}
-            title="Disclaimer"
-            description="Jur is an interface on the blockchain. Jur can als…"
-            accepted={false}
-            declineLabel="Decline"
-            acceptLabel="Accept"
-            closeLabel="Close"
-            onAccept={() => null}
-            onClose={() => null}
-            onDecline={() => null}
-          />
 
           {this.renderTestReport()}
         </>

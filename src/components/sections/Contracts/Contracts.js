@@ -1,19 +1,24 @@
-import React, { useContext } from "react";
+import React, { useState, useContext } from "react";
 
 // Context
 import { AppContext } from "../../../bootstrap/AppProvider";
 
 // Components
-import PageLayout from "../../../components/common/PageLayout";
-import Main from "../../../components/common/Main";
-import Aside from "../../../components/common/Aside";
-import ContractsTable from "../../../components/common/ContractsTable";
+import PageLayout from "../../common/PageLayout";
+import Disclaimer, { ModalDiscliamer } from "../../common/Disclaimer";
+import ContractsTable from "../../common/ContractsTable";
 
-import { log } from "../../../utils/helpers";
-import { NEW_ARBITRATION } from "../../../reducers/types";
+import { log } from "../../../utils/helpers"; // log helper
 
-export const Contracts = () => {
+import {
+  NEW_ARBITRATION,
+  DISCLAIMER_MUST_BE_ACCEPTED
+} from "../../../reducers/types";
+
+export const Contracts = props => {
   const { labels } = useContext(AppContext);
+
+  const [ showModal, setShowModal ] = useState(false);
 
   const handleArchive = () => {
     log("Contracts", "handleArchive");
@@ -21,7 +26,15 @@ export const Contracts = () => {
 
   const newArbitration = () => {
     log("newArbitration", "run");
-    global.drizzle.store.dispatch({ type: NEW_ARBITRATION });
+    const {
+      user: { disclaimer }
+    } = props;
+    if (disclaimer.optin) {
+      global.drizzle.store.dispatch({ type: NEW_ARBITRATION });
+    } else {
+      setShowModal(true); // show disclaimer modal
+      global.drizzle.store.dispatch({ type: DISCLAIMER_MUST_BE_ACCEPTED });
+    }
   };
 
   const breadcrumbs = [
@@ -44,6 +57,10 @@ export const Contracts = () => {
         handleArchive={handleArchive}
         newContract={newArbitration}
       />
+
+      <ModalDiscliamer isOpen={showModal} onAccept={() => setShowModal(false)} onDecline={() => setShowModal(false)}/>
+
+      <Disclaimer />
     </PageLayout>
   );
 };

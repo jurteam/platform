@@ -12,7 +12,7 @@ const Privacy = props => {
 
   let privacyData = [];
 
-  if (disclaimer) {
+  if (disclaimer.optin) {
     privacyData.push({
       title: labels.disclaimer,
       description: labels.disclaimerText,
@@ -42,7 +42,9 @@ const Privacy = props => {
     handler: props.deleteDisputes
   });
 
-  return <UserPrivacy data={privacyData} />;
+  return (
+    <UserPrivacy data={privacyData} disclaimerAccepted={disclaimer.optin} />
+  );
 };
 
 export default Privacy;
