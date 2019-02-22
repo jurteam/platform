@@ -9,6 +9,8 @@ export const APP_SHOULD_RESET = "APP_SHOULD_RESET";
 export const APP_EXIT = "APP_EXIT";
 export const HEARTBEAT = "HEARTBEAT";
 
+export const API_CATCH = "API_CATCH";
+
 // User
 export const DISCLAIMER_OPTIN = "DISCLAIMER_OPTIN";
 export const DISCLAIMER_VISIBILITY = "DISCLAIMER_VISIBILITY";
