@@ -43,7 +43,7 @@ class UserController extends Controller
     public function update(Request $request)
     {
         $this->validate($request, [
-            'accept_terms' => 'accepted',
+            'accepted_terms' => 'accepted',
         ]);
 
         $user = User::updateByWallet($request);
