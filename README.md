@@ -15,6 +15,9 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 - **Ganache CLI** for ETH test network _([more info here](https://github.com/trufflesuite/ganache-cli))_;
 - **Dot Env** for environment configuration _([more info here](https://github.com/motdotla/dotenv#readme))_;
 - **react-blockies** for users ident icons _(based on ETH Blockies [more info here](https://github.com/ethereum/blockies))_
+- **Composer** as PHP package manager for Lumen/Laravel framework _([more info here](https://getcomposer.org/))_
+- **Docker** for service containers management _([more info here](https://docs.docker.com/))_
+
 
 ### Developmnent
 - **prettier** for coding style format _([more info here](https://prettier.io))_;
@@ -48,6 +51,33 @@ _**You can find the environment configuration template [here](.env.template).**_
 ## Running Test Network
 To run a test ethereum network, in a separate terminal execute:
 `ganache-cli --gasLimit 7000000`
+
+### Rest API
+REST API are used to keep all user, contracts and disputes data off-chain.
+This servise is exposed via Lumen and is accessible via Docker.
+
+> Please have a look at the Postman config available under `rest/postman` for furter informations about endpoints
+
+#### First run
+On first run you should download and setup Laravel packages and database. Just follow this commands.
+```
+$ cd path/to/project/root
+$ cd rest
+$ composer install
+$ cd ..
+$ docker-compose build
+$ docker-compose up -d
+$ cd rest
+$ php artisan key:generate
+$ php artisan migrate
+```
+If all goes well now API are accessible on http://localhost/api/v[api-version].
+
+#### `$ docker-compose up -d`
+This command will **launch** REST API service on your host.
+
+#### `$ docker-compose stop`
+This command will **stop** REST API service on your host.
 
 
 ## Available Scripts
