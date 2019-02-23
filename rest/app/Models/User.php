@@ -28,7 +28,8 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'location',
         'category',
         'show_fullname',
-        'accept_terms'
+        'accepted_terms',
+        'accepted_disclaimer'
     ];
 
     /**
