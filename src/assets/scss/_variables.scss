@@ -101,6 +101,7 @@ $dropdown-list-border-color: $black-haze;
 $font-poppins: 'Poppins', Arial, sans-serif;
 $font-opensans: 'Open Sans', Arial, sans-serif;
 $font-lato: 'Lato', Arial, sans-serif;
+$font-roboto: 'Roboto', Arial, sans-serif;
 $poppins-regular: 400;
 $poppins-medium: 500;
 $poppins-semibold: 600;
@@ -167,3 +168,6 @@ $counterparties-info-color: $prussian-blue;
 $input-range-bg-color: $cloud-burst;
 $input-range-selected-color: $btn-gradient-color;
 $input-range-slider-thumb: $robin-blue;
+
+// tooltip
+$tooltip-bg: $cloud-burst;
