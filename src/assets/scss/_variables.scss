@@ -79,6 +79,7 @@ $tag-text-color-38: black;
 $tag-bg-color-38: black;
 $tag-text-color-39: $tundora;
 $tag-bg-color-39: $gallery;
+$gray: #909090;
 
 // Header
 $header-bg-color: $cloud-burst;
@@ -176,3 +177,8 @@ $tooltip-bg: $cloud-burst;
 $file-name-color: $cloud-burst;
 $file-border-color: $black-haze;
 $file-icon-color: $gull-gray;
+
+// UploadForm
+$upload-form-label-bg-color: $black-haze;
+$upload-form-label-text-color: $gray;
+$upload-form-add-button-color: $dodger-blue;

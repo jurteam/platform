@@ -1,0 +1,55 @@
+@import "../../../assets/scss/variables";
+
+.jur-upload-form {
+
+    .form-group {
+        display: flex;
+    }
+
+    &__label {
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        width: 100px;
+        height: 36px;
+        background-color: $upload-form-label-bg-color;
+        color: $upload-form-label-text-color;
+        border-radius: 2px 0 0 2px;
+        font-size: 12px;
+        cursor: pointer;
+    }
+
+    &__input-file {
+        display: none;
+    }
+
+    &__input-name {
+        margin: 0;
+        width: 315px;
+        padding: 0 10px;
+        border-radius: 0 2px 2px 0;
+        height: 34px;
+        color: $upload-form-label-text-color;
+        border: 1px solid $upload-form-label-bg-color;
+    }
+
+    button {
+        display: inline-flex;
+        align-items: center;
+        border: none;
+        outline: none;
+        background-color: transparent;
+        color: $upload-form-add-button-color;
+        font-size: 12px;
+        font-family: $font-poppins;
+        font-weight: $poppins-semibold;
+        margin-top: 8px;
+        cursor: pointer;
+
+        svg {
+            margin-right: 10px;
+            width: 18px;
+            fill: $upload-form-add-button-color;
+        }
+    }
+}
