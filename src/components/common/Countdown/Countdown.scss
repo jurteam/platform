@@ -33,5 +33,19 @@
             }
             
         }
+
+        &--playing {
+            .value {
+                color: $countdown-playing-color;
+            }
+
+        }
+
+        &--expiring {
+            .label,
+            .value {
+                color: $countdown-expiring-color;
+            }
+        }
     }
 }
