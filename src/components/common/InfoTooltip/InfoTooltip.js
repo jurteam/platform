@@ -10,7 +10,7 @@ export const InfoTooltip = ({ text, position }) => {
 
   return (
     <div
-      className={`jur-info-tooltip ${position ? `jur-info-tooltip--${position}` : ''}`}
+      className={`jur-info-tooltip ${position ? `jur-info-tooltip--${position}` : 'jur-info-tooltip--left'}`}
       {...(!!text && dataAttrs)}
     >
       <InfoIcon />
