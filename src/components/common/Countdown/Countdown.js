@@ -12,6 +12,7 @@ export class Countdown extends Component {
       minutes: 0,
       seconds: 0,
       expiring: false,
+      expired: false,
       milliseconds: 0,
       playing: false,
       duration: this.calculateDuration(),
@@ -34,7 +35,7 @@ export class Countdown extends Component {
         this.start(this.props.startDate, this.state.duration)
         break;
       case 8: // expired rosso
-        this.setState({ expiring: true })
+        this.setState({ expired: true })
         break;
       case 9: // contract closed
       case 21: // open friendly resolution
@@ -48,7 +49,7 @@ export class Countdown extends Component {
         this.start(this.props.startDate, this.state.duration);
         break;
       case 38: // expired dispute
-        this.setState({ expiring: true })
+        this.setState({ expired: true })
         break;
       case 39: // dispute closed
         break;
@@ -148,8 +149,14 @@ export class Countdown extends Component {
   render() {
     const { days, hours, minutes, seconds } = this.state;
     const { showSeconds, daysLabel, hoursLabel, minutesLabel, secondsLabel } = this.props;
+    
+    const classes = ['jur-countdown'];
+    if (this.state.playing) classes.push('jur-countdown--playing');
+    if (this.state.expiring) classes.push('jur-countdown--expiring');
+    if (this.state.expired) classes.push('jur-countdown--expired');
+
     return (
-      <div className={`jur-countdown ${!this.state.expiring ? this.state.playing ? 'jur-countdown--playing' : '' : 'jur-countdown--expiring'}`}>
+      <div className={classes.join(' ')}>
         <div className="jur-countdown__item jur-countdown__days">
           <span className="value">{ this.addLeadingZeros(days) }</span>
           <span className="label">{ daysLabel }</span>

@@ -42,6 +42,12 @@
         }
 
         &--expiring {
+            .value {
+                color: $countdown-expiring-color;
+            }
+        }
+
+        &--expired {
             .label,
             .value {
                 color: $countdown-expiring-color;
