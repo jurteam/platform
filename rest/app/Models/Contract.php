@@ -56,11 +56,7 @@ class Contract extends Model
             'contract_status_id' => $params->status
         ]);
 
-        $this->recordActivities(
-            'status_changed',
-            $this->status->label,
-            $user
-        );
+        $this->recordActivities($params, $user);
     }
 
     public function statusActivity()

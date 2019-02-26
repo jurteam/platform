@@ -11,14 +11,12 @@ trait ActivitiesTrait
         return $this->hasMany(Activity::class);
     }
 
-    public function recordActivities($type, $value, $user)
+    public function recordActivities($params, $user)
     {
-        $this->activities()->save(
-            new Activity([
-                'type' => $type,
-                'value' => $value
-                'user_id' => $user->id
-            ])
-        );
+        $attributes = array_merge($params, [
+            'user_id' => $user->id
+        ]);
+
+        $this->activities()->save(new Activity($attributes));
     }
 }

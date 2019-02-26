@@ -12,6 +12,8 @@ class ContractStatusSeeder extends Seeder
      */
     public function run()
     {
+        ContractStatus::truncate();
+
         $statuses = config('jur.statuses');
         foreach ($statuses as $status) {
             ContractStatus::create($status);

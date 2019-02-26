@@ -10,10 +10,24 @@ class ContractActivityTransformer extends TransformerAbstract
     public function transform(Activity $activity)
     {
         return [
-            'id' => $activity->id,
-            'type' => $activity->type,
-            'value' => $activity->value,
-            'recorded_at' => $activity->updated_at
+            'readed' => $activity->readed,
+            'date' => $activity->created_at,
+            'contract' => '',
+            'part_a' => $activity->contract->part_a_wallet,
+            'part_b' => $activity->contract->part_b_wallet,
+            'from' => (object)[
+                'wallet' => $activity->user->wallet,
+                'name' => $activity->user->name,
+                'system' => $activity->user->show_fullname
+            ],
+            'abstract' => '',
+            'to' => $activity->to_wallet,
+            'status' => $activity->status,
+            'message' => $activity->message,
+            'proposal' => (object)[
+                'part_a': $activity->proposal_part_a,
+                'part_b': $activity->proposal_part_b
+            ]
         ];
     }
 }
