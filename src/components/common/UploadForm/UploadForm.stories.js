@@ -15,6 +15,6 @@ storiesOf('UploadForm', module)
   })
   .add('Default', () => (
     <UploadForm
-      endpoint="https://postman-echo.com/post"
+    onAddFile={files => console.log(files)}
     />
   ))

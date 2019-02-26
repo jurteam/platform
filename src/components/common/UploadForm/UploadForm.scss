@@ -4,6 +4,10 @@
 
     .form-group {
         display: flex;
+
+        + .form-group {
+            margin-top: 10px;
+        }
     }
 
     &__label {

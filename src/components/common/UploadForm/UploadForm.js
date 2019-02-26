@@ -1,65 +1,61 @@
-import React, {useState} from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {PlusCircleIcon} from '../Icons/PlusCircleIcon';
 
 import './UploadForm.scss';
 
-export const UploadForm = ({ endpoint }) => {
-  const [file, setFile] = useState(null);
-  const [fileName, setFileName] = useState('');
-  const [addFileLabel, setAddFileLabel] = useState('Add file');
+export class UploadForm extends Component {
+  state = {
+    filesLength: 1,
+    files: []
+  }
 
-  const upload = ev => {
+  addFile = ev => {
     ev.preventDefault();
-    const formData = new FormData();
-    formData.append('file', file);
-    setAddFileLabel('Loading...');
+    this.setState(state => ({
+      filesLength: state.filesLength + 1
+    }))
+  }
 
-    setTimeout(() => {
-      setAddFileLabel('Add file');
-    }, 2000);
-    // fetch(endpoint, {
-    //   method: 'POST',
-    //   cors: true,
-    //   headers: {
-    //     'content-type': 'multipart/form-data',
-    //   },
-    //   body: formData,
-    // })
-    // .then(response => console.log(response));
-  };
-
-  const getSelectedFile = ev => {
-    const files = ev.target.files;
-    if (files.length) {
-      const file = files[0];
-      setFile(file);
-      setFileName(file.name);
+  getSelectedFile = ev => {
+    const inputFileList = ev.target.files;
+    if (inputFileList.length) {
+      const selectedFile = inputFileList[0];
+      ev.target.nextSibling.value = selectedFile.name;
+      this.setState(state => {
+        const files = [...state.files, selectedFile];
+        this.props.onAddFile(files);
+        return { files };
+      });
     }
   }
 
-  return (
-    <form className="jur-upload-form" onSubmit={upload}>
-      <div className="form-group">
-        <label className="jur-upload-form__label" htmlFor="input-file">Choose file</label>
-        <input
-          className="jur-upload-form__input-file"
-          type="file"
-          name="file"
-          id="input-file"
-          onChange={getSelectedFile}
-        />
-        <input
-          className="jur-upload-form__input-name"
-          type="text"
-          defaultValue={fileName}
-          readOnly
-        />
+  render() {
+    return (
+      <div className="jur-upload-form">
+        {[...Array(this.state.filesLength)].map((item,idx) => (
+          <div className="form-group" key={idx.toString()}>
+            <label className="jur-upload-form__label" htmlFor={`input-file-${idx}`}>Choose file</label>
+            <input
+              className="jur-upload-form__input-file"
+              type="file"
+              name={`file-${idx}`}
+              id={`input-file-${idx}`}
+              onChange={this.getSelectedFile}
+            />
+            <input
+              className="jur-upload-form__input-name"
+              type="text"
+              defaultValue=""
+              readOnly
+            />
+          </div>  
+        ))}
+        <button onClick={this.addFile}>
+          <PlusCircleIcon />
+          Add File
+        </button>
       </div>
-      <button>
-        <PlusCircleIcon />
-        {addFileLabel}
-      </button>
-    </form>
-  );
+    );
+  }
 }
