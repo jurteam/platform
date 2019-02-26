@@ -27,6 +27,7 @@ $app->configure('app');
 $app->configure('database');
 $app->configure('auth');
 $app->configure('api');
+$app->configure('jur');
 
 $app->withFacades();
 
