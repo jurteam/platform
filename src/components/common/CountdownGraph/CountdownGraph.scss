@@ -1,0 +1,11 @@
+.jur-countdown-graph {
+    &__wrapper {
+        display: flex;
+        align-items: center;
+
+        svg {
+            width: 50px;
+            margin-right: 20px;
+        }
+    }
+}

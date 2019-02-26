@@ -62,13 +62,6 @@ export class Countdown extends Component {
   }
   
   calculateDuration() {
-    if (this.props.statusId === 5) {  
-      const hoursToMillisecodsn = this.props.days * 24 * 60 * 60 * 1000;
-      const hoursToMilliseconds = this.props.hours * 60 * 60 * 1000;
-      const minutesToMilliseconds = this.props.minutes * 60 * 1000;
-      return hoursToMillisecodsn + hoursToMilliseconds + minutesToMilliseconds;
-    }
-
     if (this.props.statusId === 35) {  
       return 24 * 60 * 60 * 1000;
     }
@@ -76,6 +69,11 @@ export class Countdown extends Component {
     if (this.props.statusId === 36) {  
       return 30 * 60 * 1000;
     }
+
+    const hoursToMillisecodsn = this.props.days * 24 * 60 * 60 * 1000;
+    const hoursToMilliseconds = this.props.hours * 60 * 60 * 1000;
+    const minutesToMilliseconds = this.props.minutes * 60 * 1000;
+    return hoursToMillisecodsn + hoursToMilliseconds + minutesToMilliseconds;
   }
 
   getExpiringStatus(milliseconds) {
