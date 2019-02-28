@@ -45,7 +45,7 @@ class ContractsController extends Controller
 
         $owner->contracts()->save($contract);
 
-        return response()->json(compact('contract'), 201);
+        return $this->response->item($contract, new ContractTransformer);
     }
 
     /**
@@ -58,7 +58,7 @@ class ContractsController extends Controller
     {
         $contract = Contract::findOrFail($id);
 
-        return $this->item($contract, new ContractTransformer);
+        return $this->response->item($contract, new ContractTransformer);
     }
 
     /**
@@ -74,7 +74,7 @@ class ContractsController extends Controller
 
         $contract->update($request->all());
 
-        return $this->item($contract, new ContractTransformer);
+        return $this->response->item($contract, new ContractTransformer);
     }
 
     /**
@@ -104,6 +104,6 @@ class ContractsController extends Controller
 
         $contract->updateStatus($request, $user);
 
-        return $this->item($contract, new ContractTransformer);
+        return $this->response->item($contract, new ContractTransformer);
     }
 }

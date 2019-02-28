@@ -9,15 +9,6 @@ use App\Transformers\ContractActivityTransformer;
 class ContractTransformer extends TransformerAbstract
 {
     /**
-     * List of resources possible to include
-     *
-     * @var array
-     */
-    protected $availableIncludes = [
-        'votes', 'activities'
-    ];
-
-    /**
      * Turn this item object into a generic array
      *
      * @param  \App\Models\Contract $contract
@@ -52,25 +43,5 @@ class ContractTransformer extends TransformerAbstract
             'who_pays' => $contract->who_pays,
             'status_activity' => $contract->statusActivity()
         ];
-    }
-
-    /**
-     * Include votes.
-     *
-     * @param  \App\Models\Contract $contract
-     * @return \League\Fractal\Resource\Paginator
-     */
-    public function includeVotes(Contract $contract)
-    {
-        $votes = $contract->votes;
-
-        return $this->paginator($votes, new ContractVoteTransformer);
-    }
-
-    public function includeActivities(Contract $contract)
-    {
-        $activities = $contract->activities;
-
-        return $this->paginator($activities, new ContractActivityTransformer);
     }
 }

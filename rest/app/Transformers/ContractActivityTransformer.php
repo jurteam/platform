@@ -11,8 +11,8 @@ class ContractActivityTransformer extends TransformerAbstract
     {
         return [
             'readed' => $activity->readed,
-            'date' => $activity->created_at,
-            'contract' => '',
+            'date' => $activity->created_at->valueOf(),
+            'contract' => $activity->contract_id,
             'part_a' => $activity->contract->part_a_wallet,
             'part_b' => $activity->contract->part_b_wallet,
             'from' => (object)[
@@ -20,7 +20,7 @@ class ContractActivityTransformer extends TransformerAbstract
                 'name' => $activity->user->name,
                 'system' => $activity->user->show_fullname
             ],
-            'abstract' => '',
+            'abstract' => $activity->abstract,
             'to' => $activity->to_wallet,
             'status' => $activity->status,
             'message' => $activity->message,

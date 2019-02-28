@@ -12,6 +12,17 @@ class ContractVotesController extends Controller
     use Helpers;
 
     /**
+     * @param  \Illuminate\Http\Request $request
+     * @return \League\Fractal\
+     */
+    public function index(Request $request)
+    {
+        $votes = ContractVote::filters($request)->paginate(10);
+
+        return $this->response->paginator($votes, new ContractVoteTransformer);
+    }
+
+    /**
      * Store a vote.
      *
      * @param  \Illuminate\Http\Request $request
@@ -21,7 +32,7 @@ class ContractVotesController extends Controller
     {
         $vote = ContractVote::create($request->all());
 
-        return $this->item($vote, new ContractVoteTransformer);
+        return $this->response->item($vote, new ContractVoteTransformer);
     }
 
     /**

@@ -19,8 +19,14 @@ $api->version('v1', function($api) {
             $api->delete('{id}', 'App\Http\Controllers\ContractsController@destroy');
 
             $api->group(['prefix' => 'votes'], function($api) {
+                $api->get('{id}', 'App\Http\Controllers\ContractVotesController@index');
                 $api->post('/', 'App\Http\Controllers\ContractVotesController@store');
                 $api->delete('{id}', 'App\Http\Controllers\ContractVotesController@destroy');
+            });
+
+            $api->group(['prefix' => 'activities'], function($api) {
+                $api->get('{id}', 'App\Http\Controllers\ContractActivitiesController@index');
+                $api->post('/', 'App\Http\Controllers\ContractActivitiesController@store');
             });
 
             $api->group(['prefix' => 'status'], function($api) {
