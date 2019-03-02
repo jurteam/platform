@@ -28,6 +28,8 @@ $app->configure('database');
 $app->configure('auth');
 $app->configure('api');
 $app->configure('jur');
+$app->configure('medialibrary');
+$app->configure('filesystems');
 
 $app->withFacades();
 
@@ -52,6 +54,13 @@ $app->singleton(
 $app->singleton(
     Illuminate\Contracts\Console\Kernel::class,
     App\Console\Kernel::class
+);
+
+$app->singleton(
+    Illuminate\Contracts\Filesystem\Factory::class,
+    function ($app) {
+        return new Illuminate\Filesystem\FilesystemManager($app);
+    }
 );
 
 /*
@@ -90,6 +99,7 @@ $app->register(Dingo\Api\Provider\LumenServiceProvider::class);
 $app->register(Barryvdh\Cors\ServiceProvider::class);
 $app->register(App\Providers\AppServiceProvider::class);
 $app->register(Tymon\JWTAuth\Providers\LumenServiceProvider::class);
+$app->register(Spatie\MediaLibrary\MediaLibraryServiceProvider::class);
 // $app->register(App\Providers\AuthServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
 

@@ -4,10 +4,12 @@ namespace App\Models;
 
 use App\Models\Traits\ActivitiesTrait;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\MediaLibrary\HasMedia\HasMedia;
+use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 
-class Contract extends Model
+class Contract extends Model implements HasMedia
 {
-    use ActivitiesTrait;
+    use HasMediaTrait, ActivitiesTrait;
 
     protected $fillable = [
         'name',
