@@ -104,7 +104,7 @@ export class Countdown extends Component {
       } else {
         this.setState(state => {
           if (state.playing) {
-            this.props.onExpire();
+            this.props.onExpire && this.props.onExpire();
             return { playing: false };
           }
         });
@@ -123,7 +123,7 @@ export class Countdown extends Component {
   
   calculateCountDown = (startDate, duration) => {
     const diff = this.getDiff(startDate, duration);
-    if (diff <= 0) return false;
+    if (diff < 0) return false;
     return this.getTimeLeft(diff);
   }
   

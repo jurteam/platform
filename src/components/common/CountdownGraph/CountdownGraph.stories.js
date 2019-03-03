@@ -132,6 +132,7 @@ storiesOf('CountdownGraph', module)
       statusId={36}
       expireAlertFrom={1000*60*60*24}
       onProgress={percentage => console.log(percentage)}
+      onExpire={() => alert('finished')}
     />
   ))
   .add('Expired Dispute', () => (
