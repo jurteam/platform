@@ -1,15 +1,52 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import Countdown from '../Countdown';
+import BlockTitle from '../BlockTitle';
+import {InfoIcon} from '../Icons/InfoIcon';
 
 import './CountdownGraph.scss';
 
-export const CountdownGraph = ({ onProgress, message, ...rest }) => {
+export const CountdownGraph = ({ onProgress, message, showMessage, ...rest }) => {
   const [percentage, setPercentage] = useState(0);
   const progressHandler = (percentage) => {
     setPercentage(percentage);
     onProgress(percentage);
   };
+  const getMessage = () => {
+    switch (rest.statusId) {
+      case -1: // rejected
+        break;
+      case 0: // draft
+      case 1: // waiting for counterparty
+        return (
+          <span className="before-start">
+            <InfoIcon /> The starting date is when the counterparty accepts.
+          </span>
+        )
+      case 5: // onGoing
+        break;
+      case 8: // expired rosso
+        break;
+      case 9: // contract closed
+      case 21: // open friendly resolution
+      case 29: // closed friendly resolution
+      case 31: // Open dispute
+        break;
+      case 35: // onGoing dispute 24h
+        break;
+      case 36: // extended Dispute 30min
+        break;
+      case 38: // expired dispute
+        return <BlockTitle
+          style={{textTransform: 'uppercase'}}
+          title="the dispute is expired"
+          hideIcon
+        />
+      case 39: // dispute closed
+        break;
+      default:
+    }
+  }
   return (
     <div className="jur-countdown-graph">
       <div className="jur-countdown-graph__wrapper">
@@ -35,6 +72,9 @@ export const CountdownGraph = ({ onProgress, message, ...rest }) => {
         </svg>
         <Countdown {...rest} onProgress={progressHandler} />
       </div>
+      { showMessage &&
+        <div className="jur-countdown-graph__message">{getMessage()}</div>
+      }
     </div>
   );
 };
