@@ -6,6 +6,7 @@ $dark   : #233250;
 $gray   : #a6b2c4;
 $blackSemiTransparent : rgba(0,0,0,.5);
 
+
 $dodger-blue: #33ADFF;
 $mercury: #E5E5E5;
 $rose: #ED0782;
@@ -35,6 +36,7 @@ $cadet-blue: #AAB2C0;
 $fiord: #3F536E;
 $cloud-burst: #253454;
 $gray-1: #909090;
+$white-lilac: #EBEDF8;
 
 
 // Forms
@@ -143,6 +145,7 @@ $countdown-value-muted-color: $gull-gray;
 $countdown-label-color: $prussian-blue;
 $countdown-playing-color: $turquoise;
 $countdown-expiring-color: $crimson;
+$countdown-before-start-message-color: $gull-gray;
 
 
 // AvatarInfo
@@ -196,3 +199,6 @@ $contract-name-color: $prussian-blue;
 
 // Contract Amount
 $contract-text-color: $gull-gray;
+
+// Contract Summary
+$contract-summary-border-color: $white-lilac;

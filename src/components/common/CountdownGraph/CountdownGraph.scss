@@ -1,3 +1,5 @@
+@import "../../../assets/scss/variables";
+
 .jur-countdown-graph {
     &__wrapper {
         display: flex;
@@ -6,6 +8,19 @@
         svg {
             width: 50px;
             margin-right: 20px;
+        }
+    }
+
+    &__message {
+        margin-top: 10px;
+        
+        .before-start {
+            color: $countdown-before-start-message-color;
+            font-family: $font-poppins;
+            font-size: 10px;
+        }
+        svg {
+            width: 10px;
         }
     }
 }
