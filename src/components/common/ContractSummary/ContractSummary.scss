@@ -1,0 +1,45 @@
+@import "../../../assets/scss/variables";
+
+.jur-contract-summary {
+    .jur-contract-name {}
+
+    &__columns {
+        display: flex;
+        padding-left: 15px;
+        border-top: 1px solid $contract-summary-border-color;
+        border-bottom: 1px solid $contract-summary-border-color;
+
+        .jur-contract-penalty-fee {
+            margin-top: 5px;
+        }
+
+        .jur-contract-case-dispute {
+            margin-top: 25px;
+        }
+
+        .jur-countdown-graph {
+            margin-top: 12px;
+        }
+    }
+    
+    &__column {
+        flex: 1;
+        padding: 10px 20px;
+        border-right: 1px solid $contract-summary-border-color;
+
+        &:nth-child(1) {
+            padding-left: 0;
+        }
+        
+        &:nth-child(2) {
+            flex: 1.5;
+        }
+
+        &:nth-child(3) {}
+
+        &:nth-child(4) {
+            border: none;
+            flex: 1.5;
+        }
+    }
+}
