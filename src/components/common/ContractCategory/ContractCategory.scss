@@ -1,0 +1,12 @@
+@import "../../../assets/scss/variables";
+
+.jur-contract-category {
+    &__value {
+        margin-top: 10px;
+        line-height: 1;
+        font-size: 12px;
+        font-family: $font-poppins;
+        color: $contract-text-color;
+        text-transform: uppercase;
+    }
+}

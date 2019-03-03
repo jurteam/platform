@@ -2,16 +2,16 @@
 
 .jur-contract-counterparties {
     &__value {
-        margin-top: 10px;
-        line-break: 1;
+        margin-top: 25px;
+        line-height: 1;
     }
 
     .jur-avatar-info {
         font-size: 13px;
-        color: $contract-amount-text-color;
+        color: $contract-text-color;
 
         &:first-child {
-            margin-bottom: 20px;
+            margin-bottom: 33px;
         }
     }
 }
