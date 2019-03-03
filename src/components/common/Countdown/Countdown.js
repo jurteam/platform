@@ -131,7 +131,7 @@ export class Countdown extends Component {
     seconds: Math.floor((value / 1000) % 60),
     minutes: Math.floor((value / 1000 / 60) % 60),
     hours: Math.floor((value / (1000 * 60 * 60)) % 24),
-    days: Math.floor(value / (1000*60*60*24)),
+    days: Math.floor(value / (1000 * 60 * 60 * 24)),
     milliseconds: value
   })
   

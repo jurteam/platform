@@ -12,6 +12,7 @@ export const ContractCounterparties = ({counterparties, CounterpartiesDescriptio
       {
         counterparties.map(counterparty => (
           <AvatarInfo
+            key={counterparty.wallet.address.toString()}
             userName={counterparty.name}
             userWallet={counterparty.wallet.address}
             shouldRenderName={counterparty.shouldRenderName}

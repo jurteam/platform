@@ -5,7 +5,7 @@ import Tag from '../Tag';
 import './ContractName.scss';
 
 export const ContractName = ({ contractName, statusId, statusIdLabel, onContractNameChange }) => (
-  <div className="jur-contact-name">
+  <div className="jur-contract-name">
     <input
       type="text"
       value={contractName || ''}
