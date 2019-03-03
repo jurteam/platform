@@ -5,15 +5,26 @@ import {FormSelect} from './FormSelect';
 import {FormLabel} from './FormLabel';
 import {FormGroup} from './FormGroup';
 import {FormWrapper} from './FormWrapper';
+import {FormContainer} from './FormContainer';
+import {FormDatePicker} from './FormDatePicker';
+
+import './Forms.scss';
 
 export class Form extends Component {
   static Wrapper = FormWrapper;
+  static Container = FormContainer;
   static Group = FormGroup;
   static Label = FormLabel;
   static Input = FormInput;
   static Select = FormSelect;
+  static DatePicker = FormDatePicker;
 
   render() {
-    return (<form {...this.props}>{this.props.children}</form>);
+    const {
+      className,
+      children,
+      ...rest
+    } = this.props;
+    return (<form className={`jur-form ${className || ''}`} {...rest}>{children}</form>);
   }
 }

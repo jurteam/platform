@@ -2,16 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Select from 'react-select';
 
-export const FormSelect = ({name, id, options, ...rest}) => {
+export const FormSelect = ({name, id, options, onChange, ...rest}) => {
   const customStyles = {
     control: styles => ({
       ...styles,
       backgroundColor: 'white',
-      height: 40,
       border: '1px solid #EAEBEC',
       borderRadius: 2,
-      paddingTop: 0,
-      paddingBottom: 0,
+      maxHeight: 36,
+      height: 36,
       '&:hover': {
         border: '1px solid #EAEBEC',
       }
@@ -32,16 +31,22 @@ export const FormSelect = ({name, id, options, ...rest}) => {
       ...styles,
       fontFamily: '"Poppins", Arial, sans-serif',
       color: '#002257',
-      fontSize: 13
+      fontSize: 13,
     }),
     valueContainer: styles => ({
       ...styles,
-      height: 40,
-      paddingTop: 0,
-      paddingBottom: 0,
       fontFamily: '"Poppins", Arial, sans-serif',
       color: '#002257',
-      fontSize: 13
+      fontSize: 13,
+      maxHeight: 36,
+      height: 36,
+    }),
+    singleValue: styles => ({
+      ...styles,
+      color: '#002257',
+      position: 'relative',
+      top: 0,
+      transform: 'translateY(0)'
     })
   };
 
@@ -53,6 +58,7 @@ export const FormSelect = ({name, id, options, ...rest}) => {
       isSearchable={true}
       isClearable={true}
       options={options}
+      onChange={selectedOption => onChange(selectedOption)}
       {...rest}
     />
   );

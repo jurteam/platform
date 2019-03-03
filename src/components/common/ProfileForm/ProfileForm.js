@@ -4,12 +4,17 @@ import Avatar from "../Avatar";
 import Button from "../Button";
 import Switch from "../Switch";
 import { InfoIcon } from "../Icons/InfoIcon";
+import Form from '../Form';
+import InfoTootip from '../InfoTooltip'
 
 import "./ProfileForm.scss";
 
 // TODO: eval startup call for this informations in the future
 // TODO: use { translations } param due process.env.REACT_APP_LANGUAGE change
 import locations from "../../../assets/locations.json"; // locations
+import genders from "../../../assets/genders.json"; // genders
+import categories from "../../../assets/categories.json"; // categories
+import { FormContainer } from "../Form/FormContainer";
 console.log("locations", locations);
 
 export class ProfileForm extends Component {
@@ -17,7 +22,7 @@ export class ProfileForm extends Component {
     fullName: "Alice",
     gender: "",
     email: "alice@domain.com",
-    location: "",
+    location: null,
     birthday: "",
     category: "",
     showFullName: false,
@@ -34,6 +39,12 @@ export class ProfileForm extends Component {
     });
   };
 
+  onSelectChange = (name, selectedOption) => {
+    this.setState({ [name]: selectedOption });
+  }
+
+  onDateChange = date => this.setState({ birthday: date })
+
   onSubmit = ev => {
     ev.preventDefault();
     this.props.onSubmit();
@@ -41,127 +52,94 @@ export class ProfileForm extends Component {
 
   render() {
     const { className, wallet } = this.props;
+    let locationsOptions = locations.map(loc => ({ value: loc.alpha2Code, label: loc.name }));
 
     return (
-      <form
-        className={`jur-profile-form ${className || ""}`}
+      <Form
+        className={`jur-form__profile ${className || ''}`}
         onSubmit={this.onSubmit}
       >
-        <div className="jur-profile-form__header">
+        <Form.Container className="jur-form__header">
           <Avatar size="xxlarge" variant="rounded" seed={wallet.address} />
-          <div className="form-group">
-            <label htmlFor="wallet">
-              Wallet <sup>*</sup>
-            </label>
-            <input
+          <Form.Group>
+            <Form.Label htmlFor="walletAddress" required>Wallet</Form.Label>
+            <Form.Input
               type="text"
-              className="form-control"
-              name="wallet"
-              id="wallet"
+              name="walletAddress"
+              id="walletAddress"
               defaultValue={wallet.address}
               disabled
               readOnly
             />
-          </div>
-        </div>
-        <div className="jur-profile-form__body">
-          <div className="jur-profile-form__row">
-            <div className="form-group">
-              <label htmlFor="fullname">
-                Full Name <span>(Optional)</span>
-              </label>
-              <input
-                type="text"
-                className="form-control"
-                name="fullname"
-                id="fullname"
-                value={this.state.fullName}
-                onChange={this.onInputChange}
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="gender">
-                Gender <span>(Optional)</span>
-              </label>
-              <select
-                name="gender"
-                id="gender"
-                value={this.state.gender}
-                onChange={this.onInputChange}
-              >
-                <option>Select...</option>
-              </select>
-            </div>
-          </div>
-          <div className="jur-profile-form__row">
-            <div className="form-group">
-              <label htmlFor="email">
-                Email <span>(Optional)</span>
-              </label>
-              <input
-                type="text"
-                className="form-control"
-                name="email"
-                id="email"
-                value={this.state.email}
-                onChange={this.onInputChange}
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="location">
-                Location <span>(Optional)</span>
-              </label>
-              <select
-                name="location"
-                id="location"
-                value={this.state.location}
-                onChange={this.onInputChange}
-              >
-                <option>Select...</option>
-                {locations.map((location, index) => (
-                  <option key={`loc-${index}`}>{location.name}</option>
-                ))}
-              </select>
-            </div>
-          </div>
-          <div className="jur-profile-form__row">
-            <div className="form-group">
-              <label htmlFor="birthday">
-                Date of Birth <span>(Optional)</span>
-              </label>
-              <input
-                type="text"
-                className="form-control"
-                name="birthday"
-                id="birthday"
-                value={this.state.birthday}
-                onChange={this.onInputChange}
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="category">
-                Category <span>(Optional)</span>
-              </label>
-              <select
-                name="category"
-                id="category"
-                value={this.state.category}
-                onChange={this.onInputChange}
-              >
-                <option>Select...</option>
-              </select>
-            </div>
-          </div>
-        </div>
-        <div className="jur-profile-form__footer">
-          <div className="jur-profile-form__row">
-            <div className="jur-profile-form__options">
-              <div className="jur-profile-form__options__show-name">
-                <label>
-                  <InfoIcon />
-                  Show Full Name instead of Wallet address
-                </label>
-                <div className="jur-profile-form__options__show-name__input">
+          </Form.Group>
+        </Form.Container>
+        <Form.Container>
+          <Form.Group>
+            <Form.Label htmlFor="fullname" optional>Full Name</Form.Label>
+            <Form.Input
+              type="text"
+              name="fullname"
+              id="fullname"
+              value={this.state.fullName}
+              onChange={this.onInputChange}
+            />
+          </Form.Group>
+          <Form.Group>
+            <Form.Label htmlFor="gender" optional>Gender</Form.Label>
+            <Form.Select
+              name="gender"
+              id="gender"
+              options={genders}
+              onChange={this.onSelectChange.bind(this, 'gender')}
+            />
+          </Form.Group>
+        </Form.Container>
+        <Form.Container>
+          <Form.Group>
+            <Form.Label htmlFor="email" optional>Email</Form.Label>
+            <Form.Input
+              type="text"
+              name="email"
+              id="email"
+              value={this.state.email}
+              onChange={this.onInputChange}
+            />
+          </Form.Group>
+          <Form.Group>
+            <Form.Label htmlFor="location" optional>Location</Form.Label>
+            <Form.Select
+              name="localtion"
+              id="location"
+              value={this.state.location}
+              options={locationsOptions}
+              onChange={this.onSelectChange.bind(this, 'location')}
+            />
+          </Form.Group>
+        </Form.Container>
+        <Form.Container>
+          <Form.Group>
+            <Form.Label htmlFor="birthday" optional>Date of Birth</Form.Label>
+            <Form.DatePicker selectedDate={this.state.birthday} onChange={this.onDateChange} />
+          </Form.Group>
+          <Form.Group>
+            <Form.Label htmlFor="category" optional>Category</Form.Label>
+            <Form.Select
+              name="category"
+              id="category"
+              value={this.state.category}
+              options={categories}
+              onChange={this.onSelectChange.bind(this, 'category')}
+            />
+          </Form.Group>
+        </Form.Container>
+        <FormContainer className="jur-form__footer">
+          <Form.Group>
+            <div className="jur-form__profile__options">
+              <div className="jur-form__profile__options__show-name">
+                <Form.Label>
+                  <InfoTootip /> Show Full Name instead of Wallet address
+                </Form.Label>
+                <div className="jur-form__profile__options__show-name__input">
                   <Switch
                     name="showFullName"
                     value={this.state.showFullName}
@@ -171,7 +149,7 @@ export class ProfileForm extends Component {
                   <span>{this.state.showFullName ? "Yes" : "No"}</span>
                 </div>
               </div>
-              <div className="jur-profile-form__options__terms">
+              <div className="jur-form__profile__options__terms">
                 <input
                   type="checkbox"
                   name="terms"
@@ -183,14 +161,14 @@ export class ProfileForm extends Component {
                 </label>
               </div>
             </div>
-            <div className="jur-profile-form__submit">
-              <Button type="submit" variant="contained" size="big">
-                Update
-              </Button>
-            </div>
-          </div>
-        </div>
-      </form>
+            <div className="jur-form__profile__submit">
+                <Button type="submit" variant="contained" size="big">
+                  Update
+                </Button>
+              </div>
+          </Form.Group>
+        </FormContainer>
+      </Form>
     );
   }
 }
