@@ -1,0 +1,23 @@
+@import "../../../assets/scss/variables";
+
+.jur-contract-amount {
+    min-height: 60px;
+    
+    &__value {
+        display: flex;
+        align-items: center;
+        margin-top: 10px;
+        line-height: 1;
+    }
+
+    .jur-avatar {
+        border-radius: 50%;
+        margin-right: 10px;
+    }
+
+    .jur-amount {
+        font-family: $font-poppins;
+        font-size: 30px;
+        color: $contract-amount-text-color
+    }
+}
