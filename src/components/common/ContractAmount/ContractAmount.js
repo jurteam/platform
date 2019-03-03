@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import BlockTitle from '../BlockTitle';
 import Avatar from '../Avatar';
-import helpers from '../../../utils/helpers';
 import Amount from '../Amount';
 
 import './ContractAmount.scss';
