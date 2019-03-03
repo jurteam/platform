@@ -1,0 +1,23 @@
+@import "../../../assets/scss/variables";
+
+.jur-contact-name {
+    position: relative;
+
+    input {
+        font-size: 20px;
+        height: 40px;
+        padding-left: 30px;
+        width: 100%;
+        border: none;
+        outline: none;
+        color: $contract-name-color;
+        font-family: $font-poppins;
+    }
+
+    .jur-tag {
+        position: absolute;
+        top: 50%;
+        right: 20px;
+        transform: translateY(-50%);
+    }
+}
