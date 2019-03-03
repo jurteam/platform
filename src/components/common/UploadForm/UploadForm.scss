@@ -21,6 +21,7 @@
         border-radius: 2px 0 0 2px;
         font-size: 12px;
         cursor: pointer;
+        font-family: $font-poppins;
     }
 
     &__input-file {
@@ -32,9 +33,10 @@
         width: 315px;
         padding: 0 10px;
         border-radius: 0 2px 2px 0;
-        height: 34px;
+        height: 36px;
         color: $upload-form-label-text-color;
         border: 1px solid $upload-form-label-bg-color;
+        outline: none;
     }
 
     button {
