@@ -12,14 +12,18 @@ export const ContractPenaltyFee = ({contractInfo, penaltyFeeDescription}) => {
       <BlockTitle title="Penalty Fee" description={penaltyFeeDescription} />
       {contractInfo &&
         <div className="jur-contract-penalty-fee__value">
-          <div>
-            <Avatar seed={contractInfo.from} size="xxsmall" />
-            <Amount value={contractInfo.penaltyFee.partA} />
-          </div>
-          <div>
-            <Avatar seed={contractInfo.to} size="xxsmall" />
-            <Amount value={contractInfo.penaltyFee.partB} />
-          </div>
+          {contractInfo.penaltyFee.partA &&
+            <div>
+              <Avatar seed={contractInfo.partA} size="xxsmall" />
+              <Amount value={contractInfo.penaltyFee.partA} />
+            </div>
+          }
+          {contractInfo.penaltyFee.partB &&
+            <div>
+              <Avatar seed={contractInfo.partB} size="xxsmall" />
+              <Amount value={contractInfo.penaltyFee.partB} />
+            </div>
+          }
         </div>
       }
     </div>
