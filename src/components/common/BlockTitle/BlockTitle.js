@@ -4,12 +4,18 @@ import InfoTooltip from '../InfoTooltip';
 
 import './BlockTitle.scss';
 
-export const BlockTitle = ({ title, description, tooltipPosition }) => (
-  <div className="jur-block-title">
-    <InfoTooltip
-      text={description}
-      position={tooltipPosition}
-    />
+export const BlockTitle = ({ title, description, tooltipPosition, hideIcon, ...rest }) => (
+  <div className="jur-block-title" {...rest}>
+    { !hideIcon &&
+      <InfoTooltip
+        text={description}
+        position={tooltipPosition}
+      />
+    }
     <span>{title}</span>
   </div>
 );
+
+BlockTitle.defaultProps = {
+  hideIcon: false
+};
