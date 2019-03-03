@@ -1,2 +1,2 @@
-import {ContractTextarea} from './ContractTextarea';
-export default ContractTextarea;
+import {InsertContractDetails} from './InsertContractDetails';
+export default InsertContractDetails;
