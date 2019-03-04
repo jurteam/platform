@@ -28,7 +28,8 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'location',
         'category',
         'show_fullname',
-        'accept_terms'
+        'accepted_terms',
+        'accepted_disclaimer'
     ];
 
     /**
@@ -64,5 +65,10 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    public function contracts()
+    {
+        return $this->hasMany(Contract::class);
     }
 }

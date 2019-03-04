@@ -29,11 +29,6 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'email' => 'unique:users,email',
-            'accept_terms' => 'accepted',
-        ]);
-
         $user = User::createByWallet($request);
 
         return response()->json(compact('user'), 201);
@@ -48,7 +43,7 @@ class UserController extends Controller
     public function update(Request $request)
     {
         $this->validate($request, [
-            'email' => 'unique:users,email'
+            'accepted_terms' => 'accepted',
         ]);
 
         $user = User::updateByWallet($request);

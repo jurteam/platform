@@ -68,11 +68,15 @@ class UsersEndpointTest extends TestCase
      */
     public function a_request_with_wallet_header_can_authorize_user_update()
     {
-        $this->put('api/v1/user', ['location' => 'Lecce'], [
+        $this->put('api/v1/user', [
+            'location' => 'Lecce',
+            'name' => 'Alice',
+            'email' => 'mdpproduction@alice.it'
+        ], [
             'wallet' => 'QHx5VJEg3zO2jseSEq8R/wtCljguCvHSMA49HQ1IWiI='
         ]);
 
-        $this->seeInDatabase('users', ['location' => 'Lecce']);
+        $this->seeInDatabase('users', ['location' => 'Lecce', 'name' => 'Alice']);
     }
 
     /**
