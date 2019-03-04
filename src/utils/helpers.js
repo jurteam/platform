@@ -1,3 +1,6 @@
+
+import anchorme from 'anchorme';
+
 // Log helper only on DEVELOPMENT environment
 export const log = (mixed, obj) => {
   if (process.env.NODE_ENV === "development") {
@@ -17,3 +20,7 @@ export const toCurrencyFormat = (value) => {
 };
 
 export const capitalize = string => (string.charAt(0).toUpperCase() + string.slice(1));
+
+export const urlify = str => {
+  return anchorme(str);
+};
