@@ -6,12 +6,14 @@ import {CaretUpIcon} from '../Icons/CaretUpIcon';
 export const FormNumericInput = ({label, initialValue, onChange}) => {
   const [value, setValue] = useState(initialValue || 0);
   const plusOne = () => {
-    setValue(Number(value) + 1);
-    onChange(value);
+    const newValue = Number(value) + 1;
+    setValue(newValue);
+    onChange(newValue);
   };
   const minusOne = () => {
-    setValue(Number(value) === 0 ? 0 : Number(value) - 1)
-    onChange(value);
+    const newValue = Number(value) === 0 ? 0 : Number(value) - 1;
+    setValue(newValue);
+    onChange(newValue);
   };
   const handleChange = value => {
     if (typeof value === 'number') {
@@ -19,8 +21,8 @@ export const FormNumericInput = ({label, initialValue, onChange}) => {
       return;
     }
     const newValue = Number(value.target.value);
+    onChange(newValue);
     setValue(newValue);
-    onChange(value);
   };
 
   return (
