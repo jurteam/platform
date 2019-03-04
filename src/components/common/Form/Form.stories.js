@@ -23,5 +23,8 @@ storiesOf('Form', module)
         <Form.Label>Country</Form.Label>
         <Form.Select name="coutry" id="country" options={[{value: 'AF', label: 'AFghanistan'}]} />
       </Form.Group>
+      <Form.Group>
+        <Form.NumericInput label="days" value={0} onChange={value => console.log(value)} />
+      </Form.Group>
     </Form>
   ))
