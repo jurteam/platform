@@ -4,10 +4,20 @@ namespace App\Transformers;
 
 use App\Models\Contract;
 use League\Fractal\TransformerAbstract;
+use App\Transformers\AttachmentTransformer;
 use App\Transformers\ContractActivityTransformer;
 
 class ContractTransformer extends TransformerAbstract
 {
+    /**
+     * List of resources possible to include
+     *
+     * @var array
+     */
+    protected $availableIncludes = [
+        'attachments'
+    ];
+
     /**
      * Turn this item object into a generic array
      *
@@ -43,5 +53,17 @@ class ContractTransformer extends TransformerAbstract
             'who_pays' => $contract->who_pays,
             'status_activity' => $contract->statusActivity()
         ];
+    }
+
+    /**
+     * Include attachments
+     *
+     * @return \League\Fractal\Resource\Collection
+     */
+    public function includeAttachments(Contract $contract)
+    {
+        $attachments = $contract->getMedia();
+
+        return $this->collection($attachments, new AttachmentTransformer);
     }
 }

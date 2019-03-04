@@ -17,7 +17,7 @@ class ContractVotesController extends Controller
      */
     public function index(Request $request)
     {
-        $votes = ContractVote::filters($request)->paginate(10);
+        $votes = ContractVote::filters($request)->latest()->paginate(10);
 
         return $this->response->paginator($votes, new ContractVoteTransformer);
     }
@@ -46,5 +46,24 @@ class ContractVotesController extends Controller
         ContractVote::destroy($id);
 
         return response()->json(compact('id'));
+    }
+
+    /**
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function uploadMedia(Request $request, $id)
+    {
+        $vote = ContractVote::findOrFail($id);
+        $vote
+            ->addMultipleMediaFromRequest($request->attachments)
+            ->each(function($fileAdder) {
+                $fileAdder->toMediaCollection('attachments');
+            });
+
+        return respon()->json([
+            'attachments' => $vote->getMedia()
+        ]);
     }
 }

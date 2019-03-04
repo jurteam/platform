@@ -106,4 +106,23 @@ class ContractsController extends Controller
 
         return $this->response->item($contract, new ContractTransformer);
     }
+
+    /**
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function uploadMedia(Request $request, $id)
+    {
+        $contract = Contract::findOrFail($id);
+        $contract
+            ->addMultipleMediaFromRequest($request->attachments)
+            ->each(function($fileAdder) {
+                $fileAdder->toMediaCollection('attachments');
+            });
+
+        return respon()->json([
+            'attachments' => $contract->getMedia()
+        ]);
+    }
 }

@@ -19,7 +19,7 @@ class ContractActivitiesController extends Controller
      */
     public function index(Request $request)
     {
-        $activities = Activity::filters($request)->paginate(10);
+        $activities = Activity::filters($request)->latest()->paginate(10);
 
         return $this->response->paginator($activities, new ContractActivityTransformer);
     }
@@ -35,5 +35,24 @@ class ContractActivitiesController extends Controller
         $activity = Activity::create($request->all());
 
         return $this->item($activity, new ContractActivityTransformer);
+    }
+
+    /**
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function uploadMedia(Request $request, $id)
+    {
+        $activity = Activity::findOrFail($id);
+        $activity
+            ->addMultipleMediaFromRequest($request->attachments)
+            ->each(function($fileAdder) {
+                $fileAdder->toMediaCollection('attachments');
+            });
+
+        return respon()->json([
+            'attachments' => $activity->getMedia()
+        ]);
     }
 }
