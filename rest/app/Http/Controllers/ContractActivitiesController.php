@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Activity;
 use Illuminate\Http\Request;
 use Dingo\Api\Routing\Helpers;
@@ -30,9 +31,14 @@ class ContractActivitiesController extends Controller
      * @param  \Illuminate\Http\Request $request
      * @return \League\Fractal\Resource\Item
      */
-    public function store(Request $request)
+    public function store(Request $request, $id)
     {
-        $activity = Activity::create($request->all());
+        $wallet = $request->header('wallet');
+
+        $contract = Contract::findOrFail($id);
+        $user = User::byWallet($wallet)->firstOrFail();
+
+        $contract->recordActivities($request->all(), $user);
 
         return $this->item($activity, new ContractActivityTransformer);
     }

@@ -8,8 +8,13 @@ class ContractFilters extends Filters
      * @var array
      */
     protected $filters = [
-        'status', 'from', 'to', 'query'
+        'status', 'from', 'to', 'query', 'owner'
     ];
+
+    public function owner($value)
+    {
+        return $this->builder->whereUserId($value);
+    }
 
     public function status($value)
     {

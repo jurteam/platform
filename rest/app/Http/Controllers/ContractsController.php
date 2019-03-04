@@ -21,6 +21,8 @@ class ContractsController extends Controller
      */
     public function index(ContractFilters $filters)
     {
+        $wallet = $request->header('wallet');
+
         $user = User::byWallet($wallet)->firstOrFail();
         $contracts = $user->contracts()->filters($filters)->paginate(10);
 
@@ -39,6 +41,8 @@ class ContractsController extends Controller
             'part_a_wallet' => 'required',
             'part_b_wallet' => 'required'
         ]);
+
+        $wallet = $request->header('wallet');
 
         $owner = User::byWallet($wallet)->firstOrFail();
         $contract = new Contract($request->all());
@@ -99,6 +103,8 @@ class ContractsController extends Controller
      */
     public function updateStatus(Request $request, $id)
     {
+        $wallet = $request->header('wallet');
+
         $user = User::byWallet($wallet)->firstOrFail();
         $contract = Contract::findOrFail($id);
 
