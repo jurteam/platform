@@ -7,16 +7,27 @@ import File from '../File';
 
 import './InsertContractDetails.scss';
 
-export const InsertContractDetails = ({onKpiChange, onResolutionProofChange, onAddFile, uploadedFiles, onView, onDelete}) => {
+export const InsertContractDetails = ({kpiInitialValue, resolutionInitialValue, onKpiChange, onResolutionProofChange, onAddFile, uploadedFiles, onView, onDelete}) => {
   return (
     <div className="jur-insert-contract-details">
-      <ContractTextarea label="KPI of the contracts:" name="kpi" onChange={onKpiChange} />
-      <ContractTextarea label="Resolution Proof:" name="resolution" onChange={onResolutionProofChange} />
+      <ContractTextarea
+        initialValue={kpiInitialValue}
+        label="KPI of the contracts:"
+        name="kpi"
+        onChange={onKpiChange}
+      />
+      <ContractTextarea
+        initialValue={resolutionInitialValue}
+        label="Resolution Proof:"
+        name="resolution"
+        onChange={onResolutionProofChange}
+      />
       <div className="jur-insert-contract-details__files">
         {uploadedFiles.length > 0 &&
           <FileList>
-            { uploadedFiles.map(file => (
+            { uploadedFiles.map((file, index) => (
               <File
+              key={index.toString()}
                 name={file.name}
                 onView={onView}
                 onDelete={onDelete}
