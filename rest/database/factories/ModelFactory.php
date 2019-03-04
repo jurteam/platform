@@ -20,7 +20,7 @@ $factory->define(App\Models\User::class, function (Faker\Generator $faker) {
         'location' => '',
         'category' => '',
         'show_fullname' => false,
-        'accept_terms' => true
+        'accepted_terms' => true
     ];
 });
 
