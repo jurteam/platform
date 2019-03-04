@@ -44,4 +44,6 @@ $api->version('v1', function($api) {
             });
         });
     });
+
+    $api->get('faqs', 'App\Http\Controllers\FaqsController@index');
 });

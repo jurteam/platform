@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class DatabaseSeeder extends Seeder
+class FaqSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -11,8 +11,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call('UsersSeeder');
-        $this->call('FaqSeeder');
-        $this->call('ContractStatusSeeder');
+        factory(App\Models\Faq::class, 20)->create();
     }
 }

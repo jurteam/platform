@@ -23,3 +23,10 @@ $factory->define(App\Models\User::class, function (Faker\Generator $faker) {
         'accept_terms' => true
     ];
 });
+
+$factory->define(App\Models\Faq::class, function (Faker\Generator $faker) {
+    return [
+        'title' => $faker->sentence,
+        'description' => $faker->paragraph
+    ];
+});
