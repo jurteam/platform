@@ -30,6 +30,7 @@ $app->configure('api');
 $app->configure('jur');
 $app->configure('medialibrary');
 $app->configure('filesystems');
+$app->configure('jwt');
 
 $app->withFacades();
 
