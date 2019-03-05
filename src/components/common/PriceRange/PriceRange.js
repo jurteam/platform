@@ -7,9 +7,10 @@ import Amount from '../Amount';
 import './PriceRange.scss';
 
 export const PriceRange = ({min, max, address, defaultValue, onChange}) => {
-  const [value, setValue] = useState(defaultValue);
+  const [value, setValue] = useState(defaultValue || 0);
   const onValueChange = value => {
     setValue(value);
+    onChange(value);
   };
 
   const percentageCalc = value => {
@@ -18,7 +19,7 @@ export const PriceRange = ({min, max, address, defaultValue, onChange}) => {
   return (
     <div className="jur-price-range"> 
       <Avatar  seed={address} variant="circle" size="small"/>
-      <InputRange min={min} max={max} defaultValue={defaultValue} onValueChange={onValueChange}/>
+      <InputRange min={min} max={max} defaultValue={value} onValueChange={onValueChange}/>
       <div className="jur-price-range__value">
         <Amount value={value} />
         <span className="jur-price-range__value__percentage"> {percentageCalc(value)} % of value</span>
