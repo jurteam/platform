@@ -2,13 +2,15 @@ import {
   SET_READY,
   SET_LOADING,
   SET_TUTORIAL_VIEWED,
-  RESET_APP_STATE
+  RESET_APP_STATE,
+  SET_FAQ
 } from "./types";
 
 const INITIAL_STATE = {
   ready: false,
   loading: true,
-  tutorial: false
+  tutorial: false,
+  faqs: []
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -22,6 +24,9 @@ export default (state = INITIAL_STATE, action) => {
 
     case SET_TUTORIAL_VIEWED:
       return { ...state, tutorial: true };
+
+    case SET_FAQ:
+      return { ...state, faqs: action.payload.faqs };
 
     // Reset
     case RESET_APP_STATE:

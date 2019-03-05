@@ -10,6 +10,8 @@ export const APP_EXIT = "APP_EXIT";
 export const HEARTBEAT = "HEARTBEAT";
 
 export const API_CATCH = "API_CATCH";
+export const FETCH_FAQ = "FETCH_FAQ";
+export const SET_FAQ = "SET_FAQ";
 
 // User
 export const DISCLAIMER_OPTIN = "DISCLAIMER_OPTIN";

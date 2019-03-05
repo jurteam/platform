@@ -8,11 +8,16 @@ import {
   APP_SHOULD_RESET,
   SET_READY,
   SET_LOADING,
+  SET_FAQ,
+  FETCH_FAQ,
   RESET_APP_STATE,
   SET_TUTORIAL_VIEWED
 } from "../reducers/types";
 
 import { getWallet } from "./Selectors"; // selectors
+
+// Api layouts
+import { Faq } from "../api";
 
 // Dapp utilities
 import { init } from "../bootstrap/Dapp";
@@ -67,6 +72,7 @@ export function* handleNetworkUpdate(data) {
   // should be checked via lowercase due the MetaMask returned value
   // TODO: check if this can be an issue on long term basis
   if (address && address.toLowerCase() !== selectedAddress.toLowerCase()) {
+    yield put({ type: SET_LOADING, payload: true });
     yield put({ type: SET_WALLET_ADDRESS, payload: selectedAddress });
   }
 }
@@ -94,12 +100,23 @@ export function* handleAppInit() {
   }
 }
 
+// handles app initialization
+export function* handleFetchFaq() {
+  log("handleFetchFaq", Faq.get);
+  const response = yield call(Faq.get);
+  if (response) yield put({ type: SET_FAQ, payload: response.data });
+}
+
+// handles app ready
+export function* handleAppReady() {
+  yield init();
+  yield put({ type: FETCH_FAQ });
+}
+
 // spawn a new actions task
 export default function* appSagas() {
   yield takeEvery(DRIZZLE_INITIALIZING, handleAppInit);
-  yield takeEvery(DRIZZLE_INITIALIZED, disableLoading);
-  yield takeEvery(DRIZZLE_INITIALIZED, init);
+  yield takeLatest(DRIZZLE_INITIALIZED, handleAppReady);
   yield takeEvery(NETWORK_ID_FAILED, disableLoading);
-  yield takeEvery(NETWORK_UPDATE, handleNetworkUpdate);
-  yield takeEvery(APP_SHOULD_RESET, handleAppReset);
+  yield takeLatest(FETCH_FAQ, handleFetchFaq);
 }
