@@ -65,6 +65,17 @@
     &__numeric-input {
         display: inline-flex;
 
+        &--error {
+            input {
+                color: $form-error;
+                border-color: $form-error;
+            }
+
+            label {
+                color: $form-error;
+            }
+        }
+
         input {
             width: 46px;
             height: 32px;
