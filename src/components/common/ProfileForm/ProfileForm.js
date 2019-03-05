@@ -146,7 +146,6 @@ export class ProfileForm extends Component {
                     onChange={this.onInputChange}
                     checked={this.state.showFullName}
                   />
-                  <span>{this.state.showFullName ? "Yes" : "No"}</span>
                 </div>
               </div>
               <div className="jur-form__profile__options__terms">
