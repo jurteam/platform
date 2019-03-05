@@ -1,4 +1,4 @@
-import { put, takeEvery, select } from "redux-saga/effects";
+import { put, call, takeEvery, takeLatest, select } from "redux-saga/effects";
 import {
   DRIZZLE_INITIALIZING,
   DRIZZLE_INITIALIZED,
@@ -8,6 +8,7 @@ import {
   APP_SHOULD_RESET,
   SET_READY,
   SET_LOADING,
+  FETCH_USER,
   SET_FAQ,
   FETCH_FAQ,
   RESET_APP_STATE,
@@ -27,7 +28,7 @@ import { log } from "../utils/helpers"; // log helper
 // First load
 export function* setLoading(loading) {
   log("dispatch", { type: SET_LOADING, payload: loading });
-  yield put({ type: SET_READY, payload: loading });
+  yield put({ type: SET_LOADING, payload: loading });
 }
 
 // Reset
@@ -74,6 +75,7 @@ export function* handleNetworkUpdate(data) {
   if (address && address.toLowerCase() !== selectedAddress.toLowerCase()) {
     yield put({ type: SET_LOADING, payload: true });
     yield put({ type: SET_WALLET_ADDRESS, payload: selectedAddress });
+    yield put({ type: FETCH_USER });
   }
 }
 
@@ -90,7 +92,7 @@ export function* handleAppInit() {
 
   // tutorial info from local storage
   let tutorialViewed = yield localStorage.getItem("jur_welcome");
-  log("hadleAppInit - tutorialViewed", tutorialViewed)
+  log("hadleAppInit - tutorialViewed", tutorialViewed);
   if (typeof tutorialViewed === "undefined" || !tutorialViewed) {
     // handle local storage init
     tutorialViewed = false;
@@ -111,6 +113,7 @@ export function* handleFetchFaq() {
 export function* handleAppReady() {
   yield init();
   yield put({ type: FETCH_FAQ });
+  yield put({ type: FETCH_USER });
 }
 
 // spawn a new actions task
@@ -118,5 +121,7 @@ export default function* appSagas() {
   yield takeEvery(DRIZZLE_INITIALIZING, handleAppInit);
   yield takeLatest(DRIZZLE_INITIALIZED, handleAppReady);
   yield takeEvery(NETWORK_ID_FAILED, disableLoading);
+  yield takeLatest(NETWORK_UPDATE, handleNetworkUpdate);
+  yield takeLatest(APP_SHOULD_RESET, handleAppReset);
   yield takeLatest(FETCH_FAQ, handleFetchFaq);
 }
