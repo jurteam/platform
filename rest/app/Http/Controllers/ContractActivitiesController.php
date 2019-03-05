@@ -16,11 +16,13 @@ class ContractActivitiesController extends Controller
      * Get the contract activities.
      *
      * @param  \Illuminate\Http\Request $request
+     * @param  int $id
      * @return Response
      */
-    public function index(Request $request)
+    public function index(Request $request, $id)
     {
-        $activities = Activity::filters($request)->latest()->paginate(10);
+        $contract = Contract::findOrFail($id);
+        $activities = $contract->activities()->latest()->paginate(10);
 
         return $this->response->paginator($activities, new ContractActivityTransformer);
     }

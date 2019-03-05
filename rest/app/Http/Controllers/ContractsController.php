@@ -19,7 +19,7 @@ class ContractsController extends Controller
      * @param  \App\Filters\ContractFilters $filters
      * @return \Illuminate\Http\Response
      */
-    public function index(ContractFilters $filters)
+    public function index(ContractFilters $filters, Request $request)
     {
         $wallet = $request->header('wallet');
 

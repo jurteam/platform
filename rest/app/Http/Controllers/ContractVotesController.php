@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Contract;
 use App\Models\ContractVote;
 use Illuminate\Http\Request;
 use Dingo\Api\Routing\Helpers;
@@ -13,11 +14,13 @@ class ContractVotesController extends Controller
 
     /**
      * @param  \Illuminate\Http\Request $request
-     * @return \League\Fractal\
+     * @param  int $id
+     * @return \League\Fractal\Resource\Paginator
      */
-    public function index(Request $request)
+    public function index(Request $request, $id)
     {
-        $votes = ContractVote::filters($request)->latest()->paginate(10);
+        $contract = Contract::findOrFail($id);
+        $votes = $contract->votes()->latest()->paginate(10);
 
         return $this->response->paginator($votes, new ContractVoteTransformer);
     }
