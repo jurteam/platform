@@ -8,8 +8,9 @@ export const InputRange = ({ min, max, defaultValue, onValueChange, step }) => {
   const [spanWidth, setSpanWidth] = useState('100%');
 
   const calculateSpanWidth = (target) => {
-    const width = ((Number(target.max) - target.value) * Number(target.max)) / 100;
-    return width + '%';
+    const width = 100 - (Number(target.value) * 100) / Number(target.max);
+    console.log(parseFloat(width).toFixed(2));
+    return parseFloat(width).toFixed(2) + '%';
   };
 
   const onChange = ev => {
