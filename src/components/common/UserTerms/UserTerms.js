@@ -1,11 +1,19 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { useContext } from "react";
+import PropTypes from "prop-types";
 
-import './UserTerms.scss';
+import { AppContext } from "../../../bootstrap/AppProvider"; // context
 
-export const UserTerms = ({ termsHtml }) => (
-  <div className="jur-terms">
-    <h3>Terms of Service</h3>
-    <div className="jur-terms__content" dangerouslySetInnerHTML={{__html: termsHtml }}/>
-  </div>
-);
+import "./UserTerms.scss";
+
+export const UserTerms = ({ termsHtml }) => {
+  const { labels } = useContext(AppContext);
+  return (
+    <div className="jur-terms">
+      <h3>{labels.termOfService}</h3>
+      <div
+        className="jur-terms__content"
+        dangerouslySetInnerHTML={{ __html: termsHtml }}
+      />
+    </div>
+  );
+};
