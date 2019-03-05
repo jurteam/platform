@@ -6,72 +6,155 @@ import './Countdown.scss';
 export class Countdown extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       days: 0,
       hours: 0,
       minutes: 0,
-      seconds: 0
+      seconds: 0,
+      expiring: false,
+      expired: false,
+      milliseconds: 0,
+      playing: false,
+      duration: this.calculateDuration(),
+      completePercentage: 0
     }
   }
 
-  start = () => {
+  componentDidMount = () => {
+    switch (this.props.statusId) {
+      case -1: // rejected
+        break;
+      case 0: // draft
+      case 1: // waiting for counterparty
+        const date = this.getTimeLeft(this.state.duration)
+        this.setState({
+          ...date,
+        }); 
+        break;
+      case 5: // onGoing
+        this.start(this.props.startDate, this.state.duration)
+        break;
+      case 8: // expired rosso
+        this.setState({ expired: true })
+        break;
+      case 9: // contract closed
+      case 21: // open friendly resolution
+      case 29: // closed friendly resolution
+      case 31: // Open dispute
+        break;
+      case 35: // onGoing dispute 24h
+        this.start(this.props.startDate, this.state.duration);
+        break;
+      case 36: // extended Dispute 30min
+        this.start(this.props.startDate, this.state.duration);
+        break;
+      case 38: // expired dispute
+        this.setState({ expired: true })
+        break;
+      case 39: // dispute closed
+        break;
+      default:
+    }
+  }
+  
+  componentWillUnmount = () => {
+    this.stop();
+  }
+  
+  calculateDuration() {
+    if (this.props.statusId === 35) {  
+      return 24 * 60 * 60 * 1000;
+    }
+
+    if (this.props.statusId === 36) {  
+      return 30 * 60 * 1000;
+    }
+
+    const hoursToMillisecodsn = this.props.days * 24 * 60 * 60 * 1000;
+    const hoursToMilliseconds = this.props.hours * 60 * 60 * 1000;
+    const minutesToMilliseconds = this.props.minutes * 60 * 1000;
+    return hoursToMillisecodsn + hoursToMilliseconds + minutesToMilliseconds;
+  }
+
+  getExpiringStatus(milliseconds) {
+    if ((this.props.statusId === 5 && milliseconds < this.props.expireAlertFrom) || 
+        (this.props.statusId === 35 && milliseconds <= 3600000) ||
+        (this.props.statusId === 36)
+       ) {
+      return true
+    }
+  }
+
+  calculatePercentage(milliseconds) {
+    return 100 - ((milliseconds*100) / this.state.duration);
+  }
+  
+  start = (startDate, duration) => {
     this.interval = setInterval(() => {
-      if (this.props.status > 2) {
-        const date = this.calculateCountdown(this.props.expireDate);
-        date ? this.setState(date) : this.stop();
+      const date = this.calculateCountDown(startDate, duration);
+      if(date) {
+        const percentage = this.calculatePercentage(date.milliseconds);
+        this.setState({
+          ...date,
+          completePercentage: percentage,
+          expiring: this.getExpiringStatus(date.milliseconds),
+          playing: true
+        });
+        this.props.onProgress(percentage);
+      } else {
+        this.setState(state => {
+          if (state.playing) {
+            this.props.onExpire && this.props.onExpire();
+            return { playing: false };
+          }
+        });
+        this.stop(); 
       }
     }, 1000);
   }
-
-  componentDidMount = () => {
-    if (this.props.status > 2) {
-      this.start();
-    } else {
-      this.setInitialCountdown();
-    }
-  }
-
-  setInitialCountdown = () => {
-    this.setState(this.getTimeLeft(this.props.duration));
-  }
-
-  componentWillUnmount = () => {
-    this.stop()
-  }
-
+  
   stop = () => {
-    clearInterval(this.interval)
+    clearInterval(this.interval);
   }
-
-  getTimeLeft = (diff) => {
-    return {
-      seconds: Math.floor((diff/ 1000) % 60),
-      minutes: Math.floor((diff/ 1000 / 60) % 60),
-      hours: Math.floor((diff/ (1000 * 60 * 60)) % 24),
-      days: Math.floor(diff/ (1000 * 60 * 60 * 24))
-    }
+  
+  getDiff = (startDate, duration) => {
+    return (Date.parse(new Date(startDate)) + duration) - Date.parse(new Date());
   }
-
-  calculateCountdown = (expireDate) => {
-    let diff = (Date.parse(new Date(expireDate)) - Date.parse(new Date()));
-    if (diff <= 0) return false;
+  
+  calculateCountDown = (startDate, duration) => {
+    const diff = this.getDiff(startDate, duration);
+    if (diff < 0) return false;
     return this.getTimeLeft(diff);
   }
-
+  
+  getTimeLeft = (value) => ({
+    seconds: Math.floor((value / 1000) % 60),
+    minutes: Math.floor((value / 1000 / 60) % 60),
+    hours: Math.floor((value / (1000 * 60 * 60)) % 24),
+    days: Math.floor(value / (1000 * 60 * 60 * 24)),
+    milliseconds: value
+  })
+  
   addLeadingZeros = (value) => {
-    value = String(value);
-    while (value.length < 2) {
-      value = '0' + value;
+    let str = String(value);
+    while(str.length < 2) {
+      str = '0' + str;
     }
-    return value;
+    return str;
   }
+  
 
   render() {
     const { days, hours, minutes, seconds } = this.state;
     const { showSeconds, daysLabel, hoursLabel, minutesLabel, secondsLabel } = this.props;
+    
+    const classes = ['jur-countdown'];
+    if (this.state.playing) classes.push('jur-countdown--playing');
+    if (this.state.expiring) classes.push('jur-countdown--expiring');
+    if (this.state.expired) classes.push('jur-countdown--expired');
+
     return (
-      <div className="jur-countdown">
+      <div className={classes.join(' ')}>
         <div className="jur-countdown__item jur-countdown__days">
           <span className="value">{ this.addLeadingZeros(days) }</span>
           <span className="label">{ daysLabel }</span>
@@ -95,6 +178,7 @@ export class Countdown extends Component {
     );
   }
 }
+
 
 Countdown.defaultProps = {
   daysLabel: 'Days',

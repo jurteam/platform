@@ -14,4 +14,4 @@ storiesOf('AvatarInfo', module)
     }
   })
   .add('default', () => <AvatarInfo userName="Alice" userWallet="0xa5ca68996a5d4c16acbc99876fd1f4d82ea78ca4" />)
-  .add('Ellipsis', () => <AvatarInfo userName="Alice" userWallet="0xa5ca68996a5d4c16acbc99876fd1f4d82ea78ca4" variant="ellipsis" />)
+  .add('Ellipsis', () => <AvatarInfo maxTextWidth={150} userName="Alice" userWallet="0xa5ca68996a5d4c16acbc99876fd1f4d82ea78ca4" variant="ellipsis" />)

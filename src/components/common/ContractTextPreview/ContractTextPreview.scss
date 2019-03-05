@@ -1,0 +1,17 @@
+@import "../../../assets/scss/variables";
+
+.jur-contract-text-preview {
+    &__message {
+        color: $contract-detail-preview-text-color;
+        font-size: 12px;
+        font-family: $font-poppins;
+        line-height: 28px;
+        padding: 10px 0 0 20px;
+
+        a {
+            color: $contract-detail-preview-link-color;
+            text-decoration: none;
+            font-weight: $poppins-semibold;
+        }
+    }
+}

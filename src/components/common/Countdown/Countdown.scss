@@ -24,14 +24,37 @@
             .value {
                 font-size: 20px;
                 color: $countdown-value-muted-color;
-                margin-bottom: 10px;
+                margin-bottom: 5px;
             }
 
             .label {
                 font-size: 10px;
                 color: $countdown-label-color;
+                letter-spacing: 1px;
+                text-transform: uppercase;
+                font-weight: 500;
             }
             
+        }
+
+        &--playing {
+            .value {
+                color: $countdown-playing-color;
+            }
+
+        }
+
+        &--expiring {
+            .value {
+                color: $countdown-expiring-color;
+            }
+        }
+
+        &--expired {
+            .label,
+            .value {
+                color: $countdown-expiring-color;
+            }
         }
     }
 }

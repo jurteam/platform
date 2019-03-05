@@ -1,0 +1,71 @@
+@import "../../../assets/scss/variables";
+
+.jur-form {
+
+    *, *:before, *:after {
+        box-sizing: border-box;
+    }
+
+    $form: &;
+
+    label {
+        display: block;
+        color: $label-color;
+        font-size: 13px;
+        font-family: $font-poppins;
+        margin-bottom: 6px;
+        
+        span {
+            color: $label-option;
+        }
+        
+        sup {
+            color: $label-sup;
+        }
+    }
+
+    input {
+        width: 100%;
+        height: 36px;
+        border: 1px solid $input-border-color;
+        color: $label-color;
+        font-size: 13px;
+        border-radius: 2px;
+        background-color: $white;
+        outline: none;
+        padding: 2px 8px;
+    }
+
+    &__container {
+        &#{$form}__header {
+            display: flex;
+            padding-bottom: 20px;
+            border-bottom: 2px solid $input-border-color;
+            margin-bottom: 25px;
+
+            #{$form}__group {
+                flex: 1;
+                margin-bottom: 0;
+                
+                input {
+                    width: 45%;
+                }
+            }
+            
+            .jur-avatar {
+                margin-right: 20px;
+            }
+        }
+    }
+
+    &__group {
+        margin-bottom: 15px;
+    }
+
+    &__create-contract {}
+
+    .react-datepicker-wrapper,
+    .react-datepicker__input-container {
+        display: block;
+    }
+}

@@ -3,7 +3,6 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { withInfo } from '@storybook/addon-info';
 
-import '../../../assets/scss/_forms.scss';
 import ProfileForm from './';
 
 storiesOf('ProfileForm', module)
@@ -14,4 +13,4 @@ storiesOf('ProfileForm', module)
       header: false
     }
   })
-  .add('Default', () => <ProfileForm onSubmit={ () => alert('Submit form fired') } />)
+  .add('Default', () => <ProfileForm wallet={{address: '0xkfr48774n7y4t84b'}} onSubmit={ () => alert('Submit form fired') } />)

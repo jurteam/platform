@@ -13,7 +13,21 @@ storiesOf('Amount', module)
       header: false
     }
   })
-  .add('value is string', () => <Amount value="8346583" currency="JUR"/>)
-  .add('value is number', () => <Amount value={8346583} currency="JUR" />)
-  .add('lowercase currency', () => <Amount value={8346583} currency="jur" />)
-  .add('no currency', () => <Amount value={8346583} />)
+  .add('value as string ', () => (
+    <>
+      <Amount value="8346583" currency="JUR"/>
+      <br />
+      <Amount value="1000" currency="JUR"/>
+      <br />
+      <Amount value="3230" currency="JUR"/>
+    </>
+  ))
+  .add('value as number and no currency', () => (
+    <>
+      <Amount value={8346583}  />
+      <br />
+      <Amount value={1000} />
+      <br />
+      <Amount value={3230}/>
+    </>
+  ))

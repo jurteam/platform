@@ -16,25 +16,69 @@
             line-height: 1;
         }
 
-        &--waiting {
-            color: $tag-waiting-text-color;
-            background-color: $tag-waiting-bg-color;
+        &---1 {
+            color: $tag-text-color--1;
+            background-color: $tag-text-color--1;
         }
-        &--draft {
-            color: $tag-draft-text-color;
-            background-color: $tag-draft-bg-color;
+
+        &--0 {
+            color: $tag-text-color-0;
+            background-color: $tag-bg-color-0;
         }
-        &--ongoing {
-            color: $tag-ongoing-text-color;
-            background-color: $tag-ongoing-bg-color;
+
+        &--1 {
+            color: $tag-text-color-1;
+            background-color: $tag-bg-color-1;
         }
-        &--open-dispute {
-            color: $tag-open-dispute-text-color;
-            background-color: $tag-open-dispute-bg-color;
+
+        &--5 {
+            color: $tag-text-color-5;
+            background-color: $tag-bg-color-5;
         }
-        &--closed-dispute {
-            color: $tag-closed-dispute-text-color;
-            background-color: $tag-closed-dispute-bg-color;
+
+        &--8 {
+            color: $tag-text-color-8;
+            background-color: $tag-bg-color-8;
+        }
+
+        &--9 {
+            color: $tag-text-color-9;
+            background-color: $tag-bg-color-9;
+        }
+
+        &--21 {
+            color: $tag-text-color-21;
+            background-color: $tag-bg-color-21;
+        }
+
+        &--29 {
+            color: $tag-text-color-29;
+            background-color: $tag-bg-color-29;
+        }
+
+        &--31 {
+            color: $tag-text-color-31;
+            background-color: $tag-bg-color-31;
+        }
+
+        &--35 {
+            color: $tag-text-color-35;
+            background-color: $tag-bg-color-35;
+        }
+
+        &--36 {
+            color: $tag-text-color-36;
+            background-color: $tag-bg-color-36;
+        }
+
+        &--38 {
+            color: $tag-text-color-38;
+            background-color: $tag-bg-color-38;
+        }
+
+        &--39 {
+            color: $tag-text-color-39;
+            background-color: $tag-bg-color-39;
         }
     }
 }
