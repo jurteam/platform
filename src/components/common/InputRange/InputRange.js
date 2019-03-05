@@ -6,7 +6,6 @@ import './InputRange.scss';
 export const InputRange = ({ min, max, defaultValue, onValueChange, step }) => {
   const calculateSpanWidth = (value) => {
     const width = 100 - (Number(value) * 100) / Number(max);
-    console.log(parseFloat(width).toFixed(2));
     return parseFloat(width).toFixed(2) + '%';
   };
 

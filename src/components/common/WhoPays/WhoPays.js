@@ -11,7 +11,7 @@ export class WhoPays extends Component {
   state = {
     openIndex: 0,
     error: false,
-    counterparties: [this.props.data.from, this.props.data.to],
+    counterparties: [this.props.contract.from, this.props.contract.to],
     payer: null
   }
 
@@ -22,6 +22,11 @@ export class WhoPays extends Component {
       value: Number(value)
     }
     this.setState({payer});
+    this.props.handleSelectPayer(payer)
+  }
+
+  componentDidMount() {
+    this.handleContractValue(this.state.openIndex, 0);
   }
 
   changePayer = index => {

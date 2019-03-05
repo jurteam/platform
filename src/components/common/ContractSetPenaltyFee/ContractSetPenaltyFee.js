@@ -30,7 +30,7 @@ export const ContractSetPenaltyFee = ({contract, ContractSetPenaltyFee, setPenal
           defaultValue={contract.penaltyFee && contract.penaltyFee[counterparty.label]}
           max={counterparty.wallet.amount}
           address={counterparty.wallet.address}
-          onChange={() => console.log('kjrwghr')}
+          onChange={ContractSetPenaltyFee.bind(this, counterparty)}
         />
       ))}
       </div>

@@ -3,9 +3,9 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { withInfo } from '@storybook/addon-info';
 
-import WhoPays from './';
+import ContractSetValue from './';
 
-storiesOf('WhoPays', module)
+storiesOf('ContractSetValue', module)
   .addDecorator(withInfo)
   .addParameters({ 
     info: { 
@@ -14,14 +14,15 @@ storiesOf('WhoPays', module)
     }
   })
   .add('Default', () => (
-    <WhoPays
-      contract={{
+    <ContractSetValue
+      data={{
+        contractID: 34765,
         from: {
           label: 'partA',
           debtor: true,
           wallet: {
             address: '0xh845684f893689fh56347563fh3486539463',
-            amount: 857000
+            amount: 86486
           },
           name: 'Alice',
           shouldRenderName: true
@@ -31,17 +32,12 @@ storiesOf('WhoPays', module)
           debtor: false,
           wallet: {
             address: '0x38683746f893457h6fh563487fh569834596',
-            amount: 100000
+            amount: 126486
           },
           name: 'Bob',
-          shouldRenderName: false,
+          shouldRenderName: false
         },
-        penaltyFee: {
-          'partA': 8654,
-          'partB': 1123
-        }
+        penaltyFee: null
       }}
-      handleSelectPayer={value => console.log(value)}
     />
   ))
-  
