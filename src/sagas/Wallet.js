@@ -25,6 +25,8 @@ export function* setWalletAddress() {
   log("setWalletAddress", "run");
   const accounts = yield select(getAccounts);
   log("setWalletAddress - accounts", accounts);
+  const { API } = global;
+  API.defaults.headers.common['wallet'] = accounts[0].toLowerCase(); // update wallet in REST API request header
   yield put({ type: SET_WALLET_ADDRESS, payload: accounts[0] });
 }
 
