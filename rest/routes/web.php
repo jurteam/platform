@@ -9,6 +9,7 @@ $api->version('v1', function($api) {
             $api->post('/', 'App\Http\Controllers\UserController@store');
             $api->put('/', 'App\Http\Controllers\UserController@update');
             $api->delete('/', 'App\Http\Controllers\UserController@destroy');
+            $api->delete('contracts', 'App\Http\Controllers\ContractsController@destroyAllByOwner');
         });
 
         $api->group(['prefix' => 'contracts'], function($api) {

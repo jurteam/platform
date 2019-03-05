@@ -131,4 +131,15 @@ class ContractsController extends Controller
             'attachments' => $contract->getMedia()
         ]);
     }
+
+    public function destroyAllByOwner(Request $request)
+    {
+        $wallet = $request->header('wallet');
+
+        $user = User::byWallet($wallet)->firstOrFail();
+
+        $user->contracts()->delete();
+
+        return response()->json(['status' => 'deleted']);
+    }
 }
