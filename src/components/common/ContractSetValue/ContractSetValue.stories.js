@@ -15,7 +15,7 @@ storiesOf('ContractSetValue', module)
   })
   .add('Default', () => (
     <ContractSetValue
-      data={{
+      contract={{
         contractID: 34765,
         from: {
           label: 'partA',

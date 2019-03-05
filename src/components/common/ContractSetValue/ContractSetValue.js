@@ -7,7 +7,7 @@ import './ContractSetValue.scss';
 
 export class ContractSetValue extends Component {
   state = {
-    contract: this.props.data
+    contract: this.props.contract
   }
 
   setPenaltyFeeStatus = value => {

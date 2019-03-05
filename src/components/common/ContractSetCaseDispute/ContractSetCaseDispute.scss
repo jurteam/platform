@@ -3,6 +3,8 @@
 .jur-contract-set-case-dispute {
     
     $c: &;
+    padding: 10px 20px;
+    border-top: 1px solid $contract-actions-border-color;
 
     &__title {
         font-size: 20px;
@@ -13,7 +15,7 @@
     
     &__option {
         padding-bottom: 10px;
-        
+
         label {
             cursor: pointer;
             font-size: 13px;
@@ -40,7 +42,7 @@
             visibility: hidden;
             
             &:checked {
-                + label {
+                ~ label {
                     font-weight: $poppins-semibold;
                     color: $prussian-blue;
                     

@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import './ContractSetCaseDispute.scss';
 
 export const ContractSetCaseDispute = ({cases, selectedOptionId, handleChange}) => {
-
   return (
     <div className="jur-contract-set-case-dispute">
       <div className="jur-contract-set-case-dispute__title">In Case of Dispute</div>
@@ -13,8 +12,8 @@ export const ContractSetCaseDispute = ({cases, selectedOptionId, handleChange}) 
           <div key={index.toString()} className="jur-contract-set-case-dispute__option">
             <input
               type="radio"
-              name="contact-set-case" id={`jur-contract-set-case-dispute__case-${option.id}`}
-              checked={selectedOptionId === option.id}
+              name="contact-set-case"
+              id={`jur-contract-set-case-dispute__case-${option.id}`}
               onChange={handleChange.bind(this, option.id)}
             />
             <label htmlFor={`jur-contract-set-case-dispute__case-${option.id}`}>{option.label}</label>
