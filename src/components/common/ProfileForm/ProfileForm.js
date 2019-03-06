@@ -20,11 +20,11 @@ console.log("locations", locations);
 export class ProfileForm extends Component {
   state = {
     fullName: "Alice",
-    gender: "",
+    gender: null,
     email: "alice@domain.com",
     location: null,
-    birthday: "",
-    category: "",
+    birthday: null,
+    category: null,
     showFullName: false,
     terms: true
   };
