@@ -3,8 +3,7 @@ import { SET_WALLET_ADDRESS, SET_BALANCE, RESET_WALLET } from "./types";
 const INITIAL_STATE = {
   address: null,
   balance: 0,
-  hash: null,
-  user: {}
+  hash: null
 };
 
 export default (state = INITIAL_STATE, action) => {

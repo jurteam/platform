@@ -11,7 +11,7 @@ export class User {
   static create(payload) {
     return axios.post(root, payload);
   }
-  static edit(payload) {
+  static update(payload) {
     return axios.put(root, payload);
   }
   static delete() {

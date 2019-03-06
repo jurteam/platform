@@ -1,6 +1,9 @@
 import { drizzleConnect } from "drizzle-react";
-import { ProfileForm } from './ProfileForm';
+import { ProfileForm } from "./ProfileForm";
 
-const mapStateToProps = state => ({ wallet: state.wallet });
+import { updateUserField, updateUser } from "../../../actions/User"; // actions
 
-export default drizzleConnect(ProfileForm, mapStateToProps);
+const mapDispatchToProps = { updateUserField, updateUser };
+const mapStateToProps = state => ({ user: state.user });
+
+export default drizzleConnect(ProfileForm, mapStateToProps, mapDispatchToProps);

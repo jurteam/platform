@@ -9,3 +9,6 @@ export const getJURToken = state => state.contracts.JURToken
 // Wallet
 export const getAccounts = state => state.accounts
 export const getWallet = state => state.wallet
+
+// User
+export const getUser = state => state.user

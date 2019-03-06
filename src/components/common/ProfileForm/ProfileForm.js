@@ -1,11 +1,14 @@
-import React, { Component } from "react";
+import React, { useContext, useState } from "react";
 import PropTypes from "prop-types";
+import { NavLink } from "react-router-dom";
+
 import Avatar from "../Avatar";
 import Button from "../Button";
 import Switch from "../Switch";
-import { InfoIcon } from "../Icons/InfoIcon";
-import Form from '../Form';
-import InfoTootip from '../InfoTooltip'
+import Form from "../Form";
+import InfoTootip from "../InfoTooltip";
+
+import { AppContext } from "../../../bootstrap/AppProvider"; // context
 
 import "./ProfileForm.scss";
 
@@ -17,158 +20,214 @@ import categories from "../../../assets/categories.json"; // categories
 import { FormContainer } from "../Form/FormContainer";
 console.log("locations", locations);
 
-export class ProfileForm extends Component {
-  state = {
-    fullName: "Alice",
-    gender: "",
-    email: "alice@domain.com",
-    location: null,
-    birthday: "",
-    category: "",
-    showFullName: false,
-    terms: true
+export const ProfileForm = ({
+  className,
+  user,
+  updateUserField,
+  updateUser
+}) => {
+  // state = {
+  //   fullName: "Alice",
+  //   gender: "",
+  //   email: "alice@domain.com",
+  //   location: null,
+  //   birthday: "",
+  //   category: "",
+  //   showFullName: false,
+  //   terms: true
+  // };
+
+  const { labels } = useContext(AppContext);
+  const {
+    wallet,
+    name,
+    gender,
+    email,
+    updating,
+    birth_date,
+    location,
+    category,
+    show_fullname,
+    accepted_terms
+  } = user;
+
+  // disable update
+  const submitDisabled =
+    accepted_terms === false || accepted_terms === 0 || updating === true;
+
+  const onInputChange = ev => {
+    const { target } = ev;
+    console.log("target", target);
+    if (target) {
+      // only if there is a target
+      const value = target.type === "checkbox" ? target.checked : target.value;
+      const name = target.name;
+
+      updateUserField(name, value); // dispatch action
+    }
   };
 
-  onInputChange = ev => {
-    const target = ev.target;
-    const value = target.type === "checkbox" ? target.checked : target.value;
-    const name = target.name;
+  const onDateChange = date => this.setState({ birthday: date });
 
-    this.setState({
-      [name]: value
-    });
-  };
-
-  onSelectChange = (name, selectedOption) => {
-    this.setState({ [name]: selectedOption });
-  }
-
-  onDateChange = date => this.setState({ birthday: date })
-
-  onSubmit = ev => {
+  const onSubmit = ev => {
     ev.preventDefault();
-    this.props.onSubmit();
+    if (submitDisabled === false) {
+      updateUser();
+    }
   };
 
-  render() {
-    const { className, wallet } = this.props;
-    let locationsOptions = locations.map(loc => ({ value: loc.alpha2Code, label: loc.name }));
+  let locationsOptions = locations.map(loc => ({
+    value: loc.alpha2Code,
+    label: loc.name
+  }));
 
-    return (
-      <Form
-        className={`jur-form__profile ${className || ''}`}
-        onSubmit={this.onSubmit}
-      >
-        <Form.Container className="jur-form__header">
-          <Avatar size="xxlarge" variant="rounded" seed={wallet.address} />
-          <Form.Group>
-            <Form.Label htmlFor="walletAddress" required>Wallet</Form.Label>
-            <Form.Input
-              type="text"
-              name="walletAddress"
-              id="walletAddress"
-              defaultValue={wallet.address}
-              disabled
-              readOnly
-            />
-          </Form.Group>
-        </Form.Container>
-        <Form.Container>
-          <Form.Group>
-            <Form.Label htmlFor="fullname" optional>Full Name</Form.Label>
-            <Form.Input
-              type="text"
-              name="fullname"
-              id="fullname"
-              value={this.state.fullName}
-              onChange={this.onInputChange}
-            />
-          </Form.Group>
-          <Form.Group>
-            <Form.Label htmlFor="gender" optional>Gender</Form.Label>
-            <Form.Select
-              name="gender"
-              id="gender"
-              options={genders}
-              onChange={this.onSelectChange.bind(this, 'gender')}
-            />
-          </Form.Group>
-        </Form.Container>
-        <Form.Container>
-          <Form.Group>
-            <Form.Label htmlFor="email" optional>Email</Form.Label>
-            <Form.Input
-              type="text"
-              name="email"
-              id="email"
-              value={this.state.email}
-              onChange={this.onInputChange}
-            />
-          </Form.Group>
-          <Form.Group>
-            <Form.Label htmlFor="location" optional>Location</Form.Label>
-            <Form.Select
-              name="localtion"
-              id="location"
-              value={this.state.location}
-              options={locationsOptions}
-              onChange={this.onSelectChange.bind(this, 'location')}
-            />
-          </Form.Group>
-        </Form.Container>
-        <Form.Container>
-          <Form.Group>
-            <Form.Label htmlFor="birthday" optional>Date of Birth</Form.Label>
-            <Form.DatePicker selectedDate={this.state.birthday} onChange={this.onDateChange} />
-          </Form.Group>
-          <Form.Group>
-            <Form.Label htmlFor="category" optional>Category</Form.Label>
-            <Form.Select
-              name="category"
-              id="category"
-              value={this.state.category}
-              options={categories}
-              onChange={this.onSelectChange.bind(this, 'category')}
-            />
-          </Form.Group>
-        </Form.Container>
-        <FormContainer className="jur-form__footer">
-          <Form.Group>
-            <div className="jur-form__profile__options">
-              <div className="jur-form__profile__options__show-name">
-                <Form.Label>
-                  <InfoTootip /> Show Full Name instead of Wallet address
-                </Form.Label>
-                <div className="jur-form__profile__options__show-name__input">
-                  <Switch
-                    name="showFullName"
-                    value={this.state.showFullName}
-                    onChange={this.onInputChange}
-                    checked={this.state.showFullName}
-                  />
-                  <span>{this.state.showFullName ? "Yes" : "No"}</span>
-                </div>
-              </div>
-              <div className="jur-form__profile__options__terms">
-                <input
-                  type="checkbox"
-                  name="terms"
-                  value={this.state.terms}
-                  onChange={this.onInputChange}
+  return (
+    <Form
+      className={`jur-form__profile ${className || ""}`}
+      onSubmit={onSubmit}
+    >
+      <Form.Container className="jur-form__header">
+        <Avatar size="xxlarge" variant="rounded" seed={wallet} />
+        <Form.Group>
+          <Form.Label htmlFor="walletAddress" required>
+            {labels.wallet}
+          </Form.Label>
+          <Form.Input
+            type="text"
+            name="walletAddress"
+            id="walletAddress"
+            defaultValue={wallet}
+            disabled
+            readOnly
+          />
+        </Form.Group>
+      </Form.Container>
+      <Form.Container>
+        <Form.Group>
+          <Form.Label htmlFor="name" optional>
+            {labels.fullName}
+          </Form.Label>
+          <Form.Input
+            type="text"
+            name="name"
+            id="name"
+            placeholder={labels.fullNamePlaceholder}
+            value={name}
+            onChange={onInputChange}
+          />
+        </Form.Group>
+        <Form.Group>
+          <Form.Label htmlFor="gender" optional>
+            {labels.gender}
+          </Form.Label>
+          <Form.Select
+            name="gender"
+            id="gender"
+            value={genders.filter(option => option.value === gender)}
+            options={genders}
+            onChange={input => updateUserField("gender", input.value)}
+          />
+        </Form.Group>
+      </Form.Container>
+      <Form.Container>
+        <Form.Group>
+          <Form.Label htmlFor="email" optional>
+            {labels.email}
+          </Form.Label>
+          <Form.Input
+            type="text"
+            name="email"
+            id="email"
+            placeholder={labels.emailPlaceholder}
+            value={email}
+            onChange={onInputChange}
+          />
+        </Form.Group>
+        <Form.Group>
+          <Form.Label htmlFor="location" optional>
+            {labels.location}
+          </Form.Label>
+          <Form.Select
+            name="localtion"
+            id="location"
+            value={locationsOptions.filter(option => option.value === location)}
+            options={locationsOptions}
+            onChange={input => updateUserField("location", input.value)}
+          />
+        </Form.Group>
+      </Form.Container>
+      <Form.Container>
+        <Form.Group>
+          <Form.Label htmlFor="birth_date" optional>
+            {labels.dateOfBirth}
+          </Form.Label>
+          <Form.DatePicker
+            name="birth_date"
+            id="birth_date"
+            placeholder={labels.dateOfBirthPlaceholder}
+            selectedDate={birth_date}
+            onChange={date => updateUserField("birth_date", date)}
+          />
+        </Form.Group>
+        <Form.Group>
+          <Form.Label htmlFor="category" optional>
+            {labels.category}
+          </Form.Label>
+          <Form.Select
+            name="category"
+            id="category"
+            value={categories.filter(option => option.value === category)}
+            options={categories}
+            onChange={input => updateUserField("category", input.value)}
+          />
+        </Form.Group>
+      </Form.Container>
+      <FormContainer className="jur-form__footer">
+        <Form.Group>
+          <div className="jur-form__profile__options">
+            <div className="jur-form__profile__options__show-name">
+              <Form.Label>
+                <InfoTootip text={labels.showFullNameTooltipText} />{" "}
+                {labels.showFullName}
+              </Form.Label>
+              <div className="jur-form__profile__options__show-name__input">
+                <Switch
+                  name="show_fullname"
+                  value={show_fullname}
+                  onChange={onInputChange}
+                  checked={show_fullname}
                 />
-                <label>
-                  Accept <a href="#">Terms and Condition</a>
-                </label>
+                <span>{show_fullname ? labels.yes : labels.no}</span>
               </div>
             </div>
-            <div className="jur-form__profile__submit">
-                <Button type="submit" variant="contained" size="big">
-                  Update
-                </Button>
-              </div>
-          </Form.Group>
-        </FormContainer>
-      </Form>
-    );
-  }
-}
+            <div className="jur-form__profile__options__terms">
+              <input
+                type="checkbox"
+                name="accepted_terms"
+                value={1}
+                checked={accepted_terms}
+                onChange={onInputChange}
+              />
+              <label>
+                {labels.accept}{" "}
+                <NavLink to="/profile/terms">
+                  {labels.termAndConditions}
+                </NavLink>
+              </label>
+            </div>
+          </div>
+          <div className="jur-form__profile__submit">
+            <Button
+              type="submit"
+              variant="contained"
+              size="big"
+              disabled={submitDisabled}
+            >
+              {updating === false ? labels.update : labels.dotted}
+            </Button>
+          </div>
+        </Form.Group>
+      </FormContainer>
+    </Form>
+  );
+};

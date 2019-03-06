@@ -23,6 +23,9 @@ export const FETCH_USER = "FETCH_USER";
 export const USER_UPDATE = "USER_UPDATE";
 export const USER_OBLIVION = "USER_OBLIVION";
 export const RESET_USER = "RESET_USER";
+export const UPDATE_USER_FIELD = "UPDATE_USER_FIELD";
+export const PUT_USER = "PUT_USER";
+export const USER_UPDATING = "USER_UPDATING";
 
 // Wallet
 export const SET_BALANCE = "SET_BALANCE";

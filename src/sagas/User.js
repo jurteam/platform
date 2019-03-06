@@ -10,13 +10,17 @@ import {
   DISCLAIMER_ACCEPTED,
   API_CATCH,
   NEW_USER,
+  PUT_USER,
   FETCH_USER,
   USER_UPDATE,
+  USER_UPDATING,
   USER_OBLIVION,
   SET_LOADING
 } from "../reducers/types"; // action types
 
 import { log, warn } from "../utils/helpers"; // log helper
+
+import { getUser } from "./Selectors"; // selector
 
 export function* handleDisclaimerOptin(args) {
   log("handleDisclaimerOptin", "run");
@@ -66,6 +70,7 @@ export function* checkUserExist(action) {
       }
     } else {
       yield put({ type: API_CATCH, error });
+      yield put({ type: USER_UPDATING, payload: false });
     }
   }
 }
@@ -80,7 +85,26 @@ export function* registerUser(action) {
     yield put({ type: USER_UPDATE, ...response.data });
   } catch (error) {
       yield put({ type: API_CATCH, error });
+      yield put({ type: USER_UPDATING, payload: false });
   }
+}
+
+export function* handleUserDataUpdate(action) {
+  log("handleUserDataUpdate", "run");
+  log("handleUserDataUpdate - action", action);
+
+  const { disclaimer, created_at, updated_at, id, wallet, updating, accepted_disclaimer, ...updatedData } = yield select(getUser);
+
+  log("handleUserDataUpdate - updatedData", updatedData);
+
+  try {
+    const response = yield call(User.update, updatedData);
+    log("handleUserDataUpdate - user updated", response);
+  } catch (error) {
+      yield put({ type: API_CATCH, error });
+  }
+
+  yield put({ type: USER_UPDATING, payload: false });
 }
 
 // spawn tasks base certain actions
@@ -92,4 +116,5 @@ export default function* userSagas() {
   yield takeLatest(USER_UPDATE, () => setLoading(false));
   yield takeLatest(FETCH_USER, checkUserExist);
   yield takeLatest(USER_OBLIVION, handleUserOblivion);
+  yield takeLatest(PUT_USER, handleUserDataUpdate);
 }

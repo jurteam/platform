@@ -7,7 +7,7 @@ import Logo from "../Logo";
 import MainNav from "../MainNav";
 import ProfilePreview from "../ProfilePreview";
 
-export const Header = ({ wallet, app }) => {
+export const Header = ({ wallet, user, app }) => {
   const renderLogo = () => {
     const { tutorial } = app
     if (typeof app === 'undefined' || tutorial) return <Logo />;
@@ -24,7 +24,7 @@ export const Header = ({ wallet, app }) => {
           {renderLogo()}
           <MainNav />
           <ProfilePreview
-            name={wallet.user.name || null}
+            name={user.name || null}
             seed={wallet.address || ""}
             shouldRenderName
             balance={wallet.balance}

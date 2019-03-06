@@ -2,7 +2,12 @@ import {
   DISCLAIMER_OPTIN,
   DISCLAIMER_VISIBILITY,
   USER_UPDATE,
-  RESET_USER
+  UPDATE_USER_FIELD,
+  USER_UPDATING,
+  RESET_USER,
+  FETCH_USER,
+  NEW_USER,
+  PUT_USER
 } from "./types"; // action types
 
 const INITIAL_STATE = {
@@ -10,6 +15,7 @@ const INITIAL_STATE = {
     optin: false,
     viewed: false
   },
+  updating: false,
   id: null,
   name: null,
   email: null,
@@ -41,7 +47,23 @@ export default (state = INITIAL_STATE, action) => {
       };
 
     case USER_UPDATE:
-      return { ...state, ...action.user };
+      return { ...state, ...action.user, updating: false };
+
+    case USER_UPDATING:
+      return { ...state, updating: action.payload };
+
+    // Updates
+    case UPDATE_USER_FIELD:
+      let toUpdate = {};
+      toUpdate[action.field] = action.value;
+      console.log(UPDATE_USER_FIELD, toUpdate);
+      return { ...state, ...toUpdate };
+
+    // Fetching
+    case FETCH_USER:
+    case NEW_USER:
+    case PUT_USER:
+      return { ...state, updating: true };
 
     // Reset
     case RESET_USER:
