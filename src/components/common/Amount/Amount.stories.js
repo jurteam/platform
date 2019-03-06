@@ -15,6 +15,8 @@ storiesOf('Amount', module)
   })
   .add('value as string ', () => (
     <>
+      <Amount currency="JUR"/>
+      <br />
       <Amount value="8346583" currency="JUR"/>
       <br />
       <Amount value="1000" currency="JUR"/>
@@ -24,7 +26,7 @@ storiesOf('Amount', module)
   ))
   .add('value as number and no currency', () => (
     <>
-      <Amount value={8346583}  />
+      <Amount />
       <br />
       <Amount value={1000} />
       <br />
