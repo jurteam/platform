@@ -1,5 +1,5 @@
 
-import anchorme from 'anchorme';
+import linkify from 'linkifyjs/string';
 
 // Log helper only on DEVELOPMENT environment
 export const log = (mixed, obj) => {
@@ -22,5 +22,14 @@ export const toCurrencyFormat = (value) => {
 export const capitalize = string => (string.charAt(0).toUpperCase() + string.slice(1));
 
 export const urlify = str => {
-  return anchorme(str);
+  const html = linkify(str, {
+    target: (href, type) => {
+      if (href.startsWith(window.location.origin)) {
+        return '_self';
+      } else {
+        return '_blank';
+      }
+    }
+  });
+  return html;
 };
