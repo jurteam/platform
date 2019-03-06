@@ -15,7 +15,7 @@ class ContractDetailsController extends Controller
      */
     public function store(Request $request, $id)
     {
-        $detail = new ContractStatusDetail($request->all())
+        $detail = new ContractStatusDetail($request->all());
 
         $detail->contract()
                 ->associate(Contract::findOrFail($id))
