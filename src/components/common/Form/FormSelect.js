@@ -47,11 +47,18 @@ export const FormSelect = ({name, id, options, onChange, ...rest}) => {
       position: 'relative',
       top: 0,
       transform: 'translateY(0)'
+    }),
+    input: styles => ({
+      ...styles,
+      ' input': {
+        height: '100%'
+      }
     })
   };
 
   return (
     <Select
+      className="jur-select"
       name={name}
       id={id}
       styles={customStyles}
