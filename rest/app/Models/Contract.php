@@ -9,7 +9,7 @@ use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 
 class Contract extends Model implements HasMedia
 {
-    use HasMediaTrait, ActivitiesTrait;
+    use HasMediaTrait, ActivitiesTrait, StatusesTrait;
 
     protected $fillable = [
         'name',
@@ -81,6 +81,13 @@ class Contract extends Model implements HasMedia
         $this->update([
             'contract_status_id' => $status->id
         ]);
+
+        if ($request->code == 31) {
+            $this->flagAsOpenDispute();
+        }
+        if ($request->code == 21) {
+            $this->flagAsFriendlyResolution();
+        }
 
         $this->recordActivities($params, $user);
     }
