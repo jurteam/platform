@@ -29,7 +29,17 @@ class Contract extends Model implements HasMedia
         'durantion_days',
         'duration_hours',
         'duration_minutes',
-        'contract_status_id'
+        'contract_status_id',
+        'is_a_dispute',
+        'is_a_friendly_resolution'
+    ];
+
+    /**
+     * @var array
+     */
+    protected $casts = [
+        'is_a_dispute' => 'boolean',
+        'is_a_friendly_resolution' => 'boolean'
     ];
 
     public function scopeFilters($query, $filters)
@@ -52,19 +62,26 @@ class Contract extends Model implements HasMedia
         return $this->hasMany(ContractVote::class);
     }
 
-    public function updateStatus($params, User $user)
+    public function details()
     {
+        return $this->hasMany(ContractStatusDetail::class);
+    }
+
+    /**
+     * Update status, and save the activity.
+     *
+     * @param  \Illuminate\Http\Request $params
+     * @param  \App\Models\User $user
+     * @return void
+     */
+    public function updateStatusByCode($params, User $user)
+    {
+        $status = ContractStatus::byCode($request->code)->firstOrFail();
+
         $this->update([
-            'contract_status_id' => $params->status
+            'contract_status_id' => $status->id
         ]);
 
         $this->recordActivities($params, $user);
-    }
-
-    public function statusActivity()
-    {
-        return $this->activities->filter(function($activity) {
-            return $activity->type == config('jur.activities.types.status_changed')
-        })->first();
     }
 }

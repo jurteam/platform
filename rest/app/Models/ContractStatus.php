@@ -17,4 +17,9 @@ class ContractStatus extends Model
     ];
 
     public $timestamps = false;
+
+    public function scopeByCode($query, $code)
+    {
+        return $query->where('code', $code);
+    }
 }

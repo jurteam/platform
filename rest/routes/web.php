@@ -26,6 +26,17 @@ $api->version('v1', function($api) {
             $api->group(['prefix' => 'medias'], function($api) {
                 $api->post('{id}', 'App\Http\Controllers\ContractsController@uploadMedia');
             });
+
+            $api->group(['prefix' => 'disputes'], function($api) {
+                $api->post('{id}', 'App\Http\Controllers\ContractDetailsController@store');
+                $api->group(['prefix' => 'evidences'], function($api) {
+                    $api->post('{id}', 'App\Http\Controllers\ContractDetailsController@uploadMedia');
+                });
+            });
+
+            $api->group(['prefix' => 'friendly'], function($api) {
+                $api->post('{id}', 'App\Http\Controllers\ContractDetailsController@store');
+            });
         });
 
         $api->group(['prefix' => 'votes'], function($api) {

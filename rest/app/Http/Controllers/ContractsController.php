@@ -103,12 +103,16 @@ class ContractsController extends Controller
      */
     public function updateStatus(Request $request, $id)
     {
+        $this->request($request, [
+            'code' => 'required|exists:contract_statuses,code'
+        ]);
+
         $wallet = $request->header('wallet');
 
         $user = User::byWallet($wallet)->firstOrFail();
         $contract = Contract::findOrFail($id);
 
-        $contract->updateStatus($request, $user);
+        $contract->updateStatusByCode($request, $user);
 
         return $this->response->item($contract, new ContractTransformer);
     }
