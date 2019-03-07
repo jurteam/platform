@@ -13,7 +13,8 @@ class ContractStatusDetail extends Model implements HasMedia
     protected $fillable = [
         'message',
         'contract_part',
-        'contract_proposal',
+        'proposal_part_a',
+        'proposal_part_b',
         'payed_at'
     ];
 
