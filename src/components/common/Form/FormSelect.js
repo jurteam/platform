@@ -30,7 +30,7 @@ export const FormSelect = ({name, id, options, onChange, ...rest}) => {
     placeholder: styles => ({
       ...styles,
       fontFamily: '"Poppins", Arial, sans-serif',
-      color: '#002257',
+      color: '#97A3B4',
       fontSize: 13,
     }),
     valueContainer: styles => ({

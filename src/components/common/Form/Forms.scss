@@ -9,19 +9,28 @@
     $form: &;
 
     label {
-        display: block;
+        display: flex;
+        align-items: center;
         color: $label-color;
         font-size: 13px;
         font-family: $font-poppins;
         margin-bottom: 6px;
-        
+
         span {
-            color: $label-option;
+            padding-left: 5px;
+
+            &.optional {
+                color: $label-option;
+                font-size: 10px;
+                color: $cadet-blue;
+            }
+            
+            &.required {
+                color: $label-sup;
+                height: 16px;
+            }
         }
         
-        sup {
-            color: $label-sup;
-        }
     }
 
     input {
