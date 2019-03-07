@@ -7,7 +7,7 @@ import './ContractCounterparties.scss';
 
 export const ContractCounterparties = ({counterparties, CounterpartiesDescription}) => (
   <div className="jur-contract-counterparties">
-    <BlockTitle title="Counterparties" description={CounterpartiesDescription} />
+    <BlockTitle title="Counterparties" description={CounterpartiesDescription} hideIcon/>
     <div className="jur-contract-counterparties__value">
       {
         counterparties.map(counterparty => (
