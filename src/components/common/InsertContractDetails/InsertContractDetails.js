@@ -7,7 +7,7 @@ import File from '../File';
 
 import './InsertContractDetails.scss';
 
-export const InsertContractDetails = ({kpiInitialValue, resolutionInitialValue, onKpiChange, onResolutionProofChange, onAddFile, uploadedFiles, onView, onDelete}) => {
+export const InsertContractDetails = ({kpiPlaceholder, resolutionPlaceholder, kpiInitialValue, resolutionInitialValue, onKpiChange, onResolutionProofChange, onFileAdded, uploadedFiles, onView, onDelete}) => {
   return (
     <div className="jur-insert-contract-details">
       <ContractTextarea
@@ -15,12 +15,14 @@ export const InsertContractDetails = ({kpiInitialValue, resolutionInitialValue, 
         label="KPI of the contracts:"
         name="kpi"
         onChange={onKpiChange}
+        placeholder={kpiPlaceholder}
       />
       <ContractTextarea
         initialValue={resolutionInitialValue}
         label="Resolution Proof:"
         name="resolution"
         onChange={onResolutionProofChange}
+        placeholder={resolutionPlaceholder}
       />
       <div className="jur-insert-contract-details__files">
         {uploadedFiles.length > 0 &&
@@ -36,7 +38,7 @@ export const InsertContractDetails = ({kpiInitialValue, resolutionInitialValue, 
             ))}
           </FileList>
         }
-        <UploadForm onAddFile={onAddFile} />
+        <UploadForm onFileAdded={onFileAdded} />
       </div>
     </div>
   );
