@@ -54,7 +54,7 @@ export const ContractsTable = ({ headers, data, handleArchive, newContract }) =>
                 </TableCell>
                 <TableCell>
                   {contract.counterParties.map(counterParty => (
-                    <AvatarInfo key={counterParty.wallet} userName={counterParty.name} userWallet={counterParty.wallet} renderName={ counterParty.renderName } />
+                    <AvatarInfo key={counterParty.wallet} userName={counterParty.name} userWallet={counterParty.wallet} shouldRenderName={ counterParty.shouldRenderName } />
                   ))}
                 </TableCell>
                 <TableCell>

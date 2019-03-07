@@ -82,7 +82,7 @@ const contractsData = [
   },
   {
     id: 2,
-    statusId: 2,
+    statusId: 5,
     statusLabel: 'Ongoing',
     contractName: 'Web Development Activity',
     duration: 1000*60*60*24*3,
@@ -105,7 +105,7 @@ const contractsData = [
   },
   {
     id: 3,
-    statusId: 3,
+    statusId: 31,
     statusLabel: 'Open Dispute',
     contractName: 'Logo Design',
     duration: 1000*60*60*24*3,
@@ -128,7 +128,7 @@ const contractsData = [
   },
   {
     id: 4,
-    statusId: 4,
+    statusId: 39,
     statusLabel: 'Closed Dispute',
     contractName: 'Investment Milestone',
     duration: 1000*60*60*24*3,
@@ -151,7 +151,7 @@ const contractsData = [
   },
   {
     id: 5,
-    statusId: 5,
+    statusId: 39,
     statusLabel: 'Closed Dispute',
     contractName: 'EU Patent purchasing',
     duration: 1000*60*60*24*3,
