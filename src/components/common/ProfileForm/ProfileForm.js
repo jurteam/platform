@@ -1,6 +1,10 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import PropTypes from "prop-types";
 import { NavLink } from "react-router-dom";
+
+// form validation
+import { useFormValidation } from "../../../utils/hooks";
+import validationSchema from "./_validationSchema";
 
 import Avatar from "../Avatar";
 import Button from "../Button";
@@ -37,6 +41,19 @@ export const ProfileForm = ({
   //   terms: true
   // };
 
+  const [ isValid, errors, validateForm ] = useFormValidation(
+    user,
+    validationSchema
+  );
+
+  console.log('ProfileForm', isValid);
+  console.log('ProfileForm - validateForm', validateForm);
+
+  // first form validation
+  // useEffect(() => {
+  //   // validateForm();
+  // }, []);
+
   const { labels } = useContext(AppContext);
   const {
     wallet,
@@ -67,7 +84,10 @@ export const ProfileForm = ({
     }
   };
 
-  const onDateChange = date => this.setState({ birthday: date });
+  const onChangeSelect = (name, input) => {
+    const value = (typeof input !== 'undefined' && input !== null && typeof input.value !== 'undefined' ) ? input.value : null;
+    updateUserField(name, value);
+  };
 
   const onSubmit = ev => {
     ev.preventDefault();
@@ -80,6 +100,8 @@ export const ProfileForm = ({
     value: loc.alpha2Code,
     label: loc.name
   }));
+
+  const hasError = (field) => errors[field].length > 0
 
   return (
     <Form
@@ -125,7 +147,7 @@ export const ProfileForm = ({
             id="gender"
             value={genders.filter(option => option.value === gender)}
             options={genders}
-            onChange={input => updateUserField("gender", input.value)}
+            onChange={input => onChangeSelect("gender", input)}
           />
         </Form.Group>
       </Form.Container>
@@ -152,7 +174,7 @@ export const ProfileForm = ({
             id="location"
             value={locationsOptions.filter(option => option.value === location)}
             options={locationsOptions}
-            onChange={input => updateUserField("location", input.value)}
+            onChange={input => onChangeSelect("location", input)}
           />
         </Form.Group>
       </Form.Container>
@@ -178,7 +200,7 @@ export const ProfileForm = ({
             id="category"
             value={categories.filter(option => option.value === category)}
             options={categories}
-            onChange={input => updateUserField("category", input.value)}
+            onChange={input => onChangeSelect("category", input)}
           />
         </Form.Group>
       </Form.Container>

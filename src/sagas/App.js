@@ -9,6 +9,7 @@ import {
   SET_READY,
   SET_LOADING,
   FETCH_USER,
+  RESET_USER,
   SET_FAQ,
   FETCH_FAQ,
   RESET_APP_STATE,
@@ -73,8 +74,13 @@ export function* handleNetworkUpdate(data) {
   // should be checked via lowercase due the MetaMask returned value
   // TODO: check if this can be an issue on long term basis
   if (address && address.toLowerCase() !== selectedAddress.toLowerCase()) {
+
+    const { API } = global;
+    API.defaults.headers.common['wallet'] = selectedAddress.toLowerCase(); // update wallet in REST API request header
+
     yield put({ type: SET_LOADING, payload: true });
-    yield put({ type: SET_WALLET_ADDRESS, payload: selectedAddress });
+    yield put({ type: SET_WALLET_ADDRESS, payload: selectedAddress.toLowerCase() });
+    yield put({ type: RESET_USER });
     yield put({ type: FETCH_USER });
   }
 }
