@@ -67,7 +67,10 @@ export const ProfileForm = ({
     }
   };
 
-  const onDateChange = date => this.setState({ birthday: date });
+  const onChangeSelect = (name, input) => {
+    const value = (typeof input !== 'undefined' && input !== null && typeof input.value !== 'undefined' ) ? input.value : null;
+    updateUserField(name, value);
+  };
 
   const onSubmit = ev => {
     ev.preventDefault();
@@ -125,7 +128,7 @@ export const ProfileForm = ({
             id="gender"
             value={genders.filter(option => option.value === gender)}
             options={genders}
-            onChange={input => updateUserField("gender", input.value)}
+            onChange={input => onChangeSelect("gender", input)}
           />
         </Form.Group>
       </Form.Container>
@@ -152,7 +155,7 @@ export const ProfileForm = ({
             id="location"
             value={locationsOptions.filter(option => option.value === location)}
             options={locationsOptions}
-            onChange={input => updateUserField("location", input.value)}
+            onChange={input => onChangeSelect("location", input)}
           />
         </Form.Group>
       </Form.Container>
@@ -178,7 +181,7 @@ export const ProfileForm = ({
             id="category"
             value={categories.filter(option => option.value === category)}
             options={categories}
-            onChange={input => updateUserField("category", input.value)}
+            onChange={input => onChangeSelect("category", input)}
           />
         </Form.Group>
       </Form.Container>
