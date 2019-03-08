@@ -1,6 +1,9 @@
 @import "../../../assets/scss/variables";
 
 .jur-block-title {
+    display: flex;
+    align-items: center;
+    
     .jur-info-tooltip {
         margin-right: 5px;
 

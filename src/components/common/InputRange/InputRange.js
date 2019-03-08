@@ -4,18 +4,18 @@ import PropTypes from 'prop-types';
 import './InputRange.scss';
 
 export const InputRange = ({ min, max, defaultValue, onValueChange, step }) => {
-  const [value, setValue] = useState(defaultValue);
-  const [spanWidth, setSpanWidth] = useState('100%');
-
-  const calculateSpanWidth = (target) => {
-    const width = ((Number(target.max) - target.value) * Number(target.max)) / 100;
-    return width + '%';
+  const calculateSpanWidth = (value) => {
+    const width = 100 - (Number(value) * 100) / Number(max);
+    return parseFloat(width).toFixed(2) + '%';
   };
+
+  const [value, setValue] = useState(defaultValue);
+  const [spanWidth, setSpanWidth] = useState(defaultValue ? calculateSpanWidth(defaultValue) : '100%');
 
   const onChange = ev => {
     const value = ev.target.value;
     setValue(value);
-    setSpanWidth(calculateSpanWidth(ev.target));
+    setSpanWidth(calculateSpanWidth(value));
     onValueChange(value);
   };
 

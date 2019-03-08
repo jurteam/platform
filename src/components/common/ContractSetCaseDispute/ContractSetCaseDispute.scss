@@ -1,0 +1,71 @@
+@import "../../../assets/scss/variables";
+
+.jur-contract-set-case-dispute {
+    
+    $c: &;
+    padding: 10px 20px;
+    border-top: 1px solid $contract-actions-border-color;
+
+    &__title {
+        font-size: 20px;
+        font-family: $font-poppins;
+        color: $contract-select-category-title-color;
+        margin-bottom: 6px;
+    }
+    
+    &__option {
+        padding-bottom: 10px;
+
+        label {
+            cursor: pointer;
+            font-size: 13px;
+            color: $gull-gray;
+            font-family: $font-poppins;
+
+            &::before {
+                position: relative;
+                top: 2px;
+                right: 8px;
+                content: "";
+                display: inline-block;
+                width: 12px;
+                height: 12px;
+                border: 1px solid $gull-gray;
+                background-color: $white;
+                border-radius: 50%;
+            }
+        }
+
+        input {
+            width: 0;
+            height: 0;
+            visibility: hidden;
+            
+            &:checked {
+                ~ label {
+                    font-weight: $poppins-semibold;
+                    color: $prussian-blue;
+                    
+                    &::before {
+                        width: 8px;
+                        height: 8px;
+                        border: 3px solid $white;
+                        background-color: $dodger-blue;
+                        box-shadow: 0 0 0 2px $dodger-blue;
+                    }
+                }
+                ~ #{$c}__option-description {
+                    display: block;
+                }
+            }
+        }
+    }
+
+    &__option-description {
+        display: none;
+        font-family: $font-poppins;
+        color: $prussian-blue;
+        font-size: 13px;
+        padding-top: 8px;
+    }
+}

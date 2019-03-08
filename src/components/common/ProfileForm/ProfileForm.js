@@ -197,7 +197,6 @@ export const ProfileForm = ({
                   onChange={onInputChange}
                   checked={show_fullname}
                 />
-                <span>{show_fullname ? labels.yes : labels.no}</span>
               </div>
             </div>
             <div className="jur-form__profile__options__terms">

@@ -14,5 +14,22 @@
         color: $contract-details-textarea-text-color;
         font-size: 13px;
         font-family: $font-poppins;
+        padding: 20px 40px 0 20px;
+
+        &::-webkit-input-placeholder {
+            color: $gull-gray;
+        }
+        
+        &:-moz-placeholder {
+            color: $gull-gray;  
+        }
+        
+        &::-moz-placeholder {
+            color: $gull-gray;  
+        }
+        
+        &::placeholder {
+            color: $gull-gray;  
+        }
     }
 }

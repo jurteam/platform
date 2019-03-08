@@ -9,19 +9,28 @@
     $form: &;
 
     label {
-        display: block;
+        display: flex;
+        align-items: center;
         color: $label-color;
         font-size: 13px;
         font-family: $font-poppins;
         margin-bottom: 6px;
-        
+
         span {
-            color: $label-option;
+            padding-left: 5px;
+
+            &.optional {
+                color: $label-option;
+                font-size: 10px;
+                color: $cadet-blue;
+            }
+            
+            &.required {
+                color: $label-sup;
+                height: 16px;
+            }
         }
         
-        sup {
-            color: $label-sup;
-        }
     }
 
     input {
@@ -62,7 +71,61 @@
         margin-bottom: 15px;
     }
 
-    &__create-contract {}
+    &__numeric-input {
+        display: inline-flex;
+
+        &--error {
+            input {
+                color: $form-error;
+                border-color: $form-error;
+            }
+
+            label {
+                color: $form-error;
+            }
+        }
+
+        input {
+            width: 46px;
+            height: 32px;
+            outline: none;
+            border: 1px solid $input-numeric-border-color;
+            color: $input-numeric-text-color;
+            border-radius: 4px;
+            font-size: 20px;
+            -moz-appearance:textfield;
+            text-align: center;
+
+            &::-webkit-outer-spin-button,
+            &::-webkit-inner-spin-button {
+                -webkit-appearance: none;
+                margin: 0;
+            }
+        }
+
+        label {
+            display: block;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            width: 100%;
+            text-align: center;
+            margin-top: 5px;
+            font-family: $font-poppins;
+        }
+
+        svg {
+            display: block;
+            width: 10px;
+            padding: 3px 0;
+            cursor: pointer;
+        }
+
+        &__actions {
+            margin: 5px 0 0 5px;
+        }
+    }
+
 
     .react-datepicker-wrapper,
     .react-datepicker__input-container {

@@ -54,14 +54,13 @@
                     align-items: center;
                     justify-content: space-between;
     
-                    span {
+                    .switch__value {
                         width: 25px;
                         text-align: right;
                     }
                 }
     
                 .switch {
-                    margin-right: 5px;
                     margin-bottom: 0;
                 }
             }
@@ -74,6 +73,8 @@
                 input {
                     width: auto;
                     margin: 0;
+                    width: 16px;
+                    height: 16px;
                 }
     
                 label {
