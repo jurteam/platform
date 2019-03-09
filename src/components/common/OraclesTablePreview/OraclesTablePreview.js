@@ -9,9 +9,10 @@ import Avatar from '../Avatar';
 import Button from '../Button';
 import { Link } from 'react-router-dom';
 import {MessageIcon} from '../Icons/MessageIcon';
-import {toCurrencyFormat, ellipsisString, transformDate} from '../../../utils/helpers';
+import {toCurrencyFormat, ellipsisString } from '../../../utils/helpers';
 
 import './OraclesTablePreview.scss';
+import TimeAgo from '../TimeAgo';
 
 
 export const OraclesTablePreview = ({currentUserWallet, headers, data, viewAllDetails}) => {
@@ -61,7 +62,7 @@ export const OraclesTablePreview = ({currentUserWallet, headers, data, viewAllDe
                 {toCurrencyFormat(oracle.amount)}
               </TableCell>
               <TableCell className="jur-oracles-table-preview__date">
-                {transformDate(oracle.date)}
+                <TimeAgo date={oracle.date} />
               </TableCell>
             </TableRow>
           ))}

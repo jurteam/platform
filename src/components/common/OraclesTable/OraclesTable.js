@@ -9,7 +9,9 @@ import Avatar from '../Avatar';
 import FileList from '../FileList';
 import File from '../File';
 import Tag from '../Tag';
-import {toCurrencyFormat, ellipsisString, transformDate} from '../../../utils/helpers';
+import TimeAgo from '../TimeAgo';
+
+import {toCurrencyFormat, ellipsisString} from '../../../utils/helpers';
 
 import './OraclesTable.scss';
 
@@ -100,7 +102,7 @@ export const OraclesTable = ({currentUserWallet, headers, data, dispute, onFileV
                   {toCurrencyFormat(oracle.amount)}
                 </TableCell>
                 <TableCell className="jur-oracles-table__date">
-                  {transformDate(oracle.date)}
+                  <TimeAgo date={oracle.date} />
                 </TableCell>
               </TableRow>
             ))}
