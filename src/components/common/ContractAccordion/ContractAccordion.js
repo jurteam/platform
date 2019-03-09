@@ -1,10 +1,11 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import {AngleIcon} from '../Icons/AngleIcon';
+import InfoTooltip from '../InfoTooltip';
 
 import './ContractAccordion.scss';
 
-export const ContractAccordion = ({ className, children, title, initialOpen, borderBottom }) => {
+export const ContractAccordion = ({ tooltip, className, children, title, initialOpen, borderBottom }) => {
   const [isOpen, setOpenState] = useState(initialOpen || false);
   const classes = {
     'jur-contract-accordion': true,
@@ -15,8 +16,13 @@ export const ContractAccordion = ({ className, children, title, initialOpen, bor
   return (
     <div className={`${classNames} ${className}`}>
       <div className="jur-contract-accordion__header">
-        {title}
-        <span onClick={() => setOpenState(!isOpen)}>
+        <span class="jur-contract-accordion__title">
+          {title}
+          {tooltip &&
+            <InfoTooltip />
+          }
+        </span>
+        <span className="jur-contract-accordion__arrow" onClick={() => setOpenState(!isOpen)}>
           <AngleIcon />
         </span>
       </div>

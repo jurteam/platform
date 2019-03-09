@@ -6,5 +6,10 @@ export const TableRow = ({ parentComponent, children, className, onClick }) => {
   const cells = childrenArray.map(cell => (
     React.cloneElement(cell, { parentComponent, ...cell.props })
   ));
-  return <tr className={`jur-table__row ${className|| ''}`} onClick={() => onClick()}>{ cells }</tr>;
+  return <tr
+    className={`jur-table__row ${className|| ''}`}
+    {...(onClick && {onClick})}
+  >
+  { cells }
+  </tr>;
 }
