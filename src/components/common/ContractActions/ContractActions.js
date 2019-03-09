@@ -3,11 +3,20 @@ import PropTypes from 'prop-types';
 
 import './ContractActions.scss';
 
-export const ContractActions = ({children, statusId}) => (
-  <div className="jur-contract-actions">
-    {statusId === 31 ? // open dispute
-      <span className="jur-contract-actions__text">Waiting for Counterparty</span>
-      : <>{children}</>
+export const ContractActions = ({children, statusId}) => {
+  const renderSwitch = () => {
+    switch (statusId) {
+      case -1:
+        return <span className="jur-contract-actions__text">The Contract was rejected</span>;
+      case 31:
+        return <span className="jur-contract-actions__text">Waiting for Counterparty</span>;
+      default:
+        return children;
     }
-  </div>
-)
+  }
+  return (
+    <div className="jur-contract-actions">
+      {renderSwitch()}
+    </div>
+  );
+};
