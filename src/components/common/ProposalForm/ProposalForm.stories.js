@@ -29,6 +29,7 @@ storiesOf('ProposalForm', module)
           wallet: '0x8h847658735836547865r83548765'
         },
       }}
+      onSubmit={data => console.log(data)}
     />
   ))
   .add('Extended without Files', () => (
@@ -48,6 +49,7 @@ storiesOf('ProposalForm', module)
         },
       }}
       extended
+      onSubmit={data => console.log(data)}
     />
   ))
   .add('Extended Files', () => (
@@ -71,5 +73,6 @@ storiesOf('ProposalForm', module)
         { name: 'file2.pdf' },
       ]}
       extended
+      onSubmit={data => console.log(data)}
     />
   ))

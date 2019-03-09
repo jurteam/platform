@@ -17,10 +17,31 @@ export class ProposalForm extends Component {
   state = {
     proposalMessage: null,
     proposal: {
-      to: 0,
-      from: 0
-    }
+      to: this.props.contract.to.proposal || 0,
+      from: this.props.contract.from.proposal || 0
+    },
+    files: []
   }
+
+  updateProposal = (counterparty, value) => {
+    this.setState(state => ({
+      proposal: {
+        ...state.proposal,
+        [counterparty]: value
+      }
+    }));
+  }
+
+  onSubmit = () => this.props.onSubmit(this.state);
+
+  onReset = () => this.setState({
+    proposalMessage: null,
+    proposal: {
+      to: this.props.contract.to.proposal || 0,
+      from: this.props.contract.from.proposal || 0
+    },
+    files: []
+  });
 
   render() {
     const {
@@ -32,17 +53,17 @@ export class ProposalForm extends Component {
       contract: {
         value: contractValue,
         from: {
-          proposal: fromProposal,
           wallet: fromWallet,
           from: fromName
         },
         to: {
-          proposal: toProposal,
           wallet: toWallet,
           name: toName
         }
       },
     } = this.props;
+
+    const { from: fromProposal, to: toProposal } = this.state.proposal;
     
     const blockInfoTitle = (fromProposal, toProposal) => {
       let myProposal = 0;
@@ -66,7 +87,10 @@ export class ProposalForm extends Component {
       <div className="jur-proposal-form">
         <div className="jur-proposal-form__description">{description}</div>
         <BlockTitle title="Message" />
-        <Form.TextArea placeholder="Insert here you message"/>
+        <Form.TextArea
+          placeholder="Insert here you message"
+          onChange={value => this.setState({ proposalMessage: value })}
+        />
         <BlockTitle title="Proposal" />
         <div className="jur-proposal-form__range-wrapper">
           <PriceRange
@@ -74,14 +98,14 @@ export class ProposalForm extends Component {
             max={contractValue}
             address={fromWallet}
             defaultValue={fromProposal}
-            onChange={value => console.log('from proposal value', value)}
+            onChange={value => this.updateProposal('from', value)}
           />
           <PriceRange
             min={0}
             max={contractValue}
             address={toWallet}
             defaultValue={toProposal}
-            onChange={value => console.log('to proposal value', value)}
+            onChange={value => this.updateProposal('to', value)}
           />
         </div>
         <BlockInfo description={blockInfoTitle(fromProposal, toProposal)} />
@@ -91,7 +115,7 @@ export class ProposalForm extends Component {
             <FileList>
               {evidences.map((file, idx) => (
                 <File
-                  key={File.name || idx.toString()}
+                  key={file.name || idx.toString()}
                   name={file.name}
                   onView={onView}
                 />
@@ -101,12 +125,12 @@ export class ProposalForm extends Component {
         }
         {extended &&
           <UploadForm
-            onFileAdded={() => console.log('added')}
+            onFileAdded={files => this.setState({ files })}
           />
         }
         <div className="jur-proposal-form__actions">
-          <Button color="muted" onClick={this.reset}>Cancel</Button>
-          <Button variant="gradient" onClick={this.submit}>Send</Button>
+          <Button color="muted" onClick={this.onReset}>Cancel</Button>
+          <Button variant="gradient" onClick={this.onSubmit}>Send</Button>
         </div>
       </div>
     );
