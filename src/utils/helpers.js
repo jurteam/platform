@@ -33,3 +33,11 @@ export const urlify = str => {
   });
   return html;
 };
+
+export const ellipsisString = (str, count) => {
+  if (str.length > (count || 10)) {
+    return str.substring(0,10) + '...';
+  } else {
+    return str;
+  }
+};
