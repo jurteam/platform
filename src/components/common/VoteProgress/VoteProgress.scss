@@ -1,0 +1,52 @@
+@import "../../../assets/scss/variables";
+
+.jur-vote-progress {
+    font-family: $font-poppins;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    $c: &;
+
+    &--green {
+        #{$c}__percentage {
+            color: $turquoise;
+        }
+
+        #{$c}__value {
+            color: $turquoise;
+        }
+    }
+
+    &--blue {
+        #{$c}__percentage {
+            color: $dodger-blue;
+        }
+
+        #{$c}__value {
+            color: $dodger-blue;
+        }
+    }
+
+    &__name {
+        margin: 8px 0 5px;
+        max-width: 100px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        color: $gull-gray;
+        font-size: 10px;
+    }
+
+    &__percentage {
+        font-size: 20px;
+        font-weight: $poppins-medium;
+        line-height: 1;
+    }
+    
+    &__value {
+        margin: 3px 0 6px;
+        font-size: 10px;
+        font-weight: $poppins-medium;
+    }
+}
