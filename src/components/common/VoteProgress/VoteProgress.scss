@@ -8,12 +8,20 @@
 
     $c: &;
 
+    &--lose {
+        opacity: .4;
+    }
+
     &--green {
         #{$c}__percentage {
             color: $turquoise;
         }
 
         #{$c}__value {
+            color: $turquoise;
+        }
+
+        #{$c}__result {
             color: $turquoise;
         }
     }
@@ -24,6 +32,10 @@
         }
 
         #{$c}__value {
+            color: $dodger-blue;
+        }
+
+        #{$c}__result {
             color: $dodger-blue;
         }
     }
@@ -48,5 +60,9 @@
         margin: 3px 0 6px;
         font-size: 10px;
         font-weight: $poppins-medium;
+    }
+
+    &__result {
+        font-weight: $poppins-semibold;
     }
 }
