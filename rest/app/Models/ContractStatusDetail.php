@@ -29,4 +29,9 @@ class ContractStatusDetail extends Model implements HasMedia
     {
         return $this->belongsTo(Contract::class);
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

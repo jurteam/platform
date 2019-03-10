@@ -37,6 +37,10 @@ $api->version('v1', function($api) {
             $api->group(['prefix' => 'friendly'], function($api) {
                 $api->post('{id}', 'App\Http\Controllers\ContractDetailsController@store');
             });
+
+            $api->group(['prefix' => 'details'], function($api) {
+                $api->get('{id}', 'App\Http\Controllers\ContractDetailsController@index');
+            });
         });
 
         $api->group(['prefix' => 'votes'], function($api) {
