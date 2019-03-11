@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Trait;
+namespace App\Models\Traits;
 
 trait StatusesTrait
 {
