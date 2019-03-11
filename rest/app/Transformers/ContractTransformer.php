@@ -50,8 +50,7 @@ class ContractTransformer extends TransformerAbstract
                 ]
             ],
             'value' => $contract->value,
-            'whoPays' => $contract->who_pays,
-            'statusActivity' => $contract->statusActivity()
+            'whoPays' => $contract->who_pays
         ];
     }
 
