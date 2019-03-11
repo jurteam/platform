@@ -77,6 +77,18 @@ export const urlify = str => {
   return html;
 };
 
+export const dateReducer = date => {
+  var d = new Date(date),
+      month = '' + (d.getMonth() + 1),
+      day = '' + d.getDate(),
+      year = d.getFullYear();
+
+  if (month.length < 2) month = '0' + month;
+  if (day.length < 2) day = '0' + day;
+
+  return [year, month, day].join('-');
+}
+
 export const ellipsisString = (str, count, length) => {
   if (str.length > (count || 10)) {
     return str.substring(0, (length || 10)) + '...';

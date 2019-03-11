@@ -1,6 +1,8 @@
 import { put, call, select, takeEvery, takeLatest } from "redux-saga/effects";
 import { setLoading } from "./App";
 
+import { dateReducer } from "../utils/helpers"; // helpers
+
 // Api layouts
 import { User } from "../api";
 
@@ -93,7 +95,11 @@ export function* handleUserDataUpdate(action) {
   log("handleUserDataUpdate", "run");
   log("handleUserDataUpdate - action", action);
 
-  const { disclaimer, created_at, updated_at, id, wallet, updating, accepted_disclaimer, ...updatedData } = yield select(getUser);
+  const { disclaimer, created_at, updated_at, id, wallet, updating, accepted_disclaimer, ...userData } = yield select(getUser);
+  const updatedData = {
+    ...userData,
+    birth_date: dateReducer(userData.birth_date)
+  }
 
   log("handleUserDataUpdate - updatedData", updatedData);
 
