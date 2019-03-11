@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Trait\StatusesTrait;
 use App\Models\Traits\ActivitiesTrait;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
