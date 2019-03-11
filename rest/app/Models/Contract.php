@@ -22,7 +22,7 @@ class Contract extends Model implements HasMedia
         'part_b_name',
         'kpi',
         'resolution_proof',
-        'category_id',
+        'category',
         'value',
         'has_penalty_fee',
         'part_a_penalty_fee',
