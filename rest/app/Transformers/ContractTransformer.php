@@ -28,8 +28,8 @@ class ContractTransformer extends TransformerAbstract
     {
         return [
             'id' => $contract->id,
-            'statusId' => $contract->status->code,
-            'statusLabel' => $contract->status->label,
+            'statusId' => $contract->status ? $contract->status->code : null,
+            'statusLabel' => $contract->status ? $contract->status->label : null,
             'contractName' => $contract->name,
             'duration' => (object)[
                 'days' => $contract->duration_days,
