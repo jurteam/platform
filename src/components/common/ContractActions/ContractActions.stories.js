@@ -25,4 +25,5 @@ storiesOf('ContractActions', module)
       <Button variant="gradient" fullWidth>Payment</Button>
     </ContractActions>
   ))
+  .add('Rejected', () => <ContractActions statusId={-1} />)
   .add('Waiting', () => <ContractActions statusId={31} />)

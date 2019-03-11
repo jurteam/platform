@@ -76,3 +76,11 @@ export const urlify = str => {
   });
   return html;
 };
+
+export const ellipsisString = (str, count, length) => {
+  if (str.length > (count || 10)) {
+    return str.substring(0, (length || 10)) + '...';
+  } else {
+    return str;
+  }
+};

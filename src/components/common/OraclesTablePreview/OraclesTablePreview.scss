@@ -1,0 +1,76 @@
+@import "../../../assets/scss/variables";
+
+.jur-oracles-table-preview {
+    .jur-table__head {
+        color: $gull-gray;
+        font-size: 10px;
+        padding: 0;
+        border-bottom: 1px solid $white-lilac;
+        border-top: 1px solid $white-lilac;
+
+    }
+    
+    .jur-table__cell {
+        &:first-child {
+            padding-left: 10px; 
+            text-align: left;
+        }
+
+        &:nth-child(2),
+        &:nth-child(3) {
+            text-align: center;
+        }
+        
+        &:nth-child(3) {
+            min-width: 40px;
+        }
+    
+        &:last-child {
+            padding-right: 10px;
+            text-align: right;
+        }
+    }
+
+    &__body {
+        .jur-table__cell {
+            padding-top: 8px;
+            padding-bottom: 8px;
+        }
+
+        .highlight {
+            background-color: #E6F2FF;
+        }
+    }
+
+    &__eth-address {
+        .highlight & {
+            font-weight: $poppins-semibold;
+        }
+    }
+
+    &__message {
+        color: $gull-gray;
+        
+        svg {
+            width: 11px;
+        }
+        
+        &--full {
+            color: $dodger-blue;
+        }
+    }
+
+    &__amount {
+        .highlight & {
+            font-weight: $poppins-semibold;
+        }
+    }
+
+    &__date {
+        font-size: 11px;
+    }
+
+    button {
+        border: none;
+    }
+}

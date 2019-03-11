@@ -6,8 +6,12 @@ import './UploadForm.scss';
 import { BinIcon } from '../Icons/BinIcon';
 
 export class UploadForm extends Component {
-  state = {
-    files: [{}]
+  constructor(props) {
+    super(props);
+    this.inputs = [];
+    this.state = {
+      files: [{}]
+    }
   }
 
   addFile = ev => {
@@ -22,6 +26,7 @@ export class UploadForm extends Component {
   remove = idx => {
     this.setState(state => {
       let files = state.files;
+      this.inputs[idx].value = '';
       files.splice(idx, 1);
       files.length === 0 && files.push({});
       this.onChange(files);
@@ -54,6 +59,7 @@ export class UploadForm extends Component {
           <div className="form-group" key={idx.toString()}>
             <label className="jur-upload-form__label" htmlFor={`input-file-${idx}`}>Choose file</label>
             <input
+              ref={ref => this.inputs[idx] = ref}
               className="jur-upload-form__input-file"
               type="file"
               name={`file-${idx}`}
