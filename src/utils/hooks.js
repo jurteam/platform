@@ -9,7 +9,7 @@ export const useFormValidation = (data, schema) => {
   useEffect(() => {
     validateForm();
     log("useFormValidation - effect", "run");
-  }, [data]);
+  }, [formData]);
 
   const isValid = () => {
     return !Object.keys(errors).length > 0;

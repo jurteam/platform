@@ -89,6 +89,10 @@ export const dateReducer = date => {
   return [year, month, day].join('-');
 }
 
+export const upperCaseFirst = (string) => {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 export const ellipsisString = (str, count, length) => {
   if (str.length > (count || 10)) {
     return str.substring(0, (length || 10)) + '...';

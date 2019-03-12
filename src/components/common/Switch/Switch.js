@@ -1,21 +1,29 @@
-import React, {useState} from 'react';
-import './Switch.scss';
+import React, { useContext } from "react";
+import "./Switch.scss";
 
-export const Switch = (props) => {
-  const [checked, setChecked] = useState(props.checked);
-  const handleChange = ev => {
-    const newValue = ev.target.checked;
-    setChecked(newValue);
-    props.onChange(ev);
-  };
+import { AppContext } from "../../../bootstrap/AppProvider"; // context
+
+import { upperCaseFirst, log } from "../../../utils/helpers"; // capitalize
+
+export const Switch = ({ error, value, checked, ...rest }) => {
+  const { labels } = useContext(AppContext);
+
+  log("Switch", value)
 
   return (
     <div className="switch">
       <label className="switch__input">
-          <input type="checkbox" { ...props } onChange={handleChange} />
-          <span className="slider"></span>
+        <input
+          type="checkbox"
+          checked={checked}
+          value={value}
+          {...rest}
+        />
+        <span className="slider" />
       </label>
-      <div className="switch__value">{checked ? 'Yes': 'No'}</div>
+      <div className="switch__value">
+        {checked ? upperCaseFirst(labels.yes) : upperCaseFirst(labels.no)}
+      </div>
     </div>
   );
 };

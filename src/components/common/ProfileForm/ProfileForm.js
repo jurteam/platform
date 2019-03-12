@@ -194,7 +194,7 @@ export const ProfileForm = ({
             id="birth_date"
             error={hasError("birth_date")}
             placeholder={labels.dateOfBirthPlaceholder}
-            selectedDate={birth_date}
+            selectedDate={(birth_date) ? new Date(birth_date) : null}
             onChange={date => changeInput("birth_date", date)}
           />
         </Form.Group>
@@ -224,8 +224,8 @@ export const ProfileForm = ({
                 <Switch
                   name="show_fullname"
                   error={hasError("show_fullname")}
-                  checked={show_fullname}
                   onChange={onInputChange}
+                  value={show_fullname || false}
                   checked={show_fullname}
                 />
               </div>
