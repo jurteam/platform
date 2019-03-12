@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Select from 'react-select';
+import Form from './';
 
-export const FormSelect = ({name, id, options, onChange, ...rest}) => {
+export const FormSelect = ({name, id, options, onChange, error, errorMsg, ...rest}) => {
   const customStyles = {
     control: styles => ({
       ...styles,
@@ -57,16 +58,20 @@ export const FormSelect = ({name, id, options, onChange, ...rest}) => {
   };
 
   return (
-    <Select
-      className="jur-select"
-      name={name}
-      id={id}
-      styles={customStyles}
-      isSearchable={true}
-      isClearable={true}
-      options={options}
-      onChange={selectedOption => onChange(selectedOption)}
-      {...rest}
-    />
+    <>
+      <Select
+        className={`jur-select ${error ? 'jur-select--error' : ''}`}
+        classNamePrefix="jur-select"
+        name={name}
+        id={id}
+        styles={customStyles}
+        isSearchable={true}
+        isClearable={true}
+        options={options}
+        onChange={selectedOption => onChange(selectedOption)}
+        {...rest}
+      />
+      {errorMsg && <Form.ErrorMsg msg={errorMsg} /> }
+    </>
   );
 };

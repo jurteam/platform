@@ -43,6 +43,10 @@
         background-color: $white;
         outline: none;
         padding: 2px 8px;
+
+        &.error {
+            border-color: $crimson;
+        }
     }
 
     &__container {
@@ -72,17 +76,10 @@
     }
 
     &__numeric-input {
-        display: inline-flex;
+        display: inline-block;
 
-        &--error {
-            input {
-                color: $form-error;
-                border-color: $form-error;
-            }
-
-            label {
-                color: $form-error;
-            }
+        &__wrapper {
+            display: inline-flex;
         }
 
         input {
@@ -114,6 +111,17 @@
             font-family: $font-poppins;
         }
 
+        &--error {
+            input {
+                color: $form-error;
+                border-color: $form-error;
+            }
+
+            label {
+                color: $form-error;
+            }
+        }
+
         svg {
             display: block;
             width: 10px;
@@ -130,5 +138,28 @@
     .react-datepicker-wrapper,
     .react-datepicker__input-container {
         display: block;
+    }
+}
+
+.jur-form__error-msg {
+    display: block;
+    font-size: 10px;
+    padding-top: 2px;
+    color: $crimson;
+    font-family: $font-poppins;
+
+    svg {
+        display: inline-block;
+        width: 12px;
+        margin-right: 2px;
+    }
+}
+
+.jur-select {
+    &--error {
+        .jur-select__control,
+        .jur-select__control:hover {
+            border: 1px solid #ED1C24;
+        }
     }
 }
