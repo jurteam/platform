@@ -44,10 +44,11 @@ export const useFormValidation = (data, schema) => {
             }
           }
 
-          setErrors(newErrors);
         });
       }
     });
+
+    setErrors(newErrors);
   };
 
   return [isValid, errors, validateForm, setFormData, formData];
