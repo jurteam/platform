@@ -1,0 +1,133 @@
+@import '../../../assets/scss/variables';
+
+.jur {
+    &-btn {
+
+        $btn: &;
+
+        color: inherit;
+        border: 0;
+        margin: 0;
+        cursor: pointer;
+        display: inline-flex;
+        outline: none;
+        position: relative;
+        align-items: center;
+        user-select: none;
+        border-radius: 0;
+        vertical-align: middle;
+        justify-content: center;
+        -moz-appearance: none;
+        text-decoration: none;
+        background-color: transparent;
+        -webkit-appearance: none;
+        -webkit-tap-highlight-color: transparent;
+        padding: 0 10px;
+        font-size: $btn-font-size-default;
+        font-weight: 600;
+        font-family: $font-poppins;
+        letter-spacing: 0.5px;
+        border-radius: 4px;
+        color: $btn-primary-color;
+        text-transform: uppercase;
+
+        &[disabled] {
+            opacity: 0.5;
+            cursor: default;
+        }
+
+        &--small {
+            height: 31px;
+            min-width: 180px;
+        }
+
+        &--medium {
+            height: 36px;
+            min-width: 162px;
+        }
+        
+        &--big {
+            height: 41px;
+            min-width: 141px;
+        }
+
+        &--info {
+            color: $btn-primary-color;
+            
+            &#{$btn}--contained {
+                color: $white;
+                background: $btn-primary-color;
+                border-color: $btn-primary-color;   
+            }
+        }
+
+        &--dispute {
+            color: $btn-dispute-color;
+
+            &#{$btn}--contained {
+                color: $white;
+                background: $btn-dispute-color;
+                border-color: $btn-dispute-color;   
+            }
+        }
+
+        &--success {
+            color: $btn-secondary-color;
+
+            &#{$btn}--contained {
+                color: $white;
+                background: $btn-secondary-color;
+                border-color: $btn-secondary-color;   
+            }
+        }
+
+        &--friendly {
+            color: $btn-friendly-color;
+
+            &#{$btn}--contained {
+                color: $white;
+                background: $btn-friendly-color;
+                border-color: $btn-friendly-color;   
+            }
+        }
+
+        &--muted {
+            color: $btn-muted-color;
+
+            &#{$btn}--contained {
+                color: $white;
+                background: $btn-muted-color;
+                border-color: $btn-muted-color;   
+            }
+        }
+
+        &--dark-blue {
+            color: $btn-dark-blue-color;
+
+            &#{$btn}--contained {
+                color: $white;
+                background: $btn-dark-blue-color;
+                border-color: $btn-dark-blue-color;   
+            }
+        }
+
+        &--gradient {
+            color: $white;
+            border: none;
+            background-image: $btn-gradient-color;
+        }
+
+        &--outlined {
+            border: 1px solid $btn-border-color;
+        }
+
+        &--raised {
+            border: none;
+            box-shadow: $btn-shadow;
+        }
+
+        &--full-width {
+            width: 100%;
+        }
+    }
+}

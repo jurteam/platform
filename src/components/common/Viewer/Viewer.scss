@@ -1,0 +1,259 @@
+@import "../../../assets/scss/variables";
+
+.jur-viewer {
+  position: relative;
+  height: 100%;
+
+  &:focus {
+    outline: none;
+  }
+
+  &__close-btn {
+    cursor: pointer;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 38px;
+  }
+
+  &__wrapper {
+    position: relative;
+    width: 490px;
+    height: 100%;
+    padding-top: 50px;
+    margin: 0 auto;
+  }
+
+  &__container {
+    height: 100%;
+    background-color: $white;
+    overflow: auto;
+    position: relative;
+    box-shadow: 0 2px 30px rgba($black, .12);
+  }
+
+  &__form-switch {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translate(-58px, 50px);
+    display: inline-flex;
+    flex-direction: column;
+
+    .jur-avatar {
+      cursor: pointer;
+      opacity: 0.4;
+
+      &.active {
+        opacity: 1;
+      }
+
+      &:first-child {
+        margin-bottom: 12px;
+      }
+    }
+  }
+
+  &__form {
+    $c: &;
+
+    font-family: $font-poppins;
+
+    &--green {
+      #{$c}__header {
+        background-color: $turquoise;
+      }
+    }
+
+    &--blue {
+      #{$c}__header {
+        background-color: $dodger-blue;
+      }
+    }
+
+    &--blue {
+    }
+
+    &__header {
+      height: 140px;
+      color: $white;
+      font-weight: $poppins-semibold;
+      padding: 5px 0;
+
+      &__title {
+        text-align: center;
+        font-size: 20px;
+      }
+
+      &__user {
+        padding: 0 20px;
+        display: flex;
+        align-items: center;
+        font-size: 13px;
+        margin-bottom: -20px;
+        position: relative;
+        top: 25px;
+
+        .jur-avatar {
+          border: 2px solid $white;
+          margin-right: 10px;
+        }
+      }
+    }
+
+    &__body {
+      padding: 40px 25px 0;
+
+      .jur-block-title {
+        margin-bottom: 10px;
+      }
+
+      .jur-form__numeric-input {
+        input {
+          width: 162px;
+          text-align: right;
+          padding: 0 10px;
+          color: $prussian-blue;
+        }
+      }
+
+      .jur-block-info {
+        margin: 10px 0 30px 0;
+      }
+
+      textarea {
+        width: 100%;
+        border-radius: 4px;
+        border: 1px solid $contract-details-textarea-border-color;
+        min-height: 170px;
+        resize: none;
+        color: $contract-details-textarea-text-color;
+        font-size: 13px;
+        font-family: $font-poppins;
+        padding: 20px 40px 0 20px;
+        margin-bottom: 20px;
+
+        &::-webkit-input-placeholder {
+          color: $gull-gray;
+        }
+
+        &:-moz-placeholder {
+          color: $gull-gray;
+        }
+
+        &::-moz-placeholder {
+          color: $gull-gray;
+        }
+
+        &::placeholder {
+          color: $gull-gray;
+        }
+      }
+
+      .jur-upload-form {
+        margin-bottom: 20px;
+      }
+    }
+
+    &__note {
+      color: $gull-gray;
+      font-size: 10px;
+      text-align: center;
+      padding: 15px 0;
+
+      span {
+        display: block;
+        cursor: pointer;
+        text-decoration: none;
+        font-weight: $poppins-semibold;
+      }
+    }
+  }
+
+  &__countdown {
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translate(290px, 50px);
+    width: 280px;
+    padding: 25px 23px;
+    background-color: $white;
+    border-radius: 4px;
+    box-shadow: 0 2px 30px rgba($black, .12);
+
+    .jur-block-title {
+      margin-bottom: 15px;
+    }
+  }
+
+  &__voting-progress {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: $white;
+    border-radius: 4px;
+    width: 280px;
+    transform: translate(290px, 180px);
+    padding: 21px 10px;
+    box-shadow: 0 2px 30px rgba($black, .12);
+
+    .jur-dispute-vote {
+      padding: 0;
+    }
+
+    .jur-vote-progress {
+      width: 81px;
+
+      .jur-btn {
+        min-width: 100%;
+      }
+    }
+  }
+
+  &__metamask {
+    font-family: $font-poppins;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, 0%);
+    background-color: $white;
+    border-radius: 4px;
+    font-weight: $poppins-semibold;
+    color: $crimson;
+    font-size: 13px;
+    width: 207px;
+    height: 31px;
+    display: flex;
+    align-items: center;
+    padding-left: 25px;
+
+    svg {
+      margin-right: 15px;
+      width: 22px;
+      fill: $crimson;
+    }
+  }
+
+  .pg-viewer-wrapper {
+    width: 100%;
+    font-family: $font-poppins;
+    color: $prussian-blue;
+
+    .pg-driver-view {
+      display: flex;
+      align-items: center;
+      background-color: $white;
+    }
+
+    canvas {
+      width: 100%;
+    }
+
+    .pdf-loading {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
+}

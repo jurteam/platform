@@ -1,0 +1,34 @@
+@import "../../../assets/scss/variables";
+
+.jur-disputes {
+    &__table {
+        &__dispute-name {
+            div {
+                max-width: 260px;
+            }
+        }
+
+        &__contract-value,
+        &__earning {
+            font-weight: $poppins-semibold;
+        }
+
+        &__earning {
+            color: $disputes-earning-color;
+        }
+
+        .jur-table__empty {
+            p {
+                margin-bottom: 5px;
+            }
+
+            a {
+                font-family: $font-poppins;
+                font-weight: $poppins-semibold;
+                color: $disputes-empty-link-color;
+                font-size: 13px;
+                text-decoration: none;
+            }
+        }
+    }
+}

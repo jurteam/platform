@@ -1,0 +1,16 @@
+.jur {
+    &-user-privacy {
+        .jur-user-action {
+            margin-bottom: 20px;
+        }
+
+        &--disclaimer-not-accepted {
+            .jur-user-action {
+                &:nth-child(n+2) {
+                    opacity: .3;
+                    pointer-events: none;
+                }
+            }
+        }
+    }
+}

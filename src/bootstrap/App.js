@@ -1,44 +1,36 @@
 import React, { Component } from "react";
 
-import { Provider } from "react-redux";
-import { Route, Switch } from "react-router"; // react-router v4
-import { ConnectedRouter } from "connected-react-router";
+import AppProvider from "./AppProvider"; // App Context
 
-// Initializer
-import Initializer from "./Initializer";
+import ErrorBoundary from "./ErrorBoundary"; // Errors
 
-// Sections
-import NotFound from "../components/sections/NotFound"
-import Home from "../components/sections/Home"
+// Drizzle
+import { DrizzleProvider } from "drizzle-react";
+import drizzleOptions from "../config/drizzleOptions";
+
+// Components
+import Spinner from "../components/common/Spinner";
+
+import UnderAuth from "./UnderAuth";
+import Initializer from "./Initializer"; // Initializer
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-
-    this.renderTestReport = this.renderTestReport.bind(this);
-  }
-
-  renderTestReport() {
-    const { testElement } = this.props;
-    return process.env.NODE_ENV === "development" ? testElement : null;
-  }
-
   render() {
-    const { store, history } = this.props;
+    const { store, history, testElement } = this.props;
+
     return (
-      <Provider store={store}>
-        <Initializer>
-          <ConnectedRouter history={history}>
-            <>
-              <Switch>
-                <Route exact path="/" render={() => <Home />} />
-                <Route render={() => <NotFound />} />
-              </Switch>
-              {this.renderTestReport()}
-            </>
-          </ConnectedRouter>
-        </Initializer>
-      </Provider>
+      <AppProvider store={store}>
+        <ErrorBoundary>
+          <>
+            <Spinner store={store} />
+            <UnderAuth>
+              <DrizzleProvider options={drizzleOptions} store={store}>
+                <Initializer history={history} testElement={testElement} />
+              </DrizzleProvider>
+            </UnderAuth>
+          </>
+        </ErrorBoundary>
+      </AppProvider>
     );
   }
 }

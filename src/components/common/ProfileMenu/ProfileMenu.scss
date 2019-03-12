@@ -1,0 +1,25 @@
+@import "../../../assets/scss/variables";
+
+.jur {
+    &-profile-menu {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+
+        &__item {
+            padding: 16px 0;
+
+            a {
+                text-decoration: none;
+                font-family: $font-poppins;
+                font-size: 14px;
+                color: $profile-menu-color;
+
+                &.active {
+                    color: $profile-menu-active-color;
+                    font-weight: 600;
+                }
+            }
+        }
+    }
+}

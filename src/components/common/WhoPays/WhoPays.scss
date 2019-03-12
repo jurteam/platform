@@ -1,0 +1,50 @@
+
+@import "../../../assets/scss/variables";
+
+.jur-who-pays {
+    &__counterparties {
+        display: flex;
+        margin-top: 10px;
+
+        .jur-avatar-info {
+            margin-bottom: 10px;
+            opacity: 0.5;
+            cursor: pointer;
+        }
+
+        .jur-form__numeric-input {
+            visibility: hidden;
+
+            input {
+                min-width: 160px;
+                color: $who-pays-input-text-color;
+                text-align: right;
+                padding: 0 5px;
+            }
+            
+            label {
+                color: $who-pays-input-text-color;
+            }
+        }
+    }
+
+    &__counterparty {
+        margin-right: 20px;
+
+        &:last-child {
+            margin: 0;
+        }
+
+        &--open {
+            
+            .jur-avatar-info {
+                opacity: 1;
+                cursor: default;
+            }
+
+            .jur-form__numeric-input {
+                visibility: visible;
+            }
+        }
+    }
+}

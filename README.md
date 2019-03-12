@@ -2,7 +2,7 @@
 
 JUR MVP will be available at https://jur.io/mvp/
 
-[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
+[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier) [![Storybook](https://github.com/storybooks/press/blob/master/badges/storybook.svg)](https://github.com/storybooks/storybook)
 
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
@@ -14,10 +14,16 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 - **Truffle** as EVM framework _([more info here](https://truffleframework.com/docs/truffle/getting-started/installation))_;
 - **Ganache CLI** for ETH test network _([more info here](https://github.com/trufflesuite/ganache-cli))_;
 - **Dot Env** for environment configuration _([more info here](https://github.com/motdotla/dotenv#readme))_;
+- **Composer** as PHP package manager for Lumen/Laravel framework _([more info here](https://getcomposer.org/))_
+- **Docker** for service containers management _([more info here](https://docs.docker.com/))_
+
+### Direct Dependencies
 - **react-blockies** for users ident icons _(based on ETH Blockies [more info here](https://github.com/ethereum/blockies))_
+
 
 ### Developmnent
 - **prettier** for coding style format _([more info here](https://prettier.io))_;
+- **storybook** for ui components _([more info here](https://github.com/storybooks/storybook))_;
 
 ### Editor
 Your code editor should be compatible with [.editorconfig](https://editorconfig.org) or [Prettier](https://prettier.io).
@@ -32,6 +38,12 @@ This project repo is organized in 3 branches:
 ### Git Workflow
 Using this repository you should follow this workflow: [Atlassian Git-flow](https://it.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow), by using _**features**_, _**hotfix**_ and _**releases**_ throuth previous mentioned branches.
 
+## Architecture
+This project is structured as following:
+
+- **Frontend** build with [React.js](https://reactjs.org) + [Drizzle](https://truffleframework.com/drizzle)
+- **REST API** built with [Laravel Lumen](https://lumen.laravel.com)
+
 ## Environment setup
 This project uses a `.env` file in order to please [follow the instructions here](https://facebook.github.io/create-react-app/docs/adding-custom-environment-variables) and create this file based on your needs.
 
@@ -42,6 +54,33 @@ _**You can find the environment configuration template [here](.env.template).**_
 ## Running Test Network
 To run a test ethereum network, in a separate terminal execute:
 `ganache-cli --gasLimit 7000000`
+
+### Rest API
+REST API are used to keep all user, contracts and disputes data off-chain.
+This servise is exposed via Lumen and is accessible via Docker.
+
+> Please have a look at the Postman config available under `rest/postman` for furter informations about endpoints
+
+#### First run
+On first run you should download and setup Laravel packages and database. Just follow this commands.
+```
+$ cd path/to/project/root
+$ cd rest
+$ composer install
+$ cd ..
+$ docker-compose build
+$ docker-compose up -d
+$ cd rest
+$ php artisan key:generate
+$ php artisan migrate
+```
+If all goes well now API are accessible on http://localhost/api/v[api-version].
+
+#### `$ docker-compose up -d`
+This command will **launch** REST API service on your host.
+
+#### `$ docker-compose stop`
+This command will **stop** REST API service on your host.
 
 
 ## Available Scripts
@@ -82,6 +121,18 @@ If you aren’t satisfied with the build tool and configuration choices, you can
 Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
 You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+
+### `npm run storybook`
+
+**Note: this command will work only if you had installed `storybook` as global npm package!**
+
+Run this command in order to view app storybook (and the entire components list) in your browser.
+
+### `npm run build-storybook`
+
+**Note: this command will work only if you had installed `storybook` as global npm package!**
+
+Run this command in order to build public storybook.
 
 ## Learn More
 

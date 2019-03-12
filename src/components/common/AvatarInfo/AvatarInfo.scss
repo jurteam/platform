@@ -1,0 +1,26 @@
+@import "../../../assets/scss/variables";
+
+.jur {
+    &-avatar-info {
+        display: flex;
+        font-family: $font-poppins;
+        color: $avatar-info-text-color;
+        align-items: center;
+
+        $avatartInfo: &;
+
+        &--ellipsis {
+            #{$avatartInfo}__text {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+        }
+        
+        &__text {
+            font-size: 13px;
+            margin-left: 5px;
+            line-height: 1;
+        }
+    }
+}

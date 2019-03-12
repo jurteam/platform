@@ -1,0 +1,93 @@
+@import "../../../assets/scss/variables";
+
+.jur {
+    &-main-nav {
+        list-style: none;
+        display: flex;
+        align-items: center;
+        margin: 0 0 0 80px;
+        padding: 0;
+
+        &__item {
+            margin-right: 40px;
+
+            &:last-child {
+                margin-right: 0;
+            }
+
+            svg {
+                position: relative;
+                z-index: 10;
+            }
+
+            &--contracts {
+                svg {
+                    width: 17px;
+                }
+            }
+
+            &--disputes {
+                svg {
+                    width: 21px;
+                }
+            }
+
+
+            a {
+                position: relative;
+                display: flex;
+                align-items: center;
+                text-decoration: none;
+                color: $main-nav-muted-color;
+                
+                &.active {
+                    color: $white;
+                    
+                    span {
+                        color: $main-nav-active-color;
+                        font-weight: 600;
+                    }
+
+                    svg {
+                        fill: $white;
+                    }
+
+                    &::before {
+                        content: "";
+                        position: absolute;
+                        z-index: 1;
+                        top: -7px;
+                        left: -16px;
+                        width: 49px;
+                        height: 170%;
+                        background-color: #233250;
+                        background-color: #233250;
+                        background-image: radial-gradient( rgba(22,255,255,1), transparent);
+                        filter: blur(5px);
+                        background-blend-mode: overlay;
+                    }
+                }
+            }
+            
+            span {
+                position: relative;
+                font-family: $font-poppins;
+                font-size: 14px;
+                font-weight: 400;
+                margin-left: 15px;
+                z-index: 10;
+                
+                &:before {
+                    content: attr(title);
+                    display: block;
+                    content: attr(title);
+                    font-weight: bold;
+                    height: 0;
+                    overflow: hidden;
+                    visibility: hidden;
+                    font-weight: 600;
+                }
+            }
+        }
+    }
+}

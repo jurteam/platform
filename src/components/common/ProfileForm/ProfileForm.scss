@@ -1,0 +1,99 @@
+@import "../../../assets/scss/variables";
+
+.jur-form {
+    
+    $form: &;
+
+    &__profile {
+        #{$form}__container {
+            display: flex;
+            justify-content: space-between;
+
+            #{$form}__group {
+                flex-basis: calc((100% - 40px) / 2);
+            }
+        }
+
+        #{$form}__footer {
+            margin-top: 30px;
+
+            #{$form}__group {
+                display: flex;
+                width: 100%;
+                flex-basis: 100%;
+                justify-content: space-between;
+            }
+        }
+
+        &__options {
+            flex-basis: calc((100% - 40px) / 2);
+
+            &__show-name {
+                display: flex;
+                justify-content: space-between;
+                font-size: 12px;
+                font-family: $font-poppins;
+                align-items: flex-start;
+                justify-content: space-between;
+    
+                label {
+                    display: inline-block;
+                    color: $prussian-blue;
+                    font-weight: 600;
+                }
+                
+                .jur-info-tooltip {
+                    display: inline-block;
+                    margin-right: 5px;
+                    fill: $gull-gray;
+                    width: 10px;
+                }
+    
+                &__input {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+    
+                    .switch__value {
+                        width: 25px;
+                        text-align: right;
+                    }
+                }
+    
+                .switch {
+                    margin-bottom: 0;
+                }
+            }
+    
+            &__terms {
+                display: flex;
+                align-items: center;
+                margin-top: 20px;
+    
+                input {
+                    width: auto;
+                    margin: 0;
+                    width: 16px;
+                    height: 16px;
+                }
+    
+                label {
+                    flex-basis: 100%;
+                    margin-left: 5px;
+                    margin-bottom: 0;
+                }
+    
+                a {
+                    text-decoration: none;
+                    color: $dodger-blue;
+                }
+            }
+        }
+    
+        &__submit {
+            display: flex;
+            justify-content: flex-end;
+        }
+    }
+
+}

@@ -1,0 +1,52 @@
+@import "../../../assets/scss/variables";
+
+.jur-file {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border-top: 1px solid $file-border-color;
+    border-bottom: 1px solid $file-border-color;
+
+    $file: &;
+
+    &--large {
+        padding: 20px 10px;
+    }
+
+    &__name {
+        font-size: 12px;
+        color: $file-name-color;
+        font-family: $font-poppins;
+    }
+
+    &__actions {
+        span {
+            display: inline-block;
+            margin-left: 20px;
+            cursor: pointer;
+
+            &:first-child {
+                margin: 0;
+            }
+
+            svg {
+                fill: $file-icon-color;
+            }
+        }
+
+        &__view {
+            svg {
+                width: 20px;
+            }
+        }
+        &__delete {
+            svg {
+                width: 12px;
+            }
+        }
+    }
+
+    + #{$file} {
+        border-top: none;
+    }   
+}

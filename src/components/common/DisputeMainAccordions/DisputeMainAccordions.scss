@@ -1,0 +1,22 @@
+@import "../../../assets/scss/variables";
+
+.jur-dispute-main-accordions {
+    .jur-contract-accordion__header {
+        font-size: 12px;
+        font-weight: $poppins-semibold;
+    }
+
+    &__content {
+        color: $contract-detail-preview-text-color;
+        font-size: 12px;
+        font-family: $font-poppins;
+        line-height: 28px;
+        padding: 10px 20px 20px;
+
+        a {
+            color: $contract-detail-preview-link-color;
+            text-decoration: none;
+            font-weight: $poppins-semibold;
+        }
+    }
+}

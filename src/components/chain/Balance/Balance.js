@@ -1,50 +1,28 @@
 /* eslint-disable no-unused-vars */
-import React from "react";
-import { AccountData, ContractData, ContractForm } from "drizzle-react-components";
+import React, { Component } from "react";
+import Amount from "../../common/Amount";
 
-import style from "./Balance.scss"; // load scss properly
+// Context
+import { AppContext } from "../../../bootstrap/AppProvider";
 
-// export const Balance = ({ amount, symbol }) => (
-//   <div className="jur--balance">
-//     <p><strong>Jur Balance</strong></p>
-//     <p className="amount">{symbol} {amount}</p>
-//   </div>
-// );
+// Style
+import "./Balance.scss"; // load scss properly
 
-export const Balance = ({ drizzleStatus, accounts }) => (drizzleStatus.initialized) ?(
-    <div className="App">
-      <header className="App-header">
-        <AccountData accountIndex="0" units="ether" precision="3" />
-        <h1 className="App-title">Tutorial Token</h1>
-        <p>
-          <strong>Total Supply</strong>:{" "}
-          <ContractData
-            contract="TutorialToken"
-            method="totalSupply"
-            methodArgs={[{ from: accounts[0] }]}
-          />{" "}
-          <ContractData
-            contract="TutorialToken"
-            method="symbol"
-            hideIndicator
-          />
-        </p>
-        <p>
-          <strong>My Balance</strong>:{" "}
-          <ContractData
-            contract="TutorialToken"
-            method="balanceOf"
-            methodArgs={[accounts[0]]}
-          />
-        </p>
-        <h3>Send Tokens</h3>
-      </header>
-      <div className="App-intro">
-        <ContractForm
-          contract="TutorialToken"
-          method="transfer"
-          labels={["To Address", "Amount to Send"]}
-        />
+export class Balance extends Component {
+  render() {
+
+    const { wallet } = this.props
+    const { balance } = wallet
+
+    return (
+      <div className="jur--balance">
+        <h5>
+          <AppContext.Consumer>
+            {context => context.labels.jurBalance}
+          </AppContext.Consumer>
+        </h5>
+        <Amount value={balance} />
       </div>
-    </div>
-  ) : (<div>Loading dapp...</div>);
+    );
+  }
+}

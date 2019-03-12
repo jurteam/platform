@@ -1,4 +1,231 @@
 // variables definition
 $cyan   : #61dafb;
 $white  : white;
-$dark   : #282c34;
+$black  : black;
+$dark   : #233250;
+$gray   : #a6b2c4;
+$blackSemiTransparent : rgba(0,0,0,.5);
+
+
+$dodger-blue: #33ADFF;
+$mercury: #E5E5E5;
+$rose: #ED0782;
+$gull-gray: #97A3B4;
+$turquoise: #3FD3B8;
+$prussian-blue: #002257;
+$heliotrope: #9657FF;
+$cerulean: #00B6F2;
+$robin-blue: #00E0B7;
+$orange-peel: #FF9B00;
+$serenade: #FFF5E5;
+$electric-violet: #9013FE;
+$blue-chalk: #F3E7FE;
+$caribbean-green: #00CE7D;
+$white-ice: #E5FAF2;
+$scarlet: #FF2500;
+$pippin:#FFE5E5;
+$tundora: #4A4A4A;
+$gallery: #ECECEC;
+$cloud-burst: #233250;
+$big-stone: #1E2B45;
+$black-haze: #EAEBEC;
+$crimson: #ED1C24;
+$porcelain: #F7F8F9;
+$oxford-blue: #354052;
+$cadet-blue: #AAB2C0;
+$fiord: #3F536E;
+$cloud-burst: #253454;
+$gray-1: #909090;
+$white-lilac: #EBEDF8;
+
+
+// Forms
+$label-color: $prussian-blue;
+$label-option: $gull-gray;
+$label-sup: $dodger-blue;
+$input-border-color: $black-haze;
+$input-numeric-border-color: $mercury;
+$input-numeric-text-color: $gull-gray;
+$form-error: $crimson;
+
+
+// Buttons
+$btn-primary-color: $dodger-blue;
+$btn-secondary-color: $turquoise;
+$btn-friendly-color: $heliotrope;
+$btn-dispute-color: $rose;
+$btn-border-color: $mercury;
+$btn-dark-blue-color: $prussian-blue;
+$btn-muted-color: $gull-gray;
+$btn-gradient-color: linear-gradient(to right, $cerulean, $robin-blue);
+$btn-shadow: 0 3px 9px rgba($black, .10);
+$btn-font-size-default: 12px;
+
+// Tag
+$tag-text-color--1: black;
+$tag-bg-color--1: black;
+$tag-text-color-0: $electric-violet;
+$tag-bg-color-0: $blue-chalk;
+$tag-text-color-1: $orange-peel;
+$tag-bg-color-1: $serenade;
+$tag-text-color-5: $caribbean-green;
+$tag-bg-color-5: $white-ice;
+$tag-text-color-8: black;
+$tag-bg-color-8: black;
+$tag-text-color-9: $tundora;
+$tag-bg-color-9: $gallery;
+$tag-text-color-21: black;
+$tag-bg-color-21: black;
+$tag-text-color-29: black;
+$tag-bg-color-29: black;
+$tag-text-color-31: $scarlet;
+$tag-bg-color-31: $pippin;
+$tag-text-color-35: black;
+$tag-bg-color-35: black;
+$tag-text-color-36: black;
+$tag-bg-color-36: black;
+$tag-text-color-38: black;
+$tag-bg-color-38: black;
+$tag-text-color-39: $tundora;
+$tag-bg-color-39: $gallery;
+
+// Header
+$header-bg-color: $cloud-burst;
+$profile-preview-border-color: $big-stone;
+
+// UserAction
+
+$user-action-default-color: $prussian-blue;
+$user-action-alert-color: $crimson;
+$user-action-border-color: $black-haze;
+
+
+// Dropdown
+$dropdown-bg-color: $porcelain;
+$dropdown-active-bg-color: $dodger-blue;
+$dropdown-list-text-color: $prussian-blue;
+$dropdown-list-border-color: $black-haze;
+
+// Fonts
+$font-poppins: 'Poppins', Arial, sans-serif;
+$font-opensans: 'Open Sans', Arial, sans-serif;
+$font-lato: 'Lato', Arial, sans-serif;
+$font-roboto: 'Roboto', Arial, sans-serif;
+$poppins-regular: 400;
+$poppins-medium: 500;
+$poppins-semibold: 600;
+
+// Modal
+$modal-max-width: 900px;
+$modal-title-color: $dodger-blue;
+$modal-text-color: $oxford-blue;
+
+// Main Nav
+$main-nav-muted-color: $gray;
+$main-nav-active-color: $white;
+
+// Breadcrumb
+$breadcrumb-muted-color: $cadet-blue;
+$breadcrumb-active-color: $dodger-blue;
+
+// Profile Menu
+$profile-menu-color: $fiord;
+$profile-menu-active-color: $dodger-blue;
+
+// Accordion
+$accordion-header-color: $fiord;
+$accordion-header-active-color: $dodger-blue;
+$accordion-title-color: $prussian-blue;
+
+// Disclaimer
+$disclaimer-title-color: $prussian-blue;
+$disclaimer-title-icon-color: $dodger-blue;
+$disclaimer-description-color: $gull-gray;
+$disclaimer-border-color: $black-haze;
+$disclaimer-bg-color: $porcelain;
+
+// Coutdown
+$countdown-value-muted-color: $gull-gray;
+$countdown-label-color: $prussian-blue;
+$countdown-playing-color: $turquoise;
+$countdown-expiring-color: $crimson;
+$countdown-before-start-message-color: $gull-gray;
+
+
+// AvatarInfo
+$avatar-info-text-color: $prussian-blue;
+
+// UserNotification
+$user-notification-color: $prussian-blue;
+
+// Table
+$table-border: $black-haze;
+
+// Contracts
+$contracts-empty-text-color: $prussian-blue;
+$contracts-value-color: $dodger-blue;
+
+// User Terms
+$user-terms-title-color: $prussian-blue;
+$user-terms-content-color: $fiord;
+
+// Disputes Table
+$disputes-earning-color: $dodger-blue;
+$disputes-empty-link-color: $dodger-blue;
+
+
+// CounterpartiesInfo
+$counterparties-info-color: $prussian-blue;
+
+// Input range
+$input-range-bg-color: $cloud-burst;
+$input-range-selected-color: $btn-gradient-color;
+$input-range-slider-thumb: $robin-blue;
+
+// InfoTooltip
+$tooltip-bg: $cloud-burst;
+
+// FileList
+$file-name-color: $cloud-burst;
+$file-border-color: $black-haze;
+$file-icon-color: $gull-gray;
+
+// UploadForm
+$upload-form-label-bg-color: $black-haze;
+$upload-form-label-text-color: $gray-1;
+$upload-form-add-button-color: $dodger-blue;
+
+// BlockTitle
+$block-title-text-color: $prussian-blue;
+
+// Contract Name
+$contract-name-color: $prussian-blue;
+
+// Contract Amount
+$contract-text-color: $gull-gray;
+
+// Contract Summary
+$contract-summary-border-color: $white-lilac;
+
+// Contract Insert Details
+$contract-details-textarea-border-color: $mercury;
+$contract-details-textarea-text-color: $prussian-blue;
+$contract-detail-preview-text-color: $prussian-blue;
+$contract-detail-preview-link-color: $dodger-blue;
+
+// Contract Actions
+$contract-actions-text-color: $gull-gray;
+$contract-actions-border-color: $white-lilac;
+
+// Contract Select Category
+$contract-select-category-title-color: $prussian-blue;
+
+// Contract Set Duration
+$contract-set-duration-description-color: $gull-gray;
+$contract-set-duration-border-color: $white-lilac;
+
+// Price Range
+$price-range-value-text-color: $gull-gray;
+
+// Who pays
+$who-pays-input-text-color: $prussian-blue;

@@ -1,0 +1,165 @@
+@import "../../../assets/scss/variables";
+
+.jur-form {
+
+    *, *:before, *:after {
+        box-sizing: border-box;
+    }
+
+    $form: &;
+
+    label {
+        display: flex;
+        align-items: center;
+        color: $label-color;
+        font-size: 13px;
+        font-family: $font-poppins;
+        margin-bottom: 6px;
+
+        span {
+            padding-left: 5px;
+
+            &.optional {
+                color: $label-option;
+                font-size: 10px;
+                color: $cadet-blue;
+            }
+            
+            &.required {
+                color: $label-sup;
+                height: 16px;
+            }
+        }
+        
+    }
+
+    input {
+        width: 100%;
+        height: 36px;
+        border: 1px solid $input-border-color;
+        color: $label-color;
+        font-size: 13px;
+        border-radius: 2px;
+        background-color: $white;
+        outline: none;
+        padding: 2px 8px;
+
+        &.error {
+            border-color: $crimson;
+        }
+    }
+
+    &__container {
+        &#{$form}__header {
+            display: flex;
+            padding-bottom: 20px;
+            border-bottom: 2px solid $input-border-color;
+            margin-bottom: 25px;
+
+            #{$form}__group {
+                flex: 1;
+                margin-bottom: 0;
+                
+                input {
+                    width: 45%;
+                }
+            }
+            
+            .jur-avatar {
+                margin-right: 20px;
+            }
+        }
+    }
+
+    &__group {
+        margin-bottom: 15px;
+    }
+
+    &__numeric-input {
+        display: inline-block;
+
+        &__wrapper {
+            display: inline-flex;
+        }
+
+        input {
+            width: 46px;
+            height: 32px;
+            outline: none;
+            border: 1px solid $input-numeric-border-color;
+            color: $input-numeric-text-color;
+            border-radius: 4px;
+            font-size: 20px;
+            -moz-appearance:textfield;
+            text-align: center;
+
+            &::-webkit-outer-spin-button,
+            &::-webkit-inner-spin-button {
+                -webkit-appearance: none;
+                margin: 0;
+            }
+        }
+
+        label {
+            display: block;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            width: 100%;
+            text-align: center;
+            margin-top: 5px;
+            font-family: $font-poppins;
+        }
+
+        &--error {
+            input {
+                color: $form-error;
+                border-color: $form-error;
+            }
+
+            label {
+                color: $form-error;
+            }
+        }
+
+        svg {
+            display: block;
+            width: 10px;
+            padding: 3px 0;
+            cursor: pointer;
+        }
+
+        &__actions {
+            margin: 5px 0 0 5px;
+        }
+    }
+
+
+    .react-datepicker-wrapper,
+    .react-datepicker__input-container {
+        display: block;
+    }
+}
+
+.jur-form__error-msg {
+    display: block;
+    font-size: 10px;
+    padding-top: 2px;
+    color: $crimson;
+    font-family: $font-poppins;
+
+    svg {
+        display: inline-block;
+        width: 12px;
+        margin-right: 2px;
+    }
+}
+
+.jur-select {
+    &--error {
+        .jur-select__control,
+        .jur-select__control:hover {
+            border: 1px solid #ED1C24;
+        }
+    }
+}

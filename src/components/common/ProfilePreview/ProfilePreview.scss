@@ -1,0 +1,89 @@
+@import "../../../assets/scss/variables";
+
+.jur {
+    &-profile-preview {
+        a {
+            display: flex;
+            font-family: $font-poppins;
+            text-decoration: none;
+            color: $white;
+
+            &.active {
+                position: relative;
+
+                &::before {
+                    content: "";
+                    position: absolute;
+                    z-index: 1;
+                    top: 2px;
+                    left: 4px;
+                    width: 139px;
+                    height: 94%;
+                    background-color: #233250;
+                    background-color: #233250;
+                    background-image: radial-gradient( rgba(22,255,255,1), transparent);
+                    filter: blur(10px);
+                    background-blend-mode: overlay;
+                }
+            }
+
+        }
+
+        &__item {
+            padding: 5px 20px;
+            border-right: 3px solid $profile-preview-border-color;
+            position: relative;
+            z-index: 2;
+            
+            &:last-child {
+                border: none;
+            }
+        }
+
+        &__info {
+            display: flex;
+            align-items: center;
+
+            .jur-avatar {
+                margin-right: 10px;
+            }
+
+
+            &__details {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+            
+            &__name {
+                font-size: 14px;
+                //color: $white;
+                font-family: $font-lato;
+            }
+
+            &__seed {
+                font-size: 10px;
+                color: $gray;
+                width: 100px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+        }
+
+        &__balance {
+            display: flex;
+            flex-direction: column;
+
+            &__title {
+                font-size: 10px;
+                color: $gray;
+            }
+            
+            &__value {
+                font-size: 14px;
+                //color: $white;
+            }
+        }
+    }
+}

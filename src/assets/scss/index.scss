@@ -1,3 +1,4 @@
+@import './fonts';
 @import './variables';
 @import './reset';
 
@@ -15,5 +16,11 @@
     }
     &--link {
         color: $cyan;
+    }
+}
+
+.ReactModal__Body--open {
+    #root {
+        filter: blur(2px);
     }
 }
