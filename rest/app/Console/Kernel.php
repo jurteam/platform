@@ -15,6 +15,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         \Laravelista\LumenVendorPublish\VendorPublishCommand::class,
         \App\Console\Commands\StorageLinkCommand::class,
+        \App\Console\Commands\Notifications\NotificationMakeCommand::class,
     ];
 
     /**
