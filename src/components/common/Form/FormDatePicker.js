@@ -13,6 +13,6 @@ export const FormDatePicker = ({selectedDate, error, errorMsg, onChange}) => (
       onChange={onChange}
       dateFormat="dd/MM/yyyy"
     />
-    {errorMsg && <Form.ErrorMsg msg={errorMsg} />}
+    {error && errorMsg && <Form.ErrorMsg msg={errorMsg} />}
   </>
 );
