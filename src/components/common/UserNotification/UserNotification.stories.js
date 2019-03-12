@@ -18,17 +18,17 @@ const headers = [
 const data = [
   {
     id: 1,
-    date: 'few seconds ago',
+    date: '2019-01-08T14:25:44.335Z',
     message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum sed lacinia odio. Ut suscipit, eros ac mattis fermentum, turpis ex blandit nisi, vitae ultrices urna orci et velit. Curabitur dapibus odio in dui pellentesque orci aliquam',
   },
   {
     id: 2,
-    date: 'few minutes ago',
+    date: '2019-01-08T14:25:44.335Z',
     message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum sed lacinia odio. Ut suscipit, eros ac mattis fermentum, turpis ex blandit nisi, vitae ultrices urna orci et velit. Curabitur dapibus odio in dui pellentesque orci aliquam',
   },
   {
     id: 3,
-    date: 'few hours ago',
+    date: '2019-01-08T14:25:44.335Z',
     message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum sed lacinia odio. Ut suscipit, eros ac mattis fermentum, turpis ex blandit nisi, vitae ultrices urna orci et velit. Curabitur dapibus odio in dui pellentesque orci aliquam',
   }
 ]

@@ -20,5 +20,6 @@ Amount.propTypes = {
 };
 
 Amount.defaultProps = {
-  currency: 'JUR'
+  currency: 'JUR',
+  value: 0
 };

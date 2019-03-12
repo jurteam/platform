@@ -5,6 +5,7 @@ import TableRow from '../TableRow';
 import TableCell from '../TableCell';
 import TableBody from '../TableBody';
 import TableHead from '../TableHead';
+import TimeAgo from '../TimeAgo';
 
 import './UserNotification.scss';
 
@@ -26,7 +27,7 @@ export const UserNotification = ({ title, headers, data, className }) => {
           {data.map(row => (
             <TableRow key={ row.id } className="jur-user-notification__table__row">
               <TableCell className="jur-user-notification__table__cell" key={ row.date.toString() }>
-                {row.date}
+                <TimeAgo date={row.date} />
               </TableCell>
               <TableCell>
                 {row.message}

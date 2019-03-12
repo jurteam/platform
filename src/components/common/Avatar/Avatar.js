@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Blockies from 'react-blockies';
 import './Avatar.scss';
 
-export const Avatar = ({ seed, size, variant }) => {
+export const Avatar = ({ seed, size, variant, className, ...rest }) => {
   const variants = {
     rounded: 'jur-avatar--rounded',
     circle: 'jur-avatar--circle'
@@ -12,7 +12,10 @@ export const Avatar = ({ seed, size, variant }) => {
   return (
     <Fragment>
       {seed && (
-        <div className={`jur-avatar jur-avatar--${size} ${!!variant ? variants[variant]: ''}`}>
+        <div
+          className={`jur-avatar ${className} jur-avatar--${size} ${!!variant ? variants[variant]: ''}`}
+          {...rest}
+        >
           <Blockies seed={seed} />
         </div>
       )}

@@ -44,6 +44,10 @@ $label-color: $prussian-blue;
 $label-option: $gull-gray;
 $label-sup: $dodger-blue;
 $input-border-color: $black-haze;
+$input-numeric-border-color: $mercury;
+$input-numeric-text-color: $gull-gray;
+$form-error: $crimson;
+
 
 // Buttons
 $btn-primary-color: $dodger-blue;
@@ -208,3 +212,20 @@ $contract-details-textarea-border-color: $mercury;
 $contract-details-textarea-text-color: $prussian-blue;
 $contract-detail-preview-text-color: $prussian-blue;
 $contract-detail-preview-link-color: $dodger-blue;
+
+// Contract Actions
+$contract-actions-text-color: $gull-gray;
+$contract-actions-border-color: $white-lilac;
+
+// Contract Select Category
+$contract-select-category-title-color: $prussian-blue;
+
+// Contract Set Duration
+$contract-set-duration-description-color: $gull-gray;
+$contract-set-duration-border-color: $white-lilac;
+
+// Price Range
+$price-range-value-text-color: $gull-gray;
+
+// Who pays
+$who-pays-input-text-color: $prussian-blue;

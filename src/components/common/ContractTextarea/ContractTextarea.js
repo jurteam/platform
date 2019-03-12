@@ -4,9 +4,9 @@ import BlockTitle from '../BlockTitle';
 
 import './ContractTextarea.scss';
 
-export const ContractTextarea = ({initialValue, onChange, name, label}) => (
+export const ContractTextarea = ({initialValue, onChange, name, label, placeholder}) => (
   <div className="jur-contract-textarea">
     <BlockTitle title={label} hideIcon />
-    <textarea name={name} value={initialValue} onChange={ev => onChange(ev)} />
+    <textarea placeholder={placeholder || ''} name={name} value={initialValue} onChange={ev => onChange(ev)} />
   </div>
 );

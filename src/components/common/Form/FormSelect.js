@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Select from 'react-select';
+import Form from './';
 
-export const FormSelect = ({name, id, options, onChange, ...rest}) => {
+export const FormSelect = ({name, id, options, onChange, error, errorMsg, ...rest}) => {
   const customStyles = {
     control: styles => ({
       ...styles,
@@ -30,7 +31,7 @@ export const FormSelect = ({name, id, options, onChange, ...rest}) => {
     placeholder: styles => ({
       ...styles,
       fontFamily: '"Poppins", Arial, sans-serif',
-      color: '#002257',
+      color: '#97A3B4',
       fontSize: 13,
     }),
     valueContainer: styles => ({
@@ -47,19 +48,30 @@ export const FormSelect = ({name, id, options, onChange, ...rest}) => {
       position: 'relative',
       top: 0,
       transform: 'translateY(0)'
+    }),
+    input: styles => ({
+      ...styles,
+      ' input': {
+        height: '100%'
+      }
     })
   };
 
   return (
-    <Select
-      name={name}
-      id={id}
-      styles={customStyles}
-      isSearchable={true}
-      isClearable={true}
-      options={options}
-      onChange={selectedOption => onChange(selectedOption)}
-      {...rest}
-    />
+    <>
+      <Select
+        className={`jur-select ${error ? 'jur-select--error' : ''}`}
+        classNamePrefix="jur-select"
+        name={name}
+        id={id}
+        styles={customStyles}
+        isSearchable={true}
+        isClearable={true}
+        options={options}
+        onChange={selectedOption => onChange(selectedOption)}
+        {...rest}
+      />
+      {errorMsg && <Form.ErrorMsg msg={errorMsg} /> }
+    </>
   );
 };

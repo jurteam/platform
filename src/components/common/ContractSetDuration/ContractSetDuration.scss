@@ -1,0 +1,28 @@
+@import "../../../assets/scss/variables";
+
+.jur-contract-set-duration {
+    padding: 10px 20px;
+    border-bottom: 1px solid $contract-set-duration-border-color;
+
+    &__title {
+        font-size: 20px;
+        font-family: $font-poppins;
+        color: $contract-select-category-title-color;
+    }
+    
+    .jur-block-title {
+        margin-bottom: 10px;
+        
+        span {
+            font-size: 10px;
+            color: $contract-set-duration-description-color;
+            font-weight: $poppins-regular;
+        }
+    }
+
+    &__inputs {
+        .jur-form__numeric-input {
+            margin-right: 15px;
+        }
+    }
+}

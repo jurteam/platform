@@ -1,4 +1,4 @@
-import anchorme from "anchorme";
+import linkify from 'linkifyjs/string';
 
 // Log helper only on DEVELOPMENT environmentexport const warn = (mixed, obj) => {
 export const warn = (mixed, obj) => {
@@ -10,6 +10,7 @@ export const error = (mixed, obj) => {
 export const log = (mixed, obj, type) => {
   let out = [];
   if (typeof type === "undefined") type = 0; // default to log
+
   if (process.env.NODE_ENV === "development") {
     if (typeof obj === "undefined") {
       out = [mixed];
@@ -30,6 +31,7 @@ export const log = (mixed, obj, type) => {
       break;
   }
 };
+
 // EVM connection checker
 export const checkConnection = web3 => {
   if (!web3) {
@@ -63,5 +65,34 @@ export const capitalize = string =>
   string.charAt(0).toUpperCase() + string.slice(1);
 
 export const urlify = str => {
-  return anchorme(str);
+  const html = linkify(str, {
+    target: (href, type) => {
+      if (href.startsWith(window.location.origin)) {
+        return '_self';
+      } else {
+        return '_blank';
+      }
+    }
+  });
+  return html;
+};
+
+export const dateReducer = date => {
+  var d = new Date(date),
+      month = '' + (d.getMonth() + 1),
+      day = '' + d.getDate(),
+      year = d.getFullYear();
+
+  if (month.length < 2) month = '0' + month;
+  if (day.length < 2) day = '0' + day;
+
+  return [year, month, day].join('-');
+}
+
+export const ellipsisString = (str, count, length) => {
+  if (str.length > (count || 10)) {
+    return str.substring(0, (length || 10)) + '...';
+  } else {
+    return str;
+  }
 };

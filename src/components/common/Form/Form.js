@@ -7,6 +7,9 @@ import {FormGroup} from './FormGroup';
 import {FormWrapper} from './FormWrapper';
 import {FormContainer} from './FormContainer';
 import {FormDatePicker} from './FormDatePicker';
+import {FormNumericInput} from './FormNumericInput';
+import {FormTextArea} from './FormTextArea';
+import {FormErrorMsg} from './FormErrorMsg';
 
 import './Forms.scss';
 
@@ -18,6 +21,9 @@ export class Form extends Component {
   static Input = FormInput;
   static Select = FormSelect;
   static DatePicker = FormDatePicker;
+  static NumericInput = FormNumericInput;
+  static TextArea = FormTextArea;
+  static ErrorMsg = FormErrorMsg;
 
   render() {
     const {

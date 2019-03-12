@@ -5,6 +5,8 @@ import StoryRouter from 'storybook-react-router';
 addDecorator(StoryRouter());
 
 const req = requireContext('../src/components', true, /\.stories\.js$/);
+require('../src/assets/scss/_variables.scss');
+require('../src/assets/scss/_fonts.scss');
 require('../src/assets/scss/_base.scss');
 function loadStories() {
   req.keys().forEach(filename => req(filename));

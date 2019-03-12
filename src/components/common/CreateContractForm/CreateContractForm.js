@@ -49,7 +49,6 @@ export class CreateContractForm extends Component {
                     type="text"
                     name="walletAddress"
                     id="walletAddress"
-                    value={counterparty.wallet.address}
                     onChange={ev => this.onInputChange(ev, index)}
                   />
                 </Form.Group>
@@ -82,7 +81,7 @@ export class CreateContractForm extends Component {
           ))}
         </Form.Wrapper>
         <Form.Group className="jur-form__create-contract-form__footer">
-          <Button variant="contained" onClick={this.onNext}>Next</Button>
+          <Button size="big" variant="contained" onClick={this.onNext}>Next</Button>
         </Form.Group>
       </Form>
     );

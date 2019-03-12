@@ -4,9 +4,12 @@ import Avatar from '../Avatar';
 
 import './AvatarInfo.scss';
 
-export const AvatarInfo = ({ userName, userWallet, shouldRenderName, variant, maxTextWidth }) => (
-  <div className={`jur-avatar-info ${variant ? `jur-avatar-info--${variant}` : ''}`}>
-    <Avatar seed={ userWallet } size="xsmall" />
+export const AvatarInfo = ({ userName, userWallet, shouldRenderName, type, variant, maxTextWidth, size, ...rest }) => (
+  <div
+    className={`jur-avatar-info ${variant ? `jur-avatar-info--${variant}` : ''}`}
+    {...rest}
+  >
+    <Avatar seed={ userWallet } size={size} variant={type} />
     <div className="jur-avatar-info__text" style={{width: maxTextWidth || 150}}>
       { shouldRenderName && userName ?
           userName
@@ -15,3 +18,7 @@ export const AvatarInfo = ({ userName, userWallet, shouldRenderName, variant, ma
     </div>
   </div>
 );
+
+AvatarInfo.defaultProps = {
+  size: 'xsmall'
+}
