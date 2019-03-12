@@ -45,6 +45,7 @@
     "faq" : "FAQ's",
     "termOfService" : "Terms of Service",
     "termAndConditions" : "Terms and Conditions",
+    "termAndConditionsError" : "You must accept our Terms and Conditions",
     "notFound" : "Not Found",
     "wallet" : "Wallet",
     "optional" : "optional",

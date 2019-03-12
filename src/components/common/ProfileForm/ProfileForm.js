@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { NavLink } from "react-router-dom";
 
@@ -22,7 +22,6 @@ import locations from "../../../assets/locations.json"; // locations
 import genders from "../../../assets/genders.json"; // genders
 import categories from "../../../assets/categories.json"; // categories
 import { FormContainer } from "../Form/FormContainer";
-console.log("locations", locations);
 
 export const ProfileForm = ({
   className,
@@ -30,29 +29,18 @@ export const ProfileForm = ({
   updateUserField,
   updateUser
 }) => {
-  // state = {
-  //   fullName: "Alice",
-  //   gender: "",
-  //   email: "alice@domain.com",
-  //   location: null,
-  //   birthday: "",
-  //   category: "",
-  //   showFullName: false,
-  //   terms: true
-  // };
+  const [formUpdated, setFormUpdated] = useState(false);
 
-  const [ isValid, errors, validateForm ] = useFormValidation(
+  // validation setup
+  const [isValid, errors, validateForm, setFormData] = useFormValidation(
     user,
     validationSchema
   );
 
-  console.log('ProfileForm', isValid);
-  console.log('ProfileForm - validateForm', validateForm);
-
   // first form validation
-  // useEffect(() => {
-  //   // validateForm();
-  // }, []);
+  useEffect(() => {
+    validateForm();
+  }, []);
 
   const { labels } = useContext(AppContext);
   const {
@@ -68,31 +56,43 @@ export const ProfileForm = ({
     accepted_terms
   } = user;
 
-  // disable update
-  const submitDisabled =
-    accepted_terms === false || accepted_terms === 0 || updating === true;
+  const changeInput = (name, value) => {
+    setFormUpdated(true);
+    setFormData({ ...user, [name]: value });
+    updateUserField(name, value); // dispatch action
+  };
 
   const onInputChange = ev => {
     const { target } = ev;
-    console.log("target", target);
     if (target) {
       // only if there is a target
       const value = target.type === "checkbox" ? target.checked : target.value;
       const name = target.name;
 
-      updateUserField(name, value); // dispatch action
+      changeInput(name, value);
     }
   };
 
   const onChangeSelect = (name, input) => {
-    const value = (typeof input !== 'undefined' && input !== null && typeof input.value !== 'undefined' ) ? input.value : null;
-    updateUserField(name, value);
+    const value =
+      typeof input !== "undefined" &&
+      input !== null &&
+      typeof input.value !== "undefined"
+        ? input.value
+        : null;
+
+    changeInput(name, value);
   };
+
+  // disable update
+  const submitDisabled =
+    formUpdated === false || updating === true || !isValid();
 
   const onSubmit = ev => {
     ev.preventDefault();
-    if (submitDisabled === false) {
+    if (!submitDisabled) {
       updateUser();
+      setFormUpdated(false); // reset form
     }
   };
 
@@ -101,7 +101,9 @@ export const ProfileForm = ({
     label: loc.name
   }));
 
-  const hasError = (field) => errors[field].length > 0
+  // form error handling
+  const hasError = field =>
+    typeof errors[field] !== "undefined" && errors[field].length > 0;
 
   return (
     <Form
@@ -133,6 +135,7 @@ export const ProfileForm = ({
             type="text"
             name="name"
             id="name"
+            error={hasError("name")}
             placeholder={labels.fullNamePlaceholder}
             value={name}
             onChange={onInputChange}
@@ -145,6 +148,7 @@ export const ProfileForm = ({
           <Form.Select
             name="gender"
             id="gender"
+            error={hasError("gender")}
             value={genders.filter(option => option.value === gender)}
             options={genders}
             onChange={input => onChangeSelect("gender", input)}
@@ -162,6 +166,7 @@ export const ProfileForm = ({
             id="email"
             placeholder={labels.emailPlaceholder}
             value={email}
+            error={hasError("email")}
             onChange={onInputChange}
           />
         </Form.Group>
@@ -172,6 +177,7 @@ export const ProfileForm = ({
           <Form.Select
             name="localtion"
             id="location"
+            error={hasError("location")}
             value={locationsOptions.filter(option => option.value === location)}
             options={locationsOptions}
             onChange={input => onChangeSelect("location", input)}
@@ -186,9 +192,10 @@ export const ProfileForm = ({
           <Form.DatePicker
             name="birth_date"
             id="birth_date"
+            error={hasError("birth_date")}
             placeholder={labels.dateOfBirthPlaceholder}
             selectedDate={birth_date}
-            onChange={date => updateUserField("birth_date", date)}
+            onChange={date => changeInput("birth_date", date)}
           />
         </Form.Group>
         <Form.Group>
@@ -198,6 +205,7 @@ export const ProfileForm = ({
           <Form.Select
             name="category"
             id="category"
+            error={hasError("category")}
             value={categories.filter(option => option.value === category)}
             options={categories}
             onChange={input => onChangeSelect("category", input)}
@@ -215,6 +223,7 @@ export const ProfileForm = ({
               <div className="jur-form__profile__options__show-name__input">
                 <Switch
                   name="show_fullname"
+                  error={hasError("show_fullname")}
                   checked={show_fullname}
                   onChange={onInputChange}
                   checked={show_fullname}
@@ -222,19 +231,21 @@ export const ProfileForm = ({
               </div>
             </div>
             <div className="jur-form__profile__options__terms">
-              <input
-                type="checkbox"
-                name="accepted_terms"
-                value={1}
-                checked={accepted_terms}
-                onChange={onInputChange}
-              />
-              <label>
-                {labels.accept}{" "}
+              <Form.Label>
+                <Form.Input
+                  type="checkbox"
+                  name="accepted_terms"
+                  error={hasError("accepted_terms")}
+                  value={1}
+                  required={true}
+                  checked={accepted_terms}
+                  onChange={onInputChange}
+                />
+                {labels.accept}
                 <NavLink to="/profile/terms">
                   {labels.termAndConditions}
                 </NavLink>
-              </label>
+              </Form.Label>
             </div>
           </div>
           <div className="jur-form__profile__submit">
@@ -249,6 +260,9 @@ export const ProfileForm = ({
           </div>
         </Form.Group>
       </FormContainer>
+      {formUpdated && hasError("accepted_terms") && (
+        <Form.ErrorMsg msg={labels.termAndConditionsError} />
+      )}
     </Form>
   );
 };
