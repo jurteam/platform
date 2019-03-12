@@ -196,7 +196,7 @@ export const ProfileForm = ({
               <div className="jur-form__profile__options__show-name__input">
                 <Switch
                   name="show_fullname"
-                  value={show_fullname}
+                  checked={show_fullname}
                   onChange={onInputChange}
                   checked={show_fullname}
                 />
