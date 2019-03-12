@@ -16,7 +16,7 @@ $api->version('v1', function($api) {
             $api->get('/', 'App\Http\Controllers\ContractsController@index');
             $api->get('{id}', 'App\Http\Controllers\ContractsController@show');
             $api->post('/', 'App\Http\Controllers\ContractsController@store');
-            $api->put('update/{id}', 'App\Http\Controllers\ContractsController@update');
+            $api->put('{id}', 'App\Http\Controllers\ContractsController@update');
             $api->delete('{id}', 'App\Http\Controllers\ContractsController@destroy');
 
             $api->group(['prefix' => 'status'], function($api) {

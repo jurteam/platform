@@ -40,4 +40,30 @@ class ContractEndpointTest extends TestCase
             'part_a_wallet' => 'QHx5VJEg3zO2jseSEq8R/wtCljguCvHSMA49HQ1IWiI='
         ]);
     }
+
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function a_user_can_update_his_own_contract()
+    {
+        $user = factory(App\Models\User::class)->create();
+        $contract = factory(App\Models\Contract::class)->create([
+            'user_id' => $user->id,
+            'part_a_wallet' => $user->wallet
+        ]);
+
+        $this->put("api/v1/contracts/{$contract->id}", [
+            'kpi' => 'test kpi',
+            'category' => 'Test'
+        ], [
+            'wallet' => $user->wallet
+        ]);
+
+        $this->seeInDatabase('contracts', [
+            'kpi' => 'test kpi',
+            'category' => 'Test'
+        ]);
+    }
 }
