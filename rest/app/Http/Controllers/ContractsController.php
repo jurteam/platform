@@ -136,13 +136,9 @@ class ContractsController extends Controller
         ]);
     }
 
-    public function destroyAllByOwner(Request $request)
+    public function destroyAll(ContractFilters $filters)
     {
-        $wallet = $request->header('wallet');
-
-        $user = User::byWallet($wallet)->firstOrFail();
-
-        $user->contracts()->delete();
+        Contract::filters($filters)->delete();
 
         return response()->json(['status' => 'deleted']);
     }
