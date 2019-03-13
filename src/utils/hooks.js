@@ -41,8 +41,8 @@ export const useFormValidation = (data, schema) => {
               newErrors[field.name].push(checkName);
             }
           } else {
-            if (typeof newErrors[field.name] !== "undefined") {
-              delete newErrors[field.name];
+            if (typeof newErrors[field.name] !== "undefined" && typeof newErrors[field.name][checkName] !== "undefined") {
+              delete newErrors[field.name][checkName];
             }
           }
         });
@@ -56,7 +56,7 @@ export const useFormValidation = (data, schema) => {
 };
 
 const FormValidation = {
-  required: field => typeof field !== "undefined" && field,
+  required: field => (typeof field !== "undefined" && field !== "" && field !== null) ? true : false,
   isTrue: field => (typeof field !== "undefined" ? field === true : true), // always true when null in case this field is optional
   isFalse: field => (typeof field !== "undefined" ? field === false : true), // always true when null in case this field is optional
   isEmail: email => {
