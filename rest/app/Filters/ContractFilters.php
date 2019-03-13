@@ -8,7 +8,7 @@ class ContractFilters extends Filters
      * @var array
      */
     protected $filters = [
-        'status', 'from', 'to', 'query', 'owner'
+        'status', 'from', 'to', 'query', 'owner', 'type'
     ];
 
     public function owner($value)
@@ -37,5 +37,14 @@ class ContractFilters extends Filters
                     ->where('name', 'LIKE', "%{$value}%")
                     ->orWhere('part_a_wallet', 'LIKE', "%{$value}%")
                     ->orWhere('part_a_public_name', 'LIKE', "%{$value}%");
+    }
+
+    public function type($value)
+    {
+        if ($value == 'dispute') {
+            return $this->builder->where('is_a_dispute', true);
+        } elseif ($value == 'friendly') {
+            return $this->builder->where('is_a_friendly_resolution', true);
+        }
     }
 }

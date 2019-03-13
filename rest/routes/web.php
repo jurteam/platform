@@ -9,10 +9,11 @@ $api->version('v1', function($api) {
             $api->post('/', 'App\Http\Controllers\UserController@store');
             $api->put('/', 'App\Http\Controllers\UserController@update');
             $api->delete('/', 'App\Http\Controllers\UserController@destroy');
-            $api->delete('contracts', 'App\Http\Controllers\ContractsController@destroyAllByOwner');
         });
 
         $api->group(['prefix' => 'contracts'], function($api) {
+            $api->delete('delete-all', 'App\Http\Controllers\ContractsController@destroyAll');
+
             $api->get('/', 'App\Http\Controllers\ContractsController@index');
             $api->get('{id}', 'App\Http\Controllers\ContractsController@show');
             $api->post('/', 'App\Http\Controllers\ContractsController@store');

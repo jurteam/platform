@@ -5,6 +5,7 @@ namespace App\Transformers;
 use App\Models\Contract;
 use League\Fractal\TransformerAbstract;
 use App\Transformers\AttachmentTransformer;
+use App\Transformers\ContractDetailTransformer;
 use App\Transformers\ContractActivityTransformer;
 
 class ContractTransformer extends TransformerAbstract
@@ -15,7 +16,7 @@ class ContractTransformer extends TransformerAbstract
      * @var array
      */
     protected $availableIncludes = [
-        'attachments'
+        'attachments', 'details'
     ];
 
     /**
@@ -57,6 +58,7 @@ class ContractTransformer extends TransformerAbstract
     /**
      * Include attachments
      *
+     * @param  \App\Models\Contract $contract
      * @return \League\Fractal\Resource\Collection
      */
     public function includeAttachments(Contract $contract)
@@ -64,5 +66,18 @@ class ContractTransformer extends TransformerAbstract
         $attachments = $contract->getMedia();
 
         return $this->collection($attachments, new AttachmentTransformer);
+    }
+
+    /**
+     * Include details
+     *
+     * @param  \App\Models\Contract $contract
+     * @return \League\Fractal\Resource\Collection
+     */
+    public function includeDetails(Contract $contract)
+    {
+        $details = $contract->details;
+
+        return $this->collection($details, new ContractDetailTransformer);
     }
 }

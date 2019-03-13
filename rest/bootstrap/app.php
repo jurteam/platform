@@ -31,6 +31,7 @@ $app->configure('jur');
 $app->configure('medialibrary');
 $app->configure('filesystems');
 $app->configure('jwt');
+$app->configure('mail');
 
 $app->withFacades();
 
@@ -101,8 +102,12 @@ $app->register(Barryvdh\Cors\ServiceProvider::class);
 $app->register(App\Providers\AppServiceProvider::class);
 $app->register(Tymon\JWTAuth\Providers\LumenServiceProvider::class);
 $app->register(Spatie\MediaLibrary\MediaLibraryServiceProvider::class);
+$app->register(Illuminate\Notifications\NotificationServiceProvider::class);
+$app->register(Illuminate\Mail\MailServiceProvider::class);
 // $app->register(App\Providers\AuthServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
+
+$app->alias('mailer', \Illuminate\Contracts\Mail\Mailer::class);
 
 /*
 |--------------------------------------------------------------------------
