@@ -12,7 +12,7 @@ $api->version('v1', function($api) {
         });
 
         $api->group(['prefix' => 'contracts'], function($api) {
-            $api->delete('destroy-all', 'App\Http\Controllers\ContractsController@destroyAll');
+            $api->delete('delete-all', 'App\Http\Controllers\ContractsController@destroyAll');
 
             $api->get('/', 'App\Http\Controllers\ContractsController@index');
             $api->get('{id}', 'App\Http\Controllers\ContractsController@show');
