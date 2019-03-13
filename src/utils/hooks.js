@@ -22,26 +22,30 @@ export const useFormValidation = (data, schema) => {
     schema.map(field => {
       if (typeof field.checks !== "undefined") {
         field.checks.map(checkName => {
-          log("current function", FormValidation[checkName]);
-          console.log(
-            "useFormValidation - field",
-            field.name,
-            "with value '",
-            formData[field.name],
-            "'",
-            checkName,
-            "?",
-            FormValidation[checkName](formData[field.name])
-          );
+          let checkPass = true; // fallback
 
-          if (!FormValidation[checkName](formData[field.name])) {
+          log("current function", FormValidation[checkName]);
+
+          if (checkName !== "isEqualTo" && checkName !== "isNotEqualTo") {
+            checkPass = FormValidation[checkName](formData[field.name]);
+          } else {
+            checkPass = FormValidation[checkName](
+              formData[field.name],
+              formData[field.targetField]
+            ); // add target field
+          }
+
+          if (!checkPass) {
             if (typeof newErrors[field.name] === "undefined") {
               newErrors[field.name] = [checkName];
             } else {
               newErrors[field.name].push(checkName);
             }
           } else {
-            if (typeof newErrors[field.name] !== "undefined" && typeof newErrors[field.name][checkName] !== "undefined") {
+            if (
+              typeof newErrors[field.name] !== "undefined" &&
+              typeof newErrors[field.name][checkName] !== "undefined"
+            ) {
               delete newErrors[field.name][checkName];
             }
           }
@@ -56,7 +60,10 @@ export const useFormValidation = (data, schema) => {
 };
 
 const FormValidation = {
-  required: field => (typeof field !== "undefined" && field !== "" && field !== null) ? true : false,
+  required: field =>
+    typeof field !== "undefined" && field !== "" && field !== null
+      ? true
+      : false,
   isTrue: field => (typeof field !== "undefined" ? field === true : true), // always true when null in case this field is optional
   isFalse: field => (typeof field !== "undefined" ? field === false : true), // always true when null in case this field is optional
   isEmail: email => {
@@ -72,5 +79,11 @@ const FormValidation = {
         ? true
         : false
       : true; // always true when null in case this field is optional
+  },
+  isEqualTo: (field, target) => {
+    return field ? field === target : true; // always true when null in case this field is optional
+  },
+  isNotEqualTo: (field, target) => {
+    return field ? field !== target : true; // always true when null in case this field is optional
   }
 };
