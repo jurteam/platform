@@ -26,15 +26,17 @@ export const Contracts = props => {
 
   const newArbitration = () => {
     log("newArbitration", "run");
-    const {
-      user: { disclaimer }
-    } = props;
-    if (disclaimer.optin) {
-      global.drizzle.store.dispatch({ type: NEW_ARBITRATION });
-    } else {
-      setShowModal(true); // show disclaimer modal
-      global.drizzle.store.dispatch({ type: DISCLAIMER_MUST_BE_ACCEPTED });
-    }
+    const { history } = props;
+    history.push("/contracts/new");
+    // const {
+    //   user: { disclaimer }
+    // } = props;
+    // if (disclaimer.optin) {
+    //   global.drizzle.store.dispatch({ type: NEW_ARBITRATION });
+    // } else {
+    //   setShowModal(true); // show disclaimer modal
+    //   global.drizzle.store.dispatch({ type: DISCLAIMER_MUST_BE_ACCEPTED });
+    // }
   };
 
   const breadcrumbs = [

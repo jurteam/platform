@@ -22,13 +22,15 @@ export const useFormValidation = (data, schema) => {
     schema.map(field => {
       if (typeof field.checks !== "undefined") {
         field.checks.map(checkName => {
-          log(
-            "useFormValidation - FormValidation[checkName]",
-            FormValidation[checkName]
-          );
-          log("useFormValidation - formData[field.name]", formData[field.name]);
-          log(
-            "useFormValidation - check value",
+          log("current function", FormValidation[checkName]);
+          console.log(
+            "useFormValidation - field",
+            field.name,
+            "with value '",
+            formData[field.name],
+            "'",
+            checkName,
+            "?",
             FormValidation[checkName](formData[field.name])
           );
 
@@ -43,7 +45,6 @@ export const useFormValidation = (data, schema) => {
               delete newErrors[field.name];
             }
           }
-
         });
       }
     });
@@ -55,13 +56,21 @@ export const useFormValidation = (data, schema) => {
 };
 
 const FormValidation = {
-  required: (field = null) => typeof field !== "undefined" && field,
-  isTrue: (field = null) =>
-    typeof field !== "undefined" ? field === true : true, // always true when null in case this field is optional
-  isFalse: (field = null) =>
-    typeof field !== "undefined" ? field === false : true, // always true when null in case this field is optional
-  isEmail: (email = null) => {
+  required: field => typeof field !== "undefined" && field,
+  isTrue: field => (typeof field !== "undefined" ? field === true : true), // always true when null in case this field is optional
+  isFalse: field => (typeof field !== "undefined" ? field === false : true), // always true when null in case this field is optional
+  isEmail: email => {
     const regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return email ? regex.test(email) : true; // always true when null in case this field is optional
+  },
+  isWallet: address => {
+    const addrCheck = /^(0x)?[0-9a-f]{40}$/i;
+    const addrFormatCheck = /^(0x)?[0-9a-fA-F]{40}$/;
+
+    return address
+      ? addrCheck.test(address) && addrFormatCheck.test(address)
+        ? true
+        : false
+      : true; // always true when null in case this field is optional
   }
 };

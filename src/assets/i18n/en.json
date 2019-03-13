@@ -38,6 +38,8 @@
     "previous" : "Previous",
     "yes" : "Yes",
     "no" : "no",
+    "counterparties" : "Counterparties",
+    "counterpartiesText" : "Email address is not mandatory. If you provide your email, you will get notifications during all the different stages of the contract execution and the eventual dispute resolution",
     "search" : "Search ...",
     "profileSettings" : "Profile Settings",
     "privacy" : "Privacy",
