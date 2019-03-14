@@ -1,5 +1,38 @@
-.jur {
-    &-main {
-        flex: 1 1 75%;
+@import "../../../assets/scss/variables";
+
+.jur-main {
+    flex: 1 1 auto;
+    overflow: auto;
+    padding-bottom: 50px;
+
+    + .jur-aside {
+        min-width: 481px;
+        max-width: 481px;
+        border-right: none;
+        border-left: 1px solid $white-lilac;
+    }
+
+    .jur-form__profile,
+    .jur-user-privacy,
+    .jur-user-notification,
+    .jur-terms,
+    .jur-form__create-contract-form {
+        width: 80%;
+        margin: 80px auto 0;
+    }
+    
+    .jur-accordion {
+        width: 80%;
+        margin: 60px auto 0;
+    }
+
+    .jur-contracts__table {
+        padding: 20px;
+    }
+
+    .jur-contract-summary {
+        + .jur-insert-contract-details {
+            padding: 20px; 
+        }
     }
 }

@@ -10,6 +10,7 @@ import {FormDatePicker} from './FormDatePicker';
 import {FormNumericInput} from './FormNumericInput';
 import {FormTextArea} from './FormTextArea';
 import {FormErrorMsg} from './FormErrorMsg';
+import {FormSearch} from './FormSearch';
 
 import './Forms.scss';
 
@@ -24,6 +25,7 @@ export class Form extends Component {
   static NumericInput = FormNumericInput;
   static TextArea = FormTextArea;
   static ErrorMsg = FormErrorMsg;
+  static Search = FormSearch;
 
   render() {
     const {

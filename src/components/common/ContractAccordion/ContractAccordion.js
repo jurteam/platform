@@ -15,14 +15,14 @@ export const ContractAccordion = ({ tooltip, className, children, title, initial
 
   return (
     <div className={`${classNames} ${className}`}>
-      <div className="jur-contract-accordion__header">
+      <div className="jur-contract-accordion__header" onClick={() => setOpenState(!isOpen)}>
         <span class="jur-contract-accordion__title">
           {title}
           {tooltip &&
             <InfoTooltip />
           }
         </span>
-        <span className="jur-contract-accordion__arrow" onClick={() => setOpenState(!isOpen)}>
+        <span className="jur-contract-accordion__arrow">
           <AngleIcon />
         </span>
       </div>
