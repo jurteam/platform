@@ -37,6 +37,7 @@ $fiord: #3F536E;
 $cloud-burst: #253454;
 $gray-1: #909090;
 $white-lilac: #EBEDF8;
+$athens-gray: #E6EAEE;
 
 
 // Forms
@@ -93,8 +94,13 @@ $tag-bg-color-39: $gallery;
 $header-bg-color: $cloud-burst;
 $profile-preview-border-color: $big-stone;
 
-// UserAction
+// SubHeader
+$subheader-bg-color: $porcelain;
 
+// ResolvedDisputeNotification
+$resolved-dispute-notification-bg-color: $athens-gray;
+
+// UserAction
 $user-action-default-color: $prussian-blue;
 $user-action-alert-color: $crimson;
 $user-action-border-color: $black-haze;

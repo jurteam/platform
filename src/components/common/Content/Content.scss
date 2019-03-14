@@ -1,5 +1,7 @@
-.jur {
-    &-content {
-        display: flex;
-    }
+@import "../../../assets/scss/reset";
+
+.jur-content {
+    display: flex;
+    height: 100vh;
+    padding-top: 117px;
 }

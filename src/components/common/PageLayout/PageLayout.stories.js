@@ -3,16 +3,23 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { withInfo } from '@storybook/addon-info';
 
-import { ProfilePage } from '../PageExamples/ProfilePage';
-import { DisputesPage } from '../PageExamples/Disputes';
+import { ProfileSettings } from '../PageExamples/ProfileSettings';
+import { ProfilePrivacy } from '../PageExamples/ProfilePrivacy';
+import { ProfileNotification } from '../PageExamples/ProfileNotification';
+import { ProfileFaq } from '../PageExamples/ProfileFaq';
+import { ProfileTerms } from '../PageExamples/ProfileTerms';
+import { ContractsEmpty } from '../PageExamples/ContractsEmpty';
+import { ContractsFull } from '../PageExamples/ContractsFull';
+import { CreateContract } from '../PageExamples/CreateContract';
+import { SetContractDetails } from '../PageExamples/SetContractDetails';
 
 storiesOf('Layouts', module)
-  .addDecorator(withInfo)
-  .addParameters({
-    info: {
-      inline: true,
-      header: false
-    }
-  })
-  .add('Profile page', () => <ProfilePage />)
-  .add('Disputes page', () => <DisputesPage />)
+  .add('Profile page', () => <ProfileSettings />)
+  .add('Profile privacy', () => <ProfilePrivacy />)
+  .add('Profile notification', () => <ProfileNotification />)
+  .add('Profile Faq', () => <ProfileFaq />)
+  .add('Profile Terms', () => <ProfileTerms />)
+  .add('Contract Empty', () => <ContractsEmpty />)
+  .add('Contract Full', () => <ContractsFull />)
+  .add('Create Contract', () => <CreateContract />)
+  .add('Set contracts details', () => <SetContractDetails />)

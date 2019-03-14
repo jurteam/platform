@@ -9,6 +9,7 @@ export const FormSelect = ({name, id, options, onChange, error, errorMsg, ...res
       ...styles,
       backgroundColor: 'white',
       border: '1px solid #EAEBEC',
+      boxShadow: 'none',
       borderRadius: 2,
       maxHeight: 36,
       height: 36,
