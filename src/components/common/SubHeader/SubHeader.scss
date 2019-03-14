@@ -1,0 +1,15 @@
+@import "../../../assets/scss/variables";
+
+.jur-sub-header {
+    position: fixed;
+    top: 70px;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: $porcelain;
+    height: 47px;
+    border-bottom: 1px solid $white-lilac;
+    padding: 0 20px;
+}
