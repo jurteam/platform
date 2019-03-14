@@ -9,7 +9,7 @@ import { ProfileContext } from "./";
 import PageLayout from "../../common/PageLayout";
 import Main from "../../common/Main";
 import Aside from "../../common/Aside";
-import Side from "../../common/Side";
+import ProfileMenu from "../../common/ProfileMenu";
 import ProfileForm from "../../common/ProfileForm";
 
 const Profile = props => {
@@ -19,17 +19,22 @@ const Profile = props => {
     location: { pathname }
   } = props;
 
+  const profileRootSection = "/profile";
+
   let breadcrumbs = [
     {
       label: labels.profileSettings,
-      active: true,
-      to: "/profile"
+      to: profileRootSection
     }
   ];
 
   const showContent = () => {
     const currentContent = navigation.profile.find(el => {
-      return el.path === pathname;
+      const findCheck = el.to === pathname;
+      if (findCheck && el.to !== profileRootSection) {
+        breadcrumbs[1] = el;
+      }
+      return findCheck;
     });
 
     // fallback to profile settings by default
@@ -39,7 +44,7 @@ const Profile = props => {
   return (
     <PageLayout breadcrumbs={breadcrumbs}>
       <Aside>
-        <Side items={navigation.profile} />
+        <ProfileMenu menuList={navigation.profile} />
       </Aside>
       <Main>{showContent()}</Main>
     </PageLayout>

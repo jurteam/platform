@@ -20,24 +20,24 @@ class ProfileProvider extends Component {
       profile: [
         {
           label: i18n.profileSettings,
-          path: "/profile",
+          to: "/profile",
           component: <ProfileForm />
         },
         {
           label: i18n.privacy,
-          path: "/profile/privacy",
+          to: "/profile/privacy",
           component: <Privacy />
         },
         {
           label: i18n.notification,
-          path: "/profile/notifications",
+          to: "/profile/notifications",
           component: <UserNotification title="Notification" headers={[{label: 'Date',sortable: true},{label: 'Message'}]} data={[{id: 1,date: 'few seconds ago',message: 'Lorem ipsum dolor sit amet, consectetur adipiscing…'},{id: 2,date: 'few minutes ago',message: 'Lorem ipsum dolor sit amet, consectetur adipiscing…'},{id: 3,date: 'few hours ago',message: 'Lorem ipsum dolor sit amet, consectetur adipiscing…'}]} />
 
         },
-        { label: i18n.faq, path: "/profile/faq", component: <Faq /> },
+        { label: i18n.faq, to: "/profile/faq", component: <Faq /> },
         {
           label: i18n.termOfService,
-          path: "/profile/terms",
+          to: "/profile/terms",
           component: <Terms />
         }
       ]
