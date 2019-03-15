@@ -61,7 +61,15 @@
     "location" : "Location",
     "category" : "Category",
     "showFullName" : "Show Full Name instead of Wallet address",
+    "showFullNameTooltipText" : "Lorem ipsum dolor sit amet.",
+    "kpi" : "KPI of the contracts",
+    "kpiPlaceholder" : "Please insert in a clear way some objective elements that can demonstrate the contract has been executed properly.",
+    "resolutionProof" : "Resolution Proof",
+    "resolutionProofPlaceholder" : "Please provide evidence (including external links if appropriate) for assessing if the key performance indicators and contract terms have been met.",
+    "open" : "Open",
+    "openText" : "On the open layer any token holder can vote. According to our game theory, disputes over contracts with clear Key Performance Indicators and good evidence will result in fair outcomes. There is no incentive for anyone to vote on the wrong side, since there is no extra reward for choosing the unlikely proposition. The system is not corruptible because no one can realistically have 51% of Jur tokens.",
+    "hubs" : "Hubs",
+    "hubsText" : "Lorem ipsum dolor sit amet.",
     "saving" : "Saving",
-    "dotted" : "•••",
-    "showFullNameTooltipText" : null
+    "dotted" : "•••"
 }

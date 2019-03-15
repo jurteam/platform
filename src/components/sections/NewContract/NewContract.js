@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 
 // Context
 import { AppContext } from "../../../bootstrap/AppProvider";
@@ -15,6 +15,7 @@ import { log } from "../../../utils/helpers"; // log helper
 
 import {
   NEW_CONTRACT,
+  RESET_CONTRACT,
   DISCLAIMER_MUST_BE_ACCEPTED
 } from "../../../reducers/types";
 
@@ -23,6 +24,11 @@ export const NewContract = props => {
 
   const [showModal, setShowModal] = useState(false);
 
+  // reset contract on each new contract creation
+  useEffect(() => {
+    global.drizzle.store.dispatch({ type: RESET_CONTRACT })
+  }, []);
+
   const initContract = () => {
     log("initContract", "run");
     const {
@@ -30,6 +36,9 @@ export const NewContract = props => {
     } = props;
     if (disclaimer.optin) {
       global.drizzle.store.dispatch({ type: NEW_CONTRACT });
+
+      const { history } = props;
+      history.push("/contracts/detail");
     } else {
       setShowModal(true); // show disclaimer modal
       global.drizzle.store.dispatch({ type: DISCLAIMER_MUST_BE_ACCEPTED });

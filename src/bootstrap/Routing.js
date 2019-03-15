@@ -8,6 +8,8 @@ import Profile from "../components/sections/Profile";
 
 import Contracts from "../components/sections/Contracts";
 import NewContract from "../components/sections/NewContract";
+import ContractDetail from "../components/sections/ContractDetail";
+
 import Disputes from "../components/sections/Disputes";
 
 // Helpers
@@ -48,6 +50,13 @@ export const createRoutes = withComponents => {
       path: "/contracts/new",
       onEnter: () => redirect(checkConnection, "/contracts/new"),
       component: withComponents && NewContract,
+      title: i18n.smartContracts
+    },
+    {
+      exact: true,
+      path: "/contracts/detail",
+      onEnter: () => redirect(checkConnection, "/contracts/detail"),
+      component: withComponents && ContractDetail,
       title: i18n.smartContracts
     },
     {

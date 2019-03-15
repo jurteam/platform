@@ -17,7 +17,7 @@ export const CreateContractForm = ({ onNext, user, contract, updateContractField
 
   // validation setup
   const [isValid, errors, validateForm, setFormData] = useFormValidation(
-    contract,
+    contract.new,
     validationSchema
   );
 
@@ -25,33 +25,25 @@ export const CreateContractForm = ({ onNext, user, contract, updateContractField
 
   const {
     updating,
-    part_a_wallet,
-    part_a_name,
-    part_a_email,
-    part_b_wallet,
-    part_b_name,
-    part_b_email
+    new: {
+      part_a_wallet,
+      part_a_public_name,
+      part_a_email,
+      part_b_wallet,
+      part_b_public_name,
+      part_b_email
+    }
   } = contract;
 
   // first form validation
   useEffect(() => {
+    resetContract();
     validateForm();
   }, []);
 
-  // handle form default values based on user
-  useEffect(() => {
-    console.log("CreateContractForm", "here");
-
-    updateContractField('part_a_wallet', user.wallet);
-    updateContractField('part_a_name', (user.show_fullname) ? user.name : "");
-    updateContractField('part_a_email', user.email);
-
-    return () => resetContract;
-  }, [user]);
-
   const changeInput = (name, value) => {
     setFormUpdated(true);
-    setFormData({ ...contract, [name]: value });
+    setFormData({ ...contract.new, [name]: value });
     updateContractField(name, value); // dispatch action
   };
 
@@ -78,7 +70,7 @@ export const CreateContractForm = ({ onNext, user, contract, updateContractField
 
   // form error handling
   const hasError = field =>
-    typeof errors[field] !== "undefined" && errors[field].length > 0;
+    typeof errors[field] !== "undefined" && errors[field].length > 0 && formUpdated; // show error only when form is update at least one time
 
   return (
     <Form className="jur-form__create-contract-form">
@@ -105,17 +97,17 @@ export const CreateContractForm = ({ onNext, user, contract, updateContractField
             <Form.Container>
               <Form.Group>
                 <Form.Label
-                  htmlFor={"part_a_name"}
+                  htmlFor={"part_a_public_name"}
                   optional
                 >
                   {labels.fullName}
                 </Form.Label>
                 <Form.Input
                   type="text"
-                  name={"part_a_name"}
-                  id={"part_a_name"}
-                  error={hasError("part_a_name")}
-                  value={part_a_name}
+                  name={"part_a_public_name"}
+                  id={"part_a_public_name"}
+                  error={hasError("part_a_public_name")}
+                  value={part_a_public_name}
                   onChange={ev => onInputChange(ev)}
                 />
               </Form.Group>
@@ -161,17 +153,17 @@ export const CreateContractForm = ({ onNext, user, contract, updateContractField
             <Form.Container>
               <Form.Group>
                 <Form.Label
-                  htmlFor={"part_b_name"}
+                  htmlFor={"part_b_public_name"}
                   optional
                 >
                   {labels.fullName}
                 </Form.Label>
                 <Form.Input
                   type="text"
-                  name={"part_b_name"}
-                  id={"part_b_name"}
-                  error={hasError("part_b_name")}
-                  value={part_b_name}
+                  name={"part_b_public_name"}
+                  id={"part_b_public_name"}
+                  error={hasError("part_b_public_name")}
+                  value={part_b_public_name}
                   onChange={ev => onInputChange(ev)}
                 />
               </Form.Group>

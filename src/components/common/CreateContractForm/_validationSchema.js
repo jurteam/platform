@@ -9,7 +9,8 @@ const validationSchema = [
   },
   {
     name: "part_b_wallet",
-    checks: ["required", "isWallet"]
+    checks: ["required", "isWallet", "isNotEqualTo"],
+    targetField: "part_a_wallet"
   },
   {
     name: "part_b_email",

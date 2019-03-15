@@ -194,7 +194,7 @@ export const ProfileForm = ({
             id="birth_date"
             error={hasError("birth_date")}
             placeholder={labels.dateOfBirthPlaceholder}
-            selectedDate={(birth_date) ? new Date(birth_date) : null}
+            selectedDate={birth_date ? new Date(birth_date) : null}
             onChange={date => changeInput("birth_date", date)}
           />
         </Form.Group>
@@ -217,7 +217,10 @@ export const ProfileForm = ({
           <div className="jur-form__profile__options">
             <div className="jur-form__profile__options__show-name">
               <Form.Label>
-                <InfoTootip text={labels.showFullNameTooltipText} />{" "}
+                <InfoTootip
+                  position="top"
+                  text={labels.showFullNameTooltipText}
+                />{" "}
                 {labels.showFullName}
               </Form.Label>
               <div className="jur-form__profile__options__show-name__input">

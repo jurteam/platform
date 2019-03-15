@@ -23,6 +23,13 @@ class AppProvider extends Component {
       version: appReference.version,
       labels: i18n,
       metamaskLoading: true,
+      contractTableHeaders: [
+        { label: i18n.status, sortable: false },
+        { label: i18n.contractName, sortable: true },
+        { label: i18n.duration, sortable: false },
+        { label: i18n.couterpartyDetails, sortable: false },
+        { label: i18n.value, sortable: true }
+      ],
       onNetwork: false,
       auth: this.auth,
       exit: this.exit

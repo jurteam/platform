@@ -4,39 +4,45 @@ import React, { useState, useContext } from "react";
 import { AppContext } from "../../../bootstrap/AppProvider";
 
 // Components
-import PageLayout from "../../common/PageLayout";
+import Page from "../../common/Page";
+import Header from "../../common/Header";
+import SubHeader from "../../common/SubHeader";
+import Breadcrumbs from "../../common/Breadcrumbs";
+import Content from "../../common/Content";
+import Button from "../../common/Button";
+
 import Disclaimer, { ModalDiscliamer } from "../../common/Disclaimer";
+
+import Main from "../../common/Main";
 import ContractsTable from "../../common/ContractsTable";
 
 import { log } from "../../../utils/helpers"; // log helper
 
-import {
-  NEW_ARBITRATION,
-  DISCLAIMER_MUST_BE_ACCEPTED
-} from "../../../reducers/types";
+import { DISCLAIMER_MUST_BE_ACCEPTED } from "../../../reducers/types";
 
 export const Contracts = props => {
-  const { labels } = useContext(AppContext);
+  const { labels, contractTableHeaders } = useContext(AppContext);
 
-  const [ showModal, setShowModal ] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+
+  const { contract } = props;
+  log("Contracts - contract", contract);
 
   const handleArchive = () => {
     log("Contracts", "handleArchive");
   };
 
-  const newArbitration = () => {
-    log("newArbitration", "run");
-    const { history } = props;
-    history.push("/contracts/new");
-    // const {
-    //   user: { disclaimer }
-    // } = props;
-    // if (disclaimer.optin) {
-    //   global.drizzle.store.dispatch({ type: NEW_ARBITRATION });
-    // } else {
-    //   setShowModal(true); // show disclaimer modal
-    //   global.drizzle.store.dispatch({ type: DISCLAIMER_MUST_BE_ACCEPTED });
-    // }
+  const newContract = () => {
+    const {
+      user: { disclaimer }
+    } = props;
+    if (disclaimer.optin) {
+      const { history } = props;
+      history.push("/contracts/new");
+    } else {
+      setShowModal(true); // show disclaimer modal
+      global.drizzle.store.dispatch({ type: DISCLAIMER_MUST_BE_ACCEPTED });
+    }
   };
 
   const breadcrumbs = [
@@ -48,21 +54,32 @@ export const Contracts = props => {
   ];
 
   return (
-    <PageLayout breadcrumbs={breadcrumbs}>
-      <ContractsTable
-        headers={[
-          { label: "Status", sortable: false },
-          { label: "Contract Name", sortable: false },
-          { label: "Duration", sortable: false }
-        ]}
-        data={[]}
-        handleArchive={handleArchive}
-        newContract={newArbitration}
-      />
+    <Page>
+      <Header />
+      <SubHeader>
+        <Breadcrumbs crumbList={breadcrumbs} />
+        <Button variant="contained" onClick={newContract}>
+          {labels.newContract}
+        </Button>
+      </SubHeader>
+      <Content>
+        <Main>
+          <ContractsTable
+            headers={contractTableHeaders}
+            data={contract.list}
+            handleArchive={handleArchive}
+            newContract={newContract}
+          />
+        </Main>
 
-      <ModalDiscliamer isOpen={showModal} onAccept={() => setShowModal(false)} onDecline={() => setShowModal(false)}/>
+        <ModalDiscliamer
+          isOpen={showModal}
+          onAccept={() => setShowModal(false)}
+          onDecline={() => setShowModal(false)}
+        />
 
-      <Disclaimer />
-    </PageLayout>
+        <Disclaimer />
+      </Content>
+    </Page>
   );
 };

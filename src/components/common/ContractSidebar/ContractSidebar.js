@@ -22,6 +22,7 @@ export class ContractSidebar extends Component {
         <ContractSetValue contract={this.props.contract} />
         <ContractSetCaseDispute
           cases={this.props.cases}
+          selectedOptionId={this.props.selectedOptionId}
           handleChange={selectedOptionId => console.log(selectedOptionId)}
         />
       </div>

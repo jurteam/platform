@@ -9,9 +9,10 @@ export const ProfileMenu = ({ className, menuList }) => (
     {menuList.map((item, index) => (
       <li
       className={`jur-profile-menu__item`}
-      key={item.id.toString()}
+      key={`profile-nav-${index}`}
     >
       <NavLink
+        exact={true}
         to={ item.to }
         activeClassName="active"
       >
