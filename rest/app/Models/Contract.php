@@ -24,6 +24,7 @@ class Contract extends Model implements HasMedia
         'resolution_proof',
         'category',
         'value',
+        'in_case_of_dispute',
         'has_penalty_fee',
         'part_a_penalty_fee',
         'part_b_penalty_fee',
