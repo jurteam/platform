@@ -13,6 +13,13 @@ class RenameCategoryColumnOnContractsTable extends Migration
      */
     public function up()
     {
+        if (Schema::hasColumn('contracts', 'in_case_of_dispute'))
+        {
+            Schema::table('contracts', function (Blueprint $table) {
+                $table->dropColumn('in_case_of_dispute');
+            });
+        }
+
         if (Schema::hasColumn('contracts', 'contract_kpi'))
         {
             Schema::table('contracts', function (Blueprint $table) {
@@ -35,6 +42,13 @@ class RenameCategoryColumnOnContractsTable extends Migration
      */
     public function down()
     {
+        if (Schema::hasColumn('contracts', 'in_case_of_dispute'))
+        {
+            Schema::table('contracts', function (Blueprint $table) {
+                $table->dropColumn('in_case_of_dispute');
+            });
+        }
+
         if (Schema::hasColumn('contracts', 'category'))
         {
             Schema::table('contracts', function (Blueprint $table) {

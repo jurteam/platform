@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class UpdateContractsTable extends Migration
+class AddInCaseOfDisputeOnContractsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,6 @@ class UpdateContractsTable extends Migration
     public function up()
     {
         Schema::table('contracts', function (Blueprint $table) {
-            $table->integer('value')->default(0)->change();
             $table->enum('in_case_of_dispute', ['open', 'hubs'])->nullable()->after('value');
         });
     }
@@ -27,7 +26,6 @@ class UpdateContractsTable extends Migration
     public function down()
     {
         Schema::table('contracts', function (Blueprint $table) {
-            $table->decimal('value', 10, 10)->default(0)->change();
             $table->dropColumn('in_case_of_dispute');
         });
     }
