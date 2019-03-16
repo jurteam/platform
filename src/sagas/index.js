@@ -5,6 +5,7 @@ import errorsSagas from './Errors'
 import walletSagas from './Wallet'
 import userSagas from './User'
 import contractSagas from './Contract'
+import mediaSagas from './Media'
 import arbitrationSagas from './Arbitration'
 
 // Join all sagas
@@ -13,6 +14,7 @@ sagas.push(appSagas)
 sagas.push(errorsSagas)
 sagas.push(userSagas)
 sagas.push(walletSagas)
+sagas.push(mediaSagas)
 sagas.push(contractSagas)
 sagas.push(arbitrationSagas)
 
