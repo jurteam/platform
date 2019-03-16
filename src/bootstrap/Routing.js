@@ -1,3 +1,6 @@
+import React from "react";
+import { Redirect } from "react-router-dom";
+
 import i18n from "../assets/i18n/en/labels.json"; // i18n
 
 // Sections
@@ -55,7 +58,12 @@ export const createRoutes = withComponents => {
     {
       exact: true,
       path: "/contracts/detail",
-      onEnter: () => redirect(checkConnection, "/contracts/detail"),
+      component: () => withComponents && <Redirect to="/contracts" />
+    },
+    {
+      exact: true,
+      path: "/contracts/detail/:id",
+      onEnter: () => redirect(checkConnection, "/contracts/detail/:id"),
       component: withComponents && ContractDetail,
       title: i18n.smartContracts
     },
