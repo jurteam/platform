@@ -21,6 +21,7 @@ class ProfileProvider extends Component {
         {
           label: i18n.profileSettings,
           to: "/profile",
+          exact: true,
           component: <ProfileForm />
         },
         {

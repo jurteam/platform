@@ -24,7 +24,8 @@ const Profile = props => {
   let breadcrumbs = [
     {
       label: labels.profileSettings,
-      to: profileRootSection
+      to: profileRootSection,
+      exact: true
     }
   ];
 

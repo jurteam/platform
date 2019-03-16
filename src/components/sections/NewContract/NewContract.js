@@ -48,7 +48,8 @@ export const NewContract = props => {
   const breadcrumbs = [
     {
       label: labels.contracts,
-      to: "/contracts"
+      to: "/contracts",
+      exact: true
     },
     {
       label: labels.createContract,

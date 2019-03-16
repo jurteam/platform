@@ -11,7 +11,7 @@ export const Breadcrumbs = ({ crumbList, className }) => (
         className="jur-breadcrumbs__item"
         key={(crumb.id) ? crumb.id.toString() : `bread-${index}`}
       >
-        <NavLink exact={true} to={ crumb.to }>{ crumb.label }</NavLink>
+        <NavLink exact={crumb.exact || false} to={ crumb.to }>{ crumb.label }</NavLink>
       </li>
     ))}
   </ul>
