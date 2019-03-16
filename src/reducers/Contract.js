@@ -9,10 +9,10 @@ const INITIAL_STATE = {
   updating: false,
   current: {
     part_a_wallet: "",
-    part_a_public_name: "",
+    part_a_name: "",
     part_a_email: "",
     part_b_wallet: "",
-    part_b_public_name: "",
+    part_b_name: "",
     part_b_email: "",
     statusId: 0,
     statusLabel: "Draft",

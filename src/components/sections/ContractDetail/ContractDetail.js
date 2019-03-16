@@ -132,9 +132,9 @@ export const ContractDetail = props => {
   const {
     id,
     part_a_wallet,
-    part_a_public_name,
+    part_a_name,
     part_b_wallet,
-    part_b_public_name,
+    part_b_name,
     statusId,
     statusLabel,
     kpi,
@@ -168,7 +168,7 @@ export const ContractDetail = props => {
               wallet: {
                 address: part_a_wallet
               },
-              name: part_a_public_name,
+              name: part_a_name,
               shouldRenderName: part_a.shouldRenderName
             },
             to: {
@@ -177,7 +177,7 @@ export const ContractDetail = props => {
               wallet: {
                 address: part_b_wallet
               },
-              name: part_b_public_name,
+              name: part_b_name,
               shouldRenderName:
                 part_b_wallet === user.wallet ? user.show_fullname : false
             },
@@ -228,7 +228,7 @@ export const ContractDetail = props => {
                 address: part_a_wallet,
                 amount: value
               },
-              name: part_a_public_name,
+              name: part_a_name,
               shouldRenderName: part_a.shouldRenderName
             },
             to: {
@@ -238,7 +238,7 @@ export const ContractDetail = props => {
                 address: part_b_wallet,
                 amount: value
               },
-              name: part_b_public_name,
+              name: part_b_name,
               shouldRenderName: part_b.shouldRenderName
             },
             penaltyFee: null

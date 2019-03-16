@@ -27,10 +27,10 @@ export const CreateContractForm = ({ onNext, user, contract, updateContractField
     updating,
     current: {
       part_a_wallet,
-      part_a_public_name,
+      part_a_name,
       part_a_email,
       part_b_wallet,
-      part_b_public_name,
+      part_b_name,
       part_b_email
     }
   } = contract;
@@ -97,17 +97,17 @@ export const CreateContractForm = ({ onNext, user, contract, updateContractField
             <Form.Container>
               <Form.Group>
                 <Form.Label
-                  htmlFor={"part_a_public_name"}
+                  htmlFor={"part_a_name"}
                   optional
                 >
                   {labels.fullName}
                 </Form.Label>
                 <Form.Input
                   type="text"
-                  name={"part_a_public_name"}
-                  id={"part_a_public_name"}
-                  error={hasError("part_a_public_name")}
-                  value={part_a_public_name}
+                  name={"part_a_name"}
+                  id={"part_a_name"}
+                  error={hasError("part_a_name")}
+                  value={part_a_name}
                   onChange={ev => onInputChange(ev)}
                 />
               </Form.Group>
@@ -153,17 +153,17 @@ export const CreateContractForm = ({ onNext, user, contract, updateContractField
             <Form.Container>
               <Form.Group>
                 <Form.Label
-                  htmlFor={"part_b_public_name"}
+                  htmlFor={"part_b_name"}
                   optional
                 >
                   {labels.fullName}
                 </Form.Label>
                 <Form.Input
                   type="text"
-                  name={"part_b_public_name"}
-                  id={"part_b_public_name"}
-                  error={hasError("part_b_public_name")}
-                  value={part_b_public_name}
+                  name={"part_b_name"}
+                  id={"part_b_name"}
+                  error={hasError("part_b_name")}
+                  value={part_b_name}
                   onChange={ev => onInputChange(ev)}
                 />
               </Form.Group>

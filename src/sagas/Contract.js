@@ -19,19 +19,19 @@ export function* createContract(action) {
   log("createContract - run");
   const {
     part_a_email,
-    part_a_public_name,
+    part_a_name,
     part_a_wallet,
     part_b_email,
-    part_b_public_name,
+    part_b_name,
     part_b_wallet
   } = yield select(getCurrentContract);
 
   const contractData = {
     part_a_email,
-    part_a_public_name,
+    part_a_name,
     part_a_wallet,
     part_b_email,
-    part_b_public_name,
+    part_b_name,
     part_b_wallet
   };
 
@@ -61,7 +61,7 @@ export function* onContractReset() {
   });
   yield put({
     type: UPDATE_CONTRACT_FIELD,
-    field: "part_a_public_name",
+    field: "part_a_name",
     value: user.show_fullname ? user.name : ""
   });
   yield put({
