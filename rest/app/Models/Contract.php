@@ -33,7 +33,8 @@ class Contract extends Model implements HasMedia
         'duration_minutes',
         'contract_status_id',
         'is_a_dispute',
-        'is_a_friendly_resolution'
+        'is_a_friendly_resolution',
+        'user_id'
     ];
 
     /**
@@ -98,25 +99,24 @@ class Contract extends Model implements HasMedia
      * Store a new contract.
      *
      * @param  \Illuminate\Http\Request $request
-     * @param  string $wallet
+     * @param  \App\Models\User $user
      * @return \App\Models\Contract
      */
-    public static function storeContract($params, $wallet)
+    public static function storeContract($params, $user)
     {
         $statuses = config('jur.statuses');
-
         $status = ContractStatus::byCode($statuses[1]['code'])->firstOrFail();
 
-        $owner = User::byWallet($wallet)->firstOrFail();
-        $contract = new Contract(array_merge($request->all(), [
-            'contract_status_id' => $status->id
-        ]));
-        $owner->contracts()->save($contract);
+        $attributes = array_merge($params->all(), [
+            'contract_status_id' => $status->id,
+            'user_id' => $user->id
+        ]);
+        $contract = static::create($attributes);
 
-        $this->recordActivities([
+        $contract->recordActivities([
             'status' => $status->label,
             'contract_id' => $contract->id
-        ], $owner);
+        ], $user);
 
         return $contract;
     }

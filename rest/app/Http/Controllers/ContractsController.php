@@ -45,9 +45,10 @@ class ContractsController extends Controller
         ]);
 
         $wallet = $request->header('wallet');
-        $contract = Contract::storeContract($request, $wallet);
+        $owner = User::byWallet($wallet)->firstOrFail();
+        $contract = Contract::storeContract($request, $owner);
 
-        return $this->response->item($contract, new ContractTransformer);
+        return $this->response->item($contract, new ContractDetailTransformer);
     }
 
     /**

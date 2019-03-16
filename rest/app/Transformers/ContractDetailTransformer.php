@@ -31,7 +31,7 @@ class ContractDetailTransformer extends TransformerAbstract
             'id' => $contract->id,
             'statusId' => $contract->status ? $contract->status->code : null,
             'statusLabel' => $contract->status ? $contract->status->label : null,
-            'statusUpdatedAt' => $contract->updated_at->valueOf(),
+            'statusUpdatedAt' => $contract->status ? $contract->updated_at->valueOf() : null,
             'contractName' => $contract->name,
             'duration' => (object)[
                 'days' => $contract->duration_days,
