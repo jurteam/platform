@@ -120,4 +120,13 @@ class Contract extends Model implements HasMedia
 
         return $contract;
     }
+
+    public function uploadMedia($params)
+    {
+        foreach ($params->attachments as $attachment)
+        {
+            $this->addMedia($attachment)
+                ->toMediaCollection('attachments');
+        }
+    }
 }

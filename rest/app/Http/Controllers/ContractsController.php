@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Dingo\Api\Routing\Helpers;
 use App\Filters\ContractFilters;
 use App\Transformers\ContractTransformer;
+use App\Transformers\AttachmentTransformer;
 use App\Transformers\ContractDetailTransformer;
 
 class ContractsController extends Controller
@@ -121,16 +122,17 @@ class ContractsController extends Controller
      */
     public function uploadMedia(Request $request, $id)
     {
-        $contract = Contract::findOrFail($id);
-        $contract
-            ->addMultipleMediaFromRequest($request->attachments)
-            ->each(function($fileAdder) {
-                $fileAdder->toMediaCollection('attachments');
-            });
-
-        return respon()->json([
-            'attachments' => $contract->getMedia()
+        $this->validate($request, [
+            'attachments' => 'required'
         ]);
+
+        $contract = Contract::findOrFail($id);
+        $contract->uploadMedia($request);
+
+        return $this->response->collection(
+            $contract->getMedia('attachments'),
+            new AttachmentTransformer
+        );
     }
 
     public function destroyAll(ContractFilters $filters)
