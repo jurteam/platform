@@ -129,7 +129,7 @@ export const ContractDetail = props => {
             contractID: id,
             from: {
               label: "partA",
-              debtor: part_a.debtor, // default valute equal to true
+              debtor: part_a.isDebtor, // default valute equal to true
               wallet: {
                 address: part_a_wallet
               },
@@ -138,7 +138,7 @@ export const ContractDetail = props => {
             },
             to: {
               label: "partB",
-              debtor: part_b.debtor, // default value equal to false
+              debtor: part_b.isDebtor, // default value equal to false
               wallet: {
                 address: part_b_wallet
               },
@@ -185,7 +185,7 @@ export const ContractDetail = props => {
             contractID: id,
             from: {
               label: "partA",
-              debtor: part_a.debtor,
+              debtor: part_a.isDebtor,
               wallet: {
                 address: part_a_wallet,
                 amount: value
@@ -195,7 +195,7 @@ export const ContractDetail = props => {
             },
             to: {
               label: "partB",
-              debtor: part_b.debtor,
+              debtor: part_b.isDebtor,
               wallet: {
                 address: part_b_wallet,
                 amount: value
