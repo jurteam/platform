@@ -1,0 +1,30 @@
+[
+  {
+    "value": "OTC",
+    "label": "OTC"
+  },
+  {
+    "value": "Freelancer Agreement",
+    "label": "Freelancer Agreement"
+  },
+  {
+    "value": "Service Agreement",
+    "label": "Service Agreement"
+  },
+  {
+    "value": "Investments",
+    "label": "Investments"
+  },
+  {
+    "value": "Web Domains",
+    "label": "Web Domains"
+  },
+  {
+    "value": "Entrepreneur",
+    "label": "Entrepreneur"
+  },
+  {
+    "value": "Other",
+    "label": "Other"
+  }
+]

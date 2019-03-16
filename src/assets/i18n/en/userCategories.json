@@ -1,0 +1,26 @@
+[
+  {
+    "value": "Entrepreneur",
+    "label": "Entrepreneur"
+  },
+  {
+    "value": "Lawyer",
+    "label": "Lawyer"
+  },
+  {
+    "value": "Investor",
+    "label": "Investor"
+  },
+  {
+    "value": "Trader",
+    "label": "Trader"
+  },
+  {
+    "value": "Freelancer",
+    "label": "Freelancer"
+  },
+  {
+    "value": "Other",
+    "label": "Other"
+  }
+]

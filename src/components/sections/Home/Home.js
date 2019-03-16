@@ -12,7 +12,7 @@ import ModalFooter from "../../common/ModalFooter";
 import Step from "../../common/Step";
 import Stepper from "../../common/Stepper";
 
-import { steps } from "../../../assets/i18n/tutorial.json";
+import { steps } from "../../../assets/i18n/en/tutorial.json";
 
 export class Home extends Component {
   constructor(props) {

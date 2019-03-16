@@ -1,4 +1,4 @@
-import i18n from "../assets/i18n/en.json"; // i18n
+import i18n from "../assets/i18n/en/labels.json"; // i18n
 
 // Sections
 import NotFound from "../components/sections/NotFound";

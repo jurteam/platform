@@ -19,8 +19,8 @@ import "./ProfileForm.scss";
 // TODO: eval startup call for this informations in the future
 // TODO: use { translations } param due process.env.REACT_APP_LANGUAGE change
 import locations from "../../../assets/locations.json"; // locations
-import genders from "../../../assets/genders.json"; // genders
-import categories from "../../../assets/categories.json"; // categories
+import genders from "../../../assets/i18n/en/genders.json"; // genders
+import categories from "../../../assets/i18n/en/userCategories.json"; // TODO: i18n
 import { FormContainer } from "../Form/FormContainer";
 
 export const ProfileForm = ({

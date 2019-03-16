@@ -9,7 +9,7 @@ import UserNotification from "../../common/UserNotification";
 import Faq from "./Faq";
 import Terms from "./Terms";
 
-import i18n from "../../../assets/i18n/en.json"; // i18n
+import i18n from "../../../assets/i18n/en/labels.json"; // i18n
 
 // Section Context
 export const ProfileContext = React.createContext();
