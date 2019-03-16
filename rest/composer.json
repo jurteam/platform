@@ -10,7 +10,7 @@
         "dingo/api": "2.1",
         "illuminate/notifications": "5.8.*",
         "laravel/lumen-framework": "5.8.*",
-        "spatie/laravel-medialibrary": "^7.6.0",
+        "spatie/laravel-medialibrary": "^7.0.0",
         "tymon/jwt-auth": "^1.0.0",
         "vlucas/phpdotenv": "^3.3"
     },
