@@ -35,10 +35,8 @@ export const NewContract = props => {
       user: { disclaimer }
     } = props;
     if (disclaimer.optin) {
-      global.drizzle.store.dispatch({ type: NEW_CONTRACT });
-
       const { history } = props;
-      history.push("/contracts/detail");
+      global.drizzle.store.dispatch({ type: NEW_CONTRACT, history });
     } else {
       setShowModal(true); // show disclaimer modal
       global.drizzle.store.dispatch({ type: DISCLAIMER_MUST_BE_ACCEPTED });

@@ -15,6 +15,8 @@ import ContractSidebar from "../../common/ContractSidebar";
 import ContractSummary from "../../common/ContractSummary";
 import InsertContractDetails from "../../common/InsertContractDetails";
 
+import Button from "../../common/Button";
+
 // form validation
 import { useFormValidation } from "../../../utils/hooks";
 import validationSchema from "./_validationSchema";
@@ -23,6 +25,7 @@ import { log } from "../../../utils/helpers"; // log helper
 
 import {
   NEW_CONTRACT,
+  MEDIA_UPLOAD,
   DISCLAIMER_MUST_BE_ACCEPTED
 } from "../../../reducers/types";
 
@@ -31,23 +34,36 @@ export const ContractDetail = props => {
 
   const [showModal, setShowModal] = useState(false);
   const [formUpdated, setFormUpdated] = useState(false);
+  const [attachments, setAttachments] = useState([]);
 
   const { contract, user, updateContractField } = props;
   const { updating } = contract;
 
+  const {
+    match: { params }
+  } = props;
+
+  // cDM
+  useEffect(() => {
+    const {
+      match: { params }
+    } = props;
+    console.log("Contract Details - props", params);
+  }, []);
+
   // validation setup
   const [isValid, errors, validateForm, setFormData] = useFormValidation(
-    contract.new,
+    contract.current,
     validationSchema
   );
 
   const changeInput = (name, value) => {
     setFormUpdated(true);
-    setFormData({ ...contract.new, [name]: value });
+    setFormData({ ...contract.current, [name]: value });
     updateContractField(name, value); // dispatch action
   };
 
-  const onInputChange = (ev) => {
+  const onInputChange = ev => {
     const target = ev.target;
     if (target) {
       const value = target.type === "checkbox" ? target.checked : target.value;
@@ -57,9 +73,28 @@ export const ContractDetail = props => {
     }
   };
 
+  const onFileAdded = selectedFiles => {
+    console.log("upload", selectedFiles);
+
+    setAttachments(selectedFiles);
+  };
+
+  const fileUploadSample = () => {
+    console.log("upload", "run");
+
+    global.drizzle.store.dispatch({
+      type: MEDIA_UPLOAD,
+      entity: "contracts",
+      attachments,
+      ...params
+    });
+  };
+
   // form error handling
   const hasError = field =>
-    typeof errors[field] !== "undefined" && errors[field].length > 0 && formUpdated; // show error only when form is update at least one time
+    typeof errors[field] !== "undefined" &&
+    errors[field].length > 0 &&
+    formUpdated; // show error only when form is update at least one time
 
   // disable update
   const submitDisabled =
@@ -84,10 +119,11 @@ export const ContractDetail = props => {
   const breadcrumbs = [
     {
       label: labels.contracts,
-      to: "/contracts"
+      to: "/contracts",
+      exact: true
     },
     {
-      label: labels.createContract,
+      label: labels.contractDetails,
       active: true,
       to: "/contracts/detail"
     }
@@ -107,21 +143,20 @@ export const ContractDetail = props => {
     whoPays,
     contractName,
     duration
-  } = contract.new;
+  } = contract.current;
   console.log("ContractDetail - contract", contract);
 
   const part_a = {
-    isDebtor : (whoPays) ? whoPays === "a" : true,
-    shouldRenderName : (part_a_wallet === user.wallet) ? user.show_fullname : false
-  }
+    isDebtor: whoPays ? whoPays === "a" : true,
+    shouldRenderName: part_a_wallet === user.wallet ? user.show_fullname : false
+  };
 
   const part_b = {
-    isDebtor : (whoPays) ? whoPays === "b" : true,
-    shouldRenderName : (part_b_wallet === user.wallet) ? user.show_fullname : false
-  }
+    isDebtor: whoPays ? whoPays === "b" : true,
+    shouldRenderName: part_b_wallet === user.wallet ? user.show_fullname : false
+  };
 
-  return (
-    (contract.new.part_a_wallet) ?
+  return typeof params.id !== "undefined" && contract.current.part_a_wallet ? (
     <PageLayout breadcrumbs={breadcrumbs}>
       <Main>
         <ContractSummary
@@ -143,7 +178,8 @@ export const ContractDetail = props => {
                 address: part_b_wallet
               },
               name: part_b_public_name,
-              shouldRenderName: (part_b_wallet === user.wallet) ? user.show_fullname : false
+              shouldRenderName:
+                part_b_wallet === user.wallet ? user.show_fullname : false
             },
             penaltyFee: {
               partA: "",
@@ -171,13 +207,15 @@ export const ContractDetail = props => {
           kpiPlaceholder={labels.kpiPlaceholder}
           resolutionProofInitialValue={resolution_proof}
           resolutionProofPlaceholder={labels.resolutionProofPlaceholder}
-          onKpiChange={e=>console.log('yo')}
-          onResolutionProofChange={e=>console.log('yo')}
-          onFileAdded={addedFiles=>console.log(addedFiles)}
-          uploadedFiles={[{name: 'Hello worldl.pdf'}]}
-          onView={e=>console.log('yo')}
-          onDelete={e=>console.log('yo')}
+          onKpiChange={e => console.log("yo")}
+          onResolutionProofChange={e => console.log("yo")}
+          onFileAdded={onFileAdded}
+          uploadedFiles={[{ name: "Hello worldl.pdf" }]}
+          onView={e => console.log("yo")}
+          onDelete={e => console.log("yo")}
         />
+
+        <Button onClick={fileUploadSample}>!!! Upload Test !!!</Button>
       </Main>
       <Aside>
         <ContractSidebar
@@ -209,17 +247,17 @@ export const ContractDetail = props => {
             {
               label: labels.open,
               description: labels.openText,
-              id: 'open',
+              id: "open",
               open: true
             },
             {
               label: labels.hubs,
               description: labels.hubsText,
-              id: 'hubs',
+              id: "hubs",
               disabled: true
             }
           ]}
-          selectedOptionId={'open'}
+          selectedOptionId={"open"}
         />
       </Aside>
 
@@ -231,7 +269,7 @@ export const ContractDetail = props => {
 
       <Disclaimer />
     </PageLayout>
-    :<Redirect to="/contracts" />
-
+  ) : (
+    <Redirect to="/contracts" />
   );
 };

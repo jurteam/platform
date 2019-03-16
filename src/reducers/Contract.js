@@ -7,7 +7,7 @@ import {
 
 const INITIAL_STATE = {
   updating: false,
-  new: {
+  current: {
     part_a_wallet: "",
     part_a_public_name: "",
     part_a_email: "",
@@ -38,7 +38,8 @@ const INITIAL_STATE = {
     resolution_proof: "",
     value: "",
     whoPays: null,
-    in_case_of_dispute: "open"
+    in_case_of_dispute: "open",
+    attachments: []
   },
   list: []
 };
@@ -46,22 +47,20 @@ const INITIAL_STATE = {
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     // Setters
-    // case NEW_CONTRACT:
-    //   return { ...state, new: { ...action.payload } };
 
     // Updates
     case UPDATE_CONTRACT_FIELD:
       let toUpdate = {};
       toUpdate[action.field] = action.value;
       console.log(UPDATE_CONTRACT_FIELD, toUpdate);
-      return { ...state, new: { ...state.new, ...toUpdate } };
+      return { ...state, current: { ...state.current, ...toUpdate } };
 
     // Reset
     case RESET_CONTRACT:
       return {
         ...state,
         updating: INITIAL_STATE.updating,
-        new: { ...INITIAL_STATE.new }
+        current: { ...INITIAL_STATE.current }
       };
 
     case RESET_CONTRACTS:
@@ -71,6 +70,7 @@ export default (state = INITIAL_STATE, action) => {
         list: { ...INITIAL_STATE.list }
       };
 
+    case NEW_CONTRACT:
     default:
       return state;
   }
