@@ -15,10 +15,10 @@ class Contract extends Model implements HasMedia
     protected $fillable = [
         'tx_hash',
         'part_a_wallet',
-        'part_a_public_name',
+        'part_a_name',
         'part_a_email',
         'part_b_wallet',
-        'part_b_public_name',
+        'part_b_name',
         'part_b_email',
         'kpi',
         'resolution_proof',
@@ -92,5 +92,32 @@ class Contract extends Model implements HasMedia
         }
 
         $this->recordActivities($params, $user);
+    }
+
+    /**
+     * Store a new contract.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @param  string $wallet
+     * @return \App\Models\Contract
+     */
+    public static function storeContract($params, $wallet)
+    {
+        $statuses = config('jur.statuses');
+
+        $status = ContractStatus::byCode($statuses[1]['code'])->firstOrFail();
+
+        $owner = User::byWallet($wallet)->firstOrFail();
+        $contract = new Contract(array_merge($request->all(), [
+            'contract_status_id' => $status->id
+        ]));
+        $owner->contracts()->save($contract);
+
+        $this->recordActivities([
+            'status' => $status->label,
+            'contract_id' => $contract->id
+        ], $owner);
+
+        return $contract;
     }
 }
