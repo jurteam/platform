@@ -57,7 +57,7 @@ class Contract extends Model implements HasMedia
 
     public function status()
     {
-        return $this->belongsTo(ContractStatus::class);
+        return $this->belongsTo(ContractStatus::class, 'contract_status_id');
     }
 
     public function votes()
