@@ -6,7 +6,7 @@ use App\Models\Contract;
 use Illuminate\Http\Request;
 use App\Models\ContractStatusDetail;
 use App\Transformers\AttachmentTransformer;
-use App\Transformers\ContractDetailTransformer;
+use App\Transformers\ContractStatusDetailTransformer;
 
 class ContractDetailsController extends Controller
 {
@@ -22,7 +22,7 @@ class ContractDetailsController extends Controller
         $contract = Contract::findOrFail($id);
         $details = $contract->details;
 
-        return $this->response->collection($details, new ContractDetailTransformer);
+        return $this->response->collection($details, new ContractStatusDetailTransformer);
     }
 
     /**
@@ -38,7 +38,7 @@ class ContractDetailsController extends Controller
                 ->associate(Contract::findOrFail($id))
                 ->save();
 
-        return $this->response->item($detail, new ContractDetailTransformer);
+        return $this->response->item($detail, new ContractStatusDetailTransformer);
     }
 
     /**

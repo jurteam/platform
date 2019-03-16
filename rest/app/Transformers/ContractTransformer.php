@@ -2,6 +2,7 @@
 
 namespace App\Transformers;
 
+use App\Models\User;
 use App\Models\Contract;
 use League\Fractal\TransformerAbstract;
 use App\Transformers\AttachmentTransformer;
@@ -10,15 +11,6 @@ use App\Transformers\ContractActivityTransformer;
 
 class ContractTransformer extends TransformerAbstract
 {
-    /**
-     * List of resources possible to include
-     *
-     * @var array
-     */
-    protected $availableIncludes = [
-        'attachments', 'details'
-    ];
-
     /**
      * Turn this item object into a generic array
      *
@@ -31,14 +23,15 @@ class ContractTransformer extends TransformerAbstract
             'id' => $contract->id,
             'statusId' => $contract->status ? $contract->status->code : null,
             'statusLabel' => $contract->status ? $contract->status->label : null,
+            'statusUpdatedAt' => $contract->updated_at->valueOf(),
             'contractName' => $contract->name,
             'duration' => (object)[
                 'days' => $contract->duration_days,
                 'hours' => $contract->duration_hours,
                 'minutes' => $contract->duration_minutes
             ],
-            'expireDate' => null,
-            'counterParties' => [
+            'expireAlertFrom' => $contract->updated_at->valueOf(),
+            'counterparties' => [
                 (object)[
                     'wallet' => $contract->part_a_wallet,
                     'name' => $contract->part_a_name,
@@ -47,7 +40,7 @@ class ContractTransformer extends TransformerAbstract
                 (object)[
                     'wallet' => $contract->part_b_wallet,
                     'name' => $contract->part_b_name,
-                    'renderName' => false
+                    'renderName' => $this->getRenderNameUserFromWallet($contract->part_b_wallet)
                 ]
             ],
             'value' => $contract->value,
@@ -56,28 +49,17 @@ class ContractTransformer extends TransformerAbstract
     }
 
     /**
-     * Include attachments
+     * Check the user render full name option.
      *
-     * @param  \App\Models\Contract $contract
-     * @return \League\Fractal\Resource\Collection
+     * @param  string $wallet
+     * @return boolean
      */
-    public function includeAttachments(Contract $contract)
+    protected function getRenderNameUserFromWallet($wallet)
     {
-        $attachments = $contract->getMedia();
-
-        return $this->collection($attachments, new AttachmentTransformer);
-    }
-
-    /**
-     * Include details
-     *
-     * @param  \App\Models\Contract $contract
-     * @return \League\Fractal\Resource\Collection
-     */
-    public function includeDetails(Contract $contract)
-    {
-        $details = $contract->details;
-
-        return $this->collection($details, new ContractDetailTransformer);
+        $user = User::byWallet($wallet)->first();
+        if ($user) {
+            return $user->show_fullname;
+        }
+        return false;
     }
 }
