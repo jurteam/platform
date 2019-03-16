@@ -16,7 +16,8 @@ class Activity extends Model implements HasMedia
         'message',
         'proposal_part_a',
         'proposal_part_b',
-        'status'
+        'status',
+        'user_id'
     ];
 
     /**
