@@ -14,7 +14,7 @@ class UpdateContractsTable extends Migration
     public function up()
     {
         Schema::table('contracts', function (Blueprint $table) {
-            $table->dropColumn(['name', 'part_a_name', 'part_b_name']);
+            $table->dropColumn(['part_a_name', 'part_b_name']);
             $table->string('part_a_email')->nullable()->after('part_a_wallet');
             $table->string('part_b_email')->nullable()->after('part_b_wallet');
         });
@@ -28,7 +28,6 @@ class UpdateContractsTable extends Migration
     public function down()
     {
         Schema::table('contracts', function (Blueprint $table) {
-            $table->string('name')->nullable();
             $table->dropColumn(['part_a_email', 'part_b_email']);
         });
     }

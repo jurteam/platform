@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class UpdateActivitiesTable extends Migration
+class UpdateFieldsOnActivitiesTable extends Migration
 {
     /**
      * Run the migrations.
