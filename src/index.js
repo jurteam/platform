@@ -15,21 +15,21 @@ export default store;
 const render = Component => {
   ReactDOM.render(
     <Component
-      key={process.env.NODE_ENV === 'development' ? Math.random() : undefined}
-      store={store}
+      key={process.env.NODE_ENV === "development" ? Math.random() : undefined}
       history={history}
+      store={store}
     />,
-    document.getElementById('root')
-  )
-}
-// application render
+    document.getElementById("root")
+  );
+};
 
-render(App)
+// application render
+render(App);
 
 if (module.hot) {
-  module.hot.accept('./bootstrap/App', () => {
-    render(App)
-  })
+  module.hot.accept("./bootstrap/App", () => {
+    render(App);
+  });
 }
 
 // If you want your app to work offline and load faster, you can change

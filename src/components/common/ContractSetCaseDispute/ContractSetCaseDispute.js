@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 
 import './ContractSetCaseDispute.scss';
@@ -14,6 +14,8 @@ export const ContractSetCaseDispute = ({cases, selectedOptionId, handleChange}) 
               type="radio"
               name="contact-set-case"
               id={`jur-contract-set-case-dispute__case-${option.id}`}
+              checked={option.id === selectedOptionId}
+              disabled={option.disabled || false}
               onChange={handleChange.bind(this, option.id)}
             />
             <label htmlFor={`jur-contract-set-case-dispute__case-${option.id}`}>{option.label}</label>

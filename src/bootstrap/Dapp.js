@@ -1,96 +1,57 @@
-import Web3 from "web3";
 import { log } from "../utils/helpers"; // helpers
 import MetaMask from "../hooks/MetaMask"; // MetaMask hook
+import API from "./Api"; // Axios
 
-// Actions
+// Actions types
 import {
-  setWalletAddress,
-  setWalletConnection,
-  resetWallet
-} from "../actions/Wallet";
+  HEARTBEAT,
+  NETWORK_UPDATE,
+  APP_SHOULD_RESET
+} from "../reducers/types";
 
-// get store config
-import configureStore from "./Store";
-const { store } = configureStore();
-log("store", store);
+let dappHeartbeat = null;
 
-const ETHEREUM_PROVIDER = process.env.REACT_APP_ETHEREUM_PROVIDER;
+// Dapp init
+export const init = () => {
+  const { web3, store } = global.drizzle;
 
-let web3;
-if (process.env.NODE_ENV === "test")
-  web3 = new Web3(require("ganache-cli").provider());
-else if (window.web3 && window.web3.currentProvider)
-  web3 = new Web3(window.web3.currentProvider);
-else web3 = new Web3(new Web3.providers.HttpProvider(ETHEREUM_PROVIDER));
+  log("Dapp - web3", web3);
+  log("Dapp - web3.currentProvider", web3.currentProvider);
+  log("Dapp - web3.currentProvider._metamask", web3.currentProvider._metamask);
 
-const network =
-  web3.eth &&
-  web3.eth.net
-    .getId()
-    .then(networkID => {
-      switch (networkID) {
-        case 1:
-          return "main";
-        case 3:
-          return "ropsten";
-        case 4:
-          return "rinkeby";
-        case 42:
-          return "kovan";
-        default:
-          return null;
-      }
-    })
-    .catch(() => null);
+  // provider change handler
+  if (web3.currentProvider._metamask) {
+    // MetaMask handler
+    MetaMask.setProvider(web3.currentProvider);
 
-// provider change handler
-if (web3.currentProvider.host === "metamask") {
-  // MetaMask handler
-  MetaMask.setProvider(web3.currentProvider);
+    // only if current provider is hosted by MetaMask
+    web3.currentProvider.publicConfigStore.on("update", evm => {
+      log("Dapp - evm", evm);
+      store.dispatch({ type: NETWORK_UPDATE, payload: evm });
+    });
 
-  const { wallet } = store.getState();
+    // Heartbeat for connection
+    // TODO: Evaluate a Service Worker for this purpose
+    if (process.env.REACT_APP_HEARTBEAT_ENABLED === "true") {
+      dappHeartbeat = setInterval(() => {
+        store.dispatch({ type: HEARTBEAT });
+        log("Dapp - Heartbeat", "run");
 
-  // only if current provider is hosted by MetaMask
-  web3.currentProvider.connection.publicConfigStore.on("update", evm => {
-    log("MetaMask", MetaMask.isEnabled());
-    log("MetaMask update data", evm);
+        log("Dapp - MetaMask.isEnabled()", MetaMask.isEnabled());
 
-    if (
-      typeof evm.selectedAddress !== "undefined" &&
-      evm.selectedAddress !== undefined
-    ) {
-      // TODO: refers to web3 properties
-      store.dispatch(setWalletConnection(true)); // is connected
-
-      // Update address when needed
-      if (wallet.address !== evm.selectedAddress) {
-        log("wallet.address !== evm.selectedAddress", evm);
-        store.dispatch(setWalletAddress(evm.selectedAddress));
-      }
-    } else {
-      // TODO: refers to web3 properties
-      store.dispatch(resetWallet()); // is considered disconnected
+        MetaMask.isApproved().then(isApproved => {
+          log("Dapp - MetaMask - isApproved?", isApproved);
+          if (!isApproved) {
+            store.dispatch({ type: APP_SHOULD_RESET });
+            clearInterval(dappHeartbeat);
+          }
+        });
+        MetaMask.isUnlocked().then(isUnlocked =>
+          log("Dapp - MetaMask - isUnlocked?", isUnlocked)
+        );
+      }, process.env.REACT_APP_HEARTBEAT_DELAY);
     }
-  });
 
-  // Heartbeat for connection
-  // TODO: Evaluate a Service Worker for this purpose
-  setInterval(() => {
-    log("Heartbeat", MetaMask.isEnabled());
-    if (!MetaMask.isEnabled()) {
-      store.dispatch(resetWallet()); // is considered disconnected
-    }
-  }, process.env.REACT_APP_HEARTBEAT_DELAY);
-}
-
-const ETHAddressRegExpCaptureGroup = "(0x[a-fA-F0-9]{40})";
-const ETHAddressRegExp = /0x[a-fA-F0-9]{40}/;
-const strictETHAddressRegExp = /^0x[a-fA-F0-9]{40}$/;
-
-export {
-  web3,
-  network,
-  ETHAddressRegExpCaptureGroup,
-  ETHAddressRegExp,
-  strictETHAddressRegExp
+    global.API = API // use a axios api istance globally
+  }
 };

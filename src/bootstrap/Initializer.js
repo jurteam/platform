@@ -1,54 +1,51 @@
 /* eslint-disable no-unused-vars */
 import React, { PureComponent } from "react";
-import { connect } from "react-redux";
-import { DrizzleProvider } from "drizzle-react";
-import drizzleOptions from "../config/drizzleOptions"
+import { Route, Switch, Router } from "react-router"; // react-router v4
 
-import { log } from "../utils/helpers"; // log helpers
-import MetaMask from "../hooks/MetaMask"; // MetaMask hook
+import PropTypes from "prop-types";
 
-// Actions
-import { setLoaded } from "../actions/App";
-import { setWalletAddress, setWalletConnection } from "../actions/Wallet";
+// Routes
+import { createRoutes } from "./Routing";
+
+const Routes = createRoutes();
 
 class Initializer extends PureComponent {
-  componentDidMount() {
-    const { setLoaded, setWalletConnection, setWalletAddress } = this.props;
+  constructor(props, context) {
+    super(props);
 
-    // TODO: centralize auth promise actions
-    // First load
-    if (!MetaMask.isEnabled()) {
-      MetaMask.auth()
-        .then(addresses => {
-          log("MetaMask is authorized", addresses);
-          setWalletConnection(true); // is connected
-          setWalletAddress(addresses[0]); // only the first
-          setLoaded();
-        })
-        .catch(e => {
-          log("MetaMask authorization denied", e);
-          setWalletConnection(false); // is connected
-          setLoaded();
-        });
-    }
+    const { drizzle } = context;
+
+    // Load Drizzle context globally for actions
+    global.drizzle = drizzle;
+
+    this.renderTestReport = this.renderTestReport.bind(this);
   }
+
+  renderTestReport() {
+    const { testElement } = this.props;
+    return process.env.NODE_ENV === "development" ? testElement : null;
+  }
+
   render() {
-    const { children } = this.props;
-    return (<DrizzleProvider options={drizzleOptions}>{children}</DrizzleProvider>);
+    const { history } = this.props;
+    return (
+      <Router history={history}>
+        <>
+          <Switch>
+            {Routes.map((params, key) => (
+              <Route {...params} key={key} />
+            ))}
+          </Switch>
+
+          {this.renderTestReport()}
+        </>
+      </Router>
+    );
   }
 }
 
-const mapStateToProps = state => ({
-  app: state.app
-});
-
-const mapDispatchToProps = {
-  setLoaded,
-  setWalletAddress,
-  setWalletConnection
+Initializer.contextTypes = {
+  drizzle: PropTypes.object
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Initializer);
+export default Initializer;

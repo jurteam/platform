@@ -9,38 +9,10 @@ import ResolvedDisputeNotification from '../ResolvedDisputeNotification';
 import Logo from '../Logo';
 import NavigationWrapper from '../NavigationWrapper';
 
-export const PageLayout = ({ showBreadcrumbs, children }) => (
+export const PageLayout = ({ showBreadcrumbs, breadcrumbs, children }) => (
   <Page>
-    <Header>
-        <Logo />
-        {true ?
-          <NavigationWrapper
-            to="/profile"
-            name="Alice"
-            seed="0x3954939439487573664374"
-            shouldRenderName balance="7546857"
-            currency="Jur"
-          />
-          : null
-        }
-    </Header>
-    <SubHeader>
-      <Breadcrumbs crumbList={
-        [
-          {
-            id: 0,
-            label: 'Contracts',
-            to: '/contracts'
-          },
-          {
-            id: 1,
-            label: 'Create smart contract',
-            to: '/create'
-          }
-        ]}
-      />
-    </SubHeader>
-    { showBreadcrumbs && <Breadcrumbs /> }
+    <Header />
+    { showBreadcrumbs && <SubHeader><Breadcrumbs crumbList={breadcrumbs} /></SubHeader> }
     <Content>
       { children }
     </Content>

@@ -72,7 +72,7 @@ export const FormSelect = ({name, id, options, onChange, error, errorMsg, ...res
         onChange={selectedOption => onChange(selectedOption)}
         {...rest}
       />
-      {errorMsg && <Form.ErrorMsg msg={errorMsg} /> }
+      {error && errorMsg && <Form.ErrorMsg msg={errorMsg} /> }
     </>
   );
 };
