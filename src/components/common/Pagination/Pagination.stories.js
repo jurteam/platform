@@ -21,8 +21,7 @@ storiesOf("Pagination", module)
   })
   .add("Default", () => (
     <Pagination
-      innerClass="jur-pagination"
-      activePage={store.get("activePage")}
+      activePage={1}
       itemsCountPerPage={10}
       totalItemsCount={100}
       handlePageChange={pageNumber => console.log(pageNumber)}

@@ -189,6 +189,9 @@ storiesOf("ContractsTable", module)
       handleArchive={contractId => alert("Contractid archived")}
       handleFilterChange={value => console.log(value)}
       handleFilterSubmit={console.log("filter contracts")}
+      contractsPerPage={3}
+      totalContracts={noContracts.length}
+      handlePageChange={pageNumber => console.log(pageNumber)}
     />
   ))
   .add("Contract list", () => (
@@ -198,5 +201,8 @@ storiesOf("ContractsTable", module)
       handleArchive={contractId => alert("Contractid archived")}
       handleFilterChange={value => console.log(value)}
       handleFilterSubmit={() => console.log("filter contracts")}
+      contractsPerPage={3}
+      totalContracts={contractsData.length}
+      onPageChange={pageNumber => console.log(pageNumber)}
     />
   ));

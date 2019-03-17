@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import Table from "../Table";
 import TableRow from "../TableRow";
@@ -14,6 +14,7 @@ import { EllipsisVIcon } from "../Icons/EllipsisVIcon";
 import Button from "../Button";
 import Amount from "../Amount";
 import ContractsFilters from "../ContractsFilters";
+import Pagination from "../Pagination";
 
 import "./ContractsTable.scss";
 
@@ -23,8 +24,14 @@ export const ContractsTable = ({
   handleArchive,
   handleFilterChange,
   handleFilterSubmit,
-  newContract
+  newContract,
+  initialPage,
+  onPageChange,
+  contractsPerPage,
+  totalContracts,
+  handlePageChange
 }) => {
+  const [activePage, setActivePage] = useState(initialPage);
   const emptyMessage = data.length === 0 && (
     <div className="jur-table__empty">
       <p>It seems you did not create any contract!</p>
@@ -33,6 +40,11 @@ export const ContractsTable = ({
       </Button>
     </div>
   );
+
+  handlePageChange = pageNumber => {
+    setActivePage(pageNumber);
+    onPageChange(pageNumber);
+  }
 
   return (
     <div className="jur-contracts__table">
@@ -95,6 +107,15 @@ export const ContractsTable = ({
           </TableBody>
         ) : null}
       </Table>
+      {data.length > 0 &&
+        <Pagination
+          activePage={activePage}
+          itemsCountPerPage={contractsPerPage}
+          totalItemsCount={totalContracts}
+          handlePageChange={handlePageChange}
+          getPageUrl={i => ("https://customLink/#"+i)}
+        />
+      }
       {emptyMessage}
     </div>
   );
