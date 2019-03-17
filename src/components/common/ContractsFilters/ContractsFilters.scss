@@ -4,7 +4,12 @@
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    margin-top: 15px;
+    margin: 15px 0 30px;
+
+    &--disabled {
+        opacity: 0.5;
+        pointer-events: none;
+    }
     
     .jur-select {
         margin-right: auto;

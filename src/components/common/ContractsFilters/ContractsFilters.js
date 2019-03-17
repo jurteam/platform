@@ -10,11 +10,11 @@ export class ContractsFilters extends Component {
     status: this.props.status,
     fromDate: this.props.fromDate,
     toDate: this.props.toDate,
-    searchText: this.props.searchText
+    searchText: this.props.searchText,
+    disabled: this.props.disabled
   };
 
   handleChange = (type, value) => {
-    console.log({ type, value });
     this.setState(state => {
       const newState = { ...state, [type]: value };
       this.props.onChange(newState);
@@ -24,7 +24,7 @@ export class ContractsFilters extends Component {
 
   render() {
     return (
-      <div className="jur-contracts-filter">
+      <div className={`jur-contracts-filter ${this.state.disabled ? "jur-contracts-filter--disabled" : "" }`} >
         <Form.Select
           placeholder="Filter by Status..."
           value={this.state.status}
@@ -36,7 +36,7 @@ export class ContractsFilters extends Component {
           selectedDate={this.state.fromDate}
           onChange={value => this.handleChange("fromDate", value)}
         />
-        <span class="separator" />
+        <span className="separator" />
         <CalendarFilter
           name="to"
           selectedDate={this.state.toDate}
@@ -47,7 +47,6 @@ export class ContractsFilters extends Component {
         />
         <Button
           variant="contained"
-          size="medium"
           onClick={this.props.onSubmit}
         >
           <SearchIcon />
