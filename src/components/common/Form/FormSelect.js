@@ -48,7 +48,8 @@ export const FormSelect = ({name, id, options, onChange, error, errorMsg, ...res
       color: '#002257',
       position: 'relative',
       top: 0,
-      transform: 'translateY(0)'
+      transform: 'translateY(0)',
+      maxWidth: 'calc(100% - 10px)'
     }),
     input: styles => ({
       ...styles,
