@@ -1,0 +1,54 @@
+[
+  {
+    "value": -1,
+    "label": "Rejected"
+  },
+  {
+    "value": 0,
+    "label": "Draft"
+  },
+  {
+    "value": 1,
+    "label": "Waiting for Counterparty"
+  },
+  {
+    "value": 5,
+    "label": "OnGoing"
+  },
+  {
+    "value": 8,
+    "label": "Expired"
+  },
+  {
+    "value": 9,
+    "label": "Contract Closed"
+  },
+  {
+    "value": 21,
+    "label": "Open Friendly Resolution"
+  },
+  {
+    "value": 29,
+    "label": "Closed Friendly Resolution"
+  },
+  {
+    "value": 31,
+    "label": "Open Dispute"
+  },
+  {
+    "value": 35,
+    "label": "OnGoing Dispute"
+  },
+  {
+    "value": 36,
+    "label": "Extended Dispute"
+  },
+  {
+    "value": 38,
+    "label": "Expired Dispute"
+  },
+  {
+    "value": 39,
+    "label": "Dispute Closed"
+  }
+]

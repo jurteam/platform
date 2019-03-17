@@ -139,6 +139,47 @@
     .react-datepicker__input-container {
         display: block;
     }
+
+    &__search {
+        position: relative;
+
+        input {
+            &::-webkit-input-placeholder {
+                color: $gull-gray;
+            }
+      
+            &:-moz-placeholder {
+                color: $gull-gray;
+            }
+      
+            &::-moz-placeholder {
+                color: $gull-gray;
+            }
+
+            &::placeholder {
+                color: $gull-gray;
+            }
+
+            &::-webkit-search-decoration,
+            &::-webkit-search-cancel-button,
+            &::-webkit-search-results-button,
+            &::-webkit-search-results-decoration {
+                -webkit-appearance:none;
+                appearance: none;
+            }
+        }
+
+  
+
+
+        svg {
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            width: 15px;
+        }
+    }
 }
 
 .jur-form__error-msg {

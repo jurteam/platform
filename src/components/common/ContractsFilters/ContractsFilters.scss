@@ -1,5 +1,45 @@
 @import "../../../assets/scss/variables";
 
 .jur-contracts-filter {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: 15px;
     
+    .jur-select {
+        margin-right: auto;
+        flex: 0 0 212px;
+    }
+
+    .jur-contracts-filter {
+        flex: 0 0 140px
+    }
+
+    .separator {
+        display: inline-block;
+        flex: 0 0 8px;
+        height: 2px;
+        background-color: $gull-gray;
+        margin: 0 10px;
+    }
+
+    .jur-form__search {
+        flex: 0 0 212px;
+        margin-left: 20px;
+
+        svg {
+            fill: $gull-gray;
+        }
+    }
+
+    button {
+        margin-left: 15px;
+        width: 50px;
+        min-width: 50px;
+
+        svg {
+            width: 15px;
+            fill: $white;
+        }
+    }
 }
