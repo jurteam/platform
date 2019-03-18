@@ -21,8 +21,8 @@ class CreateActivitiesTable extends Migration
             $table->unsignedInteger('contract_id');
             $table->timestamps();
 
-            $table->foreign('contract_id')->references('id')->on('contracts')->onCascade('delete');
-            $table->foreign('user_id')->references('id')->on('users')->onCascade('delete');
+            $table->foreign('contract_id')->references('id')->on('contracts')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
