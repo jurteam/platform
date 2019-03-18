@@ -41,7 +41,7 @@ class ContractVoteTransformer extends TransformerAbstract
      */
     public function includeAttachments(ContractVote $vote)
     {
-        $attachments = $vote->getMedia();
+        $attachments = $vote->getMedia('attachments');
 
         return $this->collection($attachments, new AttachmentTransformer);
     }

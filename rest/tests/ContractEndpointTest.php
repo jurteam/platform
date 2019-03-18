@@ -26,18 +26,18 @@ class ContractEndpointTest extends TestCase
      */
     public function a_registered_user_can_create_a_contract()
     {
-        $wallet = 'QHx5VJEg3zO2jseSEq8R/wtCljguCvHSMA49HQ1IWiI=';
+        $wallet = 'dIRyZgmIQPam4zGpeR3nKBtUYhoGjD';
 
         $this->post('api/v1/contracts', [
-            'part_a_wallet' => 'QHx5VJEg3zO2jseSEq8R/wtCljguCvHSMA49HQ1IWiI=',
+            'part_a_wallet' => 'dIRyZgmIQPam4zGpeR3nKBtUYhoGjD',
             'part_b_wallet' => 'asdhuasudhasidhuasuidhasuidhasdhui'
         ], [
             'wallet' => $wallet
         ])
-        ->seeStatusCode(201);
+        ->seeStatusCode(200);
 
         $this->seeInDatabase('contracts', [
-            'part_a_wallet' => 'QHx5VJEg3zO2jseSEq8R/wtCljguCvHSMA49HQ1IWiI='
+            'part_a_wallet' => 'dIRyZgmIQPam4zGpeR3nKBtUYhoGjD'
         ]);
     }
 

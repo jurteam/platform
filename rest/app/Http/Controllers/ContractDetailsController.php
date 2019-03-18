@@ -38,23 +38,8 @@ class ContractDetailsController extends Controller
                 ->associate(Contract::findOrFail($id))
                 ->save();
 
+        $detail->uploadMedia($request, 'evidences');
+
         return $this->response->item($detail, new ContractStatusDetailTransformer);
-    }
-
-    /**
-     * @param  \Illuminate\Http\Request $request
-     * @param  int $id
-     * @return @return \League\Fractal\Resource\Collection
-     */
-    public function uploadMedia(Request $request, $id)
-    {
-        $detail = ContractStatusDetail::findOrFail($id);
-        $detail
-            ->addMultipleMediaFromRequest($request->evidences)
-            ->each(function($fileAdder) {
-                $fileAdder->toMediaCollection('evidences');
-            });
-
-        return $this->response->collection($detail->getMedia(), new AttachmentTransformer);
     }
 }

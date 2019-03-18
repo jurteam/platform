@@ -6,11 +6,12 @@ use App\Models\User;
 use App\Models\Activity;
 use Illuminate\Http\Request;
 use Dingo\Api\Routing\Helpers;
+use App\Http\Controllers\Traits\MediableTrait;
 use App\Transformers\ContractActivityTransformer;
 
 class ContractActivitiesController extends Controller
 {
-    use Helpers;
+    use Helpers, MediableTrait;
 
     /**
      * Get the contract activities.
@@ -40,27 +41,9 @@ class ContractActivitiesController extends Controller
         $contract = Contract::findOrFail($id);
         $user = User::byWallet($wallet)->firstOrFail();
 
-        $contract->recordActivities($request->all(), $user);
+        $activity = $contract->recordActivities($request->all(), $user);
+        $activity->uploadMedia($request);
 
         return $this->item($activity, new ContractActivityTransformer);
-    }
-
-    /**
-     * @param  \Illuminate\Http\Request $request
-     * @param  int $id
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function uploadMedia(Request $request, $id)
-    {
-        $activity = Activity::findOrFail($id);
-        $activity
-            ->addMultipleMediaFromRequest($request->attachments)
-            ->each(function($fileAdder) {
-                $fileAdder->toMediaCollection('attachments');
-            });
-
-        return respon()->json([
-            'attachments' => $activity->getMedia()
-        ]);
     }
 }

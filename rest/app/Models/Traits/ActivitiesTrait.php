@@ -16,7 +16,9 @@ trait ActivitiesTrait
         $attributes = array_merge($params, [
             'user_id' => $user->id
         ]);
+        $activity = new Activity($attributes);
+        $this->activities()->save($activity);
 
-        $this->activities()->save(new Activity($attributes));
+        return $activity;
     }
 }
