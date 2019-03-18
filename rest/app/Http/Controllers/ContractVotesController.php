@@ -7,10 +7,11 @@ use App\Models\ContractVote;
 use Illuminate\Http\Request;
 use Dingo\Api\Routing\Helpers;
 use App\Transformers\ContractVoteTransformer;
+use App\Http\Controllers\Traits\MediableTrait;
 
 class ContractVotesController extends Controller
 {
-    use Helpers;
+    use Helpers, MediableTrait;
 
     /**
      * @param  \Illuminate\Http\Request $request
@@ -34,6 +35,7 @@ class ContractVotesController extends Controller
     public function store(Request $request)
     {
         $vote = ContractVote::create($request->all());
+        $vote->uploadMedia($request);
 
         return $this->response->item($vote, new ContractVoteTransformer);
     }
@@ -49,24 +51,5 @@ class ContractVotesController extends Controller
         ContractVote::destroy($id);
 
         return response()->json(compact('id'));
-    }
-
-    /**
-     * @param  \Illuminate\Http\Request $request
-     * @param  int $id
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function uploadMedia(Request $request, $id)
-    {
-        $vote = ContractVote::findOrFail($id);
-        $vote
-            ->addMultipleMediaFromRequest($request->attachments)
-            ->each(function($fileAdder) {
-                $fileAdder->toMediaCollection('attachments');
-            });
-
-        return respon()->json([
-            'attachments' => $vote->getMedia()
-        ]);
     }
 }

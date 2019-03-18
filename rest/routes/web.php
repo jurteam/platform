@@ -25,7 +25,7 @@ $api->version('v1', function($api) {
             });
 
             $api->group(['prefix' => 'medias'], function($api) {
-                $api->post('{id}', 'App\Http\Controllers\ContractsController@uploadMedia');
+                $api->delete('{id}', 'App\Http\Controllers\ContractsController@deleteMedia');
             });
 
             $api->group(['prefix' => 'disputes'], function($api) {
@@ -49,7 +49,7 @@ $api->version('v1', function($api) {
             $api->post('/', 'App\Http\Controllers\ContractVotesController@store');
             $api->delete('{id}', 'App\Http\Controllers\ContractVotesController@destroy');
             $api->group(['prefix' => 'medias'], function($api) {
-                $api->post('{id}', 'App\Http\Controllers\ContractVotesController@uploadMedia');
+                $api->delete('{id}', 'App\Http\Controllers\ContractVotesController@deleteMedia');
             });
         });
 
@@ -57,7 +57,7 @@ $api->version('v1', function($api) {
             $api->get('{id}', 'App\Http\Controllers\ContractActivitiesController@index');
             $api->post('/', 'App\Http\Controllers\ContractActivitiesController@store');
             $api->group(['prefix' => 'medias'], function($api) {
-                $api->post('{id}', 'App\Http\Controllers\ContractActivitiesController@uploadMedia');
+                $api->delete('{id}', 'App\Http\Controllers\ContractActivitiesController@deleteMedia');
             });
         });
     });

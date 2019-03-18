@@ -48,7 +48,7 @@ class ContractDetailTransformer extends TransformerAbstract
                 (object)[
                     'wallet' => $contract->part_b_wallet,
                     'name' => $contract->part_b_name,
-                    'renderName' => $this->getRenderNameUserFromWallet($contract->part_b_wallet)
+                    'renderName' => $this->getRenderNameUserFromWallet($contract)
                 ]
             ],
             'value' => $contract->value,
@@ -74,7 +74,7 @@ class ContractDetailTransformer extends TransformerAbstract
      */
     public function includeAttachments(Contract $contract)
     {
-        $attachments = $contract->getMedia();
+        $attachments = $contract->getMedia('attachments');
 
         return $this->collection($attachments, new AttachmentTransformer);
     }
@@ -98,9 +98,9 @@ class ContractDetailTransformer extends TransformerAbstract
      * @param  string $wallet
      * @return boolean
      */
-    protected function getRenderNameUserFromWallet($wallet)
+    protected function getRenderNameUserFromWallet($contract)
     {
-        $user = User::byWallet($wallet)->first();
+        $user = User::byWallet($contract->part_b_wallet)->first();
         if ($user) {
             return $user->show_fullname;
         }

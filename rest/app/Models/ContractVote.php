@@ -2,13 +2,26 @@
 
 namespace App\Models;
 
+use App\Models\Traits\UploadableTrait;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 
 class ContractVote extends Model implements HasMedia
 {
-    use HasMediaTrait;
+    use HasMediaTrait, UploadableTrait;
+
+    /**
+     * @var array
+     */
+    protected $fillable = [
+        'amount',
+        'wallet_part'
+        'oracle_wallet',
+        'contract_id',
+        'message',
+        'hash'
+    ];
 
     /**
      * Retrieve contract.

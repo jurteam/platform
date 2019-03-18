@@ -50,7 +50,7 @@ class ContractStatusDetailTransformer extends TransformerAbstract
      */
     public function includeEvidencess(ContractStatusDetail $detail)
     {
-        $evidences = $detail->getMedia();
+        $evidences = $detail->getMedia('evidences');
 
         return $this->collection($evidences, new AttachmentTransformer);
     }

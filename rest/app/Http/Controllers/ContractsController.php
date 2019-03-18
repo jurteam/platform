@@ -9,11 +9,12 @@ use Dingo\Api\Routing\Helpers;
 use App\Filters\ContractFilters;
 use App\Transformers\ContractTransformer;
 use App\Transformers\AttachmentTransformer;
+use App\Http\Controllers\Traits\MediableTrait;
 use App\Transformers\ContractDetailTransformer;
 
 class ContractsController extends Controller
 {
-    use Helpers;
+    use Helpers, MediableTrait;
 
     /**
      * Retrieve all contracts for a single user.
@@ -76,6 +77,7 @@ class ContractsController extends Controller
         $contract = Contract::findOrFail($id);
 
         $contract->update($request->all());
+        $contract->uploadMedia($request);
 
         return $this->response->item($contract, new ContractTransformer);
     }
@@ -114,26 +116,6 @@ class ContractsController extends Controller
         $contract->updateStatusByCode($request, $user);
 
         return $this->response->item($contract, new ContractTransformer);
-    }
-
-    /**
-     * @param  \Illuminate\Http\Request $request
-     * @param  int $id
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function uploadMedia(Request $request, $id)
-    {
-        $this->validate($request, [
-            'attachments' => 'required'
-        ]);
-
-        $contract = Contract::findOrFail($id);
-        $contract->uploadMedia($request);
-
-        return $this->response->collection(
-            $contract->getMedia('attachments'),
-            new AttachmentTransformer
-        );
     }
 
     public function destroyAll(ContractFilters $filters)

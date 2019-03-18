@@ -4,13 +4,14 @@ namespace App\Models;
 
 use App\Models\Traits\StatusesTrait;
 use App\Models\Traits\ActivitiesTrait;
+use App\Models\Traits\UploadableTrait;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 
 class Contract extends Model implements HasMedia
 {
-    use HasMediaTrait, ActivitiesTrait, StatusesTrait;
+    use HasMediaTrait, ActivitiesTrait, StatusesTrait, UploadableTrait;
 
     protected $fillable = [
         'tx_hash',
@@ -119,14 +120,5 @@ class Contract extends Model implements HasMedia
         ], $user);
 
         return $contract;
-    }
-
-    public function uploadMedia($params)
-    {
-        foreach ($params->attachments as $attachment)
-        {
-            $this->addMedia($attachment)
-                ->toMediaCollection('attachments');
-        }
     }
 }
