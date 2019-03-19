@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 
 // Context
 import { AppContext } from "../../../bootstrap/AppProvider";
@@ -20,19 +20,36 @@ import ContractsTable from "../../common/ContractsTable";
 
 import { log } from "../../../utils/helpers"; // log helper
 
-import { DISCLAIMER_MUST_BE_ACCEPTED } from "../../../reducers/types";
+import { FETCH_CONTRACTS, API_DELETE_CONTRACT, DISCLAIMER_MUST_BE_ACCEPTED } from "../../../reducers/types";
 
 export const Contracts = props => {
   const { labels, contractTableHeaders } = useContext(AppContext);
 
   const [showModal, setShowModal] = useState(false);
   const [showDataLostModal, setShowDataLostModal] = useState(false);
+  const [contractToArchive, setContractToArchive] = useState(null);
+
+  // // cDM
+  // useEffect(() => {
+  //   global.drizzle.store.dispatch({ type: FETCH_CONTRACTS });
+  // }, []);
 
   const { contract } = props;
   log("Contracts - contract", contract);
 
-  const handleArchive = () => {
-    log("Contracts", "handleArchive");
+  const handleArchive = (contractId) => {
+    console.log("Contracts", "handleArchive", contractId);
+
+    setContractToArchive(contractId);
+    setShowDataLostModal(true);
+  };
+
+  const archive = () => {
+
+    setShowDataLostModal(false);
+
+    global.drizzle.store.dispatch({ type: API_DELETE_CONTRACT, id: contractToArchive });
+    setContractToArchive(null);
   };
 
   const newContract = () => {
