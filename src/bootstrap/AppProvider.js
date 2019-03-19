@@ -28,7 +28,8 @@ class AppProvider extends Component {
         { label: i18n.contractName, sortable: true },
         { label: i18n.duration, sortable: false },
         { label: i18n.couterpartyDetails, sortable: false },
-        { label: i18n.value, sortable: true }
+        { label: i18n.value, sortable: true },
+        { label: "", sortable: false } // options
       ],
       onNetwork: false,
       auth: this.auth,
