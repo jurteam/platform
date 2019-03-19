@@ -3,11 +3,13 @@ import CalendarFilter from "../CalendarFilter";
 import Form from "../Form";
 import Button from "../Button";
 import { SearchIcon } from "../Icons/SearchIcon";
-import statusList from "../../../assets/status.json"; // categories
-import "./ContractsFilters.scss";
-export class ContractsFilters extends Component {
+import statusList from "../../../assets/status.json"; // status
+import categories from "../../../assets/categories.json"; // categories
+import "./DisputesFilters.scss";
+export class DisputesFilters extends Component {
   state = {
     status: this.props.status,
+    category: this.props.category,
     fromDate: this.props.fromDate,
     toDate: this.props.toDate,
     searchText: this.props.searchText,
@@ -24,12 +26,26 @@ export class ContractsFilters extends Component {
 
   render() {
     return (
-      <div className={`jur-contracts-filter ${this.state.disabled ? "jur-contracts-filter--disabled" : "" }`} >
+      <div
+        className={`jur-disputes-filter ${
+          this.state.disabled ? "jur-disputes-filter--disabled" : ""
+        }`}
+      >
+        <Button variant="contained" onClick={this.props.getAllDisputes}>
+          All
+        </Button>
+        <Button onClick={this.props.getMyDisputes}>My Disputes</Button>
         <Form.Select
           placeholder="Filter by Status..."
           value={this.state.status}
           onChange={value => this.handleChange("status", value)}
           options={statusList}
+        />
+        <Form.Select
+          placeholder="Filter by Category..."
+          value={this.state.category}
+          onChange={value => this.handleChange("category", value)}
+          options={categories}
         />
         <CalendarFilter
           name="from"
@@ -45,11 +61,7 @@ export class ContractsFilters extends Component {
         <Form.Search
           onChange={value => this.handleChange("searchText", value)}
         />
-        <Button
-          variant="contained"
-          onClick={this.props.onSubmit}
-          size="medium"
-        >
+        <Button variant="contained" onClick={this.props.onSubmit} size="medium">
           <SearchIcon />
         </Button>
       </div>

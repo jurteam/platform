@@ -3,9 +3,9 @@ import React from "react";
 import { storiesOf } from "@storybook/react";
 import { withInfo } from "@storybook/addon-info";
 
-import ContractsFilters from "./";
+import DisputesFilters from ".";
 
-storiesOf("ContractsFilters", module)
+storiesOf("DisputesFilters", module)
   .addDecorator(withInfo)
   .addParameters({
     info: {
@@ -14,8 +14,10 @@ storiesOf("ContractsFilters", module)
     }
   })
   .add("Default", () => (
-    <ContractsFilters
+    <DisputesFilters
+      getAllDisputes={() => console.log("get all disputes")}
+      getMyDisputes={() => console.log("get mys disputes")}
       onChange={value => console.log(value)}
-      onSubmit={() => console.log('filter submit')}
+      onSubmit={() => console.log("filter submit")}
     />
   ));

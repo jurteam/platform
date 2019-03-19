@@ -1,6 +1,6 @@
 @import "../../../assets/scss/variables";
 
-.jur-contracts-filter {
+.jur-disputes-filter {
     display: flex;
     justify-content: flex-end;
     align-items: center;
@@ -12,8 +12,8 @@
     }
     
     .jur-select {
-        margin-right: auto;
         flex: 0 0 212px;
+        margin-right: 10px;
 
         .jur-select__control {
             min-height: 36px;
@@ -21,8 +21,8 @@
         }
     }
 
-    .jur-contracts-filter {
-        flex: 0 0 140px
+    .jur-calendar-filter {
+        flex: 0 0 120px
     }
 
     .separator {
@@ -35,7 +35,7 @@
 
     .jur-form__search {
         flex: 0 0 212px;
-        margin-left: 20px;
+        margin-left: 10px;
 
         svg {
             fill: $gull-gray;
@@ -43,9 +43,19 @@
     }
 
     button {
-        margin-left: 15px;
+        margin-left: 10px;
         width: 50px;
         min-width: 50px;
+
+        &:first-child {
+            flex: 0 0 105px;
+            margin-left: 0;
+        }
+        
+        &:nth-child(2) {
+            margin-right: auto;
+            flex: 0 0 183px;
+        }
 
         svg {
             width: 15px;
