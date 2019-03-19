@@ -4,6 +4,7 @@ import Form from "../Form";
 import Button from "../Button";
 import { SearchIcon } from "../Icons/SearchIcon";
 import statusList from "../../../assets/i18n/en/status.json"; // status
+import categories from "../../../assets/i18n/en/contractCategories.json"; // categories
 import "./DisputesFilters.scss";
 export class DisputesFilters extends Component {
   state = {
