@@ -41,7 +41,7 @@ const contractsData = [
     contractName: "Freelancer Agreement",
     duration: 1000 * 60 * 60 * 24 * 3,
     expireDate: 1000 * 60 * 60 * 24 * 2,
-    counterParties: [
+    counterparties: [
       {
         wallet: "0x496730954769357609478509674309",
         name: "Alice",
@@ -64,7 +64,7 @@ const contractsData = [
     contractName: "OTC transaction Eth vs Btc",
     duration: 1000 * 60 * 60 * 24 * 3,
     expireDate: 1000 * 60 * 60 * 24 * 2,
-    counterParties: [
+    counterparties: [
       {
         wallet: "0x496730954769357609478509674309",
         name: "Alice",
@@ -87,7 +87,7 @@ const contractsData = [
     contractName: "Web Development Activity",
     duration: 1000 * 60 * 60 * 24 * 3,
     expireDate: 1000 * 60 * 60 * 24 * 2,
-    counterParties: [
+    counterparties: [
       {
         wallet: "0x496730954769357609478509674309",
         name: "Alice",
@@ -110,7 +110,7 @@ const contractsData = [
     contractName: "Logo Design",
     duration: 1000 * 60 * 60 * 24 * 3,
     expireDate: 1000 * 60 * 60 * 24 * 2,
-    counterParties: [
+    counterparties: [
       {
         wallet: "0x496730954769357609478509674309",
         name: "Alice",
@@ -133,7 +133,7 @@ const contractsData = [
     contractName: "Investment Milestone",
     duration: 1000 * 60 * 60 * 24 * 3,
     expireDate: 1000 * 60 * 60 * 24 * 2,
-    counterParties: [
+    counterparties: [
       {
         wallet: "0x496730954769357609478509674309",
         name: "Alice",
@@ -156,7 +156,7 @@ const contractsData = [
     contractName: "EU Patent purchasing",
     duration: 1000 * 60 * 60 * 24 * 3,
     expireDate: 1000 * 60 * 60 * 24 * 2,
-    counterParties: [
+    counterparties: [
       {
         wallet: "0x496730954769357609478509674309",
         name: "Alice",

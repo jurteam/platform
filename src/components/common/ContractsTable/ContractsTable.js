@@ -81,7 +81,7 @@ export const ContractsTable = ({
                   />
                 </TableCell>
                 <TableCell>
-                  {contract.counterParties.map(counterParty => (
+                  {contract.counterparties.map(counterParty => (
                     <AvatarInfo
                       key={counterParty.wallet}
                       userName={counterParty.name}
