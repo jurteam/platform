@@ -31,7 +31,7 @@ $api->version('v1', function($api) {
             $api->group(['prefix' => 'disputes'], function($api) {
                 $api->post('{id}', 'App\Http\Controllers\ContractDetailsController@store');
                 $api->group(['prefix' => 'evidences'], function($api) {
-                    $api->post('{id}', 'App\Http\Controllers\ContractDetailsController@uploadMedia');
+                    $api->delete('{id}', 'App\Http\Controllers\ContractDetailsController@deleteMedia');
                 });
             });
 
