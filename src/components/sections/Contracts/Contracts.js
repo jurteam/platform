@@ -14,6 +14,8 @@ import Button from "../../common/Button";
 import Disclaimer, { ModalDiscliamer } from "../../common/Disclaimer";
 
 import Main from "../../common/Main";
+
+import DataLostModal from "../../common/DataLostModal";
 import ContractsTable from "../../common/ContractsTable";
 
 import { log } from "../../../utils/helpers"; // log helper
@@ -24,6 +26,7 @@ export const Contracts = props => {
   const { labels, contractTableHeaders } = useContext(AppContext);
 
   const [showModal, setShowModal] = useState(false);
+  const [showDataLostModal, setShowDataLostModal] = useState(false);
 
   const { contract } = props;
   log("Contracts - contract", contract);
@@ -71,6 +74,12 @@ export const Contracts = props => {
             newContract={newContract}
           />
         </Main>
+
+        <DataLostModal
+          isOpen={showDataLostModal}
+          onAccept={archive}
+          onDecline={() => setShowDataLostModal(false)}
+        />
 
         <ModalDiscliamer
           isOpen={showModal}
