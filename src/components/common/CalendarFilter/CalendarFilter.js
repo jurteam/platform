@@ -11,6 +11,7 @@ export const CalendarFilter = ({selectedDate, onChange, name}) => (
     <Form.DatePicker
       selectedDate={selectedDate}
       onChange={date => onChange(date)}
+      maxDate={new Date()}
     />
     {!selectedDate &&
       <div className="jur-calendar-filter__placeholder">
