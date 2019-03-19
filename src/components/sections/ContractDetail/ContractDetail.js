@@ -25,6 +25,7 @@ import { log } from "../../../utils/helpers"; // log helper
 
 import {
   NEW_CONTRACT,
+  API_GET_CONTRACT,
   MEDIA_UPLOAD,
   DISCLAIMER_MUST_BE_ACCEPTED
 } from "../../../reducers/types";
@@ -46,9 +47,13 @@ export const ContractDetail = props => {
   // cDM
   useEffect(() => {
     const {
-      match: { params }
+      match: {
+        params: { id }
+      }
     } = props;
-    console.log("Contract Details - props", params);
+    console.log("Contract Details - contract id", id);
+
+    global.drizzle.store.dispatch({ type: API_GET_CONTRACT, id });
   }, []);
 
   // validation setup
@@ -100,22 +105,6 @@ export const ContractDetail = props => {
   const submitDisabled =
     formUpdated === false || updating === true || !isValid();
 
-  const initContract = () => {
-    log("initContract", "run");
-    const {
-      user: { disclaimer }
-    } = props;
-    if (disclaimer.optin) {
-      global.drizzle.store.dispatch({ type: NEW_CONTRACT });
-
-      const { history } = props;
-      history.push("/contracts/detail");
-    } else {
-      setShowModal(true); // show disclaimer modal
-      global.drizzle.store.dispatch({ type: DISCLAIMER_MUST_BE_ACCEPTED });
-    }
-  };
-
   const breadcrumbs = [
     {
       label: labels.contracts,
@@ -156,7 +145,7 @@ export const ContractDetail = props => {
     shouldRenderName: part_b_wallet === user.wallet ? user.show_fullname : false
   };
 
-  return typeof params.id !== "undefined" && contract.current.part_a_wallet ? (
+  return typeof params.id !== "undefined" ? (
     <PageLayout breadcrumbs={breadcrumbs}>
       <Main>
         <ContractSummary
