@@ -1,16 +1,18 @@
-import React, {useState} from 'react';
-import PropTypes from 'prop-types';
+import React, { useState } from "react";
+import PropTypes from "prop-types";
 
-import './InputRange.scss';
+import "./InputRange.scss";
 
 export const InputRange = ({ min, max, defaultValue, onValueChange, step }) => {
-  const calculateSpanWidth = (value) => {
+  const calculateSpanWidth = value => {
     const width = 100 - (Number(value) * 100) / Number(max);
-    return parseFloat(width).toFixed(2) + '%';
+    return parseFloat(width).toFixed(2) + "%";
   };
 
   const [value, setValue] = useState(defaultValue);
-  const [spanWidth, setSpanWidth] = useState(defaultValue ? calculateSpanWidth(defaultValue) : '100%');
+  const [spanWidth, setSpanWidth] = useState(
+    defaultValue ? calculateSpanWidth(defaultValue) : "100%"
+  );
 
   const onChange = ev => {
     const value = ev.target.value;
@@ -21,7 +23,7 @@ export const InputRange = ({ min, max, defaultValue, onValueChange, step }) => {
 
   return (
     <div className="jur-range">
-      <span style={{width: spanWidth}}></span>
+      <span style={{ width: spanWidth }} />
       <input
         type="range"
         min={min}
@@ -31,5 +33,5 @@ export const InputRange = ({ min, max, defaultValue, onValueChange, step }) => {
         onChange={onChange}
       />
     </div>
-  )
-}
+  );
+};
