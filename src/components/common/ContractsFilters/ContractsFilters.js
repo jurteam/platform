@@ -3,7 +3,7 @@ import CalendarFilter from "../CalendarFilter";
 import Form from "../Form";
 import Button from "../Button";
 import { SearchIcon } from "../Icons/SearchIcon";
-import statusList from "../../../assets/status.json"; // categories
+import statusList from "../../../assets/i18n/en/status.json"; // categories
 import "./ContractsFilters.scss";
 export class ContractsFilters extends Component {
   state = {

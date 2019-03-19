@@ -3,8 +3,7 @@ import CalendarFilter from "../CalendarFilter";
 import Form from "../Form";
 import Button from "../Button";
 import { SearchIcon } from "../Icons/SearchIcon";
-import statusList from "../../../assets/status.json"; // status
-import categories from "../../../assets/categories.json"; // categories
+import statusList from "../../../assets/i18n/en/status.json"; // status
 import "./DisputesFilters.scss";
 export class DisputesFilters extends Component {
   state = {
