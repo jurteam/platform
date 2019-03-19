@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
@@ -29,6 +30,10 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request, [
+            'name' => 'unique:users,name'
+        ]);
+
         $user = User::createByWallet($request);
 
         return response()->json(compact('user'), 201);
@@ -42,11 +47,16 @@ class UserController extends Controller
      */
     public function update(Request $request)
     {
+        $user = $this->getUser($request);
+
         $this->validate($request, [
             'accepted_terms' => 'accepted',
+            'name' => [
+                Rule::unique('users')->ignore($user->id),
+            ]
         ]);
 
-        $user = User::updateByWallet($request);
+        $user->update($request);
 
         return response()->json(compact('user'));
     }
@@ -62,5 +72,15 @@ class UserController extends Controller
         User::deleteByWallet($request);
 
         return response()->json(['status' => 'deleted']);
+    }
+
+    /**
+     * @param  \Illuminate\Http\Request $request
+     * @return \App\Models\User
+     */
+    protected function getUser(Request $request)
+    {
+        $wallet = $request->header('wallet');
+        return User::byWallet($wallet)->firstOrFail();
     }
 }
