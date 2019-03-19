@@ -50,7 +50,7 @@ export function* handleNewArbitration(args) {
         contracts[contract].methods[jurToken]
       );
       const txJurToken = contracts[contract].methods[jurToken].cacheCall(
-        JURToken.address
+        // JURToken.address
       );
       log("handleNewArbitration - txJurToken", txJurToken);
 
