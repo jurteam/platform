@@ -1,6 +1,11 @@
-import {
+   import {
   NEW_CONTRACT,
+  API_GET_CONTRACT,
+  SET_CONTRACT,
+  API_DELETE_CONTRACT,
   UPDATE_CONTRACT_FIELD,
+  CONTRACT_DELETED,
+  CONTRACTS_FETCHED,
   RESET_CONTRACT,
   RESET_CONTRACTS
 } from "./types";
@@ -47,6 +52,12 @@ const INITIAL_STATE = {
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     // Setters
+    case SET_CONTRACT:
+      return { ...state, current: action.payload };
+
+    case CONTRACTS_FETCHED:
+      console.log(CONTRACTS_FETCHED, action.payload);
+      return { ...state, list: action.payload };
 
     // Updates
     case UPDATE_CONTRACT_FIELD:
@@ -70,7 +81,10 @@ export default (state = INITIAL_STATE, action) => {
         list: { ...INITIAL_STATE.list }
       };
 
-    case NEW_CONTRACT:
+    case NEW_CONTRACT: // saga
+    case API_GET_CONTRACT: // saga
+    case API_DELETE_CONTRACT: // saga
+    case CONTRACT_DELETED: // saga
     default:
       return state;
   }

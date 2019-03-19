@@ -3,6 +3,7 @@ import {
   SET_LOADING,
   SET_TUTORIAL_VIEWED,
   RESET_APP_STATE,
+  NETWORK_UPDATE,
   SET_FAQ
 } from "./types";
 
@@ -32,6 +33,7 @@ export default (state = INITIAL_STATE, action) => {
     case RESET_APP_STATE:
       return { ...INITIAL_STATE };
 
+    case NETWORK_UPDATE: // saga
     default:
       return state;
   }
