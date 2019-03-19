@@ -2,8 +2,9 @@
 import axios from "../bootstrap/Api";
 
 export class Media {
-  static store(payload) {
-    const { entity, id, attachments } = payload;
-    return axios.post(`/${entity}/media/${id}`, { attachments });
+  static delete(payload) {
+    const { entity, id } = payload;
+
+    return axios.delete(`/${entity}/media/${id}`);
   }
 }
