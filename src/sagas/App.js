@@ -12,6 +12,7 @@ import {
   RESET_USER,
   SET_FAQ,
   FETCH_FAQ,
+  FETCH_CONTRACTS,
   RESET_APP_STATE,
   SET_TUTORIAL_VIEWED
 } from "../reducers/types";
@@ -82,6 +83,7 @@ export function* handleNetworkUpdate(data) {
     yield put({ type: SET_WALLET_ADDRESS, payload: selectedAddress.toLowerCase() });
     yield put({ type: RESET_USER });
     yield put({ type: FETCH_USER });
+    yield put({ type: FETCH_CONTRACTS });
   }
 }
 
@@ -120,6 +122,7 @@ export function* handleAppReady() {
   yield init();
   yield put({ type: FETCH_FAQ });
   yield put({ type: FETCH_USER });
+  yield put({ type: FETCH_CONTRACTS });
 }
 
 // spawn a new actions task
