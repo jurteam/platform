@@ -196,6 +196,7 @@ export const ProfileForm = ({
             placeholder={labels.dateOfBirthPlaceholder}
             selectedDate={birth_date ? new Date(birth_date) : null}
             onChange={date => changeInput("birth_date", date)}
+            maxDate={new Date()}
           />
         </Form.Group>
         <Form.Group>
