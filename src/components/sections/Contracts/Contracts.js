@@ -20,7 +20,12 @@ import ContractsTable from "../../common/ContractsTable";
 
 import { log } from "../../../utils/helpers"; // log helper
 
-import { FETCH_CONTRACTS, API_DELETE_CONTRACT, DISCLAIMER_MUST_BE_ACCEPTED } from "../../../reducers/types";
+import {
+  FETCH_CONTRACTS,
+  UPDATE_CONTRACT_FILTER,
+  API_DELETE_CONTRACT,
+  DISCLAIMER_MUST_BE_ACCEPTED
+} from "../../../reducers/types";
 
 export const Contracts = props => {
   const { labels, contractTableHeaders } = useContext(AppContext);
@@ -37,7 +42,20 @@ export const Contracts = props => {
   const { contract } = props;
   log("Contracts - contract", contract);
 
-  const handleArchive = (contractId) => {
+  // filters
+  const { disabled: filtersDisabled, ...filters } = contract.filters;
+  const handleFilterChange = (type, value) => {
+    global.drizzle.store.dispatch({
+      type: UPDATE_CONTRACT_FILTER,
+      field: type,
+      value
+    });
+  };
+  const handleFilterSubmit = () => {
+    global.drizzle.store.dispatch({ type: FETCH_CONTRACTS });
+  };
+
+  const handleArchive = contractId => {
     console.log("Contracts", "handleArchive", contractId);
 
     setContractToArchive(contractId);
@@ -45,10 +63,12 @@ export const Contracts = props => {
   };
 
   const archive = () => {
-
     setShowDataLostModal(false);
 
-    global.drizzle.store.dispatch({ type: API_DELETE_CONTRACT, id: contractToArchive });
+    global.drizzle.store.dispatch({
+      type: API_DELETE_CONTRACT,
+      id: contractToArchive
+    });
     setContractToArchive(null);
   };
 
@@ -85,6 +105,10 @@ export const Contracts = props => {
       <Content>
         <Main>
           <ContractsTable
+            filters={filters}
+            filtersDisabled={filtersDisabled}
+            handleFilterChange={handleFilterChange}
+            handleFilterSubmit={handleFilterSubmit}
             headers={contractTableHeaders}
             data={contract.list}
             handleArchive={handleArchive}

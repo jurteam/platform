@@ -3,7 +3,9 @@ import { getUser } from "./Selectors";
 import {
   RESET_CONTRACT,
   NEW_CONTRACT,
+  PUT_CONTRACT,
   CONTRACT_UPDATING,
+  UPDATE_CONTRACT_FILTER,
   FETCH_CONTRACTS,
   API_GET_CONTRACT,
   SET_CONTRACT,
@@ -19,7 +21,11 @@ import { log } from "../utils/helpers"; // log helper
 // Api layouts
 import { Contracts } from "../api";
 
-import { getCurrentContract } from "./Selectors"; // selector
+import {
+  getNewContract,
+  getCurrentContract,
+  getContractFilters
+} from "./Selectors"; // selector
 
 // Get
 export function* getContract(action) {
@@ -48,43 +54,44 @@ export function* deleteContract(action) {
     log("deleteContract - delete", response);
     yield put({ type: CONTRACT_DELETED, id });
   } catch (error) {
-    log("deleteContract - error", error)
+    log("deleteContract - error", error);
     yield put({ type: API_CATCH, error });
   }
 }
 
 export function* fetchContracts() {
-
+  yield put({ type: UPDATE_CONTRACT_FILTER, disabled: true });
+  const { status, fromDate, toDate, searchText } = yield select(
+    getContractFilters
+  );
+  log("contracts - filters", {
+    status: status && typeof status.value !== "undefined" ? status.value : null,
+    from:fromDate,
+    to:toDate,
+    q:searchText
+  });
   try {
-    const response = yield call(Contracts.list);
+    const response = yield call(Contracts.list, {
+      status:
+        status && typeof status.value !== "undefined" ? status.value : null,
+      from:fromDate,
+      to:toDate,
+      q:searchText
+    });
     log("contracts - fetch", response);
     yield put({ type: CONTRACTS_FETCHED, payload: response.data.data });
+    yield put({ type: UPDATE_CONTRACT_FILTER, disabled: false });
   } catch (error) {
     // TODO: handle 404
     yield put({ type: API_CATCH, error });
+    yield put({ type: UPDATE_CONTRACT_FILTER, disabled: false });
   }
 }
 
 // Create
 export function* createContract(action) {
   log("createContract - run");
-  const {
-    part_a_email,
-    part_a_name,
-    part_a_wallet,
-    part_b_email,
-    part_b_name,
-    part_b_wallet
-  } = yield select(getCurrentContract);
-
-  const contractData = {
-    part_a_email,
-    part_a_name,
-    part_a_wallet,
-    part_b_email,
-    part_b_name,
-    part_b_wallet
-  };
+  const contractData = yield select(getNewContract);
 
   log("createContract - contractData", contractData);
 
@@ -96,6 +103,37 @@ export function* createContract(action) {
     const { id } = response.data.data;
     const { history } = action;
     history.push(`/contracts/detail/${id}`); // go to contract detail for furter operations
+  } catch (error) {
+    yield put({ type: API_CATCH, error });
+  }
+}
+
+// Update
+export function* updateContract(action) {
+  log("updateContract - run");
+  const { id, kpi } = yield select(getCurrentContract);
+
+  const toUpdate = new FormData();
+  // toUpdate.append('_method', 'PUT');
+  toUpdate.append("kpi", kpi);
+
+  for (let i = 0; i < action.attachments.length; i++) {
+    // iteate over any file sent over appending the files to the form data.
+    let file = action.attachments[i];
+
+    toUpdate.append("attachments[" + i + "]", file);
+  }
+  // toUpdate.append("attachments[]", action.attachments);
+
+  log("updateContract - contractData", toUpdate);
+
+  try {
+    const response = yield call(Contracts.update, toUpdate, id);
+    log("updateContract - contract created", response);
+    // yield put({ type: SET_CONTRACT, payload: response.data.data });
+
+    // const { history } = action;
+    // history.push(`/contracts/detail/${id}`); // go to contract detail for furter operations
   } catch (error) {
     yield put({ type: API_CATCH, error });
   }
@@ -133,6 +171,7 @@ export function* onError() {
 export default function* contractSagas() {
   log("run", "contractSagas");
   yield takeLatest(NEW_CONTRACT, createContract);
+  yield takeLatest(PUT_CONTRACT, updateContract);
   yield takeLatest(API_GET_CONTRACT, getContract);
   yield takeLatest(API_DELETE_CONTRACT, deleteContract);
   yield takeLatest(FETCH_CONTRACTS, fetchContracts);

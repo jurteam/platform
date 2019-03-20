@@ -26,7 +26,7 @@ import { log } from "../../../utils/helpers"; // log helper
 import {
   NEW_CONTRACT,
   API_GET_CONTRACT,
-  MEDIA_UPLOAD,
+  PUT_CONTRACT,
   DISCLAIMER_MUST_BE_ACCEPTED
 } from "../../../reducers/types";
 
@@ -80,7 +80,6 @@ export const ContractDetail = props => {
 
   const onFileAdded = selectedFiles => {
     console.log("upload", selectedFiles);
-
     setAttachments(selectedFiles);
   };
 
@@ -88,10 +87,10 @@ export const ContractDetail = props => {
     console.log("upload", "run");
 
     global.drizzle.store.dispatch({
-      type: MEDIA_UPLOAD,
-      entity: "contracts",
+      type: PUT_CONTRACT,
+      // entity: "contracts",
       attachments,
-      ...params
+      // ...params
     });
   };
 
@@ -121,9 +120,7 @@ export const ContractDetail = props => {
   const {
     id,
     part_a_wallet,
-    part_a_name,
     part_b_wallet,
-    part_b_name,
     statusId,
     statusLabel,
     kpi,
@@ -131,6 +128,7 @@ export const ContractDetail = props => {
     value,
     whoPays,
     contractName,
+    counterparties,
     duration
   } = contract.current;
   console.log("ContractDetail - contract", contract);
@@ -153,22 +151,11 @@ export const ContractDetail = props => {
             contractID: id,
             from: {
               label: "partA",
-              debtor: part_a.isDebtor, // default valute equal to true
-              wallet: {
-                address: part_a_wallet
-              },
-              name: part_a_name,
-              shouldRenderName: part_a.shouldRenderName
+              ...counterparties[0]
             },
             to: {
               label: "partB",
-              debtor: part_b.isDebtor, // default value equal to false
-              wallet: {
-                address: part_b_wallet
-              },
-              name: part_b_name,
-              shouldRenderName:
-                part_b_wallet === user.wallet ? user.show_fullname : false
+              ...counterparties[1]
             },
             penaltyFee: {
               partA: "",
@@ -214,21 +201,19 @@ export const ContractDetail = props => {
               label: "partA",
               debtor: part_a.isDebtor,
               wallet: {
-                address: part_a_wallet,
+                address: counterparties[0].wallet,
                 amount: value
               },
-              name: part_a_name,
-              shouldRenderName: part_a.shouldRenderName
+              ...counterparties[0]
             },
             to: {
               label: "partB",
               debtor: part_b.isDebtor,
               wallet: {
-                address: part_b_wallet,
+                address: counterparties[1].wallet,
                 amount: value
               },
-              name: part_b_name,
-              shouldRenderName: part_b.shouldRenderName
+              ...counterparties[1]
             },
             penaltyFee: null
           }}

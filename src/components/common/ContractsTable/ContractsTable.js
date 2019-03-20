@@ -20,8 +20,10 @@ import "./ContractsTable.scss";
 
 export const ContractsTable = ({
   headers,
+  filters,
   data,
   handleArchive,
+  filtersDisabled,
   handleFilterChange,
   handleFilterSubmit,
   newContract,
@@ -34,10 +36,12 @@ export const ContractsTable = ({
   const [activePage, setActivePage] = useState(initialPage);
   const emptyMessage = data.length === 0 && (
     <div className="jur-table__empty">
-      <p>It seems you did not create any contract!</p>
+      {(filters.status === null && filters.fromDate === null && filters.toDate === null && filters.searchText === null) ? (<>
+
+        <p>It seems you did not create any contract!</p>
       <Button variant="gradient" onClick={newContract}>
         Create your first contract
-      </Button>
+      </Button></>) : <p>Sorry, no contract match search criteria. Try with another search.</p>}
     </div>
   );
 
@@ -51,7 +55,8 @@ export const ContractsTable = ({
       <ContractsFilters
         onChange={handleFilterChange}
         onSubmit={handleFilterSubmit}
-        disabled={data.length <= 0}
+        disabled={filtersDisabled}
+        {...filters}
       />
       <Table>
         <TableHead>

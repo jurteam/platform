@@ -1,4 +1,4 @@
-   import {
+import {
   NEW_CONTRACT,
   API_GET_CONTRACT,
   SET_CONTRACT,
@@ -53,6 +53,13 @@ const INITIAL_STATE = {
     whoPays: null,
     in_case_of_dispute: "open",
     attachments: []
+  },
+  filters: {
+    status: null,
+    fromDate: null,
+    toDate: null,
+    searchText: null,
+    disabled: false
   },
   list: []
 };
