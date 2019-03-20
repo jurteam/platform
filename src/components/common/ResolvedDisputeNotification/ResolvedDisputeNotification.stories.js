@@ -1,16 +1,16 @@
-import React from 'react';
+import React from "react";
 
-import { storiesOf } from '@storybook/react';
-import { withInfo } from '@storybook/addon-info';
+import { storiesOf } from "@storybook/react";
+import { withInfo } from "@storybook/addon-info";
 
-import ResolvedDisputeNotification from './';
+import ResolvedDisputeNotification from "./";
 
-storiesOf('ResolvedDisputeNotification', module)
+storiesOf("ResolvedDisputeNotification", module)
   .addDecorator(withInfo)
-  .addParameters({ 
-    info: { 
+  .addParameters({
+    info: {
       inline: true,
       header: false
     }
   })
-  .add('Default', () => <ResolvedDisputeNotification />)
+  .add("Default", () => <ResolvedDisputeNotification />);

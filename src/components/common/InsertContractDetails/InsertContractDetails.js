@@ -1,17 +1,27 @@
-import React, { useContext } from 'react';
-import PropTypes from 'prop-types';
-import ContractTextarea from '../ContractTextarea';
-import UploadForm from '../UploadForm';
-import FileList from '../FileList';
-import File from '../File';
+import React, { useContext } from "react";
+import PropTypes from "prop-types";
+import ContractTextarea from "../ContractTextarea";
+import UploadForm from "../UploadForm";
+import FileList from "../FileList";
+import File from "../File";
 
 // Context
 import { AppContext } from "../../../bootstrap/AppProvider";
 
-import './InsertContractDetails.scss';
+import "./InsertContractDetails.scss";
 
-export const InsertContractDetails = ({kpiPlaceholder, resolutionProofPlaceholder, kpiInitialValue, resolutionProofInitialValue, onKpiChange, onResolutionProofChange, onFileAdded, uploadedFiles, onView, onDelete}) => {
-
+export const InsertContractDetails = ({
+  kpiPlaceholder,
+  resolutionProofPlaceholder,
+  kpiInitialValue,
+  resolutionProofInitialValue,
+  onKpiChange,
+  onResolutionProofChange,
+  onFileAdded,
+  uploadedFiles,
+  onView,
+  onDelete
+}) => {
   const { labels } = useContext(AppContext);
 
   return (
@@ -31,11 +41,11 @@ export const InsertContractDetails = ({kpiPlaceholder, resolutionProofPlaceholde
         placeholder={resolutionProofPlaceholder}
       />
       <div className="jur-insert-contract-details__files">
-        {uploadedFiles.length > 0 &&
+        {uploadedFiles.length > 0 && (
           <FileList>
-            { uploadedFiles.map((file, index) => (
+            {uploadedFiles.map((file, index) => (
               <File
-              key={index.toString()}
+                key={index.toString()}
                 name={file.name}
                 onView={onView}
                 onDelete={onDelete}
@@ -43,9 +53,9 @@ export const InsertContractDetails = ({kpiPlaceholder, resolutionProofPlaceholde
               />
             ))}
           </FileList>
-        }
+        )}
         <UploadForm onFileAdded={onFileAdded} />
       </div>
     </div>
   );
-}
+};

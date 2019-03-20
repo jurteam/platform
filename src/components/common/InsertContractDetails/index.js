@@ -1,2 +1,2 @@
-import {InsertContractDetails} from './InsertContractDetails';
+import { InsertContractDetails } from "./InsertContractDetails";
 export default InsertContractDetails;

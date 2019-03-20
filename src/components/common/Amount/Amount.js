@@ -1,16 +1,16 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
-import { toCurrencyFormat } from '../../../utils/helpers';
+import { toCurrencyFormat } from "../../../utils/helpers";
 
-import './Amount.scss';
+import "./Amount.scss";
 
 export const Amount = ({ value, currency, className }) => {
   return (
-    <span className={ `jur-amount ${className || ''}`} >
-      { `${toCurrencyFormat(value)}${currency.toUpperCase()}` }
+    <span className={`jur-amount ${className || ""}`}>
+      {`${toCurrencyFormat(value)}${currency.toUpperCase()}`}
     </span>
-  )
+  );
 };
 
 Amount.propTypes = {
@@ -20,6 +20,6 @@ Amount.propTypes = {
 };
 
 Amount.defaultProps = {
-  currency: 'JUR',
+  currency: "JUR",
   value: 0
 };

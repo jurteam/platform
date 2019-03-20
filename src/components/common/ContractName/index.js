@@ -1,2 +1,2 @@
-import {ContractName} from './ContractName';
+import { ContractName } from "./ContractName";
 export default ContractName;

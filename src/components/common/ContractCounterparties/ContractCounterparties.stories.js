@@ -1,31 +1,31 @@
-import React from 'react';
+import React from "react";
 
-import { storiesOf } from '@storybook/react';
-import { withInfo } from '@storybook/addon-info';
+import { storiesOf } from "@storybook/react";
+import { withInfo } from "@storybook/addon-info";
 
-import ContractCounterparties from './';
+import ContractCounterparties from "./";
 
-storiesOf('ContractCounterparties', module)
+storiesOf("ContractCounterparties", module)
   .addDecorator(withInfo)
-  .addParameters({ 
-    info: { 
+  .addParameters({
+    info: {
       inline: true,
       header: false
     }
   })
-  .add('Default', () => (
+  .add("Default", () => (
     <ContractCounterparties
       counterparties={[
         {
-          name: 'Alice',
-          wallet: { address: '0xksyg8i357ytib385yi3' },
-          shouldRenderName: true,
+          name: "Alice",
+          wallet: { address: "0xksyg8i357ytib385yi3" },
+          shouldRenderName: true
         },
         {
-          name: 'Bob',
-          wallet: { address: '0x3876h93845h945938f4756f9h34653974h6' },
-          shouldRenderName: false,
+          name: "Bob",
+          wallet: { address: "0x3876h93845h945938f4756f9h34653974h6" },
+          shouldRenderName: false
         }
       ]}
     />
-  ))
+  ));

@@ -1,23 +1,23 @@
-import React from 'react';
+import React from "react";
 
-import { storiesOf } from '@storybook/react';
-import { withInfo } from '@storybook/addon-info';
+import { storiesOf } from "@storybook/react";
+import { withInfo } from "@storybook/addon-info";
 
-import Table from './';
-import TableRow from '../TableRow';
-import TableCell from '../TableCell';
-import TableHead from '../TableHead';
-import TableBody from '../TableBody';
+import Table from "./";
+import TableRow from "../TableRow";
+import TableCell from "../TableCell";
+import TableHead from "../TableHead";
+import TableBody from "../TableBody";
 
-storiesOf('Table', module)
+storiesOf("Table", module)
   .addDecorator(withInfo)
-  .addParameters({ 
-    info: { 
+  .addParameters({
+    info: {
       inline: true,
       header: false
     }
   })
-  .add('No Styles', () => (
+  .add("No Styles", () => (
     <Table>
       <TableHead>
         <TableRow>
@@ -33,11 +33,13 @@ storiesOf('Table', module)
       </TableBody>
     </Table>
   ))
-  .add('Click on thead cell to sort', () => (
+  .add("Click on thead cell to sort", () => (
     <Table>
       <TableHead>
         <TableRow>
-          <TableCell onClick={ (e, desc) => alert(desc) }>Name (click me to sort)</TableCell>
+          <TableCell onClick={(e, desc) => alert(desc)}>
+            Name (click me to sort)
+          </TableCell>
           <TableCell>Age</TableCell>
         </TableRow>
       </TableHead>
@@ -48,4 +50,4 @@ storiesOf('Table', module)
         </TableRow>
       </TableBody>
     </Table>
-  ))
+  ));

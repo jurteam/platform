@@ -10,9 +10,8 @@ import "./Balance.scss"; // load scss properly
 
 export class Balance extends Component {
   render() {
-
-    const { wallet } = this.props
-    const { balance } = wallet
+    const { wallet } = this.props;
+    const { balance } = wallet;
 
     return (
       <div className="jur--balance">

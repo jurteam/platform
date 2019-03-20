@@ -1,48 +1,47 @@
 @import "../../../assets/scss/variables";
 
 .jur-contract-accordion {
-    $c: &;
-    &--open {
-        #{$c}__header {
-            border: none;
-            span {
-                transform: rotate(0);
-            }
-        }
+  $c: &;
+  &--open {
+    #{$c}__header {
+      border: none;
+      span {
+        transform: rotate(0);
+      }
     }
-    
-    &__header {
-        font-family: $font-poppins;
-        font-size: 20px;
-        color: $prussian-blue;
-        padding: 10px 20px;
-        display: flex;
-        justify-content: space-between;
-        border-bottom: 1px solid $white-lilac;
-        align-items: center;
-        cursor: pointer;
-    }
+  }
 
-    &__arrow {
-        transform: rotate(180deg);
-        transition: transform .3s;
-        padding: 6px;
-        width: 24px;
-    }
+  &__header {
+    font-family: $font-poppins;
+    font-size: 20px;
+    color: $prussian-blue;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid $white-lilac;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  &__arrow {
+    transform: rotate(180deg);
+    transition: transform 0.3s;
+    padding: 6px;
+    width: 24px;
+  }
+
+  svg {
+    width: 100%;
+    fill: #80868b;
+  }
+
+  .jur-info-tooltip {
+    position: relative;
+    top: -4px;
+    left: 4px;
 
     svg {
-        width: 100%;
-        fill: #80868B;
+      width: 10px;
     }
-
-    .jur-info-tooltip {
-        position: relative;
-        top: -4px;
-        left: 4px;
-
-        svg {
-            width: 10px;
-        }
-    }
-
+  }
 }

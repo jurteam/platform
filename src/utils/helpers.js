@@ -1,4 +1,4 @@
-import linkify from 'linkifyjs/string';
+import linkify from "linkifyjs/string";
 
 // Log helper only on DEVELOPMENT environmentexport const warn = (mixed, obj) => {
 export const warn = (mixed, obj) => {
@@ -68,9 +68,9 @@ export const urlify = str => {
   const html = linkify(str, {
     target: (href, type) => {
       if (href.startsWith(window.location.origin)) {
-        return '_self';
+        return "_self";
       } else {
-        return '_blank';
+        return "_blank";
       }
     }
   });
@@ -79,23 +79,23 @@ export const urlify = str => {
 
 export const dateReducer = date => {
   var d = new Date(date),
-      month = '' + (d.getMonth() + 1),
-      day = '' + d.getDate(),
-      year = d.getFullYear();
+    month = "" + (d.getMonth() + 1),
+    day = "" + d.getDate(),
+    year = d.getFullYear();
 
-  if (month.length < 2) month = '0' + month;
-  if (day.length < 2) day = '0' + day;
+  if (month.length < 2) month = "0" + month;
+  if (day.length < 2) day = "0" + day;
 
-  return [year, month, day].join('-');
-}
+  return [year, month, day].join("-");
+};
 
-export const upperCaseFirst = (string) => {
+export const upperCaseFirst = string => {
   return string.charAt(0).toUpperCase() + string.slice(1);
-}
+};
 
 export const ellipsisString = (str, count, length) => {
   if (str.length > (count || 10)) {
-    return str.substring(0, (length || 10)) + '...';
+    return str.substring(0, length || 10) + "...";
   } else {
     return str;
   }

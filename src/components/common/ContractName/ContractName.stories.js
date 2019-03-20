@@ -1,23 +1,23 @@
-import React from 'react';
+import React from "react";
 
-import { storiesOf } from '@storybook/react';
-import { withInfo } from '@storybook/addon-info';
+import { storiesOf } from "@storybook/react";
+import { withInfo } from "@storybook/addon-info";
 
-import ContractName from './';
+import ContractName from "./";
 
-storiesOf('ContractName', module)
+storiesOf("ContractName", module)
   .addDecorator(withInfo)
-  .addParameters({ 
-    info: { 
+  .addParameters({
+    info: {
       inline: true,
       header: false
     }
   })
-  .add('Default', () => (
+  .add("Default", () => (
     <ContractName
       contractName="Contract name"
-      onContractNameChange={ev => console.log(ev.target.value) }
+      onContractNameChange={ev => console.log(ev.target.value)}
       statusId={0}
       statusIdLabel="Draft"
     />
-  ))
+  ));

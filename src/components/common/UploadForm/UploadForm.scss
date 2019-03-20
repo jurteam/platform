@@ -1,73 +1,72 @@
 @import "../../../assets/scss/variables";
 
 .jur-upload-form {
+  font-family: $font-poppins;
+
+  .form-group {
+    display: flex;
+    align-items: center;
+
+    + .form-group {
+      margin-top: 10px;
+    }
+  }
+
+  &__label {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    height: 36px;
+    background-color: $upload-form-label-bg-color;
+    color: $upload-form-label-text-color;
+    border-radius: 2px 0 0 2px;
+    font-size: 12px;
+    cursor: pointer;
+  }
+
+  &__input-file {
+    display: none;
+  }
+
+  &__input-name {
+    display: inline-flex;
+    align-items: center;
+    width: 315px;
+    padding: 0 10px;
+    border-radius: 0 2px 2px 0;
+    height: 36px;
+    font-size: 11px;
+    color: $upload-form-label-text-color;
+    border: 1px solid $upload-form-label-bg-color;
+  }
+
+  .jur-bin-icon {
+    width: 12px;
+    height: 16px;
+    margin-left: 10px;
+    cursor: pointer;
+    fill: $gull-gray;
+  }
+
+  button {
+    display: inline-flex;
+    align-items: center;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    color: $upload-form-add-button-color;
+    font-size: 12px;
     font-family: $font-poppins;
+    font-weight: $poppins-semibold;
+    margin-top: 8px;
+    padding: 1px 0;
+    cursor: pointer;
 
-    .form-group {
-        display: flex;
-        align-items: center;
-
-        + .form-group {
-            margin-top: 10px;
-        }
+    svg {
+      margin-right: 10px;
+      width: 18px;
+      fill: $upload-form-add-button-color;
     }
-
-    &__label {
-        display: inline-flex;
-        justify-content: center;
-        align-items: center;
-        width: 100px;
-        height: 36px;
-        background-color: $upload-form-label-bg-color;
-        color: $upload-form-label-text-color;
-        border-radius: 2px 0 0 2px;
-        font-size: 12px;
-        cursor: pointer;
-        
-    }
-
-    &__input-file {
-        display: none;
-    }
-
-    &__input-name {
-        display: inline-flex;
-        align-items: center;
-        width: 315px;
-        padding: 0 10px;
-        border-radius: 0 2px 2px 0;
-        height: 36px;
-        font-size: 11px;
-        color: $upload-form-label-text-color;
-        border: 1px solid $upload-form-label-bg-color;
-    }
-
-    .jur-bin-icon {
-        width: 12px;
-        height: 16px;
-        margin-left: 10px;
-        cursor: pointer;
-        fill: $gull-gray;
-    }
-
-    button {
-        display: inline-flex;
-        align-items: center;
-        border: none;
-        outline: none;
-        background-color: transparent;
-        color: $upload-form-add-button-color;
-        font-size: 12px;
-        font-family: $font-poppins;
-        font-weight: $poppins-semibold;
-        margin-top: 8px;
-        padding: 1px 0;
-        cursor: pointer;
-
-        svg {
-            margin-right: 10px;
-            width: 18px;
-            fill: $upload-form-add-button-color;
-        }
-    }
+  }
 }

@@ -1,20 +1,20 @@
-import React from 'react';
+import React from "react";
 
-import { storiesOf } from '@storybook/react';
-import { withInfo } from '@storybook/addon-info';
+import { storiesOf } from "@storybook/react";
+import { withInfo } from "@storybook/addon-info";
 
-import ContractCategory from './';
+import ContractCategory from "./";
 
-storiesOf('ContractCategory', module)
+storiesOf("ContractCategory", module)
   .addDecorator(withInfo)
-  .addParameters({ 
-    info: { 
+  .addParameters({
+    info: {
       inline: true,
       header: false
     }
   })
-  .add('Default', () => (
+  .add("Default", () => (
     <ContractCategory
-      selectedCategories={{value: 2, label: 'Freelance Agreement' }}
+      selectedCategories={{ value: 2, label: "Freelance Agreement" }}
     />
-  ))
+  ));

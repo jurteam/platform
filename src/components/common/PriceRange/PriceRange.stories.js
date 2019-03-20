@@ -1,19 +1,19 @@
-import React from 'react';
+import React from "react";
 
-import { storiesOf } from '@storybook/react';
-import { withInfo } from '@storybook/addon-info';
+import { storiesOf } from "@storybook/react";
+import { withInfo } from "@storybook/addon-info";
 
-import PriceRange from './';
+import PriceRange from "./";
 
-storiesOf('PriceRange', module)
+storiesOf("PriceRange", module)
   .addDecorator(withInfo)
-  .addParameters({ 
-    info: { 
+  .addParameters({
+    info: {
       inline: true,
       header: false
     }
   })
-  .add('Default', () => (
+  .add("Default", () => (
     <PriceRange
       min={0}
       max={326433}
@@ -21,4 +21,4 @@ storiesOf('PriceRange', module)
       defaultValue={0}
       onChange={value => console.log(value)}
     />
-  ))
+  ));

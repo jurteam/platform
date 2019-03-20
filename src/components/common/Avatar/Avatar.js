@@ -1,19 +1,21 @@
-import React, { Fragment } from 'react';
-import PropTypes from 'prop-types';
-import Blockies from 'react-blockies';
-import './Avatar.scss';
+import React, { Fragment } from "react";
+import PropTypes from "prop-types";
+import Blockies from "react-blockies";
+import "./Avatar.scss";
 
 export const Avatar = ({ seed, size, variant, className, ...rest }) => {
   const variants = {
-    rounded: 'jur-avatar--rounded',
-    circle: 'jur-avatar--circle'
+    rounded: "jur-avatar--rounded",
+    circle: "jur-avatar--circle"
   };
 
   return (
     <Fragment>
       {seed && (
         <div
-          className={`jur-avatar ${className} jur-avatar--${size} ${!!variant ? variants[variant]: ''}`}
+          className={`jur-avatar ${className} jur-avatar--${size} ${
+            !!variant ? variants[variant] : ""
+          }`}
           {...rest}
         >
           <Blockies seed={seed} />
@@ -25,8 +27,17 @@ export const Avatar = ({ seed, size, variant, className, ...rest }) => {
 
 Avatar.propTypes = {
   seed: PropTypes.string,
-  size: PropTypes.oneOf(['xxsmall', 'xsmall', 'small', 'medium', 'large', 'xlarge', 'xxlarge', 'xxxlarge']),
-  variant: PropTypes.oneOf(['rounded', 'circle'])
+  size: PropTypes.oneOf([
+    "xxsmall",
+    "xsmall",
+    "small",
+    "medium",
+    "large",
+    "xlarge",
+    "xxlarge",
+    "xxxlarge"
+  ]),
+  variant: PropTypes.oneOf(["rounded", "circle"])
 };
 
 Avatar.defaultProps = {

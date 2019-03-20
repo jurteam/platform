@@ -1,20 +1,18 @@
-import React from 'react';
+import React from "react";
 
-import { storiesOf } from '@storybook/react';
-import { withInfo } from '@storybook/addon-info';
+import { storiesOf } from "@storybook/react";
+import { withInfo } from "@storybook/addon-info";
 
-import ContractCaseDispute from './';
+import ContractCaseDispute from "./";
 
-storiesOf('ContractCaseDispute', module)
+storiesOf("ContractCaseDispute", module)
   .addDecorator(withInfo)
-  .addParameters({ 
-    info: { 
+  .addParameters({
+    info: {
       inline: true,
       header: false
     }
   })
-  .add('Default', () => (
-    <ContractCaseDispute
-      selectedCase={{value: 2, label: 'Open hubs' }}
-    />
-  ))
+  .add("Default", () => (
+    <ContractCaseDispute selectedCase={{ value: 2, label: "Open hubs" }} />
+  ));

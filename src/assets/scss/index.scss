@@ -1,27 +1,27 @@
 @import "./normalize";
 @import "./base";
-@import './fonts';
-@import './variables';
+@import "./fonts";
+@import "./variables";
 
 .jur {
-    text-align: center;
-    &--header {
-        background-color: $dark;
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        font-size: calc(10px + 2vmin);
-        color: $white;
-    }
-    &--link {
-        color: $cyan;
-    }
+  text-align: center;
+  &--header {
+    background-color: $dark;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: $white;
+  }
+  &--link {
+    color: $cyan;
+  }
 }
 
 .ReactModal__Body--open {
-    #root {
-        filter: blur(2px);
-    }
+  .jur-content {
+    filter: blur(2px);
+  }
 }

@@ -44,7 +44,7 @@ export const ContractsTable = ({
   handlePageChange = pageNumber => {
     setActivePage(pageNumber);
     onPageChange(pageNumber);
-  }
+  };
 
   return (
     <div className="jur-contracts__table">
@@ -107,15 +107,15 @@ export const ContractsTable = ({
           </TableBody>
         ) : null}
       </Table>
-      {data.length > 0 &&
+      {data.length > 0 && (
         <Pagination
           activePage={activePage}
           itemsCountPerPage={contractsPerPage}
           totalItemsCount={totalContracts}
           handlePageChange={handlePageChange}
-          getPageUrl={i => ("https://customLink/#"+i)}
+          getPageUrl={i => "https://customLink/#" + i}
         />
-      }
+      )}
       {emptyMessage}
     </div>
   );

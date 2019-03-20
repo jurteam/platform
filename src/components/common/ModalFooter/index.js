@@ -1,2 +1,2 @@
-import { ModalFooter } from './ModalFooter';
+import { ModalFooter } from "./ModalFooter";
 export default ModalFooter;

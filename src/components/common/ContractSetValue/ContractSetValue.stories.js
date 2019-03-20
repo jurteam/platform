@@ -1,43 +1,43 @@
-import React from 'react';
+import React from "react";
 
-import { storiesOf } from '@storybook/react';
-import { withInfo } from '@storybook/addon-info';
+import { storiesOf } from "@storybook/react";
+import { withInfo } from "@storybook/addon-info";
 
-import ContractSetValue from './';
+import ContractSetValue from "./";
 
-storiesOf('ContractSetValue', module)
+storiesOf("ContractSetValue", module)
   .addDecorator(withInfo)
-  .addParameters({ 
-    info: { 
+  .addParameters({
+    info: {
       inline: true,
       header: false
     }
   })
-  .add('Default', () => (
+  .add("Default", () => (
     <ContractSetValue
       contract={{
         contractID: 34765,
         from: {
-          label: 'partA',
+          label: "partA",
           debtor: true,
           wallet: {
-            address: '0xh845684f893689fh56347563fh3486539463',
+            address: "0xh845684f893689fh56347563fh3486539463",
             amount: 86486
           },
-          name: 'Alice',
+          name: "Alice",
           shouldRenderName: true
         },
         to: {
-          label: 'partB',
+          label: "partB",
           debtor: false,
           wallet: {
-            address: '0x38683746f893457h6fh563487fh569834596',
+            address: "0x38683746f893457h6fh563487fh569834596",
             amount: 126486
           },
-          name: 'Bob',
+          name: "Bob",
           shouldRenderName: false
         },
         penaltyFee: null
       }}
     />
-  ))
+  ));

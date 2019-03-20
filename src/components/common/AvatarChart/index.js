@@ -1,2 +1,2 @@
-import { AvatarChart } from './AvatarChart';
+import { AvatarChart } from "./AvatarChart";
 export default AvatarChart;

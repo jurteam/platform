@@ -1,17 +1,19 @@
-import React from 'react'
-import PropTypes from 'prop-types';
-import { NavLink } from 'react-router-dom';
+import React from "react";
+import PropTypes from "prop-types";
+import { NavLink } from "react-router-dom";
 
-import './Breadcrumbs.scss';
+import "./Breadcrumbs.scss";
 
 export const Breadcrumbs = ({ crumbList, className }) => (
-  <ul className={`jur-breadcrumbs ${className || ''}`}>
+  <ul className={`jur-breadcrumbs ${className || ""}`}>
     {crumbList.map((crumb, index) => (
       <li
         className="jur-breadcrumbs__item"
-        key={(crumb.id) ? crumb.id.toString() : `bread-${index}`}
+        key={crumb.id ? crumb.id.toString() : `bread-${index}`}
       >
-        <NavLink exact={true} to={ crumb.to }>{ crumb.label }</NavLink>
+        <NavLink exact={true} to={crumb.to}>
+          {crumb.label}
+        </NavLink>
       </li>
     ))}
   </ul>

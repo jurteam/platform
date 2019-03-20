@@ -1,2 +1,2 @@
-import {BlockInfo} from './BlockInfo';
+import { BlockInfo } from "./BlockInfo";
 export default BlockInfo;

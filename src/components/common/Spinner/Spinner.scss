@@ -1,25 +1,25 @@
-@import '../../../assets/scss/variables'; // get global variables
+@import "../../../assets/scss/variables"; // get global variables
 .jur {
-    &--spinner {
-        width: 100vw;
-        height: 100vh;
-        display: flex;
-        background: $white;
-        position: absolute;
-        z-index: 99;
-        top: 0;
-        left: 0;
-        align-items: center;
-        justify-content: center;
-        user-select: none;
-        opacity: 1;
-        pointer-events: none;
-        &.off {
-            transition: all 400ms linear;
-            opacity: 0;
-        }
-        img {
-            max-width: 80px;
-        }
+  &--spinner {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    background: $white;
+    position: absolute;
+    z-index: 99;
+    top: 0;
+    left: 0;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    opacity: 1;
+    pointer-events: none;
+    &.off {
+      transition: all 400ms linear;
+      opacity: 0;
     }
+    img {
+      max-width: 80px;
+    }
+  }
 }

@@ -1,2 +1,2 @@
-import {ContractSummary} from './ContractSummary';
+import { ContractSummary } from "./ContractSummary";
 export default ContractSummary;

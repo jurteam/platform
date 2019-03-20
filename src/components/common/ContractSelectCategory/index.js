@@ -1,2 +1,2 @@
-import {ContractSelectCategory} from './ContractSelectCategory.js';
+import { ContractSelectCategory } from "./ContractSelectCategory.js";
 export default ContractSelectCategory;

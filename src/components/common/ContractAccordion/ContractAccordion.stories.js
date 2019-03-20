@@ -1,26 +1,25 @@
-import React from 'react';
+import React from "react";
 
-import { storiesOf } from '@storybook/react';
-import { withInfo } from '@storybook/addon-info';
+import { storiesOf } from "@storybook/react";
+import { withInfo } from "@storybook/addon-info";
 
-import ContractAccordion from './';
+import ContractAccordion from "./";
 
-storiesOf('ContractAccordion', module)
+storiesOf("ContractAccordion", module)
   .addDecorator(withInfo)
-  .addParameters({ 
-    info: { 
+  .addParameters({
+    info: {
       inline: true,
       header: false
     }
   })
-  .add('Default', () => (
+  .add("Default", () => (
     <ContractAccordion title="Activity">
       <div>Hello world</div>
     </ContractAccordion>
   ))
-  .add('Bordered', () => (
+  .add("Bordered", () => (
     <ContractAccordion title="Activity" borderBottom>
       <div>Hello world</div>
     </ContractAccordion>
-  ))
-  
+  ));

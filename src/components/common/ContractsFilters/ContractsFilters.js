@@ -24,7 +24,11 @@ export class ContractsFilters extends Component {
 
   render() {
     return (
-      <div className={`jur-contracts-filter ${this.state.disabled ? "jur-contracts-filter--disabled" : "" }`} >
+      <div
+        className={`jur-contracts-filter ${
+          this.state.disabled ? "jur-contracts-filter--disabled" : ""
+        }`}
+      >
         <Form.Select
           placeholder="Filter by Status..."
           value={this.state.status}
@@ -45,11 +49,7 @@ export class ContractsFilters extends Component {
         <Form.Search
           onChange={value => this.handleChange("searchText", value)}
         />
-        <Button
-          variant="contained"
-          onClick={this.props.onSubmit}
-          size="medium"
-        >
+        <Button variant="contained" onClick={this.props.onSubmit} size="medium">
           <SearchIcon />
         </Button>
       </div>

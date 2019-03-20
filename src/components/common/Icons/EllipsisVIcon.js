@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 export const EllipsisVIcon = () => (
   <svg viewBox="0 0 60 16">
@@ -7,7 +7,3 @@ export const EllipsisVIcon = () => (
     <path d="M30,0 C25.589,0 22,3.589 22,8 C22,12.411 25.589,16 30,16 C34.411,16 38,12.411 38,8 C38,3.589 34.411,0 30,0 Z" />
   </svg>
 );
-
-
-
-

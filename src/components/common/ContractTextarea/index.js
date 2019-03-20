@@ -1,2 +1,2 @@
-import {ContractTextarea} from './ContractTextarea';
+import { ContractTextarea } from "./ContractTextarea";
 export default ContractTextarea;

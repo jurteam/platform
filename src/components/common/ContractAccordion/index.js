@@ -1,2 +1,2 @@
-import {ContractAccordion} from './ContractAccordion';
+import { ContractAccordion } from "./ContractAccordion";
 export default ContractAccordion;

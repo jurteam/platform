@@ -1,2 +1,2 @@
-import {ProposalPreview} from './ProposalPreview';
+import { ProposalPreview } from "./ProposalPreview";
 export default ProposalPreview;

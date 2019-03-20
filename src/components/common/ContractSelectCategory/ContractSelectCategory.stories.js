@@ -1,16 +1,18 @@
-import React from 'react';
+import React from "react";
 
-import { storiesOf } from '@storybook/react';
-import { withInfo } from '@storybook/addon-info';
+import { storiesOf } from "@storybook/react";
+import { withInfo } from "@storybook/addon-info";
 
-import ContractSelectCategory from './';
+import ContractSelectCategory from "./";
 
-storiesOf('ContractSelectCategory', module)
+storiesOf("ContractSelectCategory", module)
   .addDecorator(withInfo)
-  .addParameters({ 
-    info: { 
+  .addParameters({
+    info: {
       inline: true,
       header: false
     }
   })
-  .add('Default', () => <ContractSelectCategory onChange={ev => console.log(ev)} />)
+  .add("Default", () => (
+    <ContractSelectCategory onChange={ev => console.log(ev)} />
+  ));

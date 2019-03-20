@@ -1,19 +1,19 @@
-import React from 'react';
+import React from "react";
 
-import { storiesOf } from '@storybook/react';
-import { withInfo } from '@storybook/addon-info';
+import { storiesOf } from "@storybook/react";
+import { withInfo } from "@storybook/addon-info";
 
-import Input from './';
+import Input from "./";
 
-storiesOf('Input', module)
+storiesOf("Input", module)
   .addDecorator(withInfo)
-  .addParameters({ 
-    info: { 
+  .addParameters({
+    info: {
       inline: true,
       header: false
     }
   })
-  .add('Optional', () => (
+  .add("Optional", () => (
     <Input
       label="Name"
       id="jur-id"
@@ -23,14 +23,14 @@ storiesOf('Input', module)
       readOnly
     />
   ))
-  .add('Required', () => (
+  .add("Required", () => (
     <Input
       label="Email"
       id="email"
       type="text"
       name="email"
-      onChange={() => alert('changed')}
+      onChange={() => alert("changed")}
       value="jur@jur.io"
       required
     />
-  ))
+  ));

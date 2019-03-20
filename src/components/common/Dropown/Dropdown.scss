@@ -1,60 +1,60 @@
 @import "../../../assets/scss/variables";
 
 .jur {
-    &-dropdown {
-        $dropdown : &;
-        
-        position: relative;
-        display: inline-block;
+  &-dropdown {
+    $dropdown: &;
 
-        &__toggle {
-            width: 28px;
-            height: 20px;
-            border: none;
-            background-color: $dropdown-bg-color;
-            border-radius: 4px;
-            outline: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            
-            #{$dropdown}--open & {
-                background-color: $dropdown-active-bg-color;
+    position: relative;
+    display: inline-block;
 
-                svg {
-                    fill: $white;
-                }
-            }
+    &__toggle {
+      width: 28px;
+      height: 20px;
+      border: none;
+      background-color: $dropdown-bg-color;
+      border-radius: 4px;
+      outline: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
 
-            svg {
-                fill: $gull-gray;
-                width: 13px;
-            }
+      #{$dropdown}--open & {
+        background-color: $dropdown-active-bg-color;
+
+        svg {
+          fill: $white;
         }
+      }
 
-        &__actions {
-            position: absolute;
-            right: 0;
-            top: 20px;
-            border: 1px solid $dropdown-list-border-color;
-            background-color: $white;
-            border-radius: 4px;
-        }
-
-        &__item {
-            padding: 9px 10px;
-            font-size: 13px;
-            color: $dropdown-list-text-color;
-            text-transform: capitalize;
-            cursor: pointer;
-            font-family: $font-poppins;
-            border-bottom: 1px solid $dropdown-list-border-color;
-            white-space: nowrap;
-
-            &:last-child {
-                border: none;
-            }
-        }
+      svg {
+        fill: $gull-gray;
+        width: 13px;
+      }
     }
+
+    &__actions {
+      position: absolute;
+      right: 0;
+      top: 20px;
+      border: 1px solid $dropdown-list-border-color;
+      background-color: $white;
+      border-radius: 4px;
+    }
+
+    &__item {
+      padding: 9px 10px;
+      font-size: 13px;
+      color: $dropdown-list-text-color;
+      text-transform: capitalize;
+      cursor: pointer;
+      font-family: $font-poppins;
+      border-bottom: 1px solid $dropdown-list-border-color;
+      white-space: nowrap;
+
+      &:last-child {
+        border: none;
+      }
+    }
+  }
 }

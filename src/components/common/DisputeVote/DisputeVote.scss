@@ -1,46 +1,46 @@
 @import "../../../assets/scss/variables";
 
 .jur-dispute-vote {
-    font-family: $font-poppins;
-    padding: 10px 20px 5px 20px;
+  font-family: $font-poppins;
+  padding: 10px 20px 5px 20px;
 
-    &__title {
-        color: $prussian-blue;
-        font-size: 20px;
-        margin-bottom: 10px;
-    }
+  &__title {
+    color: $prussian-blue;
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
 
-    &__vote {
-        display: flex;
-        justify-content: space-around;
-    }
-  
-    &__note {
-        color: $gull-gray;
-        font-size: 10px;
-        text-align: center;
-        padding-top: 15px;
-  
-        span {
-          display: block;
-          cursor: pointer;
-          text-decoration: none;
-          font-weight: $poppins-semibold;
-        }
-    }
+  &__vote {
+    display: flex;
+    justify-content: space-around;
+  }
 
-    &__result-note {
-        text-align: center;
-        font-size: 13px;
-        color: $prussian-blue;
-        margin-top: 20px;
-    }
+  &__note {
+    color: $gull-gray;
+    font-size: 10px;
+    text-align: center;
+    padding-top: 15px;
 
-    .jur-vote-progress {
-        width: 133px;
-
-        .jur-btn {
-            min-width: 100%;
-        }
+    span {
+      display: block;
+      cursor: pointer;
+      text-decoration: none;
+      font-weight: $poppins-semibold;
     }
+  }
+
+  &__result-note {
+    text-align: center;
+    font-size: 13px;
+    color: $prussian-blue;
+    margin-top: 20px;
+  }
+
+  .jur-vote-progress {
+    width: 133px;
+
+    .jur-btn {
+      min-width: 100%;
+    }
+  }
 }

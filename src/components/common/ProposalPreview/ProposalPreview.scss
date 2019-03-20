@@ -1,34 +1,34 @@
 @import "../../../assets/scss/variables";
 
 .jur-proposal-preview {
-    font-family: $font-poppins;
-    color: $prussian-blue;
-    font-size: 13px;
+  font-family: $font-poppins;
+  color: $prussian-blue;
+  font-size: 13px;
 
-    &__proposes {
-        margin-top: 15px;
-        margin-bottom: 15px;
-    }
+  &__proposes {
+    margin-top: 15px;
+    margin-bottom: 15px;
+  }
 
-    &__proposal {
-        display: flex;
-        align-items: flex-start;
-        color: $gull-gray;
-        font-size: 10px;
-        margin-bottom: 10px;
-        
-        &__value {
-            margin-left: 7px;
-        }
-    }
+  &__proposal {
+    display: flex;
+    align-items: flex-start;
+    color: $gull-gray;
+    font-size: 10px;
+    margin-bottom: 10px;
 
-    .jur-amount {
-        display: block;
-        font-size: 20px;
-        line-height: 1;
+    &__value {
+      margin-left: 7px;
     }
+  }
 
-    .jur-block-title {
-        margin-bottom: 5px;
-    }
+  .jur-amount {
+    display: block;
+    font-size: 20px;
+    line-height: 1;
+  }
+
+  .jur-block-title {
+    margin-bottom: 5px;
+  }
 }

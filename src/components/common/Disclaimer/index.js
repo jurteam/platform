@@ -15,6 +15,10 @@ const mapDispatchToProps = {
   disclaimerDecline
 };
 
-export const ModalDiscliamer = drizzleConnect(DisclaimerModal, mapStateToProps, mapDispatchToProps);
+export const ModalDiscliamer = drizzleConnect(
+  DisclaimerModal,
+  mapStateToProps,
+  mapDispatchToProps
+);
 
 export default drizzleConnect(Disclaimer, mapStateToProps, mapDispatchToProps);

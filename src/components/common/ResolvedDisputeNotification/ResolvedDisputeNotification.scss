@@ -1,17 +1,17 @@
 @import "../../../assets/scss/variables";
 
 .jur-resolved-dispute-notification {
-    margin-right: -20px;
-    font-family: $font-poppins;
-    font-size: 13px;
-    color: $gull-gray;
-    background-color: $resolved-dispute-notification-bg-color;
-    padding: 5px 20px;
-    border-radius: 4px 0 0 4px;
-    width: 479px;
+  margin-right: -20px;
+  font-family: $font-poppins;
+  font-size: 13px;
+  color: $gull-gray;
+  background-color: $resolved-dispute-notification-bg-color;
+  padding: 5px 20px;
+  border-radius: 4px 0 0 4px;
+  width: 479px;
 
-    svg {
-        width: 12px;
-        margin-right: 10px;
-    }
+  svg {
+    width: 12px;
+    margin-right: 10px;
+  }
 }

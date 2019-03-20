@@ -1,28 +1,28 @@
 @import "../../../assets/scss/variables";
 
 .jur-contract-penalty-fee {
-    min-height: 45px;
-    
-    &__value {
-        display: flex;
-        margin-top: 10px;
-        line-height: 1;
+  min-height: 45px;
 
-        > div {
-            &:first-child {
-                margin-right: 20px;
-            }
-        }
-    }
+  &__value {
+    display: flex;
+    margin-top: 10px;
+    line-height: 1;
 
-    .jur-avatar {
-        border-radius: 50%;
-        margin-right: 6px;
+    > div {
+      &:first-child {
+        margin-right: 20px;
+      }
     }
+  }
 
-    .jur-amount {
-        color: $contract-text-color;
-        font-size: 16px;
-        font-family: $font-poppins;
-    }
+  .jur-avatar {
+    border-radius: 50%;
+    margin-right: 6px;
+  }
+
+  .jur-amount {
+    color: $contract-text-color;
+    font-size: 16px;
+    font-family: $font-poppins;
+  }
 }

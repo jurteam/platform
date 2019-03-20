@@ -1,44 +1,42 @@
 // variables definition
-$cyan   : #61dafb;
-$white  : white;
-$black  : black;
-$dark   : #233250;
-$gray   : #a6b2c4;
-$blackSemiTransparent : rgba(0,0,0,.5);
+$cyan: #61dafb;
+$white: white;
+$black: black;
+$dark: #233250;
+$gray: #a6b2c4;
+$blackSemiTransparent: rgba(0, 0, 0, 0.5);
 
-
-$dodger-blue: #33ADFF;
-$mercury: #E5E5E5;
-$rose: #ED0782;
-$gull-gray: #97A3B4;
-$turquoise: #3FD3B8;
+$dodger-blue: #33adff;
+$mercury: #e5e5e5;
+$rose: #ed0782;
+$gull-gray: #97a3b4;
+$turquoise: #3fd3b8;
 $prussian-blue: #002257;
-$heliotrope: #9657FF;
-$cerulean: #00B6F2;
-$robin-blue: #00E0B7;
-$orange-peel: #FF9B00;
-$serenade: #FFF5E5;
-$electric-violet: #9013FE;
-$blue-chalk: #F3E7FE;
-$caribbean-green: #00CE7D;
-$white-ice: #E5FAF2;
-$scarlet: #FF2500;
-$pippin:#FFE5E5;
-$tundora: #4A4A4A;
-$gallery: #ECECEC;
+$heliotrope: #9657ff;
+$cerulean: #00b6f2;
+$robin-blue: #00e0b7;
+$orange-peel: #ff9b00;
+$serenade: #fff5e5;
+$electric-violet: #9013fe;
+$blue-chalk: #f3e7fe;
+$caribbean-green: #00ce7d;
+$white-ice: #e5faf2;
+$scarlet: #ff2500;
+$pippin: #ffe5e5;
+$tundora: #4a4a4a;
+$gallery: #ececec;
 $cloud-burst: #233250;
-$big-stone: #1E2B45;
-$black-haze: #EAEBEC;
-$crimson: #ED1C24;
-$porcelain: #F7F8F9;
+$big-stone: #1e2b45;
+$black-haze: #eaebec;
+$crimson: #ed1c24;
+$porcelain: #f7f8f9;
 $oxford-blue: #354052;
-$cadet-blue: #AAB2C0;
-$fiord: #3F536E;
+$cadet-blue: #aab2c0;
+$fiord: #3f536e;
 $cloud-burst: #253454;
 $gray-1: #909090;
-$white-lilac: #EBEDF8;
-$athens-gray: #E6EAEE;
-
+$white-lilac: #ebedf8;
+$athens-gray: #e6eaee;
 
 // Forms
 $label-color: $prussian-blue;
@@ -49,7 +47,6 @@ $input-numeric-border-color: $mercury;
 $input-numeric-text-color: $gull-gray;
 $form-error: $crimson;
 
-
 // Buttons
 $btn-primary-color: $dodger-blue;
 $btn-secondary-color: $turquoise;
@@ -59,36 +56,36 @@ $btn-border-color: $mercury;
 $btn-dark-blue-color: $prussian-blue;
 $btn-muted-color: $gull-gray;
 $btn-gradient-color: linear-gradient(to right, $cerulean, $robin-blue);
-$btn-shadow: 0 3px 9px rgba($black, .10);
+$btn-shadow: 0 3px 9px rgba($black, 0.1);
 $btn-font-size-default: 12px;
 
 // Tag
-$tag-text-color--1: #FF2500;
-$tag-bg-color--1: #FFE5E5;
-$tag-text-color-0: #33ADFF;
-$tag-bg-color-0: #E3EFF8;
-$tag-text-color-1: #FDA214;
-$tag-bg-color-1: #FFF5E5;
-$tag-text-color-5: #00CE7D;
-$tag-bg-color-5: #E5FAF2;
-$tag-text-color-8: #4A4A4A;
-$tag-bg-color-8: #ECECEC;
-$tag-text-color-9: #4A4A4A;
-$tag-bg-color-9: #ECECEC;
-$tag-text-color-21: #ED0782;
-$tag-bg-color-21: #F6DFEB;
-$tag-text-color-29: #4A4A4A;
-$tag-bg-color-29: #ECECEC;
-$tag-text-color-31: #ED0782;
-$tag-bg-color-31: #F6DFEB;
-$tag-text-color-35: #9013FE;
-$tag-bg-color-35: #F3E7FE;
-$tag-text-color-36: #33ADFF;
-$tag-bg-color-36: #E3EFF8;
-$tag-text-color-38: #4A4A4A;
-$tag-bg-color-38: #ECECEC;
-$tag-text-color-39: #4A4A4A;
-$tag-bg-color-39: #ECECEC;
+$tag-text-color--1: #ff2500;
+$tag-bg-color--1: #ffe5e5;
+$tag-text-color-0: #33adff;
+$tag-bg-color-0: #e3eff8;
+$tag-text-color-1: #fda214;
+$tag-bg-color-1: #fff5e5;
+$tag-text-color-5: #00ce7d;
+$tag-bg-color-5: #e5faf2;
+$tag-text-color-8: #4a4a4a;
+$tag-bg-color-8: #ececec;
+$tag-text-color-9: #4a4a4a;
+$tag-bg-color-9: #ececec;
+$tag-text-color-21: #ed0782;
+$tag-bg-color-21: #f6dfeb;
+$tag-text-color-29: #4a4a4a;
+$tag-bg-color-29: #ececec;
+$tag-text-color-31: #ed0782;
+$tag-bg-color-31: #f6dfeb;
+$tag-text-color-35: #9013fe;
+$tag-bg-color-35: #f3e7fe;
+$tag-text-color-36: #33adff;
+$tag-bg-color-36: #e3eff8;
+$tag-text-color-38: #4a4a4a;
+$tag-bg-color-38: #ececec;
+$tag-text-color-39: #4a4a4a;
+$tag-bg-color-39: #ececec;
 
 // Header
 $header-bg-color: $cloud-burst;
@@ -105,7 +102,6 @@ $user-action-default-color: $prussian-blue;
 $user-action-alert-color: $crimson;
 $user-action-border-color: $black-haze;
 
-
 // Dropdown
 $dropdown-bg-color: $porcelain;
 $dropdown-active-bg-color: $dodger-blue;
@@ -113,10 +109,10 @@ $dropdown-list-text-color: $prussian-blue;
 $dropdown-list-border-color: $black-haze;
 
 // Fonts
-$font-poppins: 'Poppins', Arial, sans-serif;
-$font-opensans: 'Open Sans', Arial, sans-serif;
-$font-lato: 'Lato', Arial, sans-serif;
-$font-roboto: 'Roboto', Arial, sans-serif;
+$font-poppins: "Poppins", Arial, sans-serif;
+$font-opensans: "Open Sans", Arial, sans-serif;
+$font-lato: "Lato", Arial, sans-serif;
+$font-roboto: "Roboto", Arial, sans-serif;
 $poppins-regular: 400;
 $poppins-medium: 500;
 $poppins-semibold: 600;
@@ -157,7 +153,6 @@ $countdown-playing-color: $turquoise;
 $countdown-expiring-color: $crimson;
 $countdown-before-start-message-color: $gull-gray;
 
-
 // AvatarInfo
 $avatar-info-text-color: $prussian-blue;
 
@@ -178,7 +173,6 @@ $user-terms-content-color: $fiord;
 // Disputes Table
 $disputes-earning-color: $dodger-blue;
 $disputes-empty-link-color: $dodger-blue;
-
 
 // CounterpartiesInfo
 $counterparties-info-color: $prussian-blue;

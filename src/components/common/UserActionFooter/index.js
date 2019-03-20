@@ -1,2 +1,2 @@
-import { UserActionFooter } from './UserActionFooter';
+import { UserActionFooter } from "./UserActionFooter";
 export default UserActionFooter;

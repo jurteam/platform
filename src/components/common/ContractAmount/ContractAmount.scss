@@ -1,23 +1,23 @@
 @import "../../../assets/scss/variables";
 
 .jur-contract-amount {
-    min-height: 60px;
-    
-    &__value {
-        display: flex;
-        align-items: center;
-        margin-top: 8px;
-        line-height: 1;
-    }
+  min-height: 60px;
 
-    .jur-avatar {
-        border-radius: 50%;
-        margin-right: 10px;
-    }
+  &__value {
+    display: flex;
+    align-items: center;
+    margin-top: 8px;
+    line-height: 1;
+  }
 
-    .jur-amount {
-        font-family: $font-poppins;
-        font-size: 30px;
-        color: $contract-text-color
-    }
+  .jur-avatar {
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+
+  .jur-amount {
+    font-family: $font-poppins;
+    font-size: 30px;
+    color: $contract-text-color;
+  }
 }

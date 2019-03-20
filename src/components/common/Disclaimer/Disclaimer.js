@@ -21,7 +21,7 @@ export const Disclaimer = props => {
     // onDecline,
     user: { disclaimer },
     disclaimerView,
-    disclaimerAccept,
+    disclaimerAccept
     // disclaimerDecline
   } = props;
 

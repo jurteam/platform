@@ -1,2 +1,2 @@
-import {UploadForm} from './UploadForm';
+import { UploadForm } from "./UploadForm";
 export default UploadForm;

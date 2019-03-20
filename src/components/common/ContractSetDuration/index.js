@@ -1,2 +1,2 @@
-import {ContractSetDuration} from './ContractSetDuration';
+import { ContractSetDuration } from "./ContractSetDuration";
 export default ContractSetDuration;

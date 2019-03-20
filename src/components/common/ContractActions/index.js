@@ -1,2 +1,2 @@
-import {ContractActions} from './ContractActions';
+import { ContractActions } from "./ContractActions";
 export default ContractActions;

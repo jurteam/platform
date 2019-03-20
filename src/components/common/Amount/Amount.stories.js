@@ -1,35 +1,35 @@
-import React from 'react';
+import React from "react";
 
-import { storiesOf } from '@storybook/react';
-import { withInfo } from '@storybook/addon-info';
+import { storiesOf } from "@storybook/react";
+import { withInfo } from "@storybook/addon-info";
 
-import Amount from './';
+import Amount from "./";
 
-storiesOf('Amount', module)
+storiesOf("Amount", module)
   .addDecorator(withInfo)
-  .addParameters({ 
-    info: { 
+  .addParameters({
+    info: {
       inline: true,
       header: false
     }
   })
-  .add('value as string ', () => (
+  .add("value as string ", () => (
     <>
-      <Amount currency="JUR"/>
+      <Amount currency="JUR" />
       <br />
-      <Amount value="8346583" currency="JUR"/>
+      <Amount value="8346583" currency="JUR" />
       <br />
-      <Amount value="1000" currency="JUR"/>
+      <Amount value="1000" currency="JUR" />
       <br />
-      <Amount value="3230" currency="JUR"/>
+      <Amount value="3230" currency="JUR" />
     </>
   ))
-  .add('value as number and no currency', () => (
+  .add("value as number and no currency", () => (
     <>
       <Amount />
       <br />
       <Amount value={1000} />
       <br />
-      <Amount value={3230}/>
+      <Amount value={3230} />
     </>
-  ))
+  ));

@@ -1,65 +1,65 @@
 @import "../../../assets/scss/variables";
 
 .jur-disputes-filter {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    margin: 15px 0 30px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin: 15px 0 30px;
 
-    &--disabled {
-        opacity: 0.5;
-        pointer-events: none;
+  &--disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  .jur-select {
+    flex: 0 0 212px;
+    margin-right: 10px;
+
+    .jur-select__control {
+      min-height: 36px;
+      max-height: 36px;
     }
-    
-    .jur-select {
-        flex: 0 0 212px;
-        margin-right: 10px;
+  }
 
-        .jur-select__control {
-            min-height: 36px;
-            max-height: 36px;
-        }
+  .jur-calendar-filter {
+    flex: 0 0 120px;
+  }
+
+  .separator {
+    display: inline-block;
+    flex: 0 0 8px;
+    height: 2px;
+    background-color: $gull-gray;
+    margin: 0 10px;
+  }
+
+  .jur-form__search {
+    flex: 0 0 212px;
+    margin-left: 10px;
+
+    svg {
+      fill: $gull-gray;
+    }
+  }
+
+  button {
+    margin-left: 10px;
+    width: 50px;
+    min-width: 50px;
+
+    &:first-child {
+      flex: 0 0 105px;
+      margin-left: 0;
     }
 
-    .jur-calendar-filter {
-        flex: 0 0 120px
+    &:nth-child(2) {
+      margin-right: auto;
+      flex: 0 0 183px;
     }
 
-    .separator {
-        display: inline-block;
-        flex: 0 0 8px;
-        height: 2px;
-        background-color: $gull-gray;
-        margin: 0 10px;
+    svg {
+      width: 15px;
+      fill: $white;
     }
-
-    .jur-form__search {
-        flex: 0 0 212px;
-        margin-left: 10px;
-
-        svg {
-            fill: $gull-gray;
-        }
-    }
-
-    button {
-        margin-left: 10px;
-        width: 50px;
-        min-width: 50px;
-
-        &:first-child {
-            flex: 0 0 105px;
-            margin-left: 0;
-        }
-        
-        &:nth-child(2) {
-            margin-right: auto;
-            flex: 0 0 183px;
-        }
-
-        svg {
-            width: 15px;
-            fill: $white;
-        }
-    }
+  }
 }

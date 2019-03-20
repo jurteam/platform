@@ -1,2 +1,2 @@
-import { MainNav } from './MainNav';
+import { MainNav } from "./MainNav";
 export default MainNav;

@@ -1,2 +1,2 @@
-import {VoteProgress} from './VoteProgress';
+import { VoteProgress } from "./VoteProgress";
 export default VoteProgress;

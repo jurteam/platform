@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import ReactModal from 'react-modal';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import ReactModal from "react-modal";
 
-import './Modal.scss';
+import "./Modal.scss";
 
 export class Modal extends Component {
   render() {
@@ -13,20 +13,20 @@ export class Modal extends Component {
       className,
       ...props
     } = this.props;
-    return (  
+    return (
       <ReactModal
-        isOpen={ isOpen }
-        ariaHideApp={ false }
-        shouldCloseOnEsc={ true }
-        onRequestClose={ onRequestClose }
-        onAfterOpen={ onAfterOpen }
-        className={ `jur-modal ${this.props.className || ''}` }
-        overlayClassName='jur-modal__overlay'
-        { ...props }
+        isOpen={isOpen}
+        ariaHideApp={false}
+        shouldCloseOnEsc={true}
+        onRequestClose={onRequestClose}
+        onAfterOpen={onAfterOpen}
+        className={`jur-modal ${this.props.className || ""}`}
+        overlayClassName="jur-modal__overlay"
+        {...props}
       >
-        { this.props.children }
+        {this.props.children}
       </ReactModal>
-    )
+    );
   }
 }
 

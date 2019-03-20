@@ -1,30 +1,28 @@
-import React from 'react';
+import React from "react";
 
-import { storiesOf } from '@storybook/react';
-import { withInfo } from '@storybook/addon-info';
+import { storiesOf } from "@storybook/react";
+import { withInfo } from "@storybook/addon-info";
 
-import ContractPenaltyFee from './';
+import ContractPenaltyFee from "./";
 
-storiesOf('ContractPenaltyFee', module)
+storiesOf("ContractPenaltyFee", module)
   .addDecorator(withInfo)
-  .addParameters({ 
-    info: { 
+  .addParameters({
+    info: {
       inline: true,
       header: false
     }
   })
-  .add('Empty', () => (
-    <ContractPenaltyFee />
-  ))
-  .add('Filled', () => (
+  .add("Empty", () => <ContractPenaltyFee />)
+  .add("Filled", () => (
     <ContractPenaltyFee
       contractInfo={{
-        from: '0x45i4754f594594',
-        to: '0xc847n35354f58f',
+        from: "0x45i4754f594594",
+        to: "0xc847n35354f58f",
         penaltyFee: {
-          partA: '1239',
-          partB: '3427'
+          partA: "1239",
+          partB: "3427"
         }
       }}
     />
-  ))
+  ));

@@ -1,2 +1,2 @@
-import {ContractSetValue} from './ContractSetValue';
+import { ContractSetValue } from "./ContractSetValue";
 export default ContractSetValue;

@@ -1,19 +1,19 @@
-import React from 'react';
+import React from "react";
 
-import { storiesOf } from '@storybook/react';
-import { withInfo } from '@storybook/addon-info';
+import { storiesOf } from "@storybook/react";
+import { withInfo } from "@storybook/addon-info";
 
-import ProfilePreview from '.';
+import ProfilePreview from ".";
 
-storiesOf('ProfilePreview', module)
+storiesOf("ProfilePreview", module)
   .addDecorator(withInfo)
-  .addParameters({ 
-    info: { 
+  .addParameters({
+    info: {
       inline: true,
       header: false
     }
   })
-  .add('shouldRenderName is true', () => (
+  .add("shouldRenderName is true", () => (
     <ProfilePreview
       to="/profile"
       name="Alice"
@@ -22,7 +22,7 @@ storiesOf('ProfilePreview', module)
       shouldRenderName
     />
   ))
-  .add('shouldRenderName is true and No name available', () => (
+  .add("shouldRenderName is true and No name available", () => (
     <ProfilePreview
       to="/profile"
       seed="0x3954939439487573664374"
@@ -30,13 +30,11 @@ storiesOf('ProfilePreview', module)
       shouldRenderName
     />
   ))
-  .add('shouldRenderName is false', () => (
+  .add("shouldRenderName is false", () => (
     <ProfilePreview
       to="/profile"
       name="Alice"
       seed="0x3954939439487573664374"
       balance="7546857"
     />
-  ))
-
-
+  ));
