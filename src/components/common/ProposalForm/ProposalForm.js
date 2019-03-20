@@ -1,17 +1,16 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import Form from '../Form';
-import BlockTitle from '../BlockTitle';
-import BlockInfo from '../BlockInfo';
-import PriceRange from '../PriceRange';
-import Button from '../Button';
-import UploadForm from '../UploadForm';
-import FileList from '../FileList';
-import File from '../File';
-import {toCurrencyFormat, ellipsisString} from '../../../utils/helpers';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import Form from "../Form";
+import BlockTitle from "../BlockTitle";
+import BlockInfo from "../BlockInfo";
+import PriceRange from "../PriceRange";
+import Button from "../Button";
+import UploadForm from "../UploadForm";
+import FileList from "../FileList";
+import File from "../File";
+import { toCurrencyFormat, ellipsisString } from "../../../utils/helpers";
 
-import './ProposalForm.scss';
-
+import "./ProposalForm.scss";
 
 export class ProposalForm extends Component {
   state = {
@@ -21,7 +20,7 @@ export class ProposalForm extends Component {
       from: this.props.contract.from.proposal || 0
     },
     files: []
-  }
+  };
 
   updateProposal = (counterparty, value) => {
     this.setState(state => ({
@@ -30,18 +29,19 @@ export class ProposalForm extends Component {
         [counterparty]: value
       }
     }));
-  }
+  };
 
   onSubmit = () => this.props.onSubmit(this.state);
 
-  onReset = () => this.setState({
-    proposalMessage: null,
-    proposal: {
-      to: this.props.contract.to.proposal || 0,
-      from: this.props.contract.from.proposal || 0
-    },
-    files: []
-  });
+  onReset = () =>
+    this.setState({
+      proposalMessage: null,
+      proposal: {
+        to: this.props.contract.to.proposal || 0,
+        from: this.props.contract.from.proposal || 0
+      },
+      files: []
+    });
 
   render() {
     const {
@@ -52,24 +52,18 @@ export class ProposalForm extends Component {
       onView,
       contract: {
         value: contractValue,
-        from: {
-          wallet: fromWallet,
-          from: fromName
-        },
-        to: {
-          wallet: toWallet,
-          name: toName
-        }
-      },
+        from: { wallet: fromWallet, from: fromName },
+        to: { wallet: toWallet, name: toName }
+      }
     } = this.props;
 
     const { from: fromProposal, to: toProposal } = this.state.proposal;
-    
+
     const blockInfoTitle = (fromProposal, toProposal) => {
       let myProposal = 0;
       let otherProposal = 0;
-      let otherUser = '';
-      
+      let otherUser = "";
+
       if (currrentUserWallet === fromWallet) {
         otherUser = toName ? toName : ellipsisString(toWallet);
         myProposal = fromProposal;
@@ -80,8 +74,10 @@ export class ProposalForm extends Component {
         otherProposal = fromProposal;
       }
 
-      return `You get back ${toCurrencyFormat(myProposal)}JUR, ${otherUser} gets ${toCurrencyFormat(otherProposal)}JUR`;
-    }
+      return `You get back ${toCurrencyFormat(
+        myProposal
+      )}JUR, ${otherUser} gets ${toCurrencyFormat(otherProposal)}JUR`;
+    };
 
     return (
       <div className="jur-proposal-form">
@@ -98,18 +94,18 @@ export class ProposalForm extends Component {
             max={contractValue}
             address={fromWallet}
             defaultValue={fromProposal}
-            onChange={value => this.updateProposal('from', value)}
+            onChange={value => this.updateProposal("from", value)}
           />
           <PriceRange
             min={0}
             max={contractValue}
             address={toWallet}
             defaultValue={toProposal}
-            onChange={value => this.updateProposal('to', value)}
+            onChange={value => this.updateProposal("to", value)}
           />
         </div>
         <BlockInfo description={blockInfoTitle(fromProposal, toProposal)} />
-        {extended && evidences && evidences.length &&
+        {extended && evidences && evidences.length && (
           <div className="jur-proposal-form__evidences">
             <BlockTitle title="Evidences" />
             <FileList>
@@ -122,15 +118,17 @@ export class ProposalForm extends Component {
               ))}
             </FileList>
           </div>
-        }
-        {extended &&
-          <UploadForm
-            onFileAdded={files => this.setState({ files })}
-          />
-        }
+        )}
+        {extended && (
+          <UploadForm onFileAdded={files => this.setState({ files })} />
+        )}
         <div className="jur-proposal-form__actions">
-          <Button color="muted" onClick={this.onReset}>Cancel</Button>
-          <Button variant="gradient" onClick={this.onSubmit}>Send</Button>
+          <Button color="muted" onClick={this.onReset}>
+            Cancel
+          </Button>
+          <Button variant="gradient" onClick={this.onSubmit}>
+            Send
+          </Button>
         </div>
       </div>
     );

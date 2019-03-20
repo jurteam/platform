@@ -1,28 +1,28 @@
-import React from 'react';
+import React from "react";
 
-import { storiesOf } from '@storybook/react';
-import { withInfo } from '@storybook/addon-info';
+import { storiesOf } from "@storybook/react";
+import { withInfo } from "@storybook/addon-info";
 
-import {AlertIcon} from './AlertIcon';
-import {BinIcon} from './BinIcon';
-import {CaretDownIcon} from './CaretDownIcon';
-import {CaretUpIcon} from './CaretUpIcon';
-import {CheckCircleIcon} from './CheckCircleIcon';
-import {ContractsIcon} from './ContractsIcon';
-import {DisputesIcon} from './DisputesIcon';
-import {EllipsisVIcon} from './EllipsisVIcon';
-import {EyeIcon} from './EyeIcon';
-import {InfoIcon} from './InfoIcon';
+import { AlertIcon } from "./AlertIcon";
+import { BinIcon } from "./BinIcon";
+import { CaretDownIcon } from "./CaretDownIcon";
+import { CaretUpIcon } from "./CaretUpIcon";
+import { CheckCircleIcon } from "./CheckCircleIcon";
+import { ContractsIcon } from "./ContractsIcon";
+import { DisputesIcon } from "./DisputesIcon";
+import { EllipsisVIcon } from "./EllipsisVIcon";
+import { EyeIcon } from "./EyeIcon";
+import { InfoIcon } from "./InfoIcon";
 
-storiesOf('Icons', module)
+storiesOf("Icons", module)
   .addDecorator(withInfo)
-  .addParameters({ 
-    info: { 
+  .addParameters({
+    info: {
       inline: true,
       header: false
     }
   })
-  .add('Default', () => (
+  .add("Default", () => (
     <>
       <AlertIcon />
       <br />
@@ -45,4 +45,4 @@ storiesOf('Icons', module)
       <InfoIcon />
       <br />
     </>
-  ))
+  ));

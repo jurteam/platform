@@ -8,17 +8,12 @@ import { upperCaseFirst, log } from "../../../utils/helpers"; // capitalize
 export const Switch = ({ error, value, checked, ...rest }) => {
   const { labels } = useContext(AppContext);
 
-  log("Switch", value)
+  log("Switch", value);
 
   return (
     <div className="switch">
       <label className="switch__input">
-        <input
-          type="checkbox"
-          checked={checked}
-          value={value}
-          {...rest}
-        />
+        <input type="checkbox" checked={checked} value={value} {...rest} />
         <span className="slider" />
       </label>
       <div className="switch__value">

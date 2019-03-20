@@ -29,7 +29,7 @@
     background-color: $white;
     overflow: auto;
     position: relative;
-    box-shadow: 0 2px 30px rgba($black, .12);
+    box-shadow: 0 2px 30px rgba($black, 0.12);
   }
 
   &__form-switch {
@@ -179,7 +179,7 @@
     padding: 25px 23px;
     background-color: $white;
     border-radius: 4px;
-    box-shadow: 0 2px 30px rgba($black, .12);
+    box-shadow: 0 2px 30px rgba($black, 0.12);
 
     .jur-block-title {
       margin-bottom: 15px;
@@ -195,7 +195,7 @@
     width: 280px;
     transform: translate(290px, 180px);
     padding: 21px 10px;
-    box-shadow: 0 2px 30px rgba($black, .12);
+    box-shadow: 0 2px 30px rgba($black, 0.12);
 
     .jur-dispute-vote {
       padding: 0;

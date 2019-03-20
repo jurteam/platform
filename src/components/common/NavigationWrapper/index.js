@@ -1,2 +1,2 @@
-import { NavigationWrapper } from './NavigationWrapper';
+import { NavigationWrapper } from "./NavigationWrapper";
 export default NavigationWrapper;

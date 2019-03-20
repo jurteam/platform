@@ -1,2 +1,2 @@
-import {DisputeMainAccordions} from './DisputeMainAccordions';
+import { DisputeMainAccordions } from "./DisputeMainAccordions";
 export default DisputeMainAccordions;

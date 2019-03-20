@@ -1,16 +1,18 @@
-import React from 'react';
+import React from "react";
 
-import { storiesOf } from '@storybook/react';
-import { withInfo } from '@storybook/addon-info';
+import { storiesOf } from "@storybook/react";
+import { withInfo } from "@storybook/addon-info";
 
-import Switch from './';
+import Switch from "./";
 
-storiesOf('Switch', module)
+storiesOf("Switch", module)
   .addDecorator(withInfo)
-  .addParameters({ 
-    info: { 
+  .addParameters({
+    info: {
       inline: true,
       header: false
     }
   })
-  .add('Default', () => <Switch onChange={ev => console.log(ev.target.checked)}/>)
+  .add("Default", () => (
+    <Switch onChange={ev => console.log(ev.target.checked)} />
+  ));

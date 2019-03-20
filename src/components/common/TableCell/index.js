@@ -1,2 +1,2 @@
-import { TableCell } from './TableCell';
+import { TableCell } from "./TableCell";
 export default TableCell;

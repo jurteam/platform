@@ -1,2 +1,2 @@
-import { CounterpartiesInfo } from './CounterpartiesInfo';
+import { CounterpartiesInfo } from "./CounterpartiesInfo";
 export default CounterpartiesInfo;

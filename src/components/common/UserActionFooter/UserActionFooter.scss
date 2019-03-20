@@ -1,19 +1,19 @@
 @import "../../../assets/scss/variables";
 
 .jur {
-    &-user-action {
-        &__footer {
-            display: flex;
-            justify-content: flex-end;
+  &-user-action {
+    &__footer {
+      display: flex;
+      justify-content: flex-end;
 
-            .jur-btn {
-                width: 229px;
-                margin: 0 10px;
+      .jur-btn {
+        width: 229px;
+        margin: 0 10px;
 
-                &:last-child {
-                    margin-right: 0; 
-                }
-            }
+        &:last-child {
+          margin-right: 0;
         }
+      }
     }
+  }
 }

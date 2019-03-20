@@ -1,20 +1,20 @@
 @import "../../../assets/scss/variables";
 
 .jur-aside {
-    min-width: 300px;
-    max-width: 360px;
-    border-right: 1px solid $white-lilac;
-    overflow: auto;
-    padding-bottom: 50px;
-    
-    // padding will be added here
-    .jur-profile-menu {
-        margin-top: 80px;
-        margin-left: 40px;
-    }
+  min-width: 300px;
+  max-width: 360px;
+  border-right: 1px solid $white-lilac;
+  overflow: auto;
+  padding-bottom: 50px;
 
-    .jur-counterparties-info {
-        width: 360px;
-        padding: 35px 30px;
-    }
+  // padding will be added here
+  .jur-profile-menu {
+    margin-top: 80px;
+    margin-left: 40px;
+  }
+
+  .jur-counterparties-info {
+    width: 360px;
+    padding: 35px 30px;
+  }
 }

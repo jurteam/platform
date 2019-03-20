@@ -1,20 +1,17 @@
-import React from 'react';
-import { storiesOf } from '@storybook/react';
-import { withInfo } from '@storybook/addon-info';
+import React from "react";
+import { storiesOf } from "@storybook/react";
+import { withInfo } from "@storybook/addon-info";
 
+import UploadForm from "./";
 
-import UploadForm from './';
-
-storiesOf('UploadForm', module)
+storiesOf("UploadForm", module)
   .addDecorator(withInfo)
-  .addParameters({ 
-    info: { 
+  .addParameters({
+    info: {
       inline: true,
       header: false
     }
   })
-  .add('Default', () => (
-    <UploadForm
-    onFileAdded={files => console.log(files)}
-    />
-  ))
+  .add("Default", () => (
+    <UploadForm onFileAdded={files => console.log(files)} />
+  ));

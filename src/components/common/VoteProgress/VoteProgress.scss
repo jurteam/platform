@@ -1,68 +1,68 @@
 @import "../../../assets/scss/variables";
 
 .jur-vote-progress {
-    font-family: $font-poppins;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  font-family: $font-poppins;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
-    $c: &;
+  $c: &;
 
-    &--lose {
-        opacity: .4;
+  &--lose {
+    opacity: 0.4;
+  }
+
+  &--green {
+    #{$c}__percentage {
+      color: $turquoise;
     }
 
-    &--green {
-        #{$c}__percentage {
-            color: $turquoise;
-        }
-
-        #{$c}__value {
-            color: $turquoise;
-        }
-
-        #{$c}__result {
-            color: $turquoise;
-        }
+    #{$c}__value {
+      color: $turquoise;
     }
 
-    &--blue {
-        #{$c}__percentage {
-            color: $dodger-blue;
-        }
+    #{$c}__result {
+      color: $turquoise;
+    }
+  }
 
-        #{$c}__value {
-            color: $dodger-blue;
-        }
-
-        #{$c}__result {
-            color: $dodger-blue;
-        }
+  &--blue {
+    #{$c}__percentage {
+      color: $dodger-blue;
     }
 
-    &__name {
-        margin: 8px 0 5px;
-        max-width: 100px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        color: $gull-gray;
-        font-size: 10px;
+    #{$c}__value {
+      color: $dodger-blue;
     }
 
-    &__percentage {
-        font-size: 20px;
-        font-weight: $poppins-medium;
-        line-height: 1;
+    #{$c}__result {
+      color: $dodger-blue;
     }
-    
-    &__value {
-        margin: 3px 0 6px;
-        font-size: 10px;
-        font-weight: $poppins-medium;
-    }
+  }
 
-    &__result {
-        font-weight: $poppins-semibold;
-    }
+  &__name {
+    margin: 8px 0 5px;
+    max-width: 100px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: $gull-gray;
+    font-size: 10px;
+  }
+
+  &__percentage {
+    font-size: 20px;
+    font-weight: $poppins-medium;
+    line-height: 1;
+  }
+
+  &__value {
+    margin: 3px 0 6px;
+    font-size: 10px;
+    font-weight: $poppins-medium;
+  }
+
+  &__result {
+    font-weight: $poppins-semibold;
+  }
 }

@@ -8,12 +8,16 @@ import TableHead from "../TableHead";
 import Tag from "../Tag";
 import Countdown from "../Countdown";
 import Amount from "../Amount";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 
 import "./DisputesTable.scss";
 import DisputesFilters from "../DisputesFilters";
 
-export class DisputesTable extends Component {
+class DisputesTable extends Component {
+  handleClick = to => {
+    this.props.history.push(to);
+  };
+
   render() {
     const {
       headers,
@@ -64,7 +68,7 @@ export class DisputesTable extends Component {
           {data.length > 0 ? (
             <TableBody>
               {data.map(dispute => (
-                <TableRow key={dispute.id}>
+                <TableRow key={dispute.id} onClick={() => this.handleClick(dispute.to)}>
                   <TableCell>
                     <Tag statusId={dispute.statusId}>{dispute.statusLabel}</Tag>
                   </TableCell>
@@ -94,3 +98,5 @@ export class DisputesTable extends Component {
     );
   }
 }
+
+export default withRouter(DisputesTable);

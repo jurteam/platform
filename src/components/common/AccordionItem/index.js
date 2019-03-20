@@ -1,2 +1,2 @@
-import { AccordionItem } from './AccordionItem';
+import { AccordionItem } from "./AccordionItem";
 export default AccordionItem;

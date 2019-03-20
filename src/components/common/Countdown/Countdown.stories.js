@@ -1,158 +1,158 @@
-import React from 'react';
+import React from "react";
 
-import { storiesOf } from '@storybook/react';
-import { withInfo } from '@storybook/addon-info';
+import { storiesOf } from "@storybook/react";
+import { withInfo } from "@storybook/addon-info";
 
-import Countdown from './';
+import Countdown from "./";
 
-storiesOf('Countdown', module)
+storiesOf("Countdown", module)
   .addDecorator(withInfo)
-  .addParameters({ 
-    info: { 
+  .addParameters({
+    info: {
       inline: true,
       header: false
     }
   })
-  .add('Rejected', () => (
+  .add("Rejected", () => (
     <Countdown
       days={2}
       hours={0}
       minutes={0}
       startDate="February 24, 2019 23:30:00"
       statusId={-1}
-      expireAlertFrom={1000*60*60*24}
+      expireAlertFrom={1000 * 60 * 60 * 24}
       onProgress={percentage => console.log(percentage)}
     />
   ))
-  .add('Draft', () => (
+  .add("Draft", () => (
     <Countdown
       days={2}
       hours={0}
       minutes={0}
       startDate="February 24, 2019 23:30:00"
       statusId={0}
-      expireAlertFrom={1000*60*60*24}
+      expireAlertFrom={1000 * 60 * 60 * 24}
       onProgress={percentage => console.log(percentage)}
     />
   ))
-  .add('Waiting For Counterparty', () => (
+  .add("Waiting For Counterparty", () => (
     <Countdown
       days={2}
       hours={0}
       minutes={0}
       startDate="February 24, 2019 23:30:00"
       statusId={1}
-      expireAlertFrom={1000*60*60*24}
+      expireAlertFrom={1000 * 60 * 60 * 24}
       onProgress={percentage => console.log(percentage)}
     />
   ))
-  .add('OnGoing', () => (
+  .add("OnGoing", () => (
     <Countdown
       days={5}
       hours={0}
       minutes={0}
       startDate="February 24, 2019 23:30:00"
       statusId={5}
-      expireAlertFrom={1000*60*60*24}
+      expireAlertFrom={1000 * 60 * 60 * 24}
       onProgress={percentage => console.log(percentage)}
     />
   ))
-  .add('Expired', () => (
+  .add("Expired", () => (
     <Countdown
       days={5}
       hours={0}
       minutes={0}
       startDate="February 24, 2019 23:30:00"
       statusId={8}
-      expireAlertFrom={1000*60*60*24}
+      expireAlertFrom={1000 * 60 * 60 * 24}
       onProgress={percentage => console.log(percentage)}
     />
   ))
-  .add('Contract Closed', () => (
+  .add("Contract Closed", () => (
     <Countdown
       days={5}
       hours={0}
       minutes={0}
       startDate="February 24, 2019 23:30:00"
       statusId={9}
-      expireAlertFrom={1000*60*60*24}
+      expireAlertFrom={1000 * 60 * 60 * 24}
       onProgress={percentage => console.log(percentage)}
     />
   ))
-  .add('Open Friendly resolution', () => (
+  .add("Open Friendly resolution", () => (
     <Countdown
       days={5}
       hours={0}
       minutes={0}
       startDate="February 24, 2019 23:30:00"
       statusId={21}
-      expireAlertFrom={1000*60*60*24}
+      expireAlertFrom={1000 * 60 * 60 * 24}
       onProgress={percentage => console.log(percentage)}
     />
   ))
-  .add('Closed Friendly resolution', () => (
+  .add("Closed Friendly resolution", () => (
     <Countdown
       days={5}
       hours={0}
       minutes={0}
       startDate="February 24, 2019 23:30:00"
       statusId={29}
-      expireAlertFrom={1000*60*60*24}
+      expireAlertFrom={1000 * 60 * 60 * 24}
       onProgress={percentage => console.log(percentage)}
     />
   ))
-  .add('Open Dispute', () => (
+  .add("Open Dispute", () => (
     <Countdown
       days={5}
       hours={0}
       minutes={0}
       startDate="February 24, 2019 23:30:00"
       statusId={31}
-      expireAlertFrom={1000*60*60*24}
+      expireAlertFrom={1000 * 60 * 60 * 24}
       onProgress={percentage => console.log(percentage)}
     />
   ))
-  .add('OnGoing Dispute', () => (
+  .add("OnGoing Dispute", () => (
     <Countdown
       days={5}
       hours={0}
       minutes={0}
       startDate={+new Date()}
       statusId={35}
-      expireAlertFrom={1000*60*60*24}
+      expireAlertFrom={1000 * 60 * 60 * 24}
       onProgress={percentage => console.log(percentage)}
     />
   ))
-  .add('Extended Dispute', () => (
+  .add("Extended Dispute", () => (
     <Countdown
       days={5}
       hours={0}
       minutes={0}
       startDate={+new Date()}
       statusId={36}
-      expireAlertFrom={1000*60*60*24}
+      expireAlertFrom={1000 * 60 * 60 * 24}
       onProgress={percentage => console.log(percentage)}
     />
   ))
-  .add('Expired Dispute', () => (
+  .add("Expired Dispute", () => (
     <Countdown
       days={5}
       hours={0}
       minutes={0}
       startDate={+new Date()}
       statusId={38}
-      expireAlertFrom={1000*60*60*24}
+      expireAlertFrom={1000 * 60 * 60 * 24}
       onProgress={percentage => console.log(percentage)}
     />
   ))
-  .add('Dispute Closed', () => (
+  .add("Dispute Closed", () => (
     <Countdown
       days={5}
       hours={0}
       minutes={0}
       startDate={+new Date()}
       statusId={39}
-      expireAlertFrom={1000*60*60*24}
+      expireAlertFrom={1000 * 60 * 60 * 24}
       onProgress={percentage => console.log(percentage)}
     />
-  ))
+  ));

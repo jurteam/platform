@@ -1,16 +1,16 @@
-import React from 'react';
+import React from "react";
 
-import { storiesOf } from '@storybook/react';
-import { withInfo } from '@storybook/addon-info';
+import { storiesOf } from "@storybook/react";
+import { withInfo } from "@storybook/addon-info";
 
-import Logo from './index';
+import Logo from "./index";
 
-storiesOf('Logo', module)
+storiesOf("Logo", module)
   .addDecorator(withInfo)
-  .addParameters({ 
-    info: { 
+  .addParameters({
+    info: {
       inline: true,
       header: false
     }
   })
-  .add('Logo', () => <Logo />);
+  .add("Logo", () => <Logo />);

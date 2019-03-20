@@ -1,11 +1,11 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import ProposalPreview from '../ProposalPreview';
-import AvatarInfo from '../AvatarInfo';
+import React from "react";
+import PropTypes from "prop-types";
+import ProposalPreview from "../ProposalPreview";
+import AvatarInfo from "../AvatarInfo";
 
-import './DisputeResolutionProposal.scss';
+import "./DisputeResolutionProposal.scss";
 
-export const DisputeResolutionProposal = ({proposals, onView}) => (
+export const DisputeResolutionProposal = ({ proposals, onView }) => (
   <div className="jur-dispute-resolution-proposal">
     <div className="jur-dispute-resolution-proposal__title">
       Dispute Resolution Proposal
@@ -18,10 +18,7 @@ export const DisputeResolutionProposal = ({proposals, onView}) => (
             size="xlarge"
             type="rounded"
           />
-          <ProposalPreview
-            proposalDetail={proposal}
-            onView={onView}
-          />
+          <ProposalPreview proposalDetail={proposal} onView={onView} />
         </div>
       ))}
     </div>

@@ -1,34 +1,34 @@
 @import "../../../assets/scss/variables";
 .jur {
-    &-terms {
-        font-family: $font-poppins;
+  &-terms {
+    font-family: $font-poppins;
 
-        h2 {
-            font-size: 14px;
-            font-weight: $poppins-semibold;
-            margin-top: 30px;
-        }
-
-        h3 {
-            font-size: 20px;
-            color: $user-terms-title-color;
-            font-weight: 400;
-            margin: 0;
-            padding: 0 0 10px 0;
-        }
-
-        p {
-            padding-left: 30px;
-            text-align: justify;
-        }
-
-        blockquote {
-            text-align: justify;
-        }
-
-        &__content {
-            font-size: 14px;
-            color: $user-terms-content-color;
-        }
+    h2 {
+      font-size: 14px;
+      font-weight: $poppins-semibold;
+      margin-top: 30px;
     }
+
+    h3 {
+      font-size: 20px;
+      color: $user-terms-title-color;
+      font-weight: 400;
+      margin: 0;
+      padding: 0 0 10px 0;
+    }
+
+    p {
+      padding-left: 30px;
+      text-align: justify;
+    }
+
+    blockquote {
+      text-align: justify;
+    }
+
+    &__content {
+      font-size: 14px;
+      color: $user-terms-content-color;
+    }
+  }
 }

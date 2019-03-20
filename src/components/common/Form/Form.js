@@ -1,18 +1,18 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import {FormInput} from './FormInput';
-import {FormSelect} from './FormSelect';
-import {FormLabel} from './FormLabel';
-import {FormGroup} from './FormGroup';
-import {FormWrapper} from './FormWrapper';
-import {FormContainer} from './FormContainer';
-import {FormDatePicker} from './FormDatePicker';
-import {FormNumericInput} from './FormNumericInput';
-import {FormTextArea} from './FormTextArea';
-import {FormErrorMsg} from './FormErrorMsg';
-import {FormSearch} from './FormSearch';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { FormInput } from "./FormInput";
+import { FormSelect } from "./FormSelect";
+import { FormLabel } from "./FormLabel";
+import { FormGroup } from "./FormGroup";
+import { FormWrapper } from "./FormWrapper";
+import { FormContainer } from "./FormContainer";
+import { FormDatePicker } from "./FormDatePicker";
+import { FormNumericInput } from "./FormNumericInput";
+import { FormTextArea } from "./FormTextArea";
+import { FormErrorMsg } from "./FormErrorMsg";
+import { FormSearch } from "./FormSearch";
 
-import './Forms.scss';
+import "./Forms.scss";
 
 export class Form extends Component {
   static Wrapper = FormWrapper;
@@ -28,11 +28,11 @@ export class Form extends Component {
   static Search = FormSearch;
 
   render() {
-    const {
-      className,
-      children,
-      ...rest
-    } = this.props;
-    return (<form className={`jur-form ${className || ''}`} {...rest}>{children}</form>);
+    const { className, children, ...rest } = this.props;
+    return (
+      <form className={`jur-form ${className || ""}`} {...rest}>
+        {children}
+      </form>
+    );
   }
 }

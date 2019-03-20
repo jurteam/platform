@@ -1,16 +1,23 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import './Button.scss';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import "./Button.scss";
 
-const btnClass = 'jur-btn';
-const btnAttrs = ['size', 'variant', 'color', 'fullWidth'];
+const btnClass = "jur-btn";
+const btnAttrs = ["size", "variant", "color", "fullWidth"];
 
 export class Button extends Component {
-
   static propTypes = {
-    color: PropTypes.oneOf(['info', 'dispute', 'success', 'friendly', 'muted', 'dark-blue', 'gradient']),
-    variant: PropTypes.oneOf(['contained', 'outlined', 'raised', 'gradient']),
-    size: PropTypes.oneOf(['small', 'medium', 'big']),
+    color: PropTypes.oneOf([
+      "info",
+      "dispute",
+      "success",
+      "friendly",
+      "muted",
+      "dark-blue",
+      "gradient"
+    ]),
+    variant: PropTypes.oneOf(["contained", "outlined", "raised", "gradient"]),
+    size: PropTypes.oneOf(["small", "medium", "big"]),
     className: PropTypes.string,
     disabled: PropTypes.bool,
     fullWidth: PropTypes.bool,
@@ -18,10 +25,10 @@ export class Button extends Component {
   };
 
   static defaultProps = {
-    className: '',
-    color: 'info',
-    variant: 'outlined',
-    size: 'small',
+    className: "",
+    color: "info",
+    variant: "outlined",
+    size: "small",
     disabled: false,
     fullWidth: false
   };
@@ -44,19 +51,16 @@ export class Button extends Component {
         return acc;
       }
 
-      if (attr === 'fullWidth') {
-        value = 'full-width';
+      if (attr === "fullWidth") {
+        value = "full-width";
       }
 
       return `${acc} ${btnClass}--${value}`;
     }, btnClass);
 
     return (
-      <button
-        className={ cls + ' ' + className }
-        { ...buttonProps }
-      >
-        <span>{ children }</span>
+      <button className={cls + " " + className} {...buttonProps}>
+        <span>{children}</span>
       </button>
     );
   }

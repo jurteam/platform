@@ -1,2 +1,2 @@
-import { UserNotification } from './UserNotification';
+import { UserNotification } from "./UserNotification";
 export default UserNotification;

@@ -1,2 +1,2 @@
-import { AvatarInfo } from './AvatarInfo';
+import { AvatarInfo } from "./AvatarInfo";
 export default AvatarInfo;

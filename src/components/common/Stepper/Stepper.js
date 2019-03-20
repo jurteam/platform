@@ -1,12 +1,9 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 
 export class Stepper extends Component {
   render() {
-    const {
-      activeStep,
-      children
-    } = this.props;
+    const { activeStep, children } = this.props;
     const childrenArray = React.Children.toArray(children);
     const steps = childrenArray.map((step, index) => {
       const state = {
@@ -16,18 +13,14 @@ export class Stepper extends Component {
       };
       return React.cloneElement(step, { ...state, ...step.props });
     });
-    console.log('render stepper');
-    return (
-      <div className="jur-stepper">
-        {steps}
-      </div>
-    )
+    console.log("render stepper");
+    return <div className="jur-stepper">{steps}</div>;
   }
 }
 
 Stepper.propTypes = {
   activeStep: PropTypes.number.isRequired,
-  children: PropTypes.node,
+  children: PropTypes.node
 };
 
 Stepper.defaultProps = {

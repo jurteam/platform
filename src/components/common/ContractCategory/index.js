@@ -1,2 +1,2 @@
-import {ContractCategory} from './ContractCategory';
+import { ContractCategory } from "./ContractCategory";
 export default ContractCategory;

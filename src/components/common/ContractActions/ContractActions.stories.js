@@ -1,29 +1,31 @@
-import React from 'react';
+import React from "react";
 
-import { storiesOf } from '@storybook/react';
-import { withInfo } from '@storybook/addon-info';
+import { storiesOf } from "@storybook/react";
+import { withInfo } from "@storybook/addon-info";
 
-import ContractActions from './';
-import Button from '../Button';
+import ContractActions from "./";
+import Button from "../Button";
 
-storiesOf('ContractActions', module)
+storiesOf("ContractActions", module)
   .addDecorator(withInfo)
-  .addParameters({ 
-    info: { 
+  .addParameters({
+    info: {
       inline: true,
       header: false
     }
   })
-  .add('Default', () => (
+  .add("Default", () => (
     <ContractActions>
       <Button>Save Contract</Button>
       <Button variant="gradient">Send to counterparty</Button>
     </ContractActions>
   ))
-  .add('Full width', () => (
+  .add("Full width", () => (
     <ContractActions>
-      <Button variant="gradient" fullWidth>Payment</Button>
+      <Button variant="gradient" fullWidth>
+        Payment
+      </Button>
     </ContractActions>
   ))
-  .add('Rejected', () => <ContractActions statusId={-1} />)
-  .add('Waiting', () => <ContractActions statusId={31} />)
+  .add("Rejected", () => <ContractActions statusId={-1} />)
+  .add("Waiting", () => <ContractActions statusId={31} />);

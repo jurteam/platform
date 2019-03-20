@@ -1,15 +1,24 @@
-import React, { useContext } from 'react';
-import PropTypes from 'prop-types';
+import React, { useContext } from "react";
+import PropTypes from "prop-types";
 
-import './ContractSetCaseDispute.scss';
+import "./ContractSetCaseDispute.scss";
 
-export const ContractSetCaseDispute = ({cases, selectedOptionId, handleChange}) => {
+export const ContractSetCaseDispute = ({
+  cases,
+  selectedOptionId,
+  handleChange
+}) => {
   return (
     <div className="jur-contract-set-case-dispute">
-      <div className="jur-contract-set-case-dispute__title">In Case of Dispute</div>
+      <div className="jur-contract-set-case-dispute__title">
+        In Case of Dispute
+      </div>
       <div className="jur-contract-set-case-dispute__options">
         {cases.map((option, index) => (
-          <div key={index.toString()} className="jur-contract-set-case-dispute__option">
+          <div
+            key={index.toString()}
+            className="jur-contract-set-case-dispute__option"
+          >
             <input
               type="radio"
               name="contact-set-case"
@@ -18,7 +27,9 @@ export const ContractSetCaseDispute = ({cases, selectedOptionId, handleChange}) 
               disabled={option.disabled || false}
               onChange={handleChange.bind(this, option.id)}
             />
-            <label htmlFor={`jur-contract-set-case-dispute__case-${option.id}`}>{option.label}</label>
+            <label htmlFor={`jur-contract-set-case-dispute__case-${option.id}`}>
+              {option.label}
+            </label>
             <div className="jur-contract-set-case-dispute__option-description">
               {option.description}
             </div>
@@ -27,4 +38,4 @@ export const ContractSetCaseDispute = ({cases, selectedOptionId, handleChange}) 
       </div>
     </div>
   );
-}
+};

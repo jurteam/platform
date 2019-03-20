@@ -1,8 +1,8 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
-import './Content.scss';
+import "./Content.scss";
 
 export const Content = ({ children }) => (
-  <div className="jur-content">{ children }</div>
+  <div className="jur-content">{children}</div>
 );

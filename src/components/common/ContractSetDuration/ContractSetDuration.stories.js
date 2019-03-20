@@ -1,16 +1,18 @@
-import React from 'react';
+import React from "react";
 
-import { storiesOf } from '@storybook/react';
-import { withInfo } from '@storybook/addon-info';
+import { storiesOf } from "@storybook/react";
+import { withInfo } from "@storybook/addon-info";
 
-import ContractSetDuration from './';
+import ContractSetDuration from "./";
 
-storiesOf('ContractSetDuration', module)
+storiesOf("ContractSetDuration", module)
   .addDecorator(withInfo)
-  .addParameters({ 
-    info: { 
+  .addParameters({
+    info: {
       inline: true,
       header: false
     }
   })
-  .add('Default', () => <ContractSetDuration onChange={value => console.log(value)} />)
+  .add("Default", () => (
+    <ContractSetDuration onChange={value => console.log(value)} />
+  ));

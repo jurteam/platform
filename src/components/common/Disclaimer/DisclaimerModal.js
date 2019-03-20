@@ -11,12 +11,12 @@ import Button from "../Button";
 
 export const DisclaimerModal = props => {
   const { labels } = useContext(AppContext);
-  const { onAccept, onDecline, isOpen, disclaimerAccept } = props
+  const { onAccept, onDecline, isOpen, disclaimerAccept } = props;
 
   const handleAccept = () => {
     disclaimerAccept(); // default action
-    if (typeof onAccept === 'function') onAccept(); // run onAccept function via props
-  }
+    if (typeof onAccept === "function") onAccept(); // run onAccept function via props
+  };
   return (
     <Modal isOpen={isOpen}>
       <ModalHeader title={labels.disclaimer} />

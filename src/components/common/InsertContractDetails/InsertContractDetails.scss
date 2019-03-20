@@ -1,19 +1,19 @@
 @import "../../../assets/scss/variables";
 
 .jur-insert-contract-details {
-    width: 90%;
+  width: 90%;
 
-    .jur-contract-textarea {
-        &:first-child {
-            margin-bottom: 20px;
-        }
+  .jur-contract-textarea {
+    &:first-child {
+      margin-bottom: 20px;
     }
+  }
 
-    .jur-file-list {
-        margin-bottom: 20px;
-    }
+  .jur-file-list {
+    margin-bottom: 20px;
+  }
 
-    .jur-insert-contract-details__files {
-        margin-top: 30px;
-    }
+  .jur-insert-contract-details__files {
+    margin-top: 30px;
+  }
 }

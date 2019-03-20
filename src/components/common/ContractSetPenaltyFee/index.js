@@ -1,2 +1,2 @@
-import {ContractSetPenaltyFee} from './ContractSetPenaltyFee';
+import { ContractSetPenaltyFee } from "./ContractSetPenaltyFee";
 export default ContractSetPenaltyFee;

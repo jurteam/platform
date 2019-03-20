@@ -1,13 +1,13 @@
 .jur {
-    &-metamask-wrapper {
-        width: 100%;
-        height: calc(100vh - 70px); // 70px is header height
-        display: flex;
-        align-items: center;
-        justify-content: center;
+  &-metamask-wrapper {
+    width: 100%;
+    height: calc(100vh - 70px); // 70px is header height
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-        &__container {
-            max-width: 900px;
-        }
+    &__container {
+      max-width: 900px;
     }
+  }
 }

@@ -1,2 +1,2 @@
-import { UserTerms } from './UserTerms';
+import { UserTerms } from "./UserTerms";
 export default UserTerms;

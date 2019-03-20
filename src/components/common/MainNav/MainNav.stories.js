@@ -1,16 +1,16 @@
-import React from 'react';
+import React from "react";
 
-import { storiesOf } from '@storybook/react';
-import { withInfo } from '@storybook/addon-info';
+import { storiesOf } from "@storybook/react";
+import { withInfo } from "@storybook/addon-info";
 
-import MainNav from './';
+import MainNav from "./";
 
-storiesOf('MainNav', module)
+storiesOf("MainNav", module)
   .addDecorator(withInfo)
-  .addParameters({ 
-    info: { 
+  .addParameters({
+    info: {
       inline: true,
       header: false
     }
   })
-  .add('Waiting', () => <MainNav />)
+  .add("Waiting", () => <MainNav />);

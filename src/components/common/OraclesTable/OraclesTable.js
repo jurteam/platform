@@ -1,21 +1,27 @@
-import React, {useState} from 'react'
-import PropTypes from 'prop-types'
-import Table from '../Table';
-import TableRow from '../TableRow';
-import TableCell from '../TableCell';
-import TableBody from '../TableBody';
-import TableHead from '../TableHead';
-import Avatar from '../Avatar';
-import FileList from '../FileList';
-import File from '../File';
-import Tag from '../Tag';
-import TimeAgo from '../TimeAgo';
+import React, { useState } from "react";
+import PropTypes from "prop-types";
+import Table from "../Table";
+import TableRow from "../TableRow";
+import TableCell from "../TableCell";
+import TableBody from "../TableBody";
+import TableHead from "../TableHead";
+import Avatar from "../Avatar";
+import FileList from "../FileList";
+import File from "../File";
+import Tag from "../Tag";
+import TimeAgo from "../TimeAgo";
 
-import {toCurrencyFormat, ellipsisString} from '../../../utils/helpers';
+import { toCurrencyFormat, ellipsisString } from "../../../utils/helpers";
 
-import './OraclesTable.scss';
+import "./OraclesTable.scss";
 
-export const OraclesTable = ({currentUserWallet, headers, data, dispute, onFileView}) => {
+export const OraclesTable = ({
+  currentUserWallet,
+  headers,
+  data,
+  dispute,
+  onFileView
+}) => {
   const [tableRows, updateTableRows] = useState(data);
 
   const handleClick = idx => {
@@ -34,20 +40,18 @@ export const OraclesTable = ({currentUserWallet, headers, data, dispute, onFileV
     <div className="jur-oracles-table">
       <div className="jur-oracles-table__dispute">
         <div className="jur-oracles-table__dispute-name">{dispute.name}</div>
-        <Tag statusId={dispute.status.id}>
-          {dispute.status.label}
-        </Tag>
+        <Tag statusId={dispute.status.id}>{dispute.status.label}</Tag>
       </div>
       <div className="jur-oracles-table__table">
-        <Table >
+        <Table>
           <TableHead>
             <TableRow>
               {headers.map(header => (
                 <TableCell
-                  key={ header.label.toString() }
-                  {...(header.sortable && {onClick: header.sortable})}
+                  key={header.label.toString()}
+                  {...header.sortable && { onClick: header.sortable }}
                 >
-                  { header.label }
+                  {header.label}
                 </TableCell>
               ))}
             </TableRow>
@@ -56,34 +60,34 @@ export const OraclesTable = ({currentUserWallet, headers, data, dispute, onFileV
             {tableRows.map((oracle, idx) => (
               <TableRow
                 key={oracle.ethAddress}
-                className={`${oracle.isOpen ? 'active' : '' }`}
+                className={`${oracle.isOpen ? "active" : ""}`}
                 onClick={() => handleClick(idx)}
               >
-                <TableCell
-                  className="jur-oracles-table__oracle"
-                >
-                  {oracle.ethAddress === currentUserWallet ? 'You' : oracle.ethAddress}
+                <TableCell className="jur-oracles-table__oracle">
+                  {oracle.ethAddress === currentUserWallet
+                    ? "You"
+                    : oracle.ethAddress}
                 </TableCell>
                 <TableCell>
-                  <Avatar
-                    seed={oracle.vote}
-                    size="xsmall"
-                    variant="circle"
-                  />
+                  <Avatar seed={oracle.vote} size="xsmall" variant="circle" />
                 </TableCell>
                 <TableCell className="jur-oracles-table__message">
-                  {oracle.isOpen ?
+                  {oracle.isOpen ? (
                     <>{oracle.message}</>
-                    : <>{ellipsisString(oracle.message, 80, 80)}</>
-                  }
+                  ) : (
+                    <>{ellipsisString(oracle.message, 80, 80)}</>
+                  )}
                 </TableCell>
                 <TableCell className="jur-oracles-table__evidence">
-                  {oracle.evidences && oracle.evidences.length > 0 &&
+                  {oracle.evidences && oracle.evidences.length > 0 && (
                     <>
-                      {!oracle.isOpen &&
-                        <span className="jur-oracles-table__evidence__counter">{oracle.evidences.length} attachment{oracle.evidences.length > 1 ? 's' : ''}</span>
-                      }
-                      {oracle.isOpen &&
+                      {!oracle.isOpen && (
+                        <span className="jur-oracles-table__evidence__counter">
+                          {oracle.evidences.length} attachment
+                          {oracle.evidences.length > 1 ? "s" : ""}
+                        </span>
+                      )}
+                      {oracle.isOpen && (
                         <FileList>
                           {oracle.evidences.map(file => (
                             <File
@@ -94,9 +98,9 @@ export const OraclesTable = ({currentUserWallet, headers, data, dispute, onFileV
                             />
                           ))}
                         </FileList>
-                      }
+                      )}
                     </>
-                  }
+                  )}
                 </TableCell>
                 <TableCell className="jur-oracles-table__amount">
                   {toCurrencyFormat(oracle.amount)}
@@ -111,4 +115,4 @@ export const OraclesTable = ({currentUserWallet, headers, data, dispute, onFileV
       </div>
     </div>
   );
-}
+};

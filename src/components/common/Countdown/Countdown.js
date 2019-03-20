@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 
-import './Countdown.scss';
+import "./Countdown.scss";
 
 export class Countdown extends Component {
   constructor(props) {
@@ -17,25 +17,25 @@ export class Countdown extends Component {
       playing: false,
       duration: this.calculateDuration(),
       completePercentage: 0
-    }
+    };
   }
 
-  componentDidMount = () => {
+  componentDidMount = () => {
     switch (this.props.statusId) {
       case -1: // rejected
         break;
       case 0: // draft
       case 1: // waiting for counterparty
-        const date = this.getTimeLeft(this.state.duration)
+        const date = this.getTimeLeft(this.state.duration);
         this.setState({
-          ...date,
-        }); 
+          ...date
+        });
         break;
       case 5: // onGoing
-        this.start(this.props.startDate, this.state.duration)
+        this.start(this.props.startDate, this.state.duration);
         break;
       case 8: // expired rosso
-        this.setState({ expired: true })
+        this.setState({ expired: true });
         break;
       case 9: // contract closed
       case 21: // open friendly resolution
@@ -49,24 +49,24 @@ export class Countdown extends Component {
         this.start(this.props.startDate, this.state.duration);
         break;
       case 38: // expired dispute
-        this.setState({ expired: true })
+        this.setState({ expired: true });
         break;
       case 39: // dispute closed
         break;
       default:
     }
-  }
-  
+  };
+
   componentWillUnmount = () => {
     this.stop();
-  }
-  
+  };
+
   calculateDuration() {
-    if (this.props.statusId === 35) {  
+    if (this.props.statusId === 35) {
       return 24 * 60 * 60 * 1000;
     }
 
-    if (this.props.statusId === 36) {  
+    if (this.props.statusId === 36) {
       return 30 * 60 * 1000;
     }
 
@@ -77,22 +77,24 @@ export class Countdown extends Component {
   }
 
   getExpiringStatus(milliseconds) {
-    if ((this.props.statusId === 5 && milliseconds < this.props.expireAlertFrom) || 
-        (this.props.statusId === 35 && milliseconds <= 3600000) ||
-        (this.props.statusId === 36)
-       ) {
-      return true
+    if (
+      (this.props.statusId === 5 &&
+        milliseconds < this.props.expireAlertFrom) ||
+      (this.props.statusId === 35 && milliseconds <= 3600000) ||
+      this.props.statusId === 36
+    ) {
+      return true;
     }
   }
 
   calculatePercentage(milliseconds) {
-    return 100 - ((milliseconds*100) / this.state.duration);
+    return 100 - (milliseconds * 100) / this.state.duration;
   }
-  
+
   start = (startDate, duration) => {
     this.interval = setInterval(() => {
       const date = this.calculateCountDown(startDate, duration);
-      if(date) {
+      if (date) {
         const percentage = this.calculatePercentage(date.milliseconds);
         this.setState({
           ...date,
@@ -108,81 +110,84 @@ export class Countdown extends Component {
             return { playing: false };
           }
         });
-        this.stop(); 
+        this.stop();
       }
     }, 1000);
-  }
-  
+  };
+
   stop = () => {
     clearInterval(this.interval);
-  }
-  
+  };
+
   getDiff = (startDate, duration) => {
-    return (Date.parse(new Date(startDate)) + duration) - Date.parse(new Date());
-  }
-  
+    return Date.parse(new Date(startDate)) + duration - Date.parse(new Date());
+  };
+
   calculateCountDown = (startDate, duration) => {
     const diff = this.getDiff(startDate, duration);
     if (diff < 0) return false;
     return this.getTimeLeft(diff);
-  }
-  
-  getTimeLeft = (value) => ({
+  };
+
+  getTimeLeft = value => ({
     seconds: Math.floor((value / 1000) % 60),
     minutes: Math.floor((value / 1000 / 60) % 60),
     hours: Math.floor((value / (1000 * 60 * 60)) % 24),
     days: Math.floor(value / (1000 * 60 * 60 * 24)),
     milliseconds: value
-  })
-  
-  addLeadingZeros = (value) => {
+  });
+
+  addLeadingZeros = value => {
     let str = String(value);
-    while(str.length < 2) {
-      str = '0' + str;
+    while (str.length < 2) {
+      str = "0" + str;
     }
     return str;
-  }
-  
+  };
 
   render() {
     const { days, hours, minutes, seconds } = this.state;
-    const { showSeconds, daysLabel, hoursLabel, minutesLabel, secondsLabel } = this.props;
-    
-    const classes = ['jur-countdown'];
-    if (this.state.playing) classes.push('jur-countdown--playing');
-    if (this.state.expiring) classes.push('jur-countdown--expiring');
-    if (this.state.expired) classes.push('jur-countdown--expired');
+    const {
+      showSeconds,
+      daysLabel,
+      hoursLabel,
+      minutesLabel,
+      secondsLabel
+    } = this.props;
+
+    const classes = ["jur-countdown"];
+    if (this.state.playing) classes.push("jur-countdown--playing");
+    if (this.state.expiring) classes.push("jur-countdown--expiring");
+    if (this.state.expired) classes.push("jur-countdown--expired");
 
     return (
-      <div className={classes.join(' ')}>
+      <div className={classes.join(" ")}>
         <div className="jur-countdown__item jur-countdown__days">
-          <span className="value">{ this.addLeadingZeros(days) }</span>
-          <span className="label">{ daysLabel }</span>
+          <span className="value">{this.addLeadingZeros(days)}</span>
+          <span className="label">{daysLabel}</span>
         </div>
         <div className="jur-countdown__item jur-countdown__hours">
-          <span className="value">{ this.addLeadingZeros(hours) }</span>
-          <span className="label">{ hoursLabel }</span>
+          <span className="value">{this.addLeadingZeros(hours)}</span>
+          <span className="label">{hoursLabel}</span>
         </div>
         <div className="jur-countdown__item jur-countdown__minutes">
-          <span className="value">{ this.addLeadingZeros(minutes) }</span>
-          <span className="label">{ minutesLabel }</span>
+          <span className="value">{this.addLeadingZeros(minutes)}</span>
+          <span className="label">{minutesLabel}</span>
         </div>
-        {showSeconds ?
+        {showSeconds ? (
           <div className="jur-countdown__item jur-countdown__seconds">
-            <span className="value">{ this.addLeadingZeros(seconds) }</span>
-            <span className="label">{ secondsLabel }</span>
+            <span className="value">{this.addLeadingZeros(seconds)}</span>
+            <span className="label">{secondsLabel}</span>
           </div>
-          : null
-        }
+        ) : null}
       </div>
     );
   }
 }
 
-
 Countdown.defaultProps = {
-  daysLabel: 'Days',
-  hoursLabel: 'Hours',
-  minutesLabel: 'Minutes',
-  secondsLabel: 'Seconds',
+  daysLabel: "Days",
+  hoursLabel: "Hours",
+  minutesLabel: "Minutes",
+  secondsLabel: "Seconds"
 };

@@ -1,113 +1,115 @@
 @import "../../../assets/scss/variables";
 
 .jur-info-tooltip {
+  display: inline-block;
+  position: relative;
+
+  &[data-tooltip] {
+    cursor: help;
+
+    &::before,
+    &::after {
+      visibility: hidden;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    &::before {
+      content: "";
+      position: absolute;
+      border-style: solid;
+    }
+
+    &::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      width: 160px;
+      border-radius: 4px;
+      padding: 10px 7px;
+      color: $white;
+      line-height: 1.2;
+      background-color: $tooltip-bg;
+      font-size: 10px;
+      font-family: $font-roboto;
+      box-shadow: 0 3px 9px rgba($black, 0.2);
+    }
+  }
+
+  &--top {
+    &::before {
+      border-width: 6px 6px 0 6px;
+      border-color: $tooltip-bg transparent transparent transparent;
+      top: -5px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    &::after {
+      bottom: 23px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  }
+
+  &--right {
+    &::before {
+      border-width: 6px 6px 6px 0;
+      border-color: transparent $tooltip-bg transparent transparent;
+      top: 50%;
+      right: -10px;
+      transform: translateY(-50%);
+    }
+
+    &::after {
+      left: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  }
+
+  &--bottom {
+    &::before {
+      border-width: 0 6px 6px 6px;
+      border-color: transparent transparent $tooltip-bg transparent;
+      bottom: -5px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    &::after {
+      top: 23px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  }
+
+  &--left {
+    &::before {
+      border-width: 6px 0 6px 6px;
+      border-color: transparent transparent transparent $tooltip-bg;
+      top: 50%;
+      left: -10px;
+      transform: translateY(-50%);
+    }
+
+    &::after {
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  }
+
+  &:hover {
+    &::before,
+    &::after {
+      visibility: visible;
+      opacity: 1;
+    }
+  }
+
+  svg {
     display: inline-block;
-    position: relative;
-    
-    &[data-tooltip] {
-        cursor: help;
-
-        &::before, &::after {
-            visibility: hidden;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-    
-        &::before {
-            content: "";
-            position: absolute;
-            border-style: solid;
-        }
-    
-        &::after {
-            content: attr(data-tooltip);
-            position: absolute;
-            width: 160px;
-            border-radius: 4px;
-            padding: 10px 7px;
-            color: $white;
-            line-height: 1.2;
-            background-color: $tooltip-bg;
-            font-size: 10px;
-            font-family: $font-roboto;
-            box-shadow: 0 3px 9px rgba($black, 0.2);
-        }
-    }
-
-    &--top {
-        &::before {
-            border-width: 6px 6px 0 6px;
-            border-color: $tooltip-bg transparent transparent transparent;
-            top: -5px;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-        
-        &::after {
-            bottom: 23px;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-    }
-
-    &--right {
-        &::before {
-            border-width: 6px 6px 6px 0;
-            border-color: transparent $tooltip-bg transparent transparent;
-            top: 50%;
-            right: -10px;
-            transform: translateY(-50%);
-        }
-        
-        &::after {
-            left: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-        }
-    }
-
-    &--bottom {
-        &::before {
-            border-width: 0 6px 6px 6px;
-            border-color: transparent transparent $tooltip-bg transparent;
-            bottom: -5px;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-        
-        &::after {
-            top: 23px;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-    }
-
-    &--left {
-        &::before {
-            border-width: 6px 0 6px 6px;
-            border-color: transparent transparent transparent $tooltip-bg;
-            top: 50%;
-            left: -10px;
-            transform: translateY(-50%);
-        }
-        
-        &::after {
-            right: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-        }
-    }
-
-    &:hover {
-        &::before, &::after {
-            visibility: visible;
-            opacity: 1;
-        }    
-    }
-
-    svg {
-        display: inline-block;
-        fill: $gull-gray;
-        width: 10px;
-    }
+    fill: $gull-gray;
+    width: 10px;
+  }
 }

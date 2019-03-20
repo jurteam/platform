@@ -1,13 +1,13 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import ContractActions from '../ContractActions';
-import ContractSelectCategory from '../ContractSelectCategory';
-import ContractSetDuration from '../ContractSetDuration';
-import ContractSetValue from '../ContractSetValue';
-import ContractSetCaseDispute from '../ContractSetCaseDispute';
-import Button from '../Button';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import ContractActions from "../ContractActions";
+import ContractSelectCategory from "../ContractSelectCategory";
+import ContractSetDuration from "../ContractSetDuration";
+import ContractSetValue from "../ContractSetValue";
+import ContractSetCaseDispute from "../ContractSetCaseDispute";
+import Button from "../Button";
 
-import './ContractSidebar.scss';
+import "./ContractSidebar.scss";
 
 export class ContractSidebar extends Component {
   render() {
@@ -28,4 +28,4 @@ export class ContractSidebar extends Component {
       </div>
     );
   }
-};
+}

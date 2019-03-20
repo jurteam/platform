@@ -1,3 +1,4 @@
+
 import React from "react";
 
 import { storiesOf } from "@storybook/react";
@@ -16,6 +17,6 @@ storiesOf("ContractsFilters", module)
   .add("Default", () => (
     <ContractsFilters
       onChange={value => console.log(value)}
-      onSubmit={() => console.log('filter submit')}
+      onSubmit={() => console.log("filter submit")}
     />
   ));

@@ -1,2 +1,2 @@
-import {ProposalForm} from './ProposalForm';
+import { ProposalForm } from "./ProposalForm";
 export default ProposalForm;

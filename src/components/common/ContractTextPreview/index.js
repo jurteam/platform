@@ -1,2 +1,2 @@
-import {ContractTextPreview} from './ContractTextPreview';
+import { ContractTextPreview } from "./ContractTextPreview";
 export default ContractTextPreview;

@@ -1,2 +1,2 @@
-import { ProfilePreview } from './ProfilePreview';
+import { ProfilePreview } from "./ProfilePreview";
 export default ProfilePreview;

@@ -1,23 +1,23 @@
 @import "../../../assets/scss/variables";
 
 .jur-contract-set-penalty-fee {
-    &__title {
-        display: flex;
-        justify-content: space-between;
+  &__title {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__values {
+    pointer-events: none;
+    opacity: 0.5;
+    margin-top: 20px;
+
+    .jur-price-range {
+      margin-bottom: 15px;
     }
 
-    &__values {
-        pointer-events: none;
-        opacity: 0.5;
-        margin-top: 20px;
-
-        .jur-price-range {
-            margin-bottom: 15px;
-        }
-
-        &--active {
-            pointer-events: auto;
-            opacity: 1;
-        }
+    &--active {
+      pointer-events: auto;
+      opacity: 1;
     }
+  }
 }

@@ -1,29 +1,29 @@
-import React from 'react';
+import React from "react";
 
-import { storiesOf } from '@storybook/react';
-import { withInfo } from '@storybook/addon-info';
+import { storiesOf } from "@storybook/react";
+import { withInfo } from "@storybook/addon-info";
 
-import VoteProgress from './';
+import VoteProgress from "./";
 
-storiesOf('VoteProgress', module)
+storiesOf("VoteProgress", module)
   .addDecorator(withInfo)
-  .addParameters({ 
-    info: { 
+  .addParameters({
+    info: {
       inline: true,
       header: false
     }
   })
-  .add('Vote ongoing & allowed', () => (
+  .add("Vote ongoing & allowed", () => (
     <VoteProgress
       counterparty={{
         wallet: {
-          address: '0xie57ht6fh75f4576894'
+          address: "0xie57ht6fh75f4576894"
         },
-        name: 'Alice',
+        name: "Alice",
         shouldRenderName: true,
         percentage: 67.2,
         value: 36133,
-        winner: false,
+        winner: false
       }}
       highlightColor="green"
       OnVote={counterparty => alert(`Votin for ${counterparty.name}`)}
@@ -31,30 +31,30 @@ storiesOf('VoteProgress', module)
       canVote
     />
   ))
-  .add('Vote ongoing & not allowed', () => (
+  .add("Vote ongoing & not allowed", () => (
     <VoteProgress
       counterparty={{
         wallet: {
-          address: '0x9h8563948567364975369h347895693'
+          address: "0x9h8563948567364975369h347895693"
         },
-        name: 'Bob',
+        name: "Bob",
         shouldRenderName: false,
         percentage: 31.4,
         value: 16903,
-        winner: false,
+        winner: false
       }}
       highlightColor="blue"
       OnVote={counterparty => alert(`Votin for ${counterparty.name}`)}
       statusId={36}
     />
   ))
-  .add('Vote closed & Winner', () => (
+  .add("Vote closed & Winner", () => (
     <VoteProgress
       counterparty={{
         wallet: {
-          address: '0x9h8563948567364975369h34789537645'
+          address: "0x9h8563948567364975369h34789537645"
         },
-        name: 'Bob',
+        name: "Bob",
         shouldRenderName: false,
         percentage: 31.4,
         value: 16903,
@@ -65,13 +65,13 @@ storiesOf('VoteProgress', module)
       statusId={39}
     />
   ))
-  .add('Vote closed & Loser', () => (
+  .add("Vote closed & Loser", () => (
     <VoteProgress
       counterparty={{
         wallet: {
-          address: '0x9h8563948567364975369h34789537645'
+          address: "0x9h8563948567364975369h34789537645"
         },
-        name: 'Bob',
+        name: "Bob",
         shouldRenderName: false,
         percentage: 31.4,
         value: 16903,
@@ -81,4 +81,4 @@ storiesOf('VoteProgress', module)
       OnVote={counterparty => alert(`Votin for ${counterparty.name}`)}
       statusId={39}
     />
-  ))
+  ));

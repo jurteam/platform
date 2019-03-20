@@ -1,21 +1,25 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import Table from '../Table';
-import TableRow from '../TableRow';
-import TableCell from '../TableCell';
-import TableBody from '../TableBody';
-import TableHead from '../TableHead';
-import Avatar from '../Avatar';
-import Button from '../Button';
-import { Link } from 'react-router-dom';
-import {MessageIcon} from '../Icons/MessageIcon';
-import {toCurrencyFormat, ellipsisString } from '../../../utils/helpers';
+import React from "react";
+import PropTypes from "prop-types";
+import Table from "../Table";
+import TableRow from "../TableRow";
+import TableCell from "../TableCell";
+import TableBody from "../TableBody";
+import TableHead from "../TableHead";
+import Avatar from "../Avatar";
+import Button from "../Button";
+import { Link } from "react-router-dom";
+import { MessageIcon } from "../Icons/MessageIcon";
+import { toCurrencyFormat, ellipsisString } from "../../../utils/helpers";
 
-import './OraclesTablePreview.scss';
-import TimeAgo from '../TimeAgo';
+import "./OraclesTablePreview.scss";
+import TimeAgo from "../TimeAgo";
 
-
-export const OraclesTablePreview = ({currentUserWallet, headers, data, viewAllDetails}) => {
+export const OraclesTablePreview = ({
+  currentUserWallet,
+  headers,
+  data,
+  viewAllDetails
+}) => {
   return (
     <div className="jur-oracles-table-preview">
       <Table>
@@ -23,10 +27,10 @@ export const OraclesTablePreview = ({currentUserWallet, headers, data, viewAllDe
           <TableRow>
             {headers.map(header => (
               <TableCell
-                key={ header.label.toString() }
-                {...(header.sortable && {onClick: header.sortable})}
+                key={header.label.toString()}
+                {...header.sortable && { onClick: header.sortable }}
               >
-                { header.label }
+                {header.label}
               </TableCell>
             ))}
           </TableRow>
@@ -35,26 +39,25 @@ export const OraclesTablePreview = ({currentUserWallet, headers, data, viewAllDe
           {data.map(oracle => (
             <TableRow
               key={oracle.ethAddress}
-              className={oracle.ethAddress === currentUserWallet ? 'highlight' : ''}
+              className={
+                oracle.ethAddress === currentUserWallet ? "highlight" : ""
+              }
             >
-              <TableCell
-                className="jur-oracles-table-preview__eth-address"
-              >
-                {oracle.ethAddress === currentUserWallet ?
-                  'You'
-                  : ellipsisString(oracle.ethAddress, 10, 15)
-                }
+              <TableCell className="jur-oracles-table-preview__eth-address">
+                {oracle.ethAddress === currentUserWallet
+                  ? "You"
+                  : ellipsisString(oracle.ethAddress, 10, 15)}
               </TableCell>
               <TableCell>
-                <Avatar
-                  seed={oracle.vote}
-                  size="xsmall"
-                  variant="circle"
-                />
+                <Avatar seed={oracle.vote} size="xsmall" variant="circle" />
                 {}
               </TableCell>
               <TableCell
-                className={`jur-oracles-table-preview__message ${oracle.message.length ? 'jur-oracles-table-preview__message--full' : ''}`}
+                className={`jur-oracles-table-preview__message ${
+                  oracle.message.length
+                    ? "jur-oracles-table-preview__message--full"
+                    : ""
+                }`}
               >
                 <MessageIcon />
               </TableCell>
@@ -69,8 +72,10 @@ export const OraclesTablePreview = ({currentUserWallet, headers, data, viewAllDe
         </TableBody>
       </Table>
       <Link to={viewAllDetails}>
-        <Button size="big" fullWidth>View All Details</Button>
+        <Button size="big" fullWidth>
+          View All Details
+        </Button>
       </Link>
     </div>
   );
-}
+};

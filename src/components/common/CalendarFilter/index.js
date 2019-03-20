@@ -1,2 +1,2 @@
-import {CalendarFilter} from './CalendarFilter';
+import { CalendarFilter } from "./CalendarFilter";
 export default CalendarFilter;

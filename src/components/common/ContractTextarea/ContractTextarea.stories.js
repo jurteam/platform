@@ -1,22 +1,22 @@
-import React from 'react';
+import React from "react";
 
-import { storiesOf } from '@storybook/react';
-import { withInfo } from '@storybook/addon-info';
+import { storiesOf } from "@storybook/react";
+import { withInfo } from "@storybook/addon-info";
 
-import ContractTextarea from '.';
+import ContractTextarea from ".";
 
-storiesOf('ContractTextarea', module)
+storiesOf("ContractTextarea", module)
   .addDecorator(withInfo)
-  .addParameters({ 
-    info: { 
+  .addParameters({
+    info: {
       inline: true,
       header: false
     }
   })
-  .add('Default', () => (
+  .add("Default", () => (
     <ContractTextarea
       label="KPI of the contracts:"
       name="kpi"
       onChange={ev => console.log(ev.target.value)}
     />
-  ))
+  ));

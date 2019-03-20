@@ -1,2 +1,2 @@
-import { BlockTitle } from './BlockTitle';
+import { BlockTitle } from "./BlockTitle";
 export default BlockTitle;

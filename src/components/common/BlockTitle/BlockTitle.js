@@ -1,17 +1,18 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import InfoTooltip from '../InfoTooltip';
+import React from "react";
+import PropTypes from "prop-types";
+import InfoTooltip from "../InfoTooltip";
 
-import './BlockTitle.scss';
+import "./BlockTitle.scss";
 
-export const BlockTitle = ({ title, description, tooltipPosition, hideIcon, ...rest }) => (
+export const BlockTitle = ({
+  title,
+  description,
+  tooltipPosition,
+  hideIcon,
+  ...rest
+}) => (
   <div className="jur-block-title" {...rest}>
-    { !hideIcon &&
-      <InfoTooltip
-        text={description}
-        position={tooltipPosition}
-      />
-    }
+    {!hideIcon && <InfoTooltip text={description} position={tooltipPosition} />}
     <span>{title}</span>
   </div>
 );

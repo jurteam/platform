@@ -1,30 +1,29 @@
-import React from 'react';
+import React from "react";
 
-import { storiesOf } from '@storybook/react';
-import { withInfo } from '@storybook/addon-info';
+import { storiesOf } from "@storybook/react";
+import { withInfo } from "@storybook/addon-info";
 
-import Breadcrumbs from '.';
+import Breadcrumbs from ".";
 
 const crumbList = [
   {
     id: 0,
-    label: 'Contracts',
-    to: '/contracts'
+    label: "Contracts",
+    to: "/contracts"
   },
   {
     id: 1,
-    label: 'Create smart contract',
-    to: '/create'
+    label: "Create smart contract",
+    to: "/create"
   }
 ];
 
-storiesOf('Breadcrumbs', module)
+storiesOf("Breadcrumbs", module)
   .addDecorator(withInfo)
-  .addParameters({ 
-    info: { 
+  .addParameters({
+    info: {
       inline: true,
       header: false
     }
   })
-  .add('Selected', () => <Breadcrumbs crumbList={ crumbList } />)
-
+  .add("Selected", () => <Breadcrumbs crumbList={crumbList} />);

@@ -1,13 +1,13 @@
 @import "../../../assets/scss/variables";
 
 .jur-contract-select-category {
-    padding: 10px 20px;
-    border-bottom: 1px solid $contract-actions-border-color;
-    
-    &__title {
-        font-size: 20px;
-        font-family: $font-poppins;
-        color: $contract-select-category-title-color;
-        margin-bottom: 6px;
-    }
+  padding: 10px 20px;
+  border-bottom: 1px solid $contract-actions-border-color;
+
+  &__title {
+    font-size: 20px;
+    font-family: $font-poppins;
+    color: $contract-select-category-title-color;
+    margin-bottom: 6px;
+  }
 }

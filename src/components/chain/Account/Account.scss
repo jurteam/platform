@@ -1,49 +1,41 @@
-
-@import '../../../assets/scss/variables'; // get global variables
+@import "../../../assets/scss/variables"; // get global variables
 
 $shadowAmount: 30px;
 
 .jur {
+  &--account {
+    font-size: 14px;
+    cursor: pointer;
 
-    &--account {
+    & > div {
+      display: flex;
+      align-items: center;
 
-        font-size: 14px;
-        cursor: pointer;
+      & > canvas {
+        width: 30px !important;
+        height: 30px !important;
+        box-shadow: 0 0 $shadowAmount $cerulean;
+        margin: 0 10px 0 0;
+      }
 
-        & > div {
+      & > aside {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        text-shadow: 0 0 $shadowAmount $cerulean;
 
-            display: flex;
-            align-items: center;
-
-            & > canvas {
-
-                width: 30px !important;
-                height: 30px !important;
-                box-shadow: 0 0 $shadowAmount $cerulean;
-                margin: 0 10px 0 0;
-            }
-
-            & > aside {
-
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                text-shadow: 0 0 $shadowAmount $cerulean;
-
-                strong {
-
-                    font-size: 14px;
-                    margin-bottom: 1px;
-                }
-
-                code {
-
-                    font-size: 10px;
-                    text-overflow: ellipsis;
-                    width: 140px;
-                    overflow: hidden;
-                }
-            }
+        strong {
+          font-size: 14px;
+          margin-bottom: 1px;
         }
+
+        code {
+          font-size: 10px;
+          text-overflow: ellipsis;
+          width: 140px;
+          overflow: hidden;
+        }
+      }
     }
+  }
 }

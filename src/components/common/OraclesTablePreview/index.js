@@ -1,2 +1,2 @@
-import {OraclesTablePreview} from './OraclesTablePreview';
+import { OraclesTablePreview } from "./OraclesTablePreview";
 export default OraclesTablePreview;

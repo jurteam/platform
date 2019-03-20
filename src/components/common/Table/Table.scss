@@ -1,55 +1,54 @@
 @import "../../../assets/scss/variables";
 
 .jur {
-    &-table {
-        box-sizing: border-box;
-        width: 100%;
-        font-family: $font-poppins;
-        color: $user-notification-color;
-        font-size: 13px;
-        border-collapse: collapse;
+  &-table {
+    box-sizing: border-box;
+    width: 100%;
+    font-family: $font-poppins;
+    color: $user-notification-color;
+    font-size: 13px;
+    border-collapse: collapse;
 
-        &__head {
-            font-weight: 400;
-            border-bottom: 2px solid $table-border;
-            padding: 7px 0;
-        }
-
-        &__cell {
-            &:not(th) {
-                vertical-align: top;
-                padding: 15px 0 20px;
-                border-bottom: 1px solid $table-border;
-            }
-
-            &--sortable {
-                cursor: pointer;
-
-                svg {
-                    display: inline-block;
-                    margin-left: 10px;
-                    width: 7px;
-                    position: relative;
-                    top: -3px;
-                }
-            }
-        }
-
-        &__empty {
-            text-align: center;
-            
-            p {
-                color: $contracts-empty-text-color;
-                font-family: $font-poppins;
-                font-weight: $poppins-semibold;
-                font-size: 13px;
-                margin: 40px 0 20px;
-            }
-
-            .jur-btn {
-                width: 253px;
-            }
-        }
+    &__head {
+      font-weight: 400;
+      border-bottom: 2px solid $table-border;
+      padding: 7px 0;
     }
 
+    &__cell {
+      &:not(th) {
+        vertical-align: top;
+        padding: 15px 0 20px;
+        border-bottom: 1px solid $table-border;
+      }
+
+      &--sortable {
+        cursor: pointer;
+
+        svg {
+          display: inline-block;
+          margin-left: 10px;
+          width: 7px;
+          position: relative;
+          top: -3px;
+        }
+      }
+    }
+
+    &__empty {
+      text-align: center;
+
+      p {
+        color: $contracts-empty-text-color;
+        font-family: $font-poppins;
+        font-weight: $poppins-semibold;
+        font-size: 13px;
+        margin: 40px 0 20px;
+      }
+
+      .jur-btn {
+        width: 253px;
+      }
+    }
+  }
 }

@@ -1,2 +1,2 @@
-import { ContractsTable } from './ContractsTable';
+import { ContractsTable } from "./ContractsTable";
 export default ContractsTable;

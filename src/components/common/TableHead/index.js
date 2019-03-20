@@ -1,2 +1,2 @@
-import { TableHead } from './TableHead';
+import { TableHead } from "./TableHead";
 export default TableHead;

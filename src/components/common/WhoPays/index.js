@@ -1,2 +1,2 @@
-import {WhoPays} from './WhoPays';
+import { WhoPays } from "./WhoPays";
 export default WhoPays;

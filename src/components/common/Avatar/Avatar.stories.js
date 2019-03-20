@@ -1,24 +1,24 @@
-import React from 'react';
+import React from "react";
 
-import { storiesOf } from '@storybook/react';
-import { withInfo } from '@storybook/addon-info';
+import { storiesOf } from "@storybook/react";
+import { withInfo } from "@storybook/addon-info";
 
-import Avatar from './index';
+import Avatar from "./index";
 
-storiesOf('Avatar', module)
+storiesOf("Avatar", module)
   .addDecorator(withInfo)
-  .addParameters({ 
-    info: { 
+  .addParameters({
+    info: {
       inline: true,
       header: false
     }
   })
-  .add('No seed', () => (
+  .add("No seed", () => (
     <div>
       <Avatar />
     </div>
   ))
-  .add('Avatar', () => (
+  .add("Avatar", () => (
     <div>
       <Avatar seed="0x70aec4b9cffa7b" size="xxsmall" />
       <Avatar seed="0x70aec4b9cffa7b" size="xsmall" />
@@ -30,7 +30,7 @@ storiesOf('Avatar', module)
       <Avatar seed="0x70aec4b9cffa7b" size="xxxlarge" />
     </div>
   ))
-  .add('Avatar rounded', () => (
+  .add("Avatar rounded", () => (
     <div>
       <Avatar seed="0x70aec4b9cffa7b" size="xxsmall" variant="rounded" />
       <Avatar seed="0x70aec4b9cffa7b" size="xsmall" variant="rounded" />
@@ -42,7 +42,7 @@ storiesOf('Avatar', module)
       <Avatar seed="0x70aec4b9cffa7b" size="xxxlarge" variant="rounded" />
     </div>
   ))
-  .add('Avatar circle', () => (
+  .add("Avatar circle", () => (
     <div>
       <Avatar seed="0x70aec4b9cffa7b" size="xxsmall" variant="circle" />
       <Avatar seed="0x70aec4b9cffa7b" size="xsmall" variant="circle" />

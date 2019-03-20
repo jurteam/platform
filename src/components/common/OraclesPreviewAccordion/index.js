@@ -1,2 +1,2 @@
-import {OraclesPreviewAccordion} from './OraclesPreviewAccordion';
+import { OraclesPreviewAccordion } from "./OraclesPreviewAccordion";
 export default OraclesPreviewAccordion;

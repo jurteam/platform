@@ -1,24 +1,23 @@
-import React from 'react';
+import React from "react";
 
-import { storiesOf } from '@storybook/react';
-import { withInfo } from '@storybook/addon-info';
+import { storiesOf } from "@storybook/react";
+import { withInfo } from "@storybook/addon-info";
 
-import InputRange from './';
+import InputRange from "./";
 
-storiesOf('InputRange', module)
+storiesOf("InputRange", module)
   .addDecorator(withInfo)
-  .addParameters({ 
-    info: { 
+  .addParameters({
+    info: {
       inline: true,
       header: false
     }
   })
-  .add('Default', () => 
+  .add("Default", () => (
     <InputRange
       min="0"
       max="100"
       defaultValue={0}
       onValueChange={value => console.log(value)}
-
     />
-  )
+  ));

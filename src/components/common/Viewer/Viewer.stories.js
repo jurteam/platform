@@ -1,26 +1,26 @@
-import React from 'react';
+import React from "react";
 
-import { storiesOf } from '@storybook/react';
-import { withInfo } from '@storybook/addon-info';
+import { storiesOf } from "@storybook/react";
+import { withInfo } from "@storybook/addon-info";
 
-import Viewer from './';
+import Viewer from "./";
 
-storiesOf('Viewer', module)
+storiesOf("Viewer", module)
   .addDecorator(withInfo)
-  .addParameters({ 
-    info: { 
+  .addParameters({
+    info: {
       inline: true,
       header: false
     }
   })
-  .add('FilePreview', () => (
+  .add("FilePreview", () => (
     <Viewer
       isOpen={true}
       filePath={`${process.env.PUBLIC_URL}/files/prova.pdf`}
-      onFileLoadingError={() => alert('file error')}
+      onFileLoadingError={() => alert("file error")}
     />
   ))
-  .add('FilePreview & Vote Allowed', () => (
+  .add("FilePreview & Vote Allowed", () => (
     <Viewer
       isOpen={true}
       filePath={`${process.env.PUBLIC_URL}/files/prova.pdf`}
@@ -30,17 +30,17 @@ storiesOf('Viewer', module)
         minutes: 1,
         startDate: "March 9, 2019 15:27:00",
         statusId: 5,
-        expireAlertFrom: 1000*60*60*24,
+        expireAlertFrom: 1000 * 60 * 60 * 24,
         onProgress: percentage => console.log(percentage),
-        onExpire: () => alert('countdown finished')
+        onExpire: () => alert("countdown finished")
       }}
       statusId={35}
       counterparties={[
         {
           wallet: {
-            address: '0x9h8563948567364975369h34789537645',
+            address: "0x9h8563948567364975369h34789537645"
           },
-          name: 'Alice',
+          name: "Alice",
           shouldRenderName: true,
           percentage: 31.4,
           value: 16903,
@@ -48,9 +48,9 @@ storiesOf('Viewer', module)
         },
         {
           wallet: {
-            address: '0xo38765374573497694756473v6936953',
+            address: "0xo38765374573497694756473v6936953"
           },
-          name: 'Bob',
+          name: "Bob",
           shouldRenderName: false,
           percentage: 40.4,
           value: 1323903,
@@ -58,11 +58,11 @@ storiesOf('Viewer', module)
         }
       ]}
       onVote={counterparty => alert(`Votin for ${counterparty.name}`)}
-      onReject={() => alert('Rejected Contract')}
-      onFileLoadingError={() => alert('file error')}
+      onReject={() => alert("Rejected Contract")}
+      onFileLoadingError={() => alert("file error")}
     />
   ))
-  .add('VoteForm', () => (
+  .add("VoteForm", () => (
     <Viewer
       isOpen={true}
       countdownOptions={{
@@ -71,17 +71,17 @@ storiesOf('Viewer', module)
         minutes: 1,
         startDate: "March 9, 2019 15:27:00",
         statusId: 5,
-        expireAlertFrom: 1000*60*60*24,
+        expireAlertFrom: 1000 * 60 * 60 * 24,
         onProgress: percentage => console.log(percentage),
-        onExpire: () => alert('countdown finished')
+        onExpire: () => alert("countdown finished")
       }}
       statusId={35}
       counterparties={[
         {
           wallet: {
-            address: '0x9h8563948567364975369h34789537645',
+            address: "0x9h8563948567364975369h34789537645"
           },
-          name: 'Alice',
+          name: "Alice",
           shouldRenderName: true,
           percentage: 31.4,
           value: 16903,
@@ -89,9 +89,9 @@ storiesOf('Viewer', module)
         },
         {
           wallet: {
-            address: '0xo38765374573497694756473v6936953',
+            address: "0xo38765374573497694756473v6936953"
           },
-          name: 'Bob',
+          name: "Bob",
           shouldRenderName: false,
           percentage: 40.4,
           value: 1323903,
@@ -99,9 +99,9 @@ storiesOf('Viewer', module)
         }
       ]}
       onVote={counterparty => alert(`Votin for ${counterparty.name}`)}
-      onReject={() => alert('Rejected Contract')}
-      onFileLoadingError={() => alert('file error')}
+      onReject={() => alert("Rejected Contract")}
+      onFileLoadingError={() => alert("file error")}
       onVoteSubmit={data => console.log(data)}
       metaMaskError={true}
     />
-  ))
+  ));

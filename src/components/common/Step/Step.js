@@ -1,15 +1,13 @@
-import React, { Fragment } from 'react'
-import PropTypes from 'prop-types';
+import React, { Fragment } from "react";
+import PropTypes from "prop-types";
 
 export const Step = ({ index, last, active, children }) => (
   <Fragment>
-  {
-    active ?
-      <div className={`jur-step ${ active ? 'jur-step--active' : '' }`}>
-        { children }
+    {active ? (
+      <div className={`jur-step ${active ? "jur-step--active" : ""}`}>
+        {children}
       </div>
-    : null
-  }
+    ) : null}
   </Fragment>
 );
 

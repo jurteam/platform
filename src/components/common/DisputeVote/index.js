@@ -1,2 +1,2 @@
-import {DisputeVote} from './DisputeVote';
+import { DisputeVote } from "./DisputeVote";
 export default DisputeVote;

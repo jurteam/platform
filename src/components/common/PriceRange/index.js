@@ -1,2 +1,2 @@
-import {PriceRange} from './PriceRange';
+import { PriceRange } from "./PriceRange";
 export default PriceRange;

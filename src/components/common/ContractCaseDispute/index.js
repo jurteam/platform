@@ -1,2 +1,2 @@
-import {ContractCaseDispute} from './ContractCaseDispute';
+import { ContractCaseDispute } from "./ContractCaseDispute";
 export default ContractCaseDispute;

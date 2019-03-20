@@ -1,2 +1,2 @@
-import {ContractCounterparties} from './ContractCounterparties';
+import { ContractCounterparties } from "./ContractCounterparties";
 export default ContractCounterparties;

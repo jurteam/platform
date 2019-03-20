@@ -1,11 +1,16 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import ContractAccordion from '../ContractAccordion';
-import OraclesTablePreview from '../OraclesTablePreview';
+import React from "react";
+import PropTypes from "prop-types";
+import ContractAccordion from "../ContractAccordion";
+import OraclesTablePreview from "../OraclesTablePreview";
 
-import './OraclesPreviewAccordion.scss';
+import "./OraclesPreviewAccordion.scss";
 
-export const OraclesPreviewAccordion = ({headers, data, currentUserWallet, viewAllDetails}) => {
+export const OraclesPreviewAccordion = ({
+  headers,
+  data,
+  currentUserWallet,
+  viewAllDetails
+}) => {
   return (
     <ContractAccordion title="Oracles" tooltip>
       <OraclesTablePreview
@@ -16,4 +21,4 @@ export const OraclesPreviewAccordion = ({headers, data, currentUserWallet, viewA
       />
     </ContractAccordion>
   );
-}
+};

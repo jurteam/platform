@@ -1,2 +1,2 @@
-import { CountdownGraph } from './CountdownGraph';
+import { CountdownGraph } from "./CountdownGraph";
 export default CountdownGraph;

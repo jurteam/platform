@@ -1,2 +1,2 @@
-import {OraclesTable} from './OraclesTable';
+import { OraclesTable } from "./OraclesTable";
 export default OraclesTable;

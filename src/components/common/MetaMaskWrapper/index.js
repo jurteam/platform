@@ -1,2 +1,2 @@
-import { MetaMaskWrapper } from './MetaMaskWrapper';
+import { MetaMaskWrapper } from "./MetaMaskWrapper";
 export default MetaMaskWrapper;
