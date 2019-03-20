@@ -180,9 +180,9 @@ export const ContractDetail = props => {
         />
 
         <InsertContractDetails
-          kpiInitialValue={kpi}
+          kpiInitialValue={kpi || ""}
           kpiPlaceholder={labels.kpiPlaceholder}
-          resolutionProofInitialValue={resolution_proof}
+          resolutionProofInitialValue={resolution_proof || ""}
           resolutionProofPlaceholder={labels.resolutionProofPlaceholder}
           onKpiChange={onInputChange}
           onResolutionProofChange={onInputChange}
