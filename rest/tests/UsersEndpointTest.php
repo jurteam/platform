@@ -92,4 +92,43 @@ class UsersEndpointTest extends TestCase
             'status' => 'deleted',
          ]);
     }
+
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function a_user_with_unique_full_name_could_be_stored()
+    {
+        $wallet = str_random(10);
+
+        $user = factory(App\Models\User::class)->make();
+
+        $this->post('api/v1/user', $user->toArray(), [
+            'wallet' => $wallet
+        ]);
+
+        $this->seeInDatabase('users', ['wallet' => $wallet]);
+    }
+
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function an_user_with_no_unique_full_name_could_not_be_stored()
+    {
+        $wallet = str_random(10);
+
+        $user = factory(App\Models\User::class)->create([
+            'wallet' => str_random(10)
+        ]);
+
+        $this->post('api/v1/user', [
+            'name' => $user->name
+        ], [
+            'wallet' => $wallet
+        ])
+        ->seeStatusCode(422);
+    }
 }
