@@ -34,6 +34,7 @@ const headers = [
 
 const disputesData = [
   {
+    to: '/0',
     id: 0,
     statusId: 21,
     statusLabel: "Open Dispute",
@@ -45,6 +46,7 @@ const disputesData = [
     earning: null
   },
   {
+    to: '/1',
     id: 1,
     statusId: 39,
     statusLabel: "Closed Dispute",

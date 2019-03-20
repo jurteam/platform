@@ -17,6 +17,10 @@
       color: $disputes-earning-color;
     }
 
+    .jur-table__row {
+      cursor: pointer;
+    }
+
     .jur-table__empty {
       p {
         margin-bottom: 5px;
