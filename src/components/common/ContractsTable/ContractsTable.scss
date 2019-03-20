@@ -9,6 +9,10 @@
         }
       }
 
+      .jur-table__row {
+        cursor: pointer;
+      }
+
       .jur-amount {
         color: $contracts-value-color;
         font-weight: $poppins-semibold;
