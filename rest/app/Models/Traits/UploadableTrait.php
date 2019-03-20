@@ -16,9 +16,11 @@ trait UploadableTrait
 
     public function uploadMedia($params, $collection = 'attachments')
     {
-        foreach ($params->attachments as $attachment) {
-            $this->addMedia($attachment)
-                ->toMediaCollection($collection);
+        if ($params->has('attachments')) {
+            foreach ($params->attachments as $attachment) {
+                $this->addMedia($attachment)
+                    ->toMediaCollection($collection);
+            }
         }
     }
 }

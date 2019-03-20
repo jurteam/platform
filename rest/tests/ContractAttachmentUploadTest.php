@@ -14,17 +14,21 @@ class ContractAttachmentUploadTest extends TestCase
      */
     public function an_user_can_upload_attachment_for_an_existing_contract()
     {
-        $wallet = 'QHx5VJEg3zO2jseSEq8R/wtCljguCvHSMA49HQ1IWiI=';
+        $wallet = str_random(20);
+        $user = factory(App\Models\User::class)->create([
+            'wallet' => $wallet
+        ]);
 
         Storage::fake('attachments');
 
         $attachments[] = UploadedFile::fake()->image('attachment.jpg');
 
         $contract = factory(App\Models\Contract::class)->create([
-            'user_id' => factory(App\Models\User::class)->create()->id
+            'user_id' => $user->id
         ]);
-        $response = $this->post("api/v1/contracts/medias/{$contract->id}", [
-            'attachments' => $attachments
+        $response = $this->put("api/v1/contracts/{$contract->id}", [
+            'attachments' => $attachments,
+            'kpi' => 'test'
         ], [
             'wallet' => $wallet
         ]);

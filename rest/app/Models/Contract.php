@@ -14,6 +14,7 @@ class Contract extends Model implements HasMedia
     use HasMediaTrait, ActivitiesTrait, StatusesTrait, UploadableTrait;
 
     protected $fillable = [
+        'name',
         'tx_hash',
         'part_a_wallet',
         'part_a_name',
