@@ -3,7 +3,9 @@
   API_GET_CONTRACT,
   SET_CONTRACT,
   API_DELETE_CONTRACT,
+  UPDATE_CONTRACT_FILTER,
   UPDATE_CONTRACT_FIELD,
+  UPDATE_NEW_CONTRACT_FIELD,
   CONTRACT_DELETED,
   CONTRACTS_FETCHED,
   RESET_CONTRACT,
@@ -12,13 +14,19 @@
 
 const INITIAL_STATE = {
   updating: false,
-  current: {
+  new: {
     part_a_wallet: "",
     part_a_name: "",
     part_a_email: "",
     part_b_wallet: "",
     part_b_name: "",
     part_b_email: "",
+    statusId: 0,
+    statusLabel: "Draft",
+    kpi: "",
+    resolution_proof: ""
+  },
+  current: {
     statusId: 0,
     statusLabel: "Draft",
     contractName: "",
@@ -60,10 +68,19 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, list: action.payload };
 
     // Updates
+    case UPDATE_CONTRACT_FILTER:
+      let filtersToUpdate = {};
+      filtersToUpdate[action.field] = action.value;
+      return { ...state, filters: { ...state.filters, ...filtersToUpdate } };
+
+    case UPDATE_NEW_CONTRACT_FIELD:
+      let newToUpdate = {};
+      newToUpdate[action.field] = action.value;
+      return { ...state, new: { ...state.new, ...newToUpdate } };
+
     case UPDATE_CONTRACT_FIELD:
       let toUpdate = {};
       toUpdate[action.field] = action.value;
-      console.log(UPDATE_CONTRACT_FIELD, toUpdate);
       return { ...state, current: { ...state.current, ...toUpdate } };
 
     // Reset

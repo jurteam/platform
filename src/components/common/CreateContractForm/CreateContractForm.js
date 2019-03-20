@@ -11,7 +11,7 @@ import { AppContext } from "../../../bootstrap/AppProvider"; // context
 
 import "./CreateContractForm.scss";
 
-export const CreateContractForm = ({ onNext, user, contract, updateContractField, resetContract }) => {
+export const CreateContractForm = ({ onNext, user, contract, updateNewContractField, resetContract }) => {
 
   const [formUpdated, setFormUpdated] = useState(false);
 
@@ -44,7 +44,7 @@ export const CreateContractForm = ({ onNext, user, contract, updateContractField
   const changeInput = (name, value) => {
     setFormUpdated(true);
     setFormData({ ...contract.current, [name]: value });
-    updateContractField(name, value); // dispatch action
+    updateNewContractField(name, value); // dispatch action
   };
 
   const onInputChange = (ev) => {
