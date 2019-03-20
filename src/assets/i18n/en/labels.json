@@ -14,6 +14,7 @@
     "filterBy" : "Filter by",
     "status" : "Status",
     "contractName" : "Contract Name",
+    "contractNamePlaceholder" : "Contract name goes here...",
     "duration" : "Duration",
     "couterpartyDetails" : "Counterparty Details",
     "metamaskRequired" : "MetaMask is Required",

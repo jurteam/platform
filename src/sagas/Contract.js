@@ -33,7 +33,7 @@ export function* getContract(action) {
 
   try {
     const response = yield call(Contracts.get, { id });
-    log("createContract - get", response);
+    log("getContract", response);
     yield put({ type: SET_CONTRACT, payload: response.data.data });
   } catch (error) {
     // TODO: handle 404
@@ -111,11 +111,14 @@ export function* createContract(action) {
 // Update
 export function* updateContract(action) {
   log("updateContract - run");
-  const { id, kpi } = yield select(getCurrentContract);
+  const { id, contractName, kpi, resolutionProof, category } = yield select(getCurrentContract);
 
   const toUpdate = new FormData();
   // toUpdate.append('_method', 'PUT');
+  toUpdate.append("contract_name", contractName);
   toUpdate.append("kpi", kpi);
+  toUpdate.append("resolution_proof", resolutionProof);
+  toUpdate.append("category", category);
 
   for (let i = 0; i < action.attachments.length; i++) {
     // iteate over any file sent over appending the files to the form data.

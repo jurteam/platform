@@ -20,10 +20,10 @@ export const ContractCounterparties = ({
         <AvatarInfo
           key={`counterparty-${idx}`}
           userName={counterparty.name}
-          userWallet={counterparty.wallet.address}
-          shouldRenderName={counterparty.shouldRenderName}
+          userWallet={counterparty.wallet}
+          shouldRenderName={counterparty.renderName}
           variant={
-            counterparty.shouldRenderName
+            counterparty.renderName
               ? counterparty.name
                 ? null
                 : "ellipsis"

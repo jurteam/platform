@@ -51,6 +51,8 @@ export const ContractSummary = props => {
     return acc;
   }, {});
 
+  console.log("debtor", debtor, partA, partB);
+
   return (
     <div className="jur-contract-summary">
       <ContractName
@@ -65,13 +67,13 @@ export const ContractSummary = props => {
         </div>
         <div className="jur-contract-summary__column">
           <ContractAmount
-            debtorWalletAddress={debtor.wallet.address}
+            debtorWalletAddress={debtor.wallet}
             amount={contractAmount}
           />
           <ContractPenaltyFee
             contractInfo={{
-              partA: partA.wallet.address,
-              partB: partB.wallet.address,
+              partA: partA.wallet,
+              partB: partB.wallet,
               penaltyFee: {
                 partA: penaltyFeePartA,
                 partB: penaltyFeePartB

@@ -31,7 +31,7 @@ export const ContractsTable = ({
   onPageChange,
   contractsPerPage,
   totalContracts,
-  handlePageChange
+  history
 }) => {
   const [activePage, setActivePage] = useState(initialPage);
   const emptyMessage = data.length === 0 && (
@@ -45,10 +45,15 @@ export const ContractsTable = ({
     </div>
   );
 
-  handlePageChange = pageNumber => {
+  const handlePageChange = pageNumber => {
     setActivePage(pageNumber);
     onPageChange(pageNumber);
-  }
+  };
+
+  const showContract = to => {
+    history.push(to);
+  };
+
 
   return (
     <div className="jur-contracts__table">
@@ -74,7 +79,9 @@ export const ContractsTable = ({
         {data.length > 0 ? (
           <TableBody>
             {data.map(contract => (
-              <TableRow key={contract.id}>
+              <TableRow key={contract.id}
+              onClick={() => showContract(`/contracts/detail/${contract.id}`)}
+              >
                 <TableCell>
                   <Tag statusId={contract.statusId}>{contract.statusLabel}</Tag>
                 </TableCell>

@@ -119,8 +119,6 @@ export const ContractDetail = props => {
 
   const {
     id,
-    part_a_wallet,
-    part_b_wallet,
     statusId,
     statusLabel,
     kpi,
@@ -129,32 +127,34 @@ export const ContractDetail = props => {
     whoPays,
     contractName,
     counterparties,
+    attachments: contractAttachments,
     duration
   } = contract.current;
   console.log("ContractDetail - contract", contract);
 
   const part_a = {
-    isDebtor: whoPays ? whoPays === "a" : true,
-    shouldRenderName: part_a_wallet === user.wallet ? user.show_fullname : false
+    isDebtor: whoPays && whoPays === counterparties[0].wallet ? true : false
   };
 
   const part_b = {
-    isDebtor: whoPays ? whoPays === "b" : true,
-    shouldRenderName: part_b_wallet === user.wallet ? user.show_fullname : false
+    isDebtor: whoPays && whoPays === counterparties[1].wallet ? true : false
   };
 
   return typeof params.id !== "undefined" ? (
     <PageLayout breadcrumbs={breadcrumbs}>
+      { counterparties ? <>
       <Main>
         <ContractSummary
           data={{
             contractID: id,
             from: {
               label: "partA",
+              debtor: (!part_a.isDebtor && !part_b.isDebtor) ? true : part_a.isDebtor,
               ...counterparties[0]
             },
             to: {
               label: "partB",
+              debtor: part_b.isDebtor,
               ...counterparties[1]
             },
             penaltyFee: {
@@ -172,7 +172,8 @@ export const ContractDetail = props => {
               minutes: duration.minutes,
               expireAlertFrom: ""
             },
-            onContractNameChange: ev => console.log(ev.target.value),
+            inCaseOfDispute: {id: "open", label: labels.open},
+            onContractNameChange: onInputChange,
             onProgress: percentage => console.log(percentage),
             onExpire: () => alert("Countdown finished")
           }}
@@ -183,10 +184,10 @@ export const ContractDetail = props => {
           kpiPlaceholder={labels.kpiPlaceholder}
           resolutionProofInitialValue={resolution_proof}
           resolutionProofPlaceholder={labels.resolutionProofPlaceholder}
-          onKpiChange={e => console.log("yo")}
-          onResolutionProofChange={e => console.log("yo")}
+          onKpiChange={onInputChange}
+          onResolutionProofChange={onInputChange}
           onFileAdded={onFileAdded}
-          uploadedFiles={[{ name: "Hello worldl.pdf" }]}
+          uploadedFiles={contractAttachments}
           onView={e => console.log("yo")}
           onDelete={e => console.log("yo")}
         />
@@ -204,7 +205,7 @@ export const ContractDetail = props => {
                 address: counterparties[0].wallet,
                 amount: value
               },
-              ...counterparties[0]
+              ...counterparties[0] || []
             },
             to: {
               label: "partB",
@@ -213,7 +214,7 @@ export const ContractDetail = props => {
                 address: counterparties[1].wallet,
                 amount: value
               },
-              ...counterparties[1]
+              ...counterparties[1] || []
             },
             penaltyFee: null
           }}
@@ -234,6 +235,8 @@ export const ContractDetail = props => {
           selectedOptionId={"open"}
         />
       </Aside>
+</>
+      : "loading" }
 
       <ModalDiscliamer
         isOpen={showModal}
