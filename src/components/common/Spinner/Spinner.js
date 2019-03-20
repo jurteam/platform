@@ -1,8 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { Component } from "react";
 
-import src from "../../../assets/loading.gif";
-import "./Spinner.scss"; // load scss properly
+import SpinnerDOM from "./SpinnerDOM";
 
 class Spinner extends Component {
   constructor(props) {
@@ -32,11 +31,7 @@ class Spinner extends Component {
   render() {
     const { loading } = this.state;
 
-    return (
-      <div className={`jur--spinner${loading ? "" : " off"}`}>
-        <img src={src} alt="Loading..." />
-      </div>
-    );
+    return <SpinnerDOM loading={loading} />;
   }
 }
 

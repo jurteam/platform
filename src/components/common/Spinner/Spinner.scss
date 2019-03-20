@@ -22,4 +22,11 @@
       max-width: 80px;
     }
   }
+
+  &-main &--spinner{
+
+    $spacer : 117px;
+    top: $spacer;
+    padding-bottom: $spacer;
+  }
 }
