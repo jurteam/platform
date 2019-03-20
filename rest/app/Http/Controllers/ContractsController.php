@@ -79,7 +79,7 @@ class ContractsController extends Controller
         $contract->update($request->all());
         $contract->uploadMedia($request);
 
-        return $this->response->item($contract, new ContractTransformer);
+        return $this->response->item($contract, new ContractDetailTransformer);
     }
 
     /**
