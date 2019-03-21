@@ -30,12 +30,13 @@ class Contract extends Model implements HasMedia
         'has_penalty_fee',
         'part_a_penalty_fee',
         'part_b_penalty_fee',
-        'durantion_days',
+        'duration_days',
         'duration_hours',
         'duration_minutes',
         'contract_status_id',
         'is_a_dispute',
         'is_a_friendly_resolution',
+        'who_pays',
         'user_id'
     ];
 
