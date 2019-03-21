@@ -10,6 +10,21 @@ class ContractEndpointTest extends TestCase
      *
      * @return void
      */
+    public function an_user_can_filters_own_contract_by()
+    {
+        $from = '2019-02-10';
+        $to = '2019-03-20';
+
+        $this->get("api/v1/contracts?from={$from}&to={$to}", [
+            'wallet' => 'QHx5VJEg3zO2jseSEq8R/wtCljguCvHSMA49HQ1IWiI='
+        ])->seeStatusCode(200);
+    }
+
+    /**
+     * @test
+     *
+     * @return void
+     */
     public function a_registered_user_can_see_his_own_list_of_contracts()
     {
         $wallet = 'QHx5VJEg3zO2jseSEq8R/wtCljguCvHSMA49HQ1IWiI=';

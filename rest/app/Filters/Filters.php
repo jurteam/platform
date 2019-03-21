@@ -36,7 +36,9 @@ abstract class Filters
         $this->builder = $builder;
 
         foreach ($this->filters as $filter) {
-            if ($this->hasFilter($filter)) {
+            if ($this->hasHeaderFilter($filter)) {
+                $this->$filter($this->request->header($filter));
+            } elseif ($this->hasFilter($filter)) {
                 $this->$filter($this->request->get($filter));
             }
         }
@@ -54,5 +56,17 @@ abstract class Filters
     protected function hasFilter($filter)
     {
         return method_exists($this, $filter) && $this->request->has($filter) && ! empty($this->request->get($filter));
+    }
+
+    /**
+     * Check if the filter has been defined in the headers.
+     *
+     * @param string $filter
+     *
+     * @return Boolean
+     */
+    protected function hasHeaderFilter($filter)
+    {
+        return $this->request->headers->has($filter) && method_exists($this, $filter) && ! empty($this->request->header($filter));
     }
 }
