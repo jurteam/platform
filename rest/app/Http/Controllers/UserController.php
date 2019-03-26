@@ -75,6 +75,29 @@ class UserController extends Controller
     }
 
     /**
+     * Checking if exist user from wallet.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function checkForRegistered(Request $request)
+    {
+        $wallet = $request->header('wallet');
+        $user = User::byWallet($wallet)->first();
+
+        if ($user) {
+            return response()->json([
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'wallet' => $user->wallet
+            ]);
+        }
+
+        return response()->json([]);
+    }
+
+    /**
      * @param  \Illuminate\Http\Request $request
      * @return \App\Models\User
      */
