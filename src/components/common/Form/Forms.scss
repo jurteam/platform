@@ -7,6 +7,14 @@
     box-sizing: border-box;
   }
 
+  h3 {
+    font-size: 20px;
+    color: $prussian-blue;
+    font-weight: 400;
+    margin: 0;
+    padding: 0 0 10px 0;
+  }
+
   $form: &;
 
   label {
