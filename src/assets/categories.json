@@ -1,26 +1,26 @@
 [
   {
-    "value": "1",
-    "label": "Category 01"
+    "value": 0,
+    "label": "Entrepreneur"
   },
   {
-    "value": "2",
-    "label": "Category 02"
+    "value": 1,
+    "label": "Lawyer"
   },
   {
-    "value": "3",
-    "label": "Category 03"
+    "value": 2,
+    "label": "Investor"
   },
   {
-    "value": "4",
-    "label": "Category 04"
+    "value": 3,
+    "label": "Trador"
   },
   {
-    "value": "5",
-    "label": "Category 05"
+    "value": 4,
+    "label": "Freelancer"
   },
   {
-    "value": "6",
-    "label": "Category 06"
+    "value": 5,
+    "label": "Other"
   }
 ]

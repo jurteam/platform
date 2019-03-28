@@ -56,6 +56,11 @@ export const ProfileForm = ({
     accepted_terms
   } = user;
 
+  const [
+    setOtherCategoryIsVisible,
+    setOtherCategoryInputVisibility
+  ] = useState(category === 5);
+
   const changeInput = (name, value) => {
     setFormUpdated(true);
     setFormData({ ...user, [name]: value });
@@ -74,14 +79,19 @@ export const ProfileForm = ({
   };
 
   const onChangeSelect = (name, input) => {
-    const value =
-      typeof input !== "undefined" &&
-      input !== null &&
-      typeof input.value !== "undefined"
-        ? input.value
-        : null;
-
-    changeInput(name, value);
+    if (name === "category" && input.value === 5) {
+      changeInput("category", null);
+      setOtherCategoryInputVisibility(true);
+    } else {
+      const value =
+        typeof input !== "undefined" &&
+        input !== null &&
+        typeof input.value !== "undefined"
+          ? input.value
+          : null;
+  
+      changeInput(name, value);
+    }
   };
 
   // disable update
@@ -202,14 +212,32 @@ export const ProfileForm = ({
           <Form.Label htmlFor="category" optional>
             {labels.category}
           </Form.Label>
-          <Form.Select
-            name="category"
-            id="category"
-            error={hasError("category")}
-            value={categories.filter(option => option.value === category)}
-            options={categories}
-            onChange={input => onChangeSelect("category", input)}
-          />
+          {setOtherCategoryIsVisible ?
+            <>
+              <Form.Input
+                type="text"
+                name="category"
+                id="category"
+                placeholder={labels.otherCategoryPlaceholder}
+                value={category || ""}
+                error={hasError("category")}
+                onChange={onInputChange}
+              />
+              <span
+                className="back-to-list"
+                onClick={() => setOtherCategoryInputVisibility(false)}
+              >Back to list</span>
+            </>
+            :
+            <Form.Select
+              name="category"
+              id="category"
+              error={hasError("category")}
+              value={categories.filter(option => option.value === category)}
+              options={categories}
+              onChange={input => onChangeSelect("category", input)}
+            />
+          }
         </Form.Group>
       </Form.Container>
       <FormContainer className="jur-form__footer">

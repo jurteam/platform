@@ -10,6 +10,16 @@
 
       #{$form}__group {
         flex-basis: calc((100% - 40px) / 2);
+        position: relative;
+      }
+
+      .back-to-list {
+        position: absolute;
+        top: 3px;
+        right: 0;
+        font-size: 11px;
+        cursor: pointer;
+        color: $prussian-blue;
       }
     }
 

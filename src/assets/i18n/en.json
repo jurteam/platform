@@ -71,5 +71,6 @@
     "hubs" : "Hubs",
     "hubsText" : "Lorem ipsum dolor sit amet.",
     "saving" : "Saving",
-    "dotted" : "•••"
+    "dotted" : "•••",
+    "otherCategoryPlaceholder": "Insert your category"
 }
