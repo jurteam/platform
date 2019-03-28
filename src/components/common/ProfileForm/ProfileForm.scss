@@ -80,6 +80,8 @@
         margin-top: 20px;
 
         input {
+          position: relative;
+          top: 2px;
           width: auto;
           margin: 0 5px 0 0;
           width: 16px;
@@ -87,7 +89,7 @@
         }
 
         label {
-          flex-basis: 100%;
+          display: block;
           margin-bottom: 0;
         }
 

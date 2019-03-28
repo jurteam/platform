@@ -273,6 +273,7 @@ export const ProfileForm = ({
                   onChange={onInputChange}
                 />
                 {labels.accept}
+                {" "}
                 <NavLink to="/profile/terms">
                   {labels.termAndConditions}
                 </NavLink>
