@@ -37,7 +37,8 @@ class Contract extends Model implements HasMedia
         'is_a_dispute',
         'is_a_friendly_resolution',
         'who_pays',
-        'user_id'
+        'user_id',
+        'wallet'
     ];
 
     /**
@@ -112,7 +113,8 @@ class Contract extends Model implements HasMedia
 
         $attributes = array_merge($params->all(), [
             'contract_status_id' => $status->id,
-            'user_id' => $user->id
+            'user_id' => $user ? $user->id : null,
+            'wallet' => $params->header('wallet')
         ]);
         $contract = static::create($attributes);
 

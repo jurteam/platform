@@ -52,7 +52,8 @@ class ContractEndpointTest extends TestCase
         ->seeStatusCode(200);
 
         $this->seeInDatabase('contracts', [
-            'part_a_wallet' => 'dIRyZgmIQPam4zGpeR3nKBtUYhoGjD'
+            'part_a_wallet' => 'dIRyZgmIQPam4zGpeR3nKBtUYhoGjD',
+            'wallet' => 'dIRyZgmIQPam4zGpeR3nKBtUYhoGjD'
         ]);
     }
 

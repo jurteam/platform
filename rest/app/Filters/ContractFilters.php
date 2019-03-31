@@ -10,8 +10,13 @@ class ContractFilters extends Filters
      * @var array
      */
     protected $filters = [
-        'status', 'from', 'to', 'query', 'owner', 'type'
+        'status', 'from', 'to', 'query', 'owner', 'type', 'wallet'
     ];
+
+    public function wallet()
+    {
+        return $this->builder->whereWallet($wallet);
+    }
 
     public function owner($value)
     {
