@@ -10,6 +10,16 @@
 
       #{$form}__group {
         flex-basis: calc((100% - 40px) / 2);
+        position: relative;
+      }
+
+      .back-to-list {
+        position: absolute;
+        top: 3px;
+        right: 0;
+        font-size: 11px;
+        cursor: pointer;
+        color: $prussian-blue;
       }
     }
 
@@ -70,6 +80,8 @@
         margin-top: 20px;
 
         input {
+          position: relative;
+          top: 2px;
           width: auto;
           margin: 0 5px 0 0;
           width: 16px;
@@ -77,7 +89,7 @@
         }
 
         label {
-          flex-basis: 100%;
+          display: block;
           margin-bottom: 0;
         }
 

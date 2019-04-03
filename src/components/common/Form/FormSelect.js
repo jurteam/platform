@@ -19,6 +19,7 @@ export const FormSelect = ({
       border: "1px solid #EAEBEC",
       boxShadow: "none",
       borderRadius: 2,
+      minHeight: 36,
       maxHeight: 36,
       height: 36,
       "&:hover": {
