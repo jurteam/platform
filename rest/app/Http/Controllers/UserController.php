@@ -56,7 +56,7 @@ class UserController extends Controller
             ]
         ]);
 
-        $user->update($request);
+        $user->update($request->all());
 
         return response()->json(compact('user'));
     }
