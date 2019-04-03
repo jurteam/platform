@@ -13,9 +13,9 @@ class ContractFilters extends Filters
         'status', 'from', 'to', 'query', 'owner', 'type', 'wallet'
     ];
 
-    public function wallet()
+    public function wallet($value)
     {
-        return $this->builder->whereWallet($wallet);
+        return $this->builder->whereWallet($value);
     }
 
     public function owner($value)
