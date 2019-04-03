@@ -24,7 +24,7 @@ class ContractsController extends Controller
      */
     public function index(ContractFilters $filters, Request $request)
     {
-        $contracts = Contracts::filters($filters)->paginate(10);
+        $contracts = Contract::filters($filters)->paginate(10);
 
         return $this->response->paginator($contracts, new ContractTransformer);
     }
