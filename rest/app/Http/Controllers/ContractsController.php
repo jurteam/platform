@@ -24,10 +24,7 @@ class ContractsController extends Controller
      */
     public function index(ContractFilters $filters, Request $request)
     {
-        $wallet = $request->header('wallet');
-
-        $user = User::byWallet($wallet)->firstOrFail();
-        $contracts = $user->contracts()->filters($filters)->paginate(10);
+        $contracts = Contracts::filters($filters)->paginate(10);
 
         return $this->response->paginator($contracts, new ContractTransformer);
     }
@@ -42,12 +39,14 @@ class ContractsController extends Controller
     {
         $this->validate($request, [
             'part_a_wallet' => 'required',
-            'part_b_wallet' => 'required'
+            'part_b_wallet' => 'required',
         ]);
 
         $wallet = $request->header('wallet');
-        $owner = User::byWallet($wallet)->firstOrFail();
-        $contract = Contract::storeContract($request, $owner);
+        $contract = Contract::storeContract(
+            $request,
+            User::byWallet($wallet)->first()
+        );
 
         return $this->response->item($contract, new ContractDetailTransformer);
     }

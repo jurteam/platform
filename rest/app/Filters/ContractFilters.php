@@ -2,14 +2,21 @@
 
 namespace App\Filters;
 
+use Carbon\Carbon;
+
 class ContractFilters extends Filters
 {
     /**
      * @var array
      */
     protected $filters = [
-        'status', 'from', 'to', 'query', 'owner', 'type'
+        'status', 'from', 'to', 'query', 'owner', 'type', 'wallet'
     ];
+
+    public function wallet()
+    {
+        return $this->builder->whereWallet($wallet);
+    }
 
     public function owner($value)
     {
@@ -23,12 +30,16 @@ class ContractFilters extends Filters
 
     public function from($value)
     {
-        return $this->builder->where('created_at', '>=', $value);
+        $from = Carbon::parse($value);
+
+        return $this->builder->where('created_at', '>=', $from->format('Y-m-d H:i:s'));
     }
 
     public function to($value)
     {
-        return $this->builder->where('created_at', '<=', $value);
+        $to = Carbon::parse($value);
+
+        return $this->builder->where('created_at', '<=', $to->format('Y-m-d H:i:s'));
     }
 
     public function query($value)
@@ -36,7 +47,11 @@ class ContractFilters extends Filters
         return $this->builder
                     ->where('name', 'LIKE', "%{$value}%")
                     ->orWhere('part_a_wallet', 'LIKE', "%{$value}%")
-                    ->orWhere('part_a_public_name', 'LIKE', "%{$value}%");
+                    ->orWhere('part_a_name', 'LIKE', "%{$value}%")
+                    ->orWhere('part_a_email', 'LIKE', "%{$value}%")
+                    ->orWhere('part_b_wallet', 'LIKE', "%{$value}%")
+                    ->orWhere('part_b_name', 'LIKE', "%{$value}%")
+                    ->orWhere('part_b_email', 'LIKE', "%{$value}%");
     }
 
     public function type($value)
