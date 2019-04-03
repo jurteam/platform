@@ -17,7 +17,7 @@ export const CreateContractForm = ({ onNext, user, contract, updateNewContractFi
 
   // validation setup
   const [isValid, errors, validateForm, setFormData] = useFormValidation(
-    contract.current,
+    contract.new,
     validationSchema
   );
 
@@ -25,7 +25,7 @@ export const CreateContractForm = ({ onNext, user, contract, updateNewContractFi
 
   const {
     updating,
-    current: {
+    new: {
       part_a_wallet,
       part_a_name,
       part_a_email,
@@ -43,7 +43,7 @@ export const CreateContractForm = ({ onNext, user, contract, updateNewContractFi
 
   const changeInput = (name, value) => {
     setFormUpdated(true);
-    setFormData({ ...contract.current, [name]: value });
+    setFormData({ ...contract.new, [name]: value });
     updateNewContractField(name, value); // dispatch action
   };
 
