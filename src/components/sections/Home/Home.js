@@ -89,7 +89,7 @@ export class Home extends Component {
             {this.renderStepper()}
           </Modal>
         ) : (
-          <Redirect to="/profile" />
+          <Redirect to="/contracts" />
         )}
       </PageLayout>
     );
