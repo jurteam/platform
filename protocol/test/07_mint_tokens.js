@@ -14,14 +14,14 @@ contract('Mint Token - Add fundings', function (accounts) {
   it("0. mint token funds", async () => {
 
     // token = await JURToken.new(["sig1"], {from: accounts[0]});
-    token = await JURToken.at("0x3d94a27759513f3883e55583fbcd70ce912da1d2", {from: accounts[0]});
+    token = await JURToken.at("0x4cced9a56c0758f330ca4ae3342946b79b8eed11", {from: accounts[0]});
     console.log("JUR Token Address: ", token.address);
 
     //Mint some tokens for party1 and party2
-    await token.mint(party0, 234897, {from: accounts[0]});
-    await token.mint(party1, 143522, {from: accounts[0]});
-    await token.mint(party2, 871194, {from: accounts[0]});
-    await token.mint(voter1, 1001, {from: accounts[0]});
+    await token.mint(party0, 2348970000000000000000, {from: accounts[0]});
+    await token.mint(party1, 1435220000000000000000, {from: accounts[0]});
+    await token.mint(party2, 8711940000000000000000, {from: accounts[0]});
+    await token.mint(voter1, 10010000000000000000, {from: accounts[0]});
 
   });
 });
