@@ -121,7 +121,7 @@ export function* createContract(action) {
 // Update
 export function* updateContract(action) {
   log("updateContract - run");
-  const { id, contractName, kpi, resolutionProof, category, value, whoPays, duration } = yield select(getCurrentContract);
+  const { id, contractName, kpi, resolutionProof, category, value, whoPays, duration, hasPenaltyFee, partAPenaltyFee, partBPenaltyFee } = yield select(getCurrentContract);
 
   const toUpdate = new FormData();
   // toUpdate.append('_method', 'PUT');
@@ -130,10 +130,13 @@ export function* updateContract(action) {
   if (resolutionProof) toUpdate.append("resolution_proof", resolutionProof);
   if (category) toUpdate.append("category", category);
   if (whoPays) toUpdate.append("who_pays", whoPays);
-  if (value) toUpdate.append("value", value);
+  toUpdate.append("value", Number(value).toFixed(process.env.REACT_APP_TOKEN_DECIMALS));
   if (duration && duration.days) toUpdate.append("duration_days", duration.days);
   if (duration && duration.hours) toUpdate.append("duration_hours", duration.hours);
   if (duration && duration.minutes) toUpdate.append("duration_minutes", duration.minutes);
+  if (hasPenaltyFee) toUpdate.append("hasPenaltyFee", hasPenaltyFee);
+  if (partAPenaltyFee) toUpdate.append("part_a_penalty_fee", hasPenaltyFee && partAPenaltyFee <= value ? Number(partAPenaltyFee).toFixed(process.env.REACT_APP_TOKEN_DECIMALS) : Number(value).toFixed(process.env.REACT_APP_TOKEN_DECIMALS)); // handle maximum value possibile
+  if (partBPenaltyFee) toUpdate.append("part_b_penalty_fee", hasPenaltyFee && partBPenaltyFee <= value ? Number(partBPenaltyFee).toFixed(process.env.REACT_APP_TOKEN_DECIMALS) : Number(value).toFixed(process.env.REACT_APP_TOKEN_DECIMALS)); // handle maximum value possibile
   toUpdate.append("in_case_of_dispute", "open"); // default
 
   for (let i = 0; i < action.attachments.length; i++) {

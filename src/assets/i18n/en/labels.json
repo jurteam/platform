@@ -40,6 +40,8 @@
     "next" : "Next",
     "previous" : "Previous",
     "percentageOfValue" : "% of value",
+    "penaltyFee" : "Penalty Fee",
+    "penaltyFeeDescription" : "Penalty fee lorem ipsum dolor sit amet.",
     "yes" : "Yes",
     "no" : "no",
     "counterparties" : "Counterparties",

@@ -45,7 +45,7 @@ export const ContractSetPenaltyFee = ({
             key={index}
             min={0}
             defaultValue={(contract.penaltyFee[counterparty.label] <= contract.amount) ?
-              contract.penaltyFee && contract.penaltyFee[counterparty.label] : contract.amount
+              contract.penaltyFee && Number(contract.penaltyFee[counterparty.label]) : contract.amount
             }
             max={Number(contract.amount)}
             address={counterparty.wallet}

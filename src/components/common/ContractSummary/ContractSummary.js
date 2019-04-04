@@ -30,7 +30,7 @@ export const ContractSummary = props => {
       minutes: durationInMinutes,
       expireAlertFrom
     },
-    penaltyFee: { partA: penaltyFeePartA, partB: penaltyFeePartB },
+    penaltyFee,
     onContractNameChange,
     onProgress,
     onExpire
@@ -72,10 +72,7 @@ export const ContractSummary = props => {
             contractInfo={{
               partA: partA.wallet,
               partB: partB.wallet,
-              penaltyFee: {
-                partA: penaltyFeePartA,
-                partB: penaltyFeePartB
-              }
+              penaltyFee
             }}
           />
         </div>

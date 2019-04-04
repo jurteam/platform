@@ -223,10 +223,7 @@ export const ContractDetail = props => {
                 penaltyFee: hasPenaltyFee ? {
                   partA: partAPenaltyFee <= value ? partAPenaltyFee : value,
                   partB: partBPenaltyFee <= value ? partBPenaltyFee : value
-                } : {
-                  partA: null,
-                  partB: null
-                },
+                } : null,
                 contractName,
                 amount: value,
                 category: { label: category },

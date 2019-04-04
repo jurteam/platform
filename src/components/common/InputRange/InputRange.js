@@ -5,14 +5,16 @@ import "./InputRange.scss";
 
 export const InputRange = ({ min, max, defaultValue, onValueChange, step }) => {
   const calculateSpanWidth = value => {
-    if (value && value <= max) {
+    if (max == 0 || value == 0) {
+      return "100%";
+    } else if (value && value <= max) {
       const width = 100 - (Number(value) * 100) / Number(max);
       return parseFloat(width).toFixed(2) + "%";
     }
     return "0%";
   };
 
-  const [value, setValue] = useState(defaultValue);
+  const [value, setValue] = useState(defaultValue || 0);
   const [spanWidth, setSpanWidth] = useState(
     defaultValue ? calculateSpanWidth(defaultValue) : "0%"
   );
@@ -26,6 +28,7 @@ export const InputRange = ({ min, max, defaultValue, onValueChange, step }) => {
   }
 
   const onMouseUp = ev => {
+    const value = ev.target.value;
     onValueChange(value);
   };
 

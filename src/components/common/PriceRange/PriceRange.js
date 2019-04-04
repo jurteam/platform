@@ -6,12 +6,11 @@ import Amount from "../Amount";
 
 import { AppContext } from "../../../bootstrap/AppProvider"; // context
 
-import { ethToHuman } from "../../../utils/helpers"; // helpers
-
 import "./PriceRange.scss";
 
 export const PriceRange = ({ min, max, address, defaultValue, onChange }) => {
-  const [value, setValue] = useState(Number(defaultValue) || 0);
+  const [value, setValue] = useState(Number(defaultValue));
+
   const onValueChange = value => {
     setValue(Number(value));
     onChange(value <= max ? Number(value) : max);
@@ -20,14 +19,18 @@ export const PriceRange = ({ min, max, address, defaultValue, onChange }) => {
   const { labels } = useContext(AppContext);
 
   const percentageCalc = value => {
-    return value > 0 ? value <= max ? parseFloat((value * 100) / max).toFixed(2) : parseFloat(100).toFixed(2) : parseFloat(0).toFixed(2);
+    return value > 0
+      ? value <= max
+        ? parseFloat((value * 100) / max).toFixed(2)
+        : parseFloat(100).toFixed(2)
+      : parseFloat(0).toFixed(2);
   };
   return (
     <div className="jur-price-range">
       <Avatar seed={address} variant="circle" size="small" />
       <InputRange
         min={min}
-        max={value ? max : 0}
+        max={max}
         defaultValue={value <= max ? value : max}
         onValueChange={onValueChange}
       />
