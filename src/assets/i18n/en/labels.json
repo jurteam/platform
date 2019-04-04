@@ -20,7 +20,7 @@
     "couterpartyDetails" : "Counterparty Details",
     "metamaskRequired" : "MetaMask is Required",
     "metamaskRequiredDesc" : "MetaMask is an extension for accessing Ethereum enabled distributed applications, or \"Dapps\" in your normal browser!<br />The extension injects the Ethereum web3 API into every website's javascript context, so that dapps can read from the blockchain.",
-    "getChromeExtension" : "Get Chrome Extension",
+    "getChromeExtension" : "Get Extension",
     "unlockMetamask" : "Unlock MetaMask",
     "value" : "Value",
     "archive" : "Archive",
