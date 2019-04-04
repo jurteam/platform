@@ -123,6 +123,8 @@ export function* updateContract(action) {
   log("updateContract - run");
   const { id, contractName, kpi, resolutionProof, category, value, whoPays, duration, hasPenaltyFee, partAPenaltyFee, partBPenaltyFee } = yield select(getCurrentContract);
 
+  const zero = Number(0).toFixed(process.env.REACT_APP_TOKEN_DECIMALS);
+
   const toUpdate = new FormData();
   // toUpdate.append('_method', 'PUT');
   if (contractName) toUpdate.append("name", contractName);
@@ -130,13 +132,18 @@ export function* updateContract(action) {
   if (resolutionProof) toUpdate.append("resolution_proof", resolutionProof);
   if (category) toUpdate.append("category", category);
   if (whoPays) toUpdate.append("who_pays", whoPays);
-  toUpdate.append("value", Number(value).toFixed(process.env.REACT_APP_TOKEN_DECIMALS));
+  toUpdate.append("value", Number(value).toFixed(process.env.REACT_APP_TOKEN_DECIMALS)); // always
   if (duration && duration.days) toUpdate.append("duration_days", duration.days);
   if (duration && duration.hours) toUpdate.append("duration_hours", duration.hours);
   if (duration && duration.minutes) toUpdate.append("duration_minutes", duration.minutes);
-  if (hasPenaltyFee) toUpdate.append("hasPenaltyFee", hasPenaltyFee);
-  if (partAPenaltyFee) toUpdate.append("part_a_penalty_fee", hasPenaltyFee && partAPenaltyFee <= value ? Number(partAPenaltyFee).toFixed(process.env.REACT_APP_TOKEN_DECIMALS) : Number(value).toFixed(process.env.REACT_APP_TOKEN_DECIMALS)); // handle maximum value possibile
-  if (partBPenaltyFee) toUpdate.append("part_b_penalty_fee", hasPenaltyFee && partBPenaltyFee <= value ? Number(partBPenaltyFee).toFixed(process.env.REACT_APP_TOKEN_DECIMALS) : Number(value).toFixed(process.env.REACT_APP_TOKEN_DECIMALS)); // handle maximum value possibile
+  toUpdate.append("has_penalty_fee", hasPenaltyFee ? 1 : 0); // always
+  if (hasPenaltyFee) {
+    if (partAPenaltyFee) toUpdate.append("part_a_penalty_fee", hasPenaltyFee && partAPenaltyFee <= value ? Number(partAPenaltyFee).toFixed(process.env.REACT_APP_TOKEN_DECIMALS) : Number(value).toFixed(process.env.REACT_APP_TOKEN_DECIMALS)); // handle maximum value possibile
+    if (partBPenaltyFee) toUpdate.append("part_b_penalty_fee", hasPenaltyFee && partBPenaltyFee <= value ? Number(partBPenaltyFee).toFixed(process.env.REACT_APP_TOKEN_DECIMALS) : Number(value).toFixed(process.env.REACT_APP_TOKEN_DECIMALS)); // handle maximum value possibile
+  } else { // reset penalty fees
+    toUpdate.append("part_a_penalty_fee", zero);
+    toUpdate.append("part_b_penalty_fee", zero);
+  };
   toUpdate.append("in_case_of_dispute", "open"); // default
 
   for (let i = 0; i < action.attachments.length; i++) {

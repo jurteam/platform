@@ -199,6 +199,11 @@ export const ContractDetail = props => {
     isDebtor: whoPays && whoPays === counterparties[1].wallet
   };
 
+  const penaltyFee = hasPenaltyFee && hasPenaltyFee != "0" ? {
+    partA: partAPenaltyFee <= value ? partAPenaltyFee : value,
+    partB: partBPenaltyFee <= value ? partBPenaltyFee : value
+  } : null;
+
   return typeof params.id !== "undefined" ? (
     <PageLayout breadcrumbs={breadcrumbs}>
       {!contract.updating && counterparties ? (
@@ -220,10 +225,7 @@ export const ContractDetail = props => {
                   debtor: part_b.isDebtor,
                   ...counterparties[1]
                 },
-                penaltyFee: hasPenaltyFee ? {
-                  partA: partAPenaltyFee <= value ? partAPenaltyFee : value,
-                  partB: partBPenaltyFee <= value ? partBPenaltyFee : value
-                } : null,
+                penaltyFee,
                 contractName,
                 amount: value,
                 category: { label: category },
@@ -277,10 +279,7 @@ export const ContractDetail = props => {
                 duration,
                 category,
                 amount: value,
-                penaltyFee: hasPenaltyFee ? {
-                  partA: partAPenaltyFee,
-                  partB: partBPenaltyFee
-                } : null
+                penaltyFee
               }}
               currentUserCanPay={value <= ethToHuman(wallet.balance)}
               cases={[
