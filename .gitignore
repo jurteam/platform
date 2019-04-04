@@ -69,6 +69,11 @@ typings/
 # testing
 /coverage
 
+# rest
+rest/public/storage/*
+rest/storage/public*
+rest/storage/app/public*
+
 # production
 /build
 
