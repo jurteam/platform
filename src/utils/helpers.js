@@ -55,10 +55,32 @@ export const redirect = (...checks) => {
 };
 
 export const toCurrencyFormat = value => {
-  var num = Number(value) / 100;
-  var res = num.toString().split(".");
-  if (res.length === 1 || res[1].length < 2) return num.toFixed(2);
-  return num;
+  const decimals = "1";
+  const num = Number(humanToEth(value)) / Number(decimals.padEnd(Number(process.env.REACT_APP_TOKEN_DECIMALS)+1,"0"));
+  return num.toFixed(2);
+};
+
+export const humanToEth = value => {
+  const decimals = "1";
+  let amount = 0;
+
+  if (typeof value === "string") {
+    amount = value.replace(".", "");
+  } else {
+    amount = Number(value) * Number(decimals.padEnd(Number(process.env.REACT_APP_TOKEN_DECIMALS)+1,"0"));
+  };
+  return amount;
+};
+
+export const ethToHuman = value => {
+  const decimals = "1";
+  const amount = Number(value) / Number(decimals.padEnd(Number(process.env.REACT_APP_TOKEN_DECIMALS)+1,"0"));
+  return amount;
+};
+
+export const ethToStore = value => {
+  const amount = Number(value)
+  return amount.toFixed(process.env.REACT_APP_TOKEN_DECIMALS);
 };
 
 export const capitalize = string =>

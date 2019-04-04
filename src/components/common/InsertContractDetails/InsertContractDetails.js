@@ -36,7 +36,7 @@ export const InsertContractDetails = ({
       <ContractTextarea
         initialValue={resolutionProofInitialValue}
         label={`${labels.resolutionProof}:`}
-        name="resolution_proof"
+        name="resolutionProof"
         onChange={onResolutionProofChange}
         placeholder={resolutionProofPlaceholder}
       />
@@ -46,7 +46,8 @@ export const InsertContractDetails = ({
             {uploadedFiles.map((file, index) => (
               <File
                 key={index.toString()}
-                name={file.name}
+                name={file.fileName}
+                file={file}
                 onView={onView}
                 onDelete={onDelete}
                 large

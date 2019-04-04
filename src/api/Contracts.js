@@ -22,9 +22,13 @@ export class Contracts {
     return axios.post(`${root}/medias/${payload.id}`, payload); // attachments
   }
   static update(payload, id) {
-    return axios.put(`${root}/${id}`, payload);
+    payload.append("_method", "PUT");
+    return axios.post(`${root}/${id}?include=attachments`, payload);
   }
   static delete(payload) {
     return axios.delete(`${root}/${payload.id}`);
+  }
+  static deleteMedia(payload) {
+    return axios.delete(`${root}/medias/${payload.id}`); // attachments delete
   }
 }

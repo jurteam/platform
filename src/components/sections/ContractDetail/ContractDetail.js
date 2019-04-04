@@ -15,18 +15,24 @@ import ContractSidebar from "../../common/ContractSidebar";
 import ContractSummary from "../../common/ContractSummary";
 import InsertContractDetails from "../../common/InsertContractDetails";
 
+import Viewer from "../../common/Viewer";
+
+import { SpinnerOnly } from "../../common/Spinner";
 import Button from "../../common/Button";
 
 // form validation
 import { useFormValidation } from "../../../utils/hooks";
 import validationSchema from "./_validationSchema";
 
-import { log } from "../../../utils/helpers"; // log helper
+import { log, humanToEth, ethToHuman } from "../../../utils/helpers"; // log helper
 
 import {
   NEW_CONTRACT,
   API_GET_CONTRACT,
   PUT_CONTRACT,
+  NEW_ARBITRATION,
+  CONTRACT_MEDIA_DELETE,
+  SEND_TO_COUNTERPARTY,
   DISCLAIMER_MUST_BE_ACCEPTED
 } from "../../../reducers/types";
 
@@ -37,11 +43,15 @@ export const ContractDetail = props => {
   const [formUpdated, setFormUpdated] = useState(false);
   const [attachments, setAttachments] = useState([]);
 
+  const [openPreview, setOpenPreview] = useState(false);
+  const [filePath, setFilePath] = useState(null);
+
   const { contract, user, updateContractField } = props;
   const { updating } = contract;
 
   const {
-    match: { params }
+    match: { params },
+    wallet
   } = props;
 
   // cDM
@@ -69,6 +79,7 @@ export const ContractDetail = props => {
   };
 
   const onInputChange = ev => {
+    console.log('onInputChange', ev);
     const target = ev.target;
     if (target) {
       const value = target.type === "checkbox" ? target.checked : target.value;
@@ -78,19 +89,63 @@ export const ContractDetail = props => {
     }
   };
 
+  const onChangeSelect = (name, input) => {
+    const value =
+      typeof input !== "undefined" &&
+      input !== null &&
+      typeof input.value !== "undefined"
+        ? input.value
+        : null;
+
+    changeInput(name, value);
+  };
+
   const onFileAdded = selectedFiles => {
     console.log("upload", selectedFiles);
     setAttachments(selectedFiles);
   };
 
-  const fileUploadSample = () => {
+  const onFileView = file => {
+    setFilePath(file.url);
+    setOpenPreview(true);
+    console.log("onFileView", file);
+  }
+
+  const onRequestClose = () => {
+    setFilePath(null);
+    setOpenPreview(false);
+  }
+
+  const onFileError = e => {
+    console.error("onFileError", e)
+  }
+
+  const onSubmit = () => {
     console.log("upload", "run");
 
     global.drizzle.store.dispatch({
       type: PUT_CONTRACT,
-      // entity: "contracts",
       attachments,
-      // ...params
+      // callback: () => {
+
+      // }
+    });
+  };
+
+  const onSend = () => {
+    console.log("onSend", "run");
+
+    global.drizzle.store.dispatch({
+      type: NEW_ARBITRATION
+    });
+  };
+
+  const onFileDelete = (file) => {
+    console.log("file delete", file);
+
+    global.drizzle.store.dispatch({
+      type: CONTRACT_MEDIA_DELETE,
+      ...file
     });
   };
 
@@ -122,121 +177,145 @@ export const ContractDetail = props => {
     statusId,
     statusLabel,
     kpi,
-    resolution_proof,
+    resolutionProof,
     value,
     whoPays,
     contractName,
+    category,
     counterparties,
     attachments: contractAttachments,
-    duration
+    duration,
+    hasPenaltyFee,
+    partAPenaltyFee,
+    partBPenaltyFee
   } = contract.current;
   console.log("ContractDetail - contract", contract);
 
   const part_a = {
-    isDebtor: whoPays && whoPays === counterparties[0].wallet ? true : false
+    isDebtor: whoPays && whoPays === counterparties[0].wallet
   };
 
   const part_b = {
-    isDebtor: whoPays && whoPays === counterparties[1].wallet ? true : false
+    isDebtor: whoPays && whoPays === counterparties[1].wallet
   };
 
   return typeof params.id !== "undefined" ? (
     <PageLayout breadcrumbs={breadcrumbs}>
-      { counterparties ? <>
-      <Main>
-        <ContractSummary
-          data={{
-            contractID: id,
-            from: {
-              label: "partA",
-              debtor: (!part_a.isDebtor && !part_b.isDebtor) ? true : part_a.isDebtor,
-              ...counterparties[0]
-            },
-            to: {
-              label: "partB",
-              debtor: part_b.isDebtor,
-              ...counterparties[1]
-            },
-            penaltyFee: {
-              partA: "",
-              partB: ""
-            },
-            contractName,
-            amount: value,
-            category: null,
-            status: { id: statusId, label: statusLabel, updatedDate: null }, // ???
-            inCaseOfDispute: null,
-            duration: {
-              days: duration.days,
-              hours: duration.hours,
-              minutes: duration.minutes,
-              expireAlertFrom: ""
-            },
-            inCaseOfDispute: {id: "open", label: labels.open},
-            onContractNameChange: onInputChange,
-            onProgress: percentage => console.log(percentage),
-            onExpire: () => alert("Countdown finished")
-          }}
-        />
+      {!contract.updating && counterparties ? (
+        <>
+          <Main>
+            <ContractSummary
+              data={{
+                contractID: id,
+                from: {
+                  label: "partA",
+                  debtor:
+                    !part_a.isDebtor && !part_b.isDebtor
+                      ? true
+                      : part_a.isDebtor,
+                  ...counterparties[0]
+                },
+                to: {
+                  label: "partB",
+                  debtor: part_b.isDebtor,
+                  ...counterparties[1]
+                },
+                penaltyFee: hasPenaltyFee ? {
+                  partA: partAPenaltyFee <= value ? partAPenaltyFee : value,
+                  partB: partBPenaltyFee <= value ? partBPenaltyFee : value
+                } : {
+                  partA: null,
+                  partB: null
+                },
+                contractName,
+                amount: value,
+                category: { label: category },
+                status: { id: statusId, label: statusLabel, updatedDate: null }, // ???
+                inCaseOfDispute: "open", // default
+                duration: {
+                  days: duration.days,
+                  hours: duration.hours,
+                  minutes: duration.minutes,
+                  expireAlertFrom: ""
+                },
+                inCaseOfDispute: { id: "open", label: labels.open },
+                onContractNameChange: onInputChange,
+                onProgress: percentage => console.log(percentage),
+                onExpire: () => alert("Countdown finished")
+              }}
+            />
 
-        <InsertContractDetails
-          kpiInitialValue={kpi || ""}
-          kpiPlaceholder={labels.kpiPlaceholder}
-          resolutionProofInitialValue={resolution_proof || ""}
-          resolutionProofPlaceholder={labels.resolutionProofPlaceholder}
-          onKpiChange={onInputChange}
-          onResolutionProofChange={onInputChange}
-          onFileAdded={onFileAdded}
-          uploadedFiles={contractAttachments}
-          onView={e => console.log("yo")}
-          onDelete={e => console.log("yo")}
-        />
+            <InsertContractDetails
+              kpiInitialValue={kpi || ""}
+              kpiPlaceholder={labels.kpiPlaceholder}
+              resolutionProofInitialValue={resolutionProof || ""}
+              resolutionProofPlaceholder={labels.resolutionProofPlaceholder}
+              onKpiChange={onInputChange}
+              onResolutionProofChange={onInputChange}
+              onFileAdded={onFileAdded}
+              uploadedFiles={contractAttachments ? contractAttachments.data : []}
+              onView={onFileView}
+              onDelete={e => onFileDelete(e)}
+              key={`contract-info-${contractAttachments ? contractAttachments.data.length : 0}`}
+            />
 
-        <Button onClick={fileUploadSample}>!!! Upload Test !!!</Button>
-      </Main>
-      <Aside>
-        <ContractSidebar
-          contract={{
-            contractID: id,
-            from: {
-              label: "partA",
-              debtor: part_a.isDebtor,
-              wallet: {
-                address: counterparties[0].wallet,
-                amount: value
-              },
-              ...counterparties[0] || []
-            },
-            to: {
-              label: "partB",
-              debtor: part_b.isDebtor,
-              wallet: {
-                address: counterparties[1].wallet,
-                amount: value
-              },
-              ...counterparties[1] || []
-            },
-            penaltyFee: null
-          }}
-          cases={[
-            {
-              label: labels.open,
-              description: labels.openText,
-              id: "open",
-              open: true
-            },
-            {
-              label: labels.hubs,
-              description: labels.hubsText,
-              id: "hubs",
-              disabled: true
-            }
-          ]}
-          selectedOptionId={"open"}
-        />
-      </Aside>
-</>
-      : "loading" }
+          </Main>
+          <Aside>
+            <ContractSidebar
+              contract={{
+                contractID: id,
+                from: {
+                  label: "partA",
+                  debtor:
+                  !part_a.isDebtor && !part_b.isDebtor
+                    ? true
+                    : part_a.isDebtor,
+                  ...counterparties[0]
+                },
+                to: {
+                  label: "partB",
+                  debtor: part_b.isDebtor,
+                  ...counterparties[1]
+                },
+                duration,
+                category,
+                amount: value,
+                penaltyFee: hasPenaltyFee ? {
+                  partA: partAPenaltyFee,
+                  partB: partBPenaltyFee
+                } : null
+              }}
+              currentUserCanPay={value <= ethToHuman(wallet.balance)}
+              cases={[
+                {
+                  label: labels.open,
+                  description: labels.openText,
+                  id: "open",
+                  open: true
+                },
+                {
+                  label: labels.hubs,
+                  description: labels.hubsText,
+                  id: "hubs",
+                  disabled: true
+                }
+              ]}
+              selectedOptionId={"open"}
+              onSubmit={onSubmit}
+              onSend={onSend}
+              onChange={onInputChange}
+              onChangeSelect={onChangeSelect}
+              onChangeValue={changeInput}
+            />
+          </Aside>
+        </>
+      ) : (
+        <Main>
+          <SpinnerOnly loading={contract.updating} />
+        </Main>
+      )}
+
+      {filePath && <Viewer isOpen={openPreview} filePath={filePath} onFileLoadingError={onFileError} onRequestClose={onRequestClose} />}
 
       <ModalDiscliamer
         isOpen={showModal}

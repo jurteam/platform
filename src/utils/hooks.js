@@ -81,9 +81,9 @@ const FormValidation = {
       : true; // always true when null in case this field is optional
   },
   isEqualTo: (field, target) => {
-    return field ? field === target : true; // always true when null in case this field is optional
+    return field ? String(field).toLowerCase() === String(target).toLowerCase() : true; // always true when null in case this field is optional
   },
   isNotEqualTo: (field, target) => {
-    return field ? field !== target : true; // always true when null in case this field is optional
+    return field ? String(field).toLowerCase() !== String(target).toLowerCase() : true; // always true when null in case this field is optional
   }
 };

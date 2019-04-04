@@ -5,7 +5,7 @@ import BlockTitle from "../BlockTitle";
 
 import "./ContractSetDuration.scss";
 
-export const ContractSetDuration = ({ savedValue, onChange }) => {
+export const ContractSetDuration = ({ savedValue, contract, onChange }) => {
   const [duration, setDuration] = useState(
     savedValue || { days: 0, hours: 0, minutes: 0 }
   );
@@ -23,18 +23,25 @@ export const ContractSetDuration = ({ savedValue, onChange }) => {
       <div className="jur-contract-set-duration__inputs">
         <Form.NumericInput
           label="days"
-          value={duration.days}
+          initialValue={contract.duration.days || 0}
           onChange={handleChange.bind(this, "days")}
+          max={999}
+          maxLength={3}
         />
         <Form.NumericInput
           label="hours"
-          value={duration.hours}
+          initialValue={contract.duration.hours || 0}
           onChange={handleChange.bind(this, "hours")}
+          max={23}
+          maxLength={2}
         />
         <Form.NumericInput
           label="minutes"
-          value={duration.minutes}
+          initialValue={contract.duration.minutes || 0}
           onChange={handleChange.bind(this, "minutes")}
+          step={15}
+          max={45}
+          maxLength={2}
         />
       </div>
     </div>

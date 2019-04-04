@@ -2,18 +2,24 @@ import {
   NEW_CONTRACT,
   API_GET_CONTRACT,
   SET_CONTRACT,
+  SET_CONTRACT_CURRENT_PAGE,
   API_DELETE_CONTRACT,
   UPDATE_CONTRACT_FILTER,
   UPDATE_CONTRACT_FIELD,
   UPDATE_NEW_CONTRACT_FIELD,
   CONTRACT_DELETED,
   CONTRACTS_FETCHED,
+  CONTRACT_UPDATING,
+  CONTRACT_LIST_UPDATING,
+  CONTRACT_MEDIA_DELETE,
+  CONTRACT_MEDIA_DELETED,
   RESET_CONTRACT,
   RESET_CONTRACTS
 } from "./types";
 
 const INITIAL_STATE = {
   updating: false,
+  updatingList: true,
   new: {
     part_a_wallet: "",
     part_a_name: "",
@@ -52,7 +58,9 @@ const INITIAL_STATE = {
     value: "",
     whoPays: null,
     in_case_of_dispute: "open",
-    attachments: []
+    attachments: {
+      data: []
+    }
   },
   filters: {
     status: null,
@@ -61,7 +69,9 @@ const INITIAL_STATE = {
     searchText: null,
     disabled: false
   },
-  list: []
+  list: [],
+  page: 1,
+  pagination: []
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -72,7 +82,10 @@ export default (state = INITIAL_STATE, action) => {
 
     case CONTRACTS_FETCHED:
       console.log(CONTRACTS_FETCHED, action.payload);
-      return { ...state, list: action.payload };
+      return { ...state, list: action.payload.data, pagination: action.payload.meta.pagination, updatingList: false };
+
+    case SET_CONTRACT_CURRENT_PAGE:
+      return { ...state, page: action.payload };
 
     // Updates
     case UPDATE_CONTRACT_FILTER:
@@ -90,11 +103,22 @@ export default (state = INITIAL_STATE, action) => {
       toUpdate[action.field] = action.value;
       return { ...state, current: { ...state.current, ...toUpdate } };
 
+    case CONTRACT_UPDATING:
+      return { ...state, updating: action.payload };
+
+    case CONTRACT_LIST_UPDATING:
+      return { ...state, updatingList: action.payload };
+
+    case CONTRACT_MEDIA_DELETED:
+      const updatedAttachments = state.current.attachments.data.filter(item => item.id !== action.id)
+      return { ...state, current: { ...state.current, attachments: { data: updatedAttachments } } };
+
     // Reset
     case RESET_CONTRACT:
       return {
         ...state,
         updating: INITIAL_STATE.updating,
+        new: { ...INITIAL_STATE.new },
         current: { ...INITIAL_STATE.current }
       };
 
@@ -109,6 +133,7 @@ export default (state = INITIAL_STATE, action) => {
     case API_GET_CONTRACT: // saga
     case API_DELETE_CONTRACT: // saga
     case CONTRACT_DELETED: // saga
+    case CONTRACT_MEDIA_DELETE: // saga
     default:
       return state;
   }

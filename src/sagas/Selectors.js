@@ -14,6 +14,7 @@ export const getWallet = state => state.wallet
 export const getContractFilters = state => state.contract.filters
 export const getNewContract = state => state.contract.new
 export const getCurrentContract = state => state.contract.current
+export const getContractListPage = state => state.contract.page
 
 // User
 export const getUser = state => state.user

@@ -15,6 +15,9 @@ import Button from "../Button";
 import Amount from "../Amount";
 import ContractsFilters from "../ContractsFilters";
 import Pagination from "../Pagination";
+import { SpinnerOnly } from "../Spinner";
+
+import { humanToEth } from "../../../utils/helpers"; // log helper
 
 import "./ContractsTable.scss";
 
@@ -31,6 +34,7 @@ export const ContractsTable = ({
   onPageChange,
   contractsPerPage,
   totalContracts,
+  loading,
   history
 }) => {
   const [activePage, setActivePage] = useState(initialPage);
@@ -76,7 +80,7 @@ export const ContractsTable = ({
             ))}
           </TableRow>
         </TableHead>
-        {data.length > 0 ? (
+        {data.length > 0 && loading === false ? (
           <TableBody>
             {data.map(contract => (
               <TableRow key={contract.id}
@@ -88,8 +92,12 @@ export const ContractsTable = ({
                 <TableCell>{contract.contractName}</TableCell>
                 <TableCell>
                   <Countdown
-                    duration={contract.duration}
-                    expireDate={contract.expireDate}
+                    days={contract.duration.days}
+                    hours={contract.duration.hours}
+                    minutes={contract.duration.minutes}
+                    statusId={contract.statusId}
+                    startDate={contract.statusUpdatedAt}
+                    expireAlertFrom={86400000} // TODO: use reference from env
                   />
                 </TableCell>
                 <TableCell>
@@ -103,7 +111,7 @@ export const ContractsTable = ({
                   ))}
                 </TableCell>
                 <TableCell>
-                  <Amount value={contract.value} />
+                  <Amount value={humanToEth(contract.value)} />
                 </TableCell>
                 {!contract.archived ? (
                   <TableCell>
@@ -119,6 +127,7 @@ export const ContractsTable = ({
           </TableBody>
         ) : null}
       </Table>
+      {data.length > 0 && loading === true && <SpinnerOnly loading={loading} className={"table__loading"} /> }
       {data.length > 0 &&
         <Pagination
           activePage={activePage}

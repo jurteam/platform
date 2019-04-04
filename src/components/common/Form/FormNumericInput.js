@@ -11,18 +11,21 @@ export const FormNumericInput = ({
   onChange,
   step,
   error,
-  errorMsg
+  errorMsg,
+  ...params
 }) => {
   const [value, setValue] = useState(
     typeof initialValue === "number" ? initialValue : ""
   );
-  const plusOne = () => {
-    const newValue = Number(value) + 1;
+  const plus = () => {
+    const { max } = params;
+    const newValue =
+      max && Number(value) === max ? max : Number(value) + (step || 1);
     setValue(newValue);
     onChange(newValue);
   };
-  const minusOne = () => {
-    const newValue = Number(value) === 0 ? "" : Number(value) - 1;
+  const minus = () => {
+    const newValue = Number(value) === 0 ? "0" : Number(value) - (step || 1);
     setValue(newValue);
     onChange(newValue);
   };
@@ -46,16 +49,17 @@ export const FormNumericInput = ({
         <div>
           <input
             type="number"
-            value={value}
+            value={initialValue}
             onChange={handleChange}
             step={step || "any"}
             pattern="^\d*(\.\d{0,2})?$"
+            {...params}
           />
           <label>{label}</label>
         </div>
         <div className="jur-form__numeric-input__actions">
-          <CaretUpIcon onClick={plusOne} />
-          <CaretDownIcon onClick={minusOne} />
+          <CaretUpIcon onClick={plus} />
+          <CaretDownIcon onClick={minus} />
         </div>
       </div>
       {errorMsg && <Form.ErrorMsg msg={errorMsg} />}

@@ -1,23 +1,31 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 
 import "./InputRange.scss";
 
 export const InputRange = ({ min, max, defaultValue, onValueChange, step }) => {
   const calculateSpanWidth = value => {
-    const width = 100 - (Number(value) * 100) / Number(max);
-    return parseFloat(width).toFixed(2) + "%";
+    if (value && value <= max) {
+      const width = 100 - (Number(value) * 100) / Number(max);
+      return parseFloat(width).toFixed(2) + "%";
+    }
+    return "0%";
   };
 
   const [value, setValue] = useState(defaultValue);
   const [spanWidth, setSpanWidth] = useState(
-    defaultValue ? calculateSpanWidth(defaultValue) : "100%"
+    defaultValue ? calculateSpanWidth(defaultValue) : "0%"
   );
 
-  const onChange = ev => {
+  useEffect(() => setSpanWidth(calculateSpanWidth(value)), [max]);
+
+  const onMove = ev => {
     const value = ev.target.value;
     setValue(value);
     setSpanWidth(calculateSpanWidth(value));
+  }
+
+  const onMouseUp = ev => {
     onValueChange(value);
   };
 
@@ -30,7 +38,8 @@ export const InputRange = ({ min, max, defaultValue, onValueChange, step }) => {
         max={max}
         step={step || 1}
         value={value}
-        onChange={onChange}
+        onChange={onMove}
+        onMouseUp={onMouseUp}
       />
     </div>
   );

@@ -22,7 +22,7 @@ storiesOf("InsertContractDetails", module)
       onKpiChange={e => console.log("yo")}
       onResolutionProofChange={e => console.log("yo")}
       onFileAdded={addedFiles => console.log(addedFiles)}
-      uploadedFiles={[{ name: "Hello worldl.pdf" }]}
+      uploadedFiles={[{ fileName: "Hello worldl.pdf" }]}
       onView={e => console.log("yo")}
       onDelete={e => console.log("yo")}
     />

@@ -28,5 +28,10 @@
     $spacer : 117px;
     top: $spacer;
     padding-bottom: $spacer;
+
+    &.table__loading {
+      top: 260px;
+      height: 66vh;
+    }
   }
 }

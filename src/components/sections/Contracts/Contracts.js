@@ -24,6 +24,7 @@ import {
   FETCH_CONTRACTS,
   UPDATE_CONTRACT_FILTER,
   API_DELETE_CONTRACT,
+  CONTRACT_PAGE_CHANGE,
   DISCLAIMER_MUST_BE_ACCEPTED
 } from "../../../reducers/types";
 
@@ -41,6 +42,8 @@ export const Contracts = props => {
 
   const { contract } = props;
   log("Contracts - contract", contract);
+
+  const { pagination } = contract;
 
   // filters
   const { disabled: filtersDisabled, ...filters } = contract.filters;
@@ -85,9 +88,16 @@ export const Contracts = props => {
     }
   };
 
+  const onPageChange = page => {
+    global.drizzle.store.dispatch({
+      type: CONTRACT_PAGE_CHANGE,
+      payload: page
+    });
+  };
+
   const breadcrumbs = [
     {
-      label: labels.contracts,
+      label: labels.smartContracts,
       active: true,
       to: "/contracts"
     }
@@ -113,6 +123,11 @@ export const Contracts = props => {
             data={contract.list}
             handleArchive={handleArchive}
             newContract={newContract}
+            initialPage={pagination.current_page}
+            onPageChange={pageNo => onPageChange(pageNo)}
+            contractsPerPage={pagination.per_page}
+            totalContracts={pagination.total}
+            loading={contract.updatingList}
           />
         </Main>
 

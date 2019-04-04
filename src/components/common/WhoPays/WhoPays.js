@@ -9,10 +9,12 @@ import "./WhoPays.scss";
 
 export class WhoPays extends Component {
   state = {
-    openIndex: 0,
-    error: false,
+    openIndex: this.props.contract.from.debtor ? 0 : 1,
     counterparties: [this.props.contract.from, this.props.contract.to],
-    payer: null
+    payer: {
+      counterParty: this.props.contract.from.debtor ? this.props.contract.from : this.props.contract.to,
+      value: Number(this.props.contract.amount)
+    }
   };
 
   handleContractValue = (counterPartyIndex, value) => {
@@ -25,16 +27,14 @@ export class WhoPays extends Component {
     this.props.handleSelectPayer(payer);
   };
 
-  componentDidMount() {
-    this.handleContractValue(this.state.openIndex, 0);
-  }
-
   changePayer = index => {
     this.setState({ openIndex: index });
     this.handleContractValue(index, 0);
   };
 
   render() {
+
+  console.log("WhoPays", this.props.contract);
     return (
       <div className="jur-who-pays">
         <BlockTitle title="Who Pays ?" />
@@ -51,8 +51,8 @@ export class WhoPays extends Component {
               <AvatarInfo
                 size="small"
                 userName={counterparty.name}
-                userWallet={counterparty.wallet.address}
-                shouldRenderName={counterparty.shouldRenderName}
+                userWallet={counterparty.wallet}
+                shouldRenderName={counterparty.renderName}
                 variant="ellipsis"
                 type="circle"
                 onClick={() => this.changePayer(index)}
@@ -61,10 +61,11 @@ export class WhoPays extends Component {
                 <>
                   <Form.NumericInput
                     label="Jur Token"
+                    initialValue={this.state.payer.value}
                     onChange={this.handleContractValue.bind(this, index)}
-                    step="0.01"
+                    step={1}
                   />
-                  {this.state.error && (
+                  {this.props.error && (
                     <span>You do not have enough Jur balance</span>
                   )}
                 </>

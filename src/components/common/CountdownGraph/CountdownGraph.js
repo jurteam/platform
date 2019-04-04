@@ -15,7 +15,7 @@ export const CountdownGraph = ({
   const [percentage, setPercentage] = useState(0);
   const progressHandler = percentage => {
     setPercentage(percentage);
-    onProgress(percentage);
+    if ( typeof onProgress === "function") onProgress(percentage);
   };
   const getMessage = () => {
     switch (rest.statusId) {

@@ -77,7 +77,7 @@ export const CreateContractForm = ({ onNext, user, contract, updateNewContractFi
       <Form.Wrapper>
           <div key="cc-part-a">
             <Form.Container>
-              <h3>Your details</h3>
+              <h3>{labels.yourDetails}</h3>
             </Form.Container>
             <Form.Container className="jur-form__header">
               <Form.Group>
@@ -136,7 +136,7 @@ export const CreateContractForm = ({ onNext, user, contract, updateNewContractFi
           </div>
           <div key="cc-part-b">
             <Form.Container>
-              <h3>Counterparty details</h3>
+              <h3>{labels.couterpartyDetails}</h3>
             </Form.Container>
             <Form.Container className="jur-form__header">
               <Form.Group>

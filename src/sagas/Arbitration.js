@@ -1,4 +1,4 @@
-import { put, select, takeEvery } from "redux-saga/effects";
+import { put, select, takeLatest } from "redux-saga/effects";
 import {
   getAccounts,
   getDrizzleStatus,
@@ -8,7 +8,8 @@ import {
 import {
   DRIZZLE_INITIALIZED,
   GOT_CONTRACT_VAR,
-  NEW_ARBITRATION
+  NEW_ARBITRATION,
+  SEND_TO_COUNTERPARTY
 } from "../reducers/types";
 
 import { log } from "../utils/helpers"; // log helper
@@ -81,7 +82,7 @@ export function* handleNewArbitration(args) {
       const contractPayload = [
         [
           utils.toChecksumAddress(wallet.address),
-          utils.toChecksumAddress("0x4d39E9bDE6F596863Cfa2815170134ba7DC75a5C")
+          utils.toChecksumAddress("0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A7")
         ],
         [0, 150],
         [50, 100],
@@ -97,22 +98,21 @@ export function* handleNewArbitration(args) {
       const abi = contracts[contract].abi;
 
       log("handleNewArbitration - abi", abi);
+      log("handleNewArbitration - next method call", contracts[contract].methods[method](...contractPayload));
 
       // // Fetch initial value from chain and return cache key for reactive updates.
       const tx = yield contracts[contract].methods[method](...contractPayload)
-        .call({ from: wallet.address })
-        .then((result, second, third) => {
+        .send({ from: wallet.address })
+        .then(result => {
           log("handleNewArbitration - arbitration tx result", result);
-          log("handleNewArbitration - arbitration tx second", second);
-          log("handleNewArbitration - arbitration tx third", third);
         });
 
       log("handleNewArbitration - arbitration tx", tx);
 
-      const txArbitrations2 = contracts[contract].methods[
-        arbitrations
-      ].cacheCall(wallet.address);
-      log("handleNewArbitration - txArbitrations", txArbitrations2);
+      // const txArbitrations2 = contracts[contract].methods[
+      //   arbitrations
+      // ].cacheCall(wallet.address);
+      // log("handleNewArbitration - txArbitrations", txArbitrations2);
 
       // // Fetch initial value from chain and return cache key for reactive updates.
       // const dataKey = contracts[contract].methods[arbitrations].cacheCall(
@@ -151,5 +151,6 @@ export function* handleNewArbitration(args) {
 // spawn tasks base certain actions
 export default function* arbitrationSagas() {
   log("run", "arbitrationSagas");
-  yield takeEvery(NEW_ARBITRATION, handleNewArbitration);
+  yield takeLatest(NEW_ARBITRATION, handleNewArbitration);
+  yield takeLatest(SEND_TO_COUNTERPARTY, handleNewArbitration);
 }

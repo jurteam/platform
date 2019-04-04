@@ -115,9 +115,9 @@ storiesOf("CountdownGraph", module)
   .add("OnGoing Dispute", () => (
     <CountdownGraph
       days={5}
-      hours={0}
+      hours={2}
       minutes={0}
-      startDate={+new Date()}
+      startDate={1552997513000}
       statusId={35}
       expireAlertFrom={1000 * 60 * 60 * 24}
       onProgress={percentage => console.log(percentage)}

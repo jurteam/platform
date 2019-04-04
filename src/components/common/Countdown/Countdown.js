@@ -94,6 +94,7 @@ export class Countdown extends Component {
   start = (startDate, duration) => {
     this.interval = setInterval(() => {
       const date = this.calculateCountDown(startDate, duration);
+      console.log("start", date);
       if (date) {
         const percentage = this.calculatePercentage(date.milliseconds);
         this.setState({
@@ -102,7 +103,8 @@ export class Countdown extends Component {
           expiring: this.getExpiringStatus(date.milliseconds),
           playing: true
         });
-        this.props.onProgress(percentage);
+        if (typeof this.props.onProgress === "function")
+          this.props.onProgress(percentage);
       } else {
         this.setState(state => {
           if (state.playing) {
