@@ -36,7 +36,7 @@ const Unlock = () => {
         <UserActionHeader variant="error">
           {labels.metamaskRequired}
         </UserActionHeader>
-        <UserActionBody>{labels.metamaskRequiredDesc}</UserActionBody>
+        <UserActionBody dangerouslySetInnerHTML={{__html:labels.metamaskRequiredDesc}}/>
         <UserActionFooter>
           {shouldUnlock && (
             <Button

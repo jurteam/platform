@@ -16,9 +16,10 @@
     "contractName" : "Contract Name",
     "contractNamePlaceholder" : "Contract name goes here...",
     "duration" : "Duration",
+    "yourDetails" : "Your Details",
     "couterpartyDetails" : "Counterparty Details",
     "metamaskRequired" : "MetaMask is Required",
-    "metamaskRequiredDesc" : "MetaMask is an extension for accessing Ethereum enabled distributed applications, or \"Dapps\" in your normal browser! The extension injects the Ethereum web3 API into every website's javascript context, so that dapps can read from the blockchain.",
+    "metamaskRequiredDesc" : "MetaMask is an extension for accessing Ethereum enabled distributed applications, or \"Dapps\" in your normal browser!<br />The extension injects the Ethereum web3 API into every website's javascript context, so that dapps can read from the blockchain.",
     "getChromeExtension" : "Get Chrome Extension",
     "unlockMetamask" : "Unlock MetaMask",
     "value" : "Value",
@@ -73,6 +74,8 @@
     "hubs" : "Hubs",
     "hubsText" : "Lorem ipsum dolor sit amet.",
     "saving" : "Saving",
+    "saveContract" : "Save contract",
+    "sendToCounterparty" : "Send to counterparty",
     "dotted" : "•••",
     "otherCategoryPlaceholder": "Insert your category"
 }
