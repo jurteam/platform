@@ -30,15 +30,13 @@ class ContractFilters extends Filters
 
     public function from($value)
     {
-        $from = Carbon::parse($value);
-
+        $from = Carbon::parse($value)->startOfDay();
         return $this->builder->where('created_at', '>=', $from->format('Y-m-d H:i:s'));
     }
 
     public function to($value)
     {
-        $to = Carbon::parse($value);
-
+        $to = Carbon::parse($value)->endOfDay();
         return $this->builder->where('created_at', '<=', $to->format('Y-m-d H:i:s'));
     }
 
