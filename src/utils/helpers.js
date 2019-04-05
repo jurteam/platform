@@ -54,13 +54,13 @@ export const redirect = (...checks) => {
   };
 };
 
-export const toCurrencyFormat = value => {
+export const toCurrencyFormat = (value) => {
   const decimals = "1";
   const num = Number(humanToEth(value)) / Number(decimals.padEnd(Number(process.env.REACT_APP_TOKEN_DECIMALS)+1,"0"));
   return num.toFixed(2);
 };
 
-export const humanToEth = value => {
+export const humanToEth = (value) => {
   const decimals = "1";
   let amount = 0;
 
@@ -72,16 +72,24 @@ export const humanToEth = value => {
   return amount;
 };
 
-export const ethToHuman = value => {
+export const ethToHuman = (value) => {
   const decimals = "1";
   const amount = Number(value) / Number(decimals.padEnd(Number(process.env.REACT_APP_TOKEN_DECIMALS)+1,"0"));
   return amount;
 };
 
-export const ethToStore = value => {
+export const ethToStore = (value) => {
   const amount = Number(value)
   return amount.toFixed(process.env.REACT_APP_TOKEN_DECIMALS);
 };
+
+export const getFormattedDate = (date) => {
+  let year = date.getFullYear();
+  let month = (1 + date.getMonth()).toString().padStart(2, '0');
+  let day = date.getDate().toString().padStart(2, '0');
+
+  return `${year}-${month}-${day}`;
+}
 
 export const capitalize = string =>
   string.charAt(0).toUpperCase() + string.slice(1);

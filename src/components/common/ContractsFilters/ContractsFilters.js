@@ -4,6 +4,7 @@ import Form from "../Form";
 import Button from "../Button";
 import { SearchIcon } from "../Icons/SearchIcon";
 import statusList from "../../../assets/i18n/en/status.json"; // categories
+import { getFormattedDate } from "../../../utils/helpers"; // helpers
 import "./ContractsFilters.scss";
 export class ContractsFilters extends Component {
   state = {
@@ -38,13 +39,13 @@ export class ContractsFilters extends Component {
         <CalendarFilter
           name="from"
           selectedDate={this.state.fromDate}
-          onChange={value => this.handleChange("fromDate", value)}
+          onChange={value => this.handleChange("fromDate", getFormattedDate(value))}
         />
         <span className="separator" />
         <CalendarFilter
           name="to"
           selectedDate={this.state.toDate}
-          onChange={value => this.handleChange("toDate", value)}
+          onChange={value => this.handleChange("toDate", getFormattedDate(value))}
         />
         <Form.Search
           onChange={value => this.handleChange("searchText", value)}
