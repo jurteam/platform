@@ -1,6 +1,10 @@
 @import "../../../assets/scss/variables";
 
 .jur-who-pays {
+  &__disabled {
+    opacity: .6;
+  }
+
   &__counterparties {
     display: flex;
     margin-top: 10px;

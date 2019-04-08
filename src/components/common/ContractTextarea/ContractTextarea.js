@@ -9,15 +9,18 @@ export const ContractTextarea = ({
   onChange,
   name,
   label,
-  placeholder
+  placeholder,
+  ...rest
 }) => (
   <div className="jur-contract-textarea">
     <BlockTitle title={label} hideIcon />
     <textarea
       placeholder={placeholder || ""}
       name={name}
+      className={rest.disabled ? "jur-contract-textarea__disabled" : ""}
       value={initialValue}
       onChange={ev => onChange(ev)}
+      {...rest}
     />
   </div>
 );

@@ -200,9 +200,11 @@ export const ContractDetail = props => {
   };
 
   const penaltyFee = hasPenaltyFee && hasPenaltyFee != "0" ? {
-    partA: partAPenaltyFee <= value ? partAPenaltyFee : value,
-    partB: partBPenaltyFee <= value ? partBPenaltyFee : value
+    partA: Number(partAPenaltyFee) <= Number(value) ? partAPenaltyFee : value,
+    partB: Number(partBPenaltyFee) <= Number(value) ? partBPenaltyFee : value
   } : null;
+
+  console.log("penaltyFee", penaltyFee);
 
   return typeof params.id !== "undefined" ? (
     <PageLayout breadcrumbs={breadcrumbs}>
@@ -245,6 +247,7 @@ export const ContractDetail = props => {
             />
 
             <InsertContractDetails
+              disabled={contract.saving}
               kpiInitialValue={kpi || ""}
               kpiPlaceholder={labels.kpiPlaceholder}
               resolutionProofInitialValue={resolutionProof || ""}
@@ -261,6 +264,7 @@ export const ContractDetail = props => {
           </Main>
           <Aside>
             <ContractSidebar
+              disabled={contract.saving}
               contract={{
                 contractID: id,
                 from: {

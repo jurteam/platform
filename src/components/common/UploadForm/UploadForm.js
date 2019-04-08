@@ -54,7 +54,7 @@ export class UploadForm extends Component {
 
   render() {
     return (
-      <div className="jur-upload-form">
+      <div className={`jur-upload-form ${this.props.disabled ? "jur-upload-form__disabled" : ""}`}>
         {this.state.files.map((file, idx) => (
           <div className="form-group" key={idx.toString()}>
             <label
@@ -69,6 +69,7 @@ export class UploadForm extends Component {
               type="file"
               name={`file-${idx}`}
               id={`input-file-${idx}`}
+              disabled={this.props.disabled}
               onChange={ev => this.getSelectedFile(ev, idx)}
             />
             <span className="jur-upload-form__input-name">

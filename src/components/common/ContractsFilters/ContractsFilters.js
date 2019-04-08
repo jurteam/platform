@@ -18,9 +18,13 @@ export class ContractsFilters extends Component {
   handleChange = (type, value) => {
     this.setState(state => {
       const newState = { ...state, [type]: value };
-      this.props.onChange(type, value);
+      if (typeof this.props.onChange === "function") this.props.onChange(type, value);
       return newState;
     });
+  };
+
+  handleReset = () => {
+    if (typeof this.props.onReset === "function") this.props.onReset();
   };
 
   render() {

@@ -5,6 +5,12 @@
     margin-bottom: 10px;
   }
 
+  &__disabled {
+    user-select: none;
+    pointer-events: none;
+    opacity: .6;
+  }
+
   textarea {
     width: 100%;
     border-radius: 4px;

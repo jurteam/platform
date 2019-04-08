@@ -9,6 +9,7 @@ import {
   UPDATE_NEW_CONTRACT_FIELD,
   CONTRACT_DELETED,
   CONTRACTS_FETCHED,
+  CONTRACT_SAVING,
   CONTRACT_UPDATING,
   CONTRACT_LIST_UPDATING,
   CONTRACT_MEDIA_DELETE,
@@ -18,6 +19,7 @@ import {
 } from "./types";
 
 const INITIAL_STATE = {
+  saving: false,
   updating: false,
   updatingList: true,
   new: {
@@ -105,6 +107,9 @@ export default (state = INITIAL_STATE, action) => {
 
     case CONTRACT_UPDATING:
       return { ...state, updating: action.payload };
+
+    case CONTRACT_SAVING:
+      return { ...state, saving: action.payload };
 
     case CONTRACT_LIST_UPDATING:
       return { ...state, updatingList: action.payload };

@@ -11,6 +11,7 @@ import { AppContext } from "../../../bootstrap/AppProvider";
 import "./InsertContractDetails.scss";
 
 export const InsertContractDetails = ({
+  disabled,
   kpiPlaceholder,
   resolutionProofPlaceholder,
   kpiInitialValue,
@@ -32,6 +33,7 @@ export const InsertContractDetails = ({
         name="kpi"
         onChange={onKpiChange}
         placeholder={kpiPlaceholder}
+        disabled={disabled}
       />
       <ContractTextarea
         initialValue={resolutionProofInitialValue}
@@ -39,6 +41,7 @@ export const InsertContractDetails = ({
         name="resolutionProof"
         onChange={onResolutionProofChange}
         placeholder={resolutionProofPlaceholder}
+        disabled={disabled}
       />
       <div className="jur-insert-contract-details__files">
         {uploadedFiles.length > 0 && (
@@ -50,12 +53,13 @@ export const InsertContractDetails = ({
                 file={file}
                 onView={onView}
                 onDelete={onDelete}
+                disabled={disabled}
                 large
               />
             ))}
           </FileList>
         )}
-        <UploadForm onFileAdded={onFileAdded} />
+        <UploadForm onFileAdded={onFileAdded} disabled={disabled} />
       </div>
     </div>
   );

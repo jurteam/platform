@@ -15,6 +15,7 @@ import {
   CONTRACTS_FETCHED,
   CONTRACT_DELETED,
   API_CATCH,
+  CONTRACT_SAVING,
   CONTRACT_MEDIA_DELETE,
   CONTRACT_MEDIA_DELETED,
   CONTRACT_PAGE_CHANGE,
@@ -121,6 +122,7 @@ export function* createContract(action) {
 // Update
 export function* updateContract(action) {
   log("updateContract - run");
+  yield put({ type: CONTRACT_SAVING, payload: true });
   const { id, contractName, kpi, resolutionProof, category, value, whoPays, duration, hasPenaltyFee, partAPenaltyFee, partBPenaltyFee } = yield select(getCurrentContract);
 
   const zero = Number(0).toFixed(process.env.REACT_APP_TOKEN_DECIMALS);
@@ -138,8 +140,8 @@ export function* updateContract(action) {
   if (duration && duration.minutes) toUpdate.append("duration_minutes", duration.minutes);
   toUpdate.append("has_penalty_fee", hasPenaltyFee ? 1 : 0); // always
   if (hasPenaltyFee) {
-    if (partAPenaltyFee) toUpdate.append("part_a_penalty_fee", hasPenaltyFee && partAPenaltyFee <= value ? Number(partAPenaltyFee).toFixed(process.env.REACT_APP_TOKEN_DECIMALS) : Number(value).toFixed(process.env.REACT_APP_TOKEN_DECIMALS)); // handle maximum value possibile
-    if (partBPenaltyFee) toUpdate.append("part_b_penalty_fee", hasPenaltyFee && partBPenaltyFee <= value ? Number(partBPenaltyFee).toFixed(process.env.REACT_APP_TOKEN_DECIMALS) : Number(value).toFixed(process.env.REACT_APP_TOKEN_DECIMALS)); // handle maximum value possibile
+    if (partAPenaltyFee) toUpdate.append("part_a_penalty_fee", hasPenaltyFee && Number(partAPenaltyFee) <= Number(value) ? Number(partAPenaltyFee).toFixed(process.env.REACT_APP_TOKEN_DECIMALS) : Number(value).toFixed(process.env.REACT_APP_TOKEN_DECIMALS)); // handle maximum value possibile
+    if (partBPenaltyFee) toUpdate.append("part_b_penalty_fee", hasPenaltyFee && Number(partBPenaltyFee) <= Number(value) ? Number(partBPenaltyFee).toFixed(process.env.REACT_APP_TOKEN_DECIMALS) : Number(value).toFixed(process.env.REACT_APP_TOKEN_DECIMALS)); // handle maximum value possibile
   } else { // reset penalty fees
     toUpdate.append("part_a_penalty_fee", zero);
     toUpdate.append("part_b_penalty_fee", zero);
@@ -219,6 +221,7 @@ export function* onContractPageChange(action) {
 }
 
 export function* resetUpdating() {
+  yield put({ type: CONTRACT_SAVING, payload: false });
   yield put({ type: CONTRACT_UPDATING, payload: false });
 }
 

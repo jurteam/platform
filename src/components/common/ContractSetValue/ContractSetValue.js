@@ -50,11 +50,13 @@ export class ContractSetValue extends Component {
           contract={this.props.contract}
           handleSelectPayer={this.handleSelectPayer}
           error={!this.props.currentUserCanPay}
+          disabled={this.props.disabled}
         />
         <ContractSetPenaltyFee
           contract={this.props.contract}
           setPenaltyFeeStatus={this.setPenaltyFeeStatus}
           setPenaltyFee={this.setPenaltyFee}
+          disabled={this.props.disabled}
         />
       </div>
     );

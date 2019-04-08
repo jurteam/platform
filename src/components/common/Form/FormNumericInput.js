@@ -18,16 +18,20 @@ export const FormNumericInput = ({
     typeof initialValue === "number" ? initialValue : ""
   );
   const plus = () => {
-    const { max } = params;
-    const newValue =
-      max && Number(value) === max ? max : Number(value) + (step || 1);
-    setValue(newValue);
-    onChange(newValue);
+    if (!params.disabled) {
+      const { max } = params;
+      const newValue =
+        max && Number(value) === max ? max : Number(value) + (step || 1);
+      setValue(newValue);
+      onChange(newValue);
+    }
   };
   const minus = () => {
-    const newValue = Number(value) === 0 ? "0" : Number(value) - (step || 1);
-    setValue(newValue);
-    onChange(newValue);
+    if (!params.disabled) {
+      const newValue = Number(value) === 0 ? "0" : Number(value) - (step || 1);
+      setValue(newValue);
+      onChange(newValue);
+    }
   };
   const handleChange = value => {
     if (typeof value === "number") {

@@ -10,6 +10,7 @@ import "./ContractSetPenaltyFee.scss";
 
 export const ContractSetPenaltyFee = ({
   contract,
+  disabled,
   setPenaltyFee,
   setPenaltyFeeStatus,
   handlePenaltyFee
@@ -33,18 +34,18 @@ export const ContractSetPenaltyFee = ({
     <div className="jur-contract-set-penalty-fee">
       <div className="jur-contract-set-penalty-fee__title">
         <BlockTitle title="Is there any penalty fee?" />
-        <Switch onChange={handlePenaltyFeeActive} checked={isActive&& contract.amount > 0} />
+        <Switch onChange={handlePenaltyFeeActive} checked={isActive&& contract.amount > 0} disabled={disabled} />
       </div>
       <div
         className={`jur-contract-set-penalty-fee__values ${
-          isActive && contract.amount > 0 ? "jur-contract-set-penalty-fee__values--active" : ""
+          isActive && !disabled && contract.amount > 0 ? "jur-contract-set-penalty-fee__values--active" : ""
         }`}
       >
         {[from, to].map((counterparty, index) => (contract.penaltyFee ?
           <PriceRange
             key={index}
             min={0}
-            defaultValue={(contract.penaltyFee[counterparty.label] <= contract.amount) ?
+            defaultValue={(Number(contract.penaltyFee[counterparty.label]) <= contract.amount) ?
               contract.penaltyFee && Number(contract.penaltyFee[counterparty.label]) : contract.amount
             }
             max={Number(contract.amount)}

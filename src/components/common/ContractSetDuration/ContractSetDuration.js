@@ -5,9 +5,9 @@ import BlockTitle from "../BlockTitle";
 
 import "./ContractSetDuration.scss";
 
-export const ContractSetDuration = ({ savedValue, contract, onChange }) => {
+export const ContractSetDuration = ({ savedValue, contract, onChange, disabled }) => {
   const [duration, setDuration] = useState(
-    savedValue || { days: 0, hours: 0, minutes: 0 }
+    savedValue || contract.duration || { days: 0, hours: 0, minutes: 0 }
   );
 
   const handleChange = (name, value) => {
@@ -27,6 +27,7 @@ export const ContractSetDuration = ({ savedValue, contract, onChange }) => {
           onChange={handleChange.bind(this, "days")}
           max={999}
           maxLength={3}
+          disabled={disabled}
         />
         <Form.NumericInput
           label="hours"
@@ -34,6 +35,7 @@ export const ContractSetDuration = ({ savedValue, contract, onChange }) => {
           onChange={handleChange.bind(this, "hours")}
           max={23}
           maxLength={2}
+          disabled={disabled}
         />
         <Form.NumericInput
           label="minutes"
@@ -42,6 +44,7 @@ export const ContractSetDuration = ({ savedValue, contract, onChange }) => {
           step={15}
           max={45}
           maxLength={2}
+          disabled={disabled}
         />
       </div>
     </div>

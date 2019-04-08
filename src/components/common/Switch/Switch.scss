@@ -3,6 +3,10 @@
 .switch {
   display: flex;
 
+  &__disabled {
+    opacity: .6;
+  }
+
   &__input {
     position: relative;
     display: inline-block;

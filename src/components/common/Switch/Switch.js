@@ -11,7 +11,7 @@ export const Switch = ({ error, value, checked, ...rest }) => {
   log("Switch", value);
 
   return (
-    <div className="switch">
+    <div className={`switch ${rest.disabled ? "switch__disabled": ""}`}>
       <label className="switch__input">
         <input type="checkbox" checked={checked} value={value} {...rest} />
         <span className="slider" />

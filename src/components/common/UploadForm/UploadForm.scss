@@ -12,6 +12,12 @@
     }
   }
 
+  &__disabled {
+    user-select: none;
+    pointer-events: none;
+    opacity: .6;
+  }
+
   &__label {
     display: inline-flex;
     justify-content: center;

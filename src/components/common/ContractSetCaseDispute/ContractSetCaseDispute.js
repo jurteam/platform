@@ -1,19 +1,26 @@
 import React, { useContext } from "react";
 import PropTypes from "prop-types";
 
+import { AppContext } from "../../../bootstrap/AppProvider"; // context
+
 import "./ContractSetCaseDispute.scss";
+
 
 export const ContractSetCaseDispute = ({
   cases,
   selectedOptionId,
-  handleChange
+  handleChange,
+  disabled
 }) => {
+
+  const { labels } = useContext(AppContext);
+
   return (
     <div className="jur-contract-set-case-dispute">
       <div className="jur-contract-set-case-dispute__title">
-        In Case of Dispute
+        { labels.inCaseOfDispute }
       </div>
-      <div className="jur-contract-set-case-dispute__options">
+      <div className={`jur-contract-set-case-dispute__options ${disabled ? "jur-contract-set-case-dispute__disabled" : ""}`}>
         {cases.map((option, index) => (
           <div
             key={index.toString()}

@@ -12,6 +12,9 @@ import { AppContext } from "../../../bootstrap/AppProvider"; // context
 import "./ContractSidebar.scss";
 
 export const ContractSidebar = ({
+  disabled,
+  error,
+  errorMsg,
   contract,
   currentUserCanPay,
   cases,
@@ -29,14 +32,15 @@ export const ContractSidebar = ({
   return (
     <div>
       <ContractActions>
-        <Button onClick={onSubmit}>{labels.saveContract}</Button>
-        <Button variant="gradient" onClick={onSend}>{labels.sendToCounterparty}</Button>
+        <Button color={disabled ? "muted" : null} onClick={!disabled && onSubmit}>{labels.saveContract}</Button>
+        <Button color={disabled ? "muted" : null} variant={disabled ? "contained" : "gradient"} onClick={!disabled && onSend}>{labels.sendToCounterparty}</Button>
       </ContractActions>
-      <ContractSelectCategory onChange={onChangeSelect} category={category} />
-      <ContractSetDuration contract={contract} onChange={value => onChangeValue("duration", value)} />
-      <ContractSetValue contract={contract} onChange={onChangeValue} currentUserCanPay={currentUserCanPay} />
+      <ContractSelectCategory onChange={onChangeSelect} category={category} isDisabled={disabled} />
+      <ContractSetDuration contract={contract} onChange={value => onChangeValue("duration", value)} disabled={disabled} />
+      <ContractSetValue contract={contract} onChange={onChangeValue} currentUserCanPay={currentUserCanPay} disabled={disabled} />
       <ContractSetCaseDispute
         cases={cases}
+        disabled={disabled}
         selectedOptionId={selectedOptionId}
         handleChange={selectedOptionId => console.log(selectedOptionId)}
       />

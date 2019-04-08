@@ -13,6 +13,12 @@
     padding: 20px 10px;
   }
 
+  &__disabled {
+    pointer-events: none;
+    user-select: none;
+    opacity: .6;
+  }
+
   &__name {
     font-size: 12px;
     color: $file-name-color;
