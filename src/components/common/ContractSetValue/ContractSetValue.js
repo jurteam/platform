@@ -2,12 +2,15 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import WhoPays from "../WhoPays";
 import ContractSetPenaltyFee from "../ContractSetPenaltyFee";
+import InfoTooltip from '../InfoTooltip';
+import { toCurrencyFormat, ellipsisString } from '../../../utils/helpers';
 
 import "./ContractSetValue.scss";
 
 export class ContractSetValue extends Component {
   state = {
-    contract: this.props.contract
+    contract: this.props.contract,
+    feeToPay: 1100
   };
 
   setPenaltyFeeStatus = value => {
@@ -46,6 +49,13 @@ export class ContractSetValue extends Component {
           setPenaltyFeeStatus={this.setPenaltyFeeStatus}
           ContractSetPenaltyFee={this.ContractSetPenaltyFee}
         />
+        { this.props.showFeeMsg &&
+          <div className="jur-contract-set-value__fee-msg">
+            <InfoTooltip />
+            {" "}
+            <span>You need to pay {toCurrencyFormat(this.state.feeToPay)} if {ellipsisString(this.props.contract.to.wallet.address, 16)} accepts the contract</span>
+        </div>
+        }
       </div>
     );
   }
