@@ -49,7 +49,12 @@ export class ContractsFilters extends Component {
         <Form.Search
           onChange={value => this.handleChange("searchText", value)}
         />
-        <Button variant="contained" onClick={this.props.onSubmit} size="medium">
+        <Button
+          className="jur-contracts-filter__submit-btn"
+          variant="contained"
+          onClick={this.props.onSubmit}
+          size="medium"
+        >
           <SearchIcon />
         </Button>
       </div>
