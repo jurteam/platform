@@ -21,14 +21,22 @@
         padding: 0 5px;
       }
 
-      label {
-        color: $who-pays-input-text-color;
-      }
+    }
+  }
+  
+  label {
+    color: $who-pays-input-text-color;
+  }
+
+  .jur-form__numeric-input--error {
+    label {
+      color: $scarlet;
     }
   }
 
   &__counterparty {
-    margin-right: 20px;
+    margin-right: 10px;
+    min-width: 202px;
 
     &:last-child {
       margin: 0;

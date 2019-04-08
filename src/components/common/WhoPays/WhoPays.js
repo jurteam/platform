@@ -3,14 +3,12 @@ import PropTypes from "prop-types";
 import BlockTitle from "../BlockTitle";
 import { AvatarInfo } from "../AvatarInfo/AvatarInfo";
 import Form from "../Form";
-import AlertIcon from "../Icons/AlertIcon";
 
 import "./WhoPays.scss";
 
 export class WhoPays extends Component {
   state = {
     openIndex: 0,
-    error: false,
     counterparties: [this.props.contract.from, this.props.contract.to],
     payer: null
   };
@@ -63,10 +61,9 @@ export class WhoPays extends Component {
                     label="Jur Token"
                     onChange={this.handleContractValue.bind(this, index)}
                     step="0.01"
+                    error={this.props.error}
+                    errorMsg={this.props.errorMsg}
                   />
-                  {this.state.error && (
-                    <span>You do not have enough Jur balance</span>
-                  )}
                 </>
               )}
             </div>
