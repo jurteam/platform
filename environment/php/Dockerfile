@@ -4,6 +4,11 @@ RUN apt-get update && \
     apt-get install -y libsodium-dev
 RUN docker-php-ext-install mbstring tokenizer mysqli pdo_mysql sodium exif
 
+# memcached libs
+RUN apt-get update && apt-get install -y libz-dev libmemcached-dev
+RUN pecl install memcached
+RUN echo extension=memcached.so >> /usr/local/etc/php/conf.d/memcached.ini
+
 # composer
 RUN apt-get update && \
     apt-get install -y zip unzip

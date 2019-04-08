@@ -6,6 +6,7 @@ JUR MVP will be available at https://jur.io/mvp/
 
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+> Note: this project should be refactored using _Drizzle Truffle Box ([Further info here](https://github.com/truffle-box/drizzle-box))_
 
 
 ## Dependencies
@@ -21,7 +22,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 - **react-blockies** for users ident icons _(based on ETH Blockies [more info here](https://github.com/ethereum/blockies))_
 
 
-### Developmnent
+### Developmnent (host)
 - **prettier** for coding style format _([more info here](https://prettier.io))_;
 - **storybook** for ui components _([more info here](https://github.com/storybooks/storybook))_;
 
@@ -60,21 +61,52 @@ REST API are used to keep all user, contracts and disputes data off-chain.
 This servise is exposed via Lumen and is accessible via Docker.
 
 > Please have a look at the Postman config available under `rest/postman` for furter informations about endpoints
-
 #### First run
 On first run you should download and setup Laravel packages and database. Just follow this commands.
+> This step by step guide assumes that _Metamask_ and required host packages was already configured.
+
+##### 1. Setup configuration
+Based on [.env.template](.env.template) create your local environment file and change `<api-base-url>` and `<provider>` constant in relation to your host.
+> A standard **.env.local** configuration can have ```REACT_APP_API_BASE_URL=http://localhost/api/v1``` and ```REACT_APP_ETHEREUM_PROVIDER=http://localhost:8545```
+
+##### 2. Project Dependecies Manager
 ```
 $ cd path/to/project/root
-$ cd rest
-$ composer install
+$ npm install
+```
+
+##### 3. Smart Contract Build
+```
+$ cd path/to/project/root/protocol
+$ npm install
+$ ganache-cli --gasLimit 7000000
+$ truffle compile
 $ cd ..
+$ npm run migrate-contracts
+```
+Once contracts is migrated and available on your local network you should Mint a couple of Token. To do it you can use the last test available under **protocol** folder (`protocol/test/07_mint_tokens.js`).
+> Please use `truffle network` command to look at token address for minting (edit test file at row 17) and token adding in _Metamask_ extension.
+
+##### 4. Docker Environment for API
+```
+$ cd path/to/project/root
 $ docker-compose build
 $ docker-compose up -d
-$ cd rest
+$ docker exec -it php bash
+$ cd ..
+$ composer install
 $ php artisan key:generate
-$ php artisan migrate
+$ php artisan migrate:refresh
+$ php artisan db:seed
 ```
-If all goes well now API are accessible on http://localhost/api/v[api-version].
+If all goes well now API endpoints are accessible on http://localhost/api/v[api-version].
+
+##### 5. DApp run
+```
+$ cd path/to/project/root
+$ npm start -- --reset-cache
+```
+If all goes well now Dapp is accessible on http://localhost:3000.
 
 #### `$ docker-compose up -d`
 This command will **launch** REST API service on your host.
@@ -121,6 +153,13 @@ If you aren’t satisfied with the build tool and configuration choices, you can
 Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
 You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+
+### `npm run migrate-contracts`
+
+**Note: this command will work only if you had installed `truffle` as global npm package!**
+> Please install the same version available in protocol README.md - _**Truffle** `^4.1.11`_
+
+Run this command in order to migrate Smart Contract from protocol repository.
 
 ### `npm run storybook`
 
