@@ -56,26 +56,37 @@ _**You can find the environment configuration template [here](.env.template).**_
 To run a test ethereum network, in a separate terminal execute:
 `ganache-cli --gasLimit 7000000`
 
-### Rest API
+## Rest API
 REST API are used to keep all user, contracts and disputes data off-chain.
 This servise is exposed via Lumen and is accessible via Docker.
 
 > Please have a look at the Postman config available under `rest/postman` for furter informations about endpoints
-#### First run
+
+## Storybook
+In order to have a full overview of the components available for this project please run **Storybook** available at http://localhost:9009 once you have run the following commands.
+
+1. Make sure you have installed host dependencies;
+2. Make sure you have installed project dependencies (step one of _First run flow_);
+3. Run ```npm run storybook```;
+
+If all goes well Storybook is accessible at http://localhost:9009
+
+
+## First run flow
 On first run you should download and setup Laravel packages and database. Just follow this commands.
 > This step by step guide assumes that _Metamask_ and required host packages was already configured.
 
-##### 1. Setup configuration
-Based on [.env.template](.env.template) create your local environment file and change `<api-base-url>` and `<provider>` constant in relation to your host.
-> A standard **.env.local** configuration can have ```REACT_APP_API_BASE_URL=http://localhost/api/v1``` and ```REACT_APP_ETHEREUM_PROVIDER=http://localhost:8545```
-
-##### 2. Project Dependecies Manager
+### 1. Project Dependecies Manager
 ```
 $ cd path/to/project/root
 $ npm install
 ```
 
-##### 3. Smart Contract Build
+### 2. Setup configuration
+Based on [.env.template](.env.template) create your local environment file and change `<api-base-url>` and `<provider>` constant in relation to your host.
+> A standard **.env.local** configuration can have ```REACT_APP_API_BASE_URL=http://localhost/api/v1``` and ```REACT_APP_ETHEREUM_PROVIDER=http://localhost:8545```
+
+### 3. Smart Contract Build
 ```
 $ cd path/to/project/root/protocol
 $ npm install
@@ -87,7 +98,7 @@ $ npm run migrate-contracts
 Once contracts is migrated and available on your local network you should Mint a couple of Token. To do it you can use the last test available under **protocol** folder (`protocol/test/07_mint_tokens.js`).
 > Please use `truffle network` command to look at token address for minting (edit test file at row 17) and token adding in _Metamask_ extension.
 
-##### 4. Docker Environment for API
+### 4. Docker Environment for API
 ```
 $ cd path/to/project/root
 $ docker-compose build
@@ -99,14 +110,14 @@ $ php artisan key:generate
 $ php artisan migrate:refresh
 $ php artisan db:seed
 ```
-If all goes well now API endpoints are accessible on http://localhost/api/v[api-version].
+If all goes well, all API endpoints are accessible at http://localhost/api/v[api-version].
 
-##### 5. DApp run
+### 5. DApp run
 ```
 $ cd path/to/project/root
 $ npm start -- --reset-cache
 ```
-If all goes well now Dapp is accessible on http://localhost:3000.
+If all goes well, now Dapp is accessible at http://localhost:3000.
 
 #### `$ docker-compose up -d`
 This command will **launch** REST API service on your host.
