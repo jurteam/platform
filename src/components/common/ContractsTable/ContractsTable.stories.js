@@ -56,13 +56,19 @@ const contractsData = [
     ],
     value: 854667,
     archived: false,
-    currency: "JUR"
+    currency: "JUR",
+    duration: {
+      days: 9,
+      hours: 6,
+      minutes: 30
+    }
   },
   {
     to: '/2',
     id: 1,
     statusId: 1,
     statusLabel: "Waiting for counterparty",
+    statusUpdatedAt: 1554487773000,
     contractName: "OTC transaction Eth vs Btc",
     duration: 1000 * 60 * 60 * 24 * 3,
     expireDate: 1000 * 60 * 60 * 24 * 2,
@@ -80,7 +86,12 @@ const contractsData = [
     ],
     value: 854667,
     archived: false,
-    currency: "JUR"
+    currency: "JUR",
+    duration: {
+      days: 9,
+      hours: 6,
+      minutes: 30
+    }
   },
   {
     to: '/3',
@@ -88,6 +99,7 @@ const contractsData = [
     statusId: 5,
     statusLabel: "Ongoing",
     contractName: "Web Development Activity",
+    statusUpdatedAt: 1554487773000,
     duration: 1000 * 60 * 60 * 24 * 3,
     expireDate: 1000 * 60 * 60 * 24 * 2,
     counterparties: [
@@ -104,7 +116,12 @@ const contractsData = [
     ],
     value: 854667,
     archived: false,
-    currency: "JUR"
+    currency: "JUR",
+    duration: {
+      days: 9,
+      hours: 6,
+      minutes: 30
+    }
   },
   {
     to: '/4',
@@ -112,6 +129,7 @@ const contractsData = [
     statusId: 31,
     statusLabel: "Open Dispute",
     contractName: "Logo Design",
+    statusUpdatedAt: 1554487773000,
     duration: 1000 * 60 * 60 * 24 * 3,
     expireDate: 1000 * 60 * 60 * 24 * 2,
     counterparties: [
@@ -128,7 +146,12 @@ const contractsData = [
     ],
     value: 854667,
     archived: false,
-    currency: "JUR"
+    currency: "JUR",
+    duration: {
+      days: 9,
+      hours: 6,
+      minutes: 30
+    }
   },
   {
     to: '/5',
@@ -136,6 +159,7 @@ const contractsData = [
     statusId: 39,
     statusLabel: "Closed Dispute",
     contractName: "Investment Milestone",
+    statusUpdatedAt: 1554487773000,
     duration: 1000 * 60 * 60 * 24 * 3,
     expireDate: 1000 * 60 * 60 * 24 * 2,
     counterparties: [
@@ -152,7 +176,12 @@ const contractsData = [
     ],
     value: 854667,
     archived: false,
-    currency: "JUR"
+    currency: "JUR",
+    duration: {
+      days: 9,
+      hours: 6,
+      minutes: 30
+    }
   },
   {
     to: '/6',
@@ -160,6 +189,7 @@ const contractsData = [
     statusId: 39,
     statusLabel: "Closed Dispute",
     contractName: "EU Patent purchasing",
+    statusUpdatedAt: 1554487773000,
     duration: 1000 * 60 * 60 * 24 * 3,
     expireDate: 1000 * 60 * 60 * 24 * 2,
     counterparties: [
@@ -176,9 +206,22 @@ const contractsData = [
     ],
     value: 854667,
     archived: false,
-    currency: "JUR"
+    currency: "JUR",
+    duration: {
+      days: 9,
+      hours: 6,
+      minutes: 30
+    }
   }
 ];
+
+const filters = {
+  status: null,
+  fromDate: null,
+  toDate: null,
+  searchText: null,
+  disabled: false
+};
 
 storiesOf("ContractsTable", module)
   .addDecorator(withInfo)
@@ -196,6 +239,7 @@ storiesOf("ContractsTable", module)
       handleFilterChange={value => console.log(value)}
       handleFilterSubmit={console.log("filter contracts")}
       contractsPerPage={3}
+      filters={filters}
       totalContracts={noContracts.length}
       handlePageChange={pageNumber => console.log(pageNumber)}
     />
@@ -208,6 +252,8 @@ storiesOf("ContractsTable", module)
       handleFilterChange={value => console.log(value)}
       handleFilterSubmit={() => console.log("filter contracts")}
       contractsPerPage={3}
+      filters={filters}
+      loading={false}
       totalContracts={contractsData.length}
       onPageChange={pageNumber => console.log(pageNumber)}
     />

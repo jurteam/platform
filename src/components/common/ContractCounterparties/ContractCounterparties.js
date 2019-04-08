@@ -16,7 +16,7 @@ export const ContractCounterparties = ({
       hideIcon
     />
     <div className="jur-contract-counterparties__value">
-      {counterparties.map((counterparty, idx) => (
+      {counterparties && counterparties.map((counterparty, idx) => (
         <AvatarInfo
           key={`counterparty-${idx}`}
           userName={counterparty.name}

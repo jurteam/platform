@@ -14,5 +14,5 @@ storiesOf("ContractSetDuration", module)
     }
   })
   .add("Default", () => (
-    <ContractSetDuration onChange={value => console.log(value)} />
+    <ContractSetDuration onChange={value => console.log(value)} contract={{duration:{days:4,hours:6,minutes:45}}} />
   ));

@@ -172,6 +172,14 @@ const contractsTableData = [
   }
 ];
 
+const filters = {
+  status: null,
+  fromDate: null,
+  toDate: null,
+  searchText: null,
+  disabled: false
+};
+
 export class ContractsEmpty extends Component {
   render() {
     return (
@@ -180,6 +188,7 @@ export class ContractsEmpty extends Component {
           <ContractsTable
             headers={contractsTableHeader}
             data={[]}
+            filters={filters}
             handleArchive={contractId => alert("Contractid archived")}
           />
         </Main>

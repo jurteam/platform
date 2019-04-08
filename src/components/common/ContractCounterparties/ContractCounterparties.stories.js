@@ -18,12 +18,12 @@ storiesOf("ContractCounterparties", module)
       counterparties={[
         {
           name: "Alice",
-          wallet: { address: "0xksyg8i357ytib385yi3" },
+          wallet: "0xksyg8i357ytib385yi3",
           shouldRenderName: true
         },
         {
           name: "Bob",
-          wallet: { address: "0x3876h93845h945938f4756f9h34653974h6" },
+          wallet: "0x3876h93845h945938f4756f9h34653974h6",
           shouldRenderName: false
         }
       ]}

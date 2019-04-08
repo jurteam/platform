@@ -20,24 +20,19 @@ storiesOf("ContractSidebar", module)
         from: {
           label: "partA",
           debtor: true,
-          wallet: {
-            address: "0xh845684f893689fh56347563fh3486539463",
-            amount: 86486
-          },
+          wallet: "0xh845684f893689fh56347563fh3486539463",
           name: "Alice",
           shouldRenderName: true
         },
         to: {
           label: "partB",
           debtor: false,
-          wallet: {
-            address: "0x38683746f893457h6fh563487fh569834596",
-            amount: 126486
-          },
+          wallet: "0x38683746f893457h6fh563487fh569834596",
           name: "Bob",
           shouldRenderName: false
         },
-        penaltyFee: null
+        penaltyFee: null,
+        duration:{days:4,hours:6,minutes:45}
       }}
       cases={[
         {
