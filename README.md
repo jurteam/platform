@@ -218,6 +218,10 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
 
 See [CONTRIBUTING.md](CONTRIBUTING.md)
 
+# Troubleshooting
+
+See [TROUBLESHOOTING.md](TROUBLESHOOTING.md)
+
 # Change Log
 
 See [CHANGELOG.md](CHANGELOG.md)
