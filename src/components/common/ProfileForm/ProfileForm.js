@@ -73,8 +73,14 @@ export const ProfileForm = ({
       // only if there is a target
       const value = target.type === "checkbox" ? target.checked : target.value;
       const name = target.name;
-
-      changeInput(name, value);
+      if (name === 'category') {
+        changeInput(name, {
+          value: 5,
+          label: value
+        });
+      } else {
+        changeInput(name, value);
+      }
     }
   };
 
@@ -220,7 +226,7 @@ export const ProfileForm = ({
                 name="category"
                 id="category"
                 placeholder={labels.otherCategoryPlaceholder}
-                value={category || ""}
+                value={(category && category.label) || ""}
                 error={hasError("category")}
                 onChange={onInputChange}
               />

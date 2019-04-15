@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import BlockTitle from "../BlockTitle";
 import { AvatarInfo } from "../AvatarInfo/AvatarInfo";
 import Form from "../Form";
-import AlertIcon from "../Icons/AlertIcon";
 
 import { AppContext } from "../../../bootstrap/AppProvider"; // context
 
@@ -36,6 +35,7 @@ export const WhoPays = (props) => {
       handleContractValue(index, 0);
     }
   };
+  console.log("WhoPays", props);
 
   return (
     <div className="jur-who-pays">
@@ -67,10 +67,9 @@ export const WhoPays = (props) => {
                   onChange={handleContractValue.bind(this, index)}
                   step={1}
                   disabled={props.disabled}
+                  error={props.error}
+                  errorMsg={props.error && labels.notEnoughTokenBalance}
                 />
-                {props.error && (
-                  <span>{labels.notEnoughTokenBalance}</span>
-                )}
               </>
             )}
           </div>

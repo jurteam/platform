@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import WhoPays from "../WhoPays";
 import ContractSetPenaltyFee from "../ContractSetPenaltyFee";
+import InfoTooltip from '../InfoTooltip';
+import { toCurrencyFormat, ellipsisString } from '../../../utils/helpers';
 
 import "./ContractSetValue.scss";
 
@@ -58,6 +60,13 @@ export class ContractSetValue extends Component {
           setPenaltyFee={this.setPenaltyFee}
           disabled={this.props.disabled}
         />
+        { this.props.showFeeMsg &&
+          <div className="jur-contract-set-value__fee-msg">
+            <InfoTooltip />
+            {" "}
+            <span>You need to pay {toCurrencyFormat(this.state.feeToPay)} if {ellipsisString(this.props.contract.to.wallet.address, 16)} accepts the contract</span>
+        </div>
+        }
       </div>
     );
   }
