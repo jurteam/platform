@@ -57,6 +57,12 @@ services:
       MEMCACHED_HOST: cache
       CACHE_DRIVER: memcached
 
+      MAIL_DRIVER: smtp
+      MAIL_USERNAME: bad3282d3a5c38
+      MAIL_HOST: smtp.mailtrap.io
+      MAIL_PASSWORD: 63f73da428ac00
+      MAIL_PORT: 2525
+
   db:
     image: mysql:5.7
     ports:
