@@ -41,8 +41,8 @@ class ContractActivityTransformer extends TransformerAbstract
             'status' => $activity->status,
             'message' => $activity->message,
             'proposal' => (object)[
-                'part_a': $activity->proposal_part_a,
-                'part_b': $activity->proposal_part_b
+                'part_a' => $activity->proposal_part_a,
+                'part_b' => $activity->proposal_part_b
             ]
         ];
     }

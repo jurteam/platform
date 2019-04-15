@@ -103,7 +103,7 @@ class ContractsController extends Controller
      */
     public function updateStatus(Request $request, $id)
     {
-        $this->request($request, [
+        $this->validate($request, [
             'code' => 'required|exists:contract_statuses,code'
         ]);
 
