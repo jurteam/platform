@@ -55,7 +55,7 @@ class ContractDetailTransformer extends TransformerAbstract
             ],
             'value' => $contract->value,
             'whoPays' => $contract->who_pays,
-            'txHash' => $contract->tx_hash,
+            'address' => $contract->address,
             'kpi' => $contract->kpi,
             'resolutionProof' => $contract->resolution_proof,
             'category' => $contract->category,

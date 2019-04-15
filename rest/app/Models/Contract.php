@@ -15,7 +15,7 @@ class Contract extends Model implements HasMedia
 
     protected $fillable = [
         'name',
-        'tx_hash',
+        'address',
         'part_a_wallet',
         'part_a_name',
         'part_a_email',
@@ -83,20 +83,22 @@ class Contract extends Model implements HasMedia
      */
     public function updateStatusByCode($params, User $user)
     {
-        $status = ContractStatus::byCode($request->code)->firstOrFail();
+        $status = ContractStatus::byCode($params->code)->firstOrFail();
 
         $this->update([
             'contract_status_id' => $status->id
         ]);
 
-        if ($request->code == 31) {
+        if ($params->code == 31) {
             $this->flagAsOpenDispute();
         }
-        if ($request->code == 21) {
+        if ($params->code == 21) {
             $this->flagAsFriendlyResolution();
         }
 
-        $this->recordActivities($params, $user);
+        $this->recordActivities([
+            'status' => $status->label
+        ], $user);
     }
 
     /**
@@ -119,8 +121,7 @@ class Contract extends Model implements HasMedia
         $contract = static::create($attributes);
 
         $contract->recordActivities([
-            'status' => $status->label,
-            'contract_id' => $contract->id
+            'status' => $status->label
         ], $user);
 
         return $contract;
