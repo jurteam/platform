@@ -15,7 +15,7 @@ class Contract extends Model implements HasMedia
 
     protected $fillable = [
         'name',
-        'tx_hash',
+        'address',
         'part_a_wallet',
         'part_a_name',
         'part_a_email',
@@ -97,8 +97,7 @@ class Contract extends Model implements HasMedia
         }
 
         $this->recordActivities([
-            'status' => $status->label,
-            'contract_id' => $this->id
+            'status' => $status->label
         ], $user);
     }
 
@@ -122,8 +121,7 @@ class Contract extends Model implements HasMedia
         $contract = static::create($attributes);
 
         $contract->recordActivities([
-            'status' => $status->label,
-            'contract_id' => $contract->id
+            'status' => $status->label
         ], $user);
 
         return $contract;
