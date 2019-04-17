@@ -15,7 +15,11 @@ class ContractFilters extends Filters
 
     public function wallet($value)
     {
-        return $this->builder->whereWallet($value);
+        return $this->builder
+            ->where('part_a_wallet', $value)
+            ->orWhereRaw('(part_b_wallet = ? AND contract_status_id IN (
+                SELECT id FROM contract_statuses WHERE code >= ?
+            ))', [$value, 1]);
     }
 
     public function owner($value)
