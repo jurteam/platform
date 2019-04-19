@@ -1,0 +1,65 @@
+@import "../../../assets/scss/variables";
+
+.jur-activity {
+  display: flex;
+  align-items: flex-start;
+  font-family: $font-poppins;
+  font-size: 13px;
+
+  &__user {
+    display: inline-block;
+    margin-right: 5px;
+    font-weight: $poppins-semibold;
+    color: $prussian-blue;
+  }
+
+  &__date {
+    color: #7f8fa4;
+  }
+
+  &__avatar {
+    flex-basis: 40px;
+    margin-right: 10px;
+  }
+
+  &__content {
+    padding-top: 5px;
+    line-height: 1.2;
+  }
+
+  &__description {
+    color: $gull-gray;
+
+    .jur-avatar-info {
+      display: inline-flex;
+      margin-left: 5px;
+    }
+
+    .jur-avatar-info__text {
+      color: $gull-gray;
+    }
+
+    svg {
+      width: 10px;
+      margin-left: 5px;
+    }
+  }
+
+  &__abstract {
+    &--friendly,
+    &--dispute {
+      font-weight: $poppins-semibold;
+      cursor: pointer;
+    }
+
+    &--friendly {
+      font-weight: $poppins-semibold;
+      color: $heliotrope;
+    }
+
+    &--dispute {
+      font-weight: $poppins-semibold;
+      color: $rose;
+    }
+  }
+}

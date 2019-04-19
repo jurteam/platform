@@ -1,0 +1,29 @@
+@import "../../../assets/scss/variables";
+
+.jur-activity-list {
+    list-style: none;
+    margin: 0;
+    padding: 0 25px 0 20px;
+
+    &__item {
+        padding: 0 10px 10px;
+    }
+
+    &__new {
+        display: flex;
+        align-items: center;
+        color: $dodger-blue;
+        padding: 5px 0 10px;
+        font-size: 13px;
+        font-family: $font-poppins;
+        font-weight: $poppins-semibold;
+
+        &::before {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background-color: $dodger-blue;
+            margin-right: 15px;
+        }
+    }
+}
