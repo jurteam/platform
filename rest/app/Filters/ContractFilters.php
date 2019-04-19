@@ -15,11 +15,7 @@ class ContractFilters extends Filters
 
     public function wallet($value)
     {
-        return $this->builder
-            ->where('part_a_wallet', $value)
-            ->orWhereRaw('(part_b_wallet = ? AND contract_status_id IN (
-                SELECT id FROM contract_statuses WHERE code >= ?
-            ))', [$value, 1]);
+        return $this->builder->where('contracts.part_a_wallet', $value);
     }
 
     public function owner($value)
@@ -29,7 +25,9 @@ class ContractFilters extends Filters
 
     public function status($value)
     {
-        return $this->builder->whereContractStatusId($value);
+        return $this->builder
+                    ->join('contract_statuses', 'contract_statuses.id', '=', 'contracts.contract_status_id')
+                    ->where('contract_statuses.code', $value);
     }
 
     public function from($value)
@@ -47,13 +45,13 @@ class ContractFilters extends Filters
     public function query($value)
     {
         return $this->builder
-                    ->where('name', 'LIKE', "%{$value}%")
-                    ->orWhere('part_a_wallet', 'LIKE', "%{$value}%")
-                    ->orWhere('part_a_name', 'LIKE', "%{$value}%")
-                    ->orWhere('part_a_email', 'LIKE', "%{$value}%")
-                    ->orWhere('part_b_wallet', 'LIKE', "%{$value}%")
-                    ->orWhere('part_b_name', 'LIKE', "%{$value}%")
-                    ->orWhere('part_b_email', 'LIKE', "%{$value}%");
+                    ->where('contracts.name', 'LIKE', "%{$value}%")
+                    ->orWhere('contracts.part_a_wallet', 'LIKE', "%{$value}%")
+                    ->orWhere('contracts.part_a_name', 'LIKE', "%{$value}%")
+                    ->orWhere('contracts.part_a_email', 'LIKE', "%{$value}%")
+                    ->orWhere('contracts.part_b_wallet', 'LIKE', "%{$value}%")
+                    ->orWhere('contracts.part_b_name', 'LIKE', "%{$value}%")
+                    ->orWhere('contracts.part_b_email', 'LIKE', "%{$value}%");
     }
 
     public function type($value)
