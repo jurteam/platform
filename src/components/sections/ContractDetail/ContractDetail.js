@@ -455,6 +455,7 @@ export const ContractDetail = props => {
               currentWallet={wallet}
               currentPart={currentPart}
               contract={contractData}
+              activities={contract.current.activities}
               formUpdated={formUpdated}
               currentUserCanPay={currentUserCanPay}
               feeToPay={feeToPay}

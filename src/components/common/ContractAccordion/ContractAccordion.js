@@ -9,9 +9,17 @@ export const ContractAccordion = ({
   className,
   children,
   title,
+  onOpen,
   initialOpen
 }) => {
   const [isOpen, setOpenState] = useState(initialOpen || false);
+
+  const onClick = () => {
+    setOpenState(!isOpen);
+
+    if (typeof onOpen === "function") onOpen(); // trigger on open
+  };
+
   const classes = {
     "jur-contract-accordion": true,
     "jur-contract-accordion--open": isOpen
@@ -24,7 +32,7 @@ export const ContractAccordion = ({
     <div className={`${classNames} ${className}`}>
       <div
         className="jur-contract-accordion__header"
-        onClick={() => setOpenState(!isOpen)}
+        onClick={onClick}
       >
         <span className="jur-contract-accordion__title">
           {title}

@@ -15,6 +15,9 @@ export class Contracts {
       }
     });
   }
+  static getActivities(payload) {
+    return axios.get(`activities/${payload.id}`);
+  }
   static create(payload) {
     return axios.post(root, payload);
   }

@@ -3,6 +3,7 @@ import {
   API_GET_CONTRACT,
   SET_CONTRACT,
   SET_CONTRACT_STATUS,
+  SET_CONTRACT_ACTIVITIES,
   SET_CONTRACT_CURRENT_PAGE,
   API_DELETE_CONTRACT,
   UPDATE_CONTRACT_FILTER,
@@ -65,7 +66,8 @@ const INITIAL_STATE = {
     in_case_of_dispute: "open",
     attachments: {
       data: []
-    }
+    },
+    activities: []
   },
   filters: {
     status: null,
@@ -95,6 +97,9 @@ export default (state = INITIAL_STATE, action) => {
     case SET_CONTRACT_STATUS:
       console.log(SET_CONTRACT_STATUS, action);
       return { ...state, current: { ...state.current, statusId : action.statusId, statusLabel : action.statusLabel, statusUpdatedAt : action.statusUpdatedAt } };
+
+    case SET_CONTRACT_ACTIVITIES:
+      return { ...state, current: { ...state.current, activities : action.payload } };
 
     // Updates
     case UPDATE_CONTRACT_FILTER:

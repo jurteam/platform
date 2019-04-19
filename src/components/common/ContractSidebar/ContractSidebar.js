@@ -1,5 +1,6 @@
 import React, { useState, useContext } from "react";
 import PropTypes from "prop-types";
+import ActivityList from "../ActivityList";
 import ContractActions from "../ContractActions";
 import ContractAccordion from "../ContractAccordion";
 import ContractSelectCategory from "../ContractSelectCategory";
@@ -12,6 +13,7 @@ import Button from "../Button";
 import { AppContext } from "../../../bootstrap/AppProvider"; // context
 
 import "./ContractSidebar.scss";
+import { CONTRACT_READ_NOTIFICATIONS } from "../../../reducers/types";
 
 export const ContractSidebar = ({
   disabled,
@@ -47,6 +49,13 @@ export const ContractSidebar = ({
   let showFeeMsg = false;
   if (typeof whoPays !== "undefined" && whoPays) {
     showFeeMsg = currentWallet.address.toLowerCase() === whoPays.toLowerCase() ? true : false;
+  };
+
+  const readActivities = () => {
+
+    global.drizzle.store.dispatch({
+      type: CONTRACT_READ_NOTIFICATIONS
+    });
   };
 
   const availableActions = () => {
@@ -107,7 +116,9 @@ export const ContractSidebar = ({
   return (
     <div>
       <ContractActions statusId={statusId} part={currentPart}>{availableActions()}</ContractActions>
-      {statusId !== 0 && <ContractAccordion title={labels.activities} statusId={statusId} isOpen={true}></ContractAccordion> }
+      {statusId !== 0 && <ContractAccordion title={labels.activities} statusId={statusId} isOpen={true} onOpen={readActivities}>
+        <ActivityList activities={activities || []} />
+      </ContractAccordion> }
       {statusId === 0 && <>
       <ContractSelectCategory onChange={onChangeSelect} category={category} isDisabled={disabled} hasError={hasError} />
       <ContractSetDuration contract={contract} onChange={value => onChangeValue("duration", value)} disabled={disabled} hasError={hasError} />

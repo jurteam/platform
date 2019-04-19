@@ -9,12 +9,15 @@ import {
   FETCH_CONTRACTS,
   API_GET_CONTRACT,
   SET_CONTRACT,
+  SET_CONTRACT_ACTIVITIES,
   SET_CONTRACT_CURRENT_PAGE,
   CONTRACT_LIST_UPDATING,
   API_DELETE_CONTRACT,
   CONTRACTS_FETCHED,
   CONTRACT_DELETED,
   API_CATCH,
+  READ_NOTIFICATIONS,
+  CONTRACT_READ_NOTIFICATIONS,
   CONTRACT_SAVING,
   CONTRACT_MEDIA_DELETE,
   CONTRACT_MEDIA_DELETED,
@@ -32,7 +35,8 @@ import {
   getNewContract,
   getCurrentContract,
   getContractListPage,
-  getContractFilters
+  getContractFilters,
+  getCurrentContractActivities
 } from "./Selectors"; // selector
 
 // Get
@@ -60,6 +64,21 @@ export function* getContract(action) {
   }
 }
 
+export function* getContractActivities(action) {
+  const { payload: { id } } = action;
+
+  try {
+    const response = yield call(Contracts.getActivities, { id });
+    const { data } = response.data;
+    log("getContract", response);
+    yield put({ type: SET_CONTRACT_ACTIVITIES, payload: data });
+
+  } catch (error) {
+    // TODO: handle 404
+    yield put({ type: API_CATCH, error });
+  }
+}
+
 // Delete
 export function* deleteContract(action) {
   yield put({ type: CONTRACT_UPDATING, payload: true });
@@ -76,6 +95,27 @@ export function* deleteContract(action) {
     log("deleteContract - error", error);
     yield put({ type: API_CATCH, error });
   }
+}
+
+export function* readActivities(action) {
+  let activities = [];
+  const { type } = action;
+  console.log("readActivities - run", action);
+
+  if (type === READ_NOTIFICATIONS) { // whole notifications
+  } else { // contract activities only
+    activities = yield select(getCurrentContractActivities);
+  };
+
+  console.log("readActivities - activities", activities);
+
+  const filteredAcivities = activities.reduce((acc, activity) => {
+    activity.readed ? acc.old.push(activity) : acc.new.push(activity);
+    return acc;
+  }, {old: [], new: []});
+
+  console.log("readActivities - activities", filteredAcivities.new);
+  // loop filtered activities new
 }
 
 export function* fetchContracts() {
@@ -251,6 +291,9 @@ export default function* contractSagas() {
   yield takeLatest(RESET_CONTRACT, onContractReset);
   yield takeLatest(API_CATCH, resetUpdating);
   yield takeLatest(SET_CONTRACT, resetUpdating);
+  yield takeLatest(SET_CONTRACT, getContractActivities);
+  yield takeLatest(READ_NOTIFICATIONS, readActivities);
+  yield takeLatest(CONTRACT_READ_NOTIFICATIONS, readActivities);
   yield takeLatest(CONTRACT_MEDIA_DELETE, deleteContractMedia);
   yield takeLatest(CONTRACT_PAGE_CHANGE, onContractPageChange);
 }
