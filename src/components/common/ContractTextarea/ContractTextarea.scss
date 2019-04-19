@@ -38,4 +38,10 @@
       color: $gull-gray;
     }
   }
+
+  &__error {
+    textarea {
+      border: 1px solid #ed1c24;
+    }
+  }
 }

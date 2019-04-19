@@ -1,4 +1,4 @@
-import { call, put, select, takeLatest } from "redux-saga/effects";
+import { call, put, select, takeLatest, takeEvery } from "redux-saga/effects";
 import { getUser } from "./Selectors";
 import {
   RESET_CONTRACT,
@@ -19,7 +19,8 @@ import {
   CONTRACT_MEDIA_DELETE,
   CONTRACT_MEDIA_DELETED,
   CONTRACT_PAGE_CHANGE,
-  UPDATE_NEW_CONTRACT_FIELD
+  UPDATE_NEW_CONTRACT_FIELD,
+  CHAIN_GET_CONTRACT
 } from "../reducers/types";
 
 import { log } from "../utils/helpers"; // log helper
@@ -36,16 +37,26 @@ import {
 
 // Get
 export function* getContract(action) {
-  const { id } = action;
+  const { id, onSuccess, onError } = action;
   yield put({ type: CONTRACT_UPDATING, payload: true });
 
   try {
     const response = yield call(Contracts.get, { id });
+    const { data } = response.data;
+    const { address } = data;
     log("getContract", response);
-    yield put({ type: SET_CONTRACT, payload: response.data.data });
+    yield put({ type: SET_CONTRACT, payload: data });
+    if (address) {
+      yield put({ type: CHAIN_GET_CONTRACT, address });
+    }
+
+    if (typeof onSuccess === "function") onSuccess(); // exec onSuccess callback if present
+
   } catch (error) {
     // TODO: handle 404
     yield put({ type: API_CATCH, error });
+
+    if (typeof onError === "function") onError(error); // exec onError callback if present
   }
 }
 
@@ -166,8 +177,11 @@ export function* updateContract(action) {
 
     // const { history } = action;
     // history.push(`/contracts/detail/${id}`); // go to contract detail for furter operations
+
+    if (typeof action.callback === "function") action.callback(); // invoke callback if needed
   } catch (error) {
     yield put({ type: API_CATCH, error });
+    if (typeof action.callback === "function") action.callback(); // invoke callback if needed
   }
 }
 
@@ -229,10 +243,10 @@ export function* resetUpdating() {
 export default function* contractSagas() {
   log("run", "contractSagas");
   yield takeLatest(NEW_CONTRACT, createContract);
-  yield takeLatest(PUT_CONTRACT, updateContract);
-  yield takeLatest(API_GET_CONTRACT, getContract);
+  yield takeEvery(PUT_CONTRACT, updateContract);
+  yield takeEvery(API_GET_CONTRACT, getContract);
   yield takeLatest(API_DELETE_CONTRACT, deleteContract);
-  yield takeLatest(FETCH_CONTRACTS, fetchContracts);
+  yield takeEvery(FETCH_CONTRACTS, fetchContracts);
   yield takeLatest(CONTRACT_DELETED, onContractDelete);
   yield takeLatest(RESET_CONTRACT, onContractReset);
   yield takeLatest(API_CATCH, resetUpdating);

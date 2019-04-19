@@ -8,13 +8,13 @@ import { AppContext } from "../../../bootstrap/AppProvider"; // context
 
 import "./ContractPenaltyFee.scss";
 
-export const ContractPenaltyFee = ({ contractInfo, penaltyFeeDescription }) => {
+export const ContractPenaltyFee = ({ contractInfo }) => {
 
   const { labels } = useContext(AppContext);
 
   return (
     <div className="jur-contract-penalty-fee">
-      <BlockTitle title={labels.penaltyFee} description={penaltyFeeDescription} />
+      <BlockTitle title={labels.penaltyFee} description={labels.penaltyFeeDescription} />
       {contractInfo && contractInfo.penaltyFee && (
         <div className="jur-contract-penalty-fee__value">
           {contractInfo.penaltyFee.partA ? (

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import PropTypes from "prop-types";
 import Table from "../Table";
 import TableRow from "../TableRow";
@@ -19,7 +19,10 @@ import { SpinnerOnly } from "../Spinner";
 
 import { humanToEth } from "../../../utils/helpers"; // log helper
 
+import { EXPIRED_CONTRACT } from "../../../reducers/types";
+
 import "./ContractsTable.scss";
+import { AppContext } from "../../../bootstrap/AppProvider"; // context
 
 export const ContractsTable = ({
   headers,
@@ -38,14 +41,23 @@ export const ContractsTable = ({
   history
 }) => {
   const [activePage, setActivePage] = useState(initialPage);
+  const { labels } = useContext(AppContext);
+
   const emptyMessage = data.length === 0 && (
     <div className="jur-table__empty">
-      {(filters.status === null && filters.fromDate === null && filters.toDate === null && filters.searchText === null) ? (<>
-
-        <p>It seems you did not create any contract!</p>
-      <Button variant="gradient" onClick={newContract}>
-        Create your first contract
-      </Button></>) : <p>Sorry, no contract match search criteria. Try with another search.</p>}
+      {filters.status === null &&
+      filters.fromDate === null &&
+      filters.toDate === null &&
+      filters.searchText === null ? (
+        <>
+          <p>{labels.anyContract}</p>
+          <Button variant="gradient" onClick={newContract}>
+            {labels.createYourFirstContract}
+          </Button>
+        </>
+      ) : (
+        <p>{labels.noContractMatch}</p>
+      )}
     </div>
   );
 
@@ -58,6 +70,12 @@ export const ContractsTable = ({
     history.push(to);
   };
 
+  const onExpire = id => {
+    global.drizzle.store.dispatch({
+      type: EXPIRED_CONTRACT,
+      id
+    });
+  };
 
   return (
     <div className="jur-contracts__table">
@@ -83,8 +101,9 @@ export const ContractsTable = ({
         {data.length > 0 && loading === false ? (
           <TableBody>
             {data.map(contract => (
-              <TableRow key={contract.id}
-              onClick={() => showContract(`/contracts/detail/${contract.id}`)}
+              <TableRow
+                key={contract.id}
+                onClick={() => showContract(`/contracts/detail/${contract.id}`)}
               >
                 <TableCell>
                   <Tag statusId={contract.statusId}>{contract.statusLabel}</Tag>
@@ -97,7 +116,10 @@ export const ContractsTable = ({
                     minutes={contract.duration.minutes}
                     statusId={contract.statusId}
                     startDate={contract.statusUpdatedAt}
-                    expireAlertFrom={86400000} // TODO: use reference from env
+                    onExpire={() => onExpire(contract.id)}
+                    expireAlertFrom={
+                      process.env.REACT_APP_CONTRACT_EXPIRE_ALERT
+                    }
                   />
                 </TableCell>
                 <TableCell>
@@ -105,7 +127,7 @@ export const ContractsTable = ({
                     <AvatarInfo
                       key={counterParty.wallet}
                       userName={counterParty.name}
-                      userWallet={counterParty.wallet}
+                      userWallet={counterParty.wallet.toLowerCase()}
                       shouldRenderName={counterParty.shouldRenderName}
                     />
                   ))}
@@ -117,7 +139,7 @@ export const ContractsTable = ({
                   <TableCell>
                     <Dropdown label={<EllipsisVIcon />}>
                       <DropdownItem onClick={() => handleArchive(contract.id)}>
-                        Archive
+                        {labels.archive}
                       </DropdownItem>
                     </Dropdown>
                   </TableCell>
@@ -127,16 +149,18 @@ export const ContractsTable = ({
           </TableBody>
         ) : null}
       </Table>
-      {data.length > 0 && loading === true && <SpinnerOnly loading={loading} className={"table__loading"} /> }
-      {data.length > 0 &&
+      {data.length > 0 && loading === true && (
+        <SpinnerOnly loading={loading} className={"table__loading"} />
+      )}
+      {data.length > 0 && (
         <Pagination
           activePage={activePage}
           itemsCountPerPage={contractsPerPage}
           totalItemsCount={totalContracts}
           handlePageChange={handlePageChange}
-          getPageUrl={i => ("https://customLink/#"+i)}
+          getPageUrl={i => "https://customLink/#" + i}
         />
-      }
+      )}
       {emptyMessage}
     </div>
   );

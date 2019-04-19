@@ -31,4 +31,8 @@ export class Contracts {
   static deleteMedia(payload) {
     return axios.delete(`${root}/medias/${payload.id}`); // attachments delete
   }
+  static statusChange(payload, id) {
+    payload.append("_method", "PUT");
+    return axios.post(`${root}/status/update/${id}`, payload);
+  }
 }

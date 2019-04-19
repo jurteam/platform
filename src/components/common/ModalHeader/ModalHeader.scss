@@ -11,5 +11,12 @@
       font-size: 24px;
       margin: 0;
     }
+
+    &__error {
+
+      h2 {
+        color: $rose;
+      }
+    }
   }
 }

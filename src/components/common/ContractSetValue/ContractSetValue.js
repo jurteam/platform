@@ -1,21 +1,24 @@
-import React, { Component } from "react";
+import React, { useContext } from "react";
 import PropTypes from "prop-types";
 import WhoPays from "../WhoPays";
 import ContractSetPenaltyFee from "../ContractSetPenaltyFee";
-import InfoTooltip from '../InfoTooltip';
 import { toCurrencyFormat, ellipsisString } from '../../../utils/helpers';
 
 import "./ContractSetValue.scss";
+import { AppContext } from "../../../bootstrap/AppProvider"; // context
+import BlockTitle from "../BlockTitle";
 
-export class ContractSetValue extends Component {
+export const ContractSetValue = (props) => {
 
-  setPenaltyFeeStatus = value => {
+  const { contract } = props;
+
+  const setPenaltyFeeStatus = value => {
     console.log(value);
 
-    this.props.onChange("hasPenaltyFee", value);
+    props.onChange("hasPenaltyFee", value);
   };
 
-  setPenaltyFee = (counterparty, fee) => {
+  const setPenaltyFee = (counterparty, fee) => {
     // this.setState(state => {
     //   const contract = state.contract;
     //   contract.penaltyFee = {
@@ -28,14 +31,14 @@ export class ContractSetValue extends Component {
     console.log(`setPenaltyFee - counterparty`, counterparty);
     console.log(`setPenaltyFee - fee`, fee);
     console.log(`setPenaltyFee - ${counterparty.label}PenaltyFee`, fee);
-    this.props.onChange(`${counterparty.label}PenaltyFee`, fee);
+    props.onChange(`${counterparty.label}PenaltyFee`, fee);
   };
 
-  handleSelectPayer = payer => {
+  const handleSelectPayer = payer => {
     console.log("handleSelectPayer", payer);
 
-    this.props.onChange("value", payer.value);
-    this.props.onChange("whoPays", payer.counterParty.wallet);
+    // props.onChange("value", payer.value);
+    props.onChange("whoPays", payer.counterParty.wallet.toLowerCase());
 
     // this.setState(state => {
     //   const contract = state.contract;
@@ -44,30 +47,30 @@ export class ContractSetValue extends Component {
     // });
   };
 
-  render() {
-    return (
-      <div className="jur-contract-set-value">
-        <div className="jur-contract-set-value__title">Contract Value:</div>
-        <WhoPays
-          contract={this.props.contract}
-          handleSelectPayer={this.handleSelectPayer}
-          error={!this.props.currentUserCanPay}
-          disabled={this.props.disabled}
+  const { labels } = useContext(AppContext);
+
+  return (
+    <div className="jur-contract-set-value">
+      <div className="jur-contract-set-value__title">{`${labels.contractValue}:`}</div>
+      <WhoPays
+        contract={contract}
+        handleSelectPayer={handleSelectPayer}
+        error={!props.currentUserCanPay}
+        onChange={props.onChange}
+        hasError={props.hasError}
+        disabled={props.disabled}
         />
-        <ContractSetPenaltyFee
-          contract={this.props.contract}
-          setPenaltyFeeStatus={this.setPenaltyFeeStatus}
-          setPenaltyFee={this.setPenaltyFee}
-          disabled={this.props.disabled}
-        />
-        { this.props.showFeeMsg &&
-          <div className="jur-contract-set-value__fee-msg">
-            <InfoTooltip />
-            {" "}
-            <span>You need to pay {toCurrencyFormat(this.state.feeToPay)} if {ellipsisString(this.props.contract.to.wallet.address, 16)} accepts the contract</span>
-        </div>
-        }
+      <ContractSetPenaltyFee
+        contract={props.contract}
+        setPenaltyFeeStatus={setPenaltyFeeStatus}
+        setPenaltyFee={setPenaltyFee}
+        disabled={props.disabled}
+      />
+      { props.showFeeMsg && props.contract.penaltyFee !== null && typeof props.contract.to.wallet !== "undefined" &&
+        <div className={`jur-contract-set-value__fee-msg ${(props.currentUserCanPay) ? "": "jur-form__numeric-input--error"}`}>
+          <BlockTitle title={labels.youNeedToPay.replace("%fee%", toCurrencyFormat(props.feeToPay)).replace("%wallet%", ellipsisString(props.contract.to.wallet.toLowerCase(), 16))} description={labels.youNeedToPayDescription} />
       </div>
-    );
-  }
+      }
+    </div>
+  );
 }

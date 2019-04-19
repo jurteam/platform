@@ -26,6 +26,7 @@ export class Countdown extends Component {
         break;
       case 0: // draft
       case 1: // waiting for counterparty
+      case 2: // waiting for payment
         const date = this.getTimeLeft(this.state.duration);
         this.setState({
           ...date
@@ -80,7 +81,7 @@ export class Countdown extends Component {
     if (
       (this.props.statusId === 5 &&
         milliseconds < this.props.expireAlertFrom) ||
-      (this.props.statusId === 35 && milliseconds <= 3600000) ||
+      (this.props.statusId === 35 && milliseconds <= this.props.expireAlertFrom) ||
       this.props.statusId === 36
     ) {
       return true;
@@ -94,7 +95,6 @@ export class Countdown extends Component {
   start = (startDate, duration) => {
     this.interval = setInterval(() => {
       const date = this.calculateCountDown(startDate, duration);
-      console.log("start", date);
       if (date) {
         const percentage = this.calculatePercentage(date.milliseconds);
         this.setState({

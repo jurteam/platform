@@ -9,10 +9,11 @@ export const ContractTextarea = ({
   onChange,
   name,
   label,
+  error,
   placeholder,
   ...rest
 }) => (
-  <div className="jur-contract-textarea">
+  <div className={`jur-contract-textarea ${error ? "jur-contract-textarea__error": null}`}>
     <BlockTitle title={label} hideIcon />
     <textarea
       placeholder={placeholder || ""}

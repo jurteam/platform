@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import PropTypes from "prop-types";
 import ContractName from "../ContractName";
 import ContractAmount from "../ContractAmount";
@@ -10,6 +10,7 @@ import ContractCaseDispute from "../ContractCaseDispute";
 import BlockTitle from "../BlockTitle";
 
 import "./ContractSummary.scss";
+import { AppContext } from "../../../bootstrap/AppProvider"; // context
 
 export const ContractSummary = props => {
   const {
@@ -51,6 +52,8 @@ export const ContractSummary = props => {
     return acc;
   }, {});
 
+  const { labels } = useContext(AppContext);
+
   return (
     <div className="jur-contract-summary">
       <ContractName
@@ -70,8 +73,8 @@ export const ContractSummary = props => {
           />
           <ContractPenaltyFee
             contractInfo={{
-              partA: partA.wallet,
-              partB: partB.wallet,
+              partA: partA.wallet.toLowerCase(),
+              partB: partB.wallet.toLowerCase(),
               penaltyFee
             }}
           />
@@ -81,7 +84,7 @@ export const ContractSummary = props => {
           <ContractCaseDispute selectedCase={inCaseOfDispute} />
         </div>
         <div className="jur-contract-summary__column">
-          <BlockTitle title="Duration" hideIcon />
+          <BlockTitle title={labels.duration} hideIcon />
           <CountdownGraph
             days={durationInDays}
             hours={durationInHours}
@@ -91,6 +94,7 @@ export const ContractSummary = props => {
             expireAlertFrom={expireAlertFrom}
             onProgress={onProgress}
             onExpire={onExpire}
+            key={`status-${statusId}`}
             showMessage
           />
         </div>

@@ -15,8 +15,24 @@
     margin-top: 10px;
 
     .before-start {
-      color: $countdown-before-start-message-color;
+
+
+      .jur-block-title {
+        // margin-bottom: 10px;
+
+        span {
+          color: $countdown-before-start-message-color;
+          font-weight: $poppins-regular;
+          font-family: $font-poppins;
+          font-size: 10px;
+        }
+      }
+    }
+
+    .rejected {
+      color: $scarlet;
       font-family: $font-poppins;
+      font-weight: bold;
       font-size: 10px;
     }
     svg {

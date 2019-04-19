@@ -17,6 +17,7 @@ export const ContractSelectCategory = ({ onChange, category, ...params }) => {
       }:`}</div>
       <Form.Select
         options={categories}
+        error={params.hasError("category")}
         onChange={input => onChange("category", input)}
         value={categories.filter(option => option.value === category)}
         {...params}

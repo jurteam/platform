@@ -20,7 +20,7 @@ export const ContractCounterparties = ({
         <AvatarInfo
           key={`counterparty-${idx}`}
           userName={counterparty.name}
-          userWallet={counterparty.wallet}
+          userWallet={counterparty.wallet.toLowerCase()}
           shouldRenderName={counterparty.renderName}
           variant={
             counterparty.renderName

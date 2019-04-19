@@ -13,7 +13,6 @@ export class Stepper extends Component {
       };
       return React.cloneElement(step, { ...state, ...step.props });
     });
-    console.log("render stepper");
     return <div className="jur-stepper">{steps}</div>;
   }
 }

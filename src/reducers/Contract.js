@@ -2,6 +2,7 @@ import {
   NEW_CONTRACT,
   API_GET_CONTRACT,
   SET_CONTRACT,
+  SET_CONTRACT_STATUS,
   SET_CONTRACT_CURRENT_PAGE,
   API_DELETE_CONTRACT,
   UPDATE_CONTRACT_FILTER,
@@ -10,6 +11,7 @@ import {
   CONTRACT_DELETED,
   CONTRACTS_FETCHED,
   CONTRACT_SAVING,
+  CONTRACT_PAYING,
   CONTRACT_UPDATING,
   CONTRACT_LIST_UPDATING,
   CONTRACT_MEDIA_DELETE,
@@ -21,6 +23,7 @@ import {
 const INITIAL_STATE = {
   saving: false,
   updating: false,
+  paying: false,
   updatingList: true,
   new: {
     part_a_wallet: "",
@@ -89,6 +92,10 @@ export default (state = INITIAL_STATE, action) => {
     case SET_CONTRACT_CURRENT_PAGE:
       return { ...state, page: action.payload };
 
+    case SET_CONTRACT_STATUS:
+      console.log(SET_CONTRACT_STATUS, action);
+      return { ...state, current: { ...state.current, statusId : action.statusId, statusLabel : action.statusLabel, statusUpdatedAt : action.statusUpdatedAt } };
+
     // Updates
     case UPDATE_CONTRACT_FILTER:
       let filtersToUpdate = {};
@@ -107,6 +114,9 @@ export default (state = INITIAL_STATE, action) => {
 
     case CONTRACT_UPDATING:
       return { ...state, updating: action.payload };
+
+    case CONTRACT_PAYING:
+      return { ...state, paying: action.payload };
 
     case CONTRACT_SAVING:
       return { ...state, saving: action.payload };

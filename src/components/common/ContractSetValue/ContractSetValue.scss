@@ -17,5 +17,16 @@
   &__fee-msg {
     font-size: 10px;
     color: $gull-gray;
+
+    .jur-block-title {
+      // margin-bottom: 10px;
+
+      span {
+        color: $countdown-before-start-message-color;
+        font-weight: $poppins-regular;
+        font-family: $font-poppins;
+        font-size: 10px;
+      }
+    }
   }
 }

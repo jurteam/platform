@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import PropTypes from "prop-types";
 import { AngleIcon } from "../Icons/AngleIcon";
 import InfoTooltip from "../InfoTooltip";
 
@@ -10,8 +9,7 @@ export const ContractAccordion = ({
   className,
   children,
   title,
-  initialOpen,
-  borderBottom
+  initialOpen
 }) => {
   const [isOpen, setOpenState] = useState(initialOpen || false);
   const classes = {
@@ -28,7 +26,7 @@ export const ContractAccordion = ({
         className="jur-contract-accordion__header"
         onClick={() => setOpenState(!isOpen)}
       >
-        <span class="jur-contract-accordion__title">
+        <span className="jur-contract-accordion__title">
           {title}
           {tooltip && <InfoTooltip />}
         </span>

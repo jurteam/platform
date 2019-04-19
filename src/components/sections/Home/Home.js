@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState, useContext } from "react";
 import { Redirect } from "react-router-dom";
 
 import PageLayout from "../../common/PageLayout";
@@ -13,43 +13,33 @@ import Step from "../../common/Step";
 import Stepper from "../../common/Stepper";
 
 import { steps } from "../../../assets/i18n/en/tutorial.json";
+import { AppContext } from "../../../bootstrap/AppProvider"; // context
 
-export class Home extends Component {
-  constructor(props) {
-    super(props);
+export const Home = (props) => {
 
-    this.state = {
-      activeStep: 0
-    };
+  const [activeStep, setActiveStep] = useState(0); // first
 
-    this.handleNext = this.handleNext.bind(this);
-    this.handleBack = this.handleBack.bind(this);
-    this.closeTutorial = this.closeTutorial.bind(this);
-  }
-  componentDidMount() {}
-
-  closeTutorial() {
-    const { setTutorialViewed } = this.props;
+  const closeTutorial = () => {
+    const { setTutorialViewed } = props;
     setTutorialViewed();
   }
 
-  handleBack() {
-    const { activeStep } = this.state;
+  const handleBack = () => {
     if (activeStep - 1 < 0) return;
-    this.setState({ activeStep: activeStep - 1 });
+    setActiveStep(activeStep - 1);
   }
 
-  handleNext() {
-    const { activeStep } = this.state;
+  const handleNext = () => {
     if (activeStep + 1 >= steps.length) {
-      this.closeTutorial();
+      closeTutorial();
     } else {
-      this.setState({ activeStep: activeStep + 1 });
+      setActiveStep(activeStep + 1);
     }
   }
 
-  renderStepper() {
-    const { activeStep } = this.state;
+  const { labels } = useContext(AppContext);
+
+  const renderStepper = () => {
     const last = activeStep + 1 === steps.length;
     return (
       <>
@@ -63,35 +53,31 @@ export class Home extends Component {
         </Stepper>
         <ModalFooter>
           {activeStep !== 0 && activeStep + 1 !== steps.length && (
-            <Button onClick={this.handleBack} size="medium" variant="raised">
-              Previous
-            </Button>
+            <Button onClick={handleBack} size="medium" variant="raised">{labels.previous}</Button>
           )}
           <Button
-            onClick={this.handleNext}
+            onClick={handleNext}
             size="medium"
             variant={last ? "gradient" : "contained"}
           >
-            {last ? "Finish" : "Next"}
+            {last ? labels.finish : labels.next}
           </Button>
         </ModalFooter>
       </>
     );
   }
 
-  render() {
-    const { app } = this.props;
-    const { tutorial } = app;
-    return (
-      <PageLayout>
-        {!tutorial ? (
-          <Modal isOpen={true} onRequestClose={this.closeTutorial}>
-            {this.renderStepper()}
-          </Modal>
-        ) : (
-          <Redirect to="/contracts" />
-        )}
-      </PageLayout>
-    );
-  }
+  const { app } = props;
+  const { tutorial } = app;
+  return (
+    <PageLayout>
+      {!tutorial ? (
+        <Modal isOpen={true} onRequestClose={closeTutorial} key={`stepper-${activeStep}`}>
+          {renderStepper()}
+        </Modal>
+      ) : (
+        <Redirect to="/contracts" />
+      )}
+    </PageLayout>
+  );
 }

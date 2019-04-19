@@ -26,7 +26,8 @@
       background-color: $tag-bg-color-0;
     }
 
-    &--1 {
+    &--1 ,
+    &--2 {
       color: $tag-text-color-1;
       background-color: $tag-bg-color-1;
     }

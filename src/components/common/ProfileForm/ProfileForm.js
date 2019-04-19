@@ -95,7 +95,7 @@ export const ProfileForm = ({
         typeof input.value !== "undefined"
           ? input.value
           : null;
-  
+
       changeInput(name, value);
     }
   };
@@ -233,7 +233,7 @@ export const ProfileForm = ({
               <span
                 className="back-to-list"
                 onClick={() => setOtherCategoryInputVisibility(false)}
-              >Back to list</span>
+              >{labels.backToList}</span>
             </>
             :
             <Form.Select

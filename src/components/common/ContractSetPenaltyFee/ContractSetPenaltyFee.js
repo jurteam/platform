@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import PropTypes from "prop-types";
 import BlockTitle from "../BlockTitle";
 import Switch from "../Switch";
@@ -7,6 +7,7 @@ import PriceRange from "../PriceRange";
 import { ethToStore } from "../../../utils/helpers"; // helpers
 
 import "./ContractSetPenaltyFee.scss";
+import { AppContext } from "../../../bootstrap/AppProvider"; // context
 
 export const ContractSetPenaltyFee = ({
   contract,
@@ -30,10 +31,12 @@ export const ContractSetPenaltyFee = ({
     if (typeof handlePenaltyFee === "function") handlePenaltyFee(isActive); // send callback
   };
 
+  const { labels } = useContext(AppContext);
+
   return (
     <div className="jur-contract-set-penalty-fee">
       <div className="jur-contract-set-penalty-fee__title">
-        <BlockTitle title="Is there any penalty fee?" />
+        <BlockTitle title={labels.isThereAnyPenaltyFee} description={labels.penaltyFeeDescription}/>
         <Switch onChange={handlePenaltyFeeActive} checked={isActive&& contract.amount > 0} disabled={disabled} />
       </div>
       <div
@@ -49,7 +52,7 @@ export const ContractSetPenaltyFee = ({
               contract.penaltyFee && Number(contract.penaltyFee[counterparty.label]) : contract.amount
             }
             max={Number(contract.amount)}
-            address={counterparty.wallet}
+            address={counterparty.wallet.toLowerCase()}
             onChange={(value) => onPriceChange(counterparty, ethToStore(value))}
           /> : null
         ))}

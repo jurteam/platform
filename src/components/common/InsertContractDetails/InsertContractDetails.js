@@ -19,6 +19,7 @@ export const InsertContractDetails = ({
   onKpiChange,
   onResolutionProofChange,
   onFileAdded,
+  hasError,
   uploadedFiles,
   onView,
   onDelete
@@ -31,6 +32,7 @@ export const InsertContractDetails = ({
         initialValue={kpiInitialValue}
         label={`${labels.kpi}:`}
         name="kpi"
+        error={hasError("kpi")}
         onChange={onKpiChange}
         placeholder={kpiPlaceholder}
         disabled={disabled}
@@ -39,6 +41,7 @@ export const InsertContractDetails = ({
         initialValue={resolutionProofInitialValue}
         label={`${labels.resolutionProof}:`}
         name="resolutionProof"
+        error={hasError("resolutionProof")}
         onChange={onResolutionProofChange}
         placeholder={resolutionProofPlaceholder}
         disabled={disabled}

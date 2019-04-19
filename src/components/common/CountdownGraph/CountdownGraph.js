@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import PropTypes from "prop-types";
 import Countdown from "../Countdown";
 import BlockTitle from "../BlockTitle";
-import { InfoIcon } from "../Icons/InfoIcon";
 
 import "./CountdownGraph.scss";
+import { AppContext } from "../../../bootstrap/AppProvider"; // context
 
 export const CountdownGraph = ({
   onProgress,
@@ -17,15 +17,22 @@ export const CountdownGraph = ({
     setPercentage(percentage);
     if ( typeof onProgress === "function") onProgress(percentage);
   };
+  const { labels } = useContext(AppContext);
+
   const getMessage = () => {
     switch (rest.statusId) {
       case -1: // rejected
-        break;
+        return (
+          <span className="rejected">
+            {labels.contractWasRejected}
+          </span>
+        );
       case 0: // draft
       case 1: // waiting for counterparty
+      case 2: // waiting for payment
         return (
           <span className="before-start">
-            <InfoIcon /> The starting date is when the counterparty accepts.
+            <BlockTitle title={labels.startingDateInfo} description={labels.startingDateInfoDescription}/>
           </span>
         );
       case 5: // onGoing

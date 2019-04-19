@@ -16,6 +16,10 @@ return [
             'code' => 1
         ],
         [
+            'label' => 'Waiting for payment',
+            'code' => 2
+        ],
+        [
             'label' => 'Ongoing',
             'code' => 5
         ],

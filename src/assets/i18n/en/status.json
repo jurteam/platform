@@ -12,8 +12,12 @@
     "label": "Waiting for Counterparty"
   },
   {
+    "value": 2,
+    "label": "Waiting for Payment"
+  },
+  {
     "value": 5,
-    "label": "OnGoing"
+    "label": "Ongoing"
   },
   {
     "value": 8,

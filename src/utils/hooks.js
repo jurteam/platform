@@ -15,6 +15,28 @@ export const useFormValidation = (data, schema) => {
     return !Object.keys(errors).length > 0;
   };
 
+  const getFieldValue = (needle, haystack) => {
+
+    let subs;
+    let value = null;
+
+    if (needle) {
+      if (needle.indexOf('.')) {
+        subs = needle.split(".")
+        value = haystack;
+        for (var i = 0; i < subs.length; i++) {
+          value = value[subs[i]]
+        }
+      } else {
+        value = haystack[needle];
+      };
+
+      return value;
+    }
+
+    return false;
+  };
+
   const validateForm = () => {
     let newErrors = [];
 
@@ -24,15 +46,32 @@ export const useFormValidation = (data, schema) => {
         field.checks.map(checkName => {
           let checkPass = true; // fallback
 
-          log("current function", FormValidation[checkName]);
+          // field value
+          const fieldValue = getFieldValue(field.name, formData);
 
-          if (checkName !== "isEqualTo" && checkName !== "isNotEqualTo") {
-            checkPass = FormValidation[checkName](formData[field.name]);
-          } else {
+          if (checkName === "duration") {
+            // duration
+            const daysFieldValue = getFieldValue(field.days, formData);
+            const hoursFieldValue = getFieldValue(field.hours, formData);
+            const minutesFieldValue = getFieldValue(field.minutes, formData);
+
             checkPass = FormValidation[checkName](
-              formData[field.name],
-              formData[field.targetField]
+              daysFieldValue,
+              hoursFieldValue,
+              minutesFieldValue
             ); // add target field
+          } else if (checkName === "isEqualTo" || checkName === "isNotEqualTo") {
+
+            // target field value
+            const targetFieldValue = getFieldValue(field.targetField, formData);
+
+            checkPass = FormValidation[checkName](
+              fieldValue,
+              targetFieldValue
+            ); // add target field
+
+          } else {
+            checkPass = FormValidation[checkName](fieldValue);
           }
 
           if (!checkPass) {
@@ -64,6 +103,8 @@ const FormValidation = {
     typeof field !== "undefined" && field !== "" && field !== null
       ? true
       : false,
+  requiredStrict: field => (typeof field !== "undefined" && field) ? true : false,
+  requiredNum: field => (typeof field !== "undefined" && field && parseFloat(field) > 0) ? true : false,
   isTrue: field => (typeof field !== "undefined" ? field === true : true), // always true when null in case this field is optional
   isFalse: field => (typeof field !== "undefined" ? field === false : true), // always true when null in case this field is optional
   isEmail: email => {
@@ -85,5 +126,8 @@ const FormValidation = {
   },
   isNotEqualTo: (field, target) => {
     return field ? String(field).toLowerCase() !== String(target).toLowerCase() : true; // always true when null in case this field is optional
+  },
+  duration: (days, hours, minutes) => {
+    return (days || hours || minutes) ? true : false;
   }
 };

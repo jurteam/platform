@@ -20,6 +20,7 @@ export const WhoPays = (props) => {
   });
 
   const handleContractValue = (counterPartyIndex, value) => {
+    props.onChange("value", value);
     let payerUpdated = { ...payer };
     payerUpdated = {
       counterParty: counterparties[counterPartyIndex],
@@ -35,11 +36,10 @@ export const WhoPays = (props) => {
       handleContractValue(index, 0);
     }
   };
-  console.log("WhoPays", props);
 
   return (
     <div className="jur-who-pays">
-      <BlockTitle title={labels.whoPays} />
+      <BlockTitle title={labels.whoPays} description={labels.whoPaysDescription} />
       <div className={`jur-who-pays__counterparties ${props.disabled ? "jur-who-pays__disabled": ""}`}>
         {counterparties.map((counterparty, index) => (
           <div
@@ -53,7 +53,7 @@ export const WhoPays = (props) => {
             <AvatarInfo
               size="small"
               userName={counterparty.name}
-              userWallet={counterparty.wallet}
+              userWallet={counterparty.wallet.toLowerCase()}
               shouldRenderName={counterparty.renderName}
               variant="ellipsis"
               type="circle"
@@ -67,7 +67,7 @@ export const WhoPays = (props) => {
                   onChange={handleContractValue.bind(this, index)}
                   step={1}
                   disabled={props.disabled}
-                  error={props.error}
+                  error={props.error || props.hasError("value")}
                   errorMsg={props.error && labels.notEnoughTokenBalance}
                 />
               </>
