@@ -6,14 +6,14 @@
     padding: 0 25px 0 20px;
 
     &__item {
-        padding: 6px 10px;
+        padding: 0 10px 10px;
     }
 
     &__new {
         display: flex;
         align-items: center;
         color: $dodger-blue;
-        padding: 5px 0;
+        padding: 5px 0 10px;
         font-size: 13px;
         font-family: $font-poppins;
         font-weight: $poppins-semibold;
