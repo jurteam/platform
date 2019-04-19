@@ -4,12 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\Contract;
 use Illuminate\Http\Request;
+use Dingo\Api\Routing\Helpers;
 use App\Models\ContractStatusDetail;
 use App\Transformers\AttachmentTransformer;
 use App\Transformers\ContractStatusDetailTransformer;
 
 class ContractDetailsController extends Controller
 {
+    use Helpers;
+
     /**
      * Get the details.
      *
