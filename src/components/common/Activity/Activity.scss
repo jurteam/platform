@@ -1,65 +1,96 @@
 @import "../../../assets/scss/variables";
 
 .jur-activity {
-  display: flex;
-  align-items: flex-start;
+  min-height: 44px;
   font-family: $font-poppins;
+  color: $gull-gray;
   font-size: 13px;
 
-  &__user {
-    display: inline-block;
-    margin-right: 5px;
-    font-weight: $poppins-semibold;
-    color: $prussian-blue;
-  }
+  &__info {
+    display: flex;
 
-  &__date {
-    color: #7f8fa4;
-  }
+    &__details {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 5px 0 0 12px;
+      line-height: 1;
+    }
 
-  &__avatar {
-    flex-basis: 40px;
-    margin-right: 10px;
+    &__from {
+      > span {
+        &:nth-child(1) {
+          display: inline-block;
+          margin-right: 7px;
+          color: $prussian-blue;
+          font-weight: $poppins-semibold;
+        }
+      }
+    }
+
+    &__message {
+      display: flex;
+      align-items: flex-end;
+
+      .alert {
+        font-weight: $poppins-semibold;
+        color: $scarlet;
+        padding-right: 5px;
+      }
+
+      .friendly {
+        cursor: pointer;
+
+        span {
+          color: $heliotrope;
+        }
+      }
+
+      .dispute {
+        cursor: pointer;
+
+        span {
+          color: $rose; 
+        }
+      }
+
+      .friendly,
+      .dispute {
+
+        span {
+          font-weight: $poppins-semibold;
+          margin: 0 20px 0 0;
+        }
+
+        svg {
+          width: 12px;
+          transform-origin: top center;
+        }
+
+        &--open {
+          svg {
+            transform: rotate(180deg) translateY(-5px);
+          }
+        }
+      }
+
+      .jur-avatar {
+        margin: 0 4px 0 8px;
+      }
+    }
   }
 
   &__content {
-    padding-top: 5px;
-    line-height: 1.2;
-  }
+    display: none;
+    padding: 10px 0 0 52px;
+    color: $prussian-blue;
 
-  &__description {
-    color: $gull-gray;
-
-    .jur-avatar-info {
-      display: inline-flex;
-      margin-left: 5px;
+    &--open {
+      display: block;
     }
 
-    .jur-avatar-info__text {
-      color: $gull-gray;
-    }
-
-    svg {
-      width: 10px;
-      margin-left: 5px;
-    }
-  }
-
-  &__abstract {
-    &--friendly,
-    &--dispute {
-      font-weight: $poppins-semibold;
-      cursor: pointer;
-    }
-
-    &--friendly {
-      font-weight: $poppins-semibold;
-      color: $heliotrope;
-    }
-
-    &--dispute {
-      font-weight: $poppins-semibold;
-      color: $rose;
+    .jur-amount {
+      color: $prussian-blue;
     }
   }
 }
