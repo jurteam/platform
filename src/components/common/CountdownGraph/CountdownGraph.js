@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import Countdown from "../Countdown";
 import BlockTitle from "../BlockTitle";
+import BlockInfo from "../BlockInfo";
 import { InfoIcon } from "../Icons/InfoIcon";
 
 import "./CountdownGraph.scss";
@@ -24,9 +25,7 @@ export const CountdownGraph = ({
       case 0: // draft
       case 1: // waiting for counterparty
         return (
-          <span className="before-start">
-            <InfoIcon /> The starting date is when the counterparty accepts.
-          </span>
+          <BlockInfo description="The starting date is when the counterparty accepts." />
         );
       case 5: // onGoing
         break;
