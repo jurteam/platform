@@ -22,6 +22,10 @@
     height: 100%;
     padding-top: 50px;
     margin: 0 auto;
+
+    &--full {
+      width: 60vw;
+    }
   }
 
   &__container {

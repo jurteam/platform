@@ -63,7 +63,8 @@ export class Viewer extends Component {
       onVote,
       onReject,
       currentUserWallet,
-      metaMaskError
+      metaMaskError,
+      fullWidthViewer
     } = this.props;
 
     const { selectedCounterpartyIndex } = this.state;
@@ -90,7 +91,7 @@ export class Viewer extends Component {
         overlayClassName="jur-modal__overlay"
       >
         <CloseIcon onClick={onRequestClose} className="jur-viewer__close-btn" />
-        <div className="jur-viewer__wrapper">
+        <div className={`jur-viewer__wrapper ${fullWidthViewer ? "jur-viewer__wrapper--full" : ""}`}>
           <div className="jur-viewer__container">
             {filePath && (
               <FileViewer
