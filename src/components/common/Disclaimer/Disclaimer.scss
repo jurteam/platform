@@ -16,6 +16,7 @@
     width: 107px;
     height: 40px;
     box-sizing: border-box;
+    z-index: 100;
 
     &--is-open {
       left: 0;
