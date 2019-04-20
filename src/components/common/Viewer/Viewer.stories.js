@@ -20,6 +20,14 @@ storiesOf("Viewer", module)
       onFileLoadingError={() => alert("file error")}
     />
   ))
+  .add("FilePreview full", () => (
+    <Viewer
+      isOpen={true}
+      filePath={`${process.env.PUBLIC_URL}/files/prova.pdf`}
+      onFileLoadingError={() => alert("file error")}
+      fullWidthViewer
+    />
+  ))
   .add("FilePreview & Vote Allowed", () => (
     <Viewer
       isOpen={true}

@@ -1,133 +1,114 @@
-import React from "react";
+import React, {useState} from "react";
 import PropTypes from "prop-types";
 import Avatar from "../Avatar";
 import AvatarInfo from "../AvatarInfo";
 import { JurIcon } from "../Icons/JurIcon";
 import { CaretDownIcon } from "../Icons/CaretDownIcon";
+import TimeAgo from "../TimeAgo";
+import ProposalPreview from "../ProposalPreview";
+import { ellipsisString } from "../../../utils/helpers";
 
 import "./Activity.scss";
 
 export const Activity = props => {
   const {
     from: { wallet: walletAddress, name: userName, system: isSystem },
+    date,
     to,
     status,
-    contractStatus,
-    abstract
+    abstract,
+    message
   } = props.data;
 
-  const fullAbstract = () => {
-    let _fullAbstract = abstract;
-    if (
-      !status &&
-      abstract
-        .toLowerCase()
-        .toString()
-        .startsWith("sent")
-    ) {
-      _fullAbstract = (
-        <span className="jur-activity__abstract">
-          {_fullAbstract}
-          <AvatarInfo userWallet={to} variant="ellipsis" />
-        </span>
-      );
+  const getActivityUser = () => {
+    if(isSystem) {
+      return "Jur System";
+    } else {
+      return userName || ellipsisString(walletAddress, 16, 16);
     }
+  };
 
-    if (status === "friendly") {
-      _fullAbstract = (
-        <>
-          {_fullAbstract}
-          <span class="jur-activity__abstract--friendly">
-            Friendly Resolution
-            <CaretDownIcon />
+  const [isOpen, setOpen] = useState(false);
+
+  const getMessage = () => {
+    if (isSystem) {
+      return (<span className="alert">{abstract}</span>);
+    } else {
+      if (status === "dispute") {
+        return (
+          <span
+            className={`dispute ${isOpen ? "dispute--open" : ""}`}
+            onClick={() => setOpen(!isOpen)}
+          >
+            {abstract}
+            <span>
+              {abstract.toLowerCase().startsWith("created an") ? "Open Dispute" : "Dispute Proposal"}
+            </span>
+            <CaretDownIcon className="friendly-caret"/>
           </span>
-        </>
-      );
-    }
-
-    if (status === "dispute") {
-      _fullAbstract = (
-        <span className="jur-activity__abstract">
-          {_fullAbstract}
-          <span class=" jur-activity__abstract--dispute">
-            Open Dispute
-            <CaretDownIcon />
+        );
+      }
+      else if (status === "friendly") {
+        return (
+          <span
+            className={`friendly ${isOpen ? "friendly--open" : ""}`}
+            onClick={() => setOpen(!isOpen)}
+          >
+            {abstract}
+            <span>Friendly Resolution.</span>
+            <CaretDownIcon className="friendly-caret"/>
           </span>
-        </span>
-      );
+        );
+      }
+      else if (status === null && abstract.toLowerCase().startsWith("sent contract")) {
+        return (
+          <>
+            {abstract}
+            <Avatar seed={to} size="xsmall" />
+            {ellipsisString(to, 16, 16)}
+          </>
+        );
+      }
+      else if (status === null && abstract.toLowerCase().startsWith("rejected")) {
+        return (
+          <>
+          <span className="alert">Rejected</span>
+          {abstract.slice("rejected".length)}
+          </>
+        );
+      }
+      else {
+        return abstract;
+      };
     }
-
-    if (status === "expired") {
-      _fullAbstract = (
-        <span className="jur-activity__abstract">
-          {_fullAbstract}
-          <span class=" jur-activity__abstract--expired">Open Dispute</span>
-        </span>
-      );
-    }
-
-    return _fullAbstract;
   };
 
   return (
     <div className="jur-activity">
-      {isSystem ? (
-        <JurIcon className="jur-activity__avatar" />
-      ) : (
-        <Avatar
-          seed={walletAddress}
-          size="large"
-          variant="circle"
-          className="jur-activity__avatar"
-        />
-      )}
-      <div className="jur-activity__content">
-        <div className="jur-activity__content__header">
-          <span className="jur-activity__user">
-            {userName || walletAddress}
-          </span>
-          <span className="jur-activity__date">few days ago</span>
-        </div>
-        <div className="jur-activity__content">
-          <div className="jur-activity__description">
-            {fullAbstract()}
-            {}
+      <div className="jur-activity__info">
+        {isSystem ? (
+          <JurIcon className="jur-activity__info__avatar" />
+        ) : (
+          <Avatar
+            seed={walletAddress}
+            size="large"
+            variant="circle"
+            className="jur-activity__info__avatar"
+          />
+        )}
+        <div className="jur-activity__info__details">
+          <div className="jur-activity__info__from">
+            <span>{getActivityUser()}</span>
+            <TimeAgo date={date} />
           </div>
+          <div className="jur-activity__info__message">{getMessage()}</div>
         </div>
       </div>
+      {status !== null && message &&
+        <div className={`jur-activity__content ${isOpen ? "jur-activity__content--open" : ""}`}>
+          <ProposalPreview proposalDetail={props.data} />
+        </div>
+      }
     </div>
   );
 };
-
-// case -1: // rejected
-//   <div><span class="alert">Rejected</span>{abstract}</div>
-//   break;
-// case 0: // draft
-// case 1: // waiting for counterparty
-//   <div>{abstract} if sent ? {to}</div>
-//   break;
-// case 5: // onGoing
-//   <div>if paid ? {value}</div>
-//   break;
-// case 8: // expired rosso
-//   <span class="alert">Contract Expired</span>
-//   break;
-// case 9: // contract closed
-//   break;
-// case 21: // open friendly resolution
-//   <div>Offered<span class="friendly">friendly resolution</span></div>
-//   break;
-// case 29: // closed friendly resolution
-//   break;
-// case 31: // Open dispute
-//   <div>Created an|sent <span class="dispute">open dispute|dispute proposal</span></div>
-//   break;
-// case 35: // onGoing dispute 24h
-//   break;
-// case 36: // extended Dispute 30min
-//   break;
-// case 38: // expired dispute
-//   break;
-// case 39: // dispute closed
-//   break;
-// default:

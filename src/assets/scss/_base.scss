@@ -40,10 +40,13 @@ a {
 }
 
 svg {
-  vertical-align: middle;
   fill: currentColor;
 }
 
 textarea {
   resize: none;
+}
+
+.jur-system-icon {
+  display: inline-flex;
 }

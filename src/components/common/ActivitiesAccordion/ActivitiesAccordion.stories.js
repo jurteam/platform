@@ -20,20 +20,26 @@ storiesOf("ActivitiesAccordion", module)
           readed: true,
           date: 20190228130000,
           contract: 234,
-          part_a: "0x000000...",
-          part_b: "0x000000...",
+          part_a: "0x496730954769357609478509674309",
+          part_b: "0x83764b53nf394n34ndgri346536843",
           from: {
-            wallet: "0x000000...",
+            wallet: "0x496730954769357609478509674309",
             name: "Alice",
             system: false
           },
           abstract: "Sent contract to:",
-          to: "0x00000...",
+          to: "0x83764b53nf394n34ndgri346536843",
           status: null,
           message: "Lorem ipsum dolor",
           proposal: {
-            part_a: 0,
-            part_b: 0
+            part_a: {
+              value: 234532,
+              percentage: 43.54
+            },
+            part_b: {
+              value: 2323445,
+              percentage: 60.54
+            }
           },
           evidences: []
         },
@@ -41,20 +47,53 @@ storiesOf("ActivitiesAccordion", module)
           readed: true,
           date: 20190228130000,
           contract: 234,
-          part_a: "0x000000...",
-          part_b: "0x000000...",
+          part_a: "0x496730954769357609478509674309",
+          part_b: "0x83764b53nf394n34ndgri346536843",
           from: {
-            wallet: "0x000000...",
+            wallet: "0x496730954769357609478509674309",
             name: "Alice",
             system: false
           },
-          abstract: "Sent contract to:",
-          to: "0x00000...",
+          abstract: "Accepted ... contract name",
+          to: "0x83764b53nf394n34ndgri346536843",
           status: null,
           message: "Lorem ipsum dolor",
           proposal: {
-            part_a: 0,
-            part_b: 0
+            part_a: {
+              value: 234532,
+              percentage: 43.54
+            },
+            part_b: {
+              value: 2323445,
+              percentage: 60.54
+            }
+          },
+          evidences: []
+        },
+        {
+          readed: true,
+          date: 20190228130000,
+          contract: 234,
+          part_a: "0x496730954769357609478509674309",
+          part_b: "0x83764b53nf394n34ndgri346536843",
+          from: {
+            wallet: "0x496730954769357609478509674309",
+            name: "Alice",
+            system: false
+          },
+          abstract: "Rejected contract name",
+          to: "0x83764b53nf394n34ndgri346536843",
+          status: null,
+          message: "Lorem ipsum dolor",
+          proposal: {
+            part_a: {
+              value: 234532,
+              percentage: 43.54
+            },
+            part_b: {
+              value: 2323445,
+              percentage: 60.54
+            }
           },
           evidences: []
         },
@@ -62,20 +101,27 @@ storiesOf("ActivitiesAccordion", module)
           readed: false,
           date: 20190228130000,
           contract: 234,
-          part_a: "0x000000...",
-          part_b: "0x000000...",
+          part_a: "0x496730954769357609478509674309",
+          part_b: "0x83764b53nf394n34ndgri346536843",
           from: {
-            wallet: "0x000000...",
-            name: "Alice",
+            wallet: "0x496730954769357609478509674309",
+            name: undefined,
             system: false
           },
-          abstract: "Sent contract to:",
-          to: "0x00000...",
-          status: null,
-          message: "Lorem ipsum dolor",
+          abstract: "Offered a ",
+          to: "0x83764b53nf394n34ndgri346536843",
+          status: "friendly",
+          message:
+            "Thank you for your work as only two drafts were delivered out of the requested three we propose the following payment",
           proposal: {
-            part_a: 0,
-            part_b: 0
+            part_a: {
+              value: 234532,
+              percentage: 43.54
+            },
+            part_b: {
+              value: 2323445,
+              percentage: 60.54
+            }
           },
           evidences: []
         }
