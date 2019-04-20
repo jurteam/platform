@@ -2,9 +2,11 @@ import {
   DELETE_ALL_CONTRACTS,
   DELETE_ALL_DISPUTES,
   UPDATE_CONTRACT_FIELD,
+  UPDATE_PROPOSAL_FIELD,
   UPDATE_NEW_CONTRACT_FIELD,
   NEW_CONTRACT,
   PUT_CONTRACT,
+  PUT_PROPOSAL,
   RESET_CONTRACT
 } from "../reducers/types"; // get action types
 
@@ -21,6 +23,13 @@ export const updateContractField = (field, value) => ({
 });
 export const updateNewContractField = (field, value) => ({
   type: UPDATE_NEW_CONTRACT_FIELD,
+  field,
+  value
+});
+
+export const updateProposal = () => ({ type: PUT_PROPOSAL });
+export const updateProposalField = (field, value) => ({
+  type: UPDATE_PROPOSAL_FIELD,
   field,
   value
 });

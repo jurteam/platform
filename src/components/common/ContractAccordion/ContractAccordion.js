@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { AngleIcon } from "../Icons/AngleIcon";
+import { EllipsisVIcon } from "../Icons/EllipsisVIcon";
 import InfoTooltip from "../InfoTooltip";
 
 import "./ContractAccordion.scss";
@@ -10,14 +11,18 @@ export const ContractAccordion = ({
   children,
   title,
   onOpen,
-  initialOpen
+  initialOpen,
+  loading
 }) => {
   const [isOpen, setOpenState] = useState(initialOpen || false);
 
   const onClick = () => {
-    setOpenState(!isOpen);
+    if (!loading) {
 
-    if (typeof onOpen === "function") onOpen(); // trigger on open
+      setOpenState(!isOpen);
+
+      if (typeof onOpen === "function") onOpen(); // trigger on open
+    }
   };
 
   const classes = {
@@ -39,10 +44,10 @@ export const ContractAccordion = ({
           {tooltip && <InfoTooltip />}
         </span>
         <span className="jur-contract-accordion__arrow">
-          <AngleIcon />
+          {!loading ? <AngleIcon /> : <EllipsisVIcon />}
         </span>
       </div>
-      {isOpen && (
+      {isOpen && !loading && (
         <div className="jur-contract-accordion__content">{children}</div>
       )}
     </div>

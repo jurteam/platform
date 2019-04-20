@@ -8,6 +8,7 @@ import {
   API_DELETE_CONTRACT,
   UPDATE_CONTRACT_FILTER,
   UPDATE_CONTRACT_FIELD,
+  UPDATE_PROPOSAL_FIELD,
   UPDATE_NEW_CONTRACT_FIELD,
   CONTRACT_DELETED,
   CONTRACTS_FETCHED,
@@ -15,6 +16,7 @@ import {
   CONTRACT_PAYING,
   CONTRACT_UPDATING,
   CONTRACT_LIST_UPDATING,
+  CONTRACT_NOTIFICATIONS_LOADING,
   CONTRACT_MEDIA_DELETE,
   CONTRACT_MEDIA_DELETED,
   RESET_CONTRACT,
@@ -25,6 +27,7 @@ const INITIAL_STATE = {
   saving: false,
   updating: false,
   paying: false,
+  notificationLoading: false,
   updatingList: true,
   new: {
     part_a_wallet: "",
@@ -78,7 +81,13 @@ const INITIAL_STATE = {
   },
   list: [],
   page: 1,
-  pagination: []
+  pagination: [],
+  currentProposal: {
+    message: null,
+    proposal_part_a: null,
+    proposal_part_b: null,
+    payed_at: null
+  }
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -112,6 +121,11 @@ export default (state = INITIAL_STATE, action) => {
       newToUpdate[action.field] = action.value;
       return { ...state, new: { ...state.new, ...newToUpdate } };
 
+    case UPDATE_PROPOSAL_FIELD:
+      let proposalToUpdate = {};
+      proposalToUpdate[action.field] = action.value;
+      return { ...state, currentProposal: { ...state.currentProposal, ...proposalToUpdate } };
+
     case UPDATE_CONTRACT_FIELD:
       let toUpdate = {};
       toUpdate[action.field] = action.value;
@@ -125,6 +139,9 @@ export default (state = INITIAL_STATE, action) => {
 
     case CONTRACT_SAVING:
       return { ...state, saving: action.payload };
+
+    case CONTRACT_NOTIFICATIONS_LOADING:
+      return { ...state, notificationLoading: action.payload };
 
     case CONTRACT_LIST_UPDATING:
       return { ...state, updatingList: action.payload };

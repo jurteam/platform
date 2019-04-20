@@ -34,6 +34,7 @@
     "yourDetails" : "Your Details",
     "couterpartyDetails" : "Counterparty Details",
     "activities" : "Activities",
+    "noActivities" : "Nothing to see. Contract activities will be visible here.",
     "waitingForCounterparty" : "Waiting for Counterparty",
     "contractWasRejected" : "The Contract was rejected",
     "contractIsClosed" : "The Contract is closed",

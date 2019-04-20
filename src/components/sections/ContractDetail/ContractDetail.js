@@ -454,6 +454,8 @@ export const ContractDetail = props => {
               submitDisabled={submitDisabled}
               currentWallet={wallet}
               currentPart={currentPart}
+              notificationLoading={contract.notificationLoading}
+              currentProposal={contract.currentProposal}
               contract={contractData}
               activities={contract.current.activities}
               formUpdated={formUpdated}

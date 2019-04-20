@@ -9,6 +9,13 @@
         padding: 0 10px 10px;
     }
 
+    &__none {
+        span {
+            font-size: 12px;
+            opacity: .6;
+        }
+    }
+
     &__new {
         display: flex;
         align-items: center;

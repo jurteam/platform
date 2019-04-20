@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import Form from "../Form";
 import BlockTitle from "../BlockTitle";
@@ -10,6 +10,10 @@ import FileList from "../FileList";
 import File from "../File";
 import { toCurrencyFormat, ellipsisString } from "../../../utils/helpers";
 
+// form validation
+import { useFormValidation } from "../../../utils/hooks";
+import validationSchema from "./_validationSchema";
+
 import "./ProposalForm.scss";
 import { AppContext } from "../../../bootstrap/AppProvider"; // context
 
@@ -17,6 +21,8 @@ export const ProposalForm = props => {
 
   const {
     currentUserWallet,
+    currentProposal,
+    updateProposalField,
     extended,
     description,
     evidences,
@@ -30,19 +36,38 @@ export const ProposalForm = props => {
     }
   } = props;
 
-  const { wallet: fromWallet, name: fromName } = from;
-  const { wallet: toWallet, name: toName } = to;
+  console.log("ProposalForm", props);
+
+  const { wallet: fromWallet } = from;
+  const { wallet: toWallet } = to;
 
   const initalProposal = {
-    from: contract.from.proposal || (contract.from.wallet.toLowerCase() === currentUserWallet.toLowerCase()) ? contract.amount : 0,
-    to: contract.to.proposal || (contract.to.wallet.toLowerCase() === currentUserWallet.toLowerCase()) ? contract.amount : 0,
+    from: from.proposal || (from.wallet.toLowerCase() === currentUserWallet.toLowerCase()) ? Number(contract.amount) : 0,
+    to: to.proposal || (to.wallet.toLowerCase() === currentUserWallet.toLowerCase()) ? Number(contract.amount) : 0,
   };
+
+  // validation setup
+  const [isValid, errors, validateForm, setFormData] = useFormValidation(
+    currentProposal,
+    validationSchema
+  );
+
+  // first form validation
+  useEffect(() => {
+    setFormData({ ...currentProposal, proposal_part_a: from, proposal_part_b: to });
+    validateForm();
+  }, []);
 
   const [proposalMessage, setProposalMessage] = useState(null);
   const [proposal, setProposal] = useState(initalProposal);
   const [files, setFiles] = useState([]);
 
   const { labels } = useContext(AppContext);
+
+  const changeInput = (name, value) => {
+    setFormData({ ...currentProposal, [name]: value });
+    updateProposalField(name, value); // dispatch action
+  };
 
   const updateProposal = (counterparty, value) => {
     let newProposal = { ...proposal };
@@ -62,9 +87,10 @@ export const ProposalForm = props => {
       }
     };
 
-    console.log("ProposalForm", newProposal);
-
+    changeInput("proposal_part_a", newProposal.from);
+    changeInput("proposal_part_b", newProposal.to);
     setProposal(newProposal);
+
   };
 
   const onSubmit = () => props.onSubmit({ proposal, files });
@@ -73,6 +99,7 @@ export const ProposalForm = props => {
     setProposalMessage(null);
     setProposal(initalProposal);
     setFiles([]);
+    setFormData({ message: null, proposal_part_a: null, proposal_part_b: null, payed_at: null });
 
     if (typeof onCancel === "function") onCancel(); // use callback
   };
@@ -104,7 +131,7 @@ export const ProposalForm = props => {
       <Form.TextArea
         placeholder={labels.insertHereYourMessage}
         defaultValue={proposalMessage}
-        onChange={value => setProposalMessage(value)}
+        onChange={value => {setProposalMessage(value); changeInput("message", value);}}
       />
       <BlockTitle title={labels.proposal} description={labels.proposalDescription} />
       <div className="jur-proposal-form__range-wrapper">

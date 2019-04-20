@@ -17,6 +17,7 @@ import {
   CONTRACT_DELETED,
   API_CATCH,
   READ_NOTIFICATIONS,
+  CONTRACT_NOTIFICATIONS_LOADING,
   CONTRACT_READ_NOTIFICATIONS,
   CONTRACT_SAVING,
   CONTRACT_MEDIA_DELETE,
@@ -66,6 +67,7 @@ export function* getContract(action) {
 
 export function* getContractActivities(action) {
   const { payload: { id } } = action;
+  yield put({ type: CONTRACT_NOTIFICATIONS_LOADING, payload: true });
 
   try {
     const response = yield call(Contracts.getActivities, { id });
@@ -76,6 +78,7 @@ export function* getContractActivities(action) {
   } catch (error) {
     // TODO: handle 404
     yield put({ type: API_CATCH, error });
+    yield put({ type: CONTRACT_NOTIFICATIONS_LOADING, payload: false });
   }
 }
 
@@ -292,6 +295,7 @@ export default function* contractSagas() {
   yield takeLatest(API_CATCH, resetUpdating);
   yield takeLatest(SET_CONTRACT, resetUpdating);
   yield takeLatest(SET_CONTRACT, getContractActivities);
+  yield takeLatest(SET_CONTRACT_ACTIVITIES, () => put({ type: CONTRACT_NOTIFICATIONS_LOADING, payload: false }));
   yield takeLatest(READ_NOTIFICATIONS, readActivities);
   yield takeLatest(CONTRACT_READ_NOTIFICATIONS, readActivities);
   yield takeLatest(CONTRACT_MEDIA_DELETE, deleteContractMedia);
