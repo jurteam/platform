@@ -68,4 +68,13 @@ storiesOf("Button", module)
     <Button color="dispute" variant="raised" size="medium">
       New smart contract
     </Button>
-  ));
+  ))
+  .add("from Info to Dispute", () => (
+    <Button
+      color="friendly"
+      variant="outlined"
+      hoverColor="muted"
+    >
+      New smart contract
+    </Button>
+  ))
