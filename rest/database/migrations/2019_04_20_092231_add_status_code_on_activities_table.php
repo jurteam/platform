@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class RestoreUserIdForeignFromActivitiesTable extends Migration
+class AddStatusCodeOnActivitiesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,8 +14,9 @@ class RestoreUserIdForeignFromActivitiesTable extends Migration
     public function up()
     {
         Schema::table('activities', function (Blueprint $table) {
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('contract_id')->references('id')->on('contracts')->onDelete('cascade');
+            $table->string('status')->nullable()->change();
+            $table->string('status_code')->nullable()->after('status');
+            $table->dropColumn('wallet');
         });
     }
 
@@ -27,8 +28,9 @@ class RestoreUserIdForeignFromActivitiesTable extends Migration
     public function down()
     {
         Schema::table('activities', function (Blueprint $table) {
-            //$table->dropForeign(['user_id']);
-            //$table->dropForeign(['contract_id']);
+            $table->string('status')->change();
+            $table->dropColumn('status_code');
+            $table->string('wallet')->nullable()->after('status');
         });
     }
 }

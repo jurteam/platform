@@ -85,9 +85,7 @@ class Contract extends Model implements HasMedia
     {
         $status = ContractStatus::byCode($params->code)->firstOrFail();
 
-        $this->update([
-            'contract_status_id' => $status->id
-        ]);
+        $this->update(['contract_status_id' => $status->id]);
 
         if ($params->code == 31) {
             $this->flagAsOpenDispute();
@@ -97,7 +95,8 @@ class Contract extends Model implements HasMedia
         }
 
         $this->recordActivities([
-            'status' => $status->label
+            'status' => $status->label,
+            'status_code' => $status->code
         ], $user);
     }
 
@@ -121,7 +120,8 @@ class Contract extends Model implements HasMedia
         $contract = static::create($attributes);
 
         $contract->recordActivities([
-            'status' => $status->label
+            'status' => $status->label,
+            'status_code' => $status->code
         ], $user);
 
         return $contract;
