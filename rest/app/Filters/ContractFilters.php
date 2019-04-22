@@ -10,12 +10,36 @@ class ContractFilters extends Filters
      * @var array
      */
     protected $filters = [
-        'status', 'from', 'to', 'query', 'owner', 'type', 'wallet'
+        'status',
+        'from',
+        'to',
+        'query',
+        'owner',
+        'type',
+        'wallet',
+        'orderBy'
     ];
+
+    public function orderBy($value)
+    {
+        $query = $this->builder;
+        foreach ($value as $field => $ordering) {
+            $query->orderBy("contracts.{$field}", $ordering);
+        }
+        return $query;
+    }
 
     public function wallet($value)
     {
-        return $this->builder->where('contracts.part_a_wallet', $value);
+        $lowerWallet = strtolower($value);
+
+        return $this->builder
+                    ->join('contract_statuses', 'contract_statuses.id', '=', 'contracts.contract_status_id')
+                    ->whereRaw(
+                        'LOWER(contracts.part_a_wallet) = ?
+                        OR IF (LOWER(contracts.part_b_wallet) = ? AND contract_statuses.code <> ?, 1, 0)',
+                        [$lowerWallet, $lowerWallet, 0]
+                    );
     }
 
     public function owner($value)
@@ -44,22 +68,24 @@ class ContractFilters extends Filters
 
     public function query($value)
     {
+        $lowerWallet = strtolower($value);
+
         return $this->builder
                     ->where('contracts.name', 'LIKE', "%{$value}%")
-                    ->orWhere('contracts.part_a_wallet', 'LIKE', "%{$value}%")
+                    ->orWhereRaw('LOWER(contracts.part_a_wallet) = ?', [$lowerWallet])
                     ->orWhere('contracts.part_a_name', 'LIKE', "%{$value}%")
                     ->orWhere('contracts.part_a_email', 'LIKE', "%{$value}%")
-                    ->orWhere('contracts.part_b_wallet', 'LIKE', "%{$value}%")
+                    ->orWhereRaw('LOWER(contracts.part_b_wallet) = ?', [$lowerWallet])
                     ->orWhere('contracts.part_b_name', 'LIKE', "%{$value}%")
-                    ->orWhere('contracts.part_b_email', 'LIKE', "%{$value}%");
+                    ->orWhere('contracts..part_b_email', 'LIKE', "%{$value}%");
     }
 
     public function type($value)
     {
         if ($value == 'dispute') {
-            return $this->builder->where('is_a_dispute', true);
+            return $this->builder->where('contracts.is_a_dispute', true);
         } elseif ($value == 'friendly') {
-            return $this->builder->where('is_a_friendly_resolution', true);
+            return $this->builder->where('contracts.is_a_friendly_resolution', true);
         }
     }
 }
