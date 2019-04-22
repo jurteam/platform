@@ -17,5 +17,10 @@ export const getCurrentContract = state => state.contract.current
 export const getContractListPage = state => state.contract.page
 export const getCurrentContractActivities = state => state.contract.current.activities
 
+// Dispute
+export const getDisputeFilters = state => state.dispute.filters
+export const getCurrentDispute = state => state.dispute.current
+export const getDisputeListPage = state => state.dispute.page
+
 // User
 export const getUser = state => state.user

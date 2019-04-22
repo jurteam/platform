@@ -5,6 +5,7 @@ import app from "./App";
 import user from "./User";
 import wallet from "./Wallet";
 import contract from "./Contract";
+import dispute from "./Dispute";
 
 // Export root reducer
 export default history =>
@@ -14,5 +15,6 @@ export default history =>
     user,
     wallet,
     contract,
+    dispute,
     ...drizzleReducers
   });

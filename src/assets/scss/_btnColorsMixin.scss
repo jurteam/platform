@@ -220,8 +220,8 @@ $btn: ".jur-btn";
 }
 
 @mixin friendlyOutlined {
-  color: $white;
-  background: $btn-friendly-color;
+  color: $btn-friendly-color;
+  background: $white;
   border-color: $btn-friendly-color;
 }
 
@@ -359,10 +359,10 @@ $btn: ".jur-btn";
       }
 
     }
-    
+
     &#{$btn}--raised {
       @include darkBlueRaised;
-      
+
       &:hover {
         @include darkBlueContained;
       }

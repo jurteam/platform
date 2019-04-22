@@ -28,8 +28,13 @@
     margin: 60px auto 0;
   }
 
-  .jur-contracts__table {
+  .jur-contracts__table,
+  .jur-disputes__table {
     padding: 20px;
+  }
+
+  .jur-disputes__table {
+    padding-top: 5px;
   }
 
   .jur-contract-summary {

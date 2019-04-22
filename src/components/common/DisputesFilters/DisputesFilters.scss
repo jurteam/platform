@@ -7,8 +7,14 @@
   margin: 15px 0 30px;
 
   &--disabled {
-    opacity: 0.5;
-    pointer-events: none;
+
+    .jur-select,
+    .jur-calendar-filter,
+    .jur-form__search,
+    .can-disable {
+      opacity: 0.5;
+      pointer-events: none;
+    }
   }
 
   .jur-select {

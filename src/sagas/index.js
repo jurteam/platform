@@ -5,6 +5,7 @@ import errorsSagas from './Errors'
 import walletSagas from './Wallet'
 import userSagas from './User'
 import contractSagas from './Contract'
+import disputeSagas from './Dispute'
 import mediaSagas from './Media'
 import arbitrationSagas from './Arbitration'
 
@@ -16,6 +17,7 @@ sagas.push(userSagas)
 sagas.push(walletSagas)
 sagas.push(mediaSagas)
 sagas.push(contractSagas)
+sagas.push(disputeSagas)
 sagas.push(arbitrationSagas)
 
 export default function* rootSaga() {

@@ -107,8 +107,9 @@ export const ContractSidebar = ({
             {!isPartB && (
               <Button
                 color="friendly"
-                variant={showProposalForm === true ? "contained" : "outlined"}
+                variant={showProposalForm === 2 ? "outlined" : "contained"}
                 onClick={() => setShowProposalForm(true)}
+                hoverColor="friendly"
               >
                 {labels.friendlyResolution}
               </Button>
@@ -120,6 +121,7 @@ export const ContractSidebar = ({
               }
               fullWidth={isPartB}
               onClick={() => setShowProposalForm(2)}
+              hoverColor="dispute"
             >
               {labels.dispute}
             </Button>
@@ -132,6 +134,7 @@ export const ContractSidebar = ({
           <Button
             color="dispute"
             fullWidth={isPartB}
+            hoverColor="dispute"
             onClick={() => {
               setShowProposalForm(isPartB ? 2 : true);
               setActivitiesOpen(false);
@@ -140,7 +143,7 @@ export const ContractSidebar = ({
             {labels.dispute}
           </Button>
           {!isPartB && (
-            <Button color="success" onClick={onSuccess}>
+            <Button color="success" onClick={onSuccess} hoverColor="success">
               {labels.success}
             </Button>
           )}

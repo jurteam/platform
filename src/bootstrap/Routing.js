@@ -74,6 +74,18 @@ export const createRoutes = withComponents => {
       component: withComponents && Disputes,
       title: i18n.disputes
     },
+    {
+      exact: true,
+      path: "/disputes/detail",
+      component: () => withComponents && <Redirect to="/disputes" />
+    },
+    {
+      exact: true,
+      path: "/disputes/detail/:id",
+      onEnter: () => redirect(checkConnection, "/disputes/detail/:id"),
+      component: withComponents && ContractDetail,
+      title: i18n.disputes
+    },
     { component: withComponents && NotFound, title: i18n.notFound }
   ];
 };

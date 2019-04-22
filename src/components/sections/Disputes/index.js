@@ -1,4 +1,7 @@
-// import { connect } from "react-redux";
+import { withRouter } from 'react-router-dom'
+import { drizzleConnect } from "drizzle-react";
 import { Disputes } from "./Disputes";
 
-export default Disputes
+const mapStateToProps = (state) => ({ user: state.user, dispute: state.dispute });
+
+export default drizzleConnect(withRouter(Disputes), mapStateToProps);
