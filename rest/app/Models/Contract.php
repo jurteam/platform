@@ -94,10 +94,10 @@ class Contract extends Model implements HasMedia
         }
 
         $user = User::byWallet($params->header('wallet'))->firstOrFail();
-        $this->recordActivities([
+        $this->recordActivities(array_merge($params->all(), [
             'status' => $status->label,
             'status_code' => $status->code
-        ], $user);
+        ]), $user);
     }
 
     /**
