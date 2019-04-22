@@ -34,6 +34,7 @@ class ContractFilters extends Filters
         $lowerWallet = strtolower($value);
 
         return $this->builder
+                    ->select('contracts.*')
                     ->join('contract_statuses', 'contract_statuses.id', '=', 'contracts.contract_status_id')
                     ->whereRaw(
                         'LOWER(contracts.part_a_wallet) = ?
