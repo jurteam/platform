@@ -35,6 +35,10 @@ class ContractDetailsController extends Controller
      */
     public function store(Request $request, $id)
     {
+        $this->validate($request, [
+            'code' => 'required|exists:contract_statuses,code'
+        ]);
+
         $detail = ContractStatusDetail::storeDetail(
             $request, Contract::findOrFail($id)
         );
