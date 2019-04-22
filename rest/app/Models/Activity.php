@@ -27,6 +27,11 @@ class Activity extends Model implements HasMedia
         return $filters->apply($query);
     }
 
+    public function scopeExceptDraft($query)
+    {
+        return $query->where('status_code', '<>', 0);
+    }
+
     public function scopeByContract($query, int $contractId)
     {
         return $query->whereContractId($contractId);

@@ -17,7 +17,8 @@ class ContractActivitiesController extends Controller
 
     public function getAllByWallet(ActivityFilters $filters, Request $request)
     {
-        $activities = Activity::filters($filters)
+        $activities = Activity::exceptDraft()
+                        ->filters($filters)
                         ->paginate($request->get('perPage', 10));
 
         return $this->response->paginator($activities, new ContractActivityTransformer);
