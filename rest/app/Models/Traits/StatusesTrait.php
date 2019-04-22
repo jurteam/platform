@@ -20,4 +20,15 @@ trait StatusesTrait
     {
         return $this->status->code > config('jur.statuses')[1]['code'];
     }
+
+    public function getCurrentStatusUpdatedAt()
+    {
+        $code = $this->status->code;
+
+        $statusActivity = $this->activities()
+            ->where('status_code', $code)
+            ->first();
+
+        return $statusActivity->created_at;
+    }
 }
