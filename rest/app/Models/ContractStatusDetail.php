@@ -26,6 +26,26 @@ class ContractStatusDetail extends Model implements HasMedia
         'payed_at'
     ];
 
+    /**
+     * Save the contract status detail.
+     *
+     * @param  \Illuminate\Http\Request $params
+     * @param  \App\Models\Contract $contract
+     * @return \App\Models\Contract
+     */
+    public static function storeDetail($params, Contract $contract)
+    {
+        $contract->updateStatusByCode($params);
+        $attributes = array_merge($params->all(), [
+            'contract_part' => $params->header('wallet')
+        ]);
+
+        $detail = new self($attributes);
+        $detail->contract()->associate($contract)->save();
+
+        return $detail;
+    }
+
     public function contract()
     {
         return $this->belongsTo(Contract::class);

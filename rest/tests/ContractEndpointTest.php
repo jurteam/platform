@@ -90,4 +90,28 @@ class ContractEndpointTest extends TestCase
             'category' => 'Test'
         ]);
     }
+
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function a_user_can_set_own_contract_as_dispute()
+    {
+        $contract = factory(App\Models\Contract::class)->create([
+            'wallet' => 'dIRyZgmIQPam4zGpeR3nKBtUYhoGjD',
+            'part_a_wallet' => 'dIRyZgmIQPam4zGpeR3nKBtUYhoGjD'
+        ]);
+
+        $response = $this->post("api/v1/contracts/disputes/{$contract->id}", [
+            'code' => 31,
+            'contract_part' => 'dIRyZgmIQPam4zGpeR3nKBtUYhoGjD'
+        ], [
+            'wallet' => 'dIRyZgmIQPam4zGpeR3nKBtUYhoGjD'
+        ]);
+
+        $this->seeInDatabase('contract_status_details', [
+            'contract_id' => $contract->id
+        ]);
+    }
 }

@@ -112,14 +112,11 @@ class ContractsController extends Controller
             'code' => 'required|exists:contract_statuses,code'
         ]);
 
-        $wallet = $request->header('wallet');
-
-        $user = User::byWallet($wallet)->firstOrFail();
         $contract = Contract::findOrFail($id);
 
-        $contract->updateStatusByCode($request, $user);
+        $contract->updateStatusByCode($request);
 
-        return $this->response->item($contract, new ContractTransformer);
+        return $this->response->item($contract, new ContractDetailTransformer);
     }
 
     public function destroyAll(ContractFilters $filters)
