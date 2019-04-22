@@ -7,7 +7,7 @@
     "require": {
         "php": ">=7.1.3",
         "barryvdh/laravel-cors": "^0.11.2",
-        "dingo/api": "2.1",
+        "dingo/api": "^2",
         "illuminate/notifications": "5.8.*",
         "laravel/lumen-framework": "5.8.*",
         "spatie/laravel-medialibrary": "^7.0.0",

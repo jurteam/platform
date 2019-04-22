@@ -37,8 +37,8 @@ class ContractFilters extends Filters
                     ->select('contracts.*')
                     ->join('contract_statuses', 'contract_statuses.id', '=', 'contracts.contract_status_id')
                     ->whereRaw(
-                        'LOWER(contracts.part_a_wallet) = ?
-                        OR IF (LOWER(contracts.part_b_wallet) = ? AND contract_statuses.code <> ?, 1, 0)',
+                        '(LOWER(contracts.part_a_wallet) = ?
+                        OR IF (LOWER(contracts.part_b_wallet) = ? AND contract_statuses.code <> ?, 1, 0))',
                         [$lowerWallet, $lowerWallet, 0]
                     );
     }

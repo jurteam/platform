@@ -22,6 +22,21 @@ class Activity extends Model implements HasMedia
         'user_id'
     ];
 
+    public function scopeFilters($query, $filters)
+    {
+        return $filters->apply($query);
+    }
+
+    public function scopeByContract($query, int $contractId)
+    {
+        return $query->whereContractId($contractId);
+    }
+
+    public function scopeByUser($query, $userId)
+    {
+        return $query->whereUserId($userId);
+    }
+
     /**
      * Retrieve contract.
      *

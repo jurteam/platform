@@ -105,7 +105,9 @@ class ContractEndpointTest extends TestCase
 
         $response = $this->post("api/v1/contracts/disputes/{$contract->id}", [
             'code' => 31,
-            'contract_part' => 'dIRyZgmIQPam4zGpeR3nKBtUYhoGjD'
+            'contract_part' => 'dIRyZgmIQPam4zGpeR3nKBtUYhoGjD',
+            'proposal_part_a' => 12.0000,
+            'proposal_part_b' => 60.0000
         ], [
             'wallet' => 'dIRyZgmIQPam4zGpeR3nKBtUYhoGjD'
         ]);

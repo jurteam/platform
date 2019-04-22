@@ -5,14 +5,24 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Contract;
 use App\Models\Activity;
+use App\Models\Contract;
 use Illuminate\Http\Request;
 use Dingo\Api\Routing\Helpers;
+use App\Filters\ActivityFilters;
 use App\Http\Controllers\Traits\MediableTrait;
 use App\Transformers\ContractActivityTransformer;
 
 class ContractActivitiesController extends Controller
 {
     use Helpers, MediableTrait;
+
+    public function getAllByWallet(ActivityFilters $filters, Request $request)
+    {
+        $activities = Activity::filters($filters)
+                        ->paginate($request->get('perPage', 10));
+
+        return $this->response->paginator($activities, new ContractActivityTransformer);
+    }
 
     /**
      * Get the contract activities.
@@ -23,8 +33,7 @@ class ContractActivitiesController extends Controller
      */
     public function index(Request $request, $id)
     {
-        $contract = Contract::findOrFail($id);
-        $activities = $contract->activities()->latest()->paginate(10);
+        $activities = Activity::byContract($id)->latest()->paginate(10);
 
         return $this->response->paginator($activities, new ContractActivityTransformer);
     }
@@ -40,11 +49,34 @@ class ContractActivitiesController extends Controller
         $wallet = $request->header('wallet');
 
         $contract = Contract::findOrFail($id);
-        $user = User::byWallet($wallet)->firstOrFail();
-
-        $activity = $contract->recordActivities($request->all(), $user);
+        $activity = $contract->recordActivities(
+            $request->all(),
+            User::byWallet($wallet)->firstOrFail()
+        );
         $activity->uploadMedia($request);
 
         return $this->item($activity, new ContractActivityTransformer);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $activity = Activity::findOrFail($id);
+        $activity->update($requst->all());
+
+        return $this->item($activity, new ContractActivityTransformer);
+    }
+
+    public function updateAsReaded(Request $request)
+    {
+        $this->validate($request, [
+            'ids' => 'required|array|min:1'
+        ]);
+
+        Activity::whereIn('id', $request->ids)
+             ->update([
+                'readed' => true
+             ]);
+
+        return response()->json(['status' => 'updated']);
     }
 }

@@ -11,6 +11,8 @@ $api->version('v1', function($api) {
             $api->post('/', 'App\Http\Controllers\UserController@store');
             $api->put('/', 'App\Http\Controllers\UserController@update');
             $api->delete('/', 'App\Http\Controllers\UserController@destroy');
+
+            $api->get('activities', 'App\Http\Controllers\ContractActivitiesController@getAllByWallet');
         });
 
         $api->group(['prefix' => 'contracts'], function($api) {
@@ -58,6 +60,7 @@ $api->version('v1', function($api) {
         $api->group(['prefix' => 'activities'], function($api) {
             $api->get('{id}', 'App\Http\Controllers\ContractActivitiesController@index');
             $api->post('/', 'App\Http\Controllers\ContractActivitiesController@store');
+            $api->put('readed', 'App\Http\Controllers\ContractActivitiesController@updateAsReaded');
             $api->group(['prefix' => 'medias'], function($api) {
                 $api->delete('{id}', 'App\Http\Controllers\ContractActivitiesController@deleteMedia');
             });
