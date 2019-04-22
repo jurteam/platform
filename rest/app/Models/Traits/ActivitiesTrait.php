@@ -21,4 +21,15 @@ trait ActivitiesTrait
 
         return $activity;
     }
+
+    public function getSendTo($wallet)
+    {
+        $contractWallet = strtolower($this->part_a_wallet);
+        $requestWallet = strtolower($wallet);
+
+        if ($contractWallet == $requestWallet) {
+            return $this->part_b_wallet;
+        }
+        return $this->part_a_wallet;
+    }
 }
