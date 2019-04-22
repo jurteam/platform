@@ -33,7 +33,9 @@ class ContractActivitiesController extends Controller
      */
     public function index(Request $request, $id)
     {
-        $activities = Activity::byContract($id)->latest()->paginate(10);
+        $activities = Activity::exceptDraft()
+                            ->byContract($id)
+                            ->latest()->paginate(10);
 
         return $this->response->paginator($activities, new ContractActivityTransformer);
     }
