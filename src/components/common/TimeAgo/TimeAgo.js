@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import * as ReactTimeAgo from 'react-timeago';
 
 export const TimeAgo = ({ date }) => {
   let transformedDate = "";
@@ -24,4 +25,5 @@ export const TimeAgo = ({ date }) => {
   }
 
   return <span>{transformedDate}</span>;
+  // return (<span><ReactTimeAgo date={date} /></span>);
 };

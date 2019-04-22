@@ -17,7 +17,7 @@ storiesOf("Activity", module)
     <Activity
       data={{
         readed: false,
-        date: 20190228130000,
+        date: 1555676259000,
         contract: 234,
         part_a: "0x496730954769357609478509674309",
         part_b: "0x83764b53nf394n34ndgri346536843",
@@ -48,7 +48,7 @@ storiesOf("Activity", module)
     <Activity
       data={{
         readed: false,
-        date: 20190228130000,
+        date: 1555330659000,
         contract: 234,
         part_a: "0x496730954769357609478509674309",
         part_b: "0x83764b53nf394n34ndgri346536843",
@@ -79,7 +79,7 @@ storiesOf("Activity", module)
     <Activity
       data={{
         readed: false,
-        date: 20190228130000,
+        date: 1555330659000,
         contract: 234,
         part_a: "0x496730954769357609478509674309",
         part_b: "0x83764b53nf394n34ndgri346536843",
@@ -110,7 +110,7 @@ storiesOf("Activity", module)
     <Activity
       data={{
         readed: false,
-        date: 20190228130000,
+        date: 1555330659000,
         contract: 234,
         part_a: "0x496730954769357609478509674309",
         part_b: "0x83764b53nf394n34ndgri346536843",
@@ -141,7 +141,7 @@ storiesOf("Activity", module)
     <Activity
       data={{
         readed: false,
-        date: 20190228130000,
+        date: 1523794659000,
         contract: 234,
         part_a: "0x496730954769357609478509674309",
         part_b: "0x83764b53nf394n34ndgri346536843",
@@ -172,7 +172,7 @@ storiesOf("Activity", module)
     <Activity
       data={{
         readed: false,
-        date: 20190228130000,
+        date: 1555330659000,
         contract: 234,
         part_a: "0x496730954769357609478509674309",
         part_b: "0x83764b53nf394n34ndgri346536843",
@@ -207,7 +207,7 @@ storiesOf("Activity", module)
     <Activity
       data={{
         readed: false,
-        date: 20190228130000,
+        date: 1523794659000,
         contract: 234,
         part_a: "0x496730954769357609478509674309",
         part_b: "0x83764b53nf394n34ndgri346536843",
@@ -238,7 +238,7 @@ storiesOf("Activity", module)
     <Activity
       data={{
         readed: false,
-        date: 20190228130000,
+        date: 1555330659000,
         contract: 234,
         part_a: "0x496730954769357609478509674309",
         part_b: "0x83764b53nf394n34ndgri346536843",

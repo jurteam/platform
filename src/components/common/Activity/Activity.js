@@ -1,11 +1,10 @@
 import React, { useContext, useState } from "react";
 import PropTypes from "prop-types";
-import TimeAgo from 'react-timeago';
+import TimeAgo from "react-timeago";
 import Avatar from "../Avatar";
 import AvatarInfo from "../AvatarInfo";
 import { JurIcon } from "../Icons/JurIcon";
 import { CaretDownIcon } from "../Icons/CaretDownIcon";
-import TimeAgo from "../TimeAgo";
 import ProposalPreview from "../ProposalPreview";
 import { ellipsisString } from "../../../utils/helpers";
 
@@ -18,7 +17,6 @@ export const Activity = props => {
     date,
     to,
     status,
-    date,
     message,
     contractStatus,
     abstract
@@ -44,13 +42,13 @@ export const Activity = props => {
     }
   };
 
-  // const getActivityUser = () => {
-  //   if(isSystem) {
-  //     return "Jur System";
-  //   } else {
-  //     return userName || ellipsisString(walletAddress, 16, 16);
-  //   }
-  // }
+  const getActivityUser = () => {
+    if(isSystem) {
+      return "Jur System";
+    } else {
+      return userName || ellipsisString(walletAddress, 16, 16);
+    }
+  }
 
   const [isOpen, setOpen] = useState(false);
 
@@ -64,9 +62,9 @@ export const Activity = props => {
             className={`dispute ${isOpen ? "dispute--open" : ""}`}
             onClick={() => setOpen(!isOpen)}
           >
-            {abstract}
+            {`${abstract} `}
             <span>
-              {abstract.toLowerCase().startsWith("created an") ? "Open Dispute" : "Dispute Proposal"}
+              {abstract && abstract.toLowerCase().startsWith("created an") ? labels.openDispute : labels.disputeProposal}
             </span>
             <CaretDownIcon className="friendly-caret"/>
           </span>
@@ -78,7 +76,7 @@ export const Activity = props => {
             className={`friendly ${isOpen ? "friendly--open" : ""}`}
             onClick={() => setOpen(!isOpen)}
           >
-            {abstract}
+            {`${abstract} `}
             <span>{`${labels.friendlyResolution}.`}</span>
             <CaretDownIcon className="friendly-caret"/>
           </span>
@@ -87,7 +85,7 @@ export const Activity = props => {
       else if (status === null && abstract.toLowerCase().startsWith("sent contract")) {
         return (
           <>
-            {abstract}
+            {`${abstract} `}
             <Avatar seed={to} size="xsmall" />
             {ellipsisString(to, 16, 16)}
           </>
@@ -109,36 +107,31 @@ export const Activity = props => {
 
   return (
     <div className="jur-activity">
-      {isSystem ? (
-        <JurIcon className="jur-activity__avatar" />
-      ) : (
-        <Avatar
-          seed={walletAddress}
-          size="large"
-          variant="circle"
-          className="jur-activity__avatar"
-        />
-      )}
-      <div className="jur-activity__content">
-        <div className="jur-activity__content__header">
-          <span className="jur-activity__user">
-            {userName || walletAddress}
-          </span>
-          <span className="jur-activity__date"><TimeAgo date={date} /></span>
-        </div>
-        <div className="jur-activity__content">
-          <div className="jur-activity__description">
-            {fullAbstract()}
-            {}
-          </div>
+      <div className="jur-activity__info">
+        {isSystem ? (
+          <JurIcon className="jur-activity__info__avatar" />
+        ) : (
+          <Avatar
+            seed={walletAddress}
+            size="large"
+            variant="circle"
+            className="jur-activity__info__avatar"
+          />
+        )}
+        <div className="jur-activity__info__details">
+          <div className="jur-activity__info__from">
+            <span>{getActivityUser()}</span>
+            <TimeAgo date={date} />
+               </div>
           <div className="jur-activity__info__message">{getMessage()}</div>
-        </div>
-      </div>
+             </div>
+           </div>
       {status !== null && message &&
         <div className={`jur-activity__content ${isOpen ? "jur-activity__content--open" : ""}`}>
           <ProposalPreview proposalDetail={props.data} />
         </div>
       }
     </div>
+
   );
 };
