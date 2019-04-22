@@ -45,13 +45,8 @@ class ContractActivitiesController extends Controller
      */
     public function store(Request $request, $id)
     {
-        $wallet = $request->header('wallet');
-
         $contract = Contract::findOrFail($id);
-        $activity = $contract->recordActivities(
-            $request->all(),
-            User::byWallet($wallet)->firstOrFail()
-        );
+        $activity = $contract->storeActivity($request);
         $activity->uploadMedia($request);
 
         return $this->item($activity, new ContractActivityTransformer);

@@ -27,8 +27,12 @@ trait StatusesTrait
 
         $statusActivity = $this->activities()
             ->where('status_code', $code)
+            ->where('contract_id', $this->id)
             ->first();
 
-        return $statusActivity->created_at;
+        if ($statusActivity) {
+            return $statusActivity->created_at->valueOf();
+        }
+        return $this->updated_at->valueOf();
     }
 }

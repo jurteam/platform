@@ -32,6 +32,11 @@ class ContractPolicy
         return $this->counterPartCouldBeAccessToContract($contract);
     }
 
+    public function viewDispute(?User $user, Contract $contract)
+    {
+        return $contract->is_a_dispute;
+    }
+
     protected function userIsTheContractOwner(Contract $contract)
     {
         $contractWallet = strtolower($contract->part_a_wallet);

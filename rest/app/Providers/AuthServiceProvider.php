@@ -28,6 +28,7 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         Gate::define('view-contract', 'App\Policies\ContractPolicy@view');
+        Gate::define('view-dispute', 'App\Policies\ContractPolicy@viewDispute');
 
         // Here you may define how you wish users to be authenticated for your Lumen
         // application. The callback which receives the incoming request instance

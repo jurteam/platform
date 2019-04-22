@@ -97,7 +97,8 @@ class Contract extends Model implements HasMedia
         $this->recordActivities(array_merge($params->all(), [
             'status' => $status->label,
             'status_code' => $status->code,
-            'to_wallet' => $this->getSendTo($params->header('wallet'))
+            'to_wallet' => $this->getSendTo($params->header('wallet')),
+            'wallet' => $params->header('wallet')
         ]), $user);
     }
 
@@ -123,7 +124,8 @@ class Contract extends Model implements HasMedia
         $contract->recordActivities([
             'status' => $status->label,
             'status_code' => $status->code,
-            'to_wallet' => $this->getSendTo($params->header('wallet'))
+            'to_wallet' => $this->getSendTo($params->header('wallet')),
+            'wallet' => $params->header('wallet')
         ], $user);
 
         return $contract;
