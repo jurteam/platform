@@ -1,0 +1,406 @@
+@import "./variables";
+
+$btn: ".jur-btn";
+
+@mixin small {
+  height: 31px;
+  min-width: 180px;
+}
+
+@mixin btnSmall {
+  &--small {
+    @include small;
+    &--hover {
+      &:hover {
+        @include small;
+      }
+    }
+  }
+}
+
+@mixin medium {
+  height: 36px;
+  min-width: 162px;
+}
+
+@mixin btnMedium {
+  &--medium {
+    @include medium;
+    &--hover {
+      &:hover {
+        @include medium;
+      }
+    }
+  }
+}
+
+@mixin big {
+  height: 41px;
+  min-width: 141px;
+}
+
+@mixin btnBig {
+  &--big {
+    @include big;
+
+    &--hover {
+      &:hover {
+        @include big;
+      }
+    }
+  }
+}
+
+@mixin infoContained {
+  color: $white;
+  background: $btn-primary-color;
+  border-color: $btn-primary-color;
+}
+
+@mixin infoOutlined {
+  color: $btn-primary-color;
+  background: $white;
+  border-color: $btn-border-color;
+}
+
+@mixin infoRaised {
+  @include infoOutlined;
+  border: none;
+  box-shadow: $btn-shadow;
+}
+
+@mixin infoBtn {
+  &--info {
+    @include infoOutlined;
+
+    &#{$btn}--outlined {
+      @include infoOutlined;
+
+      &:hover {
+        @include infoContained;
+      }
+    }
+
+    &#{$btn}--contained {
+      @include infoContained;
+
+      &:hover {
+        @include infoOutlined;
+      }
+    }
+
+    &#{$btn}--raised {
+      @include infoRaised;
+
+      &:hover {
+        @include infoContained;
+      }
+    }
+
+    &--hover#{$btn}#{$btn} {
+      &:hover {
+        @include infoContained;
+      }
+    }
+  }
+}
+
+@mixin disputeContained {
+  color: $white;
+  background: $btn-dispute-color;
+  border-color: $btn-dispute-color;
+}
+
+@mixin disputeOutlined {
+  color: $btn-dispute-color;
+  background: $white;
+  border-color: $btn-border-color;
+}
+
+@mixin disputeRaised {
+  @include disputeOutlined;
+  border: none;
+  box-shadow: $btn-shadow;
+}
+
+@mixin disputeBtn {
+  &--dispute {
+    @include disputeOutlined;
+
+    &#{$btn}--outlined {
+      @include disputeOutlined;
+
+      &:hover {
+        @include disputeContained;
+      }
+    }
+
+    &#{$btn}--contained {
+      @include disputeContained;
+
+      &:hover {
+        @include disputeOutlined;
+      }
+    }
+
+    &#{$btn}--raised {
+      @include disputeRaised;
+
+      &:hover {
+        @include disputeContained;
+      }
+    }
+
+    &--hover#{$btn}#{$btn} {
+      &:hover {
+        @include disputeContained;
+      }
+    }
+  }
+}
+
+@mixin successContained {
+  color: $white;
+  background: $btn-secondary-color;
+  border-color: $btn-secondary-color;
+}
+
+@mixin successOutlined {
+  color: $btn-secondary-color;
+  background: $white;
+  border-color: $btn-border-color;
+}
+
+@mixin successRaised {
+  @include successOutlined;
+  border: none;
+  box-shadow: $btn-shadow;
+}
+
+@mixin successBtn {
+  &--success {
+    @include successOutlined;
+
+    &#{$btn}--outlined {
+      @include successOutlined;
+
+      &:hover {
+        @include successContained;
+      }
+    }
+
+    &#{$btn}--contained {
+      @include successContained;
+
+      &:hover {
+        @include successOutlined;
+      }
+    }
+
+    &#{$btn}--raised {
+      @include successRaised;
+
+      &:hover {
+        @include successContained;
+      }
+    }
+
+    &--hover#{$btn}#{$btn} {
+      &:hover {
+        @include successContained;
+      }
+    }
+  }
+}
+
+@mixin friendlyContained {
+  color: $white;
+  background: $btn-friendly-color;
+  border-color: $btn-friendly-color;
+}
+
+@mixin friendlyOutlined {
+  color: $white;
+  background: $btn-friendly-color;
+  border-color: $btn-friendly-color;
+}
+
+@mixin friendlyRaised {
+  @include friendlyOutlined;
+  border: none;
+  box-shadow: $btn-shadow;
+}
+
+@mixin friendlyBtn {
+  &--friendly {
+    @include friendlyOutlined;
+
+    &#{$btn}--outlined {
+      @include friendlyOutlined;
+
+      &:hover {
+        @include friendlyContained;
+      }
+    }
+
+    &#{$btn}--contained {
+      @include friendlyContained;
+
+      &:hover {
+        @include friendlyOutlined;
+      }
+    }
+
+    &#{$btn}--raised {
+      @include friendlyRaised;
+
+      &:hover {
+        @include friendlyContained;
+      }
+    }
+
+    &--hover#{$btn}#{$btn} {
+      &:hover {
+        @include friendlyContained;
+      }
+    }
+  }
+}
+
+@mixin mutedContained {
+  color: $white;
+  background: $btn-muted-color;
+  border-color: $btn-muted-color;
+}
+
+@mixin mutedOutlined {
+  color: $btn-muted-color;
+  background: $white;
+  border-color: $btn-border-color;
+}
+
+@mixin mutedRaised {
+  @include mutedOutlined;
+  border: none;
+  box-shadow: $btn-shadow;
+}
+
+@mixin mutedBtn {
+  &--muted {
+    @include mutedOutlined;
+
+    &#{$btn}--outlined {
+      @include mutedOutlined;
+
+      &:hover {
+        @include mutedContained;
+      }
+    }
+
+    &#{$btn}--contained {
+      @include mutedContained;
+
+      &:hover {
+        @include mutedOutlined;
+      }
+    }
+
+    &#{$btn}--raised {
+      @include mutedRaised;
+
+      &:hover {
+        @include mutedContained;
+      }
+    }
+
+    &--hover#{$btn}#{$btn} {
+      &:hover {
+        @include mutedContained;
+      }
+    }
+  }
+}
+
+@mixin darkBlueContained {
+  color: $white;
+  background: $btn-dark-blue-color;
+  border-color: $btn-dark-blue-color;
+}
+
+@mixin darkBlueOutlined {
+  color: $btn-dark-blue-color;
+  background: $white;
+  border-color: $btn-border-color;
+}
+
+@mixin darkBlueRaised {
+  @include darkBlueOutlined;
+  border: none;
+  box-shadow: $btn-shadow;
+}
+
+@mixin darkBlueBtn {
+  &--darkBlue {
+    @include darkBlueOutlined;
+
+    &#{$btn}--outlined {
+      @include darkBlueOutlined;
+
+      &:hover {
+        @include darkBlueContained;
+      }
+    }
+
+    &#{$btn}--contained {
+      @include darkBlueContained;
+
+      &:hover {
+        @include darkBlueOutlined;
+      }
+
+    }
+    
+    &#{$btn}--raised {
+      @include darkBlueRaised;
+      
+      &:hover {
+        @include darkBlueContained;
+      }
+    }
+
+    &--hover#{$btn}#{$btn} {
+      &:hover {
+        @include darkBlueContained;
+      }
+    }
+  }
+}
+
+@mixin gradientBtn {
+  &--gradient {
+    color: $white;
+    border-color: $white;
+    background-color: #21cbd3;
+    background-image: $btn-gradient-color;
+    background-clip: border-box;
+
+    &:hover {
+      color: #21cbd3;
+      background-color: $white;
+      background-image: none;
+      border-color: $btn-border-color;
+    }
+  }
+}
+
+@mixin fullWidth {
+  &--full-width {
+    width: 100%;
+  }
+}
+
+@mixin outlined {
+  &--outlined {
+    border: 1px solid $btn-border-color;
+  }
+}
