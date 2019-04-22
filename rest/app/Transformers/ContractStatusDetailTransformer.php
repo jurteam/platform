@@ -39,7 +39,7 @@ class ContractStatusDetailTransformer extends TransformerAbstract
                 'proposal_part_a' => $detail->proposal_part_a,
                 'proposal_part_b' => $detail->proposal_part_b
             ],
-            'payed_at' => $detail->payed_at->valueOf()
+            'payed_at' => $detail->payed_at ? $detail->payed_at->valueOf() : null
         ];
     }
 
