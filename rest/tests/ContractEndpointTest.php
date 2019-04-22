@@ -116,4 +116,30 @@ class ContractEndpointTest extends TestCase
             'contract_id' => $contract->id
         ]);
     }
+
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function a_user_can_set_own_contract_as_friendly()
+    {
+        $contract = factory(App\Models\Contract::class)->create([
+            'wallet' => 'dIRyZgmIQPam4zGpeR3nKBtUYhoGjD',
+            'part_a_wallet' => 'dIRyZgmIQPam4zGpeR3nKBtUYhoGjD'
+        ]);
+
+        $response = $this->post("api/v1/contracts/friendly/{$contract->id}", [
+            'code' => 21,
+            'contract_part' => 'dIRyZgmIQPam4zGpeR3nKBtUYhoGjD',
+            'proposal_part_a' => 12.0000,
+            'proposal_part_b' => 60.0000
+        ], [
+            'wallet' => 'dIRyZgmIQPam4zGpeR3nKBtUYhoGjD'
+        ]);
+
+        $this->seeInDatabase('contract_status_details', [
+            'contract_id' => $contract->id
+        ]);
+    }
 }

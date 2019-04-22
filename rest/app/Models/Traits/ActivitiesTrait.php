@@ -11,6 +11,18 @@ trait ActivitiesTrait
         return $this->hasMany(Activity::class);
     }
 
+    public function storeActivity($params)
+    {
+        $user = User::byWallet($params->header('wallet'))->firstOrFail();
+
+        $this->recordActivities(array_merge($params->all(), [
+            'status' => $status->label,
+            'status_code' => $status->code,
+            'to_wallet' => $this->getSendTo($params->header('wallet')),
+            'wallet' => $params->header('wallet')
+        ]), $user);
+    }
+
     public function recordActivities($params, $user)
     {
         $attributes = array_merge($params, [
