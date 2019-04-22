@@ -35,12 +35,9 @@ class ContractDetailsController extends Controller
      */
     public function store(Request $request, $id)
     {
-        $detail = new ContractStatusDetail($request->all());
-
-        $detail->contract()
-                ->associate(Contract::findOrFail($id))
-                ->save();
-
+        $detail = ContractStatusDetail::storeDetail(
+            $request, Contract::findOrFail($id)
+        );
         $detail->uploadMedia($request, 'evidences');
 
         return $this->response->item($detail, new ContractStatusDetailTransformer);

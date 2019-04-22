@@ -78,10 +78,9 @@ class Contract extends Model implements HasMedia
      * Update status, and save the activity.
      *
      * @param  \Illuminate\Http\Request $params
-     * @param  \App\Models\User $user
      * @return void
      */
-    public function updateStatusByCode($params, User $user)
+    public function updateStatusByCode($params)
     {
         $status = ContractStatus::byCode($params->code)->firstOrFail();
 
@@ -94,6 +93,7 @@ class Contract extends Model implements HasMedia
             $this->flagAsFriendlyResolution();
         }
 
+        $user = User::byWallet($params->header('wallet'))->firstOrFail();
         $this->recordActivities([
             'status' => $status->label,
             'status_code' => $status->code

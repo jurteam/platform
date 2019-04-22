@@ -34,6 +34,7 @@ $factory->define(App\Models\Faq::class, function (Faker\Generator $faker) {
 
 $factory->define(App\Models\Contract::class, function (Faker\Generator $faker) {
     return [
+        'contract_status_id' => 2,
         'part_a_wallet' => str_random(10),
         'part_b_wallet' => str_random(10),
         'category' => 'IT',
