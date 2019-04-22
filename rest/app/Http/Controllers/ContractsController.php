@@ -7,6 +7,7 @@ use App\Models\Contract;
 use Illuminate\Http\Request;
 use Dingo\Api\Routing\Helpers;
 use App\Filters\ContractFilters;
+use Illuminate\Support\Facades\Gate;
 use App\Transformers\ContractTransformer;
 use App\Transformers\AttachmentTransformer;
 use App\Http\Controllers\Traits\MediableTrait;
@@ -27,7 +28,6 @@ class ContractsController extends Controller
         $contracts = Contract::filters($filters)
                             ->latest('updated_at')
                             ->paginate(10);
-
         return $this->response->paginator($contracts, new ContractTransformer);
     }
 
@@ -62,6 +62,9 @@ class ContractsController extends Controller
     public function show($id)
     {
         $contract = Contract::findOrFail($id);
+        if (Gate::denies('view-contract', $contract)) {
+            abort(404);
+        }
 
         return $this->response->item($contract, new ContractDetailTransformer);
     }

@@ -42,6 +42,9 @@ class ContractEndpointTest extends TestCase
     public function a_registered_user_can_create_a_contract()
     {
         $wallet = 'dIRyZgmIQPam4zGpeR3nKBtUYhoGjD';
+        factory(App\Models\User::class)->create([
+            'wallet' => $wallet
+        ]);
 
         $this->post('api/v1/contracts', [
             'part_a_wallet' => 'dIRyZgmIQPam4zGpeR3nKBtUYhoGjD',
@@ -54,6 +57,11 @@ class ContractEndpointTest extends TestCase
         $this->seeInDatabase('contracts', [
             'part_a_wallet' => 'dIRyZgmIQPam4zGpeR3nKBtUYhoGjD',
             'wallet' => 'dIRyZgmIQPam4zGpeR3nKBtUYhoGjD'
+        ]);
+
+        $this->seeInDatabase('activities', [
+            'status' => 'Draft',
+            'status_code' => 0
         ]);
     }
 

@@ -35,7 +35,7 @@ class ContractTransformer extends TransformerAbstract
                 (object)[
                     'wallet' => $contract->part_a_wallet,
                     'name' => $contract->part_a_name,
-                    'renderName' => $contract->owner->show_fullname
+                    'renderName' => $this->getRenderNameUserFromWallet($contract->part_a_wallet)
                 ],
                 (object)[
                     'wallet' => $contract->part_b_wallet,

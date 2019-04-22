@@ -15,4 +15,9 @@ trait StatusesTrait
         $this->update(['is_a_friendly_resolution' => true]);
         return $this;
     }
+
+    public function isNotDraft()
+    {
+        return $this->status->code > config('jur.statuses')[1]['code'];
+    }
 }

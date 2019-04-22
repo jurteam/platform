@@ -7,6 +7,7 @@ use App\Models\Contract;
 use League\Fractal\TransformerAbstract;
 use App\Transformers\AttachmentTransformer;
 use App\Transformers\ContractDetailTransformer;
+use App\Transformers\ContractStatusDetailTransformer;
 
 class ContractDetailTransformer extends TransformerAbstract
 {
@@ -44,13 +45,13 @@ class ContractDetailTransformer extends TransformerAbstract
                     'wallet' => $contract->part_a_wallet,
                     'name' => $contract->part_a_name,
                     'email' => $contract->part_a_email,
-                    'renderName' => $contract->owner->show_fullname
+                    'renderName' => $this->getRenderNameUserFromWallet($contract->part_a_wallet)
                 ],
                 (object)[
                     'wallet' => $contract->part_b_wallet,
                     'name' => $contract->part_b_name,
                     'email' => $contract->part_b_email,
-                    'renderName' => $this->getRenderNameUserFromWallet($contract)
+                    'renderName' => $this->getRenderNameUserFromWallet($contract->part_b_wallet)
                 ]
             ],
             'value' => $contract->value,
@@ -91,7 +92,7 @@ class ContractDetailTransformer extends TransformerAbstract
     {
         $details = $contract->details;
 
-        return $this->collection($details, new ContractDetailTransformer);
+        return $this->collection($details, new ContractStatusDetailTransformer);
     }
 
     /**
@@ -100,9 +101,9 @@ class ContractDetailTransformer extends TransformerAbstract
      * @param  string $wallet
      * @return boolean
      */
-    protected function getRenderNameUserFromWallet($contract)
+    protected function getRenderNameUserFromWallet($wallet)
     {
-        $user = User::byWallet($contract->part_b_wallet)->first();
+        $user = User::byWallet($wallet)->first();
         if ($user) {
             return $user->show_fullname;
         }
