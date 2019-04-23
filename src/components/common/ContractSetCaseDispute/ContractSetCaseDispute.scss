@@ -14,13 +14,13 @@
 
   &__option {
     padding-bottom: 10px;
-    padding-left: 8px;
 
     label {
       cursor: pointer;
       font-size: 13px;
       color: $gull-gray;
       font-family: $font-poppins;
+      padding-left: 8px;
 
       &::before {
         position: relative;
