@@ -5,7 +5,7 @@ import { AppContext } from "../../../bootstrap/AppProvider"; // context
 
 import "./ContractActions.scss";
 
-export const ContractActions = ({ children, statusId, part }) => {
+export const ContractActions = ({ children, statusId, part, shouldWait, disabled }) => {
   const { labels } = useContext(AppContext);
   console.log("ContractActions - props", { children, statusId, part });
   const renderSwitch = () => {
@@ -35,15 +35,15 @@ export const ContractActions = ({ children, statusId, part }) => {
             {labels.contractIsClosed}
           </span>
         );
-      case 31:
-        return (
+      case 31: // returns waiting based on last part involved.
+        return !shouldWait ? children :
           <span className="jur-contract-actions__text">
             {labels.waitingForCounterparty}
           </span>
-        );
+        ;
       default:
         return children;
     }
   };
-  return <div className="jur-contract-actions">{renderSwitch()}</div>;
+  return <div className={`jur-contract-actions ${disabled ? "jur-contract-actions__disabled" : null}`}>{renderSwitch()}</div>;
 };

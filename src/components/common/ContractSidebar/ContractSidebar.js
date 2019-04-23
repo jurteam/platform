@@ -35,11 +35,15 @@ export const ContractSidebar = ({
   currentPart,
   hasError,
   isValid,
+  lastPartInvolved,
   onPay,
+  onView,
   onReject,
   onAccept,
   onAcceptAmendment,
   onChangeSelect,
+  onSubmitProposal,
+  onProposalFileAdded,
   history,
   onChangeValue
 }) => {
@@ -72,6 +76,10 @@ export const ContractSidebar = ({
     setShowProposalForm(false);
     setActivitiesOpen(true);
   };
+
+  // const shouldWaitDispute = lastPartInvolved.toLowerCase() === currentWallet.toLowerCase();
+  const shouldWaitDispute = false;
+  const issue = showProposalForm === 2 ? "disputes" : "friendly"; // match endpoint route
 
   const availableActions = () => {
     // TODO: made some checks for actions as been done here src/components/sections/Contracts/Contracts.js
@@ -185,6 +193,26 @@ export const ContractSidebar = ({
       );
     }
 
+    if (statusId === 31) {
+      // ongoing actions fallback
+      return (
+        <>
+          <Button
+            color="dispute"
+            variant={showProposalForm === 2 ? "contained" : "outlined"}
+            onClick={() => {
+              setShowProposalForm(2);
+              setActivitiesOpen(false);
+            }}
+            fullWidth
+            hoverColor="dispute"
+          >
+            {labels.dispute}
+          </Button>
+        </>
+      );
+    }
+
     if (statusId === 35) {
       // ongoing actions fallback
       return (
@@ -229,7 +257,7 @@ export const ContractSidebar = ({
 
   return (
     <div>
-      <ContractActions statusId={statusId} part={currentPart}>
+      <ContractActions statusId={statusId} part={currentPart} shouldWait={shouldWaitDispute} disabled={disabled}>
         {availableActions()}
       </ContractActions>
       {statusId !== 0 && (
@@ -275,9 +303,10 @@ export const ContractSidebar = ({
           />
         </>
       )}
-      {((statusId >= 4 && statusId <= 9) || statusId === 21) && showProposalForm && (
+      {((statusId >= 4 && statusId <= 9) || statusId === 21 || statusId === 31) && showProposalForm && (
         <ProposalForm
           extended={showProposalForm === 2 ? true : false}
+          disabled={disabled}
           description={
             showProposalForm === 2
               ? labels.disputeProposalDescription
@@ -287,7 +316,9 @@ export const ContractSidebar = ({
           currentProposal={currentProposal}
           onCancel={onCancel}
           contract={contract}
-          onSubmit={onSubmit}
+          onView={onView}
+          onProposalFileAdded={onProposalFileAdded}
+          onSubmit={() => onSubmitProposal(issue, setShowProposalForm, setActivitiesOpen)}
         />
       )}
     </div>

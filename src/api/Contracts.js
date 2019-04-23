@@ -16,7 +16,7 @@ export class Contracts {
     });
   }
   static getActivities(payload) {
-    return axios.get(`activities/${payload.id}`);
+    return axios.get(`activities/${payload.id}?include=attachments`);
   }
   static create(payload) {
     return axios.post(root, payload);
@@ -25,8 +25,11 @@ export class Contracts {
     return axios.post(`${root}/medias/${payload.id}`, payload); // attachments
   }
   static update(payload, id) {
-    payload.append("_method", "PUT");
+    payload.append("_method", "PUT"); // for PUT methods only
     return axios.post(`${root}/${id}?include=attachments`, payload);
+  }
+  static issue(payload, issue, id) {
+    return axios.post(`${root}/${issue}/${id}`, payload);
   }
   static delete(payload) {
     return axios.delete(`${root}/${payload.id}`);

@@ -16,4 +16,10 @@
     font-family: $font-poppins;
     font-weight: $poppins-medium;
   }
+
+  &__disabled {
+    pointer-events: none;
+    user-select: none;
+    opacity: .6;
+  }
 }

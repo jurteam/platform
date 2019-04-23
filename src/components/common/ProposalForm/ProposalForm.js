@@ -28,6 +28,8 @@ export const ProposalForm = props => {
     evidences,
     onCancel,
     onView,
+    disabled,
+    onProposalFileAdded,
     contract,
     contract: {
       amount: contractValue,
@@ -54,7 +56,9 @@ export const ProposalForm = props => {
 
   // first form validation
   useEffect(() => {
-    setFormData({ ...currentProposal, proposal_part_a: from, proposal_part_b: to });
+    setFormData({ ...currentProposal });
+    changeInput("proposal_part_a", initalProposal.from);
+    changeInput("proposal_part_b", initalProposal.to);
     validateForm();
   }, []);
 
@@ -95,6 +99,11 @@ export const ProposalForm = props => {
 
   const onSubmit = () => props.onSubmit({ proposal, files });
 
+  const updateFiles = (files) => {
+    setFiles(files);
+    if (typeof onProposalFileAdded === "function") onProposalFileAdded(files);
+  };
+
   const onReset = () => {
     setProposalMessage(null);
     setProposal(initalProposal);
@@ -102,6 +111,7 @@ export const ProposalForm = props => {
     setFormData({ message: null, proposal_part_a: null, proposal_part_b: null, payed_at: null });
 
     if (typeof onCancel === "function") onCancel(); // use callback
+    if (typeof onProposalFileAdded === "function") onProposalFileAdded([]);
   };
 
   const { from: fromProposal, to: toProposal } = proposal;
@@ -125,7 +135,7 @@ export const ProposalForm = props => {
   };
 
   return (
-    <div className="jur-proposal-form">
+    <div className={`jur-proposal-form ${disabled ? "jur-proposal-form__disabled" : null}`}>
       <div className="jur-proposal-form__description">{description}</div>
       <BlockTitle title={labels.message} description={labels.messageDescription} />
       <Form.TextArea
@@ -167,7 +177,7 @@ export const ProposalForm = props => {
           </FileList>
         </div>
       )}
-      {extended && <UploadForm onFileAdded={files => setFiles({ files })} />}
+      {extended && <UploadForm onFileAdded={files => updateFiles({ files })} />}
       <div className="jur-proposal-form__actions">
         <Button color="info" onClick={onReset} hoverColor="info">
           {labels.cancel}

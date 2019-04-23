@@ -12,6 +12,7 @@ import {
   SET_CONTRACT_ACTIVITIES,
   SET_CONTRACT_CURRENT_PAGE,
   CONTRACT_LIST_UPDATING,
+  CONTRACT_ISSUE,
   API_DELETE_CONTRACT,
   CONTRACTS_FETCHED,
   CONTRACT_DELETED,
@@ -30,6 +31,8 @@ import {
 
 import { log } from "../utils/helpers"; // log helper
 
+import contractStatuses from "../assets/i18n/en/status.json";
+
 // Api layouts
 import { Contracts } from "../api";
 
@@ -39,6 +42,7 @@ import {
   getCurrentContract,
   getContractListPage,
   getContractFilters,
+  getCurrentProposal,
   getCurrentContractActivities
 } from "./Selectors"; // selector
 
@@ -68,19 +72,32 @@ export function* getContract(action) {
 }
 
 export function* getContractActivities(action) {
-  const { payload: { id } } = action;
+  let { type } = action;
+  let id = null;
+
+  console.log("getContractActivities", action);
+
+  // retrieve correct id when SET_CONTRACT_STATUS action is dispatched
+  if (type === SET_CONTRACT_STATUS) {
+    id = action.id
+  } else {
+    id = action.payload.id
+  }
+
   yield put({ type: CONTRACT_NOTIFICATIONS_LOADING, payload: true });
 
-  try {
-    const response = yield call(Contracts.getActivities, { id });
-    const { data } = response.data;
-    log("getContract", response);
-    yield put({ type: SET_CONTRACT_ACTIVITIES, payload: data });
+  if (id) {
+    try {
+      const response = yield call(Contracts.getActivities, { id });
+      const { data } = response.data;
+      log("getContract", response);
+      yield put({ type: SET_CONTRACT_ACTIVITIES, payload: data });
 
-  } catch (error) {
-    // TODO: handle 404
-    yield put({ type: API_CATCH, error });
-    yield put({ type: CONTRACT_NOTIFICATIONS_LOADING, payload: false });
+    } catch (error) {
+      // TODO: handle 404
+      yield put({ type: API_CATCH, error });
+      yield put({ type: CONTRACT_NOTIFICATIONS_LOADING, payload: false });
+    }
   }
 }
 
@@ -285,6 +302,61 @@ export function* resetUpdating() {
   yield put({ type: CONTRACT_UPDATING, payload: false });
 }
 
+export function* handleContractIssues(action) {
+  log("handleContractIssues - run", action);
+
+  yield put({ type: CONTRACT_SAVING, payload: true });
+  const proposal = yield select(getCurrentProposal);
+
+  const { message, proposal_part_a, proposal_part_b, payed_at } = proposal;
+  const { issue, statusId, proposalAttachments, id } = action;
+
+  let code = 21; // open friendly
+  if (issue === "disputes") {
+    code = statusId === 31 ? 35 : 31; // Ongoing Dispute vs Open Dispute
+  };
+
+  const nextStatus = contractStatuses.find((status) => Number(status.value) === Number(code));
+  const { label: statusLabel } = nextStatus;
+
+  const zero = Number(0).toFixed(process.env.REACT_APP_TOKEN_DECIMALS);
+
+  const toSend = new FormData();
+  // toSend.append('_method', 'PUT');
+  if (message) toSend.append("message", message);
+  if (proposal_part_a) {toSend.append("proposal_part_a", Number(proposal_part_a).toFixed(process.env.REACT_APP_TOKEN_DECIMALS))} else {toSend.append("proposal_part_a", zero)};
+  if (proposal_part_b) {toSend.append("proposal_part_b", Number(proposal_part_b).toFixed(process.env.REACT_APP_TOKEN_DECIMALS))} else {toSend.append("proposal_part_b", zero)};
+  if (payed_at) toSend.append("payed_at", payed_at);
+  if (code) toSend.append("code", code);
+
+  if (proposalAttachments.files && proposalAttachments.files.length) {
+    for (let i = 0; i < proposalAttachments.files.length; i++) {
+      // iteate over any file sent over appending the files to the form data.
+      let file = proposalAttachments.files[i];
+
+      toSend.append("attachments[" + i + "]", file);
+    }
+    // toSend.append("attachments[]", proposalAttachments.files);
+  }
+
+  try {
+    const response = yield call(Contracts.issue, toSend, issue, id);
+    log("handleContractIssues - issue created", response);
+    const { data : { data : { date: statusUpdatedAt }}} = response;
+    yield put({ type: SET_CONTRACT_STATUS, statusId, statusLabel, statusUpdatedAt, id });
+    yield put({ type: CONTRACT_SAVING, payload: false });
+    yield put({ type: FETCH_CONTRACTS });
+
+    // const { history } = action;
+    // history.push(`/contracts/detail/${id}`); // go to contract detail for furter operations
+
+    if (typeof action.callback === "function") action.callback(); // invoke callback if needed
+  } catch (error) {
+    yield put({ type: API_CATCH, error });
+    if (typeof action.callback === "function") action.callback(); // invoke callback if needed
+  }
+}
+
 // spawn tasks base certain actions
 export default function* contractSagas() {
   log("run", "contractSagas");
@@ -293,6 +365,7 @@ export default function* contractSagas() {
   yield takeEvery(API_GET_CONTRACT, getContract);
   yield takeLatest(API_DELETE_CONTRACT, deleteContract);
   yield takeEvery(FETCH_CONTRACTS, fetchContracts);
+  yield takeEvery(CONTRACT_ISSUE, handleContractIssues);
   yield takeLatest(CONTRACT_DELETED, onContractDelete);
   yield takeLatest(RESET_CONTRACT, onContractReset);
   yield takeLatest(API_CATCH, resetUpdating);

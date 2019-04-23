@@ -11,6 +11,12 @@
     margin-bottom: 10px;
   }
 
+  &__disabled {
+    pointer-events: none;
+    user-select: none;
+    opacity: .6;
+  }
+
   .jur-block-title {
     margin-bottom: 8px;
   }

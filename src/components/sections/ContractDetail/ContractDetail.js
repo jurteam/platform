@@ -38,6 +38,7 @@ import {
   API_GET_CONTRACT,
   PUT_CONTRACT,
   NEW_ARBITRATION,
+  CONTRACT_ISSUE,
   REJECT_ARBITRATION,
   ACCEPT_ARBITRATION,
   ACCEPT_ARBITRATION_AMENDMENT,
@@ -66,6 +67,8 @@ export const ContractDetail = props => {
   const [showModal, setShowModal] = useState(false);
   const [formUpdated, setFormUpdated] = useState(false);
   const [attachments, setAttachments] = useState([]);
+
+  const [proposalAttachments, setProposalAttachments] = useState([]);
 
   const [openPreview, setOpenPreview] = useState(false);
   const [filePath, setFilePath] = useState(null);
@@ -140,8 +143,11 @@ export const ContractDetail = props => {
     changeInput(name, value);
   };
 
+  const onProposalFileAdded = selectedFiles => {
+    setProposalAttachments(selectedFiles);
+  };
+
   const onFileAdded = selectedFiles => {
-    console.log("upload", selectedFiles);
     setAttachments(selectedFiles);
     setFormUpdated(true);
   };
@@ -159,6 +165,23 @@ export const ContractDetail = props => {
 
   const onFileError = e => {
     console.error("onFileError", e);
+  };
+
+  const onSubmitProposal = (issue, setShowProposalForm, setActivitiesOpen) => {
+    const { statusId, id } = contract.current;
+
+    global.drizzle.store.dispatch({
+      type: CONTRACT_ISSUE,
+      issue: statusId > 21 ? "disputes" : issue,
+      proposalAttachments,
+      statusId,
+      id,
+      callback: () => {
+        setShowProposalForm(false); // sidebar only
+        setActivitiesOpen(true); // sidebar only
+        setFormUpdated(false);
+      } // reset form
+    });
   };
 
   const onSubmit = () => {
@@ -312,6 +335,7 @@ export const ContractDetail = props => {
     counterparties,
     attachments: contractAttachments,
     duration,
+    lastPartInvolved,
     hasPenaltyFee,
     partAPenaltyFee,
     partBPenaltyFee,
@@ -496,6 +520,7 @@ export const ContractDetail = props => {
               feeToPay={feeToPay}
               isValid={isValid()}
               hasError={hasError}
+              lastPartInvolved={lastPartInvolved}
               history={history}
               cases={[
                 {
@@ -520,8 +545,11 @@ export const ContractDetail = props => {
               onAcceptAmendment={() => setShowModalAcceptAmendment(true)}
               onSuccess={() => setShowModalSuccess(true)}
               onChange={onInputChange}
+              onView={onFileView}
               onChangeSelect={onChangeSelect}
               onChangeValue={changeInput}
+              onSubmitProposal={onSubmitProposal}
+              onProposalFileAdded={onProposalFileAdded}
             />
           </Aside>
         </>
