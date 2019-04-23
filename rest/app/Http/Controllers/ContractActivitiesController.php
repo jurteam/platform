@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Contract;
 use App\Models\Activity;
-use App\Models\Contract;
 use Illuminate\Http\Request;
 use Dingo\Api\Routing\Helpers;
 use App\Filters\ActivityFilters;
