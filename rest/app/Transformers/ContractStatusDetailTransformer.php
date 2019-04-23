@@ -31,7 +31,7 @@ class ContractStatusDetailTransformer extends TransformerAbstract
             'contract' => $detail->contract_id,
             'from' => (object) [
                 'wallet' => $detail->contract_part,
-                'name' => $detail->user ? $detail->user : null,
+                'name' => $detail->user ? $detail->user->name : null,
                 'system' => $this->getSystem($detail)
             ],
             'message' => $detail->message,
