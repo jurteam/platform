@@ -254,6 +254,7 @@ storiesOf("ContractsTable", module)
       contractsPerPage={3}
       filters={filters}
       loading={false}
+      user={{wallet: "0x496730954769357609478509674309"}}
       totalContracts={contractsData.length}
       onPageChange={pageNumber => console.log(pageNumber)}
     />
