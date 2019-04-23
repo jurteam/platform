@@ -112,7 +112,7 @@ export const Disputes = props => {
             handleFilterChange={handleFilterChange}
             handleFilterSubmit={handleFilterSubmit}
             headers={disputeTableHeaders}
-            data={[]}
+            data={dispute.list || []}
             myDispute={myDispute}
             handleArchive={handleArchive}
             initialPage={pagination.current_page}

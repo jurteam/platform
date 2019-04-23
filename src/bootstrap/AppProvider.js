@@ -24,20 +24,21 @@ class AppProvider extends Component {
       labels: i18n,
       metamaskLoading: true,
       contractTableHeaders: [
-        { label: i18n.status, sortable: false },
+        { label: i18n.status, sortable: false, className: "jur-col--status" },
         { label: i18n.contractName, sortable: true },
-        { label: i18n.duration, sortable: false },
-        { label: i18n.couterpartyDetails, sortable: false },
-        { label: i18n.contractValue, sortable: true },
-        { label: "", sortable: false } // options
+        { label: i18n.duration, sortable: false, className: "jur-col--duration" },
+        { label: i18n.couterpartyDetails, sortable: false, className: "jur-col--wallet" },
+        { label: i18n.contractValue, sortable: true, className: "jur-col--amount" },
+        { label: "", sortable: false, className: "jur-col--options" } // options
       ],
       disputeTableHeaders: [
-        { label: i18n.status, sortable: false },
+        { label: i18n.status, sortable: false, className: "jur-col--status" },
         { label: i18n.disputeName, sortable: true },
-        { label: i18n.duration, sortable: false },
-        { label: i18n.contractValue, sortable: true },
-        { label: i18n.earnings, sortable: true },
-        { label: "", sortable: false } // options
+        { label: i18n.duration, sortable: false, className: "jur-col--duration-with-seconds" },
+        { label: i18n.category, sortable: true, className: "jur-col--category" },
+        { label: i18n.contractValue, sortable: true, className: "jur-col--amount" },
+        { label: i18n.earnings, sortable: true, className: "jur-col--amount" },
+        { label: "", sortable: false, className: "jur-col--options" } // options
       ],
       onNetwork: false,
       auth: this.auth,

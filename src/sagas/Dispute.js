@@ -81,7 +81,7 @@ export function* deleteDispute(action) {
 export function* fetchDisputes() {
   yield put({ type: DISPUTE_LIST_UPDATING, payload: true });
   yield put({ type: UPDATE_DISPUTE_FILTER, disabled: true });
-  const { status, fromDate, toDate, searchText } = yield select(
+  const { status, fromDate, toDate, searchText, mine } = yield select(
     getDisputeFilters
   );
   const page = yield select(getDisputeListPage);
@@ -98,6 +98,7 @@ export function* fetchDisputes() {
       from:fromDate,
       to:toDate,
       q:searchText,
+      show: mine ? "my" : "all",
       page
     });
     log("Disputes - fetch", response);

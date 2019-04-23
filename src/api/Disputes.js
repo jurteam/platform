@@ -6,7 +6,7 @@ const root = "/disputes";
 
 export class Disputes {
   static list(payload) {
-    return axios.get(root, { params: payload });
+    return axios.get("/contracts/disputes/all", { params: payload });
   }
   static get(payload) {
     return axios.get(`${root}/${payload.id}`, {

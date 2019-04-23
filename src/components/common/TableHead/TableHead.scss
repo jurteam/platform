@@ -3,9 +3,16 @@
       width: 150px;
     }
 
-    &--category {}
-
     &--duration {
+      width: 200px;
+
+      &-with-seconds {
+
+        width: 270px;
+      }
+    }
+
+    &--category {
       width: 190px;
     }
 
