@@ -22,7 +22,10 @@ class DisputeFilters extends Filters
 
     public function show($value)
     {
-        $query = $this->builder->where('contracts.is_a_dispute', true);
+        $query = $this->builder
+                        ->where('contracts.is_a_dispute', true)
+                        ->where('contracts.contract_status_id', '>=', 35);
+
         if ($value == 'my') {
             $lowerWallet = strtolower($this->request->header('wallet'));
             $query->whereRaw(
