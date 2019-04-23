@@ -27,9 +27,10 @@ class ContractVoteTransformer extends TransformerAbstract
     {
         return [
             'id' => $vote->id,
-            'token' => $vote->jur_token,
-            'description' => $vote->description,
+            'amount' => $vote->amount,
+            'message' => $vote->message,
             'oracle_wallet' => $vote->oracle_wallet,
+            'wallet_part' => $vote->wallet_part,
             'its_me' => $vote->itsMe()
         ];
     }

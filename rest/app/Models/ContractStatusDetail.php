@@ -60,4 +60,17 @@ class ContractStatusDetail extends Model implements HasMedia
     {
         return $this->belongsTo(User::class);
     }
+
+    public function getEvidences()
+    {
+        $evidences = [];
+        foreach ($this->getMedia('evidences') as $evidence) {
+            $evidences[] = [
+                'id' => $evidence->id,
+                'fileName' => $evidence->file_name,
+                'url' => $evidence->getFullUrl()
+            ];
+        }
+        return $evidences;
+    }
 }
