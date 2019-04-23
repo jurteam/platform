@@ -40,7 +40,7 @@ export const Contracts = props => {
   //   global.drizzle.store.dispatch({ type: FETCH_CONTRACTS });
   // }, []);
 
-  const { contract } = props;
+  const { user, contract } = props;
   log("Contracts - contract", contract);
 
   const { pagination } = contract;
@@ -108,7 +108,7 @@ export const Contracts = props => {
       <Header />
       <SubHeader>
         <Breadcrumbs crumbList={breadcrumbs} />
-        <Button variant="contained" onClick={newContract}>
+        <Button color="info" variant="contained" onClick={newContract}>
           {labels.newContract}
         </Button>
       </SubHeader>
@@ -128,6 +128,7 @@ export const Contracts = props => {
             contractsPerPage={pagination.per_page}
             totalContracts={pagination.total}
             loading={contract.updatingList}
+            user={user}
           />
         </Main>
 

@@ -23,7 +23,7 @@ export const ContractModal = props => {
         <Button onClick={onDecline} color="dispute" size="medium" variant="raised">
           {labels.cancel}
         </Button>
-        <Button onClick={onAccept} color="gradient" size="medium" variant="contained">
+        <Button onClick={onAccept} color="gradient" size="medium" variant="contained" hoverColor="success">
           {labels.ok}
         </Button>
       </ModalFooter>

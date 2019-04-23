@@ -17,6 +17,9 @@ export const getCurrentContract = state => state.contract.current
 export const getContractListPage = state => state.contract.page
 export const getCurrentContractActivities = state => state.contract.current.activities
 
+// Drizzle Contract
+export const getDrizzleStoredContracts = state => state.contracts
+
 // Dispute
 export const getDisputeFilters = state => state.dispute.filters
 export const getCurrentDispute = state => state.dispute.current

@@ -169,10 +169,10 @@ export const ProposalForm = props => {
       )}
       {extended && <UploadForm onFileAdded={files => setFiles({ files })} />}
       <div className="jur-proposal-form__actions">
-        <Button color="muted" onClick={onReset}>
+        <Button color="info" onClick={onReset} hoverColor="info">
           {labels.cancel}
         </Button>
-        <Button variant="gradient" onClick={onSubmit}>
+        <Button variant="gradient" onClick={onSubmit} hoverColor="success">
           {labels.send}
         </Button>
       </div>

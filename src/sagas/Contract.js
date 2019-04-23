@@ -24,7 +24,8 @@ import {
   CONTRACT_MEDIA_DELETED,
   CONTRACT_PAGE_CHANGE,
   UPDATE_NEW_CONTRACT_FIELD,
-  CHAIN_GET_CONTRACT
+  CHAIN_GET_CONTRACT,
+  SET_CONTRACT_STATUS
 } from "../reducers/types";
 
 import { log } from "../utils/helpers"; // log helper
@@ -33,6 +34,7 @@ import { log } from "../utils/helpers"; // log helper
 import { Contracts } from "../api";
 
 import {
+  getWallet,
   getNewContract,
   getCurrentContract,
   getContractListPage,
@@ -46,11 +48,11 @@ export function* getContract(action) {
   yield put({ type: CONTRACT_UPDATING, payload: true });
 
   try {
-    const response = yield call(Contracts.get, { id });
-    const { data } = response.data;
+
+    const { data: { data, data: { details } } } = yield call(Contracts.get, { id }); // due missing data TODO: look at the attachments
     const { address } = data;
-    log("getContract", response);
-    yield put({ type: SET_CONTRACT, payload: data });
+
+    yield put({ type: SET_CONTRACT, payload: { ...data, details: details.data } });
     if (address) {
       yield put({ type: CHAIN_GET_CONTRACT, address });
     }
@@ -155,7 +157,8 @@ export function* fetchContracts() {
 // Create
 export function* createContract(action) {
   log("createContract - run");
-  const contractData = yield select(getNewContract);
+  const contractStoredData = yield select(getNewContract);
+  const { statusId, statusLabel, kpi, resolution_proof, ...contractData } = contractStoredData;
 
   log("createContract - contractData", contractData);
 
@@ -294,7 +297,8 @@ export default function* contractSagas() {
   yield takeLatest(RESET_CONTRACT, onContractReset);
   yield takeLatest(API_CATCH, resetUpdating);
   yield takeLatest(SET_CONTRACT, resetUpdating);
-  yield takeLatest(SET_CONTRACT, getContractActivities);
+  yield takeEvery(SET_CONTRACT, getContractActivities);
+  yield takeEvery(SET_CONTRACT_STATUS, getContractActivities);
   yield takeLatest(SET_CONTRACT_ACTIVITIES, () => put({ type: CONTRACT_NOTIFICATIONS_LOADING, payload: false }));
   yield takeLatest(READ_NOTIFICATIONS, readActivities);
   yield takeLatest(CONTRACT_READ_NOTIFICATIONS, readActivities);

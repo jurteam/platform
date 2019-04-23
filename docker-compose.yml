@@ -55,7 +55,7 @@ services:
       DB_PASSWORD: secret
 
       MEMCACHED_HOST: cache
-      CACHE_DRIVER: memcached
+      CACHE_DRIVER: file
 
       MAIL_DRIVER: smtp
       MAIL_USERNAME: bad3282d3a5c38

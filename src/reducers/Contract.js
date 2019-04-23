@@ -94,7 +94,8 @@ export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     // Setters
     case SET_CONTRACT:
-      return { ...state, current: action.payload };
+      console.log(SET_CONTRACT, action.payload);
+      return { ...state, current: action.payload, saving: false, updating: false, notificationLoading: true };
 
     case CONTRACTS_FETCHED:
       console.log(CONTRACTS_FETCHED, action.payload);

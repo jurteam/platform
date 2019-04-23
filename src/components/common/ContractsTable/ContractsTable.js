@@ -38,6 +38,7 @@ export const ContractsTable = ({
   contractsPerPage,
   totalContracts,
   loading,
+  user,
   history
 }) => {
   const [activePage, setActivePage] = useState(initialPage);
@@ -77,6 +78,15 @@ export const ContractsTable = ({
     });
   };
 
+  const showContractName = (contract) => {
+
+    if (!contract.contractName) {
+      return <span className="empty-placeholder">{labels.noContractName.replace("%partA%", contract.counterparties[0].renderName ? contract.counterparties[0].name : contract.counterparties[0].wallet).replace("%partB%", contract.counterparties[1].renderName ? contract.counterparties[1].name : contract.counterparties[1].wallet)}</span>;
+    }
+
+    return contract.contractName;
+  }
+
   return (
     <div className="jur-contracts__table">
       <ContractsFilters
@@ -108,7 +118,7 @@ export const ContractsTable = ({
                 <TableCell>
                   <Tag statusId={contract.statusId}>{contract.statusLabel}</Tag>
                 </TableCell>
-                <TableCell>{contract.contractName}</TableCell>
+                <TableCell>{showContractName(contract)}</TableCell>
                 <TableCell>
                   <Countdown
                     days={contract.duration.days}
@@ -135,7 +145,7 @@ export const ContractsTable = ({
                 <TableCell>
                   <Amount value={humanToEth(contract.value)} />
                 </TableCell>
-                {!contract.archived ? (
+                {(!contract.archived && contract.counterparties[0].wallet.toLowerCase() === user.wallet.toLowerCase()) ? (
                   <TableCell>
                     <Dropdown label={<EllipsisVIcon />}>
                       <DropdownItem onClick={() => handleArchive(contract.id)}>

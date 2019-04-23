@@ -271,18 +271,21 @@ $btn: ".jur-btn";
   color: $white;
   background: $btn-muted-color;
   border-color: $btn-muted-color;
+  pointer-events: none;
 }
 
 @mixin mutedOutlined {
   color: $btn-muted-color;
   background: $white;
   border-color: $btn-border-color;
+  pointer-events: none;
 }
 
 @mixin mutedRaised {
   @include mutedOutlined;
   border: none;
   box-shadow: $btn-shadow;
+  pointer-events: none;
 }
 
 @mixin mutedBtn {

@@ -38,7 +38,9 @@ export const ContractSidebar = ({
   onPay,
   onReject,
   onAccept,
+  onAcceptAmendment,
   onChangeSelect,
+  history,
   onChangeValue
 }) => {
   const { labels } = useContext(AppContext);
@@ -78,10 +80,15 @@ export const ContractSidebar = ({
       // waiting actions
       return (
         <>
-          <Button color="dispute" onClick={onReject}>
+          <Button color="dispute" onClick={onReject} hoverColor="dispute">
             {labels.reject}
           </Button>
-          <Button color="muted" variant="gradient" onClick={onAccept}>
+          <Button
+            color="gradient"
+            variant="gradient"
+            onClick={onAccept}
+            hoverColor="success"
+          >
             {labels.accept}
           </Button>
         </>
@@ -123,7 +130,7 @@ export const ContractSidebar = ({
               onClick={() => setShowProposalForm(2)}
               hoverColor="dispute"
             >
-              {labels.dispute}
+              {labels.openDispute}
             </Button>
           </>
         );
@@ -151,6 +158,50 @@ export const ContractSidebar = ({
       );
     }
 
+    if (statusId === 21) {
+      // ongoing actions fallback
+      return (
+        <>
+          <Button
+            color="dispute"
+            variant={showProposalForm === 2 ? "contained" : "outlined"}
+            onClick={() => {
+              setShowProposalForm(2);
+              setActivitiesOpen(false);
+            }}
+            hoverColor="dispute"
+          >
+            {labels.openDispute}
+          </Button>
+
+          <Button
+            color="success"
+            onClick={onAcceptAmendment}
+            hoverColor="success"
+          >
+            {labels.accept}
+          </Button>
+        </>
+      );
+    }
+
+    if (statusId === 35) {
+      // ongoing actions fallback
+      return (
+        <>
+          <Button
+            color="info"
+            variant="outlined"
+            fullWidth
+            onClick={() => history.push(`/disputes/detail/${contract.contractID}`)}
+            hoverColor="info"
+          >
+            {labels.goToDispute}
+          </Button>
+        </>
+      );
+    }
+
     const canSave = disabled || submitDisabled || !formUpdated ? false : true;
     const canSend =
       disabled || !isValid || !currentUserCanPay || formUpdated ? false : true;
@@ -168,6 +219,7 @@ export const ContractSidebar = ({
           color={!canSend ? "muted" : null}
           variant={!canSend ? "contained" : "gradient"}
           onClick={canSend ? onSend : undefined}
+          hoverColor="success"
         >
           {labels.sendToCounterparty}
         </Button>
@@ -223,7 +275,7 @@ export const ContractSidebar = ({
           />
         </>
       )}
-      {statusId >= 4 && statusId <= 9 && showProposalForm && (
+      {((statusId >= 4 && statusId <= 9) || statusId === 21) && showProposalForm && (
         <ProposalForm
           extended={showProposalForm === 2 ? true : false}
           description={

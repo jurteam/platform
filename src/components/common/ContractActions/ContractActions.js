@@ -22,7 +22,14 @@ export const ContractActions = ({ children, statusId, part }) => {
             {labels.waitingForCounterparty}
           </span>
         ;
+      case 21: // returns waiting only when is part A.
+        return part === "b" ? children :
+          <span className="jur-contract-actions__text">
+            {labels.waitingForCounterparty}
+          </span>
+        ;
       case 9:
+      case 29:
         return (
           <span className="jur-contract-actions__text">
             {labels.contractIsClosed}

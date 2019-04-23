@@ -16,9 +16,9 @@ export const Activity = props => {
     from: { wallet: walletAddress, name: userName, system: isSystem },
     date,
     to,
+    contract_name,
     status,
     message,
-    contractStatus,
     abstract
   } = props.data;
 
@@ -43,65 +43,93 @@ export const Activity = props => {
   };
 
   const getActivityUser = () => {
-    if(isSystem) {
+    if (isSystem) {
       return "Jur System";
     } else {
       return userName || ellipsisString(walletAddress, 16, 16);
     }
-  }
+  };
 
   const [isOpen, setOpen] = useState(false);
 
   const getMessage = () => {
     if (isSystem) {
-      return (<span className="alert">{abstract}</span>);
+      return <span className="alert">{abstract}</span>;
     } else {
-      if (status === "dispute") {
-        return (
-          <span
-            className={`dispute ${isOpen ? "dispute--open" : ""}`}
-            onClick={() => setOpen(!isOpen)}
-          >
-            {`${abstract} `}
-            <span>
-              {abstract && abstract.toLowerCase().startsWith("created an") ? labels.openDispute : labels.disputeProposal}
+      switch (Number(status)) {
+        case 31: // Open Dispute
+          return (
+            <span
+              className={`dispute ${isOpen ? "dispute--open" : ""}`}
+              onClick={() => setOpen(!isOpen)}
+            >
+              {`${abstract || labels.createdAn} `}
+              <span>
+                {labels.openDispute}
+              </span>
+              <CaretDownIcon className="friendly-caret" />
             </span>
-            <CaretDownIcon className="friendly-caret"/>
-          </span>
-        );
+          );
+
+        case 35: // Ongoing Dispute
+          return (
+            <span
+              className={`dispute ${isOpen ? "dispute--open" : ""}`}
+              onClick={() => setOpen(!isOpen)}
+            >
+              {`${abstract || labels.sent} `}
+              <span>
+                {labels.disputeProposal}
+              </span>
+              <CaretDownIcon className="friendly-caret" />
+            </span>
+          );
+
+        case 21: // Open Friendly Resolution
+          return (
+            <span
+              className={`friendly ${isOpen ? "friendly--open" : ""}`}
+              onClick={() => setOpen(!isOpen)}
+            >
+              {`${abstract || labels.offeredA} `}
+              <span>{`${labels.friendlyResolution}.`}</span>
+              <CaretDownIcon className="friendly-caret" />
+            </span>
+          );
+        case 1: // Waiting for counterparty
+          return (
+            <>
+              {`${abstract || labels.sentContractTo}: `}
+              <Avatar seed={to.toLowerCase()} size="xsmall" />
+              {ellipsisString(to, 16, 16)}
+            </>
+          );
+
+        case -1: // Rejected
+          return (
+            <>
+              <span className="alert">{labels.rejected}</span> {contract_name}
+            </>
+          );
+
+        // Contract closed
+        case 9:
+        case 29:
+          return (
+            <>
+              <span className="alert">{labels.contractClosed}</span> {contract_name}
+            </>
+          );
+
+        case 2:
+          return abstract || labels.acceptedContractActivity.replace("%contractName%", contract_name);
+
+        case 5: // TODO: handle statuses
+          return abstract || labels.paidContractValueOf.replace("%contractValue%", "600.00");
+
+        default:
+          return abstract;
       }
-      else if (status === "friendly") {
-        return (
-          <span
-            className={`friendly ${isOpen ? "friendly--open" : ""}`}
-            onClick={() => setOpen(!isOpen)}
-          >
-            {`${abstract} `}
-            <span>{`${labels.friendlyResolution}.`}</span>
-            <CaretDownIcon className="friendly-caret"/>
-          </span>
-        );
-      }
-      else if (status === null && abstract.toLowerCase().startsWith("sent contract")) {
-        return (
-          <>
-            {`${abstract} `}
-            <Avatar seed={to} size="xsmall" />
-            {ellipsisString(to, 16, 16)}
-          </>
-        );
-      }
-      else if (status === null && abstract.toLowerCase().startsWith("rejected")) {
-        return (
-          <>
-          <span className="alert">{labels.rejected}</span>
-          {abstract.slice("rejected".length)}
-          </>
-        );
-      }
-      else {
-        return abstract;
-      };
     }
   };
 
@@ -112,7 +140,7 @@ export const Activity = props => {
           <JurIcon className="jur-activity__info__avatar" />
         ) : (
           <Avatar
-            seed={walletAddress}
+            seed={walletAddress.toLowerCase()}
             size="large"
             variant="circle"
             className="jur-activity__info__avatar"
@@ -122,16 +150,19 @@ export const Activity = props => {
           <div className="jur-activity__info__from">
             <span>{getActivityUser()}</span>
             <TimeAgo date={date} />
-               </div>
+          </div>
           <div className="jur-activity__info__message">{getMessage()}</div>
-             </div>
-           </div>
-      {status !== null && message &&
-        <div className={`jur-activity__content ${isOpen ? "jur-activity__content--open" : ""}`}>
+        </div>
+      </div>
+      {status !== null && message && (
+        <div
+          className={`jur-activity__content ${
+            isOpen ? "jur-activity__content--open" : ""
+          }`}
+        >
           <ProposalPreview proposalDetail={props.data} />
         </div>
-      }
+      )}
     </div>
-
   );
 };

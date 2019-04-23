@@ -40,6 +40,7 @@ import {
   NEW_ARBITRATION,
   REJECT_ARBITRATION,
   ACCEPT_ARBITRATION,
+  ACCEPT_ARBITRATION_AMENDMENT,
   PAY_ARBITRATION,
   EXPIRED_CONTRACT,
   SUCCESS_ARBITRATION,
@@ -56,6 +57,7 @@ export const ContractDetail = props => {
   const [showModalSend, setShowModalSend] = useState(false);
 
   const [showModalAccept, setShowModalAccept] = useState(false);
+  const [showModalAcceptAmendment, setShowModalAcceptAmendment] = useState(false);
   const [showModalReject, setShowModalReject] = useState(false);
   const [showModalSuccess, setShowModalSuccess] = useState(false);
 
@@ -68,7 +70,8 @@ export const ContractDetail = props => {
   const [openPreview, setOpenPreview] = useState(false);
   const [filePath, setFilePath] = useState(null);
 
-  const { contract, user, updateContractField } = props;
+
+  const { contract, user, updateContractField, history } = props;
   const { updating } = contract;
 
   const {
@@ -76,9 +79,15 @@ export const ContractDetail = props => {
     wallet
   } = props;
 
+  const [userWallet, setUserWallet] = useState(wallet.address);
+
   const pageLoaded = () => {
-    validateForm(); // first validation
-    setLoaded(true)
+    if (wallet.address) {
+      validateForm(); // first validation
+      setLoaded(true)
+    } else {
+      // wait for wallet to load
+    }
   };
 
   // validation setup
@@ -102,7 +111,7 @@ export const ContractDetail = props => {
       onError: pageLoaded
     });
 
-  }, []);
+  }, [wallet.address]);
 
   const changeInput = (name, value) => {
     if (!formUpdated) setFormUpdated(true);
@@ -134,6 +143,7 @@ export const ContractDetail = props => {
   const onFileAdded = selectedFiles => {
     console.log("upload", selectedFiles);
     setAttachments(selectedFiles);
+    setFormUpdated(true);
   };
 
   const onFileView = file => {
@@ -178,34 +188,55 @@ export const ContractDetail = props => {
 
   const onAccept = () => {
     const {
-      id
+      id,
+      address,
+      value
     } = contract.current;
 
     global.drizzle.store.dispatch({
       type: ACCEPT_ARBITRATION,
-      id
+      id,
+      address,
+      value
+    });
+  };
+
+  const onAcceptAmendment = () => {
+    const {
+      id,
+      address
+    } = contract.current;
+
+    global.drizzle.store.dispatch({
+      type: ACCEPT_ARBITRATION_AMENDMENT,
+      id,
+      address
     });
   };
 
   const onReject = () => {
     const {
-      id
+      id,
+      address
     } = contract.current;
 
     global.drizzle.store.dispatch({
       type: REJECT_ARBITRATION,
-      id
+      id,
+      address
     });
   };
 
   const onSuccess = () => {
     const {
-      id
+      id,
+      address
     } = contract.current;
 
     global.drizzle.store.dispatch({
       type: SUCCESS_ARBITRATION,
-      id
+      id,
+      address
     });
   };
 
@@ -283,7 +314,8 @@ export const ContractDetail = props => {
     duration,
     hasPenaltyFee,
     partAPenaltyFee,
-    partBPenaltyFee
+    partBPenaltyFee,
+    details: issues
   } = contract.current;
 
   console.log("ContractDetail - contract", {
@@ -382,6 +414,7 @@ export const ContractDetail = props => {
         expireAlertFrom: process.env.REACT_APP_CONTRACT_EXPIRE_ALERT
       },
       inCaseOfDispute: { id: "open", label: labels.open },
+      issues,
       onContractNameChange: onInputChange,
       onProgress,
       onExpire
@@ -463,6 +496,7 @@ export const ContractDetail = props => {
               feeToPay={feeToPay}
               isValid={isValid()}
               hasError={hasError}
+              history={history}
               cases={[
                 {
                   label: labels.open,
@@ -483,6 +517,7 @@ export const ContractDetail = props => {
               onSend={() => setShowModalSend(true)}
               onReject={() => setShowModalReject(true)}
               onAccept={() => setShowModalAccept(true)}
+              onAcceptAmendment={() => setShowModalAcceptAmendment(true)}
               onSuccess={() => setShowModalSuccess(true)}
               onChange={onInputChange}
               onChangeSelect={onChangeSelect}
@@ -500,6 +535,7 @@ export const ContractDetail = props => {
         <Viewer
           isOpen={openPreview}
           filePath={filePath}
+          fullWidthViewer={true}
           onFileLoadingError={onFileError}
           onRequestClose={onRequestClose}
         />
@@ -524,6 +560,16 @@ export const ContractDetail = props => {
           onAccept();
           setShowModalAccept(false);}}
         onDecline={() => setShowModalAccept(false)}
+      />
+
+      <ContractModal
+        isOpen={showModalAcceptAmendment}
+        title={labels.acceptSmartContractAmendment}
+        content={labels.acceptSmartContractAmendmentText}
+        onAccept={() => {
+          onAcceptAmendment();
+          setShowModalAcceptAmendment(false);}}
+        onDecline={() => setShowModalAcceptAmendment(false)}
       />
 
       <ContractModal
@@ -564,6 +610,6 @@ export const ContractDetail = props => {
       <Disclaimer />
     </PageLayout>
   ) : (
-    <Redirect to="/contracts" />
+    <>{userWallet ? <Redirect to="/contracts" /> : <SpinnerOnly loading={true} />}</>
   );
 };

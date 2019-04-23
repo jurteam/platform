@@ -24,10 +24,10 @@ export const DataLostModal = props => {
         <p>{labels.dataLostText}</p>
       </ModalBody>
       <ModalFooter>
-        <Button onClick={onDecline} size="medium" variant="contained">
+        <Button color="info" onClick={onDecline} size="medium" variant="contained" hoverColor="info">
           {labels.cancel}
         </Button>
-        <Button onClick={handleAccept} size="medium" variant="raised">
+        <Button onClick={handleAccept} size="medium" variant="raised" hoverColor="dispute">
           {labels.confirm}
         </Button>
       </ModalFooter>
