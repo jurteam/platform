@@ -43,6 +43,8 @@ trait DisputeTrait
             return null;
         }
 
+        $currentWallet = request()->header('wallet');
+
         $totalPartA = $this->getTokensPart('part_a_wallet');
         $totalPartB = $this->getTokensPart('part_b_wallet');
         $voteForWinner = 0;
@@ -77,6 +79,13 @@ trait DisputeTrait
         }
 
         return $detail;
+    }
+
+    public function currentWalletIsAnOracle()
+    {
+        $currentWallet = strtolower(request()->header('wallet'));
+
+        return $this->votes()->whereRaw('LOWER(oracle_wallet) = ?', [$currentWallet])->count() > 0;
     }
 
     /**

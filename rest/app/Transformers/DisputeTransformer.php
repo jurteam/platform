@@ -3,6 +3,7 @@
 namespace App\Transformers;
 
 use App\Models\Contract;
+use Illuminate\Http\Request;
 use League\Fractal\TransformerAbstract;
 
 class DisputeTransformer extends TransformerAbstract
@@ -15,6 +16,8 @@ class DisputeTransformer extends TransformerAbstract
      */
     public function transform(Contract $contract)
     {
+        $duration = $contract->getDisputeDuration();
+
         return [
             'id' => $contract->id,
             'statusId' => $contract->status ? $contract->status->code : null,
@@ -28,7 +31,8 @@ class DisputeTransformer extends TransformerAbstract
             ],
             'category' => $contract->category,
             'value' => $contract->value,
-            'earnings' => $contract->getEarnings()
+            'earnings' => $contract->getEarnings(),
+            'oracle' => $contract->currentWalletIsAnOracle()
         ];
     }
 }
