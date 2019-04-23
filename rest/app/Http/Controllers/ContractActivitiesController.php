@@ -36,7 +36,7 @@ class ContractActivitiesController extends Controller
         $activities = Activity::exceptDraft()
                             ->byContract($id)
                             ->oldest('created_at')
-                            ->paginate(10);
+                            ->get();
 
         return $this->response->paginator($activities, new ContractActivityTransformer);
     }
