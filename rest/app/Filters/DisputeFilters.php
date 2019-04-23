@@ -28,8 +28,7 @@ class DisputeFilters extends Filters
             $query->whereRaw(
                 '(LOWER(contracts.part_a_wallet) = ? OR LOWER(contracts.part_b_wallet) = ?)',
                 [$lowerWallet,$lowerWallet]
-            )
-            ->where('contracts.is_a_dispute', true);
+            );
         }
 
         return $query;
@@ -39,8 +38,7 @@ class DisputeFilters extends Filters
     {
         return $this->builder
                     ->join('contract_statuses', 'contract_statuses.id', '=', 'contracts.contract_status_id')
-                    ->where('contract_statuses.code', $value)
-                    ->orWhere('contract_statuses.code', '>=', config('jur.statuses')[9]['code']);
+                    ->where('contract_statuses.code', $value);
     }
 
     public function from($value)
