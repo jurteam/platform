@@ -8,25 +8,31 @@ import ContractsTable from ".";
 const headers = [
   {
     label: "Status",
+    className: "jur-col--status",
     sortable: () => alert("sort Status")
   },
   {
     label: "Contract Name",
+    className: "jur-col--category",
     sortable: () => alert("sort contract name")
   },
   {
     label: "Duration",
+    className: "jur-col--duration",
     sortable: () => alert("sort Duration")
   },
   {
     label: "Counterparty details",
+    className: "jur-col--wallet",
     sortable: () => alert("sort counterparty details")
   },
   {
     label: "Value",
+    className: "jur-col--amount",
     sortable: () => alert("sort Value")
   },
   {
+    className: "jur-col--options",
     label: "&nbsp;"
   }
 ];

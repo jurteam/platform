@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import "./TableHead.scss";
 
 export const TableHead = ({ children }) => {
   const childrenArray = React.Children.toArray(children);
