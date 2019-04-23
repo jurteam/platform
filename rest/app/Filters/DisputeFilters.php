@@ -39,7 +39,8 @@ class DisputeFilters extends Filters
     {
         return $this->builder
                     ->join('contract_statuses', 'contract_statuses.id', '=', 'contracts.contract_status_id')
-                    ->where('contract_statuses.code', $value);
+                    ->where('contract_statuses.code', $value)
+                    ->orWhere('contract_statuses.code', '>=', config('jur.statuses')[9]['code']);
     }
 
     public function from($value)
