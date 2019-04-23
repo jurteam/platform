@@ -59,6 +59,7 @@ class DisputesTable extends Component {
                 <TableCell
                   key={header.label.toString()}
                   {...header.sortable && { onClick: header.sortable }}
+                  {...header.className && {className: header.className }}
                 >
                   {header.label}
                 </TableCell>

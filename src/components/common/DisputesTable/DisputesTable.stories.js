@@ -8,26 +8,32 @@ import DisputesTable from ".";
 const headers = [
   {
     label: "Status",
+    className: "jur-col--status",
     sortable: () => alert("sort Status")
   },
   {
     label: "Dispute Name",
+    className: "jur-col--dispute-name",
     sortable: () => alert("sort dispute name")
   },
   {
     label: "Duration",
+    className: "jur-col--duration",
     sortable: () => alert("sort Duration")
   },
   {
     label: "Category",
+    className: "jur-col--category",
     sortable: () => alert("sort category")
   },
   {
     label: "Contract Value",
+    className: "jur-col--amount",
     sortable: () => alert("sort Contract Value")
   },
   {
     label: "Earning",
+    className: "jur-col--earning",
     sortable: () => alert("sort Earning Value")
   }
 ];

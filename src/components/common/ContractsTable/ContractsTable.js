@@ -67,6 +67,7 @@ export const ContractsTable = withRouter(
                 <TableCell
                   key={header.label.toString()}
                   {...header.sortable && { onClick: header.sortable }}
+                  {...header.className && {className: header.className }}
                 >
                   {header.label}
                 </TableCell>
