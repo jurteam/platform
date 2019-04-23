@@ -38,7 +38,7 @@ class ContractActivitiesController extends Controller
                             ->oldest('created_at')
                             ->get();
 
-        return $this->response->paginator($activities, new ContractActivityTransformer);
+        return $this->response->collection($activities, new ContractActivityTransformer);
     }
 
     /**
