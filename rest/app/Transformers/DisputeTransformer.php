@@ -16,8 +16,6 @@ class DisputeTransformer extends TransformerAbstract
      */
     public function transform(Contract $contract)
     {
-        $duration = $contract->getDisputeDuration();
-
         return [
             'id' => $contract->id,
             'statusId' => $contract->status ? $contract->status->code : null,
