@@ -11,6 +11,15 @@ use App\Transformers\ContractStatusDetailTransformer;
 class DisputeDetailTransformer extends TransformerAbstract
 {
     /**
+     * List of resources possible to include
+     *
+     * @var array
+     */
+    protected $availableIncludes = [
+        'attachments'
+    ];
+
+    /**
      * Turn this item object into a generic array
      *
      * @param  \App\Models\Contract $contract
