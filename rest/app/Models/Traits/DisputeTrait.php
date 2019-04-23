@@ -66,7 +66,8 @@ trait DisputeTrait
         $lowerWallet = strtolower($this->{$partFields});
         $detail = $this->details()
                     ->whereRaw('LOWER(contract_part) = ?', [$lowerWallet])
-                    ->last();
+                    ->latest()
+                    ->first();
 
         if ($detail) {
             return [
