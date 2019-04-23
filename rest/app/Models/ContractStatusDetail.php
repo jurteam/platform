@@ -48,6 +48,7 @@ class ContractStatusDetail extends Model implements HasMedia
         $detail->user()->associate($user);
         $detail->save();
 
+        return $detail;
     }
 
     public function contract()

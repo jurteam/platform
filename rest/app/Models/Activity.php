@@ -61,4 +61,9 @@ class Activity extends Model implements HasMedia
     {
         return $this->belongsTo(User::class);
     }
+
+    public function attachments()
+    {
+        return $this->morphMany(config('medialibrary.media_model'), 'model');
+    }
 }
