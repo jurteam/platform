@@ -11,15 +11,6 @@ use App\Transformers\ContractStatusDetailTransformer;
 class DisputeDetailTransformer extends TransformerAbstract
 {
     /**
-     * List of resources possible to include
-     *
-     * @var array
-     */
-    protected $availableIncludes = [
-        'attachments'
-    ];
-
-    /**
      * Turn this item object into a generic array
      *
      * @param  \App\Models\Contract $contract
@@ -27,6 +18,9 @@ class DisputeDetailTransformer extends TransformerAbstract
      */
     public function transform(Contract $contract)
     {
+        $totalTokensPartA = $contract->getTokensPart('part_a_wallet');
+        $totalTokensPartB = $contract->getTokensPart('part_b_wallet');
+
         return [
             'id' => $contract->id,
             'statusId' => $contract->status ? $contract->status->code : null,
@@ -67,21 +61,12 @@ class DisputeDetailTransformer extends TransformerAbstract
             'isFriendlyResolution' => $contract->is_a_friendly_resolution,
             'lastPartInvolved' => $contract->getLastPart(),
             'proposalPartA' => (object) $contract->getProposalPart('part_a'),
-            'proposalPartB' => (object) $contract->getProposalPart('part_b')
+            'proposalPartB' => (object) $contract->getProposalPart('part_b'),
+            'earnings' => $contract->getEarnings(),
+            'totalTokensPartA' => $totalTokensPartA,
+            'totalTokensPartB' => $totalTokensPartB,
+            'totalTokens' => $totalTokensPartA + $totalTokensPartB
         ];
-    }
-
-    /**
-     * Include attachments
-     *
-     * @param  \App\Models\Contract $contract
-     * @return \League\Fractal\Resource\Collection
-     */
-    public function includeAttachments(Contract $contract)
-    {
-        $attachments = $contract->getMedia('attachments');
-
-        return $this->collection($attachments, new AttachmentTransformer);
     }
 
     /**
