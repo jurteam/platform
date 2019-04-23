@@ -6,11 +6,19 @@ use App\Models\User;
 use App\Models\Contract;
 use League\Fractal\TransformerAbstract;
 use App\Transformers\AttachmentTransformer;
-use App\Transformers\ContractDetailTransformer;
-use App\Transformers\ContractActivityTransformer;
+use App\Transformers\ContractStatusDetailTransformer;
 
-class ContractTransformer extends TransformerAbstract
+class DisputeDetailTransformer extends TransformerAbstract
 {
+    /**
+     * List of resources possible to include
+     *
+     * @var array
+     */
+    protected $availableIncludes = [
+        'attachments'
+    ];
+
     /**
      * Turn this item object into a generic array
      *
@@ -35,17 +43,45 @@ class ContractTransformer extends TransformerAbstract
                 (object)[
                     'wallet' => $contract->part_a_wallet,
                     'name' => $contract->part_a_name,
+                    'email' => $contract->part_a_email,
                     'renderName' => $this->getRenderNameUserFromWallet($contract->part_a_wallet)
                 ],
                 (object)[
                     'wallet' => $contract->part_b_wallet,
                     'name' => $contract->part_b_name,
+                    'email' => $contract->part_b_email,
                     'renderName' => $this->getRenderNameUserFromWallet($contract->part_b_wallet)
                 ]
             ],
             'value' => $contract->value,
-            'whoPays' => $contract->who_pays
+            'whoPays' => $contract->who_pays,
+            'address' => $contract->address,
+            'kpi' => $contract->kpi,
+            'resolutionProof' => $contract->resolution_proof,
+            'category' => $contract->category,
+            'inCaseOfDispute' => $contract->in_case_of_dispute,
+            'hasPenaltyFee' => $contract->has_penalty_fee,
+            'partAPenaltyFee' => $contract->part_a_penalty_fee,
+            'partBPenaltyFee' => $contract->part_b_penalty_fee,
+            'isDispute' => $contract->is_a_dispute,
+            'isFriendlyResolution' => $contract->is_a_friendly_resolution,
+            'lastPartInvolved' => $contract->getLastPart(),
+            'proposalPartA' => (object) $contract->getProposalPart('part_a'),
+            'proposalPartB' => (object) $contract->getProposalPart('part_b')
         ];
+    }
+
+    /**
+     * Include attachments
+     *
+     * @param  \App\Models\Contract $contract
+     * @return \League\Fractal\Resource\Collection
+     */
+    public function includeAttachments(Contract $contract)
+    {
+        $attachments = $contract->getMedia('attachments');
+
+        return $this->collection($attachments, new AttachmentTransformer);
     }
 
     /**

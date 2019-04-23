@@ -35,4 +35,32 @@ class ContractAttachmentUploadTest extends TestCase
 
         $this->seeInDatabase('media', ['model_id' => $contract->id]);
     }
+
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function an_user_can_upload_attachment_for_an_existing_dispute_contract()
+    {
+        $wallet = str_random(20);
+        $user = factory(App\Models\User::class)->create([
+            'wallet' => $wallet
+        ]);
+
+        Storage::fake('attachments');
+
+        $attachments[] = UploadedFile::fake()->image('attachment.jpg');
+
+        $response = $this->post("api/v1/activities/28", [
+            'attachments' => $attachments,
+            'code' => 35
+        ], [
+            'wallet' => $wallet
+        ]);
+
+        $this->seeInDatabase('media', [
+            'model_type' => \App\Models\Activity::class
+        ]);
+    }
 }
