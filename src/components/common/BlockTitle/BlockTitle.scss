@@ -3,23 +3,19 @@
 .jur-block-title {
   display: flex;
   align-items: center;
+  color: $block-title-text-color;
+  font-family: $font-poppins;
+  font-weight: $poppins-semibold;
+  font-size: 12px;
 
   .jur-info-tooltip {
     margin-right: 5px;
     line-height: 1;
     position: relative;
-    top: -1px;
+    top: 1px;
 
     svg {
       width: 10px;
     }
-  }
-
-  span {
-    color: $block-title-text-color;
-    font-family: $font-poppins;
-    font-weight: $poppins-semibold;
-    font-size: 12px;
-    color: $block-title-text-color;
   }
 }
