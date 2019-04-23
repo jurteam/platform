@@ -21,7 +21,7 @@ class DisputeTransformer extends TransformerAbstract
             'statusId' => $contract->status ? $contract->status->code : null,
             'statusLabel' => $contract->status ? $contract->status->label : null,
             'statusUpdatedAt' => $contract->getCurrentStatusUpdatedAt(),
-            'disputeName' => $contract->getDisputeName(),
+            'disputeName' => $this->getDisputeName($contract),
             'duration' => (object)[
                 'days' => $contract->duration_days,
                 'hours' => $contract->duration_hours,
@@ -32,5 +32,13 @@ class DisputeTransformer extends TransformerAbstract
             'earnings' => $contract->getEarnings(),
             'oracle' => $contract->currentWalletIsAnOracle()
         ];
+    }
+
+    protected function getDisputeName(Contract $contract)
+    {
+        $partNameA = $contract->part_a_name ?: $contract->part_a_wallet;
+        $partNameB = $contract->part_b_name ?: $contract->part_b_wallet;
+
+        return "{$partNameA} vs $partNameB - {$contract->name}";
     }
 }
