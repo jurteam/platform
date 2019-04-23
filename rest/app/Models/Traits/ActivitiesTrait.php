@@ -4,6 +4,7 @@ namespace App\Models\Traits;
 
 use App\Models\User;
 use App\Models\Activity;
+use App\Models\ContractStatus;
 
 trait ActivitiesTrait
 {
@@ -14,9 +15,10 @@ trait ActivitiesTrait
 
     public function storeActivity($params)
     {
+        $status = ContractStatus::byCode($params->code)->firstOrFail();
         $user = User::byWallet($params->header('wallet'))->firstOrFail();
 
-        $this->recordActivities(array_merge($params->all(), [
+        return $this->recordActivities(array_merge($params->all(), [
             'status' => $status->label,
             'status_code' => $status->code,
             'to_wallet' => $this->getSendTo($params->header('wallet')),

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Traits\DisputeTrait;
 use App\Models\Traits\StatusesTrait;
 use App\Models\Traits\ActivitiesTrait;
 use App\Models\Traits\UploadableTrait;
@@ -11,7 +12,7 @@ use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 
 class Contract extends Model implements HasMedia
 {
-    use HasMediaTrait, ActivitiesTrait, StatusesTrait, UploadableTrait;
+    use HasMediaTrait, ActivitiesTrait, StatusesTrait, UploadableTrait, DisputeTrait;
 
     protected $fillable = [
         'name',

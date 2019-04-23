@@ -16,7 +16,7 @@ class ContractVote extends Model implements HasMedia
      */
     protected $fillable = [
         'amount',
-        'wallet_part'
+        'wallet_part',
         'oracle_wallet',
         'contract_id',
         'message',
