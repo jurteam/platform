@@ -35,7 +35,7 @@ class ContractActivityTransformer extends TransformerAbstract
             'part_b' => $activity->contract->part_b_wallet,
             'from' => (object) [
                 'wallet' => $activity->user ? $activity->user->wallet : $activity->wallet,
-                'name' => $activity->user ? $activity->name : null,
+                'name' => $activity->user ? $activity->user->name : null,
                 'system' => $this->getSystem($activity)
             ],
             'abstract' => null, # to-do
