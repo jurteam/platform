@@ -65,6 +65,6 @@ class DisputeFilters extends Filters
                     ->orWhere('contracts.part_a_email', 'LIKE', "%{$value}%")
                     ->orWhereRaw('LOWER(contracts.part_b_wallet) = ?', [$lowerWallet])
                     ->orWhere('contracts.part_b_name', 'LIKE', "%{$value}%")
-                    ->orWhere('contracts..part_b_email', 'LIKE', "%{$value}%");
+                    ->orWhere('contracts.part_b_email', 'LIKE', "%{$value}%");
     }
 }
