@@ -21,6 +21,22 @@ trait DisputeTrait
         return $totalPart;
     }
 
+    public function getCountPart($part)
+    {
+        return $this->votes->where('wallet_part', $this->{$part})->count();
+    }
+
+    public function getPercetangePart($part)
+    {
+        $totalCount = $this->getCountPart('part_a_wallet') + $this->getCountPart('part_b_wallet');
+        $tokenPart = $this->getTokensPart($part);
+
+        if ($totalCount > 0) {
+            return ($tokenPart / $totalCount) * 100;
+        }
+        return 0;
+    }
+
     public function getEarnings()
     {
         if ($this->status->code =! 39) {
@@ -31,9 +47,9 @@ trait DisputeTrait
         $totalPartB = $this->getTokensPart('part_b_wallet');
         $voteForWinner = 0;
         if ($totalPartA > $totalPartB) {
-            $voteForWinner = $this->votes->where('wallet_part', $this->part_a_wallet)->count();
+            $voteForWinner = $this->getCountPart('part_a_wallet');
         } elseif ($totalPartB > $totalPartA) {
-             $voteForWinner = $this->votes->where('wallet_part', $this->part_b_wallet)->count();
+            $voteForWinner = $this->getCountPart('part_b_wallet');
         }
 
         if ($voteForWinner > 0) {
@@ -48,15 +64,6 @@ trait DisputeTrait
         $detail = $this->details->where('contract_part', $this->{$partFields})->first();
 
         if ($detail) {
-            $evidences = [];
-            foreach ($detail->getMedia('evidences') as $evidence) {
-                $evidences[] = [
-                    'id' => $evidence->id,
-                    'fileName' => $evidence->file_name,
-                    'url' => $evidence->getFullUrl()
-                ];
-            }
-
             return [
                 'date' => $detail->created_at->valueOf(),
                 'message' => $detail->message,
@@ -65,7 +72,7 @@ trait DisputeTrait
                     'proposal_part_b' => $detail->proposal_part_b
                 ],
                 'payed_at' => $detail->payed_at ? $detail->payed_at->valueOf() : null,
-                'evidences' => $evidences
+                'evidences' => $detail->getEvidences()
             ];
         }
 
