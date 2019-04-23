@@ -63,7 +63,10 @@ trait DisputeTrait
     public function getProposalPart($part)
     {
         $partFields = "{$part}_wallet";
-        $detail = $this->details->where('contract_part', $this->{$partFields})->first();
+        $lowerWallet = strtolower($this->{$partFields});
+        $detail = $this->details()
+                    ->whereRaw('LOWER(contract_part) = ?', [$lowerWallet])
+                    ->first();
 
         if ($detail) {
             return [
