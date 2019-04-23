@@ -16,7 +16,8 @@ class ContractStatusDetail extends Model implements HasMedia
         'contract_part',
         'proposal_part_a',
         'proposal_part_b',
-        'payed_at'
+        'payed_at',
+        'user_id'
     ];
 
     /**
@@ -35,15 +36,18 @@ class ContractStatusDetail extends Model implements HasMedia
      */
     public static function storeDetail($params, Contract $contract)
     {
+        $user = User::byWallet($params->header('wallet'))->first();
+
         $contract->updateStatusByCode($params);
         $attributes = array_merge($params->all(), [
             'contract_part' => $params->header('wallet')
         ]);
 
         $detail = new self($attributes);
-        $detail->contract()->associate($contract)->save();
+        $detail->contract()->associate($contract);
+        $detail->user()->associate($user);
+        $detail->save();
 
-        return $detail;
     }
 
     public function contract()
