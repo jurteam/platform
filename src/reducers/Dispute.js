@@ -68,6 +68,7 @@ const INITIAL_STATE = {
     oracle_wallet: null,
     wallet_part: null,
     amount: 0,
+    attachments: []
   },
   list: [],
   page: 1,

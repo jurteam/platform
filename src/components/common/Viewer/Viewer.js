@@ -57,6 +57,7 @@ export const Viewer = (props) => {
       selectedCounterpartyIndex: idx,
       selectedCounterparty: counterparty
     });
+    changeInput("wallet_part", counterparty.wallet.toLowerCase());
   };
 
   const onVoteSubmit = ev => {
@@ -79,6 +80,9 @@ export const Viewer = (props) => {
       counterparties,
       onFileLoadingError,
       statusId,
+      changeInput,
+      currentVote,
+      hasError,
       onVote,
       current,
       onInputChange,
@@ -160,8 +164,11 @@ export const Viewer = (props) => {
                 <div className="jur-viewer__form__body">
                   <BlockTitle title={labels.jurTokens} hideIcon />
                   <Form.NumericInput
-                    value={0}
-                    onChange={value => onInputChange("amount", value)}
+                    initialValue={currentVote.amount.toFixed(2)}
+                    step={0.01}
+                    error={props.error || props.hasError("amount")}
+                    errorMsg={props.error && labels.notEnoughTokenBalance}
+                    onChange={value => changeInput("amount", value)}
                   />
                   <BlockInfo
                     title={labels.voteAttention}
@@ -170,7 +177,10 @@ export const Viewer = (props) => {
                   <BlockTitle title={labels.explainYourVote} hideIcon />
                   <Form.TextArea
                     placeholder={labels.insertYourExplanation}
-                    onChange={value => onInputChange("message", value)}
+                    name="message"
+                    error={hasError("message") || false}
+                    initialValue={currentVote.message}
+                    onChange={value => changeInput("message", value)}
                   />
                   <BlockTitle title={labels.attachments} hideIcon />
                   <UploadForm

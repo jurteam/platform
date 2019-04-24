@@ -34,6 +34,7 @@ import { log, humanToEth, ethToHuman } from "../../../utils/helpers"; // log hel
 import {
   API_GET_DISPUTE,
   PUT_CONTRACT,
+  PUT_VOTE,
   NEW_ARBITRATION,
   CONTRACT_ISSUE,
   REJECT_ARBITRATION,
@@ -112,11 +113,14 @@ export const DisputeDetail = props => {
   const changeInput = (name, value) => {
     if (!formUpdated) setFormUpdated(true);
     setFormData({ ...dispute.current, [name]: value });
-    // updateContractField(name, value); // dispatch action
+
+    const { updateVoteField } = props;
+    updateVoteField(name, value); // dispatch action
   };
 
   const onInputChange = ev => {
     const target = ev.target;
+    console.log("onInputChange", target, ev);
     if (target) {
       const value = target.type === "checkbox" ? target.checked : target.value;
       const name = target.name;
@@ -169,7 +173,8 @@ export const DisputeDetail = props => {
   const onSubmit = () => {
     if (!submitDisabled) {
       global.drizzle.store.dispatch({
-        type: PUT_CONTRACT,
+        type: PUT_VOTE,
+        vote: dispute.currentVote,
         attachments,
         callback: () => setFormUpdated(false) // reset form
       });
@@ -468,10 +473,12 @@ export const DisputeDetail = props => {
         statusId={statusId}
         current={showVoteOverlay}
         currentVote={dispute.vote}
+        hasError={hasError}
         counterparties={voteCounterparties}
         onVote={counterparty => alert(`Votin for ${counterparty.name}`)}
         onReject={() => alert("Rejected Contract")}
         onInputChange={onInputChange}
+        changeInput={changeInput}
         onFileAdded={onFileAdded}
         onFileLoadingError={() => alert("file error")}
         onRequestClose={() => setShowVoteOverlay(false)}

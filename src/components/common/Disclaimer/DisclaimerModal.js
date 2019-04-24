@@ -24,10 +24,10 @@ export const DisclaimerModal = props => {
         <p>{labels.disclaimerText}</p>
       </ModalBody>
       <ModalFooter>
-        <Button onClick={onDecline} size="medium" variant="raised">
+        <Button onClick={onDecline} size="medium" variant="raised" hoverColor="dispute">
           {labels.decline}
         </Button>
-        <Button onClick={handleAccept} size="medium" variant="contained">
+        <Button onClick={handleAccept} size="medium" variant="contained" hoverColor="info">
           {labels.accept}
         </Button>
       </ModalFooter>

@@ -43,8 +43,8 @@ export const VoteProgress = ({
       </div>
       <div className="jur-vote-progress__percentage">
         {counterparty.percentage.toString().indexOf("%") > -1
-          ? counterparty.percentage
-          : counterparty.percentage + "%"}
+          ? counterparty.percentage.toFixed(2)
+          : counterparty.percentage.toFixed(2) + "%"}
       </div>
       <div className="jur-vote-progress__value">
         {toCurrencyFormat(counterparty.value)}

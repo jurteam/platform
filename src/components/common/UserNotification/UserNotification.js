@@ -27,7 +27,7 @@ export const UserNotification = ({ title, headers, data, className }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map(row => (
+          {/* {data.map(row => (
             <TableRow
               key={row.id}
               className="jur-user-notification__table__row"
@@ -40,7 +40,7 @@ export const UserNotification = ({ title, headers, data, className }) => {
               </TableCell>
               <TableCell>{row.message}</TableCell>
             </TableRow>
-          ))}
+          ))} */}
         </TableBody>
       </Table>
     </div>

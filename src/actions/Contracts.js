@@ -4,6 +4,7 @@ import {
   UPDATE_CONTRACT_FIELD,
   UPDATE_PROPOSAL_FIELD,
   UPDATE_NEW_CONTRACT_FIELD,
+  UPDATE_DISPUTE_VOTE_FIELD,
   NEW_CONTRACT,
   PUT_CONTRACT,
   PUT_PROPOSAL,
@@ -23,6 +24,11 @@ export const updateContractField = (field, value) => ({
 });
 export const updateNewContractField = (field, value) => ({
   type: UPDATE_NEW_CONTRACT_FIELD,
+  field,
+  value
+});
+export const updateVoteField = (field, value) => ({
+  type: UPDATE_DISPUTE_VOTE_FIELD,
   field,
   value
 });
