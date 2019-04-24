@@ -33,6 +33,11 @@ class ContractVote extends Model implements HasMedia
         return $this->belongsTo(Contract::class);
     }
 
+    public function attachments()
+    {
+        return $this->morphMany(config('medialibrary.media_model'), 'model');
+    }
+
     /**
      * Check if the owner is the current user.
      *
