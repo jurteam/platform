@@ -15,7 +15,7 @@ trait DisputeTrait
 
     /**
      * Calculate the total amount of token.
-     * 
+     *
      * @param  string $part
      * @return double
      */
@@ -31,13 +31,13 @@ trait DisputeTrait
 
     public function getCountPart($part)
     {
-        $lowerWallet = strtolower($this->{$part);
-        return $this->votes()->where('LOWER(wallet_part) = ?', [$lowerWallet])->count();
+        $lowerWallet = strtolower($this->{$part});
+        return $this->votes()->whereRaw('LOWER(wallet_part) = ?', [$lowerWallet])->count();
     }
 
     /**
      * Calculate the percentage of votes.
-     * 
+     *
      * @param  string $part
      * @return double
      */
@@ -54,7 +54,7 @@ trait DisputeTrait
 
     /**
      * Calculate the token that user can earn.
-     * 
+     *
      * @return null|double
      */
     public function getEarnings()
@@ -82,7 +82,7 @@ trait DisputeTrait
 
     /**
      * Get the proposal part for current dispute.
-     * 
+     *
      * @param  string $part
      * @return mixed
      */
@@ -113,7 +113,7 @@ trait DisputeTrait
 
     /**
      * Check if the current user connected to the chain has voted.
-     * 
+     *
      * @return boolean
      */
     public function currentWalletIsAnOracle()
