@@ -76,7 +76,8 @@ class DisputeDetailTransformer extends TransformerAbstract
             'totalTokensPartB' => $totalTokensPartB,
             'totalTokens' => $totalTokensPartA + $totalTokensPartB,
             'percentagePartA' => $contract->getPercetangePart('part_a_wallet'),
-            'percentagePartB' => $contract->getPercetangePart('part_a_wallet')
+            'percentagePartB' => $contract->getPercetangePart('part_b_wallet'),
+            'winner' => $contract->getTheWinner()
         ];
     }
 
@@ -97,7 +98,7 @@ class DisputeDetailTransformer extends TransformerAbstract
 
     /**
      * Get dispute name
-     * 
+     *
      * @param  \App\Models\Contract $contract
      * @return string
      */
