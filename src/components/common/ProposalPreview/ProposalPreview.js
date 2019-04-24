@@ -27,7 +27,11 @@ export const ProposalPreview = ({ proposalDetail, onView }) => {
       <div className="jur-proposal-preview__proposes">
         {Object.keys(proposal).map(part => (
           <div key={part} className="jur-proposal-preview__proposal">
-            <Avatar seed={proposalDetail[part].toLowerCase()} size="small" variant="circle" />
+            <Avatar
+              seed={proposalDetail[part].toLowerCase()}
+              size="small"
+              variant="circle"
+            />
             <div className="jur-proposal-preview__proposal__value">
               <Amount value={proposal[part]} />
               <span>
@@ -38,18 +42,16 @@ export const ProposalPreview = ({ proposalDetail, onView }) => {
           </div>
         ))}
       </div>
-      <div className="jur-proposal-preview__evidences">
-        {proposalDetail.evidences && proposalDetail.evidences.length > 0 && (
-          <>
-            <BlockTitle title={labels.evidences} hideIcon />
-            <FileList>
-              {proposalDetail.evidences.map(file => (
-                <File key={file.name} name={file.name} onView={onView} />
-              ))}
-            </FileList>
-          </>
-        )}
-      </div>
+      {proposalDetail.evidences && proposalDetail.evidences.length > 0 && (
+        <div className="jur-proposal-preview__evidences">
+          <BlockTitle title={labels.evidences} hideIcon />
+          <FileList>
+            {proposalDetail.evidences.map((file, index) => (
+              <File key={`pf-${file.fileName}${index.toString()}`} name={file.fileName} onView={onView} />
+            ))}
+          </FileList>
+        </div>
+      )}
     </div>
   );
 };

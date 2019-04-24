@@ -2,18 +2,14 @@
 import axios from "../bootstrap/Api";
 
 // endpoint root
-const root = "/disputes";
+const root = "/contracts/disputes";
 
 export class Disputes {
   static list(payload) {
-    return axios.get("/contracts/disputes/all", { params: payload });
+    return axios.get(`${root}/all`, { params: payload });
   }
   static get(payload) {
-    return axios.get(`${root}/${payload.id}`, {
-      params: {
-        include: "attachments,details"
-      }
-    });
+    return axios.get(`${root}/${payload.id}`);
   }
   static addMedia(payload) {
     return axios.post(`${root}/medias/${payload.id}`, payload); // attachments

@@ -6,6 +6,7 @@ import walletSagas from './Wallet'
 import userSagas from './User'
 import contractSagas from './Contract'
 import disputeSagas from './Dispute'
+import oracleSagas from './Oracles'
 import mediaSagas from './Media'
 import arbitrationSagas from './Arbitration'
 
@@ -18,6 +19,7 @@ sagas.push(walletSagas)
 sagas.push(mediaSagas)
 sagas.push(contractSagas)
 sagas.push(disputeSagas)
+sagas.push(oracleSagas)
 sagas.push(arbitrationSagas)
 
 export default function* rootSaga() {

@@ -12,6 +12,12 @@
     outline: none;
     color: $contract-name-color;
     font-family: $font-poppins;
+
+    &:read-only {
+      cursor: default;
+      user-select: none;
+      pointer-events: none;
+    }
   }
 
   .jur-tag {

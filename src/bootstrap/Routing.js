@@ -14,6 +14,8 @@ import NewContract from "../components/sections/NewContract";
 import ContractDetail from "../components/sections/ContractDetail";
 
 import Disputes from "../components/sections/Disputes";
+import DisputeDetail from "../components/sections/DisputeDetail";
+import OracleDetail from "../components/sections/OracleDetail";
 
 // Helpers
 import { redirect, checkConnection } from "../utils/helpers";
@@ -83,8 +85,15 @@ export const createRoutes = withComponents => {
       exact: true,
       path: "/disputes/detail/:id",
       onEnter: () => redirect(checkConnection, "/disputes/detail/:id"),
-      component: withComponents && ContractDetail,
+      component: withComponents && DisputeDetail,
       title: i18n.disputes
+    },
+    {
+      exact: true,
+      path: "/disputes/detail/:id/oracles",
+      onEnter: () => redirect(checkConnection, "/disputes/detail/:id/oracles"),
+      component: withComponents && OracleDetail,
+      title: i18n.oraclesDetails
     },
     { component: withComponents && NotFound, title: i18n.notFound }
   ];

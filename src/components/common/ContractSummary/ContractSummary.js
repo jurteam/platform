@@ -52,6 +52,8 @@ export const ContractSummary = props => {
     return acc;
   }, {});
 
+  const { dispute } = props;
+
   const { labels } = useContext(AppContext);
 
   return (
@@ -61,6 +63,7 @@ export const ContractSummary = props => {
         onContractNameChange={onContractNameChange}
         statusId={statusId}
         statusIdLabel={statusIdLabel}
+        dispute
       />
       <div className="jur-contract-summary__columns">
         <div className="jur-contract-summary__column jur-contract-summary__counterparties">
@@ -95,6 +98,7 @@ export const ContractSummary = props => {
             onProgress={onProgress}
             onExpire={onExpire}
             key={`status-${statusId}`}
+            showSeconds={dispute}
             showMessage
           />
         </div>

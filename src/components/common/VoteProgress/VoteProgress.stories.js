@@ -16,11 +16,9 @@ storiesOf("VoteProgress", module)
   .add("Vote ongoing & allowed", () => (
     <VoteProgress
       counterparty={{
-        wallet: {
-          address: "0xie57ht6fh75f4576894"
-        },
+        wallet: "0xie57ht6fh75f4576894",
         name: "Alice",
-        shouldRenderName: true,
+        renderName: true,
         percentage: 67.2,
         value: 36133,
         winner: false
@@ -34,11 +32,9 @@ storiesOf("VoteProgress", module)
   .add("Vote ongoing & not allowed", () => (
     <VoteProgress
       counterparty={{
-        wallet: {
-          address: "0x9h8563948567364975369h347895693"
-        },
+        wallet: "0x9h8563948567364975369h347895693",
         name: "Bob",
-        shouldRenderName: false,
+        renderName: false,
         percentage: 31.4,
         value: 16903,
         winner: false
@@ -51,11 +47,9 @@ storiesOf("VoteProgress", module)
   .add("Vote closed & Winner", () => (
     <VoteProgress
       counterparty={{
-        wallet: {
-          address: "0x9h8563948567364975369h34789537645"
-        },
+        wallet: "0x9h8563948567364975369h34789537645",
         name: "Bob",
-        shouldRenderName: false,
+        renderName: false,
         percentage: 31.4,
         value: 16903,
         winner: true
@@ -68,11 +62,9 @@ storiesOf("VoteProgress", module)
   .add("Vote closed & Loser", () => (
     <VoteProgress
       counterparty={{
-        wallet: {
-          address: "0x9h8563948567364975369h34789537645"
-        },
+        wallet: "0x9h8563948567364975369h34789537645",
         name: "Bob",
-        shouldRenderName: false,
+        renderName: false,
         percentage: 31.4,
         value: 16903,
         winner: false

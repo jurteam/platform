@@ -41,7 +41,7 @@ export const ContractAccordion = ({
       >
         <span className="jur-contract-accordion__title">
           {title}
-          {tooltip && <InfoTooltip />}
+          {tooltip && <InfoTooltip text={tooltip} />}
         </span>
         <span className="jur-contract-accordion__arrow">
           {!loading ? <AngleIcon /> : <EllipsisVIcon />}

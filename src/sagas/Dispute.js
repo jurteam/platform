@@ -51,7 +51,6 @@ export function* getDispute(action) {
     }
 
     if (typeof onSuccess === "function") onSuccess(); // exec onSuccess callback if present
-
   } catch (error) {
     // TODO: handle 404
     yield put({ type: API_CATCH, error });
@@ -81,23 +80,27 @@ export function* deleteDispute(action) {
 export function* fetchDisputes() {
   yield put({ type: DISPUTE_LIST_UPDATING, payload: true });
   yield put({ type: UPDATE_DISPUTE_FILTER, disabled: true });
-  const { status, fromDate, toDate, searchText, mine } = yield select(
+  const { status, fromDate, toDate, searchText, category, mine } = yield select(
     getDisputeFilters
   );
   const page = yield select(getDisputeListPage);
   log("Disputes - filters", {
     status: status && typeof status.value !== "undefined" ? status.value : null,
-    from:fromDate,
-    to:toDate,
-    q:searchText
+    from: fromDate,
+    to: toDate,
+    q: searchText
   });
   try {
     const response = yield call(Disputes.list, {
       status:
         status && typeof status.value !== "undefined" ? status.value : null,
-      from:fromDate,
-      to:toDate,
-      q:searchText,
+      from: fromDate,
+      to: toDate,
+      category:
+        category && typeof category.value !== "undefined"
+          ? category.value
+          : null,
+      q: searchText,
       show: mine ? "my" : "all",
       page
     });
@@ -114,7 +117,19 @@ export function* fetchDisputes() {
 export function* updateDispute(action) {
   log("updateDispute - run");
   yield put({ type: DISPUTE_SAVING, payload: true });
-  const { id, DisputeName, kpi, resolutionProof, category, value, whoPays, duration, hasPenaltyFee, partAPenaltyFee, partBPenaltyFee } = yield select(getCurrentDispute);
+  const {
+    id,
+    DisputeName,
+    kpi,
+    resolutionProof,
+    category,
+    value,
+    whoPays,
+    duration,
+    hasPenaltyFee,
+    partAPenaltyFee,
+    partBPenaltyFee
+  } = yield select(getCurrentDispute);
 
   const zero = Number(0).toFixed(process.env.REACT_APP_TOKEN_DECIMALS);
 
@@ -125,18 +140,41 @@ export function* updateDispute(action) {
   if (resolutionProof) toUpdate.append("resolution_proof", resolutionProof);
   if (category) toUpdate.append("category", category);
   if (whoPays) toUpdate.append("who_pays", whoPays);
-  toUpdate.append("value", Number(value).toFixed(process.env.REACT_APP_TOKEN_DECIMALS)); // always
-  if (duration && duration.days) toUpdate.append("duration_days", duration.days);
-  if (duration && duration.hours) toUpdate.append("duration_hours", duration.hours);
-  if (duration && duration.minutes) toUpdate.append("duration_minutes", duration.minutes);
+  toUpdate.append(
+    "value",
+    Number(value).toFixed(process.env.REACT_APP_TOKEN_DECIMALS)
+  ); // always
+  if (duration && duration.days)
+    toUpdate.append("duration_days", duration.days);
+  if (duration && duration.hours)
+    toUpdate.append("duration_hours", duration.hours);
+  if (duration && duration.minutes)
+    toUpdate.append("duration_minutes", duration.minutes);
   toUpdate.append("has_penalty_fee", hasPenaltyFee ? 1 : 0); // always
   if (hasPenaltyFee) {
-    if (partAPenaltyFee) toUpdate.append("part_a_penalty_fee", hasPenaltyFee && Number(partAPenaltyFee) <= Number(value) ? Number(partAPenaltyFee).toFixed(process.env.REACT_APP_TOKEN_DECIMALS) : Number(value).toFixed(process.env.REACT_APP_TOKEN_DECIMALS)); // handle maximum value possibile
-    if (partBPenaltyFee) toUpdate.append("part_b_penalty_fee", hasPenaltyFee && Number(partBPenaltyFee) <= Number(value) ? Number(partBPenaltyFee).toFixed(process.env.REACT_APP_TOKEN_DECIMALS) : Number(value).toFixed(process.env.REACT_APP_TOKEN_DECIMALS)); // handle maximum value possibile
-  } else { // reset penalty fees
+    if (partAPenaltyFee)
+      toUpdate.append(
+        "part_a_penalty_fee",
+        hasPenaltyFee && Number(partAPenaltyFee) <= Number(value)
+          ? Number(partAPenaltyFee).toFixed(
+              process.env.REACT_APP_TOKEN_DECIMALS
+            )
+          : Number(value).toFixed(process.env.REACT_APP_TOKEN_DECIMALS)
+      ); // handle maximum value possibile
+    if (partBPenaltyFee)
+      toUpdate.append(
+        "part_b_penalty_fee",
+        hasPenaltyFee && Number(partBPenaltyFee) <= Number(value)
+          ? Number(partBPenaltyFee).toFixed(
+              process.env.REACT_APP_TOKEN_DECIMALS
+            )
+          : Number(value).toFixed(process.env.REACT_APP_TOKEN_DECIMALS)
+      ); // handle maximum value possibile
+  } else {
+    // reset penalty fees
     toUpdate.append("part_a_penalty_fee", zero);
     toUpdate.append("part_b_penalty_fee", zero);
-  };
+  }
   toUpdate.append("in_case_of_dispute", "open"); // default
 
   for (let i = 0; i < action.attachments.length; i++) {

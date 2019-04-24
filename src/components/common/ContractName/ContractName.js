@@ -1,5 +1,4 @@
 import React, { useContext } from "react";
-import PropTypes from "prop-types";
 import Tag from "../Tag";
 
 // Context
@@ -11,6 +10,7 @@ export const ContractName = ({
   contractName,
   statusId,
   statusIdLabel,
+  dispute,
   onContractNameChange
 }) => {
   const { labels } = useContext(AppContext);
@@ -23,6 +23,7 @@ export const ContractName = ({
         placeholder={labels.contractNamePlaceholder}
         value={contractName || ""}
         onChange={onContractNameChange}
+        readOnly={dispute}
       />
       <Tag statusId={statusId}>{statusIdLabel}</Tag>
     </div>

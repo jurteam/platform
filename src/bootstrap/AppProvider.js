@@ -40,6 +40,21 @@ class AppProvider extends Component {
         { label: i18n.earnings, sortable: true, className: "jur-col--amount" },
         { label: "", sortable: false, className: "jur-col--options" } // options
       ],
+      oraclesTableHeaders: [
+        { label: i18n.ethAddress, sortable: false },
+        { label: i18n.vote, sortable: false },
+        { label: i18n.msg, sortable: false },
+        { label: i18n.amount, sortable: false },
+        { label: i18n.time, sortable: false }
+      ],
+      oraclesFullTableHeaders: [
+        { label: i18n.ethAddress, sortable: false },
+        { label: i18n.vote, sortable: false },
+        { label: i18n.msg, sortable: false },
+        { label: i18n.evidences, sortable: false },
+        { label: i18n.amount, sortable: false },
+        { label: i18n.time, sortable: false }
+      ],
       onNetwork: false,
       auth: this.auth,
       exit: this.exit

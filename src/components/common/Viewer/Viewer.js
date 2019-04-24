@@ -1,5 +1,4 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React, { useState, useEffect, useContext } from "react";
 import ReactModal from "react-modal";
 import { CloseIcon } from "../Icons/CloseIcon";
 import { AlertIcon } from "../Icons/AlertIcon";
@@ -15,10 +14,9 @@ import Button from "../Button";
 
 import "./Viewer.scss";
 
-export class Viewer extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
+export const Viewer = (props) => {
+
+  const [state, setState] = useState({
       selectedCounterpartyIndex: 0,
       selectedCounterparty: props.counterparties
         ? props.counterparties[0]
@@ -26,31 +24,46 @@ export class Viewer extends Component {
       jurTokens: 0,
       explanation: null,
       files: []
-    };
-  }
+    });
 
-  getFileType = filePath =>
+  // cDM
+  useEffect(() => {
+
+    const { current: { idx }, counterparties } = props;
+
+    console.log("Viewer - cDM", {
+      props: props,
+      selectedCounterpartyIndex: idx,
+      selectedCounterparty: counterparties[idx]
+    });
+
+    setState({
+      selectedCounterpartyIndex: idx,
+      selectedCounterparty: counterparties[idx]
+    });
+  }, []);
+
+  const getFileType = filePath =>
     filePath.slice(((filePath.lastIndexOf(".") - 1) >>> 0) + 2);
 
-  setVoteForm = (counterparty, idx) => {
-    this.setState({
+    const setVoteForm = (counterparty, idx) => {
+    setState({
       selectedCounterpartyIndex: idx,
       selectedCounterparty: counterparty
     });
   };
 
-  onVoteSubmit = ev => {
+  const onVoteSubmit = ev => {
     ev.preventDefault();
 
-    this.props.onVoteSubmit({
-      jurTokens: this.state.jurTokens,
-      explanation: this.state.explanation,
-      files: this.state.files,
-      for: this.state.selectedCounterparty
+    props.onVoteSubmit({
+      jurTokens: state.jurTokens,
+      explanation: state.explanation,
+      files: state.files,
+      for: state.selectedCounterparty
     });
   };
 
-  render() {
     const {
       isOpen,
       onRequestClose,
@@ -61,24 +74,31 @@ export class Viewer extends Component {
       onFileLoadingError,
       statusId,
       onVote,
+      current,
       onReject,
       currentUserWallet,
       metaMaskError,
       fullWidthViewer
-    } = this.props;
+    } = props;
 
-    const { selectedCounterpartyIndex } = this.state;
+    const { selectedCounterpartyIndex } = state;
     let selectedCounterpartyAddress,
       selectedCounterpartyShouldRenderName,
       selectedCounterpartyName;
 
     if (counterparties && counterparties.length) {
-      const { selectedCounterparty } = this.state;
-      selectedCounterpartyAddress = selectedCounterparty.wallet.address;
-      selectedCounterpartyShouldRenderName =
-        selectedCounterparty.shouldRenderName;
-      selectedCounterpartyName = selectedCounterparty.name;
+      const { selectedCounterparty } = state;
+      if (selectedCounterparty) {
+        selectedCounterpartyAddress =
+          selectedCounterparty && selectedCounterparty.wallet
+            ? selectedCounterparty.wallet.toLowerCase()
+            : "0x0";
+        selectedCounterpartyShouldRenderName = selectedCounterparty.renderName;
+        selectedCounterpartyName = selectedCounterparty.name;
+      }
     }
+
+    console.log("Viewer", current);
 
     return (
       <ReactModal
@@ -91,12 +111,16 @@ export class Viewer extends Component {
         overlayClassName="jur-modal__overlay"
       >
         <CloseIcon onClick={onRequestClose} className="jur-viewer__close-btn" />
-        <div className={`jur-viewer__wrapper ${fullWidthViewer ? "jur-viewer__wrapper--full" : ""}`}>
+        <div
+          className={`jur-viewer__wrapper ${
+            fullWidthViewer ? "jur-viewer__wrapper--full" : ""
+          }`}
+        >
           <div className="jur-viewer__container">
             {filePath && (
               <FileViewer
                 filePath={filePath}
-                fileType={this.getFileType(filePath)}
+                fileType={getFileType(filePath)}
                 onError={onFileLoadingError}
               />
             )}
@@ -129,7 +153,7 @@ export class Viewer extends Component {
                   <BlockTitle title="Jur Tokens" hideIcon />
                   <Form.NumericInput
                     value={0}
-                    onChange={value => this.setState({ jurTokens: value })}
+                    onChange={value => setState({ jurTokens: value })}
                   />
                   <BlockInfo
                     title="Attention"
@@ -138,18 +162,18 @@ export class Viewer extends Component {
                   <BlockTitle title="Explain your vote" hideIcon />
                   <Form.TextArea
                     placeholder="Insert you explanation"
-                    onChange={value => this.setState({ explanation: value })}
+                    onChange={value => setState({ explanation: value })}
                   />
                   <BlockTitle title="Attachment" hideIcon />
                   <UploadForm
-                    onFileAdded={files => this.setState({ files: files })}
+                    onFileAdded={files => setState({ files: files })}
                   />
                   <Button
                     color={selectedCounterpartyIndex === 0 ? "success" : "info"}
                     className="ur-viewer__form__btn"
                     variant="contained"
                     fullWidth
-                    onClick={this.onVoteSubmit}
+                    onClick={onVoteSubmit}
                   >
                     Vote
                   </Button>
@@ -165,9 +189,9 @@ export class Viewer extends Component {
             <div className="jur-viewer__form-switch">
               {counterparties.map((counterparty, idx) => (
                 <Avatar
-                  onClick={() => this.setVoteForm(counterparty, idx)}
-                  key={counterparty.wallet.address || idx.toString()}
-                  seed={counterparty.wallet.address}
+                  onClick={() => setVoteForm(counterparty, idx)}
+                  key={counterparty.wallet.toLowerCase() || idx.toString()}
+                  seed={counterparty.wallet.toLowerCase()}
                   size="xlarge"
                   variant="rounded"
                   className={selectedCounterpartyIndex === idx ? "active" : ""}
@@ -203,5 +227,4 @@ export class Viewer extends Component {
         </div>
       </ReactModal>
     );
-  }
 }

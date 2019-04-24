@@ -26,7 +26,8 @@ import {
   CONTRACT_PAGE_CHANGE,
   UPDATE_NEW_CONTRACT_FIELD,
   CHAIN_GET_CONTRACT,
-  SET_CONTRACT_STATUS
+  SET_CONTRACT_STATUS,
+  API_GET_DISPUTE
 } from "../reducers/types";
 
 import { log } from "../utils/helpers"; // log helper
@@ -77,8 +78,8 @@ export function* getContractActivities(action) {
 
   console.log("getContractActivities", action);
 
-  // retrieve correct id when SET_CONTRACT_STATUS action is dispatched
-  if (type === SET_CONTRACT_STATUS) {
+  // retrieve correct id when SET_CONTRACT_STATUS or API_GET_DISPUTE action is dispatched
+  if (type === SET_CONTRACT_STATUS || type === API_GET_DISPUTE) {
     id = action.id
   } else {
     id = action.payload.id
@@ -370,6 +371,7 @@ export default function* contractSagas() {
   yield takeLatest(RESET_CONTRACT, onContractReset);
   yield takeLatest(API_CATCH, resetUpdating);
   yield takeLatest(SET_CONTRACT, resetUpdating);
+  yield takeEvery(API_GET_DISPUTE, getContractActivities);
   yield takeEvery(SET_CONTRACT, getContractActivities);
   yield takeEvery(SET_CONTRACT_STATUS, getContractActivities);
   yield takeLatest(SET_CONTRACT_ACTIVITIES, () => put({ type: CONTRACT_NOTIFICATIONS_LOADING, payload: false }));

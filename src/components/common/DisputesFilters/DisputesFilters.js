@@ -6,6 +6,7 @@ import { SearchIcon } from "../Icons/SearchIcon";
 import statusList from "../../../assets/i18n/en/status.json"; // status
 import categories from "../../../assets/i18n/en/contractCategories.json"; // categories
 import "./DisputesFilters.scss";
+import { getFormattedDate } from "../../../utils/helpers"; // helpers
 import { AppContext } from "../../../bootstrap/AppProvider"; // context
 
 export const DisputesFilters = props => {
@@ -18,7 +19,7 @@ export const DisputesFilters = props => {
     disabled: props.disabled
   });
 
-  const { myDispute, onChange, onSubmit } = props;
+  const { myDispute, onChange, onSubmit, onReset } = props;
 
   const handleChange = (type, value) => {
 
@@ -26,10 +27,15 @@ export const DisputesFilters = props => {
 
     setState(state => {
       const newState = { ...state, [type]: value };
-      props.onChange(newState);
+      if (typeof onChange === "function") onChange(newState);
       return newState;
     });
   };
+
+  const handleReset = () => {
+    if (typeof onReset === "function") onReset();
+  };
+
 
   const { labels } = useContext(AppContext);
 
@@ -62,13 +68,13 @@ export const DisputesFilters = props => {
         {labels.myDisputes}
       </Button>
       <Form.Select
-        placeholder="Filter by Status..."
+        placeholder={labels.filterByStatus}
         value={state.status}
         onChange={value => handleChange("status", value)}
-        options={statusList.slice(-5)}
+        options={statusList.slice(-4)}
       />
       <Form.Select
-        placeholder="Filter by Category..."
+        placeholder={labels.filterByCategory}
         value={state.category}
         onChange={value => handleChange("category", value)}
         options={categories.slice(0, -1)} // no other
@@ -76,13 +82,13 @@ export const DisputesFilters = props => {
       <CalendarFilter
         name="from"
         selectedDate={state.fromDate}
-        onChange={value => handleChange("fromDate", value)}
+        onChange={value => handleChange("fromDate", getFormattedDate(value))}
       />
       <span className="separator canDisable" />
       <CalendarFilter
         name="to"
         selectedDate={state.toDate}
-        onChange={value => handleChange("toDate", value)}
+        onChange={value => handleChange("toDate", getFormattedDate(value))}
       />
       <Form.Search onChange={value => handleChange("searchText", value)} />
       <Button

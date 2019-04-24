@@ -1,5 +1,4 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React, { useContext } from "react";
 import Table from "../Table";
 import TableRow from "../TableRow";
 import TableCell from "../TableCell";
@@ -13,6 +12,7 @@ import { toCurrencyFormat, ellipsisString } from "../../../utils/helpers";
 
 import "./OraclesTablePreview.scss";
 import TimeAgo from "../TimeAgo";
+import { AppContext } from "../../../bootstrap/AppProvider";
 
 export const OraclesTablePreview = ({
   currentUserWallet,
@@ -20,6 +20,7 @@ export const OraclesTablePreview = ({
   data,
   viewAllDetails
 }) => {
+  const { labels } = useContext(AppContext);
   return (
     <div className="jur-oracles-table-preview">
       <Table>
@@ -38,19 +39,17 @@ export const OraclesTablePreview = ({
         <TableBody className="jur-oracles-table-preview__body">
           {data.map(oracle => (
             <TableRow
-              key={oracle.ethAddress}
-              className={
-                oracle.ethAddress === currentUserWallet ? "highlight" : ""
+              key={oracle.oracle_wallet.toLowerCase()}
+              className={oracle.oracle_wallet.toLowerCase() === currentUserWallet.toLowerCase() ? "highlight" : ""
               }
             >
               <TableCell className="jur-oracles-table-preview__eth-address">
-                {oracle.ethAddress === currentUserWallet
-                  ? "You"
-                  : ellipsisString(oracle.ethAddress, 10, 15)}
+                {oracle.oracle_wallet.toLowerCase() === currentUserWallet.toLowerCase()
+                  ? labels.you
+                  : ellipsisString(oracle.oracle_wallet.toLowerCase(), 10, 15)}
               </TableCell>
               <TableCell>
-                <Avatar seed={oracle.vote} size="xsmall" variant="circle" />
-                {}
+                <Avatar seed={oracle.wallet_part.toLowerCase()} size="xsmall" variant="circle" />
               </TableCell>
               <TableCell
                 className={`jur-oracles-table-preview__message ${
@@ -65,16 +64,14 @@ export const OraclesTablePreview = ({
                 {toCurrencyFormat(oracle.amount)}
               </TableCell>
               <TableCell className="jur-oracles-table-preview__date">
-                <TimeAgo date={oracle.date} />
+                <TimeAgo date={oracle.date || null} />
               </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
       <Link to={viewAllDetails}>
-        <Button size="big" fullWidth>
-          View All Details
-        </Button>
+        <Button size="big" fullWidth>{labels.viewAllDetails}</Button>
       </Link>
     </div>
   );

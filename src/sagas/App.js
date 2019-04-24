@@ -14,7 +14,8 @@ import {
   FETCH_FAQ,
   FETCH_CONTRACTS,
   RESET_APP_STATE,
-  SET_TUTORIAL_VIEWED
+  SET_TUTORIAL_VIEWED,
+  FETCH_DISPUTES
 } from "../reducers/types";
 
 import { getWallet } from "./Selectors"; // selectors
@@ -84,6 +85,7 @@ export function* handleNetworkUpdate(data) {
     yield put({ type: RESET_USER });
     yield put({ type: FETCH_USER });
     yield put({ type: FETCH_CONTRACTS });
+    yield put({ type: FETCH_DISPUTES });
   }
 }
 
@@ -123,6 +125,7 @@ export function* handleAppReady() {
   yield put({ type: FETCH_FAQ });
   yield put({ type: FETCH_USER });
   yield put({ type: FETCH_CONTRACTS });
+  yield put({ type: FETCH_DISPUTES });
 }
 
 // spawn a new actions task

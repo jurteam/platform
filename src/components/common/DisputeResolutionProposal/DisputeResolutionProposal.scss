@@ -6,15 +6,17 @@
     font-size: 20px;
     color: $prussian-blue;
     margin-bottom: 20px;
+    padding: 20px 40px;
   }
 
   &__proposals {
     display: flex;
     justify-content: space-between;
+    padding: 0 40px;
   }
 
   &__proposal {
-    flex-basis: 400px;
+    flex-basis: 45%;
   }
 
   .jur-proposal-preview {

@@ -59,17 +59,17 @@ export const OraclesTable = ({
           <TableBody className="jur-oracles-table__body">
             {tableRows.map((oracle, idx) => (
               <TableRow
-                key={oracle.ethAddress}
+                key={oracle.oracle_wallet.toLowerCase()}
                 className={`${oracle.isOpen ? "active" : ""}`}
                 onClick={() => handleClick(idx)}
               >
                 <TableCell className="jur-oracles-table__oracle">
-                  {oracle.ethAddress === currentUserWallet
+                  {oracle.oracle_wallet.toLowerCase() === currentUserWallet.toLowerCase()
                     ? "You"
-                    : oracle.ethAddress}
+                    : oracle.oracle_wallet.toLowerCase()}
                 </TableCell>
                 <TableCell>
-                  <Avatar seed={oracle.vote} size="xsmall" variant="circle" />
+                  <Avatar seed={oracle.wallet_part.toLowerCase()} size="xsmall" variant="circle" />
                 </TableCell>
                 <TableCell className="jur-oracles-table__message">
                   {oracle.isOpen ? (
@@ -106,7 +106,7 @@ export const OraclesTable = ({
                   {toCurrencyFormat(oracle.amount)}
                 </TableCell>
                 <TableCell className="jur-oracles-table__date">
-                  <TimeAgo date={oracle.date} />
+                  <TimeAgo date={oracle.date || null} />
                 </TableCell>
               </TableRow>
             ))}

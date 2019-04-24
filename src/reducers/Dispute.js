@@ -56,6 +56,7 @@ const INITIAL_STATE = {
     mine: false,
     status: null,
     fromDate: null,
+    category: null,
     toDate: null,
     searchText: null,
     disabled: false

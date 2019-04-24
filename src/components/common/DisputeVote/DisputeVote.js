@@ -52,10 +52,10 @@ export const DisputeVote = ({
       <div className="jur-dispute-vote__vote">
         {counterparties.map((counterparty, idx) => (
           <VoteProgress
-            key={counterparty.wallet.address || idx.toString()}
+            key={counterparty.wallet.toLowerCase() || idx.toString()}
             counterparty={counterparty}
             statusId={statusId}
-            onVote={onVote}
+            onVote={() => onVote(counterparty, idx)}
             highlightColor={idx === 0 ? "green" : "blue"}
             canVote={canVote}
           />

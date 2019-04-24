@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import AvatarChart from "../AvatarChart";
 import { toCurrencyFormat } from "../../../utils/helpers";
 import Button from "../Button";
 
 import "./VoteProgress.scss";
+import { AppContext } from "../../../bootstrap/AppProvider"; // context
 
 export const VoteProgress = ({
   counterparty,
@@ -23,20 +24,22 @@ export const VoteProgress = ({
     "jur-vote-progress--lose": closedDispute && !isWinner
   };
 
+  const { labels } = useContext(AppContext);
+
   const classNames = Object.keys(classes)
     .filter(className => classes[className])
     .join(" ");
   return (
     <div className={classNames}>
       <AvatarChart
-        seed={counterparty.wallet.address}
+        seed={counterparty.wallet.toLowerCase()}
         percentage={counterparty.percentage}
         color={highlightColor}
       />
       <div className="jur-vote-progress__name">
-        {counterparty.shouldRenderName
+        {counterparty.renderName
           ? counterparty.name
-          : counterparty.wallet.address}
+          : counterparty.wallet.toLowerCase()}
       </div>
       <div className="jur-vote-progress__percentage">
         {counterparty.percentage.toString().indexOf("%") > -1
@@ -51,11 +54,12 @@ export const VoteProgress = ({
           color={highlightColor === "green" ? "success" : "info"}
           onClick={() => onVote(counterparty)}
           fullWidth
+          hoverColor={highlightColor === "green" ? "success" : "info"}
         >
-          Vote
+          {labels.vote}
         </Button>
       ) : isWinner ? (
-        <div className="jur-vote-progress__result">Wins</div>
+        <div className="jur-vote-progress__result">{labels.wins}</div>
       ) : null}
     </div>
   );

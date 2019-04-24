@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import PropTypes from "prop-types";
 import Table from "../Table";
 import TableRow from "../TableRow";
@@ -15,33 +15,60 @@ import { EllipsisVIcon } from "../Icons/EllipsisVIcon";
 
 import { Link, withRouter } from "react-router-dom";
 
+import { humanToEth } from "../../../utils/helpers"; // log helper
+import { EXPIRED_DISPUTE } from "../../../reducers/types";
+
 import "./DisputesTable.scss";
 import DisputesFilters from "../DisputesFilters";
+import Pagination from "../Pagination";
+import { SpinnerOnly } from "../Spinner";
 import { AppContext } from "../../../bootstrap/AppProvider"; // context
 
 const DisputesTable = (props) => {
 
   const { labels } = useContext(AppContext);
 
-  const handleClick = to => {
-    props.history.push(to);
-  };
-
-  const handleRedeem = to => {
-    props.history.push(to);
-  };
-
   const {
     headers,
+    filters,
     data,
     myDispute,
     handleFilterChange,
-    handleFilterSubmit
+    handleFilterSubmit,
+    initialPage,
+    onPageChange,
+    contractsPerPage,
+    totalContracts,
+    loading,
+    filtersDisabled,
+    history
   } = props;
+
+  const [activePage, setActivePage] = useState(initialPage);
+
+  const showDispute = to => {
+    history.push(to);
+  };
+
+  const handleRedeem = to => {
+    history.push(to);
+  };
 
   const emptyDisputesMessage = (
     <p>{labels.noDisputes}</p>
   );
+
+  const onExpire = id => {
+    global.drizzle.store.dispatch({
+      type: EXPIRED_DISPUTE,
+      id
+    });
+  };
+
+  const handlePageChange = pageNumber => {
+    setActivePage(pageNumber);
+    onPageChange(pageNumber);
+  };
 
   const emptyMyDisputesMessage = (
     <>
@@ -61,7 +88,7 @@ const DisputesTable = (props) => {
         myDispute={myDispute}
         onChange={handleFilterChange}
         onSubmit={handleFilterSubmit}
-        disabled={data.length <= 0}
+        {...filters}
       />
       <Table>
         <TableHead>
@@ -80,7 +107,7 @@ const DisputesTable = (props) => {
         {data.length > 0 ? (
           <TableBody>
             {data.map(dispute => (
-              <TableRow key={dispute.id} onClick={() => handleClick(dispute.to)}>
+              <TableRow key={dispute.id} onClick={() => showDispute(`/disputes/detail/${dispute.id}`)}>
                 <TableCell>
                   <Tag statusId={dispute.statusId}>{dispute.statusLabel}</Tag>
                 </TableCell>
@@ -89,14 +116,21 @@ const DisputesTable = (props) => {
                 </TableCell>
                 <TableCell>
                   <Countdown
-                    duration={dispute.duration}
-                    expireDate={dispute.expireDate}
+                    days={dispute.duration.days}
+                    hours={dispute.duration.hours}
+                    minutes={dispute.duration.minutes}
+                    statusId={dispute.statusId}
+                    startDate={dispute.statusUpdatedAt}
+                    onExpire={() => onExpire(dispute.id)}
+                    expireAlertFrom={
+                      process.env.REACT_APP_VOTE_EXPIRE_ALERT
+                    }
                     showSeconds
                   />
                 </TableCell>
                 <TableCell>{dispute.category}</TableCell>
                 <TableCell className="jur-disputes__table__contract-value">
-                  <Amount value={dispute.contractValue} />
+                  <Amount value={humanToEth(dispute.value)} />
                 </TableCell>
                 <TableCell className="jur-disputes__table__earning">
                   {dispute.earning && <Amount value={dispute.earning} />}
@@ -115,6 +149,18 @@ const DisputesTable = (props) => {
           </TableBody>
         ) : null}
       </Table>
+      {data.length > 0 && loading === true && (
+        <SpinnerOnly loading={loading} className={"table__loading"} />
+      )}
+      {data.length > 0 && (
+        <Pagination
+          activePage={activePage}
+          itemsCountPerPage={contractsPerPage}
+          totalItemsCount={totalContracts}
+          handlePageChange={handlePageChange}
+          getPageUrl={i => "https://customLink/#" + i}
+        />
+      )}
       {emptyMessage}
     </div>
   );
