@@ -47,7 +47,7 @@ export const ProposalPreview = ({ proposalDetail, onView }) => {
           <BlockTitle title={labels.evidences} hideIcon />
           <FileList>
             {proposalDetail.evidences.map((file, index) => (
-              <File key={`pf-${file.fileName}${index.toString()}`} name={file.fileName} onView={onView} />
+              <File key={`pf-${file.fileName}${index.toString()}`} file={file} name={file.fileName} onView={onView} />
             ))}
           </FileList>
         </div>

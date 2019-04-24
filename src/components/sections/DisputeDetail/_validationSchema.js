@@ -1,30 +1,23 @@
 const validationSchema = [
   {
-    name: "kpi",
-    checks: ["requiredStrict"]
-  },
-  {
-    name: "resolutionProof",
-    checks: ["requiredStrict"]
-  },
-  {
-    name: "value",
+    name: "amount",
     checks: ["requiredNum"]
   },
   {
-    name: "whoPays",
+    name: "oracle_wallet",
     checks: ["requiredStrict"]
+  },
+  {
+    name: "wallet_part",
+    checks: ["requiredStrict"]
+  },
+  {
+    name: "contract_id",
+    checks: ["required"]
   },
   {
     name: "category",
     checks: ["required"]
-  },
-  {
-    name: "duration",
-    checks: ["duration"],
-    days: "duration.days",
-    hours: "duration.hours",
-    minutes: "duration.minutes"
   }
 ];
 

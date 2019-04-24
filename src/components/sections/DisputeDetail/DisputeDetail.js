@@ -367,6 +367,14 @@ export const DisputeDetail = props => {
 
   const uploadedFiles = contractAttachments ? contractAttachments.data : [];
 
+  const countdownOptions = {
+    ...contractData.duration,
+    statusId,
+    startDate: statusUpdatedAt,
+    onExpire: () => onExpire(dispute.id),
+    showSeconds: true
+  };
+
   return typeof params.id !== "undefined" &&
     !(loaded === true && typeof dispute.current.id === "undefined") ? (
     <PageLayout breadcrumbs={breadcrumbs}>
@@ -414,10 +422,11 @@ export const DisputeDetail = props => {
             )}
           </Main>
           <Aside>
+            {user.wallet &&
             <DisputeSidebar
               disabled={dispute.saving}
               submitDisabled={submitDisabled}
-              currentWallet={userWallet}
+              currentWallet={user.wallet}
               currentPart={currentPart}
               notificationLoading={dispute.notificationLoading}
               contract={contractData}
@@ -428,9 +437,9 @@ export const DisputeDetail = props => {
               history={history}
               oracles={oracle.currentList}
               onSubmit={onSubmit}
-              onVote={(counterparty, idx) => setShowVoteOverlay({counterparty, idx})}
+              onVote={(counterparty, idx) => {onRequestClose(); setShowVoteOverlay({counterparty, idx});}}
               onView={onFileView}
-            />
+            />}
           </Aside>
         </>
       ) : (
@@ -443,7 +452,11 @@ export const DisputeDetail = props => {
         <Viewer
           isOpen={openPreview}
           filePath={filePath}
-          fullWidthViewer={true}
+          countdownOptions={countdownOptions}
+          statusId={statusId}
+          counterparties={voteCounterparties}
+          onVote={(counterparty, idx) => {onRequestClose(); setShowVoteOverlay({counterparty, idx});}}
+          onReject={() => alert("Rejected Contract")}
           onFileLoadingError={onFileError}
           onRequestClose={onRequestClose}
         />
@@ -451,18 +464,15 @@ export const DisputeDetail = props => {
 
       <Viewer
         isOpen={(showVoteOverlay && showVoteOverlay.counterparty) ? true : false}
-        countdownOptions={{
-          ...contractData.duration,
-          statusId,
-          startDate: statusUpdatedAt,
-          onExpire: () => onExpire(dispute.id),
-          showSeconds: true
-        }}
+        countdownOptions={countdownOptions}
         statusId={statusId}
         current={showVoteOverlay}
+        currentVote={dispute.vote}
         counterparties={voteCounterparties}
         onVote={counterparty => alert(`Votin for ${counterparty.name}`)}
         onReject={() => alert("Rejected Contract")}
+        onInputChange={onInputChange}
+        onFileAdded={onFileAdded}
         onFileLoadingError={() => alert("file error")}
         onRequestClose={() => setShowVoteOverlay(false)}
         onVoteSubmit={data => console.log(data)}

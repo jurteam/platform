@@ -5,7 +5,7 @@ import {
   SET_DISPUTE_CURRENT_PAGE,
   API_DELETE_DISPUTE,
   UPDATE_DISPUTE_FILTER,
-  UPDATE_DISPUTE_FIELD,
+  UPDATE_DISPUTE_VOTE_FIELD,
   DISPUTE_DELETED,
   DISPUTES_FETCHED,
   DISPUTE_SAVING,
@@ -61,6 +61,14 @@ const INITIAL_STATE = {
     searchText: null,
     disabled: false
   },
+  vote: {
+    contract_id: null,
+    message: null,
+    hash: "0x0",
+    oracle_wallet: null,
+    wallet_part: null,
+    amount: 0,
+  },
   list: [],
   page: 1,
   pagination: []
@@ -89,10 +97,10 @@ export default (state = INITIAL_STATE, action) => {
       filtersToUpdate[action.field] = action.value;
       return { ...state, filters: { ...state.filters, ...filtersToUpdate } };
 
-    case UPDATE_DISPUTE_FIELD:
+    case UPDATE_DISPUTE_VOTE_FIELD:
       let toUpdate = {};
       toUpdate[action.field] = action.value;
-      return { ...state, current: { ...state.current, ...toUpdate } };
+      return { ...state, vote: { ...state.vote, ...toUpdate } };
 
     case DISPUTE_UPDATING:
       return { ...state, updating: action.payload };

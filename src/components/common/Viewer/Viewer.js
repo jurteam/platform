@@ -13,6 +13,7 @@ import UploadForm from "../UploadForm";
 import Button from "../Button";
 
 import "./Viewer.scss";
+import { AppContext } from "../../../bootstrap/AppProvider"; // context
 
 export const Viewer = (props) => {
 
@@ -26,22 +27,27 @@ export const Viewer = (props) => {
       files: []
     });
 
+    const { labels } = useContext(AppContext);
+
   // cDM
-  useEffect(() => {
+  // useEffect(() => {
 
-    const { current: { idx }, counterparties } = props;
+  //   const { current: { idx }, counterparties } = props;
 
-    console.log("Viewer - cDM", {
-      props: props,
-      selectedCounterpartyIndex: idx,
-      selectedCounterparty: counterparties[idx]
-    });
+  //   if (typeof idx !== "undefined") {
 
-    setState({
-      selectedCounterpartyIndex: idx,
-      selectedCounterparty: counterparties[idx]
-    });
-  }, []);
+  //     console.log("Viewer - cDM", {
+  //       props: props,
+  //       selectedCounterpartyIndex: idx,
+  //       selectedCounterparty: counterparties[idx]
+  //     });
+
+  //     setState({
+  //       selectedCounterpartyIndex: idx,
+  //       selectedCounterparty: counterparties[idx]
+  //     });
+  //   }
+  // }, []);
 
   const getFileType = filePath =>
     filePath.slice(((filePath.lastIndexOf(".") - 1) >>> 0) + 2);
@@ -75,6 +81,8 @@ export const Viewer = (props) => {
       statusId,
       onVote,
       current,
+      onInputChange,
+      onFileAdded,
       onReject,
       currentUserWallet,
       metaMaskError,
@@ -134,7 +142,7 @@ export const Viewer = (props) => {
               >
                 <div className="jur-viewer__form__header">
                   <div className="jur-viewer__form__header__title">
-                    Vote for
+                    {labels.voteFor}
                   </div>
                   <div className="jur-viewer__form__header__user">
                     <Avatar
@@ -150,23 +158,23 @@ export const Viewer = (props) => {
                   </div>
                 </div>
                 <div className="jur-viewer__form__body">
-                  <BlockTitle title="Jur Tokens" hideIcon />
+                  <BlockTitle title={labels.jurTokens} hideIcon />
                   <Form.NumericInput
                     value={0}
-                    onChange={value => setState({ jurTokens: value })}
+                    onChange={value => onInputChange("amount", value)}
                   />
                   <BlockInfo
-                    title="Attention"
-                    description="By voting, you are Jur tokens at risk . You will lose your Jur token if you vote on the minority side but you can earn around as many tokens as you voted if you vote for the majority early enough. This is not gambling. There is no higher reward for higher risks. In case the KPIs or the evidence are not clear or you are not confident about which proposal is the fairest, abstain from voting. You are using this interface on the blockchain under your own exclusive responsibility."
+                    title={labels.voteAttention}
+                    description={labels.voteAttentionDescription}
                   />
-                  <BlockTitle title="Explain your vote" hideIcon />
+                  <BlockTitle title={labels.explainYourVote} hideIcon />
                   <Form.TextArea
-                    placeholder="Insert you explanation"
-                    onChange={value => setState({ explanation: value })}
+                    placeholder={labels.insertYourExplanation}
+                    onChange={value => onInputChange("message", value)}
                   />
-                  <BlockTitle title="Attachment" hideIcon />
+                  <BlockTitle title={labels.attachments} hideIcon />
                   <UploadForm
-                    onFileAdded={files => setState({ files: files })}
+                    onFileAdded={onFileAdded}
                   />
                   <Button
                     color={selectedCounterpartyIndex === 0 ? "success" : "info"}
@@ -175,12 +183,12 @@ export const Viewer = (props) => {
                     fullWidth
                     onClick={onVoteSubmit}
                   >
-                    Vote
+                    {labels.vote}
                   </Button>
                 </div>
                 <div className="jur-viewer__form__note">
-                  Do you feel the contract is illegal or inapplicable?
-                  <span onClick={onReject}>Vote for reject</span>
+                  {labels.voteForRejectText}
+                  <span onClick={onReject}>{labels.voteForReject}</span>
                 </div>
               </div>
             )}
@@ -221,7 +229,7 @@ export const Viewer = (props) => {
           )}
           {metaMaskError && (
             <div className="jur-viewer__metamask">
-              <AlertIcon /> MetaMask Error
+              <AlertIcon /> {labels.metamaskError}
             </div>
           )}
         </div>
