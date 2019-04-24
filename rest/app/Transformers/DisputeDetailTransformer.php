@@ -95,6 +95,12 @@ class DisputeDetailTransformer extends TransformerAbstract
         return false;
     }
 
+    /**
+     * Get dispute name
+     * 
+     * @param  \App\Models\Contract $contract
+     * @return string
+     */
     protected function getDisputeName(Contract $contract)
     {
         $partNameA = $contract->part_a_name ?: $contract->part_a_wallet;
