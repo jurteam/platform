@@ -15,15 +15,18 @@ trait DisputeTrait
 
     public function getTokensPart($part)
     {
-        $part = $this->{$part};
-        $totalPart = $this->votes->where('wallet_part', $part)->sum('amount');
+        $part = strtolower($this->{$part});
+        $totalPart = $this->votes()
+                        ->whereRaw('LOWER(wallet_part) = ?', [$part])
+                        ->sum('amount');
 
         return $totalPart;
     }
 
     public function getCountPart($part)
     {
-        return $this->votes->where('wallet_part', $this->{$part})->count();
+        $lowerWallet = strtolower($this->{$part);
+        return $this->votes()->where('LOWER(wallet_part) = ?', [$lowerWallet])->count();
     }
 
     public function getPercetangePart($part)
@@ -39,7 +42,7 @@ trait DisputeTrait
 
     public function getEarnings()
     {
-        if ($this->status->code =! 39) {
+        if ($this->status->code < 39) {
             return null;
         }
 
