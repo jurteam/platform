@@ -29,12 +29,10 @@ trait ActivitiesTrait
     public function recordActivities($params, $user)
     {
         $attributes = array_merge($params, [
-            'user_id' => $user->id
+            'user_id' => $user->id,
+            'contract_id' => $this->id
         ]);
-        $activity = new Activity($attributes);
-        $this->activities()->save($activity);
-
-        return $activity;
+        return Activity::create($attributes);
     }
 
     public function getSendTo($wallet)
