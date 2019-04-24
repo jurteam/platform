@@ -43,7 +43,7 @@ trait DisputeTrait
      */
     public function getPercetangePart($part)
     {
-        $totalCount = $this->getCountPart('part_a_wallet') + $this->getCountPart('part_b_wallet');
+        $totalCount = $this->getTokensPart('part_a_wallet') + $this->getTokensPart('part_b_wallet');
         $tokenPart = $this->getTokensPart($part);
 
         if ($totalCount > 0) {
@@ -121,5 +121,19 @@ trait DisputeTrait
         $currentWallet = strtolower(request()->header('wallet'));
 
         return $this->votes()->whereRaw('LOWER(oracle_wallet) = ?', [$currentWallet])->count() > 0;
+    }
+
+    public function getTheWinner()
+    {
+        $totalPartA = $this->getTokensPart('part_a_wallet');
+        $totalPartB = $this->getTokensPart('part_b_wallet');
+
+        if ($totalPartA > $totalPartB) {
+            return $this->part_a_wallet;
+        } elseif ($totalPartB > $totalPartA) {
+            return $this->part_b_wallet;
+        }
+
+        return null;
     }
 }
