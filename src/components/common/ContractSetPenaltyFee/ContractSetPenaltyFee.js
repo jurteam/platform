@@ -6,11 +6,12 @@ import PriceRange from "../PriceRange";
 
 import "./ContractSetPenaltyFee.scss";
 
-export const ContractSetPenaltyFee = ({
-  contract,
-  ContractSetPenaltyFee,
-  setPenaltyFeeStatus
-}) => {
+export const ContractSetPenaltyFee = props => {
+  const {
+    contract,
+    ContractSetPenaltyFee,
+    setPenaltyFeeStatus
+  } = props;
   const { from, to } = contract;
   const [isActive, setActive] = useState(!!contract.penaltyFee);
 

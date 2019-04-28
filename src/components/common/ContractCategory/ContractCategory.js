@@ -4,15 +4,12 @@ import BlockTile from "../BlockTitle";
 
 import "./ContractCategory.scss";
 
-export const ContractCategory = ({
-  selectedCategories,
-  categoryDescription
-}) => (
+export const ContractCategory = props => (
   <div className="jur-contract-category">
-    <BlockTile title="Category" description={categoryDescription} />
-    {selectedCategories && (
+    <BlockTile title="Category" description={props.categoryDescription} />
+    {props.selectedCategories && (
       <div className="jur-contract-category__value">
-        {selectedCategories.label}
+        {props.selectedCategories.label}
       </div>
     )}
   </div>

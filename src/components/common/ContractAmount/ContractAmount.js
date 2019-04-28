@@ -6,11 +6,13 @@ import Amount from "../Amount";
 
 import "./ContractAmount.scss";
 
-export const ContractAmount = ({
-  debtorWalletAddress,
-  amount,
-  paymentDescription
-}) => (
+export const ContractAmount = props => {
+  const {
+    debtorWalletAddress,
+    amount,
+    paymentDescription
+  } = props;
+return (
   <div className="jur-contract-amount">
     <BlockTitle title="Payment" description={paymentDescription} />
     {debtorWalletAddress && amount && (
@@ -20,4 +22,5 @@ export const ContractAmount = ({
       </div>
     )}
   </div>
-);
+)};
+  

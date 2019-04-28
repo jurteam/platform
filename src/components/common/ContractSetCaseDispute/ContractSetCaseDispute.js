@@ -3,11 +3,12 @@ import PropTypes from "prop-types";
 
 import "./ContractSetCaseDispute.scss";
 
-export const ContractSetCaseDispute = ({
-  cases,
-  selectedOptionId,
-  handleChange
-}) => {
+export const ContractSetCaseDispute = props => {
+  const {
+    cases,
+    selectedOptionId,
+    handleChange
+  } = props;
   return (
     <div className="jur-contract-set-case-dispute">
       <div className="jur-contract-set-case-dispute__title">

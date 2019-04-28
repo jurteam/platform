@@ -5,9 +5,9 @@ import Form from "../Form";
 
 import "./ContractSelectCategory.scss";
 
-export const ContractSelectCategory = ({ onChange }) => (
+export const ContractSelectCategory = props => (
   <div className="jur-contract-select-category">
     <div className="jur-contract-select-category__title">Category:</div>
-    <Form.Select options={categories} onChange={ev => onChange(ev)} />
+    <Form.Select options={categories} onChange={ev => props.onChange(ev)} />
   </div>
 );

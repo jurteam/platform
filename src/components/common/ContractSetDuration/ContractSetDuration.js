@@ -5,7 +5,8 @@ import BlockTitle from "../BlockTitle";
 
 import "./ContractSetDuration.scss";
 
-export const ContractSetDuration = ({ savedValue, onChange }) => {
+export const ContractSetDuration = props => {
+  const { savedValue, onChange } = props;
   const [duration, setDuration] = useState(
     savedValue || { days: 0, hours: 0, minutes: 0 }
   );

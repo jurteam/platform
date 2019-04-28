@@ -4,8 +4,8 @@ import Activity from "../Activity";
 
 import "./ActivityList.scss";
 
-export const ActivityList = ({activities}) => {
-  const filteredAcivities = activities.reduce((acc, activity) => {
+export const ActivityList = props => {
+  const filteredAcivities = props.activities.reduce((acc, activity) => {
     activity.readed ? acc.old.push(activity) : acc.new.push(activity);
     return acc;
   }, {old: [], new: []});

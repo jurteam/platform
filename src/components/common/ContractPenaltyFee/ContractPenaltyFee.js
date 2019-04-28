@@ -6,7 +6,8 @@ import BlockTitle from "../BlockTitle";
 
 import "./ContractPenaltyFee.scss";
 
-export const ContractPenaltyFee = ({ contractInfo, penaltyFeeDescription }) => {
+export const ContractPenaltyFee = props => {
+  const { contractInfo, penaltyFeeDescription } = props;
   return (
     <div className="jur-contract-penalty-fee">
       <BlockTitle title="Penalty Fee" description={penaltyFeeDescription} />

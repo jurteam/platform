@@ -5,14 +5,14 @@ import InfoTooltip from "../InfoTooltip";
 
 import "./ContractAccordion.scss";
 
-export const ContractAccordion = ({
-  tooltip,
-  className,
-  children,
-  title,
-  initialOpen,
-  borderBottom
-}) => {
+export const ContractAccordion = props => {
+  const {
+    tooltip,
+    className,
+    children,
+    title,
+    initialOpen
+  } = props;
   const [isOpen, setOpenState] = useState(initialOpen || false);
   const classes = {
     "jur-contract-accordion": true,

@@ -4,12 +4,12 @@ import BlockTile from "../BlockTitle";
 
 import "./ContractCaseDispute.scss";
 
-export const ContractCaseDispute = ({ selectedCase, disputeDescription }) => (
+export const ContractCaseDispute = props => (
   <div className="jur-contract-case-dispute">
-    <BlockTile title="In Case of Dispute:" description={disputeDescription} />
-    {selectedCase && (
+    <BlockTile title="In Case of Dispute:" description={props.disputeDescription} />
+    {props.selectedCase && (
       <div className="jur-contract-case-dispute__value">
-        {selectedCase.label}
+        {props.selectedCase.label}
       </div>
     )}
   </div>

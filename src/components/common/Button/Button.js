@@ -21,7 +21,7 @@ const generateClasses = (props, attr, baseClass, isHover) => {
   }, baseClass)
 }
 
-export const Button = (props) => {
+export const Button = props => {
   const {
     children,
     color,

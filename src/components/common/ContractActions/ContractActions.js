@@ -3,9 +3,9 @@ import PropTypes from "prop-types";
 
 import "./ContractActions.scss";
 
-export const ContractActions = ({ children, statusId }) => {
+export const ContractActions = props => {
   const renderSwitch = () => {
-    switch (statusId) {
+    switch (props.statusId) {
       case -1:
         return (
           <span className="jur-contract-actions__text">
@@ -19,7 +19,7 @@ export const ContractActions = ({ children, statusId }) => {
           </span>
         );
       default:
-        return children;
+        return props.children;
     }
   };
   return <div className="jur-contract-actions">{renderSwitch()}</div>;

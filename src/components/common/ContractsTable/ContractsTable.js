@@ -19,21 +19,20 @@ import { withRouter } from "react-router-dom";
 
 import "./ContractsTable.scss";
 
-export const ContractsTable = withRouter(
-  ({
-    headers,
-    data,
-    handleArchive,
-    handleFilterChange,
-    handleFilterSubmit,
-    newContract,
-    initialPage,
-    onPageChange,
-    contractsPerPage,
-    totalContracts,
-    history,
-    ...props
-  }) => {
+export const ContractsTable = withRouter(props => {
+    const {
+      headers,
+      data,
+      handleArchive,
+      handleFilterChange,
+      handleFilterSubmit,
+      newContract,
+      initialPage,
+      onPageChange,
+      contractsPerPage,
+      totalContracts,
+      history
+    } = props;
     const [activePage, setActivePage] = useState(initialPage);
     const emptyMessage = data.length === 0 && (
       <div className="jur-table__empty">
