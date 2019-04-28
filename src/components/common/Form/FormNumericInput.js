@@ -5,14 +5,15 @@ import { CaretUpIcon } from "../Icons/CaretUpIcon";
 import { toCurrencyFormat } from "../../../utils/helpers";
 import Form from "./";
 
-export const FormNumericInput = ({
-  label,
-  initialValue,
-  onChange,
-  step,
-  error,
-  errorMsg
-}) => {
+export const FormNumericInput = props => {
+    const {
+    label,
+    initialValue,
+    onChange,
+    step,
+    error,
+    errorMsg
+  } = props;
   const [value, setValue] = useState(
     typeof initialValue === "number" ? initialValue : ""
   );

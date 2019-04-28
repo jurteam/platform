@@ -4,18 +4,21 @@ import { EyeIcon } from "../Icons/EyeIcon";
 import { BinIcon } from "../Icons/BinIcon";
 import "./File.scss";
 
-export const File = ({ name, onView, onDelete, large }) => (
-  <li className={`jur-file ${large ? "jur-file--large" : ""}`}>
-    <div className="jur-file__name">{name}</div>
-    <div className="jur-file__actions">
-      {onDelete && (
-        <span className="jur-file__actions__delete" onClick={onDelete}>
-          <BinIcon />
+export const File = props => {
+  const { name, onView, onDelete, large } = props;
+  return (
+    <li className={`jur-file ${large ? "jur-file--large" : ""}`}>
+      <div className="jur-file__name">{name}</div>
+      <div className="jur-file__actions">
+        {onDelete && (
+          <span className="jur-file__actions__delete" onClick={onDelete}>
+            <BinIcon />
+          </span>
+        )}
+        <span className="jur-file__actions__view" onClick={onView}>
+          <EyeIcon />
         </span>
-      )}
-      <span className="jur-file__actions__view" onClick={onView}>
-        <EyeIcon />
-      </span>
-    </div>
-  </li>
-);
+      </div>
+    </li>
+  );
+};

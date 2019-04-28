@@ -7,14 +7,15 @@ import Amount from "../Amount";
 import Avatar from "../Avatar";
 import "./ProfilePreview.scss";
 
-export const ProfilePreview = ({
-  to,
-  name,
-  seed,
-  shouldRenderName,
-  balance,
-  currency
-}) => {
+export const ProfilePreview = props => {
+  const {
+    to,
+    name,
+    seed,
+    shouldRenderName,
+    balance,
+    currency
+  } = props;
   return (
     <div className="jur-profile-preview">
       <NavLink to={to} activeClassName="active">

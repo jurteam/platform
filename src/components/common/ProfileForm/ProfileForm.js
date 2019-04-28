@@ -23,12 +23,13 @@ import genders from "../../../assets/genders.json"; // genders
 import categories from "../../../assets/categories.json"; // categories
 import { FormContainer } from "../Form/FormContainer";
 
-export const ProfileForm = ({
-  className,
-  user,
-  updateUserField,
-  updateUser
-}) => {
+export const ProfileForm = props => {
+  const {
+    className,
+    user,
+    updateUserField,
+    updateUser
+  } = props;
   const [formUpdated, setFormUpdated] = useState(false);
 
   // validation setup

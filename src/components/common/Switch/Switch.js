@@ -5,7 +5,8 @@ import { AppContext } from "../../../bootstrap/AppProvider"; // context
 
 import { upperCaseFirst, log } from "../../../utils/helpers"; // capitalize
 
-export const Switch = ({ error, value, checked, ...rest }) => {
+export const Switch = props => {
+  const { error, value, checked, ...rest } = props;
   const { labels } = useContext(AppContext);
 
   log("Switch", value);

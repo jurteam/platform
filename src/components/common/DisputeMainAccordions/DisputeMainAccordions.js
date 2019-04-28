@@ -6,7 +6,8 @@ import FileList from "../FileList";
 import File from "../File";
 import "./DisputeMainAccordions.scss";
 
-export const DisputeMainAccordions = ({ details, files, onView }) => {
+export const DisputeMainAccordions = props => {
+  const { details, files, onView } = props;
   return (
     <div className="jur-dispute-main-accordions">
       {Object.keys(details).map(detail => (

@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 
 import "./UserActionBody.scss";
 
-export const UserActionBody = ({ children, className }) => (
-  <div className={`jur-user-action__body ${className || ""}`}>{children}</div>
-);
+export const UserActionBody = props => {
+  const { children, className } = props;
+  return (<div className={`jur-user-action__body ${className || ""}`}>{children}</div>);
+};

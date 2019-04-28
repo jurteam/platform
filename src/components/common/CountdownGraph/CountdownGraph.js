@@ -7,12 +7,13 @@ import { InfoIcon } from "../Icons/InfoIcon";
 
 import "./CountdownGraph.scss";
 
-export const CountdownGraph = ({
-  onProgress,
-  message,
-  showMessage,
-  ...rest
-}) => {
+export const CountdownGraph = props => {
+  const {
+    onProgress,
+    message,
+    showMessage,
+    ...rest
+  } = props;
   const [percentage, setPercentage] = useState(0);
   const progressHandler = percentage => {
     setPercentage(percentage);

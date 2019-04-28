@@ -5,17 +5,18 @@ import { toCurrencyFormat } from "../../../utils/helpers";
 
 import "./DisputeVote.scss";
 
-export const DisputeVote = ({
-  currentUserWallet,
-  title,
-  counterparties,
-  statusId,
-  onVote,
-  canVote,
-  onReject,
-  gainedValue,
-  lossedValue
-}) => {
+export const DisputeVote = props => {
+  const {
+    currentUserWallet,
+    title,
+    counterparties,
+    statusId,
+    onVote,
+    canVote,
+    onReject,
+    gainedValue,
+    lossedValue
+  } = props;
   let resultNote = "";
 
   if (statusId === 39) {

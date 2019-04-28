@@ -5,20 +5,20 @@ import AvatarInfo from "../AvatarInfo";
 
 import "./DisputeResolutionProposal.scss";
 
-export const DisputeResolutionProposal = ({ proposals, onView }) => (
+export const DisputeResolutionProposal = props => (
   <div className="jur-dispute-resolution-proposal">
     <div className="jur-dispute-resolution-proposal__title">
       Dispute Resolution Proposal
     </div>
     <div className="jur-dispute-resolution-proposal__proposals">
-      {proposals.map(proposal => (
+      {props.proposals.map(proposal => (
         <div className="jur-dispute-resolution-proposal__proposal">
           <AvatarInfo
             userWallet={proposal.from.wallet}
             size="xlarge"
             type="rounded"
           />
-          <ProposalPreview proposalDetail={proposal} onView={onView} />
+          <ProposalPreview proposalDetail={proposal} onView={props.onView} />
         </div>
       ))}
     </div>

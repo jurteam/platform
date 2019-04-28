@@ -9,17 +9,24 @@ import ResolvedDisputeNotification from "../ResolvedDisputeNotification";
 import Logo from "../Logo";
 import NavigationWrapper from "../NavigationWrapper";
 
-export const PageLayout = ({ showBreadcrumbs, breadcrumbs, children }) => (
-  <Page>
-    <Header />
-    {showBreadcrumbs && (
-      <SubHeader>
-        <Breadcrumbs crumbList={breadcrumbs} />
-      </SubHeader>
-    )}
-    <Content>{children}</Content>
-  </Page>
-);
+export const PageLayout = props => {
+  const {
+    showBreadcrumbs,
+    breadcrumbs,
+    children
+  } = props;
+  return (
+    <Page>
+      <Header />
+      {showBreadcrumbs && (
+        <SubHeader>
+          <Breadcrumbs crumbList={breadcrumbs} />
+        </SubHeader>
+      )}
+      <Content>{children}</Content>
+    </Page>
+  );
+};
 
 PageLayout.defaultProps = {
   showBreadcrumbs: true

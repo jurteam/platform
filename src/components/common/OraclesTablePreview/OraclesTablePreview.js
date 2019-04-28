@@ -14,12 +14,13 @@ import { toCurrencyFormat, ellipsisString } from "../../../utils/helpers";
 import "./OraclesTablePreview.scss";
 import TimeAgo from "../TimeAgo";
 
-export const OraclesTablePreview = ({
-  currentUserWallet,
-  headers,
-  data,
-  viewAllDetails
-}) => {
+export const OraclesTablePreview = props => {
+  const {
+    currentUserWallet,
+    headers,
+    data,
+    viewAllDetails
+  } = props;
   return (
     <div className="jur-oracles-table-preview">
       <Table>

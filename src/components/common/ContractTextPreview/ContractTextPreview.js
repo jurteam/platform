@@ -5,11 +5,11 @@ import { urlify } from "../../../utils/helpers";
 
 import "./ContractTextPreview.scss";
 
-export const ContractTextPreview = ({ label, message }) => {
-  const processedMessage = urlify(message);
+export const ContractTextPreview = props => {
+  const processedMessage = urlify(props.message);
   return (
     <div className="jur-contract-text-preview">
-      <BlockTitle title={label} hideIcon />
+      <BlockTitle title={props.label} hideIcon />
       <div
         className="jur-contract-text-preview__message"
         dangerouslySetInnerHTML={{ __html: processedMessage }}

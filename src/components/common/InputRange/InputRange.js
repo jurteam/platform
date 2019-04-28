@@ -3,7 +3,8 @@ import PropTypes from "prop-types";
 
 import "./InputRange.scss";
 
-export const InputRange = ({ min, max, defaultValue, onValueChange, step }) => {
+export const InputRange = props => {
+  const { min, max, defaultValue, onValueChange, step } = props;
   const calculateSpanWidth = value => {
     const width = 100 - (Number(value) * 100) / Number(max);
     return parseFloat(width).toFixed(2) + "%";

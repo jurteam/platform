@@ -11,13 +11,13 @@ import { AppContext } from "../../../bootstrap/AppProvider"; // context
 
 import "./CreateContractForm.scss";
 
-export const CreateContractForm = ({
-  onNext,
-  user,
-  contract,
-  updateContractField,
-  resetContract
-}) => {
+export const CreateContractForm = props => {
+  const {
+    onNext,
+    contract,
+    updateContractField,
+    resetContract
+  } = props;
   const [formUpdated, setFormUpdated] = useState(false);
 
   // validation setup

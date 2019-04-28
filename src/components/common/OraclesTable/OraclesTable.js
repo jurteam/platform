@@ -15,13 +15,14 @@ import { toCurrencyFormat, ellipsisString } from "../../../utils/helpers";
 
 import "./OraclesTable.scss";
 
-export const OraclesTable = ({
-  currentUserWallet,
-  headers,
-  data,
-  dispute,
-  onFileView
-}) => {
+export const OraclesTable = props => {
+  const {
+    currentUserWallet,
+    headers,
+    data,
+    dispute,
+    onFileView
+  } = props;
   const [tableRows, updateTableRows] = useState(data);
 
   const handleClick = idx => {

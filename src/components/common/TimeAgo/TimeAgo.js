@@ -1,7 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-export const TimeAgo = ({ date }) => {
+export const TimeAgo = props => {
+  const date = props.date;
   let transformedDate = "";
   const parsedDate = Date.parse(date);
   const now = Date.parse(new Date());

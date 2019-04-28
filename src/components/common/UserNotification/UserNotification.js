@@ -9,7 +9,8 @@ import TimeAgo from "../TimeAgo";
 
 import "./UserNotification.scss";
 
-export const UserNotification = ({ title, headers, data, className }) => {
+export const UserNotification = props => {
+  const { title, headers, data, className } = props;
   return (
     <div className={`jur-user-notification ${className || ""}`}>
       <h3>{title}</h3>

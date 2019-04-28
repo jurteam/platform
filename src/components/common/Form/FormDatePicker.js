@@ -5,14 +5,17 @@ import Form from "./";
 
 import "react-datepicker/dist/react-datepicker.css";
 
-export const FormDatePicker = ({ selectedDate, error, errorMsg, onChange }) => (
-  <>
-    <DatePicker
-      className={`${error ? "error" : ""}`}
-      selected={selectedDate}
-      onChange={onChange}
-      dateFormat="dd/MM/yyyy"
-    />
-    {error && errorMsg && <Form.ErrorMsg msg={errorMsg} />}
-  </>
-);
+export const FormDatePicker = props => {
+  const { selectedDate, error, errorMsg, onChange } = props;
+  return (
+    <>
+      <DatePicker
+        className={`${error ? "error" : ""}`}
+        selected={selectedDate}
+        onChange={onChange}
+        dateFormat="dd/MM/yyyy"
+      />
+      {error && errorMsg && <Form.ErrorMsg msg={errorMsg} />}
+    </>
+  );
+};

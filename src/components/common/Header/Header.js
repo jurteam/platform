@@ -7,7 +7,8 @@ import Logo from "../Logo";
 import MainNav from "../MainNav";
 import ProfilePreview from "../ProfilePreview";
 
-export const Header = ({ wallet, user, app }) => {
+export const Header = props => {
+  const { wallet, user, app } = props;
   const renderLogo = () => {
     const { tutorial } = app;
     if (typeof app === "undefined" || tutorial) return <Logo />;

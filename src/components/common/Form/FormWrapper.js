@@ -1,4 +1,4 @@
 import React from "react";
-export const FormWrapper = ({ children }) => (
-  <div className="jur-form__wrapper">{children}</div>
-);
+export const FormWrapper = props => {
+  return (<div className="jur-form__wrapper">{props.children}</div>);
+};

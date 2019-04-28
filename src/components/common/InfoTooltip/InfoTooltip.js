@@ -4,7 +4,8 @@ import ReactTooltip from 'react-tooltip'
 import { InfoIcon } from "../Icons/InfoIcon";
 import "./InfoTooltip.scss";
 
-export const InfoTooltip = ({ text, position }) => {
+export const InfoTooltip = props => {
+  const { text, position } = props;
   const dataAttrs = {
     "data-tip": text
   };

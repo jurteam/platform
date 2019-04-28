@@ -13,9 +13,7 @@ export const Avatar = ({ seed, size, variant, className, ...rest }) => {
     <Fragment>
       {seed && (
         <div
-          className={`jur-avatar ${className} jur-avatar--${size} ${
-            !!variant ? variants[variant] : ""
-          }`}
+          className={`jur-avatar ${className} jur-avatar--${size} ${ variant ? variants[variant] : "" }`}
           {...rest}
         >
           <Blockies seed={seed} />

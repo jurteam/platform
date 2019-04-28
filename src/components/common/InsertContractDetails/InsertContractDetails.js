@@ -10,18 +10,19 @@ import { AppContext } from "../../../bootstrap/AppProvider";
 
 import "./InsertContractDetails.scss";
 
-export const InsertContractDetails = ({
-  kpiPlaceholder,
-  resolutionProofPlaceholder,
-  kpiInitialValue,
-  resolutionProofInitialValue,
-  onKpiChange,
-  onResolutionProofChange,
-  onFileAdded,
-  uploadedFiles,
-  onView,
-  onDelete
-}) => {
+export const InsertContractDetails = props => {
+  const {
+    kpiPlaceholder,
+    resolutionProofPlaceholder,
+    kpiInitialValue,
+    resolutionProofInitialValue,
+    onKpiChange,
+    onResolutionProofChange,
+    onFileAdded,
+    uploadedFiles,
+    onView,
+    onDelete
+  } = props;
   const { labels } = useContext(AppContext);
 
   return (
