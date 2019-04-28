@@ -21,40 +21,58 @@ export class Countdown extends Component {
   }
 
   componentDidMount = () => {
-    switch (this.props.statusId) {
-      case -1: // rejected
-        break;
-      case 0: // draft
-      case 1: // waiting for counterparty
-        const date = this.getTimeLeft(this.state.duration);
-        this.setState({
-          ...date
-        });
-        break;
-      case 5: // onGoing
+    const date = this.getTimeLeft(this.state.duration);
+    const statusActions = {
+      "-1": () => {
+        // rejected
+      },
+      "0": () => {
+        // draft
+        this.setState({ ...date });
+      },
+      "1": () => {
+        // waiting for counterparty
+        this.setState({ ...date });
+      },
+      "5": () => {
+        // onGoing
         this.start(this.props.startDate, this.state.duration);
-        break;
-      case 8: // expired rosso
+      },
+      "8": () => {
+        // expired rosso
         this.setState({ expired: true });
-        break;
-      case 9: // contract closed
-      case 21: // open friendly resolution
-      case 29: // closed friendly resolution
-      case 31: // Open dispute
-        break;
-      case 35: // onGoing dispute 24h
+      },
+      "9": () => {
+        // contract closed
+      },
+      "21": () => {
+        // open friendly resolution
+      },
+      "29": () => {
+        // closed friendly resolution
+      },
+      "31": () => {
+        // Open dispute
+      },
+      "35": () => {
+        // onGoing dispute 24h
         this.start(this.props.startDate, this.state.duration);
-        break;
-      case 36: // extended Dispute 30min
+      },
+      "36": () => {
+        // extended Dispute 30min
         this.start(this.props.startDate, this.state.duration);
-        break;
-      case 38: // expired dispute
+      },
+      "38": () => {
+        // expired dispute
         this.setState({ expired: true });
-        break;
-      case 39: // dispute closed
-        break;
-      default:
-    }
+      },
+      "39": () => {
+        // dispute closed
+      },
+      "default": () => {}
+    };
+    const key = this.props.statusId || "default";
+    statusActions[key.toString()]();
   };
 
   componentWillUnmount = () => {
@@ -77,14 +95,19 @@ export class Countdown extends Component {
   }
 
   getExpiringStatus(milliseconds) {
-    if (
-      (this.props.statusId === 5 &&
-        milliseconds < this.props.expireAlertFrom) ||
-      (this.props.statusId === 35 && milliseconds <= 3600000) ||
-      this.props.statusId === 36
-    ) {
-      return true;
-    }
+    const { statusId, expireAlertFrom } = this.props;
+    const expireStatus = {
+      "5": () => {
+        return milliseconds < expireAlertFrom;
+      },
+      "35": () => {
+        return milliseconds <= 3600000;
+      },
+      "36": () => (true),
+      "default": () => false
+    };
+    const key = statusId || "default";
+    return expireStatus[key.toString()]();
   }
 
   calculatePercentage(milliseconds) {
