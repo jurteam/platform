@@ -46,11 +46,11 @@ const data = [
     ethAddress: '0x55fe002aeff02f77364de339a1292923a15844b8',
     vote: '0x55fe002eff02f77364de339a1292923a15844b8',
     message: '',
-    evidences: [{
-      name: 'file1.pdf',
-      name: 'file2.pdf',
-      name: 'file3.pdf',
-    }],
+    evidences: [
+      { name: 'file1.pdf' },
+      { name: 'file2.pdf' },
+      { name: 'file3.pdf' }
+    ],
     amount: 38974,
     date: '2019-03-08T14:25:44.335Z'
   },
