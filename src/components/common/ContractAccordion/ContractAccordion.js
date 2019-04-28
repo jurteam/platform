@@ -28,7 +28,7 @@ export const ContractAccordion = props => {
         className="jur-contract-accordion__header"
         onClick={() => setOpenState(!isOpen)}
       >
-        <span class="jur-contract-accordion__title">
+        <span className="jur-contract-accordion__title">
           {title}
           {tooltip && <InfoTooltip />}
         </span>
