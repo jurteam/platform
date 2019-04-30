@@ -14,12 +14,14 @@ class Activity extends Model implements HasMedia
     protected $fillable = [
         'readed',
         'to_wallet',
+        'wallet',
         'message',
         'proposal_part_a',
         'proposal_part_b',
         'status',
         'status_code',
-        'user_id'
+        'user_id',
+        'contract_id'
     ];
 
     public function scopeFilters($query, $filters)

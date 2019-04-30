@@ -83,7 +83,7 @@ class Contract extends Model implements HasMedia
      */
     public function updateStatusByCode($params)
     {
-        $user = User::byWallet($params->header('wallet'))->firstOrFail();
+        $user = User::byWallet($params->header('wallet'))->first();
         $status = ContractStatus::byCode($params->code)->firstOrFail();
 
         $this->update(['contract_status_id' => $status->id]);
@@ -94,7 +94,7 @@ class Contract extends Model implements HasMedia
         if ($params->code == 21) {
             $this->flagAsFriendlyResolution();
         }
-        
+
         $activity = $this->recordActivities(array_merge($params->all(), [
             'status' => $status->label,
             'status_code' => $status->code,

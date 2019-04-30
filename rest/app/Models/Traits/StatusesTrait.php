@@ -2,8 +2,9 @@
 
 namespace App\Models\Traits;
 
-use App\Events\NotifyCounterPart;
 use App\Models\User;
+use App\Models\Activity;
+use App\Events\NotifyCounterPart;
 
 trait StatusesTrait
 {
@@ -43,14 +44,13 @@ trait StatusesTrait
     {
         $attributes = $this->getNotifyData($activity);
         if (! empty($attributes['to']['address'])) {
-            event(new NotifyCounterPart($contract, $attributes));
+            event(new NotifyCounterPart($activity->contract, $attributes));
         }
     }
 
     protected function getNotifyData($activity)
     {
         $contract = $activity->contract;
-
         if ($contract->part_a_wallet == $activity->wallet) {
             return [
                 'from' => [

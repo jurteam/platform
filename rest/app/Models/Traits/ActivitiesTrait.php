@@ -29,7 +29,7 @@ trait ActivitiesTrait
     public function recordActivities($params, $user)
     {
         $attributes = array_merge($params, [
-            'user_id' => $user->id,
+            'user_id' => $user ? $user->id : null,
             'contract_id' => $this->id
         ]);
         return Activity::create($attributes);

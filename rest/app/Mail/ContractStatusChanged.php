@@ -49,18 +49,20 @@ class ContractStatusChanged extends Mailable
 
     /**
      * Get the label from the status changed
-     * 
+     *
      * @return string
      */
     protected function getContractStatusSubject()
     {
         $labels = config('jur.activities.labels');
+        $contract = $this->contract;
 
         $label = array_filter($labels, function($label) use($contract) {
             return $label['status_code'] == $contract->status->code;
         });
+        $currentLabel = array_pop($label);
 
-        return $label['label_name'] . ' ' . $label['label_status'];
+        return $currentLabel['label_name'] . ' ' . $currentLabel['label_status'];
     }
 
     protected function getFromData()

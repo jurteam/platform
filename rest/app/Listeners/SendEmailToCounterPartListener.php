@@ -5,8 +5,9 @@ namespace App\Listeners;
 use App\Events\ExampleEvent;
 use App\Events\NotifyCounterPart;
 use App\Mail\ContractStatusChanged;
-use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
 class SendEmailToCounterPartListener
 {
@@ -28,11 +29,9 @@ class SendEmailToCounterPartListener
      */
     public function handle(NotifyCounterPart $event)
     {
-        $to = $event->attributes['to']['email'];
-
-        Mail::to($to)
+        Mail::to($event->attributes['to']['address'])
             ->send(new ContractStatusChanged(
-                $event->contract
+                $event->contract,
                 $event->attributes['from']
             ));
     }
