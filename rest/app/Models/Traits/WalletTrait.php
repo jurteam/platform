@@ -13,7 +13,9 @@ trait WalletTrait
      */
     public function scopeByWallet($query, $wallet)
     {
-        return $query->whereWallet($wallet);
+        $lowerWallet = strtolower($wallet);
+        
+        return $query->whereRaw('LOWER(wallet) = ?', [$lowerWallet]);
     }
 
     /**

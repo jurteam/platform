@@ -2,6 +2,11 @@
 
 return [
 
+    'from' => [
+        'address' => env('JUR_MAIL_FROM_ADDRESS', 'hello@example.com'),
+        'name' => env('JUR_MAIL_FROM_NAME', 'Example'),
+    ],
+
     'statuses' => [
         [
             'label' => 'Rejected',
@@ -64,6 +69,44 @@ return [
     'activities' => [
         'types' => [
             'status_changed' => 'status_changed'
+        ],
+
+        'labels' => [      
+            [
+                'status_code' => -1,
+                'label_name' => 'The Contract was rejected',
+                'label_status' => null
+            ],            
+            [
+                'status_code' => 1,
+                'label_name' => 'Sent contract to',
+                'label_status' => null
+            ],
+            [
+                'status_code' => 2,
+                'label_name' => 'Accepted',
+                'label_status' => null
+            ],       
+            [
+                'status_code' => 5,
+                'label_name' => 'Paid contract value of :value JUR',
+                'label_status' => null
+            ],                    
+            [
+                'status_code' => 21,
+                'label_name' => 'Offered a',
+                'label_status' => 'Friendly resolution'
+            ],                 
+            [
+                'status_code' => 31,
+                'label_name' => 'Created an',
+                'label_status' => 'Open Dispute'
+            ],
+            [
+                'status_code' => 35,
+                'label_name' => 'Sent',
+                'label_status' => 'Open Dispute'
+            ]            
         ]
     ]
 ];
