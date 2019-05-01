@@ -2,6 +2,8 @@
 
 return [
 
+    'url' => env('JUR_FE_URL'),
+
     'from' => [
         'address' => env('JUR_MAIL_FROM_ADDRESS', 'hello@example.com'),
         'name' => env('JUR_MAIL_FROM_NAME', 'Example'),
@@ -84,7 +86,7 @@ return [
             ],
             [
                 'status_code' => 2,
-                'label_name' => 'Accepted',
+                'label_name' => 'Accepted :name',
                 'label_status' => null
             ],
             [

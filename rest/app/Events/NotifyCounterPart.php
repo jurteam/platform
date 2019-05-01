@@ -2,11 +2,11 @@
 
 namespace App\Events;
 
-use App\Models\Contract;
+use App\Models\Activity;
 
 class NotifyCounterPart extends Event
 {
-	public $contract;
+	public $activity;
 
 	public $attributes;
 
@@ -15,9 +15,9 @@ class NotifyCounterPart extends Event
      *
      * @return void
      */
-    public function __construct(Contract $contract, array $attributes)
+    public function __construct(Activity $activity, array $attributes)
     {
-        $this->contract = $contract;
+        $this->activity = $activity;
         $this->attributes = $attributes;
     }
 }

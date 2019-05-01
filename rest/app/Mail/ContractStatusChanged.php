@@ -2,17 +2,17 @@
 
 namespace App\Mail;
 
-use App\Models\Contract;
+use App\Models\Activity;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
 class ContractStatusChanged extends Mailable
 {
     use Queueable, SerializesModels;
 
-    protected $contract;
+    protected $activity;
 
     protected $attributes;
 
@@ -21,9 +21,9 @@ class ContractStatusChanged extends Mailable
      *
      * @return void
      */
-    public function __construct(Contract $contract, array $attributes)
+    public function __construct(Activity $activity, array $attributes)
     {
-        $this->contract = $contract;
+        $this->activity = $activity;
         $this->attributes = $attributes;
     }
 
@@ -34,35 +34,18 @@ class ContractStatusChanged extends Mailable
      */
     public function build()
     {
-        $subject = $this->getContractStatusSubject();
         $from = $this->getFromData();
+        $contractUrl = config('jur.url') . "/contacts/detail/{$this->activity->contract_id}";
 
         return $this
-                ->subject($subject)
+                ->subject($this->activity->abstract)
                 ->from($from['address'], $from['name'])
                 ->markdown('vendor.contracts.changed', [
-                    'contract' => $this->contract,
+                    'contract' => $this->activity->contract,
                     'attributes' => $this->attributes,
-                    'subject' => $subject
+                    'subject' => $this->activity->abstract,
+                    'contractUrl' => $contractUrl
                 ]);
-    }
-
-    /**
-     * Get the label from the status changed
-     *
-     * @return string
-     */
-    protected function getContractStatusSubject()
-    {
-        $labels = config('jur.activities.labels');
-        $contract = $this->contract;
-
-        $label = array_filter($labels, function($label) use($contract) {
-            return $label['status_code'] == $contract->status->code;
-        });
-        $currentLabel = array_pop($label);
-
-        return $currentLabel['label_name'] . ' ' . $currentLabel['label_status'];
     }
 
     protected function getFromData()

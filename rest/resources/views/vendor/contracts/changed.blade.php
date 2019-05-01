@@ -3,8 +3,8 @@
 
 {{$attributes['name']}} {{$subject}}
 
-@component('mail::button', ['url' => ''])
-Show detail
+@component('mail::button', ['url' => $contractUrl])
+Show Contract Detail
 @endcomponent
 
 Thanks,<br>

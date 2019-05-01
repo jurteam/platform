@@ -31,7 +31,7 @@ class SendEmailToCounterPartListener
     {
         Mail::to($event->attributes['to']['address'])
             ->send(new ContractStatusChanged(
-                $event->contract,
+                $event->activity,
                 $event->attributes['from']
             ));
     }

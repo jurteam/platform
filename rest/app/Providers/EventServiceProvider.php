@@ -15,5 +15,8 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\NotifyCounterPart' => [
             'App\Listeners\SendEmailToCounterPartListener',
         ],
+        'App\Events\NotifyContractParts' => [
+            'App\Listeners\SendEmailToContractPartListener',
+        ]
     ];
 }

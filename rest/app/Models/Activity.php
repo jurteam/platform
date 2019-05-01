@@ -13,6 +13,7 @@ class Activity extends Model implements HasMedia
 
     protected $fillable = [
         'readed',
+        'abstract',
         'to_wallet',
         'wallet',
         'message',
@@ -67,5 +68,10 @@ class Activity extends Model implements HasMedia
     public function attachments()
     {
         return $this->morphMany(config('medialibrary.media_model'), 'model');
+    }
+
+    public function fromSystem()
+    {
+        return is_null($this->wallet);
     }
 }

@@ -133,4 +133,14 @@ class Contract extends Model implements HasMedia
 
         return $contract;
     }
+
+    public function getWhoPaysAmount()
+    {
+        if ($this->who_pays == $this->part_a_wallet) {
+            return $this->value + $this->part_a_penalty_fee;
+        } elseif ($this->who_pays == $this->part_b_wallet) {
+            return $this->value + $this->part_b_penalty_fee;
+        }
+        return 0;
+    }
 }
