@@ -72,7 +72,7 @@ trait ActivitiesTrait
             $labelText = __("messages.labels.{$indexKey[0]}.label_name", [
                 'name' => $contract->name
             ]);
-        } elseif ($contract->status->code == 2) {
+        } elseif ($contract->status->code == 5) {
             $labelText = __("messages.labels.{$indexKey[0]}.label_name", [
                 'value' => $contract->getWhoPaysAmount()
             ]);
