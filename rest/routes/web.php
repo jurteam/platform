@@ -52,6 +52,7 @@ $api->version('v1', function($api) {
 
         $api->group(['prefix' => 'votes'], function($api) {
             $api->get('{id}', 'App\Http\Controllers\ContractVotesController@index');
+            $api->get('live/{id}', 'App\Http\Controllers\ContractVotesController@liveVotes');
             $api->post('/', 'App\Http\Controllers\ContractVotesController@store');
             $api->delete('{id}', 'App\Http\Controllers\ContractVotesController@destroy');
             $api->group(['prefix' => 'medias'], function($api) {

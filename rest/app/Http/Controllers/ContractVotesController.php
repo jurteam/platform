@@ -29,6 +29,20 @@ class ContractVotesController extends Controller
     }
 
     /**
+     * @param  \App\Filters\ContractVoteFilters $filters
+     * @param  int $id
+     * @return \League\Fractal\Resource\Collection
+     */
+    public function liveVotes(ContractVoteFilters $filters, $id)
+    {
+        $votes = ContractVote::byContract($id)
+                        ->filters($filters)
+                        ->get();
+
+        return $this->response->collection($votes, new ContractVoteTransformer);
+    }
+
+    /**
      * Store a vote.
      *
      * @param  \Illuminate\Http\Request $request
