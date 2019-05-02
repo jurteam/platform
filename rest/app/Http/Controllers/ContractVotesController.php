@@ -6,6 +6,7 @@ use App\Models\Contract;
 use App\Models\ContractVote;
 use Illuminate\Http\Request;
 use Dingo\Api\Routing\Helpers;
+use App\Filters\ContractVoteFilters;
 use App\Transformers\ContractVoteTransformer;
 use App\Http\Controllers\Traits\MediableTrait;
 
@@ -18,10 +19,11 @@ class ContractVotesController extends Controller
      * @param  int $id
      * @return \League\Fractal\Resource\Paginator
      */
-    public function index(Request $request, $id)
+    public function index(ContractVoteFilters $filters, $id)
     {
-        $contract = Contract::findOrFail($id);
-        $votes = $contract->votes()->latest()->paginate(10);
+        $votes = ContractVote::byContract($id)
+                        ->filters($filters)
+                        ->latest()->paginate(15);
 
         return $this->response->paginator($votes, new ContractVoteTransformer);
     }

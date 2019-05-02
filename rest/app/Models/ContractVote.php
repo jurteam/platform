@@ -23,6 +23,16 @@ class ContractVote extends Model implements HasMedia
         'hash'
     ];
 
+    public function scopeFilters($query, $filters)
+    {
+        return $filters->apply($query);
+    }
+
+    public function scopeByContract($query, $contractId)
+    {
+        return $query->whereContractId($contractId);
+    }
+
     /**
      * Retrieve contract.
      *
