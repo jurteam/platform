@@ -62,7 +62,7 @@ trait ActivitiesTrait
 
         $indexKey = array_keys($jurLabel);
         $currentLabel = array_pop($jurLabel);
-        $labelText = currentLabel['label_name'];
+        $labelText = $currentLabel['label_name'];
 
         if ($contract->status->code == 1) {
             $labelText = __("messages.labels.{$indexKey[0]}.label_name", [
