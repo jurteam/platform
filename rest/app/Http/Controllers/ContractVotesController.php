@@ -35,11 +35,17 @@ class ContractVotesController extends Controller
      */
     public function liveVotes(ContractVoteFilters $filters, $id)
     {
+        $contract = Contract::findOrFail($id);
         $votes = ContractVote::byContract($id)
                         ->filters($filters)
                         ->get();
 
-        return $this->response->collection($votes, new ContractVoteTransformer);
+        $response = $this->response->collection($votes, new ContractVoteTransformer)->getContent();
+
+        return response()->json([
+            'current_winner' => $contract->getTheWinner(false),
+            'data' => json_decode($response)
+        ]);
     }
 
     /**

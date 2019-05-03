@@ -123,15 +123,22 @@ trait DisputeTrait
         return $this->votes()->whereRaw('LOWER(oracle_wallet) = ?', [$currentWallet])->count() > 0;
     }
 
-    public function getTheWinner()
+    public function getTheWinner($partials = false)
     {
-        $totalPartA = $this->getTokensPart('part_a_wallet');
-        $totalPartB = $this->getTokensPart('part_b_wallet');
+        $statuses = config('jur.statuses');
+        $validStatus = array_filter($statuses, function($status) {
+            return in_array($status['code'], [9,29,39]);
+        });
 
-        if ($totalPartA > $totalPartB) {
-            return $this->part_a_wallet;
-        } elseif ($totalPartB > $totalPartA) {
-            return $this->part_b_wallet;
+        if (in_array($this->status->code, $validStatus) || !$partials) {
+            $totalPartA = $this->getTokensPart('part_a_wallet');
+            $totalPartB = $this->getTokensPart('part_b_wallet');
+
+            if ($totalPartA > $totalPartB) {
+                return $this->part_a_wallet;
+            } elseif ($totalPartB > $totalPartA) {
+                return $this->part_b_wallet;
+            }
         }
 
         return null;
