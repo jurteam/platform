@@ -25,6 +25,10 @@ trait StatusesTrait
 
     public function getCurrentStatusUpdatedAt()
     {
+        if (! empty($this->chain_updated_at)) {
+            return $this->chain_updated_at->valueOf();
+        }
+
         $code = $this->status->code;
 
         $statusActivity = $this->activities()

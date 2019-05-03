@@ -39,7 +39,8 @@ class Contract extends Model implements HasMedia
         'is_a_friendly_resolution',
         'who_pays',
         'user_id',
-        'wallet'
+        'wallet',
+        'chain_updated_at'
     ];
 
     /**
@@ -48,6 +49,10 @@ class Contract extends Model implements HasMedia
     protected $casts = [
         'is_a_dispute' => 'boolean',
         'is_a_friendly_resolution' => 'boolean'
+    ];
+
+    protected $dates = [
+        'chain_updated_at'
     ];
 
     public function scopeFilters($query, $filters)

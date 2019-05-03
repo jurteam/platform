@@ -22,8 +22,11 @@ class Activity extends Model implements HasMedia
         'status',
         'status_code',
         'user_id',
-        'contract_id'
+        'contract_id',
+        'chain_updated_at'
     ];
+
+    protected $dates = ['chain_updated_at'];
 
     public function scopeFilters($query, $filters)
     {
@@ -73,5 +76,13 @@ class Activity extends Model implements HasMedia
     public function fromSystem()
     {
         return is_null($this->wallet);
+    }
+
+    public function getUpdatedDate()
+    {
+        if (! empty($this->chain_updated_at)) {
+            return $this->chain_updated_at->valueOf();
+        }
+        return $this->created_at->valueOf();
     }
 }
