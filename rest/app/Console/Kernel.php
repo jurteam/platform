@@ -16,6 +16,7 @@ class Kernel extends ConsoleKernel
         \Laravelista\LumenVendorPublish\VendorPublishCommand::class,
         \App\Console\Commands\StorageLinkCommand::class,
         \App\Console\Commands\Notifications\NotificationMakeCommand::class,
+        \App\Console\Commands\Mails\MailMakeCommand::class,
     ];
 
     /**

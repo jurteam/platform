@@ -4,6 +4,8 @@ namespace App\Models\Traits;
 
 trait StatusesTrait
 {
+    use StatusesNotifable;
+
     public function flagAsOpenDispute()
     {
         $this->update(['is_a_dispute' => true]);
@@ -23,6 +25,10 @@ trait StatusesTrait
 
     public function getCurrentStatusUpdatedAt()
     {
+        if (! empty($this->chain_updated_at)) {
+            return $this->chain_updated_at->valueOf();
+        }
+
         $code = $this->status->code;
 
         $statusActivity = $this->activities()

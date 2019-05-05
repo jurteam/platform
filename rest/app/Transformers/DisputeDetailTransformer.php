@@ -82,6 +82,19 @@ class DisputeDetailTransformer extends TransformerAbstract
     }
 
     /**
+     * Include attachments
+     *
+     * @param  \App\Models\Contract $contract
+     * @return \League\Fractal\Resource\Collection
+     */
+    public function includeAttachments(Contract $contract)
+    {
+        $attachments = $contract->getMedia('attachments');
+
+        return $this->collection($attachments, new AttachmentTransformer);
+    }
+
+    /**
      * Check the user render full name option.
      *
      * @param  string $wallet

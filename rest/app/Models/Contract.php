@@ -39,7 +39,8 @@ class Contract extends Model implements HasMedia
         'is_a_friendly_resolution',
         'who_pays',
         'user_id',
-        'wallet'
+        'wallet',
+        'chain_updated_at'
     ];
 
     /**
@@ -48,6 +49,10 @@ class Contract extends Model implements HasMedia
     protected $casts = [
         'is_a_dispute' => 'boolean',
         'is_a_friendly_resolution' => 'boolean'
+    ];
+
+    protected $dates = [
+        'chain_updated_at'
     ];
 
     public function scopeFilters($query, $filters)
@@ -83,6 +88,7 @@ class Contract extends Model implements HasMedia
      */
     public function updateStatusByCode($params)
     {
+        $user = User::byWallet($params->header('wallet'))->first();
         $status = ContractStatus::byCode($params->code)->firstOrFail();
 
         $this->update(['contract_status_id' => $status->id]);
@@ -94,13 +100,14 @@ class Contract extends Model implements HasMedia
             $this->flagAsFriendlyResolution();
         }
 
-        $user = User::byWallet($params->header('wallet'))->firstOrFail();
-        $this->recordActivities(array_merge($params->all(), [
+        $activity = $this->recordActivities(array_merge($params->all(), [
             'status' => $status->label,
             'status_code' => $status->code,
             'to_wallet' => $this->getSendTo($params->header('wallet')),
             'wallet' => $params->header('wallet')
         ]), $user);
+
+        $this->notifyCounterPart($activity);
     }
 
     /**
@@ -130,5 +137,15 @@ class Contract extends Model implements HasMedia
         ], $user);
 
         return $contract;
+    }
+
+    public function getWhoPaysAmount()
+    {
+        if ($this->who_pays == $this->part_a_wallet) {
+            return $this->value + $this->part_a_penalty_fee;
+        } elseif ($this->who_pays == $this->part_b_wallet) {
+            return $this->value + $this->part_b_penalty_fee;
+        }
+        return 0;
     }
 }

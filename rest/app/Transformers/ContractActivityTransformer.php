@@ -28,7 +28,7 @@ class ContractActivityTransformer extends TransformerAbstract
         return [
             'id' => $activity->id,
             'readed' => $activity->readed,
-            'date' => $activity->created_at->valueOf(),
+            'date' => $activity->getUpdatedDate(),
             'contract_name' => $activity->contract->name,
             'contract' => $activity->contract_id,
             'part_a' => $activity->contract->part_a_wallet,

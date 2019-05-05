@@ -13,14 +13,20 @@ class Activity extends Model implements HasMedia
 
     protected $fillable = [
         'readed',
+        'abstract',
         'to_wallet',
+        'wallet',
         'message',
         'proposal_part_a',
         'proposal_part_b',
         'status',
         'status_code',
-        'user_id'
+        'user_id',
+        'contract_id',
+        'chain_updated_at'
     ];
+
+    protected $dates = ['chain_updated_at'];
 
     public function scopeFilters($query, $filters)
     {
@@ -65,5 +71,18 @@ class Activity extends Model implements HasMedia
     public function attachments()
     {
         return $this->morphMany(config('medialibrary.media_model'), 'model');
+    }
+
+    public function fromSystem()
+    {
+        return is_null($this->wallet);
+    }
+
+    public function getUpdatedDate()
+    {
+        if (! empty($this->chain_updated_at)) {
+            return $this->chain_updated_at->valueOf();
+        }
+        return $this->created_at->valueOf();
     }
 }
