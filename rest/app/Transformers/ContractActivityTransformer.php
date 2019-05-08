@@ -25,9 +25,11 @@ class ContractActivityTransformer extends TransformerAbstract
      */
     public function transform(Activity $activity)
     {
+        $wallet = request()->header('wallet');
+
         return [
             'id' => $activity->id,
-            'readed' => $activity->readed,
+            'readed' => $activity->getStatusFromWallet($wallet),
             'date' => $activity->getUpdatedDate(),
             'contract_name' => $activity->contract->name,
             'contract' => $activity->contract_id,
