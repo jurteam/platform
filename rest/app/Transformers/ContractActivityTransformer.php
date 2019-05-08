@@ -70,7 +70,7 @@ class ContractActivityTransformer extends TransformerAbstract
      */
     protected function getSystem(Activity $activity)
     {
-        if (in_array($activity->status_code, [39,8])) {
+        if (in_array($activity->status_code, [39,38,36])) {
             return true;
         }
         return false;
