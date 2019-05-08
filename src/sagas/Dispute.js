@@ -19,7 +19,11 @@ import {
   DISPUTE_MEDIA_DELETE,
   DISPUTE_MEDIA_DELETED,
   DISPUTE_PAGE_CHANGE,
-  CHAIN_GET_DISPUTE
+  CHAIN_GET_DISPUTE,
+  DELETE_ALL_DISPUTES,
+  RESET_ALL_DISPUTES,
+  PUT_VOTE,
+  RESET_VOTE
 } from "../reducers/types";
 
 import { log } from "../utils/helpers"; // log helper
@@ -114,90 +118,55 @@ export function* fetchDisputes() {
 }
 
 // Update
-export function* updateDispute(action) {
-  log("updateDispute - run");
-  yield put({ type: DISPUTE_SAVING, payload: true });
+export function* onVote(action) {
+  log("onVote - run");
+  yield put({ type: DISPUTE_UPDATING, payload: true });
   const {
-    id,
-    DisputeName,
-    kpi,
-    resolutionProof,
-    category,
-    value,
-    whoPays,
-    duration,
-    hasPenaltyFee,
-    partAPenaltyFee,
-    partBPenaltyFee
-  } = yield select(getCurrentDispute);
+    vote: {
+      amount,
+      contract_id,
+      message,
+      hash,
+      oracle_wallet,
+      wallet_part
+    },
+    attachments
+  } = action;
 
   const zero = Number(0).toFixed(process.env.REACT_APP_TOKEN_DECIMALS);
 
-  const toUpdate = new FormData();
-  // toUpdate.append('_method', 'PUT');
-  if (DisputeName) toUpdate.append("name", DisputeName);
-  if (kpi) toUpdate.append("kpi", kpi);
-  if (resolutionProof) toUpdate.append("resolution_proof", resolutionProof);
-  if (category) toUpdate.append("category", category);
-  if (whoPays) toUpdate.append("who_pays", whoPays);
-  toUpdate.append(
-    "value",
-    Number(value).toFixed(process.env.REACT_APP_TOKEN_DECIMALS)
-  ); // always
-  if (duration && duration.days)
-    toUpdate.append("duration_days", duration.days);
-  if (duration && duration.hours)
-    toUpdate.append("duration_hours", duration.hours);
-  if (duration && duration.minutes)
-    toUpdate.append("duration_minutes", duration.minutes);
-  toUpdate.append("has_penalty_fee", hasPenaltyFee ? 1 : 0); // always
-  if (hasPenaltyFee) {
-    if (partAPenaltyFee)
-      toUpdate.append(
-        "part_a_penalty_fee",
-        hasPenaltyFee && Number(partAPenaltyFee) <= Number(value)
-          ? Number(partAPenaltyFee).toFixed(
-              process.env.REACT_APP_TOKEN_DECIMALS
-            )
-          : Number(value).toFixed(process.env.REACT_APP_TOKEN_DECIMALS)
-      ); // handle maximum value possibile
-    if (partBPenaltyFee)
-      toUpdate.append(
-        "part_b_penalty_fee",
-        hasPenaltyFee && Number(partBPenaltyFee) <= Number(value)
-          ? Number(partBPenaltyFee).toFixed(
-              process.env.REACT_APP_TOKEN_DECIMALS
-            )
-          : Number(value).toFixed(process.env.REACT_APP_TOKEN_DECIMALS)
-      ); // handle maximum value possibile
-  } else {
-    // reset penalty fees
-    toUpdate.append("part_a_penalty_fee", zero);
-    toUpdate.append("part_b_penalty_fee", zero);
-  }
-  toUpdate.append("in_case_of_dispute", "open"); // default
+  const voteData = new FormData();
+  // voteData.append('_method', 'PUT');
+  if (contract_id) voteData.append("contract_id", contract_id);
+  voteData.append("hash", hash || "0x0");
+  if (wallet_part) voteData.append("wallet_part", wallet_part);
+  if (oracle_wallet) voteData.append("oracle_wallet", oracle_wallet);
+  if (message) voteData.append("message", message);
+  voteData.append("amount", Number(amount).toFixed(process.env.REACT_APP_TOKEN_DECIMALS)); // always
 
-  for (let i = 0; i < action.attachments.length; i++) {
+  for (let i = 0; i < attachments.length; i++) {
     // iteate over any file sent over appending the files to the form data.
-    let file = action.attachments[i];
+    let file = attachments[i];
 
-    toUpdate.append("attachments[" + i + "]", file);
+    voteData.append("attachments[" + i + "]", file);
   }
-  // toUpdate.append("attachments[]", action.attachments);
+  // voteData.append("attachments[]", attachments);
 
-  log("updateDispute - DisputeData", toUpdate);
+  log("onVote - voteData", voteData);
 
   try {
-    const response = yield call(Disputes.update, toUpdate, id);
-    log("updateDispute - Dispute created", response);
-    yield put({ type: SET_DISPUTE, payload: response.data.data });
-    yield put({ type: FETCH_DISPUTES });
+    const response = yield call(Disputes.vote, voteData);
+    log("onVote - vote created", response);
 
-    // const { history } = action;
-    // history.push(`/Disputes/detail/${id}`); // go to Dispute detail for furter operations
+    yield put({ type: DISPUTE_UPDATING, payload: false });
+    yield put({ type: RESET_VOTE });
+    // TODO: fetch new votes
 
     if (typeof action.callback === "function") action.callback(); // invoke callback if needed
   } catch (error) {
+
+    yield put({ type: DISPUTE_UPDATING, payload: false });
+
     yield put({ type: API_CATCH, error });
     if (typeof action.callback === "function") action.callback(); // invoke callback if needed
   }
@@ -238,10 +207,20 @@ export function* resetUpdating() {
   yield put({ type: DISPUTE_UPDATING, payload: false });
 }
 
+export function* onDeleteAllDisputes() {
+  try {
+    yield call(Disputes.deleteAll);
+    yield put({ type: DISPUTE_DELETED });
+    yield put({ type: RESET_ALL_DISPUTES });
+  } catch (error) {
+    yield put({ type: API_CATCH, error });
+  }
+}
+
 // spawn tasks base certain actions
 export default function* disputeSagas() {
   log("run", "DisputeSagas");
-  yield takeEvery(PUT_DISPUTE, updateDispute);
+  yield takeEvery(PUT_VOTE, onVote);
   yield takeEvery(API_GET_DISPUTE, getDispute);
   yield takeLatest(API_DELETE_DISPUTE, deleteDispute);
   yield takeEvery(FETCH_DISPUTES, fetchDisputes);
@@ -250,4 +229,5 @@ export default function* disputeSagas() {
   yield takeLatest(SET_DISPUTE, resetUpdating);
   yield takeLatest(DISPUTE_MEDIA_DELETE, deleteDisputeMedia);
   yield takeLatest(DISPUTE_PAGE_CHANGE, onDisputePageChange);
+  yield takeLatest(DELETE_ALL_DISPUTES, onDeleteAllDisputes);
 }

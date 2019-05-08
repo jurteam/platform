@@ -30,9 +30,9 @@ class ProfileProvider extends Component {
           component: <Privacy />
         },
         {
-          label: i18n.notification,
+          label: i18n.notifications,
           to: "/profile/notifications",
-          component: <UserNotification title="Notification" headers={[{label: 'Date',sortable: true},{label: 'Message'}]} data={[{id: 1,date: 'few seconds ago',message: 'Lorem ipsum dolor sit amet, consectetur adipiscing…'},{id: 2,date: 'few minutes ago',message: 'Lorem ipsum dolor sit amet, consectetur adipiscing…'},{id: 3,date: 'few hours ago',message: 'Lorem ipsum dolor sit amet, consectetur adipiscing…'}]} />
+          component: <UserNotification />
 
         },
         { label: i18n.faq, to: "/profile/faq", component: <Faq /> },

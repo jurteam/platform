@@ -30,24 +30,30 @@ export const Viewer = (props) => {
     const { labels } = useContext(AppContext);
 
   // cDM
-  // useEffect(() => {
+  useEffect(() => {
 
-  //   const { current: { idx }, counterparties } = props;
+    const { current, counterparties } = props;
 
-  //   if (typeof idx !== "undefined") {
+    if (typeof current !== "undefined" || typeof current.idx !== "undefined") {
 
-  //     console.log("Viewer - cDM", {
-  //       props: props,
-  //       selectedCounterpartyIndex: idx,
-  //       selectedCounterparty: counterparties[idx]
-  //     });
+      const { idx } = current;
 
-  //     setState({
-  //       selectedCounterpartyIndex: idx,
-  //       selectedCounterparty: counterparties[idx]
-  //     });
-  //   }
-  // }, []);
+      console.log("Viewer - cDM", {
+        props: props,
+        selectedCounterpartyIndex: idx,
+        selectedCounterparty: counterparties[idx]
+      });
+
+      setState({
+        selectedCounterpartyIndex: idx,
+        selectedCounterparty: counterparties[idx]
+      });
+
+      changeInput("wallet_part", counterparties[idx].wallet.toLowerCase());
+      changeInput("contract_id", contract.contractID);
+      changeInput("oracle_wallet", currentWallet);
+    }
+  }, [props.current]);
 
   const getFileType = filePath =>
     filePath.slice(((filePath.lastIndexOf(".") - 1) >>> 0) + 2);
@@ -60,15 +66,9 @@ export const Viewer = (props) => {
     changeInput("wallet_part", counterparty.wallet.toLowerCase());
   };
 
-  const onVoteSubmit = ev => {
-    ev.preventDefault();
-
-    props.onVoteSubmit({
-      jurTokens: state.jurTokens,
-      explanation: state.explanation,
-      files: state.files,
-      for: state.selectedCounterparty
-    });
+  const onVoteSubmit = () => {
+    console.log("onVoteSubmit", props.onVoteSubmit);
+    props.onVoteSubmit();
   };
 
     const {
@@ -85,10 +85,11 @@ export const Viewer = (props) => {
       hasError,
       onVote,
       current,
+      contract,
       onInputChange,
       onFileAdded,
       onReject,
-      currentUserWallet,
+      currentWallet,
       metaMaskError,
       fullWidthViewer
     } = props;
@@ -191,7 +192,7 @@ export const Viewer = (props) => {
                     className="ur-viewer__form__btn"
                     variant="contained"
                     fullWidth
-                    onClick={onVoteSubmit}
+                    onClick={() => onVoteSubmit()}
                   >
                     {labels.vote}
                   </Button>
@@ -227,10 +228,12 @@ export const Viewer = (props) => {
             <div className="jur-viewer__voting-progress">
               <div className="jur-viewer__voting-progress__items">
                 <DisputeVote
-                  currentUserWallet={currentUserWallet}
+                  currentWallet={currentWallet}
                   statusId={statusId}
                   counterparties={counterparties}
                   onVote={onVote}
+                  winner={contract.winner}
+                  earnings={contract.earnings}
                   onReject={onReject}
                   canVote={statusId === 35 && !!filePath}
                 />

@@ -14,7 +14,9 @@ import {
   DISPUTE_MEDIA_DELETE,
   DISPUTE_MEDIA_DELETED,
   RESET_DISPUTE,
-  RESET_DISPUTES
+  RESET_DISPUTES,
+  RESET_ALL_DISPUTES,
+  RESET_VOTE
 } from "./types";
 
 const INITIAL_STATE = {
@@ -64,11 +66,9 @@ const INITIAL_STATE = {
   vote: {
     contract_id: null,
     message: null,
-    hash: "0x0",
     oracle_wallet: null,
     wallet_part: null,
-    amount: 0,
-    attachments: []
+    amount: 0
   },
   list: [],
   page: 1,
@@ -79,18 +79,32 @@ export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     // Setters
     case SET_DISPUTE:
-      return { ...state, current: action.payload };
+      return { ...state, current: action.payload, vote: INITIAL_STATE.vote };
 
     case DISPUTES_FETCHED:
       console.log(DISPUTES_FETCHED, action.payload);
-      return { ...state, list: action.payload.data, pagination: action.payload.meta.pagination, updatingList: false };
+      return {
+        ...state,
+        list: action.payload.data,
+        pagination: action.payload.meta.pagination,
+        updatingList: false
+      };
 
     case SET_DISPUTE_CURRENT_PAGE:
       return { ...state, page: action.payload };
 
     case SET_DISPUTE_STATUS:
       console.log(SET_DISPUTE_STATUS, action);
-      return { ...state, current: { ...state.current, statusId : action.statusId, statusLabel : action.statusLabel, statusUpdatedAt : action.statusUpdatedAt } };
+      return {
+        ...state,
+        current: {
+          ...state.current,
+          statusId: action.statusId,
+          statusLabel: action.statusLabel,
+          statusUpdatedAt: action.statusUpdatedAt
+        },
+        vote: INITIAL_STATE.vote
+      };
 
     // Updates
     case UPDATE_DISPUTE_FILTER:
@@ -113,10 +127,22 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, updatingList: action.payload };
 
     case DISPUTE_MEDIA_DELETED:
-      const updatedAttachments = state.current.attachments.data.filter(item => item.id !== action.id)
-      return { ...state, current: { ...state.current, attachments: { data: updatedAttachments } } };
+      const updatedAttachments = state.current.attachments.data.filter(
+        item => item.id !== action.id
+      );
+      return {
+        ...state,
+        current: { ...state.current, attachments: { data: updatedAttachments } }
+      };
 
     // Reset
+    case RESET_VOTE:
+      return {
+        ...state,
+        updating: INITIAL_STATE.updating,
+        vote: { ...INITIAL_STATE.vote }
+      };
+
     case RESET_DISPUTE:
       return {
         ...state,
@@ -131,6 +157,9 @@ export default (state = INITIAL_STATE, action) => {
         updating: INITIAL_STATE.updating,
         list: { ...INITIAL_STATE.list }
       };
+
+    case RESET_ALL_DISPUTES:
+      return { ...INITIAL_STATE };
 
     case API_GET_DISPUTE: // saga
     case API_DELETE_DISPUTE: // saga

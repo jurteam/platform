@@ -11,12 +11,13 @@ export const VoteProgress = ({
   highlightColor,
   onVote,
   canVote,
+  wins,
   statusId
 }) => {
   const voteOnGoing = [35, 36].indexOf(Number(statusId)) > -1;
   const closedDispute = statusId === 39;
   const votingAllowed = canVote && voteOnGoing;
-  const isWinner = counterparty.winner;
+  const isWinner = counterparty.winner || wins;
   const classes = {
     "jur-vote-progress": true,
     "jur-vote-progress--green": highlightColor === "green",

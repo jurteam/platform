@@ -92,6 +92,7 @@ export const useFormValidation = (data, schema) => {
       }
     });
 
+    console.log("Validation", newErrors);
     setErrors(newErrors);
   };
 

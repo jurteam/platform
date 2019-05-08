@@ -47,6 +47,8 @@ export const DisputeSidebar = ({
 
   const {
     statusId,
+    winner,
+    earnings,
     counterparties,
     percentagePartA,
     percentagePartB,
@@ -79,16 +81,21 @@ export const DisputeSidebar = ({
     //   date: "2019-01-08T14:25:44.335Z"
     // }
 
+    const canVote = [35,36,38].indexOf(statusId) >= 0;
+
   return (
     <div>
       {voteCounterparties && (
         <DisputeVote
-          title={labels.whoDoYouThinkIsRight}
+          title={statusId === 39 ? labels.voting : labels.whoDoYouThinkIsRight}
           statusId={statusId}
           counterparties={voteCounterparties}
+          currentWallet={currentWallet}
           onVote={onVote}
+          earnings={earnings}
+          winner={winner}
           onReject={() => alert("Rejected Contract")}
-          canVote={true}
+          canVote={canVote}
         />
       )}
       <ContractAccordion

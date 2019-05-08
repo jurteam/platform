@@ -130,3 +130,5 @@ export const ellipsisString = (str, count, length) => {
     return str;
   }
 };
+
+export const arrayColumn = (arr, n) => arr.map(x => x[n]);

@@ -23,6 +23,12 @@ class AppProvider extends Component {
       version: appReference.version,
       labels: i18n,
       metamaskLoading: true,
+      notificationsTableHeaders: [
+        {label: "", className: "jur-col--options", key: "status"},
+        {label: i18n.date, sortable: true, className: "jur-col--duration", key: "date"},
+        {label: i18n.message, key: "activity"},
+        {label: "", className: "jur-col--options", key: "opt"}
+      ],
       contractTableHeaders: [
         { label: i18n.status, sortable: false, className: "jur-col--status" },
         { label: i18n.contractName, sortable: true },

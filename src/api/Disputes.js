@@ -9,7 +9,7 @@ export class Disputes {
     return axios.get(`${root}/all`, { params: payload });
   }
   static get(payload) {
-    return axios.get(`${root}/${payload.id}`);
+    return axios.get(`${root}/${payload.id}?include=attachments`);
   }
   static addMedia(payload) {
     return axios.post(`${root}/medias/${payload.id}`, payload); // attachments
@@ -20,6 +20,14 @@ export class Disputes {
   }
   static delete(payload) {
     return axios.delete(`${root}/${payload.id}`);
+  }
+  static deleteAll() {
+    const payload = new FormData();
+    payload.append("type", "dispute");
+    return axios.delete("/contracts/delete-all", payload);
+  }
+  static vote(payload) {
+    return axios.post("votes", payload);
   }
   static deleteMedia(payload) {
     return axios.delete(`${root}/medias/${payload.id}`); // attachments delete

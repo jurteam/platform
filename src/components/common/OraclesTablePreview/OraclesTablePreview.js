@@ -21,7 +21,7 @@ export const OraclesTablePreview = ({
   viewAllDetails
 }) => {
   const { labels } = useContext(AppContext);
-  return (
+  return data.length > 0 ? (
     <div className="jur-oracles-table-preview">
       <Table>
         <TableHead>
@@ -40,16 +40,25 @@ export const OraclesTablePreview = ({
           {data.map(oracle => (
             <TableRow
               key={oracle.oracle_wallet.toLowerCase()}
-              className={oracle.oracle_wallet.toLowerCase() === currentUserWallet.toLowerCase() ? "highlight" : ""
+              className={
+                oracle.oracle_wallet.toLowerCase() ===
+                currentUserWallet.toLowerCase()
+                  ? "highlight"
+                  : ""
               }
             >
               <TableCell className="jur-oracles-table-preview__eth-address">
-                {oracle.oracle_wallet.toLowerCase() === currentUserWallet.toLowerCase()
+                {oracle.oracle_wallet.toLowerCase() ===
+                currentUserWallet.toLowerCase()
                   ? labels.you
                   : ellipsisString(oracle.oracle_wallet.toLowerCase(), 10, 15)}
               </TableCell>
               <TableCell>
-                <Avatar seed={oracle.wallet_part.toLowerCase()} size="xsmall" variant="circle" />
+                <Avatar
+                  seed={oracle.wallet_part.toLowerCase()}
+                  size="xsmall"
+                  variant="circle"
+                />
               </TableCell>
               <TableCell
                 className={`jur-oracles-table-preview__message ${
@@ -71,8 +80,14 @@ export const OraclesTablePreview = ({
         </TableBody>
       </Table>
       <Link to={viewAllDetails}>
-        <Button size="big" fullWidth>{labels.viewAllDetails}</Button>
+        <Button size="big" fullWidth>
+          {labels.viewAllDetails}
+        </Button>
       </Link>
+    </div>
+  ) : (
+    <div className="jur-dispute-vote__note">
+      <p>{labels.noOracles}</p>
     </div>
   );
 };

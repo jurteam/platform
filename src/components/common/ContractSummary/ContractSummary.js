@@ -63,7 +63,7 @@ export const ContractSummary = props => {
         onContractNameChange={onContractNameChange}
         statusId={statusId}
         statusIdLabel={statusIdLabel}
-        dispute
+        dispute={dispute}
       />
       <div className="jur-contract-summary__columns">
         <div className="jur-contract-summary__column jur-contract-summary__counterparties">

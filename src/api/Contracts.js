@@ -18,6 +18,10 @@ export class Contracts {
   static getActivities(payload) {
     return axios.get(`activities/${payload.id}?include=attachments`);
   }
+  static readActivities(payload) {
+    payload.append("_method", "PUT"); // for PUT methods only
+    return axios.post(`/activities/readed`, payload);
+  }
   static create(payload) {
     return axios.post(root, payload);
   }
@@ -33,6 +37,9 @@ export class Contracts {
   }
   static delete(payload) {
     return axios.delete(`${root}/${payload.id}`);
+  }
+  static deleteAll() {
+    return axios.delete(`${root}/delete-all`);
   }
   static deleteMedia(payload) {
     return axios.delete(`${root}/medias/${payload.id}`); // attachments delete

@@ -20,7 +20,9 @@ import {
   CONTRACT_MEDIA_DELETE,
   CONTRACT_MEDIA_DELETED,
   RESET_CONTRACT,
-  RESET_CONTRACTS
+  RESET_CONTRACTS,
+  RESET_ALL_CONTRACTS,
+  SET_ACTIVITY_STATUS_READED
 } from "./types";
 
 const INITIAL_STATE = {
@@ -95,21 +97,43 @@ export default (state = INITIAL_STATE, action) => {
     // Setters
     case SET_CONTRACT:
       console.log(SET_CONTRACT, action.payload);
-      return { ...state, current: action.payload, saving: false, updating: false, notificationLoading: true };
+      return {
+        ...state,
+        current: action.payload,
+        saving: false,
+        updating: false,
+        notificationLoading: true
+      };
 
     case CONTRACTS_FETCHED:
       console.log(CONTRACTS_FETCHED, action.payload);
-      return { ...state, list: action.payload.data, pagination: action.payload.meta.pagination, updatingList: false };
+      return {
+        ...state,
+        list: action.payload.data,
+        pagination: action.payload.meta.pagination,
+        updatingList: false
+      };
 
     case SET_CONTRACT_CURRENT_PAGE:
       return { ...state, page: action.payload };
 
     case SET_CONTRACT_STATUS:
       console.log(SET_CONTRACT_STATUS, action);
-      return { ...state, current: { ...state.current, statusId : action.statusId, statusLabel : action.statusLabel, statusUpdatedAt : action.statusUpdatedAt } };
+      return {
+        ...state,
+        current: {
+          ...state.current,
+          statusId: action.statusId,
+          statusLabel: action.statusLabel,
+          statusUpdatedAt: action.statusUpdatedAt
+        }
+      };
 
     case SET_CONTRACT_ACTIVITIES:
-      return { ...state, current: { ...state.current, activities : action.payload } };
+      return {
+        ...state,
+        current: { ...state.current, activities: action.payload }
+      };
 
     // Updates
     case UPDATE_CONTRACT_FILTER:
@@ -125,7 +149,10 @@ export default (state = INITIAL_STATE, action) => {
     case UPDATE_PROPOSAL_FIELD:
       let proposalToUpdate = {};
       proposalToUpdate[action.field] = action.value;
-      return { ...state, currentProposal: { ...state.currentProposal, ...proposalToUpdate } };
+      return {
+        ...state,
+        currentProposal: { ...state.currentProposal, ...proposalToUpdate }
+      };
 
     case UPDATE_CONTRACT_FIELD:
       let toUpdate = {};
@@ -148,8 +175,37 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, updatingList: action.payload };
 
     case CONTRACT_MEDIA_DELETED:
-      const updatedAttachments = state.current.attachments.data.filter(item => item.id !== action.id)
-      return { ...state, current: { ...state.current, attachments: { data: updatedAttachments } } };
+      const updatedAttachments = state.current.attachments.data.filter(
+        item => item.id !== action.id
+      );
+      return {
+        ...state,
+        current: { ...state.current, attachments: { data: updatedAttachments } }
+      };
+
+    // case SET_ACTIVITY_STATUS_READED:
+    //   let updatedActivities = state.current.activities.filter(activity => {
+    //     return action.ids.indexOf(activity.id);
+    //   });
+
+    //   // set as readed
+    //   if (
+    //     updatedActivities &&
+    //     updatedActivities.isArray() &&
+    //     updatedActivities.length > 0
+    //   ) {
+    //     updatedActivities.forEach(activity => (activity.readed = 1));
+    //   }
+
+    //   console.log(SET_ACTIVITY_STATUS_READED, updatedActivities);
+
+    //   return {
+    //     ...state,
+    //     current: {
+    //       ...state.current,
+    //       activities: [...state.current.activities, ...updatedActivities]
+    //     }
+    //   };
 
     // Reset
     case RESET_CONTRACT:
@@ -166,6 +222,9 @@ export default (state = INITIAL_STATE, action) => {
         updating: INITIAL_STATE.updating,
         list: { ...INITIAL_STATE.list }
       };
+
+    case RESET_ALL_CONTRACTS:
+      return { ...INITIAL_STATE };
 
     case NEW_CONTRACT: // saga
     case API_GET_CONTRACT: // saga

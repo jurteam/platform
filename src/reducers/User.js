@@ -7,7 +7,10 @@ import {
   RESET_USER,
   FETCH_USER,
   NEW_USER,
-  PUT_USER
+  PUT_USER,
+  SET_USER_ACTIVITIES,
+  FETCH_ACTIVITIES,
+  SET_ACTIVITY_STATUS_READED
 } from "./types"; // action types
 
 const INITIAL_STATE = {
@@ -28,7 +31,8 @@ const INITIAL_STATE = {
   accepted_terms: false,
   accepted_disclaimer: false,
   created_at: null,
-  updated_at: null
+  updated_at: null,
+  activities: []
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -52,6 +56,23 @@ export default (state = INITIAL_STATE, action) => {
     case USER_UPDATING:
       return { ...state, updating: action.payload };
 
+    case SET_USER_ACTIVITIES:
+      return { ...state, activities: action.activities };
+
+    case SET_ACTIVITY_STATUS_READED:
+
+      const updatedActivities = state.activities.map(activity => {
+        if (action.ids.indexOf(activity.id) >= 0) {
+          return { ...activity, readed: 1 }
+        }
+        return activity
+      });
+
+      return {
+        ...state,
+        activities: updatedActivities
+      };
+
     // Updates
     case UPDATE_USER_FIELD:
       let toUpdate = {};
@@ -60,6 +81,7 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, ...toUpdate };
 
     // Fetching
+    case FETCH_ACTIVITIES:
     case FETCH_USER:
     case NEW_USER:
     case PUT_USER:

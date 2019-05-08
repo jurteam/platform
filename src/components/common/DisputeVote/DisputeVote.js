@@ -1,49 +1,28 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React, { useContext } from "react";
 import VoteProgress from "../VoteProgress";
 import { toCurrencyFormat } from "../../../utils/helpers";
 
 import "./DisputeVote.scss";
+import { AppContext } from "../../../bootstrap/AppProvider"; // context
 
 export const DisputeVote = ({
-  currentUserWallet,
+  currentWallet,
   title,
   counterparties,
   statusId,
   onVote,
   canVote,
-  onReject,
-  gainedValue,
-  lossedValue
+  winner,
+  earnings,
+  onReject
 }) => {
   let resultNote = "";
+  const { labels } = useContext(AppContext);
 
-  if (statusId === 39) {
-    counterparties.forEach(counterparty => {
-      if (counterparty.wallet.address === currentUserWallet) {
-        if (counterparty.winner) {
-          resultNote = (
-            <>
-              You gained{" "}
-              <strong>
-                {gainedValue ? toCurrencyFormat(gainedValue) : 0} Jur tokens
-              </strong>
-              , congratulations!
-            </>
-          );
-        } else {
-          resultNote = (
-            <>
-              You lossed{" "}
-              <strong>
-                {lossedValue ? toCurrencyFormat(lossedValue) : 0} Jur
-              </strong>{" "}
-              tokens.
-            </>
-          );
-        }
-      }
-    });
+  if (statusId === 39 && earnings) {
+    resultNote = (
+      <span dangerouslySetInnerHTML={{__html:labels.gained.replace("%tokens%", toCurrencyFormat(earnings))}} />
+    );
   }
 
   return (
@@ -58,13 +37,14 @@ export const DisputeVote = ({
             onVote={() => onVote(counterparty, idx)}
             highlightColor={idx === 0 ? "green" : "blue"}
             canVote={canVote}
+            wins={(counterparty.wallet && winner && counterparty.wallet.toLowerCase() === winner.toLowerCase()) ? true : false}
           />
         ))}
       </div>
       {canVote && (
         <div className="jur-dispute-vote__note">
-          Do you feel the contract is illegal or inapplicable?
-          <span onClick={onReject}>Vote for reject</span>
+          {labels.voteForRejectText}
+          <span onClick={onReject}>{labels.voteForReject}</span>
         </div>
       )}
       {!canVote && statusId === 39 && (

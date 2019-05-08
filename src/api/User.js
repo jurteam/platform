@@ -17,4 +17,7 @@ export class User {
   static delete() {
     return axios.delete(root);
   }
+  static getActivities(payload) {
+    return axios.get(`${root}/activities?byDate&orderBy=${payload.orderBy}&perPage=${process.env.REACT_APP_PER_PAGE_NOTIFICATIONS}`)
+  }
 }

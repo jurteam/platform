@@ -5,7 +5,6 @@ import { Redirect } from "react-router-dom";
 import { AppContext } from "../../../bootstrap/AppProvider";
 
 // Components
-import PageLayout from "../../common/PageLayout";
 import Disclaimer, { ModalDiscliamer } from "../../common/Disclaimer";
 import Aside from "../../common/Aside";
 import Main from "../../common/Main";
@@ -16,6 +15,13 @@ import ContractSummary from "../../common/ContractSummary";
 
 import DisputeMainAccordions from "../../common/DisputeMainAccordions";
 import DisputeResolutionProposal from "../../common/DisputeResolutionProposal";
+
+import Page from "../../common/Page";
+import Header from "../../common/Header";
+import SubHeader from "../../common/SubHeader";
+import Breadcrumbs from "../../common/Breadcrumbs";
+import ResolvedDisputeNotification from "../../common/ResolvedDisputeNotification";
+import Content from "../../common/Content";
 
 import ContractModal from "../../common/ContractModal";
 import PaymentModal from "../../common/PaymentModal";
@@ -90,7 +96,7 @@ export const DisputeDetail = props => {
 
   // validation setup
   const [isValid, errors, validateForm, setFormData] = useFormValidation(
-    dispute.current,
+    dispute.vote,
     validationSchema
   );
 
@@ -112,7 +118,7 @@ export const DisputeDetail = props => {
 
   const changeInput = (name, value) => {
     if (!formUpdated) setFormUpdated(true);
-    setFormData({ ...dispute.current, [name]: value });
+    setFormData({ ...dispute.vote, [name]: value });
 
     const { updateVoteField } = props;
     updateVoteField(name, value); // dispatch action
@@ -174,9 +180,9 @@ export const DisputeDetail = props => {
     if (!submitDisabled) {
       global.drizzle.store.dispatch({
         type: PUT_VOTE,
-        vote: dispute.currentVote,
+        vote: dispute.vote,
         attachments,
-        callback: () => setFormUpdated(false) // reset form
+        callback: () => {setFormUpdated(false); setShowVoteOverlay(false); } // reset form
       });
     }
   };
@@ -224,6 +230,7 @@ export const DisputeDetail = props => {
     kpi,
     resolutionProof,
     value,
+    winner,
     whoPays,
     contractName,
     category,
@@ -240,6 +247,7 @@ export const DisputeDetail = props => {
     percentagePartB,
     totalTokensPartA,
     totalTokensPartB,
+    earnings,
     totalTokens,
     details: issues
   } = dispute.current;
@@ -304,6 +312,8 @@ export const DisputeDetail = props => {
   if (typeof params.id !== "undefined" && counterparties) {
     contractData = {
       contractID: id,
+      winner,
+      earnings,
       statusId,
       statusLabel,
       statusUpdatedAt,
@@ -382,7 +392,14 @@ export const DisputeDetail = props => {
 
   return typeof params.id !== "undefined" &&
     !(loaded === true && typeof dispute.current.id === "undefined") ? (
-    <PageLayout breadcrumbs={breadcrumbs}>
+
+    <Page>
+    <Header />
+    <SubHeader>
+      <Breadcrumbs crumbList={breadcrumbs} />
+      {statusId === 39 && <ResolvedDisputeNotification />}
+    </SubHeader>
+    <Content>
       {!dispute.updating && counterparties ? (
         <>
           <Main>
@@ -459,6 +476,8 @@ export const DisputeDetail = props => {
           filePath={filePath}
           countdownOptions={countdownOptions}
           statusId={statusId}
+          contract={contractData}
+          currentWallet={user.wallet}
           counterparties={voteCounterparties}
           onVote={(counterparty, idx) => {onRequestClose(); setShowVoteOverlay({counterparty, idx});}}
           onReject={() => alert("Rejected Contract")}
@@ -471,18 +490,20 @@ export const DisputeDetail = props => {
         isOpen={(showVoteOverlay && showVoteOverlay.counterparty) ? true : false}
         countdownOptions={countdownOptions}
         statusId={statusId}
+        contract={contractData}
         current={showVoteOverlay}
         currentVote={dispute.vote}
+        currentWallet={user.wallet}
         hasError={hasError}
         counterparties={voteCounterparties}
-        onVote={counterparty => alert(`Votin for ${counterparty.name}`)}
+        onVote={(counterparty, idx) => {onRequestClose(); setShowVoteOverlay({counterparty, idx});}}
         onReject={() => alert("Rejected Contract")}
         onInputChange={onInputChange}
         changeInput={changeInput}
         onFileAdded={onFileAdded}
         onFileLoadingError={() => alert("file error")}
         onRequestClose={() => setShowVoteOverlay(false)}
-        onVoteSubmit={data => console.log(data)}
+        onVoteSubmit={() => onSubmit()}
         metaMaskError={metaMaskError}
       />
 
@@ -493,7 +514,8 @@ export const DisputeDetail = props => {
       />
 
       <Disclaimer />
-    </PageLayout>
+    </Content>
+    </Page>
   ) : (
     <>
       {userWallet ? (

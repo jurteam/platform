@@ -213,7 +213,7 @@ export const ContractSidebar = ({
       );
     }
 
-    if (statusId === 35) {
+    if ([35, 36, 38, 39].indexOf(statusId) >= 0) {
       // ongoing actions fallback
       return (
         <>

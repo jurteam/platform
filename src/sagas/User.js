@@ -17,7 +17,10 @@ import {
   USER_UPDATE,
   USER_UPDATING,
   USER_OBLIVION,
-  SET_LOADING
+  SET_LOADING,
+  FETCH_ACTIVITIES,
+  SET_USER_ACTIVITIES,
+  RESET_USER
 } from "../reducers/types"; // action types
 
 import { log, warn } from "../utils/helpers"; // log helper
@@ -39,6 +42,7 @@ export function* handleDisclaimerOptin(args) {
 
 export function* handleUserOblivion() {
   yield call(User.delete);
+  yield put({ type: RESET_USER });
 }
 
 export function* apiCatch(err) {
@@ -113,6 +117,20 @@ export function* handleUserDataUpdate(action) {
   yield put({ type: USER_UPDATING, payload: false });
 }
 
+export function* fetchActivities(action) {
+
+  log("fetchActivities - action", action);
+
+  try {
+    const response = yield call(User.getActivities, { orderBy: "desc" });
+    const activities = response.data.data;
+    log("fetchActivities - response", response);
+    yield put({ type: SET_USER_ACTIVITIES, activities });
+  } catch (error) {
+      yield put({ type: API_CATCH, error });
+  }
+}
+
 // spawn tasks base certain actions
 export default function* userSagas() {
   log("run", "userSagas");
@@ -121,6 +139,7 @@ export default function* userSagas() {
   yield takeLatest(NEW_USER, registerUser);
   yield takeLatest(USER_UPDATE, () => setLoading(false));
   yield takeLatest(FETCH_USER, checkUserExist);
+  yield takeLatest(FETCH_ACTIVITIES, fetchActivities);
   yield takeLatest(USER_OBLIVION, handleUserOblivion);
   yield takeLatest(PUT_USER, handleUserDataUpdate);
 }

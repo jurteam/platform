@@ -14,10 +14,6 @@ const validationSchema = [
   {
     name: "contract_id",
     checks: ["required"]
-  },
-  {
-    name: "category",
-    checks: ["required"]
   }
 ];
 

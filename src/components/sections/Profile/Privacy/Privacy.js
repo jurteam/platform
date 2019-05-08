@@ -5,6 +5,8 @@ import { AppContext } from "../../../../bootstrap/AppProvider"; // context
 import UserPrivacy from "../../../../components/common/UserPrivacy"; // components
 import { PrivacyModal } from "./PrivacyModal";
 
+import { USER_OBLIVION, DELETE_ALL_CONTRACTS, DELETE_ALL_DISPUTES } from "../../../../reducers/types";
+
 const Privacy = props => {
   // Context
   const { labels } = useContext(AppContext);
@@ -47,12 +49,39 @@ const Privacy = props => {
     handler: () => setShowModalDisputes(true)
   });
 
+  const disclaimerDecline = () => {
+
+    global.drizzle.store.dispatch({
+      type: USER_OBLIVION
+    });
+
+    if (typeof props.disclaimerDecline === "function") props.disclaimerDecline(); // callback
+  }
+
+  const deleteContracts = () => {
+
+    global.drizzle.store.dispatch({
+      type: DELETE_ALL_CONTRACTS
+    });
+
+    if (typeof props.deleteContracts === "function") props.deleteContracts(); // callback
+  }
+
+  const deleteDisputes = () => {
+
+    global.drizzle.store.dispatch({
+      type: DELETE_ALL_DISPUTES
+    });
+
+    if (typeof props.deleteDisputes === "function") props.deleteDisputes(); // callback
+  }
+
   return (
     <>
       <UserPrivacy data={privacyData} disclaimerAccepted={disclaimer.optin} />
-      <PrivacyModal isOpen={showModalDisclaimer} onAccept={() => {props.disclaimerDecline(); setShowModalDisclaimer(false);}} onDecline={() => setShowModalDisclaimer(false)}/>
-      <PrivacyModal isOpen={showModalContracts} onAccept={() => {props.deleteContracts(); setShowModalContracts(false);}} onDecline={() => setShowModalContracts(false)}/>
-      <PrivacyModal isOpen={showModalDisputes} onAccept={() => {props.deleteDisputes(); setShowModalDisputes(false);}} onDecline={() => setShowModalDisputes(false)}/>
+      <PrivacyModal isOpen={showModalDisclaimer} onAccept={() => {disclaimerDecline(); setShowModalDisclaimer(false);}} onDecline={() => setShowModalDisclaimer(false)}/>
+      <PrivacyModal isOpen={showModalContracts} onAccept={() => {deleteContracts(); setShowModalContracts(false);}} onDecline={() => setShowModalContracts(false)}/>
+      <PrivacyModal isOpen={showModalDisputes} onAccept={() => {deleteDisputes(); setShowModalDisputes(false);}} onDecline={() => setShowModalDisputes(false)}/>
     </>
   );
 };
