@@ -1,12 +1,12 @@
 @component('mail::message')
 # {{$subject}}
 
-{{$attributes['name']}} {{$subject}}
+<p class="text-center">{{$attributes['name']}} {{$subject}}</p>
 
 @component('mail::button', ['url' => $contractUrl])
-Show Contract Detail
+{{__('Show Contract Detail')}}
 @endcomponent
 
-Thanks,<br>
+{{__('Thanks')}},<br>
 {{ config('app.name') }}
 @endcomponent
