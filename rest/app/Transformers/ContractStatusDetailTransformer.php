@@ -14,7 +14,7 @@ class ContractStatusDetailTransformer extends TransformerAbstract
      * @var array
      */
     protected $availableIncludes = [
-        'evidences'
+        'attachments'
     ];
 
     /**
@@ -49,7 +49,7 @@ class ContractStatusDetailTransformer extends TransformerAbstract
      * @param  \App\Models\ContractStatusDetail $contract
      * @return \League\Fractal\Resource\Collection
      */
-    public function includeEvidencess(ContractStatusDetail $detail)
+    public function includeAttachments(ContractStatusDetail $detail)
     {
         $evidences = $detail->getMedia('evidences');
 
@@ -64,7 +64,7 @@ class ContractStatusDetailTransformer extends TransformerAbstract
     protected function getSystem(ContractStatusDetail $detail)
     {
         $status = $detail->contract->status;
-        if (in_array($status->code, [39,8])) {
+        if (in_array($status->code, [39,38,36])) {
             return true;
         }
         return false;
