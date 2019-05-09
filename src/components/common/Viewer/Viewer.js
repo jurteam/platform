@@ -68,10 +68,6 @@ export const Viewer = (props) => {
   //       selectedCounterparty: counterparties[idx]
   //     });
 
-  //     setState({
-  //       selectedCounterpartyIndex: idx,
-  //       selectedCounterparty: counterparties[idx]
-  //     });
 
   //     changeInput("wallet_part", counterparties[idx].wallet.toLowerCase());
   //     changeInput("contract_id", contract.contractID);
@@ -84,16 +80,32 @@ export const Viewer = (props) => {
   // cDM
   useEffect(() => {
 
+    console.log("Viewer - current changed");
+
+    const { current : { idx } } = props;
+
+    setState({
+      selectedCounterpartyIndex: idx,
+      selectedCounterparty: counterparties[idx]
+    });
+
+    return () => null; // do nothing on unmount
+
+  }, [props.current]);
+
+  // cDM
+  useEffect(() => {
+
     console.log("Viewer - mount");
 
     return () => console.log("Viewer - umount"); // do something on unmount
 
-  }, []);
+  }, [state.selectedCounterpartyIndex]);
 
   const getFileType = filePath =>
     filePath.slice(((filePath.lastIndexOf(".") - 1) >>> 0) + 2);
 
-    const setVoteForm = (counterparty, idx) => {
+  const setVoteForm = (counterparty, idx) => {
     setState({
       selectedCounterpartyIndex: idx,
       selectedCounterparty: counterparty

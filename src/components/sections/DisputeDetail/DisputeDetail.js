@@ -114,7 +114,16 @@ export const DisputeDetail = props => {
       onSuccess: pageLoaded,
       onError: pageLoaded
     });
+
   }, [wallet.address]);
+
+  const onVote = (counterparty, idx) => {
+    onRequestClose();
+    changeInput("contract_id", dispute.current.id);
+    changeInput("oracle_wallet", wallet.address);
+    changeInput("wallet_part", counterparty.wallet.toLowerCase());
+    setShowVoteOverlay({ counterparty, idx });
+  };
 
   const changeInput = (name, value) => {
     if (!formUpdated) setFormUpdated(true);
@@ -182,7 +191,10 @@ export const DisputeDetail = props => {
         type: PUT_VOTE,
         vote: dispute.vote,
         attachments,
-        callback: () => {setFormUpdated(false); setShowVoteOverlay(false); } // reset form
+        callback: () => {
+          setFormUpdated(false);
+          setShowVoteOverlay(false);
+        } // reset form
       });
     }
   };
@@ -392,129 +404,138 @@ export const DisputeDetail = props => {
 
   return typeof params.id !== "undefined" &&
     !(loaded === true && typeof dispute.current.id === "undefined") ? (
-
     <Page>
-    <Header />
-    <SubHeader>
-      <Breadcrumbs crumbList={breadcrumbs} />
-      {statusId === 39 && <ResolvedDisputeNotification />}
-    </SubHeader>
-    <Content>
-      {!dispute.updating && counterparties ? (
-        <>
-          <Main>
-            <ContractSummary
-              data={{
-                ...contractData,
-                category: { label: contractData.category }
-              }}
-              dispute={true}
-            />
+      <Header />
+      <SubHeader>
+        <Breadcrumbs crumbList={breadcrumbs} />
+        {statusId === 39 && <ResolvedDisputeNotification />}
+      </SubHeader>
+      <Content>
+        {!dispute.updating && counterparties ? (
+          <>
+            <Main>
+              <ContractSummary
+                data={{
+                  ...contractData,
+                  category: { label: contractData.category }
+                }}
+                dispute={true}
+              />
 
-            <DisputeMainAccordions
-              details={contractData.details}
-              files={uploadedFiles}
-              onView={onFileView}
-            />
-
-            {counterparties && (
-              <DisputeResolutionProposal
-                proposals={[
-                  {
-                    ...proposalPartA,
-                    ...common,
-                    from: { ...counterparties[0] },
-                    proposal: {
-                      part_a: proposalPartA.proposal.proposal_part_a,
-                      part_b: proposalPartA.proposal.proposal_part_b
-                    }
-                  },
-                  {
-                    ...proposalPartB,
-                    ...common,
-                    from: { ...counterparties[1] },
-                    proposal: {
-                      part_a: proposalPartB.proposal.proposal_part_a,
-                      part_b: proposalPartB.proposal.proposal_part_b
-                    }
-                  }
-                ]}
+              <DisputeMainAccordions
+                details={contractData.details}
+                files={uploadedFiles}
                 onView={onFileView}
               />
-            )}
-          </Main>
-          <Aside>
-            {user.wallet &&
-            <DisputeSidebar
-              disabled={dispute.saving}
-              submitDisabled={submitDisabled}
-              currentWallet={user.wallet}
-              currentPart={currentPart}
-              notificationLoading={dispute.notificationLoading}
-              contract={contractData}
-              activities={contract.current.activities}
-              currentUserCanPay={currentUserCanPay}
-              lastPartInvolved={lastPartInvolved}
-              voteCounterparties={voteCounterparties}
-              history={history}
-              oracles={oracle.currentList}
-              onSubmit={onSubmit}
-              onVote={(counterparty, idx) => {onRequestClose(); setShowVoteOverlay({counterparty, idx});}}
-              onView={onFileView}
-            />}
-          </Aside>
-        </>
-      ) : (
-        <Main>
-          <SpinnerOnly loading={dispute.updating} />
-        </Main>
-      )}
 
-      {filePath && (
+              {counterparties && (
+                <DisputeResolutionProposal
+                  proposals={[
+                    {
+                      ...proposalPartA,
+                      ...common,
+                      from: { ...counterparties[0] },
+                      proposal: {
+                        part_a: proposalPartA.proposal.proposal_part_a,
+                        part_b: proposalPartA.proposal.proposal_part_b
+                      }
+                    },
+                    {
+                      ...proposalPartB,
+                      ...common,
+                      from: { ...counterparties[1] },
+                      proposal: {
+                        part_a: proposalPartB.proposal.proposal_part_a,
+                        part_b: proposalPartB.proposal.proposal_part_b
+                      }
+                    }
+                  ]}
+                  onView={onFileView}
+                />
+              )}
+            </Main>
+            <Aside>
+              {user.wallet && (
+                <DisputeSidebar
+                  disabled={dispute.saving}
+                  submitDisabled={submitDisabled}
+                  currentWallet={user.wallet}
+                  currentPart={currentPart}
+                  notificationLoading={dispute.notificationLoading}
+                  contract={contractData}
+                  activities={contract.current.activities}
+                  currentUserCanPay={currentUserCanPay}
+                  lastPartInvolved={lastPartInvolved}
+                  voteCounterparties={voteCounterparties}
+                  history={history}
+                  oracles={oracle.currentList}
+                  onSubmit={onSubmit}
+                  onVote={onVote}
+                  onView={onFileView}
+                />
+              )}
+            </Aside>
+          </>
+        ) : (
+          <Main>
+            <SpinnerOnly loading={dispute.updating} />
+          </Main>
+        )}
+
+        {filePath && (
+          <Viewer
+            isOpen={openPreview}
+            filePath={filePath}
+            countdownOptions={countdownOptions}
+            statusId={statusId}
+            contract={contractData}
+            currentWallet={user.wallet}
+            counterparties={voteCounterparties}
+            onVote={(counterparty, idx) => {
+              onRequestClose();
+              setShowVoteOverlay({ counterparty, idx });
+            }}
+            onReject={() => alert("Rejected Contract")}
+            onFileLoadingError={onFileError}
+            onRequestClose={onRequestClose}
+          />
+        )}
+
         <Viewer
-          isOpen={openPreview}
-          filePath={filePath}
+          isOpen={
+            showVoteOverlay && showVoteOverlay.counterparty ? true : false
+          }
           countdownOptions={countdownOptions}
           statusId={statusId}
           contract={contractData}
+          current={showVoteOverlay}
+          currentIdx={showVoteOverlay.idx}
+          currentVote={dispute.vote}
           currentWallet={user.wallet}
+          hasError={hasError}
           counterparties={voteCounterparties}
-          onVote={(counterparty, idx) => {onRequestClose(); setShowVoteOverlay({counterparty, idx});}}
+          onVote={(counterparty, idx) => {
+            onRequestClose();
+            setShowVoteOverlay({ counterparty, idx });
+          }}
           onReject={() => alert("Rejected Contract")}
-          onFileLoadingError={onFileError}
-          onRequestClose={onRequestClose}
+          onInputChange={onInputChange}
+          changeInput={changeInput}
+          onFileAdded={onFileAdded}
+          onFileLoadingError={() => alert("file error")}
+          onRequestClose={() => setShowVoteOverlay(false)}
+          onVoteSubmit={() => onSubmit()}
+          metaMaskError={metaMaskError}
         />
-      )}
 
-      <Viewer
-        isOpen={(showVoteOverlay && showVoteOverlay.counterparty) ? true : false}
-        countdownOptions={countdownOptions}
-        statusId={statusId}
-        contract={contractData}
-        current={showVoteOverlay}
-        currentVote={dispute.vote}
-        currentWallet={user.wallet}
-        hasError={hasError}
-        counterparties={voteCounterparties}
-        onVote={(counterparty, idx) => {onRequestClose(); setShowVoteOverlay({counterparty, idx});}}
-        onReject={() => alert("Rejected Contract")}
-        onInputChange={onInputChange}
-        changeInput={changeInput}
-        onFileAdded={onFileAdded}
-        onFileLoadingError={() => alert("file error")}
-        onRequestClose={() => setShowVoteOverlay(false)}
-        onVoteSubmit={() => onSubmit()}
-        metaMaskError={metaMaskError}
-      />
+        <ModalDiscliamer
+          isOpen={showModal}
+          onAccept={() => setShowModal(false)}
+          onDecline={() => setShowModal(false)}
+        />
 
-      <ModalDiscliamer
-        isOpen={showModal}
-        onAccept={() => setShowModal(false)}
-        onDecline={() => setShowModal(false)}
-      />
-
-      <Disclaimer />
-    </Content>
+        <Disclaimer />
+      </Content>
     </Page>
   ) : (
     <>
