@@ -42,7 +42,7 @@ class ContractDetailsController extends Controller
         $detail = ContractStatusDetail::storeDetail(
             $request, Contract::findOrFail($id)
         );
-        $detail->uploadMedia($request, 'evidences');
+        $detail->uploadMedia($request);
 
         return $this->response->item($detail, new ContractStatusDetailTransformer);
     }
