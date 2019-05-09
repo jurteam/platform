@@ -455,7 +455,7 @@ export function* onContractActivitiesSet(action) {
   } else {
     ids = yield select(getCurrentContractActivities);
     ids = ids.filter(activity => {
-      return activity.readed === 0;
+      return activity.readed === 0 || activity.readed === false;
     }); // gets only unreaded activities
     ids = arrayColumn(ids, "id");
   }
