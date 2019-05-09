@@ -42,10 +42,11 @@ class ContractVotesController extends Controller
 
         $response = $this->response->collection($votes, new ContractVoteTransformer)->getContent();
 
-        return response()->json([
-            'current_winner' => $contract->getTheWinner(false),
-            'data' => json_decode($response)
-        ]);
+        return response()->json(array_merge(
+            $contract->getPartialsData(), [
+                'data' => json_decode($response)
+            ])
+        );
     }
 
     /**
