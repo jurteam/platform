@@ -30,30 +30,30 @@ export const Viewer = (props) => {
     const { labels } = useContext(AppContext);
 
   // cDM
-  useEffect(() => {
+  // useEffect(() => {
 
-    const { current, counterparties } = props;
+  //   const { current, counterparties } = props;
 
-    if (typeof current !== "undefined" || typeof current.idx !== "undefined") {
+  //   if (typeof current !== "undefined" || typeof current.idx !== "undefined") {
 
-      const { idx } = current;
+  //     const { idx } = current;
 
-      console.log("Viewer - cDM", {
-        props: props,
-        selectedCounterpartyIndex: idx,
-        selectedCounterparty: counterparties[idx]
-      });
+  //     console.log("Viewer - cDM", {
+  //       props: props,
+  //       selectedCounterpartyIndex: idx,
+  //       selectedCounterparty: counterparties[idx]
+  //     });
 
-      setState({
-        selectedCounterpartyIndex: idx,
-        selectedCounterparty: counterparties[idx]
-      });
+  //     setState({
+  //       selectedCounterpartyIndex: idx,
+  //       selectedCounterparty: counterparties[idx]
+  //     });
 
-      changeInput("wallet_part", counterparties[idx].wallet.toLowerCase());
-      changeInput("contract_id", contract.contractID);
-      changeInput("oracle_wallet", currentWallet);
-    }
-  }, [props.current]);
+  //     changeInput("wallet_part", counterparties[idx].wallet.toLowerCase());
+  //     changeInput("contract_id", contract.contractID);
+  //     changeInput("oracle_wallet", currentWallet);
+  //   }
+  // }, []);
 
   const getFileType = filePath =>
     filePath.slice(((filePath.lastIndexOf(".") - 1) >>> 0) + 2);

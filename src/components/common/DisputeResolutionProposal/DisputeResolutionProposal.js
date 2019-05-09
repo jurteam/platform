@@ -13,14 +13,15 @@ export const DisputeResolutionProposal = ({ proposals, onView }) => {
         {labels.disputeResolutionProposal}
       </div>
       <div className="jur-dispute-resolution-proposal__proposals">
-        {proposals.map(proposal => (
-          <div className="jur-dispute-resolution-proposal__proposal">
+        {proposals.map((proposal, idx) => (
+          <div key={`proposal-${idx}`} className="jur-dispute-resolution-proposal__proposal">
             <AvatarInfo
               userWallet={proposal.from.wallet.toLowerCase()}
               size="xlarge"
               type="rounded"
+              key={`proposal-avt-${idx}`}
             />
-            <ProposalPreview proposalDetail={proposal} onView={onView} />
+            <ProposalPreview proposalDetail={proposal} onView={onView} key={`proposal-prev-${idx}`} />
           </div>
         ))}
       </div>
