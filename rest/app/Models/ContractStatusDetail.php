@@ -63,20 +63,19 @@ class ContractStatusDetail extends Model implements HasMedia
 
     public function getFromWallet($wallet)
     {
-        dd($this->contract_part, $wallet);
         return strcmp($this->contract_part, $wallet) == 0;
     }
 
-    public function getEvidences()
+    public function getAttachments()
     {
-        $evidences = [];
-        foreach ($this->getMedia('evidences') as $evidence) {
-            $evidences[] = [
-                'id' => $evidence->id,
-                'fileName' => $evidence->file_name,
-                'url' => $evidence->getFullUrl()
+        $attachments = [];
+        foreach ($this->getMedia('attachments') as $attachment) {
+            $attachments[] = [
+                'id' => $attachment->id,
+                'fileName' => $attachment->file_name,
+                'url' => $attachment->getFullUrl()
             ];
         }
-        return $evidences;
+        return $attachments;
     }
 }
