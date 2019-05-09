@@ -5,6 +5,7 @@ namespace App\Transformers;
 use App\Models\Activity;
 use League\Fractal\TransformerAbstract;
 use App\Transformers\AttachmentTransformer;
+use App\Transformers\ContractStatusDetailTransformer;
 
 class ContractActivityTransformer extends TransformerAbstract
 {
@@ -14,7 +15,7 @@ class ContractActivityTransformer extends TransformerAbstract
      * @var array
      */
     protected $availableIncludes = [
-        'attachments'
+        'attachments', 'details'
     ];
 
     /**
@@ -40,7 +41,7 @@ class ContractActivityTransformer extends TransformerAbstract
                 'name' => $activity->user ? $activity->user->name : null,
                 'system' => $this->getSystem($activity)
             ],
-            'abstract' => null, # to-do
+            'abstract' => $activity->abstract,
             'to' => $activity->to_wallet,
             'status' => $activity->status_code,
             'message' => $activity->message,
@@ -62,6 +63,13 @@ class ContractActivityTransformer extends TransformerAbstract
         $attachments = $activity->getMedia('attachments');
 
         return $this->collection($attachments, new AttachmentTransformer);
+    }
+
+    public function includeDetails(Activity $activity)
+    {
+        $details = $activity->getContractDetails();
+
+        return $this->collection($details, new ContractStatusDetailTransformer);
     }
 
     /**

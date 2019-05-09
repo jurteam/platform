@@ -6,6 +6,11 @@ trait StatusesTrait
 {
     use StatusesNotifable;
 
+    public function hasStatusCode($code)
+    {
+        return $this->status->code == $code;
+    }
+
     public function flagAsOpenDispute()
     {
         $this->update(['is_a_dispute' => true]);
