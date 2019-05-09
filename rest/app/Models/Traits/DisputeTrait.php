@@ -6,6 +6,21 @@ use App\Models\ContractStatusDetail;
 
 trait DisputeTrait
 {
+    public function getPartialsData()
+    {
+        $totalTokensPartA = $this->getTokensPart('part_a_wallet');
+        $totalTokensPartB = $this->getTokensPart('part_b_wallet');
+
+        return [
+            'totalTokensPartA' => $totalTokensPartA,
+            'totalTokensPartB' => $totalTokensPartB,
+            'totalTokens' => $totalTokensPartA + $totalTokensPartB,
+            'percentagePartA' => $this->getPercetangePart('part_a_wallet'),
+            'percentagePartB' => $this->getPercetangePart('part_b_wallet'),
+            'current_winner' => $this->getTheWinner(false),
+        ];
+    }
+
     public function getLastPart()
     {
         $last = $this->details->sortByDesc('id')->first();
