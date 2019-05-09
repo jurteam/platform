@@ -68,7 +68,7 @@ class ContractStatusDetail extends Model implements HasMedia
 
     public function getAttachments()
     {
-        $evidences = [];
+        $attachments = [];
         foreach ($this->getMedia('attachments') as $attachment) {
             $attachments[] = [
                 'id' => $attachment->id,
