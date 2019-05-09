@@ -98,12 +98,21 @@ class Activity extends Model implements HasMedia
         return $this->created_at->valueOf();
     }
 
-    public function getContractDetails()
+    public function getContractDetailsAttachments()
     {
+        $attachments = collect([]);
         if ($this->contract->hasStatusCode($this->status_code)) {
-            return $this->contract->details;
+            if ($this->contract->details->count()) {
+                $this->contract->details
+                    ->each(function($detail) use(&$attachments) {
+                        $currentMedia = $detail->getMedia('evidences');
+                        if ($currentMedia->count()) {
+                            $attachments->push($currentMedia);
+                        }
+                    });
+            }
         }
-        return [];
+        return $attachments->collapse();
     }
 
     public function getStatusFromWallet($wallet)

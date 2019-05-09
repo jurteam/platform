@@ -60,16 +60,13 @@ class ContractActivityTransformer extends TransformerAbstract
      */
     public function includeAttachments(Activity $activity)
     {
+        $detailAttachments = $activity->getContractDetailsAttachments();
         $attachments = $activity->getMedia('attachments');
 
-        return $this->collection($attachments, new AttachmentTransformer);
-    }
-
-    public function includeDetails(Activity $activity)
-    {
-        $details = $activity->getContractDetails();
-
-        return $this->collection($details, new ContractStatusDetailTransformer);
+        return $this->collection(
+            $attachments->merge($detailAttachments),
+            new AttachmentTransformer
+        );
     }
 
     /**
