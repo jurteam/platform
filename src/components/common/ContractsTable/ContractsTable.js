@@ -42,7 +42,7 @@ export const ContractsTable = ({
   history
 }) => {
   const [activePage, setActivePage] = useState(initialPage);
-  const { labels } = useContext(AppContext);
+  const { labels, archivableCodes } = useContext(AppContext);
 
   const emptyMessage = data.length === 0 && (
     <div className="jur-table__empty">
@@ -146,7 +146,7 @@ export const ContractsTable = ({
                 <TableCell>
                   <Amount value={humanToEth(contract.value)} />
                 </TableCell>
-                {(!contract.archived && contract.counterparties[0].wallet.toLowerCase() === user.wallet.toLowerCase()) ? (
+                {(!contract.archived && contract.counterparties[0].wallet.toLowerCase() === user.wallet.toLowerCase() && archivableCodes.indexOf(contract.statusId) >= 0) ? (
                   <TableCell>
                     <Dropdown label={<EllipsisVIcon />}>
                       <DropdownItem onClick={() => handleArchive(contract.id)}>

@@ -22,6 +22,8 @@ class AppProvider extends Component {
     this.state = {
       version: appReference.version,
       labels: i18n,
+      closedCodes: [-1, 9, 29, 39],
+      archivableCodes: [-1, 0, 9, 29, 39],
       metamaskLoading: true,
       notificationsTableHeaders: [
         {label: "", className: "jur-col--options", key: "status"},
