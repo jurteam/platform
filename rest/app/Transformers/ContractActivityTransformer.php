@@ -40,7 +40,7 @@ class ContractActivityTransformer extends TransformerAbstract
                 'name' => $activity->user ? $activity->user->name : null,
                 'system' => $this->getSystem($activity)
             ],
-            'abstract' => null, # to-do
+            'abstract' => $activity->abstract,
             'to' => $activity->to_wallet,
             'status' => $activity->status_code,
             'message' => $activity->message,
