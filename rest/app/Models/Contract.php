@@ -91,7 +91,10 @@ class Contract extends Model implements HasMedia
         $user = User::byWallet($params->header('wallet'))->first();
         $status = ContractStatus::byCode($params->code)->firstOrFail();
 
-        $this->update(['contract_status_id' => $status->id]);
+        $this->update([
+            'contract_status_id' => $status->id,
+            'chain_updated_at' => $this->getChainUpdatedAtFromRequest($params)
+        ]);
 
         if ($params->code == 31) {
             $this->flagAsOpenDispute();
@@ -104,7 +107,8 @@ class Contract extends Model implements HasMedia
             'status' => $status->label,
             'status_code' => $status->code,
             'to_wallet' => $this->getSendTo($params->header('wallet')),
-            'wallet' => $params->header('wallet')
+            'wallet' => $params->header('wallet'),
+            'chain_updated_at' => $this->chain_updated_at
         ]), $user);
 
         $this->notifyCounterPart($activity);
