@@ -8,6 +8,9 @@ trait StatusesTrait
 
     public function hasStatusCode($code)
     {
+        if (is_array($code)) {
+            return in_array($this->status->code, $code);
+        }
         return $this->status->code == $code;
     }
 
