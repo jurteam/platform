@@ -63,7 +63,6 @@ class ContractStatusDetail extends Model implements HasMedia
 
     public function getFromWallet($wallet)
     {
-        dd($this->contract_part, $wallet);
         return strcmp($this->contract_part, $wallet) == 0;
     }
 
