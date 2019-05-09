@@ -11,7 +11,7 @@ import { MessageIcon } from "../Icons/MessageIcon";
 import { toCurrencyFormat, ellipsisString } from "../../../utils/helpers";
 
 import "./OraclesTablePreview.scss";
-import TimeAgo from "../TimeAgo";
+import TimeAgo from "react-timeago";
 import { AppContext } from "../../../bootstrap/AppProvider";
 
 export const OraclesTablePreview = ({
@@ -73,7 +73,7 @@ export const OraclesTablePreview = ({
                 {toCurrencyFormat(oracle.amount)}
               </TableCell>
               <TableCell className="jur-oracles-table-preview__date">
-                <TimeAgo date={oracle.date || null} />
+                <TimeAgo date={oracle.voted_at || null} />
               </TableCell>
             </TableRow>
           ))}

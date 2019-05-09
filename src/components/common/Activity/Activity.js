@@ -22,7 +22,7 @@ export const Activity = props => {
     abstract
   } = props.data;
 
-  const { hideTime } = props;
+  const { hideTime, onView, noPreview } = props;
 
   const { labels } = useContext(AppContext);
 
@@ -66,7 +66,7 @@ export const Activity = props => {
             <span>
               {labels.openDispute}
             </span>
-            <CaretDownIcon className="friendly-caret" />
+            {typeof noPreview !== "undefined" && <CaretDownIcon className="friendly-caret" />}
           </span>
         );
 
@@ -80,7 +80,7 @@ export const Activity = props => {
             <span>
               {labels.disputeProposal}
             </span>
-            <CaretDownIcon className="friendly-caret" />
+            {typeof noPreview !== "undefined" && <CaretDownIcon className="friendly-caret" />}
           </span>
         );
 
@@ -92,7 +92,7 @@ export const Activity = props => {
           >
             {`${abstract || labels.offeredA} `}
             <span>{`${labels.friendlyResolution}.`}</span>
-            <CaretDownIcon className="friendly-caret" />
+            {typeof noPreview !== "undefined" && <CaretDownIcon className="friendly-caret" />}
           </span>
         );
       case 1: // Waiting for counterparty
@@ -176,13 +176,13 @@ export const Activity = props => {
           <div className="jur-activity__info__message">{getMessage()}</div>
         </div>
       </div>
-      {status !== null && message && (
+      {status !== null && typeof noPreview === "undefined" && message && (
         <div
           className={`jur-activity__content ${
             isOpen ? "jur-activity__content--open" : ""
           }`}
         >
-          <ProposalPreview proposalDetail={props.data} />
+          <ProposalPreview proposalDetail={props.data} onView={onView} />
         </div>
       )}
     </div>

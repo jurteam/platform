@@ -9,7 +9,7 @@ import Avatar from "../Avatar";
 import FileList from "../FileList";
 import File from "../File";
 import Tag from "../Tag";
-import TimeAgo from "../TimeAgo";
+import TimeAgo from "react-timeago";
 import Pagination from "../Pagination";
 import { SpinnerOnly } from "../Spinner";
 
@@ -147,7 +147,7 @@ export const OraclesTable = ({
                     {toCurrencyFormat(oracle.amount)}
                   </TableCell>
                   <TableCell className="jur-oracles-table__date">
-                    <TimeAgo date={oracle.date || null} />
+                    <TimeAgo date={oracle.voted_at || null} />
                   </TableCell>
                 </TableRow>
               );

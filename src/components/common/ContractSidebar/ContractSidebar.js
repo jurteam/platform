@@ -269,7 +269,7 @@ export const ContractSidebar = ({
           loading={notificationLoading}
           onOpen={readActivities}
         >
-          <ActivityList activities={activities || []} />
+          <ActivityList activities={activities || []} onView={onView} />
         </ContractAccordion>
       )}
       {statusId === 0 && (

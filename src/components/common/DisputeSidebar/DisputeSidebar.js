@@ -106,7 +106,7 @@ export const DisputeSidebar = ({
         loading={notificationLoading}
         onOpen={readActivities}
       >
-        <ActivityList activities={activities || []} />
+        <ActivityList activities={activities || []} onView={onView} />
       </ContractAccordion>
 
       <ContractAccordion

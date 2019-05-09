@@ -5,7 +5,7 @@ import Activity from "../Activity";
 import "./ActivityList.scss";
 import { AppContext } from "../../../bootstrap/AppProvider"; // context
 
-export const ActivityList = ({ activities }) => {
+export const ActivityList = ({ activities, ...params }) => {
   const { labels } = useContext(AppContext);
   if (activities.length) {
     const filteredAcivities = activities.reduce(
@@ -19,7 +19,7 @@ export const ActivityList = ({ activities }) => {
       <ul className="jur-activity-list">
         {filteredAcivities.old.map((activity, idx) => (
           <li className="jur-activity-list__item" key={`old-${idx}`}>
-            <Activity data={activity} />
+            <Activity data={activity} {...params} />
           </li>
         ))}
         {filteredAcivities.new.length > 0 && (
@@ -27,7 +27,7 @@ export const ActivityList = ({ activities }) => {
             <li className="jur-activity-list__new">{labels.new}</li>
             {filteredAcivities.new.map((activity, idx) => (
               <li className="jur-activity-list__item" key={`new-${idx}`}>
-                <Activity data={activity} />
+                <Activity data={activity} {...params} />
               </li>
             ))}
           </>

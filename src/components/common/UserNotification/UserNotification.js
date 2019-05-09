@@ -78,7 +78,7 @@ export const UserNotification = ({ user, history, className }) => {
               </TableCell>
               <TableCell
                 key={`uactivity-${idx}-${activity.id}-activity`}>
-                <Activity data={activity} hideTime={true} />
+                <Activity data={activity} hideTime={true} noPreview={true} />
               </TableCell>
               <TableCell
                 key={`uactivity-${idx}-${activity.id}-opt`}>

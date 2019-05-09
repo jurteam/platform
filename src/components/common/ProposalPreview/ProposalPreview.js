@@ -42,11 +42,11 @@ export const ProposalPreview = ({ proposalDetail, onView }) => {
           </div>
         ))}
       </div>
-      {proposalDetail.evidences && proposalDetail.evidences.length > 0 && (
+      {proposalDetail.attachments && proposalDetail.attachments.length > 0 && (
         <div className="jur-proposal-preview__evidences">
           <BlockTitle title={labels.evidences} hideIcon />
           <FileList>
-            {proposalDetail.evidences.map((file, index) => (
+            {proposalDetail.attachments.map((file, index) => (
               <File key={`pf-${file.fileName}${index.toString()}`} file={file} name={file.fileName} onView={onView} />
             ))}
           </FileList>
