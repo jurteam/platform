@@ -95,12 +95,12 @@ export const ContractsTable = ({
         disabled={filtersDisabled}
         {...filters}
       />
-      <Table>
+      <Table key="contractsTable">
         <TableHead>
-          <TableRow>
-            {headers.map(header => (
+          <TableRow key="contractsTableHead">
+            {headers.map((header, idx) => (
               <TableCell
-                key={header.label.toString()}
+                key={`thead-${idx}-${header.label.toString()}`}
                 {...header.sortable && { onClick: header.sortable }}
                 {...header.className && {className: header.className }}
               >
@@ -111,9 +111,9 @@ export const ContractsTable = ({
         </TableHead>
         {data.length > 0 && loading === false ? (
           <TableBody>
-            {data.map(contract => (
+            {data.map((contract, idx) => (
               <TableRow
-                key={contract.id}
+                key={`notification-row-${idx}-${contract.id}`}
                 onClick={() => showContract(`/contracts/detail/${contract.id}`)}
               >
                 <TableCell>
@@ -169,7 +169,7 @@ export const ContractsTable = ({
           itemsCountPerPage={contractsPerPage}
           totalItemsCount={totalContracts}
           handlePageChange={handlePageChange}
-          getPageUrl={i => "https://customLink/#" + i}
+          // getPageUrl={i => "https://customLink/#" + i}
         />
       )}
       {emptyMessage}

@@ -4,8 +4,8 @@ export const JurIcon = ({className, ...props}) => (
     <svg width="40" height="40" viewBox="0 0 40 40">
       <defs>
         <linearGradient x1="1.73646329%" y1="0%" x2="98.2635367%" y2="100%" id="linearGradient-1">
-          <stop stop-color="#32FBFC" offset="0%"></stop>
-            <stop stop-color="#147AFF" offset="100%"></stop>
+          <stop stopColor="#32FBFC" offset="0%"></stop>
+            <stop stopColor="#147AFF" offset="100%"></stop>
           </linearGradient>
       </defs>
       <g stroke="none" strokeWidth="1" fill="none" >

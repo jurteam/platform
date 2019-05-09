@@ -16,7 +16,7 @@ export class Contracts {
     });
   }
   static getActivities(payload) {
-    return axios.get(`activities/${payload.id}?include=attachments`);
+    return axios.get(`activities/${payload.id}?include=attachments,details`);
   }
   static readActivities(payload) {
     payload.append("_method", "PUT"); // for PUT methods only

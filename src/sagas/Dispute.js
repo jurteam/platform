@@ -21,9 +21,7 @@ import {
   DISPUTE_PAGE_CHANGE,
   CHAIN_GET_DISPUTE,
   DELETE_ALL_DISPUTES,
-  RESET_ALL_DISPUTES,
-  PUT_VOTE,
-  RESET_VOTE
+  RESET_ALL_DISPUTES
 } from "../reducers/types";
 
 import { log } from "../utils/helpers"; // log helper
@@ -117,61 +115,6 @@ export function* fetchDisputes() {
   }
 }
 
-// Update
-export function* onVote(action) {
-  log("onVote - run");
-  yield put({ type: DISPUTE_UPDATING, payload: true });
-  const {
-    vote: {
-      amount,
-      contract_id,
-      message,
-      hash,
-      oracle_wallet,
-      wallet_part
-    },
-    attachments
-  } = action;
-
-  const zero = Number(0).toFixed(process.env.REACT_APP_TOKEN_DECIMALS);
-
-  const voteData = new FormData();
-  // voteData.append('_method', 'PUT');
-  if (contract_id) voteData.append("contract_id", contract_id);
-  voteData.append("hash", hash || "0x0");
-  if (wallet_part) voteData.append("wallet_part", wallet_part);
-  if (oracle_wallet) voteData.append("oracle_wallet", oracle_wallet);
-  if (message) voteData.append("message", message);
-  voteData.append("amount", Number(amount).toFixed(process.env.REACT_APP_TOKEN_DECIMALS)); // always
-
-  for (let i = 0; i < attachments.length; i++) {
-    // iteate over any file sent over appending the files to the form data.
-    let file = attachments[i];
-
-    voteData.append("attachments[" + i + "]", file);
-  }
-  // voteData.append("attachments[]", attachments);
-
-  log("onVote - voteData", voteData);
-
-  try {
-    const response = yield call(Disputes.vote, voteData);
-    log("onVote - vote created", response);
-
-    yield put({ type: DISPUTE_UPDATING, payload: false });
-    yield put({ type: RESET_VOTE });
-    // TODO: fetch new votes
-
-    if (typeof action.callback === "function") action.callback(); // invoke callback if needed
-  } catch (error) {
-
-    yield put({ type: DISPUTE_UPDATING, payload: false });
-
-    yield put({ type: API_CATCH, error });
-    if (typeof action.callback === "function") action.callback(); // invoke callback if needed
-  }
-}
-
 // Delete media
 export function* deleteDisputeMedia(action) {
   log("deleteDisputeMedia - run", action);
@@ -220,7 +163,6 @@ export function* onDeleteAllDisputes() {
 // spawn tasks base certain actions
 export default function* disputeSagas() {
   log("run", "DisputeSagas");
-  yield takeEvery(PUT_VOTE, onVote);
   yield takeEvery(API_GET_DISPUTE, getDispute);
   yield takeLatest(API_DELETE_DISPUTE, deleteDispute);
   yield takeEvery(FETCH_DISPUTES, fetchDisputes);

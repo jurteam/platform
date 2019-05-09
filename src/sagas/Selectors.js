@@ -26,5 +26,9 @@ export const getDisputeFilters = state => state.dispute.filters
 export const getCurrentDispute = state => state.dispute.current
 export const getDisputeListPage = state => state.dispute.page
 
+// Oracle
+export const getOracleOrder = state => state.oracle.order
+export const getOracleListPage = state => state.oracle.page
+
 // User
 export const getUser = state => state.user

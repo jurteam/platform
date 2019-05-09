@@ -5,11 +5,12 @@ import axios from "../bootstrap/Api";
 const root = "/votes";
 
 export class Oracles {
-  // static list(payload) {
-  //   return axios.get(`${root}/all`, { params: payload });
-  // }
+  static list(payload) {
+    const { id, ...params } = payload;
+    return axios.get(`${root}/${payload.id}`, { params });
+  }
   static get(payload) {
-    return axios.get(`${root}/${payload.id}`);
+    return axios.get(`${root}/${payload.id}?include=attachments`);
   }
   static store(payload) {
     return axios.post(`${root}?include=attachments`, payload);

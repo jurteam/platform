@@ -8,6 +8,7 @@ export const TableCell = ({
   parentComponent,
   children,
   onClick,
+  noCarret,
   align
 }) => {
   const [desc, setDesc] = useState(false);
@@ -31,7 +32,7 @@ export const TableCell = ({
       ) : (
         children
       )}
-      {onClick ? desc ? <CaretUpIcon /> : <CaretDownIcon /> : null}
+      {onClick && typeof noCarret === "undefined" ? desc ? <CaretUpIcon /> : <CaretDownIcon /> : null}
     </Component>
   );
 };

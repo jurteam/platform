@@ -29,47 +29,6 @@ export const Viewer = (props) => {
 
     const { labels } = useContext(AppContext);
 
-  // cDM
-  // useEffect(() => {
-
-  //   const { current, counterparties } = props;
-
-  //   if (typeof current !== "undefined" || typeof current.idx !== "undefined") {
-
-  //     const { idx } = current;
-
-  //     console.log("Viewer - cDM", {
-  //       props: props,
-  //       selectedCounterpartyIndex: idx,
-  //       selectedCounterparty: counterparties[idx]
-  //     });
-
-  //     setState({
-  //       selectedCounterpartyIndex: idx,
-  //       selectedCounterparty: counterparties[idx]
-  //     });
-
-  //     changeInput("wallet_part", counterparties[idx].wallet.toLowerCase());
-  //     changeInput("contract_id", contract.contractID);
-  //     changeInput("oracle_wallet", currentWallet);
-  //   }
-  // }, []);
-
-  const getFileType = filePath =>
-    filePath.slice(((filePath.lastIndexOf(".") - 1) >>> 0) + 2);
-
-    const setVoteForm = (counterparty, idx) => {
-    setState({
-      selectedCounterpartyIndex: idx,
-      selectedCounterparty: counterparty
-    });
-    changeInput("wallet_part", counterparty.wallet.toLowerCase());
-  };
-
-  const onVoteSubmit = () => {
-    console.log("onVoteSubmit", props.onVoteSubmit);
-    props.onVoteSubmit();
-  };
 
     const {
       isOpen,
@@ -93,6 +52,60 @@ export const Viewer = (props) => {
       metaMaskError,
       fullWidthViewer
     } = props;
+
+  // cDM
+  // useEffect(() => {
+
+  //   const { current, counterparties, changeInput } = props;
+
+  //   if (typeof current !== "undefined" || typeof current.idx !== "undefined") {
+
+  //     const { idx } = current;
+
+  //     console.log("Viewer - cDM", {
+  //       props: props,
+  //       selectedCounterpartyIndex: idx,
+  //       selectedCounterparty: counterparties[idx]
+  //     });
+
+  //     setState({
+  //       selectedCounterpartyIndex: idx,
+  //       selectedCounterparty: counterparties[idx]
+  //     });
+
+  //     changeInput("wallet_part", counterparties[idx].wallet.toLowerCase());
+  //     changeInput("contract_id", contract.contractID);
+  //     changeInput("oracle_wallet", currentWallet);
+  //   }
+
+  //   return () => null;
+
+  // }, [contract]);
+  // cDM
+  useEffect(() => {
+
+    console.log("Viewer - mount");
+
+    return () => console.log("Viewer - umount"); // do something on unmount
+
+  }, []);
+
+  const getFileType = filePath =>
+    filePath.slice(((filePath.lastIndexOf(".") - 1) >>> 0) + 2);
+
+    const setVoteForm = (counterparty, idx) => {
+    setState({
+      selectedCounterpartyIndex: idx,
+      selectedCounterparty: counterparty
+    });
+    changeInput("wallet_part", counterparty.wallet.toLowerCase());
+  };
+
+  const onVoteSubmit = () => {
+    console.log("onVoteSubmit", props.onVoteSubmit);
+    props.onVoteSubmit();
+  };
+
 
     const { selectedCounterpartyIndex } = state;
     let selectedCounterpartyAddress,
