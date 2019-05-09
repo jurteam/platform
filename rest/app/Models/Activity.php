@@ -75,6 +75,11 @@ class Activity extends Model implements HasMedia
         return $this->belongsTo(User::class);
     }
 
+    public function details()
+    {
+        return $this->belongsTo(Contract::class);
+    }
+
     public function attachments()
     {
         return $this->morphMany(config('medialibrary.media_model'), 'model');
@@ -91,6 +96,14 @@ class Activity extends Model implements HasMedia
             return $this->chain_updated_at->valueOf();
         }
         return $this->created_at->valueOf();
+    }
+
+    public function getContractDetails()
+    {
+        if ($this->contract->hasStatusCode($this->status_code)) {
+            return $this->contract->details;
+        }
+        return [];
     }
 
     public function getStatusFromWallet($wallet)
@@ -121,7 +134,6 @@ class Activity extends Model implements HasMedia
     public static function updateStatus($params)
     {
         $currentWallet = $params->header('wallet');
-
         foreach ($params->ids as $id) {
             $activity = static::find($id);
             $activity->updateStatusFromWallet($currentWallet);
