@@ -61,6 +61,11 @@ class ContractStatusDetail extends Model implements HasMedia
         return $this->belongsTo(User::class);
     }
 
+    public function getFromWallet($wallet)
+    {
+        return strcmp($this->contract_part, $wallet) == 0;
+    }
+
     public function getEvidences()
     {
         $evidences = [];
