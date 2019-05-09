@@ -111,6 +111,13 @@ export const Activity = props => {
           </>
         );
 
+      case 8: // Expired
+        return (
+          <>
+            <span className="alert">{labels.contractExpired}</span> {contract_name}
+          </>
+        );
+
       // Contract closed
       case 9:
       case 29:

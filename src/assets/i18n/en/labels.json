@@ -18,6 +18,7 @@
     "newContract" : "New Smart Contract",
     "createContract" : "Create Smart Contract",
     "contractDetails" : "Contract Details",
+    "contractExpired" : "Contract Expired",
     "confirm" : "Confirm",
     "success" : "Success",
     "cancel" : "Cancel",
