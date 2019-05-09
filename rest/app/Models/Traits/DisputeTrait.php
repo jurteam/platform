@@ -104,7 +104,7 @@ trait DisputeTrait
                     'proposal_part_b' => $detail->proposal_part_b
                 ],
                 'payed_at' => $detail->payed_at ? $detail->payed_at->valueOf() : null,
-                'evidences' => $detail->getEvidences()
+                'attachments' => $detail->getAttachments()
             ];
         }
 
