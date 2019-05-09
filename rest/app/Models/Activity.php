@@ -13,6 +13,8 @@ class Activity extends Model implements HasMedia
 
     protected $fillable = [
         'readed',
+        'readed_part_a',
+        'readed_part_b',
         'abstract',
         'to_wallet',
         'wallet',
@@ -24,6 +26,11 @@ class Activity extends Model implements HasMedia
         'user_id',
         'contract_id',
         'chain_updated_at'
+    ];
+
+    protected $casts = [
+        'readed_part_a' => 'boolean',
+        'readed_part_b' => 'boolean'
     ];
 
     protected $dates = ['chain_updated_at'];
@@ -84,5 +91,40 @@ class Activity extends Model implements HasMedia
             return $this->chain_updated_at->valueOf();
         }
         return $this->created_at->valueOf();
+    }
+
+    public function getStatusFromWallet($wallet)
+    {
+        $contract = $this->contract;
+        if (strtolower($contract->part_a_wallet) == strtolower($wallet)) {
+            return $this->readed_part_a;
+        } elseif (strtolower($contract->part_b_wallet) == strtolower($wallet)) {
+            return $this->readed_part_b;
+        }
+        return false;
+    }
+
+    public function updateStatusFromWallet($wallet)
+    {
+        $contract = $this->contract;
+        if (strtolower($contract->part_a_wallet) == strtolower($wallet)) {
+            $this->update([
+                'readed_part_a' => true
+            ]);
+        } elseif (strtolower($contract->part_b_wallet) == strtolower($wallet)) {
+            $this->update([
+                'readed_part_b' => true
+            ]);
+        }
+    }
+
+    public static function updateStatus($params)
+    {
+        $currentWallet = $params->header('wallet');
+
+        foreach ($params->ids as $id) {
+            $activity = static::find($id);
+            $activity->updateStatusFromWallet($currentWallet);
+        }
     }
 }

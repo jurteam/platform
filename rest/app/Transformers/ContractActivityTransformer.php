@@ -25,9 +25,11 @@ class ContractActivityTransformer extends TransformerAbstract
      */
     public function transform(Activity $activity)
     {
+        $wallet = request()->header('wallet');
+
         return [
             'id' => $activity->id,
-            'readed' => $activity->readed,
+            'readed' => $activity->getStatusFromWallet($wallet),
             'date' => $activity->getUpdatedDate(),
             'contract_name' => $activity->contract->name,
             'contract' => $activity->contract_id,
@@ -70,7 +72,7 @@ class ContractActivityTransformer extends TransformerAbstract
      */
     protected function getSystem(Activity $activity)
     {
-        if (in_array($activity->status_code, [39,8])) {
+        if (in_array($activity->status_code, [39,38,36])) {
             return true;
         }
         return false;

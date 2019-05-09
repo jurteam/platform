@@ -70,10 +70,7 @@ class ContractActivitiesController extends Controller
             'ids' => 'required|array|min:1'
         ]);
 
-        Activity::whereIn('id', $request->ids)
-             ->update([
-                'readed' => true
-             ]);
+        Activity::updateStatus($request);
 
         return response()->json(['status' => 'updated']);
     }

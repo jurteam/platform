@@ -31,7 +31,8 @@ class ContractVoteTransformer extends TransformerAbstract
             'message' => $vote->message,
             'oracle_wallet' => $vote->oracle_wallet,
             'wallet_part' => $vote->wallet_part,
-            'its_me' => $vote->itsMe()
+            'its_me' => $vote->itsMe(),
+            'voted_at' => $vote->created_at->valueOf()
         ];
     }
 
