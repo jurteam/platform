@@ -6,6 +6,14 @@ trait StatusesTrait
 {
     use StatusesNotifable;
 
+    public function getChainUpdatedAtFromRequest($params)
+    {
+        if ($params->has('chain_updated_at')) {
+            return $params->get('chain_updated_at');
+        }
+        return null;
+    }
+
     public function hasStatusCode($code)
     {
         if (is_array($code)) {
@@ -45,7 +53,7 @@ trait StatusesTrait
             ->first();
 
         if ($statusActivity) {
-            return $statusActivity->created_at->valueOf();
+            return $statusActivity->getUpdatedDate();
         }
         return $this->updated_at->valueOf();
     }
