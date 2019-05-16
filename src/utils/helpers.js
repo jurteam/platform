@@ -54,16 +54,6 @@ export const redirect = (...checks) => {
   };
 };
 
-export const toCurrencyFormat = value => {
-  const decimals = "1";
-  const num =
-    Number(humanToEth(value)) /
-    Number(
-      decimals.padEnd(Number(process.env.REACT_APP_TOKEN_DECIMALS) + 1, "0")
-    );
-  return num.toFixed(2);
-};
-
 export const humanToEth = value => {
   const decimals = "1";
   let amount = 0;
@@ -78,6 +68,16 @@ export const humanToEth = value => {
       );
   }
   return amount;
+};
+
+export const toCurrencyFormat = value => {
+  const decimals = "1";
+  const num =
+    Number(humanToEth(value)) /
+    Number(
+      decimals.padEnd(Number(process.env.REACT_APP_TOKEN_DECIMALS) + 1, "0")
+    );
+  return num.toFixed(2);
 };
 
 export const ethToHuman = value => {

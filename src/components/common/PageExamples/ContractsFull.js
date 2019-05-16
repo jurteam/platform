@@ -1,8 +1,6 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import PageLayout from "../PageLayout";
 import Main from "../Main";
-import Aside from "../Aside";
 import ContractsTable from "../ContractsTable";
 
 const contractsTableHeader = [
@@ -31,15 +29,13 @@ const contractsTableHeader = [
   }
 ];
 
-
 const contractsData = [
   {
-    to: '/1',
+    to: "/1",
     id: 0,
     statusId: 0,
     statusLabel: "Draft",
     contractName: "Freelancer Agreement",
-    duration: 1000 * 60 * 60 * 24 * 3,
     expireDate: 1000 * 60 * 60 * 24 * 2,
     counterparties: [
       {
@@ -63,13 +59,12 @@ const contractsData = [
     }
   },
   {
-    to: '/2',
+    to: "/2",
     id: 1,
     statusId: 1,
     statusLabel: "Waiting for counterparty",
     statusUpdatedAt: 1554487773000,
     contractName: "OTC transaction Eth vs Btc",
-    duration: 1000 * 60 * 60 * 24 * 3,
     expireDate: 1000 * 60 * 60 * 24 * 2,
     counterparties: [
       {
@@ -93,13 +88,12 @@ const contractsData = [
     }
   },
   {
-    to: '/3',
+    to: "/3",
     id: 2,
     statusId: 5,
     statusLabel: "Ongoing",
     contractName: "Web Development Activity",
     statusUpdatedAt: 1554487773000,
-    duration: 1000 * 60 * 60 * 24 * 3,
     expireDate: 1000 * 60 * 60 * 24 * 2,
     counterparties: [
       {
@@ -123,13 +117,12 @@ const contractsData = [
     }
   },
   {
-    to: '/4',
+    to: "/4",
     id: 3,
     statusId: 31,
     statusLabel: "Open Dispute",
     contractName: "Logo Design",
     statusUpdatedAt: 1554487773000,
-    duration: 1000 * 60 * 60 * 24 * 3,
     expireDate: 1000 * 60 * 60 * 24 * 2,
     counterparties: [
       {
@@ -153,13 +146,12 @@ const contractsData = [
     }
   },
   {
-    to: '/5',
+    to: "/5",
     id: 4,
     statusId: 39,
     statusLabel: "Closed Dispute",
     contractName: "Investment Milestone",
     statusUpdatedAt: 1554487773000,
-    duration: 1000 * 60 * 60 * 24 * 3,
     expireDate: 1000 * 60 * 60 * 24 * 2,
     counterparties: [
       {
@@ -183,13 +175,12 @@ const contractsData = [
     }
   },
   {
-    to: '/6',
+    to: "/6",
     id: 5,
     statusId: 39,
     statusLabel: "Closed Dispute",
     contractName: "EU Patent purchasing",
     statusUpdatedAt: 1554487773000,
-    duration: 1000 * 60 * 60 * 24 * 3,
     expireDate: 1000 * 60 * 60 * 24 * 2,
     counterparties: [
       {

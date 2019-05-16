@@ -78,12 +78,18 @@ export const DisputeDetail = props => {
   const { dispute, user, oracle, contract, history } = props;
   const { updating } = dispute;
 
+  // validation setup
+  const [isValid, errors, validateForm, setFormData] = useFormValidation(
+    dispute.vote,
+    validationSchema
+  );
+
   const {
     match: { params },
     wallet
   } = props;
 
-  const [userWallet, setUserWallet] = useState(wallet.address);
+  const [userWallet] = useState(wallet.address);
 
   const pageLoaded = () => {
     if (wallet.address) {
@@ -93,12 +99,6 @@ export const DisputeDetail = props => {
       // wait for wallet to load
     }
   };
-
-  // validation setup
-  const [isValid, errors, validateForm, setFormData] = useFormValidation(
-    dispute.vote,
-    validationSchema
-  );
 
   // cDM
   useEffect(() => {
@@ -116,14 +116,6 @@ export const DisputeDetail = props => {
     });
 
   }, [wallet.address]);
-
-  const onVote = (counterparty, idx) => {
-    onRequestClose();
-    changeInput("contract_id", dispute.current.id);
-    changeInput("oracle_wallet", wallet.address);
-    changeInput("wallet_part", counterparty.wallet.toLowerCase());
-    setShowVoteOverlay({ counterparty, idx });
-  };
 
   const changeInput = (name, value) => {
     if (!formUpdated) setFormUpdated(true);
@@ -173,6 +165,14 @@ export const DisputeDetail = props => {
     });
   };
 
+  const onVote = (counterparty, idx) => {
+    onRequestClose();
+    changeInput("contract_id", dispute.current.id);
+    changeInput("oracle_wallet", wallet.address);
+    changeInput("wallet_part", counterparty.wallet.toLowerCase());
+    setShowVoteOverlay({ counterparty, idx });
+  };
+
   const onSend = () => {
     console.log("onSend", "run");
 
@@ -183,20 +183,6 @@ export const DisputeDetail = props => {
 
   const onProgress = percentage => {
     // console.log(percentage);
-  };
-
-  const onSubmit = () => {
-    if (!submitDisabled) {
-      global.drizzle.store.dispatch({
-        type: PUT_VOTE,
-        vote: dispute.vote,
-        attachments,
-        callback: () => {
-          setFormUpdated(false);
-          setShowVoteOverlay(false);
-        } // reset form
-      });
-    }
   };
 
   const onFileDelete = file => {
@@ -220,6 +206,20 @@ export const DisputeDetail = props => {
     updating === true ||
     dispute.saving === true ||
     !isValid();
+
+  const onSubmit = () => {
+    if (!submitDisabled) {
+      global.drizzle.store.dispatch({
+        type: PUT_VOTE,
+        vote: dispute.vote,
+        attachments,
+        callback: () => {
+          setFormUpdated(false);
+          setShowVoteOverlay(false);
+        } // reset form
+      });
+    }
+  };
 
   const breadcrumbs = [
     {

@@ -74,7 +74,7 @@ export const ContractDetail = props => {
   const [filePath, setFilePath] = useState(null);
 
 
-  const { contract, user, updateContractField, history } = props;
+  const { contract, updateContractField, history } = props;
   const { updating } = contract;
 
   const {
@@ -82,7 +82,13 @@ export const ContractDetail = props => {
     wallet
   } = props;
 
-  const [userWallet, setUserWallet] = useState(wallet.address);
+  // validation setup
+  const [isValid, errors, validateForm, setFormData] = useFormValidation(
+    contract.current,
+    validationSchema
+  );
+
+  const [userWallet] = useState(wallet.address);
 
   const pageLoaded = () => {
     if (wallet.address) {
@@ -92,12 +98,6 @@ export const ContractDetail = props => {
       // wait for wallet to load
     }
   };
-
-  // validation setup
-  const [isValid, errors, validateForm, setFormData] = useFormValidation(
-    contract.current,
-    validationSchema
-  );
 
   // cDM
   useEffect(() => {
@@ -182,17 +182,6 @@ export const ContractDetail = props => {
         setFormUpdated(false);
       } // reset form
     });
-  };
-
-  const onSubmit = () => {
-
-    if (!submitDisabled) {
-      global.drizzle.store.dispatch({
-        type: PUT_CONTRACT,
-        attachments,
-        callback: () => setFormUpdated(false) // reset form
-      });
-    }
   };
 
   const onPay = () => {
@@ -319,6 +308,17 @@ export const ContractDetail = props => {
     updating === true ||
     contract.saving === true ||
     !isValid();
+
+  const onSubmit = () => {
+
+    if (!submitDisabled) {
+      global.drizzle.store.dispatch({
+        type: PUT_CONTRACT,
+        attachments,
+        callback: () => setFormUpdated(false) // reset form
+      });
+    }
+  };
 
   const breadcrumbs = [
     {

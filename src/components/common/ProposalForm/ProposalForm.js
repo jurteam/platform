@@ -32,8 +32,6 @@ export const ProposalForm = props => {
     contract: { amount: contractValue, from, to }
   } = props;
 
-  console.log("ProposalForm", props);
-
   const { wallet: fromWallet } = from;
   const { wallet: toWallet } = to;
 
@@ -55,6 +53,11 @@ export const ProposalForm = props => {
     validationSchema
   );
 
+  const changeInput = (name, value) => {
+    setFormData({ ...currentProposal, [name]: value });
+    updateProposalField(name, value); // dispatch action
+  };
+
   // first form validation
   useEffect(() => {
     setFormData({ ...currentProposal });
@@ -68,11 +71,6 @@ export const ProposalForm = props => {
   const [files, setFiles] = useState([]);
 
   const { labels } = useContext(AppContext);
-
-  const changeInput = (name, value) => {
-    setFormData({ ...currentProposal, [name]: value });
-    updateProposalField(name, value); // dispatch action
-  };
 
   const updateProposal = (counterparty, value) => {
     let newProposal = { ...proposal };

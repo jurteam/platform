@@ -77,6 +77,62 @@ export function* fetchArbitrations(args) {
   }
 }
 
+export function* chainGetContract(args) {
+  log("chainGetContract - args", args);
+
+  const { address } = args;
+
+  const drizzleStatus = yield select(getDrizzleStatus);
+  log("chainGetContract - drizzleStatus", drizzleStatus);
+  if (drizzleStatus.initialized && global.drizzle) {
+    const { contracts, web3 } = global.drizzle;
+
+    const wallet = yield select(getWallet);
+
+    // add new arbitration to drizzle
+    const contractConfig = {
+      contractName: address,
+      web3Contract: new web3.eth.Contract(
+        ArbitrationJsonInterface.abi,
+        address,
+        { from: wallet.address }
+      )
+    };
+    const contractEvents = [
+      "StateChange",
+      "ContractCreated",
+      "ContractSigned",
+      "ContractUnsigned",
+      "ContractAgreed",
+      "ContractUnagreed",
+      "ContractAmendmentProposed",
+      "ContractAmendmentAgreed",
+      "ContractAmendmentUnagreed",
+      "ContractWithdrawn",
+      "ContractDisputed",
+      "ContractDisputeDispersalAmended",
+      "DisputeEndsAdjusted",
+      "VoteCast",
+      "VoterPayout",
+      "PartyPayout"
+    ];
+
+    log("chainGetContract - contractConfig", contractConfig);
+    log("chainGetContract - contractEvents", contractEvents);
+
+    // Or using the Drizzle context object
+    const newContractAdded = yield global.drizzle.addContract(
+      contractConfig,
+      contractEvents
+    );
+
+    log("chainGetContract - newContractAdded", newContractAdded);
+
+    // const txApprove = yield contracts[JURToken].methods["approve"].cacheSend(_arbitration, 50000000000000000000); // 50 JUR
+    // log("chainGetContract - txApprove", txApprove);
+  }
+}
+
 export function* handleNewArbitration(args) {
   log("handleNewArbitration", "run");
   log("handleNewArbitration - args", args);
@@ -350,62 +406,6 @@ export function* handleEvents(args) {
 
       log("handleEvents - event", event);
     }
-  }
-}
-
-export function* chainGetContract(args) {
-  log("chainGetContract - args", args);
-
-  const { address } = args;
-
-  const drizzleStatus = yield select(getDrizzleStatus);
-  log("chainGetContract - drizzleStatus", drizzleStatus);
-  if (drizzleStatus.initialized && global.drizzle) {
-    const { contracts, web3 } = global.drizzle;
-
-    const wallet = yield select(getWallet);
-
-    // add new arbitration to drizzle
-    const contractConfig = {
-      contractName: address,
-      web3Contract: new web3.eth.Contract(
-        ArbitrationJsonInterface.abi,
-        address,
-        { from: wallet.address }
-      )
-    };
-    const contractEvents = [
-      "StateChange",
-      "ContractCreated",
-      "ContractSigned",
-      "ContractUnsigned",
-      "ContractAgreed",
-      "ContractUnagreed",
-      "ContractAmendmentProposed",
-      "ContractAmendmentAgreed",
-      "ContractAmendmentUnagreed",
-      "ContractWithdrawn",
-      "ContractDisputed",
-      "ContractDisputeDispersalAmended",
-      "DisputeEndsAdjusted",
-      "VoteCast",
-      "VoterPayout",
-      "PartyPayout"
-    ];
-
-    log("chainGetContract - contractConfig", contractConfig);
-    log("chainGetContract - contractEvents", contractEvents);
-
-    // Or using the Drizzle context object
-    const newContractAdded = yield global.drizzle.addContract(
-      contractConfig,
-      contractEvents
-    );
-
-    log("chainGetContract - newContractAdded", newContractAdded);
-
-    // const txApprove = yield contracts[JURToken].methods["approve"].cacheSend(_arbitration, 50000000000000000000); // 50 JUR
-    // log("chainGetContract - txApprove", txApprove);
   }
 }
 
