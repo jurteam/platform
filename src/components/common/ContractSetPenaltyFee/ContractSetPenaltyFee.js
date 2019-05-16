@@ -9,13 +9,14 @@ import { ethToStore } from "../../../utils/helpers"; // helpers
 import "./ContractSetPenaltyFee.scss";
 import { AppContext } from "../../../bootstrap/AppProvider"; // context
 
-export const ContractSetPenaltyFee = ({
-  contract,
-  disabled,
-  setPenaltyFee,
-  setPenaltyFeeStatus,
-  handlePenaltyFee
-}) => {
+export const ContractSetPenaltyFee = props => {
+  const {
+    contract,
+    disabled,
+    setPenaltyFee,
+    setPenaltyFeeStatus,
+    handlePenaltyFee
+  } = props;
   const { from, to } = contract;
   const [isActive, setActive] = useState(!!contract.penaltyFee);
 

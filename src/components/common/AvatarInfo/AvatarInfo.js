@@ -4,31 +4,35 @@ import Avatar from "../Avatar";
 
 import "./AvatarInfo.scss";
 
-export const AvatarInfo = ({
-  userName,
-  userWallet,
-  shouldRenderName,
-  type,
-  variant,
-  maxTextWidth,
-  size,
-  ...rest
-}) => (
-  <div
-    className={`jur-avatar-info ${
-      variant ? `jur-avatar-info--${variant}` : ""
-    }`}
-    {...rest}
-  >
-    <Avatar seed={userWallet} size={size} variant={type} />
+export const AvatarInfo = props => {
+  const {
+    userName,
+    userWallet,
+    shouldRenderName,
+    type,
+    variant,
+    maxTextWidth,
+    size,
+    ...rest
+  } = props;
+  return (
     <div
-      className="jur-avatar-info__text"
-      style={{ width: maxTextWidth || 150 }}
+      className={`jur-avatar-info ${
+        variant ? `jur-avatar-info--${variant}` : ""
+      }`}
+      {...rest}
     >
-      {shouldRenderName && userName ? userName : userWallet}
+      <Avatar seed={userWallet} size={size} variant={type} />
+      <div
+        className="jur-avatar-info__text"
+        style={{ width: maxTextWidth || 150 }}
+      >
+        {shouldRenderName && userName ? userName : userWallet}
+      </div>
     </div>
-  </div>
-);
+  );
+};
+
 
 AvatarInfo.defaultProps = {
   size: "xsmall"

@@ -5,10 +5,12 @@ import AvatarInfo from "../AvatarInfo";
 
 import "./ContractCounterparties.scss";
 
-export const ContractCounterparties = ({
-  counterparties,
-  CounterpartiesDescription
-}) => (
+export const ContractCounterparties = props => {
+  const {
+    counterparties,
+    CounterpartiesDescription
+  } = props;
+  return (
   <div className="jur-contract-counterparties">
     <BlockTitle
       title="Counterparties"
@@ -34,4 +36,4 @@ export const ContractCounterparties = ({
       <AvatarInfo />
     </div>
   </div>
-);
+)};

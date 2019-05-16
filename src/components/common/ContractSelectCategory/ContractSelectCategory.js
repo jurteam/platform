@@ -7,7 +7,8 @@ import { AppContext } from "../../../bootstrap/AppProvider"; // context
 
 import "./ContractSelectCategory.scss";
 
-export const ContractSelectCategory = ({ onChange, category, ...params }) => {
+export const ContractSelectCategory = props => {
+  const { onChange, category, ...params } = props;
   const { labels } = useContext(AppContext);
 
   return (

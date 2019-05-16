@@ -8,7 +8,8 @@ import { AppContext } from "../../../bootstrap/AppProvider"; // context
 
 import "./ContractPenaltyFee.scss";
 
-export const ContractPenaltyFee = ({ contractInfo }) => {
+export const ContractPenaltyFee = props => {
+  const { contractInfo } = props;
 
   const { labels } = useContext(AppContext);
 

@@ -5,22 +5,21 @@ import { AppContext } from "../../../bootstrap/AppProvider"; // context
 
 import "./ContractSetCaseDispute.scss";
 
-
-export const ContractSetCaseDispute = ({
-  cases,
-  selectedOptionId,
-  handleChange,
-  disabled
-}) => {
+export const ContractSetCaseDispute = props => {
+  const { cases, selectedOptionId, handleChange, disabled } = props;
 
   const { labels } = useContext(AppContext);
 
   return (
     <div className="jur-contract-set-case-dispute">
       <div className="jur-contract-set-case-dispute__title">
-        { labels.inCaseOfDispute }
+        {labels.inCaseOfDispute}
       </div>
-      <div className={`jur-contract-set-case-dispute__options ${disabled ? "jur-contract-set-case-dispute__disabled" : ""}`}>
+      <div
+        className={`jur-contract-set-case-dispute__options ${
+          disabled ? "jur-contract-set-case-dispute__disabled" : ""
+        }`}
+      >
         {cases.map((option, index) => (
           <div
             key={index.toString()}

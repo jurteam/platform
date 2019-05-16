@@ -5,11 +5,12 @@ import { AppContext } from "../../../bootstrap/AppProvider"; // context
 
 import "./ContractActions.scss";
 
-export const ContractActions = ({ children, statusId, part, shouldWait, disabled }) => {
+export const ContractActions = props => {
+  const { children, statusId, part, shouldWait, disabled } = props;
   const { labels } = useContext(AppContext);
   console.log("ContractActions - props", { children, statusId, part });
   const renderSwitch = () => {
-    switch (statusId) {
+    switch (props.statusId) {
       case -1:
         return (
           <span className="jur-contract-actions__text">
@@ -42,7 +43,7 @@ export const ContractActions = ({ children, statusId, part, shouldWait, disabled
           </span>
         ;
       default:
-        return children;
+        return props.children;
     }
   };
   return <div className={`jur-contract-actions ${disabled ? "jur-contract-actions__disabled" : null}`}>{renderSwitch()}</div>;

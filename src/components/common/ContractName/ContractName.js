@@ -6,13 +6,14 @@ import { AppContext } from "../../../bootstrap/AppProvider";
 
 import "./ContractName.scss";
 
-export const ContractName = ({
-  contractName,
-  statusId,
-  statusIdLabel,
-  dispute,
-  onContractNameChange
-}) => {
+export const ContractName = props => {
+  const {
+    contractName,
+    statusId,
+    statusIdLabel,
+    dispute,
+    onContractNameChange
+  } = props;
   const { labels } = useContext(AppContext);
 
   return (

@@ -24,23 +24,24 @@ import { EXPIRED_CONTRACT } from "../../../reducers/types";
 import "./ContractsTable.scss";
 import { AppContext } from "../../../bootstrap/AppProvider"; // context
 
-export const ContractsTable = ({
-  headers,
-  filters,
-  data,
-  handleArchive,
-  filtersDisabled,
-  handleFilterChange,
-  handleFilterSubmit,
-  newContract,
-  initialPage,
-  onPageChange,
-  contractsPerPage,
-  totalContracts,
-  loading,
-  user,
-  history
-}) => {
+export const ContractsTable = props => {
+  const {
+    headers,
+    filters,
+    data,
+    handleArchive,
+    filtersDisabled,
+    handleFilterChange,
+    handleFilterSubmit,
+    newContract,
+    initialPage,
+    onPageChange,
+    contractsPerPage,
+    totalContracts,
+    loading,
+    user,
+    history
+  } = props;
   const [activePage, setActivePage] = useState(initialPage);
   const { labels, archivableCodes } = useContext(AppContext);
 
@@ -78,14 +79,29 @@ export const ContractsTable = ({
     });
   };
 
-  const showContractName = (contract) => {
-
+  const showContractName = contract => {
     if (!contract.contractName) {
-      return <span className="empty-placeholder">{labels.noContractName.replace("%partA%", contract.counterparties[0].renderName ? contract.counterparties[0].name : contract.counterparties[0].wallet).replace("%partB%", contract.counterparties[1].renderName ? contract.counterparties[1].name : contract.counterparties[1].wallet)}</span>;
+      return (
+        <span className="empty-placeholder">
+          {labels.noContractName
+            .replace(
+              "%partA%",
+              contract.counterparties[0].renderName
+                ? contract.counterparties[0].name
+                : contract.counterparties[0].wallet
+            )
+            .replace(
+              "%partB%",
+              contract.counterparties[1].renderName
+                ? contract.counterparties[1].name
+                : contract.counterparties[1].wallet
+            )}
+        </span>
+      );
     }
 
     return contract.contractName;
-  }
+  };
 
   return (
     <div className="jur-contracts__table">
@@ -102,7 +118,7 @@ export const ContractsTable = ({
               <TableCell
                 key={`thead-${idx}-${header.label.toString()}`}
                 {...header.sortable && { onClick: header.sortable }}
-                {...header.className && {className: header.className }}
+                {...header.className && { className: header.className }}
               >
                 {header.label}
               </TableCell>
@@ -146,7 +162,10 @@ export const ContractsTable = ({
                 <TableCell>
                   <Amount value={humanToEth(contract.value)} />
                 </TableCell>
-                {(!contract.archived && contract.counterparties[0].wallet.toLowerCase() === user.wallet.toLowerCase() && archivableCodes.indexOf(contract.statusId) >= 0) ? (
+                {!contract.archived &&
+                contract.counterparties[0].wallet.toLowerCase() ===
+                  user.wallet.toLowerCase() &&
+                archivableCodes.indexOf(contract.statusId) >= 0 ? (
                   <TableCell>
                     <Dropdown label={<EllipsisVIcon />}>
                       <DropdownItem onClick={() => handleArchive(contract.id)}>

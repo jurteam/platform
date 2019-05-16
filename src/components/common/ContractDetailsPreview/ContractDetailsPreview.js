@@ -6,28 +6,31 @@ import File from "../File";
 
 import "./ContractDetailsPreview.scss";
 
-export const ContractDetailsPreview = ({ contract, onView, onDelete }) => (
-  <div className="jur-contract-details-preview">
-    {contract.details &&
-      Object.keys(contract.details).map((key, index) => (
-        <ContractTextPreview
-          key={index.toString()}
-          label={contract.details[key].label}
-          message={contract.details[key].message}
-        />
-      ))}
-    {contract.files && contract.files.length > 0 && (
-      <FileList>
-        {contract.files.map((file, index) => (
-          <File
+export const ContractDetailsPreview = props => {
+  const { contract, onView, onDelete } = props;
+  return (
+    <div className="jur-contract-details-preview">
+      {contract.details &&
+        Object.keys(contract.details).map((key, index) => (
+          <ContractTextPreview
             key={index.toString()}
-            name={file.name}
-            onView={onView}
-            onDelete={onDelete}
-            large
+            label={contract.details[key].label}
+            message={contract.details[key].message}
           />
         ))}
-      </FileList>
-    )}
-  </div>
-);
+      {contract.files && contract.files.length > 0 && (
+        <FileList>
+          {contract.files.map((file, index) => (
+            <File
+              key={index.toString()}
+              name={file.name}
+              onView={onView}
+              onDelete={onDelete}
+              large
+            />
+          ))}
+        </FileList>
+      )}
+    </div>
+  );
+};

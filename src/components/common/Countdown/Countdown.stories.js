@@ -18,7 +18,7 @@ storiesOf("Countdown", module)
       days={2}
       hours={0}
       minutes={0}
-      startDate="February 24, 2019 23:30:00"
+      startDate="May 24, 2019 23:30:00"
       statusId={-1}
       expireAlertFrom={1000 * 60 * 60 * 24}
       onProgress={percentage => console.log(percentage)}
@@ -29,7 +29,7 @@ storiesOf("Countdown", module)
       days={2}
       hours={0}
       minutes={0}
-      startDate="February 24, 2019 23:30:00"
+      startDate="May 24, 2019 23:30:00"
       statusId={0}
       expireAlertFrom={1000 * 60 * 60 * 24}
       onProgress={percentage => console.log(percentage)}
@@ -40,7 +40,7 @@ storiesOf("Countdown", module)
       days={2}
       hours={0}
       minutes={0}
-      startDate="February 24, 2019 23:30:00"
+      startDate="May 24, 2019 23:30:00"
       statusId={1}
       expireAlertFrom={1000 * 60 * 60 * 24}
       onProgress={percentage => console.log(percentage)}
@@ -51,7 +51,11 @@ storiesOf("Countdown", module)
       days={5}
       hours={0}
       minutes={0}
+<<<<<<< HEAD
       startDate={1552997513000}
+=======
+      startDate="May 24, 2019 23:30:00"
+>>>>>>> 19ff0efeca44af112493a3c49a02e7a9c8cb20cb
       statusId={5}
       expireAlertFrom={1000 * 60 * 60 * 24}
       onProgress={percentage => console.log(percentage)}
@@ -62,7 +66,7 @@ storiesOf("Countdown", module)
       days={5}
       hours={0}
       minutes={0}
-      startDate="February 24, 2019 23:30:00"
+      startDate="May 24, 2019 23:30:00"
       statusId={8}
       expireAlertFrom={1000 * 60 * 60 * 24}
       onProgress={percentage => console.log(percentage)}
@@ -73,7 +77,7 @@ storiesOf("Countdown", module)
       days={5}
       hours={0}
       minutes={0}
-      startDate="February 24, 2019 23:30:00"
+      startDate="May 24, 2019 23:30:00"
       statusId={9}
       expireAlertFrom={1000 * 60 * 60 * 24}
       onProgress={percentage => console.log(percentage)}
@@ -84,7 +88,7 @@ storiesOf("Countdown", module)
       days={5}
       hours={0}
       minutes={0}
-      startDate="February 24, 2019 23:30:00"
+      startDate="May 24, 2019 23:30:00"
       statusId={21}
       expireAlertFrom={1000 * 60 * 60 * 24}
       onProgress={percentage => console.log(percentage)}
@@ -95,7 +99,7 @@ storiesOf("Countdown", module)
       days={5}
       hours={0}
       minutes={0}
-      startDate="February 24, 2019 23:30:00"
+      startDate="May 24, 2019 23:30:00"
       statusId={29}
       expireAlertFrom={1000 * 60 * 60 * 24}
       onProgress={percentage => console.log(percentage)}
@@ -106,7 +110,7 @@ storiesOf("Countdown", module)
       days={5}
       hours={0}
       minutes={0}
-      startDate="February 24, 2019 23:30:00"
+      startDate="May 24, 2019 23:30:00"
       statusId={31}
       expireAlertFrom={1000 * 60 * 60 * 24}
       onProgress={percentage => console.log(percentage)}

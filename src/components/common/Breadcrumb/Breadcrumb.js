@@ -3,9 +3,9 @@ import PropTypes from "prop-types";
 
 import "./Breadcrumb.scss";
 
-export const Breadcrumb = ({ crumbList, className }) => (
-  <ul className={`jur-breadcrumb ${className || ""}`}>
-    {crumbList.map((crumb, index) => (
+export const Breadcrumb = props => (
+  <ul className={`jur-breadcrumb ${props.className || ""}`}>
+    {props.crumbList.map((crumb, index) => (
       <li
         className={`jur-breadcrumb__item ${
           crumb.active ? "jur-breadcrumb__item--active" : ""

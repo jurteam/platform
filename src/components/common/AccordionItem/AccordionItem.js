@@ -1,15 +1,15 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-export const AccordionItem = ({ active, question, children, onClick }) => (
+export const AccordionItem = props => (
   <li
     className={`jur-accordion__item ${
-      active ? "jur-accordion__item--active" : ""
+      props.active ? "jur-accordion__item--active" : ""
     }`}
   >
-    <div className="jur-accordion__item__header" onClick={() => onClick()}>
-      {question}
+    <div className="jur-accordion__item__header" onClick={() => props.onClick()}>
+      {props.question}
     </div>
-    <div className="jur-accordion__item__content">{children}</div>
+    <div className="jur-accordion__item__content">{props.children}</div>
   </li>
 );

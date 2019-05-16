@@ -1,6 +1,8 @@
 @import "../../../assets/scss/variables";
 
 .jur-resolved-dispute-notification {
+  display: flex;
+  align-items: center;
   margin-right: -20px;
   font-family: $font-poppins;
   font-size: 13px;

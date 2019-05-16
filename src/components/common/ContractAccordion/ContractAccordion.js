@@ -5,15 +5,16 @@ import InfoTooltip from "../InfoTooltip";
 
 import "./ContractAccordion.scss";
 
-export const ContractAccordion = ({
-  tooltip,
-  className,
-  children,
-  title,
-  onOpen,
-  initialOpen,
-  loading
-}) => {
+export const ContractAccordion = props => {
+  const {
+    tooltip,
+    className,
+    children,
+    title,
+    onOpen,
+    initialOpen,
+    loading
+  } = props;
   const [isOpen, setOpenState] = useState(initialOpen || false);
 
   const onClick = () => {
