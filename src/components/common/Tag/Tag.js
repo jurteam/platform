@@ -2,7 +2,8 @@ import React from "react";
 import PropTypes from "prop-types";
 import "./Tag.scss";
 
-export const Tag = ({ statusId, children }) => {
+export const Tag = props => {
+  const { statusId, children } = props;
   return (
     <div className={`jur-tag jur-tag--${statusId}`}>
       <span>{children}</span>

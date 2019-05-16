@@ -8,7 +8,8 @@ import { AppContext } from "../../../bootstrap/AppProvider"; // context
 
 import "./PriceRange.scss";
 
-export const PriceRange = ({ min, max, address, defaultValue, onChange }) => {
+export const PriceRange = props => {
+  const { min, max, address, defaultValue, onChange } = props;
   const [value, setValue] = useState(Number(defaultValue));
 
   const onValueChange = value => {

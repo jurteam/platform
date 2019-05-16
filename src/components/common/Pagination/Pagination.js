@@ -4,14 +4,15 @@ import ReactPagination from "react-js-pagination";
 import { CaretDownIcon } from "../Icons/CaretDownIcon";
 import "./Pagination.scss";
 
-export const Pagination = ({
-  activePage,
-  itemsCountPerPage,
-  totalItemsCount,
-  handlePageChange,
-  getPageUrl,
-  ...rest
-}) => {
+export const Pagination = props => {
+  const {
+    activePage,
+    itemsCountPerPage,
+    totalItemsCount,
+    handlePageChange,
+    getPageUrl,
+    ...rest
+  } = props;
   return (
     <div className="jur-pagination">
       <ReactPagination

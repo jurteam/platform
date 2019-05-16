@@ -18,18 +18,19 @@ import { toCurrencyFormat, ellipsisString } from "../../../utils/helpers";
 import "./OraclesTable.scss";
 import { AppContext } from "../../../bootstrap/AppProvider"; // context
 
-export const OraclesTable = ({
-  currentUserWallet,
-  headers,
-  data,
-  onPageChange,
-  initialPage,
-  oraclesPerPage,
-  totalOracles,
-  loading,
-  dispute,
-  onFileView
-}) => {
+export const OraclesTable = props => {
+  const {
+    currentUserWallet,
+    headers,
+    data,
+    onPageChange,
+    initialPage,
+    oraclesPerPage,
+    totalOracles,
+    loading,
+    dispute,
+    onFileView
+  } = props;
   const [tableRows, updateTableRows] = useState(data);
   const [activePage, setActivePage] = useState(initialPage);
 

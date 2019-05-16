@@ -14,12 +14,13 @@ import "./OraclesTablePreview.scss";
 import TimeAgo from "react-timeago";
 import { AppContext } from "../../../bootstrap/AppProvider";
 
-export const OraclesTablePreview = ({
-  currentUserWallet,
-  headers,
-  data,
-  viewAllDetails
-}) => {
+export const OraclesTablePreview = props => {
+  const {
+    currentUserWallet,
+    headers,
+    data,
+    viewAllDetails
+  } = props;
   const { labels } = useContext(AppContext);
   return data.length > 0 ? (
     <div className="jur-oracles-table-preview">

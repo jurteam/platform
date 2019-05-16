@@ -3,7 +3,8 @@ import PropTypes from "prop-types";
 
 import "./InputRange.scss";
 
-export const InputRange = ({ min, max, defaultValue, onValueChange, step }) => {
+export const InputRange = props => {
+  const { min, max, defaultValue, onValueChange, step } = props;
   const calculateSpanWidth = value => {
     if (max == 0 || value == 0) {
       return "100%";

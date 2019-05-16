@@ -5,12 +5,13 @@ import OraclesTablePreview from "../OraclesTablePreview";
 
 import "./OraclesPreviewAccordion.scss";
 
-export const OraclesPreviewAccordion = ({
-  headers,
-  data,
-  currentUserWallet,
-  viewAllDetails
-}) => {
+export const OraclesPreviewAccordion = props => {
+  const {
+    headers,
+    data,
+    currentUserWallet,
+    viewAllDetails
+  } = props;
   return (
     <ContractAccordion title="Oracles" tooltip>
       <OraclesTablePreview

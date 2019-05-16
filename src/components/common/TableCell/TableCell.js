@@ -3,14 +3,15 @@ import PropsTypes from "prop-types";
 import { CaretDownIcon } from "../Icons/CaretDownIcon";
 import { CaretUpIcon } from "../Icons/CaretUpIcon";
 
-export const TableCell = ({
-  className,
-  parentComponent,
-  children,
-  onClick,
-  noCarret,
-  align
-}) => {
+export const TableCell = props => {
+  const {
+    className,
+    parentComponent,
+    children,
+    onClick,
+    noCarret,
+    align
+  } = props;
   const [desc, setDesc] = useState(false);
   const handleClick = ev => {
     onClick.bind(this, ev, desc)();

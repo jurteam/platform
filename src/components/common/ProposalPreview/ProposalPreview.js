@@ -9,7 +9,8 @@ import { AppContext } from "../../../bootstrap/AppProvider"; // context
 
 import "./ProposalPreview.scss";
 
-export const ProposalPreview = ({ proposalDetail, onView }) => {
+export const ProposalPreview = props => {
+  const { proposalDetail, onView } = props;
   const { proposal } = proposalDetail;
   const contractValue = Number(proposal.part_a) + Number(proposal.part_b);
 

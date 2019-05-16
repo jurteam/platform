@@ -6,14 +6,14 @@ import Button from "../Button";
 import "./VoteProgress.scss";
 import { AppContext } from "../../../bootstrap/AppProvider"; // context
 
-export const VoteProgress = ({
-  counterparty,
-  highlightColor,
-  onVote,
-  canVote,
-  wins,
-  statusId
-}) => {
+export const VoteProgress = props => {
+  const {
+    counterparty,
+    highlightColor,
+    onVote,
+    canVote,
+    statusId
+  } = props;
   const voteOnGoing = [35, 36].indexOf(Number(statusId)) > -1;
   const closedDispute = statusId === 39;
   const votingAllowed = canVote && voteOnGoing;

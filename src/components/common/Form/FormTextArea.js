@@ -1,5 +1,6 @@
 import React from "react";
-export const FormTextArea = ({ onChange, ...props }) => {
+export const FormTextArea = props => {
+  const { onChange, ...rest } = props;
   const handleChange = ev => onChange(ev.target.value);
-  return <textarea {...props} onChange={handleChange} />;
+  return <textarea {...rest} onChange={handleChange} />;
 };

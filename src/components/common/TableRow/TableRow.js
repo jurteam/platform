@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 
 export const TableRow = (props) => {
   const { parentComponent, children, className, onClick, key, ...params } = props;

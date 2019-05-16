@@ -3,15 +3,16 @@ import PropTypes from "prop-types";
 import Select from "react-select";
 import Form from "./";
 
-export const FormSelect = ({
-  name,
-  id,
-  options,
-  onChange,
-  error,
-  errorMsg,
-  ...rest
-}) => {
+export const FormSelect = props => {
+  const {
+    name,
+    id,
+    options,
+    onChange,
+    error,
+    errorMsg,
+    ...rest
+  } = props;
   const customStyles = {
     control: styles => ({
       ...styles,

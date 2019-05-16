@@ -1,12 +1,6 @@
 import linkify from "linkifyjs/string";
 
 // Log helper only on DEVELOPMENT environmentexport const warn = (mixed, obj) => {
-export const warn = (mixed, obj) => {
-  return log(mixed, obj, 1);
-};
-export const error = (mixed, obj) => {
-  return log(mixed, obj, -1);
-};
 export const log = (mixed, obj, type) => {
   let out = [];
   if (typeof type === "undefined") type = 0; // default to log
@@ -30,6 +24,12 @@ export const log = (mixed, obj, type) => {
       console.log(...out);
       break;
   }
+};
+export const warn = (mixed, obj) => {
+  return log(mixed, obj, 1);
+};
+export const error = (mixed, obj) => {
+  return log(mixed, obj, -1);
 };
 
 // EVM connection checker

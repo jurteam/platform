@@ -5,23 +5,28 @@ import { toCurrencyFormat } from "../../../utils/helpers";
 import "./DisputeVote.scss";
 import { AppContext } from "../../../bootstrap/AppProvider"; // context
 
-export const DisputeVote = ({
-  currentWallet,
-  title,
-  counterparties,
-  statusId,
-  onVote,
-  canVote,
-  winner,
-  earnings,
-  onReject
-}) => {
+export const DisputeVote = props => {
+  const {
+    currentWallet,
+    title,
+    counterparties,
+    statusId,
+    onVote,
+    canVote,
+    winner,
+    earnings,
+    onReject
+  } = props;
   let resultNote = "";
   const { labels } = useContext(AppContext);
 
   if (statusId === 39 && earnings) {
     resultNote = (
-      <span dangerouslySetInnerHTML={{__html:labels.gained.replace("%tokens%", toCurrencyFormat(earnings))}} />
+      <span
+        dangerouslySetInnerHTML={{
+          __html: labels.gained.replace("%tokens%", toCurrencyFormat(earnings))
+        }}
+      />
     );
   }
 
@@ -37,7 +42,13 @@ export const DisputeVote = ({
             onVote={() => onVote(counterparty, idx)}
             highlightColor={idx === 0 ? "green" : "blue"}
             canVote={canVote}
-            wins={(counterparty.wallet && winner && counterparty.wallet.toLowerCase() === winner.toLowerCase()) ? true : false}
+            wins={
+              counterparty.wallet &&
+              winner &&
+              counterparty.wallet.toLowerCase() === winner.toLowerCase()
+                ? true
+                : false
+            }
           />
         ))}
       </div>

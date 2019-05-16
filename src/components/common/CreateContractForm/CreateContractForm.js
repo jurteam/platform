@@ -11,7 +11,8 @@ import { AppContext } from "../../../bootstrap/AppProvider"; // context
 
 import "./CreateContractForm.scss";
 
-export const CreateContractForm = ({ onNext, user, contract, updateNewContractField, resetContract }) => {
+export const CreateContractForm = props => {
+  const { onNext, user, contract, updateNewContractField, resetContract } = props;
 
   const [formUpdated, setFormUpdated] = useState(false);
 
