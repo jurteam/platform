@@ -1,5 +1,4 @@
-import React, { useState, useContext } from "react";
-import PropTypes from "prop-types";
+import React, { useContext } from "react";
 import Button from "../Button";
 import { AppContext } from "../../../bootstrap/AppProvider";
 import { CheckCircleIcon } from "../Icons/CheckCircleIcon";
@@ -28,7 +27,9 @@ export const Disclaimer = props => {
   let shouldClose = null;
 
   const handleAccept = () => {
-    if (shouldClose) clearTimeout(shouldClose); // clear close timeout if needed
+    if (shouldClose) {
+      clearTimeout(shouldClose);
+    } // clear close timeout if needed
 
     disclaimerAccept();
     disclaimerView(!disclaimer.viewed);
@@ -42,7 +43,9 @@ export const Disclaimer = props => {
   // };
 
   const handleVisibility = () => {
-    if (shouldClose) clearTimeout(shouldClose); // clear close timeout if needed
+    if (shouldClose) {
+      clearTimeout(shouldClose);
+    } // clear close timeout if needed
 
     const opened = !disclaimer.viewed;
     disclaimerView(opened);

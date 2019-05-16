@@ -1,5 +1,4 @@
 import React, { useContext, useState, useEffect } from "react";
-import PropTypes from "prop-types";
 import { NavLink } from "react-router-dom";
 
 // form validation
@@ -24,12 +23,7 @@ import categories from "../../../assets/i18n/en/userCategories.json"; // TODO: i
 import { FormContainer } from "../Form/FormContainer";
 
 export const ProfileForm = props => {
-  const {
-    className,
-    user,
-    updateUserField,
-    updateUser
-  } = props;
+  const { className, user, updateUserField, updateUser } = props;
   const [formUpdated, setFormUpdated] = useState(false);
 
   // validation setup
@@ -57,10 +51,9 @@ export const ProfileForm = props => {
     accepted_terms
   } = user;
 
-  const [
-    setOtherCategoryIsVisible,
-    setOtherCategoryInputVisibility
-  ] = useState(category === 5);
+  const [setOtherCategoryIsVisible, setOtherCategoryInputVisibility] = useState(
+    category === 5
+  );
 
   const changeInput = (name, value) => {
     setFormUpdated(true);
@@ -74,7 +67,7 @@ export const ProfileForm = props => {
       // only if there is a target
       const value = target.type === "checkbox" ? target.checked : target.value;
       const name = target.name;
-      if (name === 'category') {
+      if (name === "category") {
         changeInput(name, {
           value: 5,
           label: value
@@ -119,7 +112,7 @@ export const ProfileForm = props => {
   }));
 
   // form error handling
-  const hasError = field =>
+  const hasError = (field) =>
     typeof errors[field] !== "undefined" && errors[field].length > 0;
 
   return (
@@ -220,7 +213,7 @@ export const ProfileForm = props => {
           <Form.Label htmlFor="category" optional>
             {labels.category}
           </Form.Label>
-          {setOtherCategoryIsVisible ?
+          {setOtherCategoryIsVisible ? (
             <>
               <Form.Input
                 type="text"
@@ -234,9 +227,11 @@ export const ProfileForm = props => {
               <span
                 className="back-to-list"
                 onClick={() => setOtherCategoryInputVisibility(false)}
-              >{labels.backToList}</span>
+              >
+                {labels.backToList}
+              </span>
             </>
-            :
+          ) : (
             <Form.Select
               name="category"
               id="category"
@@ -245,7 +240,7 @@ export const ProfileForm = props => {
               options={categories}
               onChange={input => onChangeSelect("category", input)}
             />
-          }
+          )}
         </Form.Group>
       </Form.Container>
       <FormContainer className="jur-form__footer">
@@ -280,8 +275,7 @@ export const ProfileForm = props => {
                   checked={accepted_terms}
                   onChange={onInputChange}
                 />
-                {labels.accept}
-                {" "}
+                {labels.accept}{" "}
                 <NavLink to="/profile/terms">
                   {labels.termAndConditions}
                 </NavLink>

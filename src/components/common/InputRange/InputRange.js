@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
-import PropTypes from "prop-types";
 
 import "./InputRange.scss";
 
 export const InputRange = props => {
   const { min, max, defaultValue, onValueChange, step } = props;
   const calculateSpanWidth = value => {
-    if (max == 0 || value == 0) {
+    if (max === 0 || value === 0) {
       return "100%";
     } else if (value && value <= max) {
       const width = 100 - (Number(value) * 100) / Number(max);
@@ -26,7 +25,7 @@ export const InputRange = props => {
     const value = ev.target.value;
     setValue(value);
     setSpanWidth(calculateSpanWidth(value));
-  }
+  };
 
   const onMouseUp = ev => {
     const value = ev.target.value;
