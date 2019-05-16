@@ -652,13 +652,71 @@ export function* handleSuccessArbitration(args) {
   }
 }
 
+export function* pay(address, amount) {
+
+  const drizzleStatus = yield select(getDrizzleStatus);
+  log("pay - drizzleStatus", drizzleStatus);
+  if (drizzleStatus.initialized && global.drizzle) {
+    const { contracts } = global.drizzle;
+    log(`pay - current contract`, contracts[address]);
+    log(`pay - global.drizzle`, global.drizzle);
+    log(`pay - global.web3`, global.web3);
+    // log(`pay - JURToken contract`, contracts["JURToken"]);
+
+    const { web3 } = global.drizzle;
+
+    const wallet = yield select(getWallet);
+
+    const drizzleContracts = yield select(getDrizzleStoredContracts);
+    log(
+      `pay - current drizzle contract`,
+      drizzleContracts[address]
+    );
+
+    // const payStatus = yield contracts[address].methods["pay"].cacheSend();
+    // log(
+    //   `pay - payment status`,
+    //   payStatus
+    // );
+    log(`pay - address isAddress?`, web3.utils.isAddress(address));
+    log(`pay - wallet.address isAddress?`, web3.utils.isAddress(wallet.address));
+    log(`pay - amount`, amount);
+    log(
+      `pay - payload`,
+      {
+        from: wallet.address,
+        to: address,
+        value: web3.utils.toWei(amount.toString(), "ether")
+    }
+    );
+
+    yield web3.eth.sendSignedTransaction({
+      from: wallet,
+      to: address,
+      value: web3.utils.toWei(amount.toString(), "ether")
+  }, function (error, result) {
+      if (error) {
+        log("pay - error", error);
+        return false;
+      } else {
+        log("pay - result", result);
+        return true;
+      }
+  });
+
+    return false;
+  }
+
+  return false;
+}
+
 export function* handlePayArbitration(args) {
   log("handlePayArbitration - run", args);
-  const { id, address, onFail } = args;
+  const { id, address, amount, onFail } = args;
 
-  const paymentEsit = Math.random();
+  const paymentEsit = yield pay(address, amount);
 
-  if (address && paymentEsit > 0.5) {
+  if (address && paymentEsit) {
     log("handlePayArbitration - contract paymentEsit", paymentEsit);
 
     // Status update

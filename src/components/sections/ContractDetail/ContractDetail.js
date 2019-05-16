@@ -196,15 +196,27 @@ export const ContractDetail = props => {
   };
 
   const onPay = () => {
+
+    const {
+      wallet
+    } = props;
+
     const {
       id,
-      address
+      address,
+      value,
+      counterparties,
+      partAPenaltyFee,
+      partBPenaltyFee
     } = contract.current;
+
+    const amount = wallet.address.toLowerCase() === counterparties[1].wallet.toLowerCase() ? Number(value) + Number(partBPenaltyFee) : Number(value) + Number(partAPenaltyFee)
 
     global.drizzle.store.dispatch({
       type: PAY_ARBITRATION,
       id,
       address,
+      amount,
       onFail: () => setShowModalRejectPay(true)
     });
   };
