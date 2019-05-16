@@ -23,6 +23,6 @@ class ContractVoteFilters extends Filters
     public function live($value)
     {
         $date = Carbon::parse($value);
-        return $this->builder->where('created_at', '>=', $date->format('Y-m-d- H:i:s'));
+        return $this->builder->where('created_at', '>=', $date->format('Y-m-d H:i:s'));
     }
 }
