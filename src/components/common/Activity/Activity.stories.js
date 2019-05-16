@@ -244,7 +244,7 @@ storiesOf("Activity", module)
         part_b: "0x83764b53nf394n34ndgri346536843",
         from: {
           wallet: "0x496730954769357609478509674309",
-          name: undefined,
+          name: null,
           system: true
         },
         abstract: "Dispute Closed",

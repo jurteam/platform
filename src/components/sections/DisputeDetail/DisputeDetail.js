@@ -29,7 +29,6 @@ import PaymentModal from "../../common/PaymentModal";
 import Viewer from "../../common/Viewer";
 
 import { SpinnerOnly } from "../../common/Spinner";
-import Button from "../../common/Button";
 
 // form validation
 import { useFormValidation } from "../../../utils/hooks";
@@ -307,7 +306,7 @@ export const DisputeDetail = props => {
   };
 
   const penaltyFee =
-    hasPenaltyFee && hasPenaltyFee != "0"
+    hasPenaltyFee && hasPenaltyFee !== "0"
       ? {
           partA:
             Number(partAPenaltyFee) <= Number(value) ? partAPenaltyFee : value,

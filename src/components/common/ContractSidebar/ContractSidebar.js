@@ -1,5 +1,4 @@
 import React, { useState, useContext } from "react";
-import PropTypes from "prop-types";
 import ActivityList from "../ActivityList";
 import ContractActions from "../ContractActions";
 import ContractAccordion from "../ContractAccordion";
@@ -29,13 +28,13 @@ export const ContractSidebar = ({
   onSubmit,
   onSend,
   activities,
-  onDispute,
+  // onDispute,
   onSuccess,
   currentWallet,
   currentPart,
   hasError,
   isValid,
-  lastPartInvolved,
+  // lastPartInvolved,
   onPay,
   onView,
   onReject,
@@ -239,14 +238,14 @@ export const ContractSidebar = ({
       <>
         <Button
           color={!canSave ? "muted" : null}
-          onClick={canSave ? onSubmit : undefined}
+          onClick={canSave ? onSubmit : null}
         >
           {labels.saveContract}
         </Button>
         <Button
           color={!canSend ? "muted" : null}
           variant={!canSend ? "contained" : "gradient"}
-          onClick={canSend ? onSend : undefined}
+          onClick={canSend ? onSend : null}
           hoverColor="success"
         >
           {labels.sendToCounterparty}
