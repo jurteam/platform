@@ -4,23 +4,18 @@ import Blockies from "react-blockies";
 import "./Avatar.scss";
 
 export const Avatar = props => {
-  const {
-    seed,
-    size,
-    variant,
-    className,
-    ...rest
-  } = props;
+  const { seed, size, variant, className, ...rest } = props;
   const variants = {
     rounded: "jur-avatar--rounded",
     circle: "jur-avatar--circle"
   };
+  const currentVariant = variant ? variants[variant] : "";
 
   return (
     <Fragment>
       {seed && (
         <div
-          className={`jur-avatar ${className} jur-avatar--${size} ${ variant ? variants[variant] : "" }`}
+          className={`jur-avatar ${className} jur-avatar--${size} ${currentVariant}`}
           {...rest}
         >
           <Blockies seed={seed} />

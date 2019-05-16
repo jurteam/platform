@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext } from "react";
 
 // Context
 import { AppContext } from "../../../bootstrap/AppProvider";
@@ -9,7 +9,6 @@ import Header from "../../common/Header";
 import SubHeader from "../../common/SubHeader";
 import Breadcrumbs from "../../common/Breadcrumbs";
 import Content from "../../common/Content";
-import Button from "../../common/Button";
 
 import Disclaimer, { ModalDiscliamer } from "../../common/Disclaimer";
 
@@ -24,8 +23,7 @@ import {
   FETCH_DISPUTES,
   UPDATE_DISPUTE_FILTER,
   API_DELETE_DISPUTE,
-  DISPUTE_PAGE_CHANGE,
-  DISCLAIMER_MUST_BE_ACCEPTED
+  DISPUTE_PAGE_CHANGE
 } from "../../../reducers/types";
 
 export const Disputes = props => {
