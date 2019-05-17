@@ -12,7 +12,7 @@ Web3 version should be the same between DApp and Protocol. Different versions ar
 
 ## Metamask
 
-### Error: the tx doesn't have the correct nonce.
+### Error: the tx doesn't have the correct nonce
 
 To fix this error you should reset your Metamask Account.
 
