@@ -48,6 +48,27 @@ export const useFormValidation = (data, schema) => {
   const [formData, setFormData] = useState(data);
   const [errors, setErrors] = useState([]);
 
+  const getFieldValue = (needle, haystack) => {
+    let subs;
+    let value = null;
+
+    if (needle) {
+      if (needle.indexOf(".")) {
+        subs = needle.split(".");
+        value = haystack;
+        for (var i = 0; i < subs.length; i++) {
+          value = value[subs[i]];
+        }
+      } else {
+        value = haystack[needle];
+      }
+
+      return value;
+    }
+
+    return false;
+  };
+
   const validateForm = () => {
     let newErrors = [];
 
@@ -112,27 +133,6 @@ export const useFormValidation = (data, schema) => {
 
   const isValid = () => {
     return !Object.keys(errors).length > 0;
-  };
-
-  const getFieldValue = (needle, haystack) => {
-    let subs;
-    let value = null;
-
-    if (needle) {
-      if (needle.indexOf(".")) {
-        subs = needle.split(".");
-        value = haystack;
-        for (var i = 0; i < subs.length; i++) {
-          value = value[subs[i]];
-        }
-      } else {
-        value = haystack[needle];
-      }
-
-      return value;
-    }
-
-    return false;
   };
 
   return [isValid, errors, validateForm, setFormData, formData];
