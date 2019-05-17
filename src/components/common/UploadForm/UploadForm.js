@@ -1,88 +1,85 @@
-import React, { Component } from "react";
+import React, { useContext, useState } from "react";
 
 import { PlusCircleIcon } from "../Icons/PlusCircleIcon";
 
 import "./UploadForm.scss";
 import { BinIcon } from "../Icons/BinIcon";
+import { AppContext } from "../../../bootstrap/AppProvider";
 
-export class UploadForm extends Component {
-  constructor(props) {
-    super(props);
-    this.inputs = [];
-    this.state = {
-      files: [{}]
-    };
-  }
+export const UploadForm = (props) => {
+  let inputs = [];
+  const [state, setState] = useState({
+    files: [{}]
+  });
 
-  addFile = (ev) => {
+  const addFile = (ev) => {
     ev.preventDefault();
-    this.setState(state => {
+    setState(state => {
       const files = state.files;
       files.push({});
       return { files };
     });
   };
 
-  remove = idx => {
-    this.setState(state => {
+  const onChange = (files) => {
+    const selectedFiles = files.filter((file) => (!!file.name));
+    props.onFileAdded(selectedFiles);
+  };
+
+  const remove = (idx) => {
+    setState(state => {
       let files = state.files;
-      this.inputs[idx].value = "";
+      inputs[idx].value = "";
       files.splice(idx, 1);
       files.length === 0 && files.push({});
-      this.onChange(files);
+      onChange(files);
       return { files };
     });
   };
 
-  onChange(files) {
-    const selectedFiles = files.filter((file) => !!file.name);
-    this.props.onFileAdded(selectedFiles);
-  }
-
-  getSelectedFile = (ev, idx) => {
+  const getSelectedFile = (ev, idx) => {
     const inputFileList = ev.target.files;
     if (inputFileList.length) {
       const selectedFile = inputFileList[0];
-      this.setState(state => {
-        const files = state.files;
-        files[idx] = selectedFile;
-        this.onChange(files);
-        return { files };
-      });
+      const files = state.files;
+      files[idx] = selectedFile;
+      setState(files);
     }
   };
 
-  render() {
-    return (
-      <div className={`jur-upload-form ${this.props.disabled ? "jur-upload-form__disabled" : ""}`}>
-        {this.state.files.map((file, idx) => (
-          <div className="form-group" key={idx.toString()}>
-            <label
-              className="jur-upload-form__label"
-              htmlFor={`input-file-${idx}`}
-            >
-              Choose file
-            </label>
-            <input
-              ref={ref => (this.inputs[idx] = ref)}
-              className="jur-upload-form__input-file"
-              type="file"
-              name={`file-${idx}`}
-              id={`input-file-${idx}`}
-              disabled={this.props.disabled}
-              onChange={(ev) => this.getSelectedFile(ev, idx)}
-            />
-            <span className="jur-upload-form__input-name">
-              {file.name || ""}
-            </span>
-            <BinIcon onClick={() => this.remove(idx)} />
-          </div>
-        ))}
-        <button onClick={this.addFile}>
-          <PlusCircleIcon />
-          Add File
-        </button>
-      </div>
-    );
-  }
-}
+  const { labels } = useContext(AppContext);
+
+  return (
+    <div
+      className={`jur-upload-form ${
+        props.disabled ? "jur-upload-form__disabled" : ""
+      }`}
+    >
+      {state.files.map((file, idx) => (
+        <div className="form-group" key={idx.toString()}>
+          <label
+            className="jur-upload-form__label"
+            htmlFor={`input-file-${idx}`}
+          >
+            {labels.chooseFile}
+          </label>
+          <input
+            ref={(ref) => (inputs[idx] = ref)}
+            className="jur-upload-form__input-file"
+            type="file"
+            name={`file-${idx}`}
+            id={`input-file-${idx}`}
+            disabled={props.disabled}
+            onChange={(ev) => getSelectedFile(ev, idx)}
+          />
+          <span className="jur-upload-form__input-name">{file.name || ""}</span>
+          <BinIcon onClick={() => remove(idx)} />
+        </div>
+      ))}
+      <button onClick={addFile}>
+        <PlusCircleIcon />
+        {labels.addFile}
+      </button>
+    </div>
+  );
+};
