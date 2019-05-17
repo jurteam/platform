@@ -20,9 +20,9 @@ import OracleDetail from "../components/sections/OracleDetail";
 // Helpers
 import { redirect, checkConnection } from "../utils/helpers";
 
-export const createRoutes = withComponents => {
+export const createRoutes = (withComponents) => {
   // handle empty params
-  if (typeof withComponents === "undefined") withComponents = true;
+  if (typeof withComponents === "undefined") {withComponents = true;}
   return [
     {
       exact: true,

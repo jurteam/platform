@@ -3,7 +3,7 @@ import { drizzleConnect } from "drizzle-react";
 import { withRouter } from "react-router-dom";
 import { Account } from "./Account";
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   app: state.app,
   wallet: state.wallet
 });
