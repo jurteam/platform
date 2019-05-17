@@ -53,6 +53,8 @@
     "contractNamePlaceholder" : "Contract name goes here...",
     "ethAddress" : "ETH Address",
     "msg" : "Msg",
+    "addFile" : "Add File",
+    "chooseFile" : "Choose file",
     "duration" : "Duration",
     "durationDescription" : "The starting date is when the counterparty accepts. 30 days max",
     "youGetBack" : "You get back %myProposal%JUR, %otherUser% gets %otherProposal%JUR",
