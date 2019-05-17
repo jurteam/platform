@@ -79,7 +79,7 @@ export const FormSelect = ( props ) => {
         isSearchable={true}
         isClearable={true}
         options={options}
-        onChange={selectedOption => onChange(selectedOption)}
+        onChange={selected(option) => onChange(selectedOption)}
         {...rest}
       />
       {error && errorMsg && <Form.ErrorMsg msg={errorMsg} />}

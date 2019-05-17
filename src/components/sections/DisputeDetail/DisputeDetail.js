@@ -123,7 +123,7 @@ export const DisputeDetail = ( props ) => {
     updateVoteField(name, value); // dispatch action
   };
 
-  const onInputChange = ev => {
+  const onInputChange = (ev) => {
     const target = ev.target;
     console.log("onInputChange", target, ev);
     if (target) {

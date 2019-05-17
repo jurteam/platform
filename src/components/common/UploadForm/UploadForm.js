@@ -14,7 +14,7 @@ export class UploadForm extends Component {
     };
   }
 
-  addFile = ev => {
+  addFile = (ev) => {
     ev.preventDefault();
     this.setState(state => {
       const files = state.files;

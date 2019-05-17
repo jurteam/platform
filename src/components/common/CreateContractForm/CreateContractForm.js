@@ -47,7 +47,7 @@ export const CreateContractForm = ( props ) => {
     updateNewContractField(name, value); // dispatch action
   };
 
-  const onInputChange = ev => {
+  const onInputChange = (ev) => {
     const target = ev.target;
     if (target) {
       const value = target.type === "checkbox" ? target.checked : target.value;
@@ -61,7 +61,7 @@ export const CreateContractForm = ( props ) => {
   const submitDisabled =
     formUpdated === false || updating === true || !isValid();
 
-  const onSubmit = ev => {
+  const onSubmit = (ev) => {
     ev.preventDefault();
     onNext();
   };

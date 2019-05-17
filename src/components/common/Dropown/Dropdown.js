@@ -19,12 +19,12 @@ export class Dropdown extends Component {
     document.removeEventListener("click", this.onOutsideClick);
   };
 
-  onOutsideClick = ev => {
+  onOutsideClick = (ev) => {
     let isClickInside = this.wrapperElRef.contains(ev.target);
     if (!isClickInside) this.close();
   };
 
-  toggle = ev => {
+  toggle = (ev) => {
     ev.stopPropagation();
     this.setState(state => ({ isOpen: !state.isOpen }));
   };

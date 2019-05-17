@@ -2,7 +2,7 @@ import React from "react";
 
 export const DropdownItem = ( props ) => {
   const { onClick, children, className } = props;
-  const handleClick = ev => {
+  const handleClick = (ev) => {
     ev.stopPropagation();
     onClick();
   };

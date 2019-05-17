@@ -122,7 +122,7 @@ export const ContractDetail = ( props ) => {
     updateContractField(name, value); // dispatch action
   };
 
-  const onInputChange = ev => {
+  const onInputChange = (ev) => {
     const target = ev.target;
     if (target) {
       const value = target.type === "checkbox" ? target.checked : target.value;

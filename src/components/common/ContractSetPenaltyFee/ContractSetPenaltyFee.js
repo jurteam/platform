@@ -25,7 +25,7 @@ export const ContractSetPenaltyFee = ( props ) => {
     setPenaltyFee(counterparty, fee);
   };
 
-  const handlePenaltyFeeActive = ev => {
+  const handlePenaltyFeeActive = (ev) => {
     const isActive = ev.target.checked;
     setActive(isActive);
     setPenaltyFeeStatus(isActive);

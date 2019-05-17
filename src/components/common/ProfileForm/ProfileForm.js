@@ -61,7 +61,7 @@ export const ProfileForm = ( props ) => {
     updateUserField(name, value); // dispatch action
   };
 
-  const onInputChange = ev => {
+  const onInputChange = (ev) => {
     const { target } = ev;
     if (target) {
       // only if there is a target
@@ -98,7 +98,7 @@ export const ProfileForm = ( props ) => {
   const submitDisabled =
     formUpdated === false || updating === true || !isValid();
 
-  const onSubmit = ev => {
+  const onSubmit = (ev) => {
     ev.preventDefault();
     if (!submitDisabled) {
       updateUser();
@@ -106,7 +106,7 @@ export const ProfileForm = ( props ) => {
     }
   };
 
-  let locationsOptions = locations.map(loc => ({
+  let locationsOptions = locations.map((loc) => ({
     value: loc.alpha2Code,
     label: loc.name
   }));
@@ -159,9 +159,9 @@ export const ProfileForm = ( props ) => {
             name="gender"
             id="gender"
             error={hasError("gender")}
-            value={genders.filter(option => option.value === gender)}
+            value={genders.filter((option) => option.value === gender)}
             options={genders}
-            onChange={input => onChangeSelect("gender", input)}
+            onChange={(input) => onChangeSelect("gender", input)}
           />
         </Form.Group>
       </Form.Container>
@@ -188,9 +188,9 @@ export const ProfileForm = ( props ) => {
             name="localtion"
             id="location"
             error={hasError("location")}
-            value={locationsOptions.filter(option => option.value === location)}
+            value={locationsOptions.filter((option) => option.value === location)}
             options={locationsOptions}
-            onChange={input => onChangeSelect("location", input)}
+            onChange={(input) => onChangeSelect("location", input)}
           />
         </Form.Group>
       </Form.Container>
@@ -236,9 +236,9 @@ export const ProfileForm = ( props ) => {
               name="category"
               id="category"
               error={hasError("category")}
-              value={categories.filter(option => option.value === category)}
+              value={categories.filter((option) => option.value === category)}
               options={categories}
-              onChange={input => onChangeSelect("category", input)}
+              onChange={(input) => onChangeSelect("category", input)}
             />
           )}
         </Form.Group>

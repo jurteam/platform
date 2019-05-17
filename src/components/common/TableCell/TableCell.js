@@ -13,7 +13,7 @@ export const TableCell = ( props ) => {
     align
   } = props;
   const [desc, setDesc] = useState(false);
-  const handleClick = ev => {
+  const handleClick = (ev) => {
     onClick.bind(this, ev, desc)();
     setDesc(!desc);
   };

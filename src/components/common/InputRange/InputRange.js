@@ -21,13 +21,13 @@ export const InputRange = ( props ) => {
 
   useEffect(() => setSpanWidth(calculateSpanWidth(value)), [max]);
 
-  const onMove = ev => {
+  const onMove = (ev) => {
     const value = ev.target.value;
     setValue(value);
     setSpanWidth(calculateSpanWidth(value));
   };
 
-  const onMouseUp = ev => {
+  const onMouseUp = (ev) => {
     const value = ev.target.value;
     onValueChange(value);
   };

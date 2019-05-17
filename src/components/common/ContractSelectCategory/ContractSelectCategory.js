@@ -19,8 +19,8 @@ export const ContractSelectCategory = ( props ) => {
       <Form.Select
         options={categories}
         error={params.hasError("category")}
-        onChange={input => onChange("category", input)}
-        value={categories.filter(option => option.value === category)}
+        onChange={(input) => onChange("category", input)}
+        value={categories.filter((option) => option.value === category)}
         {...params}
       />
     </div>

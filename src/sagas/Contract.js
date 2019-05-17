@@ -73,12 +73,16 @@ export function* getContract(action) {
       yield put({ type: CHAIN_GET_CONTRACT, address });
     }
 
-    if (typeof onSuccess === "function") onSuccess(); // exec onSuccess callback if present
+    if (typeof onSuccess === "function") {
+      onSuccess();
+    } // exec onSuccess callback if present
   } catch (error) {
     // TODO: handle 404
     yield put({ type: API_CATCH, error });
 
-    if (typeof onError === "function") onError(error); // exec onError callback if present
+    if (typeof onError === "function") {
+      onError(error);
+    } // exec onError callback if present
   }
 }
 
@@ -236,24 +240,37 @@ export function* updateContract(action) {
 
   const toUpdate = new FormData();
   // toUpdate.append('_method', 'PUT');
-  if (contractName) toUpdate.append("name", contractName);
-  if (kpi) toUpdate.append("kpi", kpi);
-  if (resolutionProof) toUpdate.append("resolution_proof", resolutionProof);
-  if (category) toUpdate.append("category", category);
-  if (whoPays) toUpdate.append("who_pays", whoPays);
+  if (contractName) {
+    toUpdate.append("name", contractName);
+  }
+  if (kpi) {
+    toUpdate.append("kpi", kpi);
+  }
+  if (resolutionProof) {
+    toUpdate.append("resolution_proof", resolutionProof);
+  }
+  if (category) {
+    toUpdate.append("category", category);
+  }
+  if (whoPays) {
+    toUpdate.append("who_pays", whoPays);
+  }
   toUpdate.append(
     "value",
     Number(value).toFixed(process.env.REACT_APP_TOKEN_DECIMALS)
   ); // always
-  if (duration && duration.days)
+  if (duration && duration.days) {
     toUpdate.append("duration_days", duration.days);
-  if (duration && duration.hours)
+  }
+  if (duration && duration.hours) {
     toUpdate.append("duration_hours", duration.hours);
-  if (duration && duration.minutes)
+  }
+  if (duration && duration.minutes) {
     toUpdate.append("duration_minutes", duration.minutes);
+  }
   toUpdate.append("has_penalty_fee", hasPenaltyFee ? 1 : 0); // always
   if (hasPenaltyFee) {
-    if (partAPenaltyFee)
+    if (partAPenaltyFee) {
       toUpdate.append(
         "part_a_penalty_fee",
         hasPenaltyFee && Number(partAPenaltyFee) <= Number(value)
@@ -262,7 +279,8 @@ export function* updateContract(action) {
             )
           : Number(value).toFixed(process.env.REACT_APP_TOKEN_DECIMALS)
       ); // handle maximum value possibile
-    if (partBPenaltyFee)
+    }
+    if (partBPenaltyFee) {
       toUpdate.append(
         "part_b_penalty_fee",
         hasPenaltyFee && Number(partBPenaltyFee) <= Number(value)
@@ -271,6 +289,7 @@ export function* updateContract(action) {
             )
           : Number(value).toFixed(process.env.REACT_APP_TOKEN_DECIMALS)
       ); // handle maximum value possibile
+    }
   } else {
     // reset penalty fees
     toUpdate.append("part_a_penalty_fee", zero);
@@ -432,10 +451,14 @@ export function* handleContractIssues(action) {
     // const { history } = action;
     // history.push(`/contracts/detail/${id}`); // go to contract detail for furter operations
 
-    if (typeof action.callback === "function") action.callback(); // invoke callback if needed
+    if (typeof action.callback === "function") {
+      action.callback();
+    } // invoke callback if needed
   } catch (error) {
     yield put({ type: API_CATCH, error });
-    if (typeof action.callback === "function") action.callback(); // invoke callback if needed
+    if (typeof action.callback === "function") {
+      action.callback();
+    } // invoke callback if needed
   }
 }
 
