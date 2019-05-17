@@ -58,7 +58,7 @@ export const Contracts = ( props ) => {
     global.drizzle.store.dispatch({ type: FETCH_CONTRACTS });
   };
 
-  const handleArchive = contractId => {
+  const handleArchive = (contractId) => {
     console.log("Contracts", "handleArchive", contractId);
 
     setContractToArchive(contractId);
@@ -88,7 +88,7 @@ export const Contracts = ( props ) => {
     }
   };
 
-  const onPageChange = page => {
+  const onPageChange = (page) => {
     global.drizzle.store.dispatch({
       type: CONTRACT_PAGE_CHANGE,
       payload: page

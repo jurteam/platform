@@ -15,7 +15,7 @@ export default store;
 const render = Component => {
   ReactDOM.render(
     <Component
-      key={process.env.NODE_ENV === "development" ? Math.random() : undefined}
+      key={process.env.NODE_ENV === "development" ? Math.random() : null}
       history={history}
       store={store}
     />,

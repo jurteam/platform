@@ -485,7 +485,7 @@ export const ContractDetail = ( props ) => {
                 uploadedFiles={uploadedFiles}
                 onView={onFileView}
                 hasError={hasError}
-                onDelete={e => onFileDelete(e)}
+                onDelete={(e) => onFileDelete(e)}
                 key={`contract-info-${
                   contractAttachments ? contractAttachments.data.length : 0
                 }`}

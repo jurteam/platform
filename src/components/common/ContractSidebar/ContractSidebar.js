@@ -281,7 +281,7 @@ export const ContractSidebar = ({
           />
           <ContractSetDuration
             contract={contract}
-            onChange={value => onChangeValue("duration", value)}
+            onChange={(value) => onChangeValue("duration", value)}
             disabled={disabled}
             hasError={hasError}
           />

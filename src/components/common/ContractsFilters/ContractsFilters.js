@@ -16,7 +16,7 @@ export class ContractsFilters extends Component {
   };
 
   handleChange = (type, value) => {
-    this.setState(state => {
+    this.setState((state) => {
       const newState = { ...state, [type]: value };
       if (typeof this.props.onChange === "function") this.props.onChange(type, value);
       return newState;
@@ -37,22 +37,22 @@ export class ContractsFilters extends Component {
         <Form.Select
           placeholder="Filter by Status..."
           value={this.state.status}
-          onChange={value => this.handleChange("status", value)}
+          onChange={(value) => this.handleChange("status", value)}
           options={statusList}
         />
         <CalendarFilter
           name="from"
           selectedDate={this.state.fromDate}
-          onChange={value => this.handleChange("fromDate", getFormattedDate(value))}
+          onChange={(value) => this.handleChange("fromDate", getFormattedDate(value))}
         />
         <span className="separator" />
         <CalendarFilter
           name="to"
           selectedDate={this.state.toDate}
-          onChange={value => this.handleChange("toDate", getFormattedDate(value))}
+          onChange={(value) => this.handleChange("toDate", getFormattedDate(value))}
         />
         <Form.Search
-          onChange={value => this.handleChange("searchText", value)}
+          onChange={(value) => this.handleChange("searchText", value)}
         />
         <Button
           color="info"

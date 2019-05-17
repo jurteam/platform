@@ -15,7 +15,7 @@ export const DisclaimerModal = ( props ) => {
 
   const handleAccept = () => {
     disclaimerAccept(); // default action
-    if (typeof onAccept === "function") onAccept(); // run onAccept function via props
+    if (typeof onAccept === "function") {onAccept();} // run onAccept function via props
   };
   return (
     <Modal isOpen={isOpen}>

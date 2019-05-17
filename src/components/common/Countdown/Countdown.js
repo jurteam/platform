@@ -158,9 +158,9 @@ export class Countdown extends Component {
     } = this.props;
 
     const classes = ["jur-countdown"];
-    if (this.state.playing) classes.push("jur-countdown--playing");
-    if (this.state.expiring) classes.push("jur-countdown--expiring");
-    if (this.state.expired) classes.push("jur-countdown--expired");
+    if (this.state.playing) {classes.push("jur-countdown--playing");}
+    if (this.state.expiring) {classes.push("jur-countdown--expiring");}
+    if (this.state.expired) {classes.push("jur-countdown--expired");}
 
     return (
       <div className={classes.join(" ")}>

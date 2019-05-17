@@ -194,7 +194,7 @@ export const Viewer = (props) => {
                     step={0.01}
                     error={props.error || props.hasError("amount")}
                     errorMsg={props.error && labels.notEnoughTokenBalance}
-                    onChange={value => changeInput("amount", value)}
+                    onChange={(value) => changeInput("amount", value)}
                   />
                   <BlockInfo
                     title={labels.voteAttention}
@@ -206,7 +206,7 @@ export const Viewer = (props) => {
                     name="message"
                     error={hasError("message") || false}
                     initialValue={currentVote.message}
-                    onChange={value => changeInput("message", value)}
+                    onChange={(value) => changeInput("message", value)}
                   />
                   <BlockTitle title={labels.attachments} hideIcon />
                   <UploadForm

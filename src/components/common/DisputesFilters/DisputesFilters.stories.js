@@ -17,7 +17,7 @@ storiesOf("DisputesFilters", module)
     <DisputesFilters
       getAllDisputes={() => console.log("get all disputes")}
       getMyDisputes={() => console.log("get mys disputes")}
-      onChange={value => console.log(value)}
+      onChange={(value) => console.log(value)}
       onSubmit={() => console.log("filter submit")}
     />
   ));

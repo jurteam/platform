@@ -76,7 +76,7 @@ storiesOf("Viewer", module)
         startDate: "March 9, 2019 15:27:00",
         statusId: 5,
         expireAlertFrom: 1000 * 60 * 60 * 24,
-        onProgress: percentage => console.log(percentage),
+        onProgress: (percentage) => console.log(percentage),
         onExpire: () => alert("countdown finished")
       }}
       statusId={35}
@@ -98,10 +98,10 @@ storiesOf("Viewer", module)
           winner: false
         }
       ]}
-      onVote={counterparty => alert(`Votin for ${counterparty.name}`)}
+      onVote={(counterparty) => alert(`Votin for ${counterparty.name}`)}
       onReject={() => alert("Rejected Contract")}
       onFileLoadingError={() => alert("file error")}
-      onVoteSubmit={data => console.log(data)}
+      onVoteSubmit={(data) => console.log(data)}
       metaMaskError={true}
     />
   ));

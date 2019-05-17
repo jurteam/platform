@@ -83,7 +83,7 @@ storiesOf("DisputesTable", module)
       myDisputes
       getAllDisputes={() => console.log("get all disputes")}
       getMyDisputes={() => console.log("get my disputes")}
-      handleFilterChange={value => console.log(value)}
+      handleFilterChange={(value) => console.log(value)}
       handleFilterSubmit={() => console.log("submit filters")}
     />
   ))
@@ -93,7 +93,7 @@ storiesOf("DisputesTable", module)
       data={disputesData}
       getAllDisputes={() => console.log("get all disputes")}
       getMyDisputes={() => console.log("get my disputes")}
-      handleFilterChange={value => console.log(value)}
+      handleFilterChange={(value) => console.log(value)}
       handleFilterSubmit={() => console.log("submit filters")}
     />
   ));

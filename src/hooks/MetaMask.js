@@ -30,11 +30,11 @@ class MetaMaskProvider {
     this.enableCall = await enable()
       .then(res => {
         log("MetaMaskProvider - enable then", res);
-        if (typeof onSuccess === "function") onSuccess(res);
+        if (typeof onSuccess === "function") {onSuccess(res);}
       })
       .catch(err => {
         log("MetaMaskProvider - enable catch", err);
-        if (typeof onError === "function") onError(err);
+        if (typeof onError === "function") {onError(err);}
       }); // promise
 
     return this.enableCall;

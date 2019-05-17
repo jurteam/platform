@@ -33,7 +33,7 @@ export const error = (mixed, obj) => {
 };
 
 // EVM connection checker
-export const checkConnection = web3 => {
+export const checkConnection = (web3) => {
   if (!web3) {
     return { pathname: "/" };
   }
@@ -95,7 +95,7 @@ export const ethToStore = ( value ) => {
   return amount.toFixed(process.env.REACT_APP_TOKEN_DECIMALS);
 };
 
-export const getFormattedDate = date => {
+export const getFormattedDate = (date) => {
   let year = date.getFullYear();
   let month = (1 + date.getMonth()).toString().padStart(2, "0");
   let day = date
@@ -106,10 +106,10 @@ export const getFormattedDate = date => {
   return `${year}-${month}-${day}`;
 };
 
-export const capitalize = string =>
+export const capitalize = (string) =>
   string.charAt(0).toUpperCase() + string.slice(1);
 
-export const urlify = str => {
+export const urlify = (str) => {
   const html = linkify(str, {
     target: (href, type) => {
       if (href.startsWith(window.location.origin)) {
@@ -122,7 +122,7 @@ export const urlify = str => {
   return html;
 };
 
-export const dateReducer = date => {
+export const dateReducer = (date) => {
   var d = new Date(date),
     month = "" + (d.getMonth() + 1),
     day = "" + d.getDate(),
@@ -134,7 +134,7 @@ export const dateReducer = date => {
   return [year, month, day].join("-");
 };
 
-export const upperCaseFirst = string => {
+export const upperCaseFirst = (string) => {
   return string.charAt(0).toUpperCase() + string.slice(1);
 };
 
@@ -146,4 +146,4 @@ export const ellipsisString = (str, count, length) => {
   }
 };
 
-export const arrayColumn = (arr, n) => arr.map(x => x[n]);
+export const arrayColumn = (arr, n) => {arr.map(x => x[n]);}

@@ -99,7 +99,7 @@ export const ProposalForm = ( props ) => {
 
   const updateFiles = files => {
     setFiles(files);
-    if (typeof onProposalFileAdded === "function") onProposalFileAdded(files);
+    if (typeof onProposalFileAdded === "function") {onProposalFileAdded(files);}
   };
 
   const onReset = () => {
@@ -113,8 +113,8 @@ export const ProposalForm = ( props ) => {
       payed_at: null
     });
 
-    if (typeof onCancel === "function") onCancel(); // use callback
-    if (typeof onProposalFileAdded === "function") onProposalFileAdded([]);
+    if (typeof onCancel === "function") {onCancel();} // use callback
+    if (typeof onProposalFileAdded === "function") {onProposalFileAdded([]);}
   };
 
   const { from: fromProposal, to: toProposal } = proposal;
@@ -156,7 +156,7 @@ export const ProposalForm = ( props ) => {
       <Form.TextArea
         placeholder={labels.insertHereYourMessage}
         defaultValue={proposalMessage}
-        onChange={value => {
+        onChange={(value) => {
           setProposalMessage(value);
           changeInput("message", value);
         }}
@@ -172,7 +172,7 @@ export const ProposalForm = ( props ) => {
           max={Number(contractValue)}
           address={fromWallet.toLowerCase()}
           defaultValue={Number(fromProposal)}
-          onChange={value => updateProposal("from", value)}
+          onChange={(value) => updateProposal("from", value)}
         />
         <PriceRange
           key={`proposalB-${parseInt(toProposal)}`}
@@ -180,7 +180,7 @@ export const ProposalForm = ( props ) => {
           max={Number(contractValue)}
           address={toWallet.toLowerCase()}
           defaultValue={Number(toProposal)}
-          onChange={value => updateProposal("to", value)}
+          onChange={(value) => updateProposal("to", value)}
         />
       </div>
       <BlockInfo description={blockInfoTitle(fromProposal, toProposal)} />

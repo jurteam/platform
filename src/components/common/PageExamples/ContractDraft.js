@@ -104,12 +104,12 @@ export class ContractDraft extends Component {
             resolutionPlaceholder={
               "Please provide evidence (including external links if appropriate) for assessing if the key performance indicators and contract terms have been met"
             }
-            onKpiChange={e => console.log("yo")}
-            onResolutionProofChange={e => console.log("yo")}
+            onKpiChange={(e) => console.log("yo")}
+            onResolutionProofChange={(e) => console.log("yo")}
             onFileAdded={addedFiles => console.log(addedFiles)}
             uploadedFiles={[{ name: "Hello worldl.pdf" }]}
-            onView={e => console.log("yo")}
-            onDelete={e => console.log("yo")}
+            onView={(e) => console.log("yo")}
+            onDelete={(e) => console.log("yo")}
           />
         </Main>
         <Aside>
@@ -118,7 +118,7 @@ export class ContractDraft extends Component {
             <Button variant="gradient">Send to counterparty</Button>
           </ContractActions>
           <ContractSelectCategory onChange={(ev) => console.log(ev)} />
-          <ContractSetDuration onChange={value => console.log(value)} />
+          <ContractSetDuration onChange={(value) => console.log(value)} />
           <ContractSetValue contract={contract} />
           <ContractSetCaseDispute
             cases={cases}

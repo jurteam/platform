@@ -20,7 +20,7 @@ export class Contracts {
   }
   static readActivities(payload) {
     payload.append("_method", "PUT"); // for PUT methods only
-    return axios.post(`/activities/readed`, payload);
+    return axios.post("/activities/readed", payload);
   }
   static create(payload) {
     return axios.post(root, payload);

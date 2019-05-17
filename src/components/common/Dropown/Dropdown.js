@@ -42,7 +42,7 @@ export class Dropdown extends Component {
         className={`jur-dropdown ${
           this.state.isOpen ? "jur-dropdown--open" : ""
         }`}
-        ref={el => {
+        ref={(el) => {
           this.wrapperElRef = el;
         }}
       >

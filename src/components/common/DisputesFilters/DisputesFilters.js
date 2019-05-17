@@ -70,27 +70,27 @@ export const DisputesFilters = ( props ) => {
       <Form.Select
         placeholder={labels.filterByStatus}
         value={state.status}
-        onChange={value => handleChange("status", value)}
+        onChange={(value) => handleChange("status", value)}
         options={statusList.slice(-4)}
       />
       <Form.Select
         placeholder={labels.filterByCategory}
         value={state.category}
-        onChange={value => handleChange("category", value)}
+        onChange={(value) => handleChange("category", value)}
         options={categories.slice(0, -1)} // no other
       />
       <CalendarFilter
         name="from"
         selectedDate={state.fromDate}
-        onChange={value => handleChange("fromDate", getFormattedDate(value))}
+        onChange={(value) => handleChange("fromDate", getFormattedDate(value))}
       />
       <span className="separator canDisable" />
       <CalendarFilter
         name="to"
         selectedDate={state.toDate}
-        onChange={value => handleChange("toDate", getFormattedDate(value))}
+        onChange={(value) => handleChange("toDate", getFormattedDate(value))}
       />
-      <Form.Search onChange={value => handleChange("searchText", value)} />
+      <Form.Search onChange={(value) => handleChange("searchText", value)} />
       <Button
         color="info"
         variant="contained"

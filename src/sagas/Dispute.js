@@ -1,5 +1,5 @@
 import { call, put, select, takeLatest, takeEvery } from "redux-saga/effects";
-import { getUser } from "./Selectors";
+
 import {
   RESET_DISPUTE,
   PUT_DISPUTE,
@@ -52,12 +52,12 @@ export function* getDispute(action) {
       yield put({ type: CHAIN_GET_DISPUTE, address });
     }
 
-    if (typeof onSuccess === "function") onSuccess(); // exec onSuccess callback if present
+    if (typeof onSuccess === "function") {onSuccess();} // exec onSuccess callback if present
   } catch (error) {
     // TODO: handle 404
     yield put({ type: API_CATCH, error });
 
-    if (typeof onError === "function") onError(error); // exec onError callback if present
+    if (typeof onError === "function") {onError(error);} // exec onError callback if present
   }
 }
 

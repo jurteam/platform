@@ -8,7 +8,7 @@ export const FormSearch = ( props ) => {
       <input
         type="search"
         value={value}
-        onChange={e => onChange(e.target.value)}
+        onChange={(e) => onChange(e.target.value)}
         placeholder="Search..."
       />
       <SearchIcon />

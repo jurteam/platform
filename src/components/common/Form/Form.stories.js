@@ -58,14 +58,14 @@ storiesOf("Form", module)
         <Form.NumericInput
           label="days"
           value={0}
-          onChange={value => console.log(value)}
+          onChange={(value) => console.log(value)}
         />
       </Form.Group>
       <Form.Group>
         <Form.NumericInput
           label="days"
           value={0}
-          onChange={value => console.log(value)}
+          onChange={(value) => console.log(value)}
           error
         />
       </Form.Group>
@@ -73,7 +73,7 @@ storiesOf("Form", module)
         <Form.NumericInput
           label="days"
           value={0}
-          onChange={value => console.log(value)}
+          onChange={(value) => console.log(value)}
           errorMsg="hello world"
           error
         />
@@ -81,20 +81,20 @@ storiesOf("Form", module)
       <Form.Group>
         <Form.DatePicker
           selectedDate={new Date()}
-          onChange={value => console.log(value)}
+          onChange={(value) => console.log(value)}
         />
       </Form.Group>
       <Form.Group>
         <Form.DatePicker
           selectedDate={new Date()}
-          onChange={value => console.log(value)}
+          onChange={(value) => console.log(value)}
           error
         />
       </Form.Group>
       <Form.Group>
         <Form.DatePicker
           selectedDate={new Date()}
-          onChange={value => console.log(value)}
+          onChange={(value) => console.log(value)}
           errorMsg="hello world"
           error
         />

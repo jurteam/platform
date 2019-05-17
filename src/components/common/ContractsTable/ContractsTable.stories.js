@@ -236,7 +236,7 @@ storiesOf("ContractsTable", module)
       headers={headers}
       data={noContracts}
       handleArchive={contractId => alert("Contractid archived")}
-      handleFilterChange={value => console.log(value)}
+      handleFilterChange={(value) => console.log(value)}
       handleFilterSubmit={console.log("filter contracts")}
       contractsPerPage={3}
       filters={filters}
@@ -249,7 +249,7 @@ storiesOf("ContractsTable", module)
       headers={headers}
       data={contractsData}
       handleArchive={contractId => alert("Contractid archived")}
-      handleFilterChange={value => console.log(value)}
+      handleFilterChange={(value) => console.log(value)}
       handleFilterSubmit={() => console.log("filter contracts")}
       contractsPerPage={3}
       filters={filters}
