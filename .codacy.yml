@@ -6,3 +6,4 @@ exclude_paths:
   - 'docs/**'
   - 'environment/**'
   - 'protocol/**'
+  - 'rest/vendor/**'
