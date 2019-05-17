@@ -7,7 +7,7 @@ import { Home } from "./Home";
 // Actions
 import { setTutorialViewed } from "../../../sagas/App";
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   app: state.app,
   wallet: state.wallet,
   drizzleStatus: state.drizzleStatus

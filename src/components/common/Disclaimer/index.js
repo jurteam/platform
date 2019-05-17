@@ -8,7 +8,7 @@ import {
   disclaimerDecline
 } from "../../../actions"; // actions
 
-const mapStateToProps = state => ({ user: state.user });
+const mapStateToProps = (state) => ({ user: state.user });
 const mapDispatchToProps = {
   disclaimerView,
   disclaimerAccept,
