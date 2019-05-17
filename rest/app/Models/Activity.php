@@ -87,7 +87,7 @@ class Activity extends Model implements HasMedia
 
     public function fromSystem()
     {
-        return is_null($this->wallet);
+        return $this->wallet === null;
     }
 
     public function getUpdatedDate()

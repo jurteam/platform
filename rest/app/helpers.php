@@ -14,7 +14,7 @@ if (! function_exists('request')) {
     {
         $request = app()->make(Request::class);
 
-        if (is_null($key)) {
+        if ($key === null) {
             return $request;
         }
 
@@ -24,7 +24,7 @@ if (! function_exists('request')) {
 
         $value = $request->__get($key);
 
-        return is_null($value) ? value($default) : $value;
+        return $value === null ? value($default) : $value;
     }
 }
 

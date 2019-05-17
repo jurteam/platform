@@ -31,7 +31,7 @@ class ContractActivitiesController extends Controller
      * @param  int $id
      * @return Response
      */
-    public function index(Request $request, $id)
+    public function index($id)
     {
         $activities = Activity::exceptDraft()
                             ->byContract($id)
@@ -59,7 +59,7 @@ class ContractActivitiesController extends Controller
     public function update(Request $request, $id)
     {
         $activity = Activity::findOrFail($id);
-        $activity->update($requst->all());
+        $activity->update($request->all());
 
         return $this->item($activity, new ContractActivityTransformer);
     }

@@ -20,7 +20,7 @@ class ContractDetailsController extends Controller
      * @param  int $id
      * @return \League\Fractal\Resource\Collection
      */
-    public function index(request $request, $id)
+    public function index($id)
     {
         $contract = Contract::findOrFail($id);
         $details = $contract->details;
