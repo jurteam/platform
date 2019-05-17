@@ -1,5 +1,5 @@
 import React from "react";
-import PropTypes from "prop-types";
+
 import ReactTooltip from 'react-tooltip'
 import { InfoIcon } from "../Icons/InfoIcon";
 import "./InfoTooltip.scss";

@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import PropTypes from "prop-types";
+
 import Form from "../Form";
 import BlockTitle from "../BlockTitle";
 

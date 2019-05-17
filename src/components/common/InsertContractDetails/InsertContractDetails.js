@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import PropTypes from "prop-types";
+
 import ContractTextarea from "../ContractTextarea";
 import UploadForm from "../UploadForm";
 import FileList from "../FileList";

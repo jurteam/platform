@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import PropTypes from "prop-types";
+
 import ContractName from "../ContractName";
 import ContractAmount from "../ContractAmount";
 import ContractPenaltyFee from "../ContractPenaltyFee";

@@ -1,5 +1,5 @@
 import React from "react";
-import PropTypes from "prop-types";
+
 
 export const Input = ( props ) => {
   const { label, required, id, ...rest } = props;

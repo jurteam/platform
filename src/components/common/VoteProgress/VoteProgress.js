@@ -12,7 +12,8 @@ export const VoteProgress = ( props ) => {
     highlightColor,
     onVote,
     canVote,
-    statusId
+    statusId,
+    wins
   } = props;
   const voteOnGoing = [35, 36].indexOf(Number(statusId)) > -1;
   const closedDispute = statusId === 39;

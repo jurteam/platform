@@ -1,5 +1,5 @@
 import React from "react";
-import PropTypes from "prop-types";
+
 import ReactPagination from "react-js-pagination";
 import { CaretDownIcon } from "../Icons/CaretDownIcon";
 import "./Pagination.scss";

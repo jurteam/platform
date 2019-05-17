@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import PropTypes from "prop-types";
+
 import Avatar from "../Avatar";
 import InputRange from "../InputRange";
 import Amount from "../Amount";

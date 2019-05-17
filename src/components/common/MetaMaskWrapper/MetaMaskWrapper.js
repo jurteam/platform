@@ -1,5 +1,5 @@
 import React from "react";
-import PropTypes from "prop-types";
+
 import UserAction from "../UserAction";
 
 import "./MetaMastWrapper.scss";

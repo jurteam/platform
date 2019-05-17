@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import PropTypes from "prop-types";
+
 import Activity from "../Activity";
 
 import "./ActivityList.scss";

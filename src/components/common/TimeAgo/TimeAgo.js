@@ -1,5 +1,5 @@
 import React from "react";
-import PropTypes from "prop-types";
+
 import * as ReactTimeAgo from 'react-timeago';
 
 export const TimeAgo = ( props ) => {

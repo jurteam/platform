@@ -1,5 +1,5 @@
 import React from "react";
-import PropTypes from "prop-types";
+
 import { AlertIcon } from "../Icons/AlertIcon";
 
 import "./UserActionHeader.scss";

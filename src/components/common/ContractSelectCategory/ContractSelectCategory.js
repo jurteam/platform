@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import PropTypes from "prop-types";
+
 import categories from "../../../assets/i18n/en/contractCategories.json"; // TODO: i18n
 import Form from "../Form";
 

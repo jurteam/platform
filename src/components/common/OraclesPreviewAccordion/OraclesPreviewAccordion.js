@@ -1,5 +1,5 @@
 import React from "react";
-import PropTypes from "prop-types";
+
 import ContractAccordion from "../ContractAccordion";
 import OraclesTablePreview from "../OraclesTablePreview";
 

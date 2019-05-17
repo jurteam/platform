@@ -1,8 +1,7 @@
 import React, { useContext, useState } from "react";
-import PropTypes from "prop-types";
+
 import TimeAgo from "react-timeago";
 import Avatar from "../Avatar";
-import AvatarInfo from "../AvatarInfo";
 import { JurIcon } from "../Icons/JurIcon";
 import { CaretDownIcon } from "../Icons/CaretDownIcon";
 import ProposalPreview from "../ProposalPreview";
@@ -25,24 +24,6 @@ export const Activity = ( props ) => {
   const { hideTime, onView, noPreview } = props;
 
   const { labels } = useContext(AppContext);
-
-  const fullAbstract = () => {
-    let _fullAbstract = abstract;
-    if (
-      !status &&
-      abstract
-        .toLowerCase()
-        .toString()
-        .startsWith("sent")
-    ) {
-      _fullAbstract = (
-        <span className="jur-activity__abstract">
-          {_fullAbstract}
-          <AvatarInfo userWallet={to} variant="ellipsis" />
-        </span>
-      );
-    }
-  };
 
   const getActivityUser = () => {
     if (isSystem) {

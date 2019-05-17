@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import PropTypes from "prop-types";
+
 import Countdown from "../Countdown";
 import BlockTitle from "../BlockTitle";
 

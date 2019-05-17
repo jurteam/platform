@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import PropTypes from "prop-types";
+
 import BlockTitle from "../BlockTitle";
 import Avatar from "../Avatar";
 import Amount from "../Amount";

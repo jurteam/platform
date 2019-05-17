@@ -1,5 +1,5 @@
 import React from "react";
-import PropTypes from "prop-types";
+
 import MainNav from "../MainNav";
 import ProfilePreview from "../ProfilePreview";
 

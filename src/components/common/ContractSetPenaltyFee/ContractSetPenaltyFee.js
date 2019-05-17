@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import PropTypes from "prop-types";
+
 import BlockTitle from "../BlockTitle";
 import Switch from "../Switch";
 import PriceRange from "../PriceRange";
