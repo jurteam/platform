@@ -4,7 +4,7 @@ import { HourGlassIcon } from "../Icons/HourGlassIcon";
 import "./ResolvedDisputeNotification.scss";
 import { AppContext } from "../../../bootstrap/AppProvider"; // context
 
-export const ResolvedDisputeNotification = props => {
+export const ResolvedDisputeNotification = ( props ) => {
   const { labels } = useContext(AppContext);
   return (
     <div className="jur-resolved-dispute-notification" {...props}>

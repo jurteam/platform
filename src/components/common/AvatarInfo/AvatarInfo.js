@@ -4,7 +4,7 @@ import Avatar from "../Avatar";
 
 import "./AvatarInfo.scss";
 
-export const AvatarInfo = props => {
+export const AvatarInfo = ( props ) => {
   const {
     userName,
     userWallet,

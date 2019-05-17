@@ -1,6 +1,6 @@
 import React from "react";
 
-export const BinIcon = props => (
+export const BinIcon = ( props ) => (
   <svg viewBox="0 0 12 16" className="jur-bin-icon" {...props}>
     <path
       fill="#97A3B4"

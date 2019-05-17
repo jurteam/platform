@@ -6,7 +6,7 @@ import BlockTitle from "../BlockTitle";
 import "./ContractSetDuration.scss";
 import { AppContext } from "../../../bootstrap/AppProvider"; // context
 
-export const ContractSetDuration = props => {
+export const ContractSetDuration = ( props ) => {
   const { savedValue, contract, onChange, hasError, disabled } = props;
   const [duration, setDuration] = useState(
     savedValue || contract.duration || { days: 0, hours: 0, minutes: 0 }

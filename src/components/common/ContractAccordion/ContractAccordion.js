@@ -5,7 +5,7 @@ import InfoTooltip from "../InfoTooltip";
 
 import "./ContractAccordion.scss";
 
-export const ContractAccordion = props => {
+export const ContractAccordion = ( props ) => {
   const {
     tooltip,
     className,

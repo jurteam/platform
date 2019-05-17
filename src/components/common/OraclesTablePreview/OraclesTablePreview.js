@@ -14,7 +14,7 @@ import "./OraclesTablePreview.scss";
 import TimeAgo from "react-timeago";
 import { AppContext } from "../../../bootstrap/AppProvider";
 
-export const OraclesTablePreview = props => {
+export const OraclesTablePreview = ( props ) => {
   const {
     currentUserWallet,
     headers,

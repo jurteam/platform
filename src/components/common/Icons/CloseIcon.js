@@ -1,6 +1,6 @@
 import React from "react";
 
-export const CloseIcon = props => (
+export const CloseIcon = ( props ) => (
   <svg viewBox="0 0 38 38" {...props}>
     <path
       d="M0,19 C0,8.50658975 8.50428254,-2.27373675e-13 19,-2.27373675e-13 L19,-2.27373675e-13 C29.4934102,-2.27373675e-13 38,8.50428254 38,19 L38,19 C38,29.4934102 29.4957175,38 19,38 L19,38 C8.50658975,38 0,29.4957175 0,19 L0,19 Z"

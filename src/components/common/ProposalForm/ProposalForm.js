@@ -16,7 +16,7 @@ import validationSchema from "./_validationSchema";
 import "./ProposalForm.scss";
 import { AppContext } from "../../../bootstrap/AppProvider"; // context
 
-export const ProposalForm = props => {
+export const ProposalForm = ( props ) => {
   const {
     currentUserWallet,
     currentProposal,

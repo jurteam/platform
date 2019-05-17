@@ -131,7 +131,7 @@ export class Countdown extends Component {
     return this.getTimeLeft(diff);
   };
 
-  getTimeLeft = value => ({
+  getTimeLeft = ( value ) => ({
     seconds: Math.floor((value / 1000) % 60),
     minutes: Math.floor((value / 1000 / 60) % 60),
     hours: Math.floor((value / (1000 * 60 * 60)) % 24),
@@ -139,7 +139,7 @@ export class Countdown extends Component {
     milliseconds: value
   });
 
-  addLeadingZeros = value => {
+  addLeadingZeros = ( value ) => {
     let str = String(value);
     while (str.length < 2) {
       str = "0" + str;

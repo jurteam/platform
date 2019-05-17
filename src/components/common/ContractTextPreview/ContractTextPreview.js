@@ -5,7 +5,7 @@ import { urlify } from "../../../utils/helpers";
 
 import "./ContractTextPreview.scss";
 
-export const ContractTextPreview = props => {
+export const ContractTextPreview = ( props ) => {
   const processedMessage = urlify(props.message);
   return (
     <div className="jur-contract-text-preview">

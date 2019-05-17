@@ -44,7 +44,7 @@ import {
   ORACLE_PAGE_CHANGE
 } from "../../../reducers/types";
 
-export const OracleDetail = props => {
+export const OracleDetail = ( props ) => {
   const { labels, oraclesFullTableHeaders } = useContext(AppContext);
 
   const {
@@ -97,7 +97,7 @@ export const OracleDetail = props => {
     setOpenPreview(false);
   };
 
-  const onFileError = e => {
+  const onFileError = ( e ) => {
     console.error("onFileError", e);
   };
 

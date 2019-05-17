@@ -12,7 +12,7 @@ export const ContractSetValue = (props) => {
 
   const { contract } = props;
 
-  const setPenaltyFeeStatus = value => {
+  const setPenaltyFeeStatus = ( value ) => {
     console.log(value);
 
     props.onChange("hasPenaltyFee", value);

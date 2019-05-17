@@ -9,7 +9,7 @@ import ModalBody from "../ModalBody";
 import ModalFooter from "../ModalFooter";
 import Button from "../Button";
 
-export const DataLostModal = props => {
+export const DataLostModal = ( props ) => {
   const { labels } = useContext(AppContext);
   const { onAccept, onDecline, isOpen } = props
 

@@ -5,7 +5,7 @@ import { AppContext } from "../../../bootstrap/AppProvider"; // context
 
 import "./UserTerms.scss";
 
-export const UserTerms = props => {
+export const UserTerms = ( props ) => {
   const { termsHtml } = props;
   const { labels } = useContext(AppContext);
   return (

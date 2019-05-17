@@ -18,7 +18,7 @@ import { toCurrencyFormat, ellipsisString } from "../../../utils/helpers";
 import "./OraclesTable.scss";
 import { AppContext } from "../../../bootstrap/AppProvider"; // context
 
-export const OraclesTable = props => {
+export const OraclesTable = ( props ) => {
   const {
     currentUserWallet,
     headers,
@@ -91,8 +91,8 @@ export const OraclesTable = props => {
 
               let rowParams = {};
               if (!oracle.isOpen) {
-                rowParams = { onClick : () => handleClick(idx) };
-              };
+                rowParams = { onClick: () => handleClick(idx) };
+              }
 
               return (
                 <TableRow
@@ -166,10 +166,11 @@ export const OraclesTable = props => {
             handlePageChange={handlePageChange}
             // getPageUrl={i => "https://customLink/#" + i}
           />
-        ) :
-        <div className="jur-dispute-vote__note">
-          <p>{labels.noOracles}</p>
-        </div>}
+        ) : (
+          <div className="jur-dispute-vote__note">
+            <p>{labels.noOracles}</p>
+          </div>
+        )}
       </div>
     </div>
   );

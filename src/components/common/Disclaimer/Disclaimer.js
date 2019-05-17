@@ -5,7 +5,7 @@ import { CheckCircleIcon } from "../Icons/CheckCircleIcon";
 
 import "./Disclaimer.scss";
 
-export const Disclaimer = props => {
+export const Disclaimer = ( props ) => {
   const { labels } = useContext(AppContext);
 
   const {

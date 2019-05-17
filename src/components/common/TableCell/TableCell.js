@@ -3,7 +3,7 @@ import PropsTypes from "prop-types";
 import { CaretDownIcon } from "../Icons/CaretDownIcon";
 import { CaretUpIcon } from "../Icons/CaretUpIcon";
 
-export const TableCell = props => {
+export const TableCell = ( props ) => {
   const {
     className,
     parentComponent,

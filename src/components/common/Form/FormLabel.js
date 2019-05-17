@@ -1,5 +1,5 @@
 import React from "react";
-export const FormLabel = props => {
+export const FormLabel = ( props ) => {
   const { children, optional, required, ...rest } = props;
   return (
     <label {...rest}>

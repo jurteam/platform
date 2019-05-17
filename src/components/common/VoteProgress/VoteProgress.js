@@ -6,7 +6,7 @@ import Button from "../Button";
 import "./VoteProgress.scss";
 import { AppContext } from "../../../bootstrap/AppProvider"; // context
 
-export const VoteProgress = props => {
+export const VoteProgress = ( props ) => {
   const {
     counterparty,
     highlightColor,

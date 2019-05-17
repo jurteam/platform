@@ -9,12 +9,12 @@ import { AppContext } from "../../../bootstrap/AppProvider"; // context
 
 import "./ProposalPreview.scss";
 
-export const ProposalPreview = props => {
+export const ProposalPreview = ( props ) => {
   const { proposalDetail, onView } = props;
   const { proposal } = proposalDetail;
   const contractValue = Number(proposal.part_a) + Number(proposal.part_b);
 
-  const calcPercentage = val => {
+  const calcPercentage = ( val ) => {
     return Math.round((Number(val) / contractValue) * 100, 2);
   };
 

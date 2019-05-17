@@ -50,7 +50,7 @@ import {
   DISCLAIMER_MUST_BE_ACCEPTED
 } from "../../../reducers/types";
 
-export const ContractDetail = props => {
+export const ContractDetail = ( props ) => {
   const { labels } = useContext(AppContext);
 
   const [loaded, setLoaded] = useState(false);
@@ -163,7 +163,7 @@ export const ContractDetail = props => {
     setOpenPreview(false);
   };
 
-  const onFileError = e => {
+  const onFileError = ( e ) => {
     console.error("onFileError", e);
   };
 

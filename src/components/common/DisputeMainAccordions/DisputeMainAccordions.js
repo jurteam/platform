@@ -6,7 +6,7 @@ import File from "../File";
 import "./DisputeMainAccordions.scss";
 import { AppContext } from "../../../bootstrap/AppProvider"; // context
 
-export const DisputeMainAccordions = props => {
+export const DisputeMainAccordions = ( props ) => {
   const { details, files, onView } = props;
   const { labels } = useContext(AppContext);
   return (

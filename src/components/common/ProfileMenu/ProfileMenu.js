@@ -4,7 +4,7 @@ import { NavLink } from "react-router-dom";
 
 import "./ProfileMenu.scss";
 
-export const ProfileMenu = props => {
+export const ProfileMenu = ( props ) => {
   const { className, menuList } = props;
   return (
     <ul className={`jur-profile-menu ${className || ""}`}>

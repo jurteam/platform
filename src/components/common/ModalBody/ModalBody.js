@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 import "./ModalBody.scss";
 
-export const ModalBody = props => {
+export const ModalBody = ( props ) => {
   const { children, className, dangerouslySetInnerHTML } = props;
   return (
     <div

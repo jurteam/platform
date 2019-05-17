@@ -6,7 +6,7 @@ import { CaretDownIcon } from "../Icons/CaretDownIcon";
 import { capitalize } from "../../../utils/helpers";
 import "./CalendarFilter.scss";
 
-export const CalendarFilter = props => {
+export const CalendarFilter = ( props ) => {
   const { selectedDate, onChange, name } = props;
   return (
     <div className="jur-calendar-filter">

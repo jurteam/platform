@@ -3,7 +3,7 @@ import { EyeIcon } from "../Icons/EyeIcon";
 import { BinIcon } from "../Icons/BinIcon";
 import "./File.scss";
 
-export const File = props => {
+export const File = ( props ) => {
   const { name, onView, onDelete, large, file, disabled } = props;
   return (
     <li className={`jur-file ${large ? "jur-file--large" : ""}`}>

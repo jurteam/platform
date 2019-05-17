@@ -1,6 +1,6 @@
 import React from "react";
 
-export const AngleIcon = props => (
+export const AngleIcon = ( props ) => (
   <svg viewBox="0 0 12 8" {...props}>
     <polygon
       id="path-1"

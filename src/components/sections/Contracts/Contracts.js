@@ -28,7 +28,7 @@ import {
   DISCLAIMER_MUST_BE_ACCEPTED
 } from "../../../reducers/types";
 
-export const Contracts = props => {
+export const Contracts = ( props ) => {
   const { labels, contractTableHeaders } = useContext(AppContext);
 
   const [showModal, setShowModal] = useState(false);

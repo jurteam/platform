@@ -3,7 +3,7 @@ import Avatar from "../Avatar";
 import PropTypes from "prop-types";
 import "./AvatarChart.scss";
 
-export const AvatarChart = props => {
+export const AvatarChart = ( props ) => {
   return (
     <div className="jur-avatar-chart">
       <svg viewBox="0 0 36 36" className={props.color}>

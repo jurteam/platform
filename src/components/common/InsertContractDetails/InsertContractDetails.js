@@ -10,7 +10,7 @@ import { AppContext } from "../../../bootstrap/AppProvider";
 
 import "./InsertContractDetails.scss";
 
-export const InsertContractDetails = props => {
+export const InsertContractDetails = ( props ) => {
   const {
     disabled,
     kpiPlaceholder,

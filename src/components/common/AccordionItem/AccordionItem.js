@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-export const AccordionItem = props => (
+export const AccordionItem = ( props ) => (
   <li
     className={`jur-accordion__item ${
       props.active ? "jur-accordion__item--active" : ""

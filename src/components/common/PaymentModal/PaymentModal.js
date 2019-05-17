@@ -9,7 +9,7 @@ import ModalBody from "../ModalBody";
 import ModalFooter from "../ModalFooter";
 import Button from "../Button";
 
-export const PaymentModal = props => {
+export const PaymentModal = ( props ) => {
   const { labels } = useContext(AppContext);
   const { title, content, onAccept, isOpen } = props;
 

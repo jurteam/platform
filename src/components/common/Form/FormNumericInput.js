@@ -3,7 +3,7 @@ import { CaretDownIcon } from "../Icons/CaretDownIcon";
 import { CaretUpIcon } from "../Icons/CaretUpIcon";
 import Form from "./";
 
-export const FormNumericInput = props => {
+export const FormNumericInput = ( props ) => {
   const {
     label,
     initialValue,
@@ -32,7 +32,7 @@ export const FormNumericInput = props => {
       onChange(newValue);
     }
   };
-  const handleChange = value => {
+  const handleChange = ( value ) => {
     if (typeof value === "number") {
       onChange(value);
       return;

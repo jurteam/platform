@@ -53,7 +53,7 @@ import {
   DISCLAIMER_MUST_BE_ACCEPTED
 } from "../../../reducers/types";
 
-export const DisputeDetail = props => {
+export const DisputeDetail = ( props ) => {
   const { labels } = useContext(AppContext);
 
   const [loaded, setLoaded] = useState(false);
@@ -113,7 +113,6 @@ export const DisputeDetail = props => {
       onSuccess: pageLoaded,
       onError: pageLoaded
     });
-
   }, [wallet.address]);
 
   const changeInput = (name, value) => {
@@ -151,7 +150,7 @@ export const DisputeDetail = props => {
     setOpenPreview(false);
   };
 
-  const onFileError = e => {
+  const onFileError = ( e ) => {
     console.error("onFileError", e);
   };
 

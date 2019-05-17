@@ -5,7 +5,7 @@ import AvatarInfo from "../AvatarInfo";
 
 import "./ContractCounterparties.scss";
 
-export const ContractCounterparties = props => {
+export const ContractCounterparties = ( props ) => {
   const {
     counterparties,
     CounterpartiesDescription

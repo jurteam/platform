@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 import PropTypes from "prop-types";
 
-export const Step = props => {
+export const Step = ( props ) => {
   const { active, children } = props;
   return (
     <Fragment>

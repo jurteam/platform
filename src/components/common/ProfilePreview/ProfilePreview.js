@@ -7,7 +7,7 @@ import Amount from "../Amount";
 import Avatar from "../Avatar";
 import "./ProfilePreview.scss";
 
-export const ProfilePreview = props => {
+export const ProfilePreview = ( props ) => {
   const {
     to,
     name,

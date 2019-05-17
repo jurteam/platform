@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 import "./Breadcrumb.scss";
 
-export const Breadcrumb = props => (
+export const Breadcrumb = ( props ) => (
   <ul className={`jur-breadcrumb ${props.className || ""}`}>
     {props.crumbList.map((crumb, index) => (
       <li

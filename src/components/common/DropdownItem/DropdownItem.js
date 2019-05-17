@@ -1,6 +1,6 @@
 import React from "react";
 
-export const DropdownItem = props => {
+export const DropdownItem = ( props ) => {
   const { onClick, children, className } = props;
   const handleClick = ev => {
     ev.stopPropagation();

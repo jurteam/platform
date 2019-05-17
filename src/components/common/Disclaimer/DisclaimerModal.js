@@ -9,7 +9,7 @@ import ModalBody from "../ModalBody";
 import ModalFooter from "../ModalFooter";
 import Button from "../Button";
 
-export const DisclaimerModal = props => {
+export const DisclaimerModal = ( props ) => {
   const { labels } = useContext(AppContext);
   const { onAccept, onDecline, isOpen, disclaimerAccept } = props;
 

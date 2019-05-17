@@ -5,7 +5,7 @@ import { AppContext } from "../../../bootstrap/AppProvider"; // context
 
 import "./ContractSetCaseDispute.scss";
 
-export const ContractSetCaseDispute = props => {
+export const ContractSetCaseDispute = ( props ) => {
   const { cases, selectedOptionId, handleChange, disabled } = props;
 
   const { labels } = useContext(AppContext);

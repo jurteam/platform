@@ -1,12 +1,11 @@
 import React from "react";
-import PropTypes from "prop-types";
 import ContractTextPreview from "../ContractTextPreview";
 import FileList from "../FileList";
 import File from "../File";
 
 import "./ContractDetailsPreview.scss";
 
-export const ContractDetailsPreview = props => {
+export const ContractDetailsPreview = ( props ) => {
   const { contract, onView, onDelete } = props;
   return (
     <div className="jur-contract-details-preview">

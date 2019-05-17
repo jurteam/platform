@@ -1,6 +1,6 @@
 import React from "react";
 
-export const CalendarIcon = props => (
+export const CalendarIcon = ( props ) => (
   <svg {...props} viewBox="0 0 16 16">
     <path
       fill="#B4C0CF"

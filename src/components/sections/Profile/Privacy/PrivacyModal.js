@@ -9,7 +9,7 @@ import ModalBody from "../../../common/ModalBody";
 import ModalFooter from "../../../common/ModalFooter";
 import Button from "../../../common/Button";
 
-export const PrivacyModal = props => {
+export const PrivacyModal = ( props ) => {
   const { labels } = useContext(AppContext);
   const { onAccept, onDecline, isOpen } = props
 

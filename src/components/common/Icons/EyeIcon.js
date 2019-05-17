@@ -1,6 +1,6 @@
 import React from "react";
 
-export const EyeIcon = props => (
+export const EyeIcon = ( props ) => (
   <svg viewBox="0 0 20 14" {...props}>
     <path
       fill="#97A3B4"

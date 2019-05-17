@@ -8,7 +8,7 @@ import Button from "../Button";
 
 import "./UserPrivacy.scss";
 
-export const UserPrivacy = props => {
+export const UserPrivacy = ( props ) => {
   const { data, className, disclaimerAccepted } = props;
   return (
     <div

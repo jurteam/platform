@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 import "./ModalHeader.scss";
 
-export const ModalHeader = props => {
+export const ModalHeader = ( props ) => {
   const { children, className, title } = props;
   return (
     <div className={`jur-modal__header ${className || ""}`}>

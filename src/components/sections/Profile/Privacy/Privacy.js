@@ -7,7 +7,7 @@ import { PrivacyModal } from "./PrivacyModal";
 
 import { USER_OBLIVION, DELETE_ALL_CONTRACTS, DELETE_ALL_DISPUTES } from "../../../../reducers/types";
 
-const Privacy = props => {
+const Privacy = ( props ) => {
   // Context
   const { labels } = useContext(AppContext);
 

@@ -54,7 +54,7 @@ export const redirect = (...checks) => {
   };
 };
 
-export const humanToEth = value => {
+export const humanToEth = ( value ) => {
   const decimals = "1";
   let amount = 0;
 
@@ -70,7 +70,7 @@ export const humanToEth = value => {
   return amount;
 };
 
-export const toCurrencyFormat = value => {
+export const toCurrencyFormat = ( value ) => {
   const decimals = "1";
   const num =
     Number(humanToEth(value)) /
@@ -80,7 +80,7 @@ export const toCurrencyFormat = value => {
   return num.toFixed(2);
 };
 
-export const ethToHuman = value => {
+export const ethToHuman = ( value ) => {
   const decimals = "1";
   const amount =
     Number(value) /
@@ -90,7 +90,7 @@ export const ethToHuman = value => {
   return amount;
 };
 
-export const ethToStore = value => {
+export const ethToStore = ( value ) => {
   const amount = Number(value);
   return amount.toFixed(process.env.REACT_APP_TOKEN_DECIMALS);
 };

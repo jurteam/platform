@@ -4,7 +4,7 @@ import ContractAccordion from "../ContractAccordion";
 import ActivityList from "../ActivityList";
 import { AngleIcon } from "../Icons/AngleIcon";
 
-export const ActivitiesAccordion = props => (
+export const ActivitiesAccordion = ( props ) => (
   <ContractAccordion title="Activity">
     <ActivityList activities={props.activities} />
   </ContractAccordion>

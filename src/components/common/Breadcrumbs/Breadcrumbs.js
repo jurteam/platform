@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom';
 
 import './Breadcrumbs.scss';
 
-export const Breadcrumbs = props => (
+export const Breadcrumbs = ( props ) => (
   <ul className={`jur-breadcrumbs ${props.className || ""}`}>
     {props.crumbList.map((crumb, index) => (
       <li

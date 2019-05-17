@@ -8,18 +8,18 @@ import { AppContext } from "../../../bootstrap/AppProvider"; // context
 
 import "./PriceRange.scss";
 
-export const PriceRange = props => {
+export const PriceRange = ( props ) => {
   const { min, max, address, defaultValue, onChange } = props;
   const [value, setValue] = useState(Number(defaultValue));
 
-  const onValueChange = value => {
+  const onValueChange = ( value ) => {
     setValue(Number(value));
     onChange(value <= max ? Number(value) : max);
   };
 
   const { labels } = useContext(AppContext);
 
-  const percentageCalc = value => {
+  const percentageCalc = ( value ) => {
     return value > 0
       ? value <= max
         ? parseFloat((value * 100) / max).toFixed(2)

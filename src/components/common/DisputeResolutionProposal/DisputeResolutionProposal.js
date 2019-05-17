@@ -5,7 +5,7 @@ import AvatarInfo from "../AvatarInfo";
 import "./DisputeResolutionProposal.scss";
 import { AppContext } from "../../../bootstrap/AppProvider"; // context
 
-export const DisputeResolutionProposal = props => {
+export const DisputeResolutionProposal = ( props ) => {
   const { proposals, onView } = props;
   const { labels } = useContext(AppContext);
   return (

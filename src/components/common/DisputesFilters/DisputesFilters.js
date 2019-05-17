@@ -9,7 +9,7 @@ import "./DisputesFilters.scss";
 import { getFormattedDate } from "../../../utils/helpers"; // helpers
 import { AppContext } from "../../../bootstrap/AppProvider"; // context
 
-export const DisputesFilters = props => {
+export const DisputesFilters = ( props ) => {
   const [state, setState] = useState({
     status: props.status,
     category: props.category,

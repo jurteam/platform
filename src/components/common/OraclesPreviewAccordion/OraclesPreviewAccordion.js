@@ -5,7 +5,7 @@ import OraclesTablePreview from "../OraclesTablePreview";
 
 import "./OraclesPreviewAccordion.scss";
 
-export const OraclesPreviewAccordion = props => {
+export const OraclesPreviewAccordion = ( props ) => {
   const {
     headers,
     data,

@@ -26,7 +26,7 @@ import {
   DISPUTE_PAGE_CHANGE
 } from "../../../reducers/types";
 
-export const Disputes = props => {
+export const Disputes = ( props ) => {
   const { labels, disputeTableHeaders } = useContext(AppContext);
 
   const [showModal, setShowModal] = useState(false);
@@ -48,11 +48,10 @@ export const Disputes = props => {
   // filters
   const { disabled: filtersDisabled, ...filters } = dispute.filters;
   const handleFilterChange = (type, value) => {
-
     if (type === "mine") {
-      log("Disputes - handleFilterChange", {type, value});
+      log("Disputes - handleFilterChange", { type, value });
       setMyDispute(value);
-    };
+    }
 
     global.drizzle.store.dispatch({
       type: UPDATE_DISPUTE_FILTER,

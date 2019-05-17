@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import Blockies from "react-blockies";
 import "./Avatar.scss";
 
-export const Avatar = props => {
+export const Avatar = ( props ) => {
   const { seed, size, variant, className, ...rest } = props;
   const variants = {
     rounded: "jur-avatar--rounded",

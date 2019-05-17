@@ -6,7 +6,7 @@ import BlockTitle from "../BlockTitle";
 import "./CountdownGraph.scss";
 import { AppContext } from "../../../bootstrap/AppProvider"; // context
 
-export const CountdownGraph = props => {
+export const CountdownGraph = ( props ) => {
   const {
     onProgress,
     message,

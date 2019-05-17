@@ -4,7 +4,7 @@ import BlockTitle from "../BlockTitle";
 
 import "./ContractTextarea.scss";
 
-export const ContractTextarea = props => {
+export const ContractTextarea = ( props ) => {
   const {
     initialValue,
     onChange,

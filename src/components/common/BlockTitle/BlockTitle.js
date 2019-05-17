@@ -4,7 +4,7 @@ import InfoTooltip from "../InfoTooltip";
 
 import "./BlockTitle.scss";
 
-export const BlockTitle = props => {
+export const BlockTitle = ( props ) => {
   const {
     title,
     description,

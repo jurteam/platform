@@ -7,8 +7,12 @@ const FormValidation = {
     typeof field !== "undefined" && field !== "" && field !== null
       ? true
       : false,
-  requiredStrict: field => (typeof field !== "undefined" && field) ? true : false,
-  requiredNum: field => (typeof field !== "undefined" && field && parseFloat(field) > 0) ? true : false,
+  requiredStrict: field =>
+    typeof field !== "undefined" && field ? true : false,
+  requiredNum: field =>
+    typeof field !== "undefined" && field && parseFloat(field) > 0
+      ? true
+      : false,
   isTrue: field => (typeof field !== "undefined" ? field === true : true), // always true when null in case this field is optional
   isFalse: field => (typeof field !== "undefined" ? field === false : true), // always true when null in case this field is optional
   isEmail: email => {
@@ -26,13 +30,17 @@ const FormValidation = {
       : true; // always true when null in case this field is optional
   },
   isEqualTo: (field, target) => {
-    return field ? String(field).toLowerCase() === String(target).toLowerCase() : true; // always true when null in case this field is optional
+    return field
+      ? String(field).toLowerCase() === String(target).toLowerCase()
+      : true; // always true when null in case this field is optional
   },
   isNotEqualTo: (field, target) => {
-    return field ? String(field).toLowerCase() !== String(target).toLowerCase() : true; // always true when null in case this field is optional
+    return field
+      ? String(field).toLowerCase() !== String(target).toLowerCase()
+      : true; // always true when null in case this field is optional
   },
   duration: (days, hours, minutes) => {
-    return (days || hours || minutes) ? true : false;
+    return days || hours || minutes ? true : false;
   }
 };
 
@@ -63,16 +71,14 @@ export const useFormValidation = (data, schema) => {
               hoursFieldValue,
               minutesFieldValue
             ); // add target field
-          } else if (checkName === "isEqualTo" || checkName === "isNotEqualTo") {
-
+          } else if (
+            checkName === "isEqualTo" ||
+            checkName === "isNotEqualTo"
+          ) {
             // target field value
             const targetFieldValue = getFieldValue(field.targetField, formData);
 
-            checkPass = FormValidation[checkName](
-              fieldValue,
-              targetFieldValue
-            ); // add target field
-
+            checkPass = FormValidation[checkName](fieldValue, targetFieldValue); // add target field
           } else {
             checkPass = FormValidation[checkName](fieldValue);
           }
@@ -109,20 +115,19 @@ export const useFormValidation = (data, schema) => {
   };
 
   const getFieldValue = (needle, haystack) => {
-
     let subs;
     let value = null;
 
     if (needle) {
-      if (needle.indexOf('.')) {
-        subs = needle.split(".")
+      if (needle.indexOf(".")) {
+        subs = needle.split(".");
         value = haystack;
         for (var i = 0; i < subs.length; i++) {
-          value = value[subs[i]]
+          value = value[subs[i]];
         }
       } else {
         value = haystack[needle];
-      };
+      }
 
       return value;
     }

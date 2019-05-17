@@ -4,7 +4,7 @@ import { InfoIcon } from "../Icons/InfoIcon";
 
 import "./BlockInfo.scss";
 
-export const BlockInfo = props => (
+export const BlockInfo = ( props ) => (
   <div className="jur-block-info">
     <InfoIcon />
     <span>

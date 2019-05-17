@@ -6,7 +6,7 @@ import { AppContext } from "../../../bootstrap/AppProvider";
 
 import "./ContractName.scss";
 
-export const ContractName = props => {
+export const ContractName = ( props ) => {
   const {
     contractName,
     statusId,

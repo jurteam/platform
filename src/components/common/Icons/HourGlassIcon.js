@@ -1,5 +1,5 @@
 import React from "react";
-export const HourGlassIcon = props => (
+export const HourGlassIcon = ( props ) => (
   <svg viewBox="0 0 12 20" {...props}>
     <polygon
       fill="#97A3B4"

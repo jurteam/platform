@@ -7,7 +7,7 @@ import Amount from "../Amount";
 import "./ContractAmount.scss";
 import { AppContext } from "../../../bootstrap/AppProvider"; // context
 
-export const ContractAmount = props => {
+export const ContractAmount = ( props ) => {
   const { debtorWalletAddress, amount } = props;
   const { labels } = useContext(AppContext);
 

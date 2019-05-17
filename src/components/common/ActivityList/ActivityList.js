@@ -5,7 +5,7 @@ import Activity from "../Activity";
 import "./ActivityList.scss";
 import { AppContext } from "../../../bootstrap/AppProvider"; // context
 
-export const ActivityList = props => {
+export const ActivityList = ( props ) => {
   const { activities, ...params } = props;
   const { labels } = useContext(AppContext);
   if (activities.length) {

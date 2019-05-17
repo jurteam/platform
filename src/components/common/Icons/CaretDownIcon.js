@@ -1,6 +1,6 @@
 import React from "react";
 
-export const CaretDownIcon = props => (
+export const CaretDownIcon = ( props ) => (
   <svg viewBox="0 0 6 4" {...props}>
     <g strokeWidth="1">
       <path

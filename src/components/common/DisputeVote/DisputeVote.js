@@ -5,7 +5,7 @@ import { toCurrencyFormat } from "../../../utils/helpers";
 import "./DisputeVote.scss";
 import { AppContext } from "../../../bootstrap/AppProvider"; // context
 
-export const DisputeVote = props => {
+export const DisputeVote = ( props ) => {
   const {
     currentWallet,
     title,

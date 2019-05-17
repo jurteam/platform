@@ -11,7 +11,7 @@ import { ellipsisString } from "../../../utils/helpers";
 import "./Activity.scss";
 import { AppContext } from "../../../bootstrap/AppProvider"; // context
 
-export const Activity = props => {
+export const Activity = ( props ) => {
   const {
     from: { wallet: walletAddress, name: userName, system: isSystem },
     date,

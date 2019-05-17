@@ -17,7 +17,7 @@ import { AppContext } from "../../../bootstrap/AppProvider"; // context
 import Activity from "../Activity";
 
 import { READ_ACTIVITY, FETCH_ACTIVITIES } from "../../../reducers/types";
-export const UserNotification = props => {
+export const UserNotification = ( props ) => {
   const { user, history, className } = props;
   const { labels, notificationsTableHeaders: headers } = useContext(AppContext);
   const { activities } = user;

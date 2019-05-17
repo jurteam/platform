@@ -1,5 +1,5 @@
 import React from "react";
-export const JurIcon = props => {
+export const JurIcon = ( props ) => {
   const {className, ...rest} = props;
   return (
     <div className={`jur-system-icon ${className}`} {...rest}>

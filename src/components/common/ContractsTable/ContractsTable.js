@@ -23,7 +23,7 @@ import { EXPIRED_CONTRACT } from "../../../reducers/types";
 import "./ContractsTable.scss";
 import { AppContext } from "../../../bootstrap/AppProvider"; // context
 
-export const ContractsTable = props => {
+export const ContractsTable = ( props ) => {
   const {
     headers,
     filters,

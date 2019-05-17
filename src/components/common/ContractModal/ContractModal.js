@@ -9,7 +9,7 @@ import ModalBody from "../ModalBody";
 import ModalFooter from "../ModalFooter";
 import Button from "../Button";
 
-export const ContractModal = props => {
+export const ContractModal = ( props ) => {
   const { labels } = useContext(AppContext);
   const { title, content, onAccept, onDecline, isOpen } = props;
 

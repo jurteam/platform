@@ -4,7 +4,7 @@ import UserAction from "../UserAction";
 
 import "./MetaMastWrapper.scss";
 
-export const MetaMaskWrapper = props => {
+export const MetaMaskWrapper = ( props ) => {
   const { className, children } = props;
   return (
     <div className={`jur-metamask-wrapper ${className || ""}`}>

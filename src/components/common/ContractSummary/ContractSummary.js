@@ -12,7 +12,7 @@ import BlockTitle from "../BlockTitle";
 import "./ContractSummary.scss";
 import { AppContext } from "../../../bootstrap/AppProvider"; // context
 
-export const ContractSummary = props => {
+export const ContractSummary = ( props ) => {
   const {
     contractName,
     from,

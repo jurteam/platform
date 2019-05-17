@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 
 import "./InputRange.scss";
 
-export const InputRange = props => {
+export const InputRange = ( props ) => {
   const { min, max, defaultValue, onValueChange, step } = props;
-  const calculateSpanWidth = value => {
+  const calculateSpanWidth = ( value ) => {
     if (max === 0 || value === 0) {
       return "100%";
     } else if (value && value <= max) {

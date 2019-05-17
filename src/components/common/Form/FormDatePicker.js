@@ -4,7 +4,7 @@ import Form from "./";
 
 import "react-datepicker/dist/react-datepicker.css";
 
-export const FormDatePicker = props => {
+export const FormDatePicker = ( props ) => {
   const { selectedDate, error, errorMsg, onChange, ...rest } = props;
   return (
     <>

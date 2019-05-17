@@ -4,7 +4,7 @@ import { AlertIcon } from "../Icons/AlertIcon";
 
 import "./UserActionHeader.scss";
 
-export const UserActionHeader = props => {
+export const UserActionHeader = ( props ) => {
   const { children, className, variant } = props;
   return (
     <div

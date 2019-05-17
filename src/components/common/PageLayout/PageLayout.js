@@ -9,7 +9,7 @@ import ResolvedDisputeNotification from "../ResolvedDisputeNotification";
 import Logo from "../Logo";
 import NavigationWrapper from "../NavigationWrapper";
 
-export const PageLayout = props => {
+export const PageLayout = ( props ) => {
   const {
     showBreadcrumbs,
     breadcrumbs,

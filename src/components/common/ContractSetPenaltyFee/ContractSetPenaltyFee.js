@@ -9,7 +9,7 @@ import { ethToStore } from "../../../utils/helpers"; // helpers
 import "./ContractSetPenaltyFee.scss";
 import { AppContext } from "../../../bootstrap/AppProvider"; // context
 
-export const ContractSetPenaltyFee = props => {
+export const ContractSetPenaltyFee = ( props ) => {
   const {
     contract,
     disabled,
