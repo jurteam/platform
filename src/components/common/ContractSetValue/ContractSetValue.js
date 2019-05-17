@@ -9,10 +9,9 @@ import { AppContext } from "../../../bootstrap/AppProvider"; // context
 import BlockTitle from "../BlockTitle";
 
 export const ContractSetValue = (props) => {
-
   const { contract } = props;
 
-  const setPenaltyFeeStatus = ( value ) => {
+  const setPenaltyFeeStatus = (value) => {
     console.log(value);
 
     props.onChange("hasPenaltyFee", value);
@@ -51,7 +50,9 @@ export const ContractSetValue = (props) => {
 
   return (
     <div className="jur-contract-set-value">
-      <div className="jur-contract-set-value__title">{`${labels.contractValue}:`}</div>
+      <div className="jur-contract-set-value__title">{`${
+        labels.contractValue
+      }:`}</div>
       <WhoPays
         contract={contract}
         handleSelectPayer={handleSelectPayer}
@@ -59,18 +60,32 @@ export const ContractSetValue = (props) => {
         onChange={props.onChange}
         hasError={props.hasError}
         disabled={props.disabled}
-        />
+      />
       <ContractSetPenaltyFee
         contract={props.contract}
         setPenaltyFeeStatus={setPenaltyFeeStatus}
         setPenaltyFee={setPenaltyFee}
         disabled={props.disabled}
       />
-      { props.showFeeMsg && props.contract.penaltyFee !== null && typeof props.contract.to.wallet !== "undefined" &&
-        <div className={`jur-contract-set-value__fee-msg ${(props.currentUserCanPay) ? "": "jur-form__numeric-input--error"}`}>
-          <BlockTitle title={labels.youNeedToPay.replace("%fee%", toCurrencyFormat(props.feeToPay)).replace("%wallet%", ellipsisString(props.contract.to.wallet.toLowerCase(), 16))} description={labels.youNeedToPayDescription} />
-      </div>
-      }
+      {props.showFeeMsg &&
+        props.contract.penaltyFee !== null &&
+        typeof props.contract.to.wallet !== "undefined" && (
+          <div
+            className={`jur-contract-set-value__fee-msg ${
+              props.currentUserCanPay ? "" : "jur-form__numeric-input--error"
+            }`}
+          >
+            <BlockTitle
+              title={labels.youNeedToPay
+                .replace("%fee%", toCurrencyFormat(props.feeToPay))
+                .replace(
+                  "%wallet%",
+                  ellipsisString(props.contract.to.wallet.toLowerCase(), 16)
+                )}
+              description={labels.youNeedToPayDescription}
+            />
+          </div>
+        )}
     </div>
   );
-}
+};

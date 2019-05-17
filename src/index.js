@@ -12,7 +12,7 @@ const { store, history } = configureStore();
 export default store;
 
 // Random number is used so hot reloading works with `react-loadable`
-const render = Component => {
+const render = (Component) => {
   ReactDOM.render(
     <Component
       key={process.env.NODE_ENV === "development" ? Math.random() : null}
