@@ -86,7 +86,7 @@ export const OracleDetail = ( props ) => {
 
   }, [wallet.address]);
 
-  const onFileView = file => {
+  const onFileView = (file) => {
     setFilePath(file.url);
     setOpenPreview(true);
     console.log("onFileView", file);
@@ -149,7 +149,7 @@ export const OracleDetail = ( props ) => {
               currentUserWallet={userWallet}
               onFileView={onFileView}
               initialPage={pagination.current_page}
-              onPageChange={pageNo => onPageChange(pageNo)}
+              onPageChange={(pageNo) => onPageChange(pageNo)}
               contractsPerPage={pagination.per_page}
               totalContracts={pagination.total}
               loading={oracle.updatingList}

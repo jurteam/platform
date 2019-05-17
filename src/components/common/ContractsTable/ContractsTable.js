@@ -62,12 +62,12 @@ export const ContractsTable = ( props ) => {
     </div>
   );
 
-  const handlePageChange = pageNumber => {
+  const handlePageChange = (pageNumber) => {
     setActivePage(pageNumber);
     onPageChange(pageNumber);
   };
 
-  const showContract = to => {
+  const showContract = (to) => {
     history.push(to);
   };
 

@@ -122,7 +122,7 @@ export class ContractDraft extends Component {
           <ContractSetValue contract={contract} />
           <ContractSetCaseDispute
             cases={cases}
-            handleChange={selectedOptionId => console.log(selectedOptionId)}
+            handleChange={(selectedOptionId) => console.log(selectedOptionId)}
           />
         </Aside>
         <Disclaimer

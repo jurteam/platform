@@ -45,11 +45,11 @@ const DisputesTable = props => {
 
   const [activePage, setActivePage] = useState(initialPage);
 
-  const showDispute = to => {
+  const showDispute = (to) => {
     history.push(to);
   };
 
-  const handleRedeem = to => {
+  const handleRedeem = (to) => {
     history.push(to);
   };
 
@@ -62,7 +62,7 @@ const DisputesTable = props => {
     });
   };
 
-  const handlePageChange = pageNumber => {
+  const handlePageChange = (pageNumber) => {
     setActivePage(pageNumber);
     onPageChange(pageNumber);
   };

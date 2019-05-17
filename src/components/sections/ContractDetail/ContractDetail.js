@@ -152,7 +152,7 @@ export const ContractDetail = ( props ) => {
     setFormUpdated(true);
   };
 
-  const onFileView = file => {
+  const onFileView = (file) => {
     setFilePath(file.url);
     setOpenPreview(true);
     console.log("onFileView", file);
@@ -287,7 +287,7 @@ export const ContractDetail = ( props ) => {
     // console.log(percentage);
   };
 
-  const onFileDelete = file => {
+  const onFileDelete = (file) => {
     console.log("file delete", file);
 
     global.drizzle.store.dispatch({

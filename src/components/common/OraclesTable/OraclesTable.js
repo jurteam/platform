@@ -42,7 +42,7 @@ export const OraclesTable = ( props ) => {
 
   const { labels } = useContext(AppContext);
 
-  const handlePageChange = pageNumber => {
+  const handlePageChange = (pageNumber) => {
     setActivePage(pageNumber);
     onPageChange(pageNumber);
   };

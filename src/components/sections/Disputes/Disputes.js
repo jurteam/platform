@@ -113,7 +113,7 @@ export const Disputes = ( props ) => {
             myDispute={myDispute}
             handleArchive={handleArchive}
             initialPage={pagination.current_page}
-            onPageChange={pageNo => onPageChange(pageNo)}
+            onPageChange={(pageNo) => onPageChange(pageNo)}
             disputesPerPage={pagination.per_page}
             totalDisputes={pagination.total}
             loading={dispute.updatingList}

@@ -124,7 +124,7 @@ export const Contracts = ( props ) => {
             handleArchive={handleArchive}
             newContract={newContract}
             initialPage={pagination.current_page}
-            onPageChange={pageNo => onPageChange(pageNo)}
+            onPageChange={(pageNo) => onPageChange(pageNo)}
             contractsPerPage={pagination.per_page}
             totalContracts={pagination.total}
             loading={contract.updatingList}

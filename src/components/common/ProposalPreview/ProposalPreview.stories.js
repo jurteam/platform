@@ -40,6 +40,6 @@ storiesOf("ProposalPreview", module)
           { name: "file3.pdf" }
         ]
       }}
-      onView={file => console.log(file)}
+      onView={(file) => console.log(file)}
     />
   ));

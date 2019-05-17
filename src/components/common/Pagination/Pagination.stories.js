@@ -24,7 +24,7 @@ storiesOf("Pagination", module)
       activePage={1}
       itemsCountPerPage={10}
       totalItemsCount={100}
-      handlePageChange={pageNumber => {}}
+      handlePageChange={(pageNumber) => {}}
       getPageUrl={() => "#1"}
     />
   ));

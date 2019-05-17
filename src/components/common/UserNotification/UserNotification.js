@@ -22,7 +22,7 @@ export const UserNotification = ( props ) => {
   const { labels, notificationsTableHeaders: headers } = useContext(AppContext);
   const { activities } = user;
 
-  const handleGoTo = to => {
+  const handleGoTo = (to) => {
     history.push(to);
   };
 

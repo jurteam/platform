@@ -298,7 +298,7 @@ export const ContractSidebar = ({
             cases={cases}
             disabled={disabled}
             selectedOptionId={selectedOptionId}
-            handleChange={selectedOptionId => console.log(selectedOptionId)}
+            handleChange={(selectedOptionId) => console.log(selectedOptionId)}
           />
         </>
       )}

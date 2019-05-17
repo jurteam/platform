@@ -139,7 +139,7 @@ export const DisputeDetail = ( props ) => {
     setFormUpdated(true);
   };
 
-  const onFileView = file => {
+  const onFileView = (file) => {
     setFilePath(file.url);
     setOpenPreview(true);
     console.log("onFileView", file);
@@ -183,7 +183,7 @@ export const DisputeDetail = ( props ) => {
     // console.log(percentage);
   };
 
-  const onFileDelete = file => {
+  const onFileDelete = (file) => {
     console.log("file delete", file);
 
     global.drizzle.store.dispatch({

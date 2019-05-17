@@ -35,7 +35,7 @@ export class UploadForm extends Component {
   };
 
   onChange(files) {
-    const selectedFiles = files.filter(file => !!file.name);
+    const selectedFiles = files.filter((file) => !!file.name);
     this.props.onFileAdded(selectedFiles);
   }
 
