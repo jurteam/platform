@@ -20,7 +20,7 @@ export function* handleApiErrors(action) {
     const { response:{status}} = error;
 
     if (status === 400) {
-      warn('Bad request, often due to missing a required parameter.');
+      warn("Bad request, often due to missing a required parameter.");
     } else if (status === 401) {
       warn('No valid Wallet provided.');
     } else if (status === 404) {

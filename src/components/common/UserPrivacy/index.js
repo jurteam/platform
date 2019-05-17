@@ -1,2 +1,2 @@
-import { UserPrivacy } from './UserPrivacy';
+import { UserPrivacy } from "./UserPrivacy";
 export default UserPrivacy;

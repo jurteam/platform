@@ -1,6 +1,6 @@
 import React from "react";
 
-import ReactTooltip from 'react-tooltip'
+import ReactTooltip from "react-tooltip"
 import { InfoIcon } from "../Icons/InfoIcon";
 import "./InfoTooltip.scss";
 

@@ -1,4 +1,4 @@
-import { withRouter } from 'react-router-dom'
+import { withRouter } from "react-router-dom"
 import { drizzleConnect } from "drizzle-react";
 import { DisputeDetail } from "./DisputeDetail";
 

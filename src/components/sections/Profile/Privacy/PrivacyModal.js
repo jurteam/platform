@@ -14,7 +14,7 @@ export const PrivacyModal = ( props ) => {
   const { onAccept, onDecline, isOpen } = props
 
   const handleAccept = () => {
-    if (typeof onAccept === 'function') onAccept(); // run onAccept function via props
+    if (typeof onAccept === "function") onAccept(); // run onAccept function via props
   }
 
   return (

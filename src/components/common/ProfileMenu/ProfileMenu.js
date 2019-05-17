@@ -9,7 +9,7 @@ export const ProfileMenu = ( props ) => {
   return (
     <ul className={`jur-profile-menu ${className || ""}`}>
       {menuList.map((item, index) => (
-        <li className={`jur-profile-menu__item`} key={`profile-nav-${index}`}>
+        <li className={"jur-profile-menu__item"} key={`profile-nav-${index}`}>
           <NavLink exact={true} to={item.to} activeClassName="active">
             {item.label}
           </NavLink>

@@ -1,6 +1,6 @@
 import React from "react";
 
-import * as ReactTimeAgo from 'react-timeago';
+import * as ReactTimeAgo from "react-timeago";
 
 export const TimeAgo = ( props ) => {
   const date = props.date;

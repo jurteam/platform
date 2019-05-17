@@ -27,12 +27,12 @@ export class ProfileTerms extends Component {
               },
               {
                 id: 2,
-                label: `FAQ's`,
+                label: "FAQ's",
                 to: "/faq"
               },
               {
                 id: 3,
-                label: `Term of Service`,
+                label: "Term of Service",
                 to: "/terms"
               }
             ]}

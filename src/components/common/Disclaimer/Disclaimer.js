@@ -39,7 +39,7 @@ export const Disclaimer = ( props ) => {
   // NOTE: Decline action removed due it's availability only on Profile Settings > Privacy page
   // const handleDecline = () => {
   //   disclaimerDecline()
-  //   if (typeof onDecline === 'function') onDecline();
+  //   if (typeof onDecline === "function") onDecline();
   // };
 
   const handleVisibility = () => {

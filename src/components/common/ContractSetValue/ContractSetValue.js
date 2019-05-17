@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 
 import WhoPays from "../WhoPays";
 import ContractSetPenaltyFee from "../ContractSetPenaltyFee";
-import { toCurrencyFormat, ellipsisString } from '../../../utils/helpers';
+import { toCurrencyFormat, ellipsisString } from "../../../utils/helpers";
 
 import "./ContractSetValue.scss";
 import { AppContext } from "../../../bootstrap/AppProvider"; // context
