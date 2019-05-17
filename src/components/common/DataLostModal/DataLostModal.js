@@ -9,13 +9,15 @@ import ModalBody from "../ModalBody";
 import ModalFooter from "../ModalFooter";
 import Button from "../Button";
 
-export const DataLostModal = ( props ) => {
+export const DataLostModal = props => {
   const { labels } = useContext(AppContext);
-  const { onAccept, onDecline, isOpen } = props
+  const { onAccept, onDecline, isOpen } = props;
 
   const handleAccept = () => {
-    if (typeof onAccept === 'function') onAccept(); // run onAccept function via props
-  }
+    if (typeof onAccept === "function") {
+      onAccept();
+    } // run onAccept function via props
+  };
 
   return (
     <Modal isOpen={isOpen}>
@@ -24,10 +26,21 @@ export const DataLostModal = ( props ) => {
         <p>{labels.dataLostText}</p>
       </ModalBody>
       <ModalFooter>
-        <Button color="info" onClick={onDecline} size="medium" variant="contained" hoverColor="info">
+        <Button
+          color="info"
+          onClick={onDecline}
+          size="medium"
+          variant="contained"
+          hoverColor="info"
+        >
           {labels.cancel}
         </Button>
-        <Button onClick={handleAccept} size="medium" variant="raised" hoverColor="dispute">
+        <Button
+          onClick={handleAccept}
+          size="medium"
+          variant="raised"
+          hoverColor="dispute"
+        >
           {labels.confirm}
         </Button>
       </ModalFooter>

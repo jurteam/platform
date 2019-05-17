@@ -33,7 +33,7 @@ export const Disclaimer = ( props ) => {
 
     disclaimerAccept();
     disclaimerView(!disclaimer.viewed);
-    if (typeof onAccept === "function") { onAccept(); };
+    if (typeof onAccept === "function") { onAccept(); }
   };
 
   // NOTE: Decline action removed due it's availability only on Profile Settings > Privacy page

@@ -70,7 +70,7 @@ export class UploadForm extends Component {
               name={`file-${idx}`}
               id={`input-file-${idx}`}
               disabled={this.props.disabled}
-              onChange={ev => this.getSelectedFile(ev, idx)}
+              onChange={(ev) => this.getSelectedFile(ev, idx)}
             />
             <span className="jur-upload-form__input-name">
               {file.name || ""}

@@ -138,7 +138,7 @@ const DisputesTable = props => {
       <Table>
         <TableHead>
           <TableRow>
-            {headers.map(header => (
+            {headers.map((header) => (
               <TableCell
                 key={header.label.toString()}
                 {...header.sortable && { onClick: header.sortable }}

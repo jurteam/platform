@@ -90,7 +90,7 @@ export class SetContractDetails extends Component {
                 minutes: 0,
                 expireAlertFrom: ""
               },
-              onContractNameChange: ev => console.log(ev.target.value),
+              onContractNameChange: (ev) => console.log(ev.target.value),
               onProgress: percentage => console.log(percentage),
               onExpire: () => alert("Countdown finished")
             }}
@@ -113,7 +113,7 @@ export class SetContractDetails extends Component {
             <Button>Save Contract</Button>
             <Button variant="gradient">Send to counterparty</Button>
           </ContractActions>
-          <ContractSelectCategory onChange={ev => console.log(ev)} />
+          <ContractSelectCategory onChange={(ev) => console.log(ev)} />
           <ContractSetDuration onChange={value => console.log(value)} contract={contract} />
           <ContractSetValue contract={contract} />
           <ContractSetCaseDispute

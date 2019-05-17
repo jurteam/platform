@@ -26,7 +26,7 @@ export const ContractTextarea = ( props ) => {
         name={name}
         className={rest.disabled ? "jur-contract-textarea__disabled" : ""}
         value={initialValue}
-        onChange={ev => onChange(ev)}
+        onChange={(ev) => onChange(ev)}
         {...rest}
       />
     </div>

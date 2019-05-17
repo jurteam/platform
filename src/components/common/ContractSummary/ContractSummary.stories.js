@@ -46,7 +46,7 @@ storiesOf("ContractSummary", module)
           minutes: 0,
           expireAlertFrom: ""
         },
-        onContractNameChange: ev => console.log(ev.target.value),
+        onContractNameChange: (ev) => console.log(ev.target.value),
         onProgress: percentage => console.log(percentage),
         onExpire: () => alert("Countdown finished")
       }}
@@ -95,9 +95,9 @@ storiesOf("ContractSummary", module)
           minutes: 0,
           expireAlertFrom: 1000 * 60 * 60 * 24 // 24 hours
         },
-        onContractNameChange: ev => console.log(ev.target.value),
+        onContractNameChange: (ev) => console.log(ev.target.value),
         onProgress: percentage => console.log(percentage),
-        onExpire: ev => console.log(ev.target.value)
+        onExpire: (ev) => console.log(ev.target.value)
       }}
     />
   ));

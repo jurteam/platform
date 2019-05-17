@@ -14,5 +14,5 @@ storiesOf("Switch", module)
     }
   })
   .add("Default", () => (
-    <Switch onChange={ev => console.log(ev.target.checked)} />
+    <Switch onChange={(ev) => console.log(ev.target.checked)} />
   ));

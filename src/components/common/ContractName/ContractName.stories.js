@@ -16,7 +16,7 @@ storiesOf("ContractName", module)
   .add("Default", () => (
     <ContractName
       contractName="Contract name"
-      onContractNameChange={ev => console.log(ev.target.value)}
+      onContractNameChange={(ev) => console.log(ev.target.value)}
       statusId={0}
       statusIdLabel="Draft"
     />

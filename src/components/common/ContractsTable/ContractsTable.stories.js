@@ -41,7 +41,7 @@ const noContracts = [];
 
 const contractsData = [
   {
-    to: '/1',
+    to: "/1",
     id: 0,
     statusId: 0,
     statusLabel: "Draft",
@@ -69,7 +69,7 @@ const contractsData = [
     }
   },
   {
-    to: '/2',
+    to: "/2",
     id: 1,
     statusId: 1,
     statusLabel: "Waiting for counterparty",
@@ -98,7 +98,7 @@ const contractsData = [
     }
   },
   {
-    to: '/3',
+    to: "/3",
     id: 2,
     statusId: 5,
     statusLabel: "Ongoing",
@@ -127,7 +127,7 @@ const contractsData = [
     }
   },
   {
-    to: '/4',
+    to: "/4",
     id: 3,
     statusId: 31,
     statusLabel: "Open Dispute",
@@ -156,7 +156,7 @@ const contractsData = [
     }
   },
   {
-    to: '/5',
+    to: "/5",
     id: 4,
     statusId: 39,
     statusLabel: "Closed Dispute",
@@ -185,7 +185,7 @@ const contractsData = [
     }
   },
   {
-    to: '/6',
+    to: "/6",
     id: 5,
     statusId: 39,
     statusLabel: "Closed Dispute",
@@ -254,7 +254,7 @@ storiesOf("ContractsTable", module)
       contractsPerPage={3}
       filters={filters}
       loading={false}
-      user={{wallet: "0x496730954769357609478509674309"}}
+      user={{ wallet: "0x496730954769357609478509674309" }}
       totalContracts={contractsData.length}
       onPageChange={pageNumber => console.log(pageNumber)}
     />
