@@ -26,7 +26,7 @@ export const ProposalPreview = ( props ) => {
         {proposalDetail.message}
       </div>
       <div className="jur-proposal-preview__proposes">
-        {Object.keys(proposal).map(part => (
+        {Object.keys(proposal).map((part) => (
           <div key={part} className="jur-proposal-preview__proposal">
             <Avatar
               seed={proposalDetail[part].toLowerCase()}

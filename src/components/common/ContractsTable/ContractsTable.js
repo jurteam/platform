@@ -71,7 +71,7 @@ export const ContractsTable = ( props ) => {
     history.push(to);
   };
 
-  const onExpire = id => {
+  const onExpire = (id) => {
     global.drizzle.store.dispatch({
       type: EXPIRED_CONTRACT,
       id
@@ -187,7 +187,7 @@ export const ContractsTable = ( props ) => {
           itemsCountPerPage={contractsPerPage}
           totalItemsCount={totalContracts}
           handlePageChange={handlePageChange}
-          // getPageUrl={i => "https://customLink/#" + i}
+          // getPageUrl={(i) => "https://customLink/#" + i}
         />
       )}
       {emptyMessage}

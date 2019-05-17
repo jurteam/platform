@@ -80,7 +80,7 @@ export const Disputes = ( props ) => {
     setDisputeToArchive(null);
   };
 
-  const onPageChange = page => {
+  const onPageChange = (page) => {
     global.drizzle.store.dispatch({
       type: DISPUTE_PAGE_CHANGE,
       payload: page

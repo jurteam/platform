@@ -297,7 +297,7 @@ export const ContractDetail = ( props ) => {
   };
 
   // form error handling
-  const hasError = field =>
+  const hasError = (field) =>
     typeof errors[field] !== "undefined" &&
     errors[field].length > 0 &&
     formUpdated; // show error only when form is update at least one time
@@ -629,7 +629,7 @@ export const ContractDetail = ( props ) => {
         content={labels.successSmartContractText}
         onAccept={() => {
           onSuccess();
-          setShowModalSuccess(false)
+          setShowModalSuccess(false);
         }}
         onDecline={() => setShowModalSuccess(false)}
       />

@@ -56,7 +56,7 @@ export default function configureStore(
     const reduxUnhandledAction = require("redux-unhandled-action").default;
     middleware.push(
       reduxImmutableState(),
-      reduxUnhandledAction(action =>
+      reduxUnhandledAction((action) =>
         console.warn(
           `UNHANDLED ACTION: ${action} didn't lead to creation of a new state object`,
           action
@@ -67,7 +67,7 @@ export default function configureStore(
 
   // Testing Tools
   if (dispatchSpy) {
-    middleware.push(_store => next => action => {
+    middleware.push((_store) => (next) => (action) => {
       dispatchSpy(action);
       return next(action);
     });

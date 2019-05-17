@@ -14,7 +14,7 @@ export const UploadForm = (props) => {
 
   const addFile = (ev) => {
     ev.preventDefault();
-    setState(state => {
+    setState((state) => {
       const files = state.files;
       files.push({});
       return { files };
@@ -27,7 +27,7 @@ export const UploadForm = (props) => {
   };
 
   const remove = (idx) => {
-    setState(state => {
+    setState((state) => {
       let files = state.files;
       inputs[idx].value = "";
       files.splice(idx, 1);

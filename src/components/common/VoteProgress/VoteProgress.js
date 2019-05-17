@@ -29,7 +29,7 @@ export const VoteProgress = ( props ) => {
   const { labels } = useContext(AppContext);
 
   const classNames = Object.keys(classes)
-    .filter(className => classes[className])
+    .filter((className) => classes[className])
     .join(" ");
   return (
     <div className={classNames}>

@@ -37,7 +37,7 @@ export const UserNotification = ( props ) => {
 
   }, []);
 
-  const handleRead = activityId => {
+  const handleRead = (activityId) => {
     global.drizzle.store.dispatch({
       type: READ_ACTIVITY,
       activityId

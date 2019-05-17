@@ -26,7 +26,7 @@ export class Dropdown extends Component {
 
   toggle = (ev) => {
     ev.stopPropagation();
-    this.setState(state => ({ isOpen: !state.isOpen }));
+    this.setState((state) => ({ isOpen: !state.isOpen }));
   };
 
   close = () => this.setState({ isOpen: false });

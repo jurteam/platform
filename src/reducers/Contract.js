@@ -184,7 +184,7 @@ export default (state = INITIAL_STATE, action) => {
       };
 
     // case SET_ACTIVITY_STATUS_READED:
-    //   let updatedActivities = state.current.activities.filter(activity => {
+    //   let updatedActivities = state.current.activities.filter((activity) => {
     //     return action.ids.indexOf(activity.id);
     //   });
 
@@ -194,7 +194,7 @@ export default (state = INITIAL_STATE, action) => {
     //     updatedActivities.isArray() &&
     //     updatedActivities.length > 0
     //   ) {
-    //     updatedActivities.forEach(activity => (activity.readed = 1));
+    //     updatedActivities.forEach((activity) => (activity.readed = 1));
     //   }
 
     //   console.log(SET_ACTIVITY_STATUS_READED, updatedActivities);

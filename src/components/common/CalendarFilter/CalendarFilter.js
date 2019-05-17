@@ -12,7 +12,7 @@ export const CalendarFilter = ( props ) => {
     <div className="jur-calendar-filter">
       <Form.DatePicker
         selectedDate={selectedDate}
-        onChange={date => onChange(date)}
+        onChange={(date) => onChange(date)}
         maxDate={new Date()}
       />
       {!selectedDate && (

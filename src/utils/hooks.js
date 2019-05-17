@@ -3,18 +3,18 @@ import React, { useState, useEffect } from "react";
 import { log } from "./helpers"; // log helper
 
 const FormValidation = {
-  required: field =>
+  required: (field) =>
     typeof field !== "undefined" && field !== "" && field !== null
       ? true
       : false,
-  requiredStrict: field =>
+  requiredStrict: (field) =>
     typeof field !== "undefined" && field ? true : false,
-  requiredNum: field =>
+  requiredNum: (field) =>
     typeof field !== "undefined" && field && parseFloat(field) > 0
       ? true
       : false,
-  isTrue: field => (typeof field !== "undefined" ? field === true : true), // always true when null in case this field is optional
-  isFalse: field => (typeof field !== "undefined" ? field === false : true), // always true when null in case this field is optional
+  isTrue: (field) => (typeof field !== "undefined" ? field === true : true), // always true when null in case this field is optional
+  isFalse: (field) => (typeof field !== "undefined" ? field === false : true), // always true when null in case this field is optional
   isEmail: email => {
     const regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return email ? regex.test(email) : true; // always true when null in case this field is optional

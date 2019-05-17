@@ -31,7 +31,7 @@ export const ContractAccordion = ( props ) => {
     "jur-contract-accordion--open": isOpen
   };
   const classNames = Object.keys(classes)
-    .filter(classItem => classes[classItem])
+    .filter((classItem) => classes[classItem])
     .join(" ");
 
   return (

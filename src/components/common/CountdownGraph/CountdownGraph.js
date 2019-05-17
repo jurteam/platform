@@ -14,7 +14,7 @@ export const CountdownGraph = ( props ) => {
     ...rest
   } = props;
   const [percentage, setPercentage] = useState(0);
-  const progressHandler = percentage => {
+  const progressHandler = (percentage) => {
     setPercentage(percentage);
     if ( typeof onProgress === "function") onProgress(percentage);
   };

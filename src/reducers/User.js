@@ -61,7 +61,7 @@ export default (state = INITIAL_STATE, action) => {
 
     case SET_ACTIVITY_STATUS_READED:
 
-      const updatedActivities = state.activities.map(activity => {
+      const updatedActivities = state.activities.map((activity) => {
         if (action.ids.indexOf(activity.id) >= 0) {
           return { ...activity, readed: 1 }
         }

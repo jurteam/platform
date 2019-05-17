@@ -18,7 +18,7 @@ export const ContractSetValue = (props) => {
   };
 
   const setPenaltyFee = (counterparty, fee) => {
-    // this.setState(state => {
+    // this.setState((state) => {
     //   const contract = state.contract;
     //   contract.penaltyFee = {
     //     ...contract.penaltyFee,
@@ -39,7 +39,7 @@ export const ContractSetValue = (props) => {
     // props.onChange("value", payer.value);
     props.onChange("whoPays", payer.counterParty.wallet.toLowerCase());
 
-    // this.setState(state => {
+    // this.setState((state) => {
     //   const contract = state.contract;
     //   contract.amount = payer.value;
     //   return { contract };

@@ -287,7 +287,7 @@ export function* handleNewArbitration(args) {
         ...contractPayload
       )
         .send({ from: wallet.address })
-        .then(result => {
+        .then((result) => {
           log("handleNewArbitration - arbitration tx result", result);
 
           const {
@@ -297,7 +297,7 @@ export function* handleNewArbitration(args) {
 
           arbitrationAddress = _arbitration;
         })
-        .catch(error => {
+        .catch((error) => {
           log("handleNewArbitration - arbitration tx error", error);
         });
 

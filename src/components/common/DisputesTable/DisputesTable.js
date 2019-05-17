@@ -55,7 +55,7 @@ const DisputesTable = props => {
 
   const emptyDisputesMessage = <p>{labels.noDisputes}</p>;
 
-  const onExpire = id => {
+  const onExpire = (id) => {
     global.drizzle.store.dispatch({
       type: EXPIRED_DISPUTE,
       id
@@ -76,9 +76,9 @@ const DisputesTable = props => {
     </>
   );
 
-  const renderRecords = data => (
+  const renderRecords = (data) => (
     <TableBody>
-      {data.map(dispute => (
+      {data.map((dispute) => (
         <TableRow
           key={dispute.id}
           onClick={() => showDispute(`/disputes/detail/${dispute.id}`)}
@@ -160,7 +160,7 @@ const DisputesTable = props => {
           itemsCountPerPage={contractsPerPage}
           totalItemsCount={totalContracts}
           handlePageChange={handlePageChange}
-          getPageUrl={i => "https://customLink/#" + i}
+          getPageUrl={(i) => "https://customLink/#" + i}
         />
       )}
       {emptyMessage}

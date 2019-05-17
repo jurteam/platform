@@ -417,8 +417,8 @@ export function* handleContractIssues(action) {
   } else {
     toSend.append("proposal_part_b", zero);
   }
-  if (payed_at) toSend.append("payed_at", payed_at);
-  if (code) toSend.append("code", code);
+  if (payed_at) {toSend.append("payed_at", payed_at);};
+  if (code) {toSend.append("code", code);};
 
   if (proposalAttachments.files && proposalAttachments.files.length) {
     for (let i = 0; i < proposalAttachments.files.length; i++) {
@@ -477,7 +477,7 @@ export function* onContractActivitiesSet(action) {
     ids = [activityId];
   } else {
     ids = yield select(getCurrentContractActivities);
-    ids = ids.filter(activity => {
+    ids = ids.filter((activity) => {
       return activity.readed === 0 || activity.readed === false;
     }); // gets only unreaded activities
     ids = arrayColumn(ids, "id");
@@ -487,7 +487,7 @@ export function* onContractActivitiesSet(action) {
   if (ids.length > 0) {
     // only if needed
 
-    ids.forEach(id => toRead.append("ids[]", id));
+    ids.forEach((id) => toRead.append("ids[]", id));
 
     console.log("onContractActivitiesSet - toRead", toRead);
 

@@ -25,7 +25,7 @@ export const DisputesFilters = ( props ) => {
 
     onChange(type, value);
 
-    setState(state => {
+    setState((state) => {
       const newState = { ...state, [type]: value };
       if (typeof onChange === "function") onChange(newState);
       return newState;
@@ -33,7 +33,7 @@ export const DisputesFilters = ( props ) => {
   };
 
   const handleReset = () => {
-    if (typeof onReset === "function") onReset();
+    if (typeof onReset === "function") {onReset();};
   };
 
 

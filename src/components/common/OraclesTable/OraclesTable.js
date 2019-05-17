@@ -164,7 +164,7 @@ export const OraclesTable = ( props ) => {
             itemsCountPerPage={oraclesPerPage}
             totalItemsCount={totalOracles}
             handlePageChange={handlePageChange}
-            // getPageUrl={i => "https://customLink/#" + i}
+            // getPageUrl={(i) => "https://customLink/#" + i}
           />
         ) : (
           <div className="jur-dispute-vote__note">

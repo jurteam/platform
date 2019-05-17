@@ -101,7 +101,7 @@ export const OracleDetail = ( props ) => {
     console.error("onFileError", e);
   };
 
-  const onPageChange = page => {
+  const onPageChange = (page) => {
     global.drizzle.store.dispatch({
       type: ORACLE_PAGE_CHANGE,
       payload: page

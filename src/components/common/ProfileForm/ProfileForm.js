@@ -205,7 +205,7 @@ export const ProfileForm = ( props ) => {
             error={hasError("birth_date")}
             placeholder={labels.dateOfBirthPlaceholder}
             selectedDate={birth_date ? new Date(birth_date) : null}
-            onChange={date => changeInput("birth_date", date)}
+            onChange={(date) => changeInput("birth_date", date)}
             maxDate={new Date()}
           />
         </Form.Group>

@@ -116,7 +116,7 @@ export const DisputeDetail = ( props ) => {
   }, [wallet.address]);
 
   const changeInput = (name, value) => {
-    if (!formUpdated) setFormUpdated(true);
+    if (!formUpdated) {setFormUpdated(true);};
     setFormData({ ...dispute.vote, [name]: value });
 
     const { updateVoteField } = props;
@@ -134,7 +134,7 @@ export const DisputeDetail = ( props ) => {
     }
   };
 
-  const onFileAdded = selectedFiles => {
+  const onFileAdded = (selectedFiles) => {
     setAttachments(selectedFiles);
     setFormUpdated(true);
   };
@@ -193,7 +193,7 @@ export const DisputeDetail = ( props ) => {
   };
 
   // form error handling
-  const hasError = field =>
+  const hasError = (field) =>
     typeof errors[field] !== "undefined" &&
     errors[field].length > 0 &&
     formUpdated; // show error only when form is update at least one time

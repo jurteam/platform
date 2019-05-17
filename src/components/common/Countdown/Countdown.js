@@ -106,7 +106,7 @@ export class Countdown extends Component {
         if (typeof this.props.onProgress === "function")
           this.props.onProgress(percentage);
       } else {
-        this.setState(state => {
+        this.setState((state) => {
           if (state.playing) {
             this.props.onExpire && this.props.onExpire();
             return { playing: false };
