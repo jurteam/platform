@@ -24,8 +24,7 @@ import Pagination from "../Pagination";
 import { SpinnerOnly } from "../Spinner";
 import { AppContext } from "../../../bootstrap/AppProvider"; // context
 
-const DisputesTable = (props) => {
-
+const DisputesTable = props => {
   const { labels } = useContext(AppContext);
 
   const {
@@ -54,9 +53,7 @@ const DisputesTable = (props) => {
     history.push(to);
   };
 
-  const emptyDisputesMessage = (
-    <p>{labels.noDisputes}</p>
-  );
+  const emptyDisputesMessage = <p>{labels.noDisputes}</p>;
 
   const onExpire = id => {
     global.drizzle.store.dispatch({
@@ -73,8 +70,56 @@ const DisputesTable = (props) => {
   const emptyMyDisputesMessage = (
     <>
       <p>{labels.noDisputesParticipation}</p>
-      <Link to="/disputes" onClick={() => handleFilterChange("mine", false)}>{labels.seeAllDisputes}</Link>
+      <Link to="/disputes" onClick={() => handleFilterChange("mine", false)}>
+        {labels.seeAllDisputes}
+      </Link>
     </>
+  );
+
+  const renderRecords = data => (
+    <TableBody>
+      {data.map(dispute => (
+        <TableRow
+          key={dispute.id}
+          onClick={() => showDispute(`/disputes/detail/${dispute.id}`)}
+        >
+          <TableCell>
+            <Tag statusId={dispute.statusId}>{dispute.statusLabel}</Tag>
+          </TableCell>
+          <TableCell className="jur-disputes__table__dispute-name">
+            <div>{dispute.disputeName}</div>
+          </TableCell>
+          <TableCell>
+            <Countdown
+              days={dispute.duration.days}
+              hours={dispute.duration.hours}
+              minutes={dispute.duration.minutes}
+              statusId={dispute.statusId}
+              startDate={dispute.statusUpdatedAt}
+              onExpire={() => onExpire(dispute.id)}
+              expireAlertFrom={process.env.REACT_APP_VOTE_EXPIRE_ALERT}
+              showSeconds
+            />
+          </TableCell>
+          <TableCell>{dispute.category}</TableCell>
+          <TableCell className="jur-disputes__table__contract-value">
+            <Amount value={humanToEth(dispute.value)} />
+          </TableCell>
+          <TableCell className="jur-disputes__table__earning">
+            {dispute.earning && <Amount value={dispute.earning} />}
+          </TableCell>
+          {dispute.archived ? (
+            <TableCell>
+              <Dropdown label={<EllipsisVIcon />}>
+                <DropdownItem onClick={() => handleRedeem(dispute.id)}>
+                  {labels.redeem}
+                </DropdownItem>
+              </Dropdown>
+            </TableCell>
+          ) : null}
+        </TableRow>
+      ))}
+    </TableBody>
   );
 
   const emptyMessage = data.length === 0 && (
@@ -97,57 +142,14 @@ const DisputesTable = (props) => {
               <TableCell
                 key={header.label.toString()}
                 {...header.sortable && { onClick: header.sortable }}
-                {...header.className && {className: header.className }}
+                {...header.className && { className: header.className }}
               >
                 {header.label}
               </TableCell>
             ))}
           </TableRow>
         </TableHead>
-        {data.length > 0 ? (
-          <TableBody>
-            {data.map(dispute => (
-              <TableRow key={dispute.id} onClick={() => showDispute(`/disputes/detail/${dispute.id}`)}>
-                <TableCell>
-                  <Tag statusId={dispute.statusId}>{dispute.statusLabel}</Tag>
-                </TableCell>
-                <TableCell className="jur-disputes__table__dispute-name">
-                  <div>{dispute.disputeName}</div>
-                </TableCell>
-                <TableCell>
-                  <Countdown
-                    days={dispute.duration.days}
-                    hours={dispute.duration.hours}
-                    minutes={dispute.duration.minutes}
-                    statusId={dispute.statusId}
-                    startDate={dispute.statusUpdatedAt}
-                    onExpire={() => onExpire(dispute.id)}
-                    expireAlertFrom={
-                      process.env.REACT_APP_VOTE_EXPIRE_ALERT
-                    }
-                    showSeconds
-                  />
-                </TableCell>
-                <TableCell>{dispute.category}</TableCell>
-                <TableCell className="jur-disputes__table__contract-value">
-                  <Amount value={humanToEth(dispute.value)} />
-                </TableCell>
-                <TableCell className="jur-disputes__table__earning">
-                  {dispute.earning && <Amount value={dispute.earning} />}
-                </TableCell>
-                  {dispute.archived ? (
-                    <TableCell>
-                      <Dropdown label={<EllipsisVIcon />}>
-                        <DropdownItem onClick={() => handleRedeem(dispute.id)}>
-                          {labels.redeem}
-                        </DropdownItem>
-                      </Dropdown>
-                    </TableCell>
-                  ) : null}
-              </TableRow>
-            ))}
-          </TableBody>
-        ) : null}
+        {data.length > 0 ? renderRecords(data) : null}
       </Table>
       {data.length > 0 && loading === true && (
         <SpinnerOnly loading={loading} className={"table__loading"} />
@@ -164,6 +166,6 @@ const DisputesTable = (props) => {
       {emptyMessage}
     </div>
   );
-}
+};
 
 export default withRouter(DisputesTable);

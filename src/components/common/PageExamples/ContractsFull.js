@@ -63,7 +63,7 @@ const contractsData = [
     id: 1,
     statusId: 1,
     statusLabel: "Waiting for counterparty",
-    statusUpdatedAt: 1554487773000,
+    statusUpdatedAt: 155448777300000,
     contractName: "OTC transaction Eth vs Btc",
     expireDate: 1000 * 60 * 60 * 24 * 2,
     counterparties: [
@@ -93,7 +93,7 @@ const contractsData = [
     statusId: 5,
     statusLabel: "Ongoing",
     contractName: "Web Development Activity",
-    statusUpdatedAt: 1554487773000,
+    statusUpdatedAt: 155448777300000,
     expireDate: 1000 * 60 * 60 * 24 * 2,
     counterparties: [
       {
@@ -122,7 +122,7 @@ const contractsData = [
     statusId: 31,
     statusLabel: "Open Dispute",
     contractName: "Logo Design",
-    statusUpdatedAt: 1554487773000,
+    statusUpdatedAt: 155448777300000,
     expireDate: 1000 * 60 * 60 * 24 * 2,
     counterparties: [
       {
@@ -151,7 +151,7 @@ const contractsData = [
     statusId: 39,
     statusLabel: "Closed Dispute",
     contractName: "Investment Milestone",
-    statusUpdatedAt: 1554487773000,
+    statusUpdatedAt: 155448777300000,
     expireDate: 1000 * 60 * 60 * 24 * 2,
     counterparties: [
       {
@@ -180,7 +180,7 @@ const contractsData = [
     statusId: 39,
     statusLabel: "Closed Dispute",
     contractName: "EU Patent purchasing",
-    statusUpdatedAt: 1554487773000,
+    statusUpdatedAt: 155448777300000,
     expireDate: 1000 * 60 * 60 * 24 * 2,
     counterparties: [
       {
