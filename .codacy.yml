@@ -1,6 +1,8 @@
 exclude_paths:
   - '**.DS_Store'
   - '**.test.js'
+  - '**.stories.js'
+  - '**.json'
   - 'node_modules/**'
   - '.storybook/**'
   - 'docs/**'
