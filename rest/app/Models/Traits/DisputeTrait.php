@@ -78,8 +78,6 @@ trait DisputeTrait
             return null;
         }
 
-        $currentWallet = request()->header('wallet');
-
         $totalPartA = $this->getTokensPart('part_a_wallet');
         $totalPartB = $this->getTokensPart('part_b_wallet');
         $voteForWinner = 0;

@@ -9,7 +9,7 @@ use App\Transformers\AttachmentTransformer;
 
 trait MediableTrait
 {
-    public function deleteMedia(Request $request, $id)
+    public function deleteMedia($id)
     {
         $media = Media::findOrFail($id);
         $media->delete();

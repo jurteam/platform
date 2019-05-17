@@ -84,9 +84,9 @@ class ContractFilters extends Filters
     public function type($value)
     {
         if ($value == 'dispute') {
-            return $this->builder->where('contracts.is_a_dispute', 1);
+            return $this->builder->where('contracts.is_a_dispute', true);
         } elseif ($value == 'friendly') {
-            return $this->builder->where('contracts.is_a_friendly_resolution', 1);
+            return $this->builder->where('contracts.is_a_friendly_resolution', true);
         }
     }
 }
