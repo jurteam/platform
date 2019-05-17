@@ -3,14 +3,17 @@
 ## Dependencies
 
 ### Truffle
+
 Truffle on you host should be at the correct version that is compatible with `openzeppelin-solidity ^1.10.0`
 
 ### Web3
+
 Web3 version should be the same between DApp and Protocol. Different versions are not compatible. Until now version is downgraded due protocol at `^1.0.0-beta.46`
 
 ## Metamask
 
 ### Error: the tx doesn't have the correct nonce.
+
 To fix this error you should reset your Metamask Account.
 
 Just click on your account avatar, then go to _Settings > Advanced > **Reset Account**_
