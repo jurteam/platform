@@ -139,7 +139,9 @@ export function* handleNewArbitration(args) {
 
   const JURToken = "JURToken";
   const ArbitrationFactory = "ArbitrationFactory";
-  const method = "createArbitration";
+
+  // Step .1
+  let method = "createArbitration";
 
   // destructuring call params
   const { type } = args;
@@ -305,13 +307,16 @@ export function* handleNewArbitration(args) {
       log("handleNewArbitration - arbitration address", arbitrationAddress);
 
       if (arbitrationAddress) {
+
+        // Step .2 - JURToken
+        method = "approve"
+
         yield chainGetContract({ address: arbitrationAddress });
 
-        // sign
-        const signed = yield contracts[arbitrationAddress].methods[
-          "sign"
-        ].cacheSend({ from: wallet.address });
-        log("handleNewArbitration - arbitration signed?", signed);
+        // approve
+        let approveFundings = partA.wallet === wallet.address ? fundings.a : fundings.b
+        const approved = yield contracts[JURToken].methods[method].cacheSend(wallet.address, approveFundings);
+        log("handleNewArbitration - jur Token approved?", approved);
 
         // Update contract address
         let toUpdate = new FormData();
