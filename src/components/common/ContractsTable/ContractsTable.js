@@ -161,18 +161,18 @@ export const ContractsTable = ( props ) => {
                 <TableCell>
                   <Amount value={humanToEth(contract.value)} />
                 </TableCell>
+                  <TableCell>
                 {!contract.archived &&
                 contract.counterparties[0].wallet.toLowerCase() ===
                   user.wallet.toLowerCase() &&
                 archivableCodes.indexOf(contract.statusId) >= 0 ? (
-                  <TableCell>
                     <Dropdown label={<EllipsisVIcon />}>
                       <DropdownItem onClick={() => handleArchive(contract.id)}>
                         {labels.archive}
                       </DropdownItem>
                     </Dropdown>
-                  </TableCell>
                 ) : null}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
