@@ -15,19 +15,20 @@ import Stepper from "../../common/Stepper";
 import { steps } from "../../../assets/i18n/en/tutorial.json";
 import { AppContext } from "../../../bootstrap/AppProvider"; // context
 
-export const Home = (props) => {
-
+export const Home = props => {
   const [activeStep, setActiveStep] = useState(0); // first
 
   const closeTutorial = () => {
     const { setTutorialViewed } = props;
     setTutorialViewed();
-  }
+  };
 
   const handleBack = () => {
-    if (activeStep - 1 < 0) return;
+    if (activeStep - 1 < 0) {
+      return;
+    }
     setActiveStep(activeStep - 1);
-  }
+  };
 
   const handleNext = () => {
     if (activeStep + 1 >= steps.length) {
@@ -35,7 +36,7 @@ export const Home = (props) => {
     } else {
       setActiveStep(activeStep + 1);
     }
-  }
+  };
 
   const { labels } = useContext(AppContext);
 
@@ -53,7 +54,9 @@ export const Home = (props) => {
         </Stepper>
         <ModalFooter>
           {activeStep !== 0 && activeStep + 1 !== steps.length && (
-            <Button onClick={handleBack} size="medium" variant="raised">{labels.previous}</Button>
+            <Button onClick={handleBack} size="medium" variant="raised">
+              {labels.previous}
+            </Button>
           )}
           <Button
             onClick={handleNext}
@@ -65,14 +68,18 @@ export const Home = (props) => {
         </ModalFooter>
       </>
     );
-  }
+  };
 
   const { app } = props;
   const { tutorial } = app;
   return (
     <PageLayout>
       {!tutorial ? (
-        <Modal isOpen={true} onRequestClose={closeTutorial} key={`stepper-${activeStep}`}>
+        <Modal
+          isOpen={true}
+          onRequestClose={closeTutorial}
+          key={`stepper-${activeStep}`}
+        >
           {renderStepper()}
         </Modal>
       ) : (
@@ -80,4 +87,4 @@ export const Home = (props) => {
       )}
     </PageLayout>
   );
-}
+};

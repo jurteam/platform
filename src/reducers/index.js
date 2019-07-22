@@ -9,7 +9,7 @@ import dispute from "./Dispute";
 import oracle from "./Oracle";
 
 // Export root reducer
-export default history =>
+export default (history) =>
   combineReducers({
     router: connectRouter(history),
     app,

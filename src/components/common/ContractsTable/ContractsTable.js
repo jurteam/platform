@@ -23,7 +23,7 @@ import { EXPIRED_CONTRACT } from "../../../reducers/types";
 import "./ContractsTable.scss";
 import { AppContext } from "../../../bootstrap/AppProvider"; // context
 
-export const ContractsTable = ( props ) => {
+export const ContractsTable = props => {
   const {
     headers,
     filters,
@@ -62,16 +62,16 @@ export const ContractsTable = ( props ) => {
     </div>
   );
 
-  const handlePageChange = (pageNumber) => {
+  const handlePageChange = pageNumber => {
     setActivePage(pageNumber);
     onPageChange(pageNumber);
   };
 
-  const showContract = (to) => {
+  const showContract = to => {
     history.push(to);
   };
 
-  const onExpire = (id) => {
+  const onExpire = id => {
     global.drizzle.store.dispatch({
       type: EXPIRED_CONTRACT,
       id
@@ -161,17 +161,17 @@ export const ContractsTable = ( props ) => {
                 <TableCell>
                   <Amount value={humanToEth(contract.value)} />
                 </TableCell>
-                  <TableCell>
-                {!contract.archived &&
-                contract.counterparties[0].wallet.toLowerCase() ===
-                  user.wallet.toLowerCase() &&
-                archivableCodes.indexOf(contract.statusId) >= 0 ? (
+                <TableCell>
+                  {!contract.archived &&
+                  contract.counterparties[0].wallet.toLowerCase() ===
+                    user.wallet.toLowerCase() &&
+                  archivableCodes.indexOf(contract.statusId) >= 0 ? (
                     <Dropdown label={<EllipsisVIcon />}>
                       <DropdownItem onClick={() => handleArchive(contract.id)}>
                         {labels.archive}
                       </DropdownItem>
                     </Dropdown>
-                ) : null}
+                  ) : null}
                 </TableCell>
               </TableRow>
             ))}

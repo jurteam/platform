@@ -3,11 +3,7 @@ import MetaMask from "../hooks/MetaMask"; // MetaMask hook
 import API from "./Api"; // Axios
 
 // Actions types
-import {
-  HEARTBEAT,
-  NETWORK_UPDATE,
-  APP_SHOULD_RESET
-} from "../reducers/types";
+import { HEARTBEAT, NETWORK_UPDATE, APP_SHOULD_RESET } from "../reducers/types";
 
 let dappHeartbeat = null;
 
@@ -52,6 +48,6 @@ export const init = () => {
       }, process.env.REACT_APP_HEARTBEAT_DELAY);
     }
 
-    global.API = API // use a axios api istance globally
+    global.API = API; // use a axios api istance globally
   }
 };

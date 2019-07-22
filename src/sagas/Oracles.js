@@ -21,10 +21,7 @@ import contractStatuses from "../assets/i18n/en/status.json";
 // Api layouts
 import { Oracles, Disputes } from "../api";
 
-import {
-  getOracleOrder,
-  getOracleListPage
-} from "./Selectors"; // selector
+import { getOracleOrder, getOracleListPage } from "./Selectors"; // selector
 
 // Get
 export function* fetchOracles(action) {
@@ -71,14 +68,7 @@ export function* onVote(action) {
   log("onVote - run");
   yield put({ type: DISPUTE_UPDATING, payload: true });
   const {
-    vote: {
-      amount,
-      contract_id,
-      message,
-      hash,
-      oracle_wallet,
-      wallet_part
-    },
+    vote: { amount, contract_id, message, hash, oracle_wallet, wallet_part },
     attachments
   } = action;
 
@@ -91,7 +81,10 @@ export function* onVote(action) {
   if (wallet_part) voteData.append("wallet_part", wallet_part);
   if (oracle_wallet) voteData.append("oracle_wallet", oracle_wallet);
   if (message) voteData.append("message", message);
-  voteData.append("amount", Number(amount).toFixed(process.env.REACT_APP_TOKEN_DECIMALS)); // always
+  voteData.append(
+    "amount",
+    Number(amount).toFixed(process.env.REACT_APP_TOKEN_DECIMALS)
+  ); // always
 
   for (let i = 0; i < attachments.length; i++) {
     // iteate over any file sent over appending the files to the form data.
@@ -111,13 +104,16 @@ export function* onVote(action) {
     yield put({ type: RESET_VOTE });
     // TODO: fetch new votes
 
-    if (typeof action.callback === "function") action.callback(); // invoke callback if needed
+    if (typeof action.callback === "function") {
+      action.callback();
+    } // invoke callback if needed
   } catch (error) {
-
     yield put({ type: DISPUTE_UPDATING, payload: false });
 
     yield put({ type: API_CATCH, error });
-    if (typeof action.callback === "function") action.callback(); // invoke callback if needed
+    if (typeof action.callback === "function") {
+      action.callback();
+    } // invoke callback if needed
   }
 }
 
