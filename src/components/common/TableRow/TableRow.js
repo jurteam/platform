@@ -1,7 +1,7 @@
 import React from "react";
 
 export const TableRow = (props) => {
-  const { parentComponent, children, className, onClick, key, ...params } = props;
+  const { parentComponent, children, className, onClick, ...params } = props;
   const childrenArray = React.Children.toArray(children);
   const cells = childrenArray.map(cell =>
     React.cloneElement(cell, { parentComponent, ...cell.props })
