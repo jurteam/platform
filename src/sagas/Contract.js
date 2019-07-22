@@ -484,7 +484,7 @@ export function* onContractActivitiesSet(action) {
   }
 
   console.log("onContractActivitiesSet - ids", ids);
-  if (ids.length > 0) {
+  if (typeof ids !== "undefined" && ids.length > 0) {
     // only if needed
 
     ids.forEach((id) => toRead.append("ids[]", id));
