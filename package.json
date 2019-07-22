@@ -71,6 +71,7 @@
     "redux-unhandled-action": "^1.3.0",
     "require-context.macro": "^1.0.4",
     "storybook": "^1.0.0",
-    "storybook-react-router": "^1.0.5"
+    "storybook-react-router": "^1.0.5",
+    "truffle": "^4.1.15"
   }
 }
