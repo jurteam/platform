@@ -32,7 +32,12 @@ import {
 // Api layouts
 import { Contracts } from "../api";
 
-import ArbitrationJsonInterface from "../build/contracts/Arbitration.json";
+import {
+  chainGetContract,
+  callToContract,
+  sendToContract,
+  checkDrizzleInit
+} from "../utils/sc";
 
 import {
   log,
@@ -77,315 +82,197 @@ export function* fetchArbitrations(args) {
   }
 }
 
-export function* chainGetContract(args) {
-  log("chainGetContract - args", args);
-
-  const { address } = args;
-
-  const drizzleStatus = yield select(getDrizzleStatus);
-  log("chainGetContract - drizzleStatus", drizzleStatus);
-  if (drizzleStatus.initialized && global.drizzle) {
-    const { contracts, web3 } = global.drizzle;
-
-    const wallet = yield select(getWallet);
-
-    // add new arbitration to drizzle
-    const contractConfig = {
-      contractName: address,
-      web3Contract: new web3.eth.Contract(
-        ArbitrationJsonInterface.abi,
-        address,
-        { from: wallet.address }
-      )
-    };
-    const contractEvents = [
-      "StateChange",
-      "ContractCreated",
-      "ContractSigned",
-      "ContractUnsigned",
-      "ContractAgreed",
-      "ContractUnagreed",
-      "ContractAmendmentProposed",
-      "ContractAmendmentAgreed",
-      "ContractAmendmentUnagreed",
-      "ContractWithdrawn",
-      "ContractDisputed",
-      "ContractDisputeDispersalAmended",
-      "DisputeEndsAdjusted",
-      "VoteCast",
-      "VoterPayout",
-      "PartyPayout"
-    ];
-
-    log("chainGetContract - contractConfig", contractConfig);
-    log("chainGetContract - contractEvents", contractEvents);
-
-    // Or using the Drizzle context object
-    const newContractAdded = yield global.drizzle.addContract(
-      contractConfig,
-      contractEvents
-    );
-
-    log("chainGetContract - newContractAdded", newContractAdded);
-
-    // const txApprove = yield contracts[JURToken].methods["approve"].cacheSend(_arbitration, 50000000000000000000); // 50 JUR
-    // log("chainGetContract - txApprove", txApprove);
-  }
-}
-
 export function* handleNewArbitration(args) {
   log("handleNewArbitration", "run");
   log("handleNewArbitration - args", args);
 
-  const JURToken = "JURToken";
-  const ArbitrationFactory = "ArbitrationFactory";
+  // Check if Drizzle is initialized
+  const check = checkDrizzleInit();
+  if (!check) { return false; }
 
-  // Step .1
-  let method = "createArbitration";
+  const {
+    web3: { utils }
+  } = global.drizzle;
 
-  // destructuring call params
-  const { type } = args;
+  yield put({ type: CONTRACT_SAVING, payload: true });
+  yield put({ type: CONTRACT_UPDATING, payload: true });
 
-  const drizzleStatus = yield select(getDrizzleStatus);
-  log("handleNewArbitration - drizzleStatus", drizzleStatus);
-  if (drizzleStatus.initialized && global.drizzle) {
-    const {
-      contracts,
-      web3,
-      web3: { utils }
-    } = global.drizzle;
-    log("handleNewArbitration - contracts", contracts);
+  const wallet = yield select(getWallet);
 
-    // cache call on new arbitration request
-    if (type === NEW_ARBITRATION) {
-      yield put({ type: CONTRACT_SAVING, payload: true });
-      yield put({ type: CONTRACT_UPDATING, payload: true });
+  const contractData = yield select(getCurrentContract);
+  const [partA, partB] = contractData.counterparties;
 
-      const wallet = yield select(getWallet);
+  log("handleNewArbitration - contractData", contractData);
 
-      const contractData = yield select(getCurrentContract);
-      const [partA, partB] = contractData.counterparties;
+  // Setup agreement
+  const agreement = {
+    kpi: contractData.kpi,
+    resolutionProof: contractData.resolutionProof
+  };
+  const agreementHash = yield callToContract("ArbitrationFactory", "generateHash", JSON.stringify(agreement))
 
-      log("handleNewArbitration - contractData", contractData);
+  log("handleNewArbitration - agreementHash", agreementHash);
 
-      // Setup agreement
-      const agreement = {
-        kpi: contractData.kpi,
-        resolutionProof: contractData.resolutionProof
-      };
-      const generateHash = "generateHash"; // contract abi method
-      const agreementHash = yield contracts[ArbitrationFactory].methods[
-        generateHash
-      ].cacheCall(JSON.stringify(agreement));
+  // TODO: move elsewhere
+  // --
+  const { id, partAPenaltyFee, partBPenaltyFee, whoPays, value } = contractData;
+  let fundings = {
+    a: Number(
+      humanToEth(ethToStore(ethToHuman(Number(humanToEth(partAPenaltyFee)))))
+    ),
+    b: Number(
+      humanToEth(ethToStore(ethToHuman(Number(humanToEth(partBPenaltyFee)))))
+    )
+  };
+  let dispersal = {
+    a: Number(
+      humanToEth(ethToStore(ethToHuman(Number(humanToEth(partAPenaltyFee)))))
+    ),
+    b: Number(
+      humanToEth(ethToStore(ethToHuman(Number(humanToEth(partBPenaltyFee)))))
+    )
+  };
 
-      log("handleNewArbitration - agreementHash", agreementHash);
-
-      const {
-        id,
-        partAPenaltyFee,
-        partBPenaltyFee,
-        whoPays,
-        value
-      } = contractData;
-      let fundings = {
-        a: Number(
-          humanToEth(
-            ethToStore(ethToHuman(Number(humanToEth(partAPenaltyFee))))
-          )
-        ),
-        b: Number(
-          humanToEth(
-            ethToStore(ethToHuman(Number(humanToEth(partBPenaltyFee))))
+  if (whoPays === partA.wallet) {
+    fundings.a = Number(
+      humanToEth(
+        ethToStore(
+          ethToHuman(
+            Number(humanToEth(partAPenaltyFee)) + Number(humanToEth(value))
           )
         )
-      };
-      let dispersal = {
-        a: Number(
-          humanToEth(
-            ethToStore(ethToHuman(Number(humanToEth(partAPenaltyFee))))
-          )
-        ),
-        b: Number(
-          humanToEth(
-            ethToStore(ethToHuman(Number(humanToEth(partBPenaltyFee))))
-          )
-        )
-      };
-
-      if (whoPays === partA.wallet) {
-        fundings.a = Number(
-          humanToEth(
-            ethToStore(
-              ethToHuman(
-                Number(humanToEth(partAPenaltyFee)) + Number(humanToEth(value))
-              )
-            )
-          )
-        );
-        dispersal.b = Number(
-          humanToEth(
-            ethToStore(
-              ethToHuman(
-                Number(humanToEth(partBPenaltyFee)) + Number(humanToEth(value))
-              )
-            )
-          )
-        );
-      } else {
-        fundings.b = Number(
-          humanToEth(
-            ethToStore(
-              ethToHuman(
-                Number(humanToEth(partBPenaltyFee)) + Number(humanToEth(value))
-              )
-            )
-          )
-        );
-        dispersal.a = Number(
-          humanToEth(
-            ethToStore(
-              ethToHuman(
-                Number(humanToEth(partAPenaltyFee)) + Number(humanToEth(value))
-              )
-            )
-          )
-        );
-      }
-
-      log("handleNewArbitration - fundings + dispersal", {
-        fundings,
-        dispersal
-      });
-
-      // createArbitration([party1, party2], [0, 150], [50, 100], "Do some work...")
-      const contractPayload = [
-        [
-          utils.toChecksumAddress(partA.wallet),
-          utils.toChecksumAddress(partB.wallet)
-        ],
-        Object.values(fundings),
-        Object.values(dispersal),
-        agreementHash
-      ];
-
-      log("handleNewArbitration - contractPayload", contractPayload);
-      log(
-        `handleNewArbitration - contracts[ArbitrationFactory].methods[${method}]`,
-        contracts[ArbitrationFactory].methods[method]
-      );
-
-      const abi = contracts[ArbitrationFactory].abi;
-
-      log("handleNewArbitration - abi", abi);
-      log(
-        "handleNewArbitration - next method call",
-        contracts[ArbitrationFactory].methods[method](...contractPayload)
-      );
-
-      let arbitrationAddress = null;
-
-      // // Fetch initial value from chain and return cache key for reactive updates.
-      const tx = yield contracts[ArbitrationFactory].methods[method](
-        ...contractPayload
       )
-        .send({ from: wallet.address })
-        .then((result) => {
-          log("handleNewArbitration - arbitration tx result", result);
+    );
+    dispersal.b = Number(
+      humanToEth(
+        ethToStore(
+          ethToHuman(
+            Number(humanToEth(partBPenaltyFee)) + Number(humanToEth(value))
+          )
+        )
+      )
+    );
+  } else {
+    fundings.b = Number(
+      humanToEth(
+        ethToStore(
+          ethToHuman(
+            Number(humanToEth(partBPenaltyFee)) + Number(humanToEth(value))
+          )
+        )
+      )
+    );
+    dispersal.a = Number(
+      humanToEth(
+        ethToStore(
+          ethToHuman(
+            Number(humanToEth(partAPenaltyFee)) + Number(humanToEth(value))
+          )
+        )
+      )
+    );
+  }
 
-          const {
-            _arbitration
-          } = result.events.ArbitrationCreated.returnValues; // get arbitration address
-          log("handleNewArbitration - arbitration address", _arbitration);
+  log("handleNewArbitration - fundings + dispersal", {
+    fundings,
+    dispersal
+  });
+  // --
 
-          arbitrationAddress = _arbitration;
-        })
-        .catch((error) => {
-          log("handleNewArbitration - arbitration tx error", error);
+  // createArbitration([party1, party2], [0, 150], [50, 100], "Do some work...")
+  const contractPayload = [
+    [
+      utils.toChecksumAddress(partA.wallet),
+      utils.toChecksumAddress(partB.wallet)
+    ],
+    Object.values(fundings),
+    Object.values(dispersal),
+    agreementHash
+  ];
+
+  let arbitrationAddress = null;
+
+  // Fetch initial value from chain and return cache key for reactive updates.
+  const tx = yield sendToContract(
+    "ArbitrationFactory",
+    "createArbitration",
+    contractPayload,
+    result => {
+      log("handleNewArbitration - arbitration tx result", result);
+
+      const { _arbitration } = result.events.ArbitrationCreated.returnValues; // get arbitration address
+      log("handleNewArbitration - arbitration address", _arbitration);
+
+      arbitrationAddress = _arbitration;
+    },
+    error => {
+      log("handleNewArbitration - arbitration tx error", error);
+    },
+    false
+  );
+
+  log("handleNewArbitration - arbitration tx", tx);
+  log("handleNewArbitration - arbitration address", arbitrationAddress);
+
+  if (arbitrationAddress) {
+
+    // Step .2 - JURToken
+    yield chainGetContract({ address: arbitrationAddress });
+
+    // approve
+    let approveFundings =
+      partA.wallet === wallet.address ? fundings.a : fundings.b;
+    const approved = yield sendToContract("JURToken", "approve", [
+      wallet.address,
+      approveFundings
+    ]);
+    log("handleNewArbitration - jur Token approved?", approved);
+
+    // Update contract address
+    let toUpdate = new FormData();
+    // toUpdate.append('_method', 'PUT');
+    toUpdate.append("address", arbitrationAddress);
+    try {
+      let response = yield call(Contracts.update, toUpdate, id);
+      log("handleNewArbitration - contract address updated", response);
+
+      // Status update
+      toUpdate = new FormData();
+      toUpdate.append("code", 1);
+      try {
+        response = yield call(Contracts.statusChange, toUpdate, id);
+        log("handleNewArbitration - contract status updated", response);
+        const { statusId, statusLabel, statusUpdatedAt } = response.data.data;
+        yield put({
+          type: SET_CONTRACT_STATUS,
+          statusId,
+          statusLabel,
+          statusUpdatedAt,
+          id
         });
+        yield put({ type: FETCH_CONTRACTS });
 
-      log("handleNewArbitration - arbitration tx", tx);
-      log("handleNewArbitration - arbitration address", arbitrationAddress);
-
-      if (arbitrationAddress) {
-
-        // Step .2 - JURToken
-        method = "approve"
-
-        yield chainGetContract({ address: arbitrationAddress });
-
-        // approve
-        let approveFundings = partA.wallet === wallet.address ? fundings.a : fundings.b
-        const approved = yield contracts[JURToken].methods[method].cacheSend(wallet.address, approveFundings);
-        log("handleNewArbitration - jur Token approved?", approved);
-
-        // Update contract address
-        let toUpdate = new FormData();
-        // toUpdate.append('_method', 'PUT');
-        toUpdate.append("address", arbitrationAddress);
-        try {
-          let response = yield call(Contracts.update, toUpdate, id);
-          log("handleNewArbitration - contract address updated", response);
-
-          // Status update
-          toUpdate = new FormData();
-          toUpdate.append("code", 1);
-          try {
-            response = yield call(Contracts.statusChange, toUpdate, id);
-            log("handleNewArbitration - contract status updated", response);
-            const {
-              statusId,
-              statusLabel,
-              statusUpdatedAt
-            } = response.data.data;
-            yield put({
-              type: SET_CONTRACT_STATUS,
-              statusId,
-              statusLabel,
-              statusUpdatedAt,
-              id
-            });
-            yield put({ type: FETCH_CONTRACTS });
-
-            // const { history } = action;
-            // history.push(`/contracts/detail/${id}`); // go to contract detail for furter operations
-          } catch (error) {
-            yield put({ type: API_CATCH, error });
-          }
-
-          // const { history } = action;
-          // history.push(`/contracts/detail/${id}`); // go to contract detail for furter operations
-        } catch (error) {
-          yield put({ type: API_CATCH, error });
-        }
-
-        yield put({ type: CHAIN_GET_CONTRACT, address: arbitrationAddress });
-
-        // Read arbitrations
-        log(
-          "handleNewArbitration - contracts[ArbitrationFactory].methods['arbirations']",
-          contracts[ArbitrationFactory].methods["arbirations"]
-        );
-        const txArbitrations = yield contracts[ArbitrationFactory].methods[
-          "arbirations"
-        ].cacheCall(wallet.address);
-        log("handleNewArbitration - txArbitrations", txArbitrations);
+        // const { history } = action;
+        // history.push(`/contracts/detail/${id}`); // go to contract detail for furter operations
+      } catch (error) {
+        yield put({ type: API_CATCH, error });
       }
 
-      yield put({ type: CONTRACT_SAVING, payload: false });
-      yield put({ type: CONTRACT_UPDATING, payload: false });
+      // const { history } = action;
+      // history.push(`/contracts/detail/${id}`); // go to contract detail for furter operations
+    } catch (error) {
+      yield put({ type: API_CATCH, error });
     }
 
-    // // when contract var is available
-    // if (type === GOT_CONTRACT_VAR) {
-    //   // destructuring call params
-    //   const { name, variable, value, argsHash } = args;
-    //   if (name === contract && variable === method) {
-    //     // only if
+    yield put({ type: CHAIN_GET_CONTRACT, address: arbitrationAddress });
 
-    //     yield put({ type: SET_BALANCE, amount: value, argsHash });
-    //   }
-    // }
+    // Read arbitrations
+    const txArbitrations = yield sendToContract("ArbitrationFactory", "arbirations", wallet.address);
+    log("handleNewArbitration - txArbitrations", txArbitrations);
   }
+
+  yield put({ type: CONTRACT_SAVING, payload: false });
+  yield put({ type: CONTRACT_UPDATING, payload: false });
 }
 
 export function* handleEvents(args) {
@@ -658,7 +545,6 @@ export function* handleSuccessArbitration(args) {
 }
 
 export function* pay(address, amount) {
-
   const drizzleStatus = yield select(getDrizzleStatus);
   log("pay - drizzleStatus", drizzleStatus);
   if (drizzleStatus.initialized && global.drizzle) {
@@ -673,10 +559,7 @@ export function* pay(address, amount) {
     const wallet = yield select(getWallet);
 
     const drizzleContracts = yield select(getDrizzleStoredContracts);
-    log(
-      `pay - current drizzle contract`,
-      drizzleContracts[address]
-    );
+    log(`pay - current drizzle contract`, drizzleContracts[address]);
 
     // const payStatus = yield contracts[address].methods["pay"].cacheSend();
     // log(
@@ -684,30 +567,33 @@ export function* pay(address, amount) {
     //   payStatus
     // );
     log(`pay - address isAddress?`, web3.utils.isAddress(address));
-    log(`pay - wallet.address isAddress?`, web3.utils.isAddress(wallet.address));
-    log(`pay - amount`, amount);
     log(
-      `pay - payload`,
-      {
-        from: wallet.address,
-        to: address,
-        value: web3.utils.toWei(amount.toString(), "ether")
-    }
+      `pay - wallet.address isAddress?`,
+      web3.utils.isAddress(wallet.address)
     );
-
-    yield web3.eth.sendSignedTransaction({
-      from: wallet,
+    log(`pay - amount`, amount);
+    log(`pay - payload`, {
+      from: wallet.address,
       to: address,
       value: web3.utils.toWei(amount.toString(), "ether")
-  }, function (error, result) {
-      if (error) {
-        log("pay - error", error);
-        return false;
-      } else {
-        log("pay - result", result);
-        return true;
+    });
+
+    yield web3.eth.sendSignedTransaction(
+      {
+        from: wallet,
+        to: address,
+        value: web3.utils.toWei(amount.toString(), "ether")
+      },
+      function(error, result) {
+        if (error) {
+          log("pay - error", error);
+          return false;
+        } else {
+          log("pay - result", result);
+          return true;
+        }
       }
-  });
+    );
 
     return false;
   }

@@ -1,0 +1,22 @@
+@import "../../../assets/scss/variables"; // get global variables
+
+.jur {
+  &--actions {
+    &--container {
+      padding: 0 16px;
+      margin-bottom: 16px;
+    }
+    &--inner-container {
+
+        button {
+
+            margin: 0 20px 20px 0;
+            background: #ffcc00;
+            color: black;
+            border-radius: 4px;
+            border: 0;
+            padding: 10px 16px;
+        }
+    }
+  }
+}

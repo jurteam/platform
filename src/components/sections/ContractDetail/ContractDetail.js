@@ -49,6 +49,7 @@ import {
   SEND_TO_COUNTERPARTY,
   DISCLAIMER_MUST_BE_ACCEPTED
 } from "../../../reducers/types";
+import ActionsBar from "../../chain/ActionsBar";
 
 export const ContractDetail = ( props ) => {
   const { labels } = useContext(AppContext);
@@ -465,6 +466,7 @@ export const ContractDetail = ( props ) => {
       {!contract.updating && counterparties ? (
         <>
           <Main>
+            <ActionsBar />
             <ContractSummary
               data={{
                 ...contractData,
