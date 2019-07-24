@@ -161,7 +161,7 @@ export function* sendToContract(
       let tx;
       const abi = contracts[contract].methods[method];
       if (cache) {
-        yield (tx = abi.cacheSend(...payload));
+        tx = yield abi.cacheSend(...payload);
 
         log(`sendToContract – ${contract}[${method}] - tx`, tx);
 
