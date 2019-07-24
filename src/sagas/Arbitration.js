@@ -26,7 +26,9 @@ import {
   CONTRACT_SAVING,
   CONTRACT_UPDATING,
   CHAIN_GET_CONTRACT,
-  ACCEPT_ARBITRATION_AMENDMENT
+  ACCEPT_ARBITRATION_AMENDMENT,
+  CHAIN_CREATE_ARBITRATION,
+  CHAIN_APPROVE_JURTOKEN
 } from "../reducers/types";
 
 // Api layouts
@@ -44,7 +46,8 @@ import {
   warn,
   humanToEth,
   ethToHuman,
-  ethToStore
+  ethToStore,
+  calculateFundingAndDispersal
 } from "../utils/helpers"; // log helper
 
 export function* fetchArbitrations(args) {
@@ -82,9 +85,9 @@ export function* fetchArbitrations(args) {
   }
 }
 
-export function* handleNewArbitration(args) {
-  log("handleNewArbitration", "run");
-  log("handleNewArbitration - args", args);
+export function* handleCreateArbitration(args) {
+  log("handleCreateArbitration", "run");
+  log("handleCreateArbitration - args", args);
 
   // Check if Drizzle is initialized
   const check = checkDrizzleInit();
@@ -102,7 +105,7 @@ export function* handleNewArbitration(args) {
   const contractData = yield select(getCurrentContract);
   const [partA, partB] = contractData.counterparties;
 
-  log("handleNewArbitration - contractData", contractData);
+  log("handleCreateArbitration - contractData", contractData);
 
   // Setup agreement
   const agreement = {
@@ -111,10 +114,11 @@ export function* handleNewArbitration(args) {
   };
   const agreementHash = yield callToContract("ArbitrationFactory", "generateHash", JSON.stringify(agreement))
 
-  log("handleNewArbitration - agreementHash", agreementHash);
+  log("handleCreateArbitration - agreementHash", agreementHash);
 
   // TODO: move elsewhere
   // --
+  /*
   const { id, partAPenaltyFee, partBPenaltyFee, whoPays, value } = contractData;
   let fundings = {
     a: Number(
@@ -172,8 +176,11 @@ export function* handleNewArbitration(args) {
       )
     );
   }
+  */
+  const { id, partAPenaltyFee, partBPenaltyFee, whoPays, value } = contractData;
+  const { fundings, dispersal} = calculateFundingAndDispersal(contractData);
 
-  log("handleNewArbitration - fundings + dispersal", {
+  log("handleCreateArbitration - fundings + dispersal", {
     fundings,
     dispersal
   });
@@ -198,35 +205,36 @@ export function* handleNewArbitration(args) {
     "createArbitration",
     contractPayload,
     result => {
-      log("handleNewArbitration - arbitration tx result", result);
+      log("[promise] handleCreateArbitration - arbitration tx result", result);
 
       const { _arbitration } = result.events.ArbitrationCreated.returnValues; // get arbitration address
-      log("handleNewArbitration - arbitration address", _arbitration);
+      log("handleCreateArbitration - arbitration address", _arbitration);
 
       arbitrationAddress = _arbitration;
     },
     error => {
-      log("handleNewArbitration - arbitration tx error", error);
+      log("handleCreateArbitration - arbitration tx error", error);
     },
     false
   );
 
-  log("handleNewArbitration - arbitration tx", tx);
-  log("handleNewArbitration - arbitration address", arbitrationAddress);
+  log("handleCreateArbitration - arbitration tx", tx);
+  log("handleCreateArbitration - arbitration address", arbitrationAddress);
 
   if (arbitrationAddress) {
 
     // Step .2 - JURToken
-    yield chainGetContract({ address: arbitrationAddress });
 
     // approve
+    /*
     let approveFundings =
       partA.wallet === wallet.address ? fundings.a : fundings.b;
     const approved = yield sendToContract("JURToken", "approve", [
       wallet.address,
       approveFundings
     ]);
-    log("handleNewArbitration - jur Token approved?", approved);
+    log("handleCreateArbitration - jur Token approved?", approved);
+    */
 
     // Update contract address
     let toUpdate = new FormData();
@@ -234,14 +242,14 @@ export function* handleNewArbitration(args) {
     toUpdate.append("address", arbitrationAddress);
     try {
       let response = yield call(Contracts.update, toUpdate, id);
-      log("handleNewArbitration - contract address updated", response);
+      log("handleCreateArbitration - contract address updated", response);
 
       // Status update
       toUpdate = new FormData();
       toUpdate.append("code", 1);
       try {
         response = yield call(Contracts.statusChange, toUpdate, id);
-        log("handleNewArbitration - contract status updated", response);
+        log("handleCreateArbitration - contract status updated", response);
         const { statusId, statusLabel, statusUpdatedAt } = response.data.data;
         yield put({
           type: SET_CONTRACT_STATUS,
@@ -268,12 +276,14 @@ export function* handleNewArbitration(args) {
 
     // Read arbitrations
     const txArbitrations = yield sendToContract("ArbitrationFactory", "arbirations", wallet.address);
-    log("handleNewArbitration - txArbitrations", txArbitrations);
+    log("handleCreateArbitration - txArbitrations", txArbitrations);
   }
 
   yield put({ type: CONTRACT_SAVING, payload: false });
   yield put({ type: CONTRACT_UPDATING, payload: false });
 }
+
+
 
 export function* handleEvents(args) {
   log("handleEvents", "run");
@@ -578,22 +588,24 @@ export function* pay(address, amount) {
       value: web3.utils.toWei(amount.toString(), "ether")
     });
 
-    yield web3.eth.sendSignedTransaction(
-      {
-        from: wallet,
-        to: address,
-        value: web3.utils.toWei(amount.toString(), "ether")
-      },
-      function(error, result) {
-        if (error) {
-          log("pay - error", error);
-          return false;
-        } else {
-          log("pay - result", result);
-          return true;
-        }
-      }
-    );
+    yield sendToContract();
+
+    // yield web3.eth.sendSignedTransaction(
+    //   {
+    //     from: wallet,
+    //     to: address,
+    //     value: web3.utils.toWei(amount.toString(), "ether")
+    //   },
+    //   function(error, result) {
+    //     if (error) {
+    //       log("pay - error", error);
+    //       return false;
+    //     } else {
+    //       log("pay - result", result);
+    //       return true;
+    //     }
+    //   }
+    // );
 
     return false;
   }
@@ -637,10 +649,32 @@ export function* handlePayArbitration(args) {
   }
 }
 
+export function* handleApproveJurToken({amount}) {
+  log('handleApproveJurToken');
+  const wallet = yield select(getWallet);
+  yield sendToContract("JURToken", "approve", [wallet.address, amount])
+}
+
+export function* handleSendToCounterparty() {
+  yield put({ type: CHAIN_CREATE_ARBITRATION });
+  // const wallet = yield select(getWallet);
+  // const contractData = yield select(getCurrentContract);
+  // const [partA, partB] = contractData.counterparties;
+  // const fd = calculateFundingAndDispersal(contractData);
+  // let amount = 0;
+  // if (wallet.address === partA.address)
+  //   amount = fd.fundings.a;
+  // else
+  //   amount = fd.fundings.b;
+  // yield put({ type: CHAIN_APPROVE_JURTOKEN, amount});
+}
+
 // spawn tasks base certain actions
 export default function* arbitrationSagas() {
   log("run", "arbitrationSagas");
-  yield takeEvery(NEW_ARBITRATION, handleNewArbitration);
+  yield takeEvery(SEND_TO_COUNTERPARTY, handleSendToCounterparty);
+  yield takeEvery(CHAIN_CREATE_ARBITRATION, handleCreateArbitration);
+  yield takeEvery(CHAIN_APPROVE_JURTOKEN, handleApproveJurToken);
   yield takeEvery(
     ACCEPT_ARBITRATION_AMENDMENT,
     handleAcceptArbitrationAmendment
@@ -649,9 +683,9 @@ export default function* arbitrationSagas() {
   yield takeEvery(REJECT_ARBITRATION, handleRejectArbitration);
   yield takeEvery(SUCCESS_ARBITRATION, handleSuccessArbitration);
   yield takeEvery(PAY_ARBITRATION, handlePayArbitration);
-  yield takeEvery(SEND_TO_COUNTERPARTY, handleNewArbitration);
   yield takeEvery(EVENT_FIRED, handleEvents);
   yield takeEvery(SET_BALANCE, fetchArbitrations);
   yield takeEvery(CHAIN_GET_CONTRACT, chainGetContract);
   yield takeEvery(CONTRACT_INITIALIZED, handleContractInitialized);
+
 }

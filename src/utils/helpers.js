@@ -147,3 +147,76 @@ export const ellipsisString = (str, count, length) => {
 };
 
 export const arrayColumn = (arr, n) => {arr.map(x => x[n]);};
+
+/**
+ *
+ * @param {*} contractData
+ * @param {*} wallet -  if specified check is performed against the provided value for wallet
+ *                      instead of whoPays
+ */
+export const calculateFundingAndDispersal = (contractData) => {
+  const { id, partAPenaltyFee, partBPenaltyFee, whoPays, value } = contractData;
+  const [partA, partB] = contractData.counterparties;
+
+  let fundings = {
+    a: Number(
+      humanToEth(ethToStore(ethToHuman(Number(humanToEth(partAPenaltyFee)))))
+    ),
+    b: Number(
+      humanToEth(ethToStore(ethToHuman(Number(humanToEth(partBPenaltyFee)))))
+    )
+  };
+  let dispersal = {
+    a: Number(
+      humanToEth(ethToStore(ethToHuman(Number(humanToEth(partAPenaltyFee)))))
+    ),
+    b: Number(
+      humanToEth(ethToStore(ethToHuman(Number(humanToEth(partBPenaltyFee)))))
+    )
+  };
+
+  if (whoPays === partA.wallet) {
+    fundings.a = Number(
+      humanToEth(
+        ethToStore(
+          ethToHuman(
+            Number(humanToEth(partAPenaltyFee)) + Number(humanToEth(value))
+          )
+        )
+      )
+    );
+    dispersal.b = Number(
+      humanToEth(
+        ethToStore(
+          ethToHuman(
+            Number(humanToEth(partBPenaltyFee)) + Number(humanToEth(value))
+          )
+        )
+      )
+    );
+  } else {
+    fundings.b = Number(
+      humanToEth(
+        ethToStore(
+          ethToHuman(
+            Number(humanToEth(partBPenaltyFee)) + Number(humanToEth(value))
+          )
+        )
+      )
+    );
+    dispersal.a = Number(
+      humanToEth(
+        ethToStore(
+          ethToHuman(
+            Number(humanToEth(partAPenaltyFee)) + Number(humanToEth(value))
+          )
+        )
+      )
+    );
+  }
+
+  return {
+    fundings: fundings,
+    dispersal: dispersal
+  }
+}

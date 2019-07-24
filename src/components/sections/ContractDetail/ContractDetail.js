@@ -280,7 +280,7 @@ export const ContractDetail = ( props ) => {
     console.log("onSend", "run");
 
     global.drizzle.store.dispatch({
-      type: NEW_ARBITRATION
+      type: SEND_TO_COUNTERPARTY
     });
   };
 
