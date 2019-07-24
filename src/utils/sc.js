@@ -170,7 +170,7 @@ export function* sendToContract(
           success(tx);
         } // handle success if present
       } else {
-        yield (tx = abi(...payload).send({ from: wallet.address }));
+        tx = yield abi(...payload).send({ from: wallet.address });
 
         log(`sendToContract – ${contract}[${method}].send() - then result`, tx);
 
