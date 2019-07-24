@@ -52,9 +52,6 @@ export function* callToContract(
   if (drizzleStatus.initialized && global.drizzle) {
     const { contracts } = global.drizzle;
 
-    yield put({ type: CONTRACT_SAVING, payload: true });
-    yield put({ type: CONTRACT_UPDATING, payload: true });
-
     log("callToContract - payload", payload);
 
     try {
@@ -117,9 +114,6 @@ export function* callToContract(
         fail(e);
       } // handle fail if present
     }
-
-    yield put({ type: CONTRACT_SAVING, payload: false });
-    yield put({ type: CONTRACT_UPDATING, payload: false });
   }
 }
 
@@ -139,9 +133,6 @@ export function* sendToContract(
   log("sendToContract - drizzleStatus", drizzleStatus);
   if (drizzleStatus.initialized && global.drizzle) {
     const { contracts } = global.drizzle;
-
-    yield put({ type: CONTRACT_SAVING, payload: true });
-    yield put({ type: CONTRACT_UPDATING, payload: true });
 
     log("sendToContract - contracts", contracts);
     log("sendToContract - contracts[contract]", contracts[contract]);
@@ -187,9 +178,6 @@ export function* sendToContract(
         fail(e);
       } // handle fail if present
     }
-
-    yield put({ type: CONTRACT_SAVING, payload: false });
-    yield put({ type: CONTRACT_UPDATING, payload: false });
   }
 }
 
