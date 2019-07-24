@@ -66,7 +66,7 @@ trait ActivitiesTrait
 
         if ($contract->status->code == 1) {
             $labelText = __("messages.labels.{$indexKey[0]}.label_name", [
-                'part' => $contract->part_b_name ?: $contract->part_a_wallet
+                'part' => $contract->part_b_name
             ]);
         } elseif ($contract->status->code == 2) {
             $labelText = __("messages.labels.{$indexKey[0]}.label_name", [
