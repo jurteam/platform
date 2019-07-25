@@ -6,6 +6,35 @@ trait StatusesTrait
 {
     use StatusesNotifable;
 
+    /**
+     * Get wallet from last user that had
+     * change the contract status.
+     *
+     * @return string
+     */
+    public function getLastStatusFrom()
+    {
+        $activity = $this->activities->last();
+
+        return $activity->wallet;
+    }
+
+    /**
+     *
+     * @return null|string
+     */
+    public function getLastStatusPart()
+    {
+        $wallet = $this->getLastStatusFrom();
+
+        if ($wallet == $this->part_a_wallet) {
+            return config('jur.part_a_label');
+        } elseif ($wallet == $this->part_b_wallet) {
+            return config('jur.part_b_label');
+        }
+        return null;
+    }
+
     public function getChainUpdatedAtFromRequest($params)
     {
         if ($params->has('chain_updated_at')) {
