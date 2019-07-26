@@ -15,6 +15,7 @@ const options = {
   contracts: [JURToken, ArbitrationFactory],
   events: {
     ArbitrationFactory: ["ArbitrationCreated"],
+    JURToken: ["Approval"],
   },
   // polls: {
   //   accounts: 1500

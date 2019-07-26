@@ -151,17 +151,33 @@ export function* sendToContract(
     try {
       let tx;
       const abi = contracts[contract].methods[method];
-      if (cache) {
-        tx = yield abi.cacheSend(...payload);
+    //   if (cache) {
+    //     try {
+    //         log("sendToContract – abi", abi);
+    //         log("sendToContract – abi.cacheSend", abi.cacheSend);
+    //         tx = yield abi.cacheSend(...payload);
 
-        log(`sendToContract – ${contract}[${method}] - tx`, tx);
+    //         log(`sendToContract – ${contract}[${method}] - tx`, tx);
 
-        // TODO: handle with actions
-        if (typeof success === "function") {
-          success(tx);
-        } // handle success if present
-      } else {
-        tx = yield abi(...payload).send({ from: wallet.address });
+    //         // TODO: handle with actions
+    //         if (typeof success === "function") {
+    //             return success(tx);
+    //         } // handle success if present
+    //     } catch (e) {
+    //         log(`sendToContract – ${contract}[${method}] - error`, e);
+
+    //         // TODO: handle with actions
+    //         if (typeof fail === "function") {
+    //             return fail(e);
+    //         } // handle fail if present
+    //     }
+    //   } else {
+
+        if (payload !== null) {
+            tx = yield abi(...payload).send({ from: wallet.address });
+        } else {
+            tx = yield abi().send({ from: wallet.address });
+        }
 
         log(`sendToContract – ${contract}[${method}].send() - then result`, tx);
 
@@ -169,7 +185,9 @@ export function* sendToContract(
         if (typeof success === "function") {
           success(tx);
         } // handle success if present
-      }
+
+        return tx
+    //   }
     } catch (e) {
       log(`sendToContract – ${contract}[${method}] - error`, e);
 
