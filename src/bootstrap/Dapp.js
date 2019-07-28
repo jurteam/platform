@@ -1,5 +1,5 @@
 import { log } from "../utils/helpers"; // helpers
-import MetaMask from "../hooks/MetaMask"; // MetaMask hook
+import Comet from "../hooks/Comet"; // Comet hook
 import API from "./Api"; // Axios
 
 // Actions types
@@ -11,16 +11,17 @@ let dappHeartbeat = null;
 export const init = () => {
   const { web3, store } = global.drizzle;
 
+  log("Dapp - global.drizzle", global.drizzle);
   log("Dapp - web3", web3);
   log("Dapp - web3.currentProvider", web3.currentProvider);
-  log("Dapp - web3.currentProvider._metamask", web3.currentProvider._metamask);
+  log("Dapp - web3.currentProvider._comet", web3.currentProvider._comet);
 
   // provider change handler
-  if (web3.currentProvider._metamask) {
-    // MetaMask handler
-    MetaMask.setProvider(web3.currentProvider);
+  if (web3.currentProvider._comet) {
+    // Comet handler
+    Comet.setProvider(web3.currentProvider);
 
-    // only if current provider is hosted by MetaMask
+    // only if current provider is hosted by Comet
     web3.currentProvider.publicConfigStore.on("update", evm => {
       log("Dapp - evm", evm);
       store.dispatch({ type: NETWORK_UPDATE, payload: evm });
@@ -33,17 +34,17 @@ export const init = () => {
         store.dispatch({ type: HEARTBEAT });
         log("Dapp - Heartbeat", "run");
 
-        log("Dapp - MetaMask.isEnabled()", MetaMask.isEnabled());
+        log("Dapp - Comet.isEnabled()", Comet.isEnabled());
 
-        MetaMask.isApproved().then(isApproved => {
-          log("Dapp - MetaMask - isApproved?", isApproved);
+        Comet.isApproved().then(isApproved => {
+          log("Dapp - Comet - isApproved?", isApproved);
           if (!isApproved) {
             store.dispatch({ type: APP_SHOULD_RESET });
             clearInterval(dappHeartbeat);
           }
         });
-        MetaMask.isUnlocked().then(isUnlocked =>
-          log("Dapp - MetaMask - isUnlocked?", isUnlocked)
+        Comet.isUnlocked().then(isUnlocked =>
+          log("Dapp - Comet - isUnlocked?", isUnlocked)
         );
       }, process.env.REACT_APP_HEARTBEAT_DELAY);
     }

@@ -3,8 +3,8 @@ import React, { Component } from "react";
 import appReference from "../../package.json"; // config
 import i18n from "../assets/i18n/en/labels.json"; // i18n
 
-// MetaMask
-import MetaMask from "../hooks/MetaMask";
+// Comet
+import Comet from "../hooks/Comet";
 import { SET_LOADING, APP_EXIT } from "../reducers/types.js";
 
 // Application Context
@@ -24,7 +24,8 @@ class AppProvider extends Component {
       labels: i18n,
       closedCodes: [-1, 9, 29, 39],
       archivableCodes: [-1, 0, 9, 29, 39],
-      metamaskLoading: true,
+      cometLoading: true,
+      customProvider: null,
       notificationsTableHeaders: [
         {label: "", className: "jur-col--options", key: "status"},
         {label: i18n.date, sortable: true, className: "jur-col--duration", key: "date"},
@@ -73,35 +74,35 @@ class AppProvider extends Component {
     if (typeof window.web3 === "object") {
       this.auth();
     } else {
-      this.setState({ metamaskLoading: false });
+      this.setState({ cometLoading: false });
       this.store.dispatch({ type: SET_LOADING, payload: false });
     }
   }
 
   componentWillUnmount() {
-    MetaMask.cancel()
+    Comet.cancel()
   }
 
   auth() {
     this.store.dispatch({ type: SET_LOADING, payload: true });
-    this.setState({ metamaskLoading: true });
-    MetaMask.auth(
-      () => {
+    this.setState({ cometLoading: true });
+    Comet.auth(
+      (customProvider) => {
         // success
         console.log("AppProvider", "store should be updated");
-        this.setState({ onNetwork: true });
+        this.setState({ onNetwork: true, customProvider });
       },
       () => {
         // error
         console.log("AppProvider", "network connection error!");
-        this.setState({ metamaskLoading: false });
+        this.setState({ cometLoading: false });
         this.store.dispatch({ type: SET_LOADING, payload: false });
       }
     );
   }
 
   exit() {
-    const exitState = { onNetwork: false, metamaskLoading: false };
+    const exitState = { onNetwork: false, cometLoading: false };
     this.store.dispatch({ type: APP_EXIT, exitState });
     this.setState(exitState);
   }
