@@ -667,12 +667,12 @@ export function* handleWithdrawDispersalArbitration({contractAddress}) {
   }
 }
 
-export function* handleApproveJurToken({contractAddress, amount}) {
+export function* handleApproveJurToken({currentContractAddress, amount}) {
   log('handleApproveJurToken');
   const wallet = yield select(getWallet);
   // TODO: convert amount with 18 decimals
 
-  log('xxx', [contractAddress, amount]);
+  log('xxx', [currentContractAddress, amount]);
 
   const success = () => {
     log('handleApproveJurToken – success');
@@ -682,7 +682,7 @@ export function* handleApproveJurToken({contractAddress, amount}) {
     log('handleApproveJurToken – fail');
   }
 
-  yield sendToContract("JURToken", "approve", [contractAddress, amount], success, fail)
+  yield sendToContract("JURToken", "approve", [currentContractAddress, amount], success, fail)
 }
 
 export function* handleSendToCounterparty() {
