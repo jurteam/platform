@@ -16,6 +16,8 @@ import {
   CHAIN_WITHDRAW_DISPERSAL_ARBITRATION
 } from "../../../reducers/types";
 
+const currentContractAddress = "0x5b03aEF483d1f9FCb11fA297b9f60E575a0d45f8";
+
 export const ActionsBar = props => {
   const { wallet } = props;
   const { balance } = wallet;
@@ -33,6 +35,7 @@ export const ActionsBar = props => {
 
     global.drizzle.store.dispatch({
       type: CHAIN_APPROVE_JURTOKEN,
+      currentContractAddress,
       amount
     });
   };
@@ -48,7 +51,7 @@ export const ActionsBar = props => {
     console.log("signArbitration - call");
     global.drizzle.store.dispatch({
       type: CHAIN_SIGN_ARBITRATION,
-      contractAddress: "0xefFc163f346011cbFeb4BdD642B833D8B50dED1b"
+      contractAddress: currentContractAddress
     });
   };
 
@@ -56,7 +59,7 @@ export const ActionsBar = props => {
     console.log("agreeArbitration - call");
     global.drizzle.store.dispatch({
       type: CHAIN_AGREE_ARBITRATION,
-      contractAddress: "0xefFc163f346011cbFeb4BdD642B833D8B50dED1b"
+      contractAddress: currentContractAddress
     });
   };
 
@@ -64,7 +67,7 @@ export const ActionsBar = props => {
     console.log("withdrawFromArbitration - call");
     global.drizzle.store.dispatch({
       type: CHAIN_WITHDRAW_DISPERSAL_ARBITRATION,
-      contractAddress: "0xefFc163f346011cbFeb4BdD642B833D8B50dED1b"
+      contractAddress: currentContractAddress
     });
   };
 

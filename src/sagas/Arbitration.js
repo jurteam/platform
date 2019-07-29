@@ -119,67 +119,6 @@ export function* handleCreateArbitration(args) {
 
   log("handleCreateArbitration - agreementHash", agreementHash);
 
-  // TODO: move elsewhere
-  // --
-  /*
-  const { id, partAPenaltyFee, partBPenaltyFee, whoPays, value } = contractData;
-  let fundings = {
-    a: Number(
-      humanToEth(ethToStore(ethToHuman(Number(humanToEth(partAPenaltyFee)))))
-    ),
-    b: Number(
-      humanToEth(ethToStore(ethToHuman(Number(humanToEth(partBPenaltyFee)))))
-    )
-  };
-  let dispersal = {
-    a: Number(
-      humanToEth(ethToStore(ethToHuman(Number(humanToEth(partAPenaltyFee)))))
-    ),
-    b: Number(
-      humanToEth(ethToStore(ethToHuman(Number(humanToEth(partBPenaltyFee)))))
-    )
-  };
-
-  if (whoPays === partA.wallet) {
-    fundings.a = Number(
-      humanToEth(
-        ethToStore(
-          ethToHuman(
-            Number(humanToEth(partAPenaltyFee)) + Number(humanToEth(value))
-          )
-        )
-      )
-    );
-    dispersal.b = Number(
-      humanToEth(
-        ethToStore(
-          ethToHuman(
-            Number(humanToEth(partBPenaltyFee)) + Number(humanToEth(value))
-          )
-        )
-      )
-    );
-  } else {
-    fundings.b = Number(
-      humanToEth(
-        ethToStore(
-          ethToHuman(
-            Number(humanToEth(partBPenaltyFee)) + Number(humanToEth(value))
-          )
-        )
-      )
-    );
-    dispersal.a = Number(
-      humanToEth(
-        ethToStore(
-          ethToHuman(
-            Number(humanToEth(partAPenaltyFee)) + Number(humanToEth(value))
-          )
-        )
-      )
-    );
-  }
-  */
   const { id, partAPenaltyFee, partBPenaltyFee, whoPays, value } = contractData;
   const { fundings, dispersal} = calculateFundingAndDispersal(contractData);
 
@@ -195,10 +134,12 @@ export function* handleCreateArbitration(args) {
       utils.toChecksumAddress(partA.wallet),
       utils.toChecksumAddress(partB.wallet)
     ],
-    Object.values(fundings),
     Object.values(dispersal),
+    Object.values(fundings),
     agreementHash
   ];
+
+  log('contractPayload', contractPayload);
 
   let arbitrationAddress = null;
 
@@ -285,8 +226,6 @@ export function* handleCreateArbitration(args) {
   yield put({ type: CONTRACT_SAVING, payload: false });
   yield put({ type: CONTRACT_UPDATING, payload: false });
 }
-
-
 
 export function* handleEvents(args) {
   log("handleEvents", "run");
@@ -670,6 +609,7 @@ export function* handleSignArbitration({contractAddress}) {
     log('handleSignArbitration – fail');
   }
 
+  const wallet = yield select(getWallet);
   yield sendToContract(contractAddress, "sign", null, success, fail)
 }
 
@@ -727,10 +667,12 @@ export function* handleWithdrawDispersalArbitration({contractAddress}) {
   }
 }
 
-export function* handleApproveJurToken({amount}) {
+export function* handleApproveJurToken({contractAddress, amount}) {
   log('handleApproveJurToken');
   const wallet = yield select(getWallet);
   // TODO: convert amount with 18 decimals
+
+  log('xxx', [contractAddress, amount]);
 
   const success = () => {
     log('handleApproveJurToken – success');
@@ -740,7 +682,7 @@ export function* handleApproveJurToken({amount}) {
     log('handleApproveJurToken – fail');
   }
 
-  yield sendToContract("JURToken", "approve", [wallet.address, amount], success, fail)
+  yield sendToContract("JURToken", "approve", [contractAddress, amount], success, fail)
 }
 
 export function* handleSendToCounterparty() {
