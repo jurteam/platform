@@ -46,9 +46,7 @@ storiesOf("DisputeVote", module)
       statusId={35}
       counterparties={[
         {
-          wallet: {
-            address: "0x9h8563948567364975369h34789537645"
-          },
+          wallet: "0x9h8563948567364975369h34789537645",
           name: "Alice",
           shouldRenderName: true,
           percentage: 31.4,
@@ -56,9 +54,7 @@ storiesOf("DisputeVote", module)
           winner: false
         },
         {
-          wallet: {
-            address: "0xo38765374573497694756473v6936953"
-          },
+          wallet: "0xo38765374573497694756473v6936953",
           name: "Bob",
           shouldRenderName: false,
           percentage: 40.4,
@@ -78,9 +74,7 @@ storiesOf("DisputeVote", module)
       currentUserWallet="0xo38765374573497694756473v6936953"
       counterparties={[
         {
-          wallet: {
-            address: "0x9h8563948567364975369h34789537645"
-          },
+          wallet: "0x9h8563948567364975369h34789537645",
           name: "Alice",
           shouldRenderName: true,
           percentage: 31.4,
@@ -88,9 +82,7 @@ storiesOf("DisputeVote", module)
           winner: false
         },
         {
-          wallet: {
-            address: "0xo38765374573497694756473v6936953"
-          },
+          wallet: "0xo38765374573497694756473v6936953",
           name: "Bob",
           shouldRenderName: false,
           percentage: 40.4,
@@ -111,9 +103,7 @@ storiesOf("DisputeVote", module)
       currentUserWallet="0xo38765374573497694756473v6936953"
       counterparties={[
         {
-          wallet: {
-            address: "0x9h8563948567364975369h34789537645"
-          },
+          wallet: "0x9h8563948567364975369h34789537645",
           name: "Alice",
           shouldRenderName: true,
           percentage: 31.4,
@@ -121,9 +111,7 @@ storiesOf("DisputeVote", module)
           winner: true
         },
         {
-          wallet: {
-            address: "0xo38765374573497694756473v6936953"
-          },
+          wallet: "0xo38765374573497694756473v6936953",
           name: "Bob",
           shouldRenderName: false,
           percentage: 40.4,

@@ -14,5 +14,5 @@ storiesOf("ContractSelectCategory", module)
     }
   })
   .add("Default", () => (
-    <ContractSelectCategory onChange={(ev) => console.log(ev)} />
+    <ContractSelectCategory onChange={(ev) => console.log(ev)} hasError={() => null} />
   ));

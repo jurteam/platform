@@ -14,12 +14,20 @@ import { CreateContract } from "../PageExamples/CreateContract";
 import { SetContractDetails } from "../PageExamples/SetContractDetails";
 
 storiesOf("Layouts", module)
+.addDecorator(withInfo)
+  .addParameters({
+    user: {
+      wallet: "0x55fe02aeff02f77364de339a1292923a15844b8"
+    }
+  })
   .add("Profile page", () => <ProfileSettings />)
   .add("Profile privacy", () => <ProfilePrivacy />)
   .add("Profile notification", () => <ProfileNotification />)
   .add("Profile Faq", () => <ProfileFaq />)
   .add("Profile Terms", () => <ProfileTerms />)
   .add("Contract Empty", () => <ContractsEmpty />)
-  .add("Contract Full", () => <ContractsFull />)
+  .add("Contract Full", () => <ContractsFull user={{
+    wallet: "0x55fe02aeff02f77364de339a1292923a15844b8"
+  }} />)
   .add("Create Contract", () => <CreateContract />)
   .add("Set contracts details", () => <SetContractDetails />);

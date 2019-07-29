@@ -25,5 +25,6 @@ storiesOf("InsertContractDetails", module)
       uploadedFiles={[{ fileName: "Hello worldl.pdf" }]}
       onView={(e) => console.log("yo")}
       onDelete={(e) => console.log("yo")}
+      hasError={() => null}
     />
   ));

@@ -32,6 +32,10 @@ const data = [
       name: "file1.pdf",
     }],
     amount: 38974,
+    wallet_part: 'a',
+    attachments: {
+      data: []
+    },
     date: "2019-03-08T14:25:44.335Z"
   },
   {
@@ -52,6 +56,10 @@ const data = [
       { name: "file3.pdf" }
     ],
     amount: 38974,
+    wallet_part: 'a',
+    attachments: {
+      data: []
+    },
     date: "2019-03-08T14:25:44.335Z"
   },
   {
@@ -60,6 +68,10 @@ const data = [
     message: "Lorem Ipsum è un testo segnaposto utilizzato nel settore della tipografia e della stampa. Lorem Ipsum è considerato il testo segnaposto standard sin dal sedicesimo secolo, quando un anonimo tipografo prese una cassetta di caratteri e li assemblò per preparare un testo campione. È sopravvissuto non solo a più di cinque secoli, ma anche al passaggio alla videoimpaginazione, pervenendoci sostanzialmente inalterato.",
     evidences: [],
     amount: 38974,
+    wallet_part: 'b',
+    attachments: {
+      data: []
+    },
     date: "2019-03-10T11:25:44.335Z"
   },
   {
@@ -70,6 +82,10 @@ const data = [
       name: "file1.pdf",
     }],
     amount: 38974,
+    wallet_part: 'b',
+    attachments: {
+      data: []
+    },
     date: "2019-02-08T14:25:44.335Z"
   },
   {
@@ -80,6 +96,10 @@ const data = [
       name: "file1.pdf",
     }],
     amount: 38974,
+    wallet_part: 'a',
+    attachments: {
+      data: []
+    },
     date: "2019-01-08T14:25:44.335Z"
   }
 ];
