@@ -96,7 +96,7 @@ On first run you should download and setup Laravel packages and database. Just f
 
 Based on [.env.template](.env.template) create your local environment file and change `<api-base-url>` and `<provider>` constant in relation to your host.
 
-> A standard **.env.local** configuration can have `REACT_APP_API_BASE_URL=http://localhost/api/v1` and `REACT_APP_ETHEREUM_PROVIDER=http://localhost:8545`
+> A standard **.env.local** configuration can have `REACT_APP_API_BASE_URL=http://localhost/api/v1`
 
 ### 3. Smart Contract Build
 
