@@ -645,20 +645,14 @@ export function* handleAgreeArbitration({contractAddress}) {
   const contract = drizzleContracts[contractAddress];
   log(contract);
 
-  const {synced} = contract;
+  const { synced } = contract;
 
   const hasAgreedAddress = yield callToContract(contractAddress, "hasAgreed", wallet.address)
-  const hasAgreed = contract.hasAgreed.value;
+  const hasAgreed = typeof contract.hasAgreedAddress != 'undefined' ? contract.hasAgreedAddress.value : false;
 
   log('handleAgreeArbitration – hasAgreed', hasAgreedAddress, hasAgreed, synced);
 
-  if (synced && !hasAgreed){
-
-  } else
-    log('no agree, already agreed');
-
-  /*
-  if (hasAgreed === true) {
+  if (synced && !hasAgreed) {
     const success = () => {
       log('handleAgreeArbitration – success');
     }
@@ -668,18 +662,26 @@ export function* handleAgreeArbitration({contractAddress}) {
     }
 
     yield sendToContract(contractAddress, "agree", null, success, fail)
-  }
-  */
+  } else
+    log('no agree, already agreed');
 }
 
 export function* handleWithdrawDispersalArbitration({contractAddress}) {
   log('handleWithdrawDispersalArbitration');
   const wallet = yield select(getWallet);
 
-  const hasWithdrawn = yield callToContract(contractAddress, "hasWithdrawn", wallet.address)
+  const drizzleContracts = yield select(getDrizzleStoredContracts);
+  const contract = drizzleContracts[contractAddress];
+  log(contract);
+
+  const { synced } = contract;
+
+  const hasWithdrawnAddress = yield callToContract(contractAddress, "hasWithdrawn", wallet.address);
+  const hasWithdrawn = typeof contract.hasWithdrawnAddress != 'undefined' ? contract.hasWithdrawnAddress.value : false;
+
   log('handleWithdrawDispersalArbitration – hasWithdrawn', hasWithdrawn);
 
-  if (hasWithdrawn === true) {
+  if (synced && !hasWithdrawn) {
     const success = () => {
       log('handleWithdrawDispersalArbitration – success');
     }
@@ -688,7 +690,7 @@ export function* handleWithdrawDispersalArbitration({contractAddress}) {
       log('handleWithdrawDispersalArbitration – fail');
     }
 
-    yield sendToContract(contractAddress, "agree", null, success, fail)
+    yield sendToContract(contractAddress, "withdrawDispersal", null, success, fail)
   }
 }
 
