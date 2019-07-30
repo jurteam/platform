@@ -1,6 +1,5 @@
 // Contracts
 // please see "protocol/README.md" subtree for furter informations about contracts deployment
-import Arbitration from "../build/contracts/Arbitration.json";
 import ArbitrationFactory from "../build/contracts/ArbitrationFactory.json";
 import JURToken from "../build/contracts/JURToken.json";
 

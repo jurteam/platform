@@ -155,8 +155,12 @@ export const arrayColumn = (arr, n) => {arr.map(x => x[n]);};
  *                      instead of whoPays
  */
 export const calculateFundingAndDispersal = (contractData) => {
-  const { id, partAPenaltyFee, partBPenaltyFee, whoPays, value } = contractData;
-  const [partA, partB] = contractData.counterparties;
+  const { partAPenaltyFee, partBPenaltyFee, whoPays, value } = contractData;
+  const [ partA ] = contractData.counterparties;
+
+  const {
+    web3: { utils }
+  } = global.drizzle;
 
   let fundings = {
     a: Number(
@@ -215,8 +219,30 @@ export const calculateFundingAndDispersal = (contractData) => {
     );
   }
 
+  // Avoid presicion issues on BN
+  if (process.env.REACT_APP_VECHAIN_ENABLED === 'true')
+  { // Comet - VeChain Blockchain
+    fundings.a = fundings.a.toString();
+    fundings.b = fundings.b.toString();
+    dispersal.a = dispersal.a.toString();
+    dispersal.b = dispersal.b.toString();
+  }
+
   return {
     fundings: fundings,
     dispersal: dispersal
   }
+}
+
+export const formatAmount = (amount) => {
+
+  // TODO: WEI conversion
+
+  // Avoid presicion issues on BN
+  if (process.env.REACT_APP_VECHAIN_ENABLED === 'true')
+  { // Comet - VeChain Blockchain
+    amount = amount.toString()
+  }
+
+  return amount
 }
