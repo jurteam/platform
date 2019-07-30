@@ -47,58 +47,72 @@ export function* callToContract(
     cache = true;
   } // handle empty value
 
+  cache = false;
+
   const drizzleStatus = yield select(getDrizzleStatus);
   log("callToContract - drizzleStatus", drizzleStatus);
   if (drizzleStatus.initialized && global.drizzle) {
     const { contracts } = global.drizzle;
 
+    log("contracts", contracts);
     log("callToContract - payload", payload);
+
+    const wallet = yield select(getWallet);
 
     try {
       let tx;
       const abi = contracts[contract].methods[method];
-      if (cache) {
-        try {
-          tx = yield abi.cacheCall(payload);
+      if (payload !== null) {
+        tx = yield abi(...payload).call({ from: wallet.address });
+      } else {
+        tx = yield abi().call({ from: wallet.address });
+      }
+
+      log(`callToContract – ${contract}[${method}].call() - then result`, tx);
+
+      // TODO: handle with actions
+      if (typeof success === "function") {
+        success(tx);
+      } // handle success if present
+
+      return tx
+    } catch (e) {
+      log(`callToContract – ${contract}[${method}] - error`, e);
+
+      // TODO: handle with actions
+      if (typeof fail === "function") {
+        fail(e);
+      } // handle fail if present
+    }
+
+    /*
+    try {
+      let tx;
+      const abi = contracts[contract].methods[method];
+      tx = yield abi()
+        .call()
+        .then(result => {
+          log(
+            `callToContract – ${contract}[${method}].call() - then result`,
+            result
+          );
 
           // TODO: handle with actions
           if (typeof success === "function") {
-            success(tx);
+            success(result);
           } // handle success if present
-          return tx;
-        } catch (e) {
+        })
+        .catch(error => {
+          log(
+            `callToContract – ${contract}[${method}].call() - catch error`,
+            error
+          );
+
           // TODO: handle with actions
           if (typeof fail === "function") {
-            fail(e);
-          } // handle success if present
-          return false;
-        }
-      } else {
-        tx = yield abi(...payload)
-          .call()
-          .then(result => {
-            log(
-              `callToContract – ${contract}[${method}].call() - then result`,
-              result
-            );
-
-            // TODO: handle with actions
-            if (typeof success === "function") {
-              success(result);
-            } // handle success if present
-          })
-          .catch(error => {
-            log(
-              `callToContract – ${contract}[${method}].call() - catch error`,
-              error
-            );
-
-            // TODO: handle with actions
-            if (typeof fail === "function") {
-              fail(error);
-            } // handle fail if present
-          });
-      }
+            fail(error);
+          } // handle fail if present
+        });
 
       log(`callToContract – ${contract}[${method}] - tx`, tx);
 
