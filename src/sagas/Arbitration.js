@@ -631,9 +631,23 @@ export function* handleAgreeArbitration({contractAddress}) {
   log('handleAgreeArbitration');
   const wallet = yield select(getWallet);
 
-  const hasAgreed = yield callToContract(contractAddress, "hasAgreed", wallet.address)
-  log('handleAgreeArbitration – hasAgreed', hasAgreed);
+  const drizzleContracts = yield select(getDrizzleStoredContracts);
+  const contract = drizzleContracts[contractAddress];
+  log(contract);
 
+  const {synced} = contract;
+
+  const hasAgreedAddress = yield callToContract(contractAddress, "hasAgreed", wallet.address)
+  const hasAgreed = contract.hasAgreed.value;
+
+  log('handleAgreeArbitration – hasAgreed', hasAgreedAddress, hasAgreed, synced);
+
+  if (synced && !hasAgreed){
+
+  } else
+    log('no agree, already agreed');
+
+  /*
   if (hasAgreed === true) {
     const success = () => {
       log('handleAgreeArbitration – success');
@@ -645,6 +659,7 @@ export function* handleAgreeArbitration({contractAddress}) {
 
     yield sendToContract(contractAddress, "agree", null, success, fail)
   }
+  */
 }
 
 export function* handleWithdrawDispersalArbitration({contractAddress}) {

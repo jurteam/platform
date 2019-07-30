@@ -4,7 +4,8 @@ import { ActionsBar } from "./ActionsBar";
 
 const mapStateToProps = (state) => {
   return {
-    wallet: state.wallet
+    wallet: state.wallet,
+    contract: state.contract.current
   };
 };
 

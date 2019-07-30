@@ -16,11 +16,11 @@ import {
   CHAIN_WITHDRAW_DISPERSAL_ARBITRATION
 } from "../../../reducers/types";
 
-const currentContractAddress = "0x5b03aEF483d1f9FCb11fA297b9f60E575a0d45f8";
-
 export const ActionsBar = props => {
-  const { wallet } = props;
+  const { wallet, contract } = props;
   const { balance } = wallet;
+
+  const { address: currentContractAddress } = contract;
 
   const createArbitration = () => {
     console.log("createArbitration - call");
