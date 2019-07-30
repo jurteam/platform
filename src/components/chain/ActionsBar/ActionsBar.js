@@ -13,7 +13,8 @@ import {
   CHAIN_SIGN_ARBITRATION,
   REJECT_ARBITRATION,
   CHAIN_AGREE_ARBITRATION,
-  CHAIN_WITHDRAW_DISPERSAL_ARBITRATION
+  CHAIN_WITHDRAW_DISPERSAL_ARBITRATION,
+  CHAIN_APPROVE_AND_CALL_ARBITRATION
 } from "../../../reducers/types";
 
 export const ActionsBar = props => {
@@ -71,6 +72,14 @@ export const ActionsBar = props => {
     });
   };
 
+  const dispute = () => {
+    console.log("approveAndDispute - call");
+    global.drizzle.store.dispatch({
+      type: CHAIN_APPROVE_AND_CALL_ARBITRATION,
+      contractAddress: currentContractAddress
+    });
+  }
+
   return (
     <>
       <div className="jur--actions--container">
@@ -90,6 +99,7 @@ export const ActionsBar = props => {
           <button onClick={withdrawFromArbitration}>5. withdrawDispersal() [arbitration]</button>
         </div>
       </div>
+
       <div className="jur--actions--container">
         <h5>Actions Bar – Dispute Contract</h5>
         <div className="jur--actions--inner-container">
@@ -100,8 +110,8 @@ export const ActionsBar = props => {
           <button onClick={signArbitration}>
             3. sign() – pay [arbitration]
           </button>
-          <button onClick={approveToken}>4.1 approve() [JURToken] + 1%</button>
-          <button>4.2 dispute() [arbitration]</button>
+          <button onClick={approveToken} disabled>4.1 approve() [JURToken] + 1%</button>
+          <button onClick={dispute}>4.2 dispute() [arbitration]</button>
           <button>5. amendDisputeDispersal() – other part [arbitration]</button>
           <button onClick={approveToken}>6.1 approve() [JURToken]</button>
           <button>

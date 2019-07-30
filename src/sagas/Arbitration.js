@@ -31,7 +31,8 @@ import {
   CHAIN_APPROVE_JURTOKEN,
   CHAIN_SIGN_ARBITRATION,
   CHAIN_AGREE_ARBITRATION,
-  CHAIN_WITHDRAW_DISPERSAL_ARBITRATION
+  CHAIN_WITHDRAW_DISPERSAL_ARBITRATION,
+  CHAIN_APPROVE_AND_CALL_ARBITRATION
 } from "../reducers/types";
 
 // Api layouts
@@ -728,6 +729,23 @@ export function* handleSendToCounterparty() {
   // yield put({ type: CHAIN_APPROVE_JURTOKEN, amount});
 }
 
+export function* handleApproveAndCallArbitration({ contractAddress }) {
+  const drizzleContracts = yield select(getDrizzleStoredContracts);
+  const contract = drizzleContracts[contractAddress];
+
+  log('c', contractAddress);
+
+  const success = (data) => {
+    log('balanceOf success', data, contractAddress);
+  }
+
+  const fail = (data) => {
+    log('balanceOf fail', data, contractAddress);
+  }
+
+  const x = yield callToContract("JURToken", "balanceOf", [contractAddress], success, fail);
+}
+
 // spawn tasks base certain actions
 export default function* arbitrationSagas() {
   log("run", "arbitrationSagas");
@@ -737,6 +755,7 @@ export default function* arbitrationSagas() {
   yield takeEvery(CHAIN_SIGN_ARBITRATION, handleSignArbitration);
   yield takeEvery(CHAIN_AGREE_ARBITRATION, handleAgreeArbitration);
   yield takeEvery(CHAIN_WITHDRAW_DISPERSAL_ARBITRATION, handleWithdrawDispersalArbitration);
+  yield takeEvery(CHAIN_APPROVE_AND_CALL_ARBITRATION, handleApproveAndCallArbitration);
   yield takeEvery(
     ACCEPT_ARBITRATION_AMENDMENT,
     handleAcceptArbitrationAmendment
