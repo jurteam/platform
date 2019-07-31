@@ -34,9 +34,9 @@ const Unlock = () => {
     <MetaMaskWrapper>
       <UserAction>
         <UserActionHeader variant="error">
-          {labels.metamaskRequired}
+          {labels.cometRequired}
         </UserActionHeader>
-        <UserActionBody dangerouslySetInnerHTML={{__html:labels.metamaskRequiredDesc}}/>
+        <UserActionBody dangerouslySetInnerHTML={{__html:labels.cometRequiredDesc}}/>
         <UserActionFooter>
           {shouldUnlock && (
             <Button
@@ -46,12 +46,12 @@ const Unlock = () => {
               size="big"
               variant="contained"
             >
-              {labels.unlockMetamask}
+              {labels.unlockComet}
             </Button>
           )}
           <Button
             onClick={() => {
-              window.open("https://metamask.io");
+              window.open(labels.cometUrl);
             }}
             size="big"
           >
