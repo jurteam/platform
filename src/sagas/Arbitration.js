@@ -16,6 +16,7 @@ import {
   API_CATCH,
   NEW_ARBITRATION,
   PAY_ARBITRATION,
+  DISPUTE_ARBITRATION,
   SUCCESS_ARBITRATION,
   ACCEPT_ARBITRATION,
   REJECT_ARBITRATION,
@@ -32,7 +33,8 @@ import {
   CHAIN_SIGN_ARBITRATION,
   CHAIN_AGREE_ARBITRATION,
   CHAIN_WITHDRAW_DISPERSAL_ARBITRATION,
-  CHAIN_APPROVE_AND_CALL_ARBITRATION
+  CHAIN_DISPUTE_ARBITRATION,
+  CHAIN_VOTE_ARBITRATION
 } from "../reducers/types";
 
 // Api layouts
@@ -51,7 +53,6 @@ import {
   humanToEth,
   ethToHuman,
   ethToStore,
-  formatAmount,
   calculateFundingAndDispersal
 } from "../utils/helpers"; // log helper
 
@@ -117,7 +118,8 @@ export function* handleCreateArbitration(args) {
     kpi: contractData.kpi,
     resolutionProof: contractData.resolutionProof
   };
-  const agreementHash = yield callToContract("ArbitrationFactory", "generateHash", JSON.stringify(agreement))
+
+  const agreementHash = yield callToContract("ArbitrationFactory", "generateHash", [JSON.stringify(agreement)])
 
   log("handleCreateArbitration - agreementHash", agreementHash);
 
@@ -128,7 +130,6 @@ export function* handleCreateArbitration(args) {
     fundings,
     dispersal
   });
-  // --
 
   // createArbitration([party1, party2], [0, 150], [50, 100], "Do some work...")
   const contractPayload = [
@@ -153,19 +154,10 @@ export function* handleCreateArbitration(args) {
     result => {
       log("[promise] handleCreateArbitration - arbitration tx result", result);
 
-      if (process.env.REACT_APP_VECHAIN_ENABLED === 'true')
-      { // Comet - VeChain Blockchain
-        const { address } = result.outputs[0].events[0]; // get arbitration address
-        log("handleCreateArbitration - arbitration address", address);
-        arbitrationAddress = address;
-      }
-      else
-      { // Metamask - Ethereum Blockchain
-        const { _arbitration } = result.events.ArbitrationCreated.returnValues; // get arbitration address
-        log("handleCreateArbitration - arbitration address", _arbitration);
-        arbitrationAddress = _arbitration;
-      }
+      const { _arbitration } = result.events.ArbitrationCreated.returnValues; // get arbitration address
+      log("handleCreateArbitration - arbitration address", _arbitration);
 
+      arbitrationAddress = _arbitration;
     },
     error => {
       log("handleCreateArbitration - arbitration tx error", error);
@@ -334,7 +326,23 @@ export function* handleAcceptArbitrationAmendment(args) {
   }
 }
 
-export function* handleAcceptArbitration(args) {
+export function* handleAcceptArbitration({contractAddress, amount}) {
+  const signJURFunction = {
+    name: 'sign',
+    type: 'function',
+    inputs: []
+  };
+  const data = global.drizzle.web3.eth.abi.encodeFunctionSignature(signJURFunction);
+
+  const payload = [contractAddress, amount, data];
+
+  log(payload);
+
+  const r = yield sendToContract('JURToken', 'approveAndCall', payload);
+
+
+  /*
+
   log("handleAcceptArbitration - run", args);
   const { id, address, value } = args;
 
@@ -412,6 +420,7 @@ export function* handleAcceptArbitration(args) {
       log("handleAcceptArbitration - error", error);
     }
   }
+  */
 }
 
 export function* handleRejectArbitration(args) {
@@ -610,14 +619,14 @@ export function* handlePayArbitration(args) {
 }
 
 export function* handleSignArbitration({contractAddress}) {
-  log('handleSignArbitration');
+  log('handleSignArbitration on', contractAddress);
 
-  const success = () => {
-    log('handleSignArbitration – success');
+  const success = (data) => {
+    log('handleSignArbitration – success', data);
   }
 
-  const fail = () => {
-    log('handleSignArbitration – fail');
+  const fail = (data) => {
+    log('handleSignArbitration – fail', data);
   }
 
   const wallet = yield select(getWallet);
@@ -695,24 +704,26 @@ export function* handleWithdrawDispersalArbitration({contractAddress}) {
   }
 }
 
-export function* handleApproveJurToken({currentContractAddress, amount}) {
+export function* handleApproveJurToken({contractAddress, amount, success, fail}) {
   log('handleApproveJurToken');
   const wallet = yield select(getWallet);
   // TODO: convert amount with 18 decimals
 
-  amount = formatAmount(amount); // Avoid presicion issues on BN
+  log('xxx', [contractAddress, amount]);
 
-  log('xxx', [currentContractAddress, amount]);
-
-  const success = () => {
+  const onSuccess = () => {
     log('handleApproveJurToken – success');
+    if (success && typeof success === 'function')
+      success();
   }
 
-  const fail = () => {
+  const onFail = () => {
     log('handleApproveJurToken – fail');
+    if (fail && typeof fail === 'function')
+      fail();
   }
 
-  yield sendToContract("JURToken", "approve", [currentContractAddress, amount], success, fail)
+  return yield sendToContract("JURToken", "approve", [contractAddress, amount], onSuccess, onFail)
 }
 
 export function* handleSendToCounterparty() {
@@ -729,41 +740,94 @@ export function* handleSendToCounterparty() {
   // yield put({ type: CHAIN_APPROVE_JURTOKEN, amount});
 }
 
-export function* handleApproveAndCallArbitration({ contractAddress }) {
+export function* handleDisputeArbitration({ contractAddress }) {
   const drizzleContracts = yield select(getDrizzleStoredContracts);
   const contract = drizzleContracts[contractAddress];
 
-  log('c', contractAddress);
+  // get contract balance
+  const balance = yield callToContract("JURToken", "balanceOf", [contractAddress], () => { }, () => { });
+  const amount = parseInt(balance) * 0.1;
+  log('amount for dispute', balance, amount);
+  // amount = Number(humanToEth(amount));
 
-  const success = (data) => {
-    log('balanceOf success', data, contractAddress);
+  const success = () => {
+    log('CHAIN_APPROVE_JURTOKEN succedeed');
+    global.drizzle.store.dispatch({
+      type: CHAIN_DISPUTE_ARBITRATION,
+      contractAddress,
+      amount,
+      success: ()=>{
+        log('dispute success');
+      },
+      fail: ()=>{
+        log('dispute fail');
+      }
+    });
   }
 
-  const fail = (data) => {
-    log('balanceOf fail', data, contractAddress);
+  const fail = () => {
+    log('CHAIN_APPROVE_JURTOKEN failed');
   }
 
-  const x = yield callToContract("JURToken", "balanceOf", [contractAddress], success, fail);
+  yield put({ type: CHAIN_APPROVE_JURTOKEN,
+    contractAddress,
+    amount,
+    success,
+    fail
+  });
+}
+
+export function* handleChainDisputeArbitration({contractAddress, amount, success, fail}) {
+  log('CHAIN_DISPUTE_ARBITRATION on', contractAddress);
+
+  const onSuccess = () => {
+    log('handleChainDisputeArbitration – success');
+    if (success && typeof success === 'function')
+      success();
+  }
+
+  const onFail = () => {
+    log('handleChainDisputeArbitration – fail');
+    if (fail && typeof fail === 'function')
+      fail();
+  }
+
+  return yield sendToContract(
+    contractAddress,
+    "dispute",
+    [amount, [10, 10]],
+    onSuccess,
+    onFail
+  )
+}
+
+export function* handleChainVoteArbitration({contractAddress}) {
+  log('CHAIN_VOTE_ARBITRATION');
 }
 
 // spawn tasks base certain actions
 export default function* arbitrationSagas() {
   log("run", "arbitrationSagas");
   yield takeEvery(SEND_TO_COUNTERPARTY, handleSendToCounterparty);
+  yield takeEvery(ACCEPT_ARBITRATION, handleAcceptArbitration);
+  yield takeEvery(REJECT_ARBITRATION, handleRejectArbitration);
+  yield takeEvery(SUCCESS_ARBITRATION, handleSuccessArbitration);
+  yield takeEvery(PAY_ARBITRATION, handlePayArbitration);
+  yield takeEvery(DISPUTE_ARBITRATION, handleDisputeArbitration);
+
   yield takeEvery(CHAIN_CREATE_ARBITRATION, handleCreateArbitration);
   yield takeEvery(CHAIN_APPROVE_JURTOKEN, handleApproveJurToken);
   yield takeEvery(CHAIN_SIGN_ARBITRATION, handleSignArbitration);
   yield takeEvery(CHAIN_AGREE_ARBITRATION, handleAgreeArbitration);
   yield takeEvery(CHAIN_WITHDRAW_DISPERSAL_ARBITRATION, handleWithdrawDispersalArbitration);
-  yield takeEvery(CHAIN_APPROVE_AND_CALL_ARBITRATION, handleApproveAndCallArbitration);
-  yield takeEvery(
-    ACCEPT_ARBITRATION_AMENDMENT,
-    handleAcceptArbitrationAmendment
-  );
-  yield takeEvery(ACCEPT_ARBITRATION, handleAcceptArbitration);
-  yield takeEvery(REJECT_ARBITRATION, handleRejectArbitration);
-  yield takeEvery(SUCCESS_ARBITRATION, handleSuccessArbitration);
-  yield takeEvery(PAY_ARBITRATION, handlePayArbitration);
+  yield takeEvery(CHAIN_DISPUTE_ARBITRATION, handleChainDisputeArbitration);
+  yield takeEvery(CHAIN_VOTE_ARBITRATION, handleChainVoteArbitration);
+
+  yield takeEvery(ACCEPT_ARBITRATION_AMENDMENT, handleAcceptArbitrationAmendment);
+  // yield takeEvery(ACCEPT_ARBITRATION, handleAcceptArbitration);
+  // yield takeEvery(REJECT_ARBITRATION, handleRejectArbitration);
+  // yield takeEvery(SUCCESS_ARBITRATION, handleSuccessArbitration);
+  // yield takeEvery(PAY_ARBITRATION, handlePayArbitration);
   yield takeEvery(EVENT_FIRED, handleEvents);
   yield takeEvery(SET_BALANCE, fetchArbitrations);
   yield takeEvery(CHAIN_GET_CONTRACT, chainGetContract);

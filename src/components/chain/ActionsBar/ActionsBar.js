@@ -14,7 +14,8 @@ import {
   REJECT_ARBITRATION,
   CHAIN_AGREE_ARBITRATION,
   CHAIN_WITHDRAW_DISPERSAL_ARBITRATION,
-  CHAIN_APPROVE_AND_CALL_ARBITRATION
+  DISPUTE_ARBITRATION,
+  ACCEPT_ARBITRATION
 } from "../../../reducers/types";
 
 export const ActionsBar = props => {
@@ -31,15 +32,29 @@ export const ActionsBar = props => {
   };
 
   const approveToken = (amount) => {
-    console.log("approveToken - call");
+    const contractAddress = currentContractAddress;
+
+    console.log("approveToken - call on contract", [contractAddress, currentContractAddress]);
     amount = amount * 1000000000000000000; // 18 decimals
 
     global.drizzle.store.dispatch({
       type: CHAIN_APPROVE_JURTOKEN,
-      currentContractAddress,
+      contractAddress,
       amount
     });
   };
+
+  const acceptArbitration = (amount) => {
+    console.log('acceptArbitration');
+    const contractAddress = currentContractAddress;
+    amount = amount * 1000000000000000000; // 18 decimals
+
+    global.drizzle.store.dispatch({
+      type: ACCEPT_ARBITRATION,
+      contractAddress,
+      amount
+    });
+  }
 
   const rejectArbitration = () => {
     console.log("rejectArbitration - call");
@@ -75,7 +90,7 @@ export const ActionsBar = props => {
   const dispute = () => {
     console.log("approveAndDispute - call");
     global.drizzle.store.dispatch({
-      type: CHAIN_APPROVE_AND_CALL_ARBITRATION,
+      type: DISPUTE_ARBITRATION,
       contractAddress: currentContractAddress
     });
   }
@@ -88,6 +103,7 @@ export const ActionsBar = props => {
           <button onClick={createArbitration}>
             1. createArbitration() + Get Contract [arbitration]
           </button>
+          <button style={{backgroundColor:'red', color:'white'}} onClick={()=>acceptArbitration(10)}>Accept</button>
           <button onClick={() => approveToken(10)}>2.1 approve() [JURToken]</button>
           <button onClick={rejectArbitration}>
             2.2 reject – approve(0) [JURToken]
