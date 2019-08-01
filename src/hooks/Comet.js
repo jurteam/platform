@@ -16,9 +16,9 @@ class CometProvider {
     console.log('Before init – this.web3 [before]', this.web3);
 
     // Checking if Thor has been injected by the browser
-    if (typeof this.thor !== 'undefined') {
+    if (typeof window.thor !== 'undefined') {
       // Use thor provider
-      this.web3 = new Web3(this.thor);
+      this.web3 = new Web3(window.thor);
       // Extend web3 to connect to VeChain Blockchain
       extend(this.web3)
     } else {
@@ -31,7 +31,7 @@ class CometProvider {
     console.log('Before init – this.web3 [after]', this.web3);
 
     if (window.web3) {
-      this.provider = window.web3.currentProvider;
+      this.setProvider(window.web3.currentProvider);
       log("CometProvider - constructor", this.provider);
     }
   }
@@ -45,24 +45,31 @@ class CometProvider {
   async auth(onSuccess, onError) {
     // const { enable } = this.provider;
     // eslint-disable-next-line no-undef
-    const { enable } = thor;
-    log("CometProvider", "enable()");
+    const { enable } = this.provider;
+    log("CometProvider", this.provider);
+    log("CometProvider", "launching enable()");
 
-    this.enableCall = await enable()
-      .then(res => {
-        log("CometProvider - enable then", res);
-        log("CometProvider - wallet address", res.pop());
-        if (typeof onSuccess === "function") {onSuccess(res);}
+    if (typeof enable !== 'undefined') {
 
-        return this.provider
-      })
-      .catch(err => {
-        log("CometProvider - enable catch", err);
-        if (typeof onError === "function") {onError(err);}
-        return err
-      }); // promise
+      this.enableCall = await enable()
+        .then(res => {
+          log("CometProvider - enable then", res);
+          log("CometProvider - wallet address", res.pop());
+          if (typeof onSuccess === "function") {onSuccess(res);}
 
-    return this.enableCall;
+          return this.provider
+        })
+        .catch(err => {
+          log("CometProvider - enable catch", err);
+          if (typeof onError === "function") {onError(err);}
+          return err
+        }); // promise
+
+      return this.enableCall;
+    }
+
+    if (typeof onError === "function") {onError([]);}
+    return false;
   }
 
   // enabled checker

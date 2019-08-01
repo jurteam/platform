@@ -16,11 +16,11 @@ const Unlock = () => {
   let shouldUnlock = false;
   if (typeof window.web3 === "object") {
     // TODO: check based on _metamask itself
-    //   const { currentProvider: { _metamask } } = window.web3
-    //   console.log('UnderAuth - _metamask.isEnabled()', _metamask.isEnabled());
-    //   console.log('UnderAuth - _metamask.isApproved()', _metamask.isApproved());
-    //   console.log('UnderAuth - _metamask.isUnlocked()', _metamask.isUnlocked());
-    shouldUnlock = true;
+    const { currentProvider: { _comet } } = window.web3
+    // console.log('UnderAuth - _metamask.isEnabled()', _metamask.isEnabled());
+    // console.log('UnderAuth - _metamask.isApproved()', _metamask.isApproved());
+    // console.log('UnderAuth - _metamask.isUnlocked()', _metamask.isUnlocked());
+    shouldUnlock = typeof _comet !== 'undefined';
   }
 
   const unlock = () => {
