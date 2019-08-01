@@ -14,7 +14,7 @@ class AddBalanceOnContractsTable extends Migration
     public function up()
     {
         Schema::table('contracts', function (Blueprint $table) {
-            $table->decimal('balance', 18, 18)->after('value')->default(0);
+            $table->decimal('balance', 36, 18)->after('value')->default(0);
         });
     }
 
