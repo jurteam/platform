@@ -9,6 +9,9 @@ return [
         'name' => env('JUR_MAIL_FROM_NAME', 'Example'),
     ],
 
+    'part_a_label' => 'a',
+    'part_b_label' => 'b',
+
     'statuses' => [
         [
             'label' => 'Rejected',
