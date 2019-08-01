@@ -29,6 +29,7 @@ class DisputeTransformer extends TransformerAbstract
             ],
             'category' => $contract->category,
             'value' => $contract->value,
+            'balance' => $contract->balance,
             'earnings' => $contract->getEarnings(),
             'oracle' => $contract->currentWalletIsAnOracle()
         ];

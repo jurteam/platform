@@ -59,6 +59,7 @@ class DisputeDetailTransformer extends TransformerAbstract
                 ]
             ],
             'value' => $contract->value,
+            'balance' => $contract->balance,
             'whoPays' => $contract->who_pays,
             'address' => $contract->address,
             'kpi' => $contract->kpi,
