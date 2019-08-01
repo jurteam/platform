@@ -21,6 +21,8 @@ class DisputeTransformer extends TransformerAbstract
             'statusId' => $contract->status ? $contract->status->code : null,
             'statusLabel' => $contract->status ? $contract->status->label : null,
             'statusUpdatedAt' => $contract->getCurrentStatusUpdatedAt(),
+            'statusFrom' => $contract->getLastStatusFrom(),
+            'statusPart' => $contract->getLastStatusPart(),
             'disputeName' => $this->getDisputeName($contract),
             'duration' => (object)[
                 'days' => $contract->duration_days,
