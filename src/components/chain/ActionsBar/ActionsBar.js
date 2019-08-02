@@ -88,13 +88,21 @@ export const ActionsBar = props => {
   };
 
   const dispute = () => {
-    console.log("approveAndDispute - call");
+    console.log("Dispute - call");
     global.drizzle.store.dispatch({
       type: DISPUTE_ARBITRATION,
       contractAddress: currentContractAddress
     });
   }
 
+  const disputeArbitration = (amount) => {
+    console.log("approveAndDispute - call");
+    global.drizzle.store.dispatch({
+      type: DISPUTE_ARBITRATION,
+      contractAddress: currentContractAddress,
+      amount: amount
+    });
+  }
   return (
     <>
       <div className="jur--actions--container">
@@ -126,8 +134,9 @@ export const ActionsBar = props => {
           <button onClick={signArbitration}>
             3. sign() – pay [arbitration]
           </button>
-          <button onClick={approveToken} disabled>4.1 approve() [JURToken] + 1%</button>
+          <button onClick={()=>approveToken(2)}>4.1 approve() [JURToken] + 1%</button>
           <button onClick={dispute}>4.2 dispute() [arbitration]</button>
+          <button style={{ backgroundColor: 'red', color: 'white' }} onClick={()=>disputeArbitration(2)}>4.2 dispute() [arbitration]</button>
           <button>5. amendDisputeDispersal() – other part [arbitration]</button>
           <button onClick={approveToken}>6.1 approve() [JURToken]</button>
           <button>

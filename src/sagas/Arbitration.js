@@ -757,45 +757,96 @@ export function* handleSendToCounterparty() {
   // yield put({ type: CHAIN_APPROVE_JURTOKEN, amount});
 }
 
-export function* handleDisputeArbitration({ contractAddress }) {
-  const drizzleContracts = yield select(getDrizzleStoredContracts);
-  const contract = drizzleContracts[contractAddress];
+export function* handleDisputeArbitration({ contractAddress, amount }) {
+  const trai = 2;
 
-  // get contract balance
-  const balance = yield callToContract("JURToken", "balanceOf", [contractAddress], () => { }, () => { });
-  const amount = parseInt(balance) * 0.1;
-  log('amount for dispute', balance, amount);
-  // amount = Number(humanToEth(amount));
+  if (trai == 1)
+  {
+    const wallet = yield select(getWallet);
 
-  const success = () => {
-    log('CHAIN_APPROVE_JURTOKEN succedeed');
-    global.drizzle.store.dispatch({
+    let disputeJURFunction = {
+      name: 'disputeJUR',
+      type: 'function',
+      inputs: [{
+        type: 'address',
+        name: '_sender'
+      }, {
+        type: 'uint256',
+        name: '_voteAmount'
+      }, {
+        type: 'uint256[]',
+        name: '_dispersal'
+      }]
+    };
+    amount = parseInt(amount+'000000000000000000');
+    const signPayload = [wallet.address, amount, [10000000000000000000, 10000000000000000000]];
+    log('signPayload', signPayload);
+    const data = global.drizzle.web3.eth.abi.encodeFunctionSignature(disputeJURFunction, signPayload);
+
+    const payload = [contractAddress, amount, data];
+
+    log('upayload', payload);
+
+    const r = yield sendToContract('JURToken', 'approveAndCall', payload);
+  }
+  else
+  {
+    const drizzleContracts = yield select(getDrizzleStoredContracts);
+    const contract = drizzleContracts[contractAddress];
+
+    // get contract balance
+    const balance = yield callToContract("JURToken", "balanceOf", [contractAddress], () => { }, () => { });
+    const amount = parseInt(balance) * 0.1;
+    console.log('amount for dispute', amount, 'balance', balance);
+    // amount = Number(humanToEth(amount));
+
+    alert('x');
+
+    yield put({
       type: CHAIN_DISPUTE_ARBITRATION,
       contractAddress,
       amount,
-      success: ()=>{
+      success: () => {
         log('dispute success');
       },
-      fail: ()=>{
+      fail: () => {
         log('dispute fail');
       }
     });
-  }
 
-  const fail = () => {
-    log('CHAIN_APPROVE_JURTOKEN failed');
-  }
+    /*
+    const success = () => {
+      log('CHAIN_APPROVE_JURTOKEN succedeed');
+      global.drizzle.store.dispatch({
+        type: CHAIN_DISPUTE_ARBITRATION,
+        contractAddress,
+        amount,
+        success: ()=>{
+          log('dispute success');
+        },
+        fail: ()=>{
+          log('dispute fail');
+        }
+      });
+    }
 
-  yield put({ type: CHAIN_APPROVE_JURTOKEN,
-    contractAddress,
-    amount,
-    success,
-    fail
-  });
+    const fail = () => {
+      log('CHAIN_APPROVE_JURTOKEN failed');
+    }
+
+    yield put({ type: CHAIN_APPROVE_JURTOKEN,
+      contractAddress,
+      amount,
+      success,
+      fail
+    });
+    */
+  }
 }
 
 export function* handleChainDisputeArbitration({contractAddress, amount, success, fail}) {
   log('CHAIN_DISPUTE_ARBITRATION on', contractAddress);
+  log('CHAIN_DISPUTE_ARBITRATION', {contractAddress, amount, success, fail});
 
   const onSuccess = () => {
     log('handleChainDisputeArbitration – success');
