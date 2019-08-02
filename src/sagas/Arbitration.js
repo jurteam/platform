@@ -232,8 +232,8 @@ export function* handleCreateArbitration(args) {
     yield put({ type: CHAIN_GET_CONTRACT, address: arbitrationAddress });
 
     // Read arbitrations
-    const txArbitrations = yield sendToContract("ArbitrationFactory", "arbirations", wallet.address);
-    log("handleCreateArbitration - txArbitrations", txArbitrations);
+    // const txArbitrations = yield callToContract("ArbitrationFactory", "arbirations", [wallet.address]);
+    // log("handleCreateArbitration - txArbitrations", txArbitrations);
   }
 
   yield put({ type: CONTRACT_SAVING, payload: false });
