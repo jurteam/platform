@@ -34,7 +34,8 @@ import {
   CHAIN_AGREE_ARBITRATION,
   CHAIN_WITHDRAW_DISPERSAL_ARBITRATION,
   CHAIN_DISPUTE_ARBITRATION,
-  CHAIN_VOTE_ARBITRATION
+  CHAIN_VOTE_ARBITRATION,
+  LOOKUP_WALLET_BALANCE
 } from "../reducers/types";
 
 // Api layouts
@@ -632,6 +633,9 @@ export function* handleSignArbitration({contractAddress}) {
 
   const success = (data) => {
     log('handleSignArbitration – success', data);
+    global.drizzle.store.dispatch({
+      type: LOOKUP_WALLET_BALANCE
+    })
   }
 
   const fail = (data) => {
@@ -647,6 +651,9 @@ export function* handleWithdrawDispersal({contractAddress}) {
 
   const success = () => {
     log('handleWithdrawDispersal – success');
+    global.drizzle.store.dispatch({
+      type: LOOKUP_WALLET_BALANCE
+    })
   }
 
   const fail = () => {

@@ -10,10 +10,12 @@ import {
   GOT_CONTRACT_VAR,
   SET_BALANCE,
   SET_WALLET_ADDRESS,
-  RESET_WALLET
+  RESET_WALLET,
+  LOOKUP_WALLET_BALANCE
 } from "../reducers/types";
 
 import { log } from "../utils/helpers"; // log helper
+import { callToContract, checkDrizzleInit } from "../utils/sc";
 
 // Reset
 export function* resetWallet() {
@@ -28,6 +30,27 @@ export function* setWalletAddress() {
   const { API } = global;
   API.defaults.headers.common['wallet'] = accounts[0].toLowerCase(); // update wallet in REST API request header
   yield put({ type: SET_WALLET_ADDRESS, payload: accounts[0] });
+}
+
+export function* handleLookupWalletBalance(args) {
+
+  // // Check if Drizzle is initialized
+  // const check = checkDrizzleInit();
+  // if (!check) { return false; }
+
+  log("handleLookupWalletBalance", "run");
+
+  const wallet = yield select(getWallet);
+
+  // it will sync automatically token balance using Drizzle fresh data
+  const jurTokenBalance = yield callToContract("JURToken", "balanceOf", [wallet.address]);
+
+  if (typeof jurTokenBalance !== 'undefined' && jurTokenBalance) {
+    yield put({
+      type: SET_BALANCE,
+      amount: jurTokenBalance
+    })
+  }
 }
 
 export function* getBalance(args) {
@@ -88,4 +111,5 @@ export default function* walletSagas() {
   yield takeEvery(DRIZZLE_INITIALIZED, setWalletAddress);
   yield takeEvery(SET_WALLET_ADDRESS, getBalance);
   yield takeEvery(GOT_CONTRACT_VAR, getBalance);
+  yield takeEvery(LOOKUP_WALLET_BALANCE, handleLookupWalletBalance);
 }
