@@ -53,6 +53,7 @@ import {
   humanToEth,
   ethToHuman,
   ethToStore,
+  formatAmount,
   calculateFundingAndDispersal
 } from "../utils/helpers"; // log helper
 
@@ -154,15 +155,23 @@ export function* handleCreateArbitration(args) {
     result => {
       log("[promise] handleCreateArbitration - arbitration tx result", result);
 
+      if (process.env.REACT_APP_VECHAIN_ENABLED === 'true')
+      { // Comet - VeChain Blockchain
+        const { address } = result.outputs[0].events[0]; // get arbitration address
+        log("handleCreateArbitration - arbitration address", address);
+        arbitrationAddress = address;
+      }
+      else
+      { // Metamask - Ethereum Blockchain
       const { _arbitration } = result.events.ArbitrationCreated.returnValues; // get arbitration address
       log("handleCreateArbitration - arbitration address", _arbitration);
+        arbitrationAddress = _arbitration;
+      }
 
-      arbitrationAddress = _arbitration;
     },
     error => {
       log("handleCreateArbitration - arbitration tx error", error);
-    },
-    false
+    }
   );
 
   log("handleCreateArbitration - arbitration tx", tx);
@@ -709,6 +718,7 @@ export function* handleApproveJurToken({contractAddress, amount, success, fail})
   const wallet = yield select(getWallet);
   // TODO: convert amount with 18 decimals
 
+  amount = formatAmount(amount); // Avoid presicion issues on BN
   log('xxx', [contractAddress, amount]);
 
   const onSuccess = () => {
