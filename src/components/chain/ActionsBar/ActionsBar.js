@@ -49,10 +49,12 @@ export const ActionsBar = props => {
     const contractAddress = currentContractAddress;
     amount = amount * 1000000000000000000; // 18 decimals
 
-    global.drizzle.store.dispatch({
+    const { dispatch } = global.drizzle.store
+    dispatch({
       type: ACCEPT_ARBITRATION,
       contractAddress,
-      amount
+      amount,
+      dispatch
     });
   }
 
@@ -73,6 +75,7 @@ export const ActionsBar = props => {
 
   const agreeArbitration = () => {
     console.log("agreeArbitration - call");
+
     global.drizzle.store.dispatch({
       type: CHAIN_AGREE_ARBITRATION,
       contractAddress: currentContractAddress

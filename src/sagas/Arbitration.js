@@ -336,20 +336,45 @@ export function* handleAcceptArbitrationAmendment(args) {
   }
 }
 
-export function* handleAcceptArbitration({contractAddress, amount}) {
+export function* handleAcceptArbitration({contractAddress, amount, dispatch}) {
+  // NOT WORKING
+  /*
   const signJURFunction = {
-    name: 'sign',
-    type: 'function',
-    inputs: []
+    "constant": false,
+    "inputs": [
+      {
+        "name": "_sender",
+        "type": "address"
+      }
+    ],
+    "name": "signJUR",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
   };
-  const data = global.drizzle.web3.eth.abi.encodeFunctionSignature(signJURFunction);
+
+  const wallet = yield select(getWallet);
+  const data = global.drizzle.web3.eth.abi.encodeFunctionSignature(signJURFunction, [wallet.address]);
+
+  amount = formatAmount(amount); // Avoid presicion issues on BN
 
   const payload = [contractAddress, amount, data];
 
-  log(payload);
+  log("handleAcceptArbitration – payload", payload);
 
   const r = yield sendToContract('JURToken', 'approveAndCall', payload);
 
+  log("handleAcceptArbitration – result", r);
+  */
+
+  // Check if Drizzle is initialized
+  const check = checkDrizzleInit();
+  if (!check) { return false; }
+
+  yield put({ type: CHAIN_APPROVE_JURTOKEN, contractAddress, amount, success: () => dispatch({ type: CHAIN_SIGN_ARBITRATION, contractAddress, amount, success: () => log('ACCEPTED!!') }) });
+
+  log('handleAcceptArbitration – last step?')
 
   /*
 
@@ -722,7 +747,6 @@ export function* handleWithdrawDispersalArbitration({contractAddress}) {
 
 export function* handleApproveJurToken({contractAddress, amount, success, fail}) {
   log('handleApproveJurToken');
-  const wallet = yield select(getWallet);
   // TODO: convert amount with 18 decimals
 
   amount = formatAmount(amount); // Avoid presicion issues on BN
