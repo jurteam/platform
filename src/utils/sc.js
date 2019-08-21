@@ -73,7 +73,7 @@ export function* callToContract(
 
       // TODO: handle with actions
       if (typeof success === "function") {
-        success(tx);
+        return success(tx);
       } // handle success if present
 
       return tx
@@ -82,8 +82,10 @@ export function* callToContract(
 
       // TODO: handle with actions
       if (typeof fail === "function") {
-        fail(e);
+        return fail(e);
       } // handle fail if present
+
+      return e;
     }
 
     /*
@@ -167,6 +169,7 @@ export function* sendToContract(
     try {
       let tx;
       const abi = contracts[contract].methods[method];
+
       if (payload !== null) {
           tx = yield abi(...payload).send({ from: wallet.address });
       } else {
@@ -177,7 +180,7 @@ export function* sendToContract(
 
       // TODO: handle with actions
       if (typeof success === "function") {
-        success(tx);
+        return success(tx);
       } // handle success if present
 
       return tx
@@ -186,8 +189,10 @@ export function* sendToContract(
 
       // TODO: handle with actions
       if (typeof fail === "function") {
-        fail(e);
+        return fail(e);
       } // handle fail if present
+
+      return e;
     }
   }
 }
