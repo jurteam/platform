@@ -6,7 +6,7 @@
     "axios": "^0.18.1",
     "connected-react-router": "^6.2.2",
     "dotenv": "^6.2.0",
-    "drizzle": "npm:drizzle-vechain@^1.4.0",
+    "drizzle": "npm:drizzle-vechain@^1.4.1",
     "drizzle-react": "^1.2.0",
     "drizzle-react-components": "^1.2.1",
     "history": "^4.7.2",
@@ -32,7 +32,7 @@
     "redux-saga": "^0.16.2",
     "redux-thunk": "^2.3.0",
     "thorify": "^1.2.0",
-    "truffle-contract": "^4.0.29",
+    "truffle-contract": "npm:truffle-contract-vechain@^0.9.5",
     "web3": "1.0.0-beta.37",
     "web3-eth-abi": "^1.2.0"
   },

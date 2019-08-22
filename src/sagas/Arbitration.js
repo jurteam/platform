@@ -39,7 +39,7 @@ import {
 } from "../reducers/types";
 
 // Api layouts
-import { Contracts } from "../api";
+import { Contracts, JURToken, Arbitration } from "../api";
 
 import {
   chainGetContract,
@@ -99,7 +99,9 @@ export function* handleCreateArbitration(args) {
 
   // Check if Drizzle is initialized
   const check = checkDrizzleInit();
-  if (!check) { return false; }
+  if (!check) {
+    return false;
+  }
 
   const {
     web3: { utils }
@@ -121,12 +123,16 @@ export function* handleCreateArbitration(args) {
     resolutionProof: contractData.resolutionProof
   };
 
-  const agreementHash = yield callToContract("ArbitrationFactory", "generateHash", [JSON.stringify(agreement)])
+  const agreementHash = yield callToContract(
+    "ArbitrationFactory",
+    "generateHash",
+    [JSON.stringify(agreement)]
+  );
 
   log("handleCreateArbitration - agreementHash", agreementHash);
 
   const { id, partAPenaltyFee, partBPenaltyFee, whoPays, value } = contractData;
-  const { fundings, dispersal} = calculateFundingAndDispersal(contractData);
+  const { fundings, dispersal } = calculateFundingAndDispersal(contractData);
 
   log("handleCreateArbitration - fundings + dispersal", {
     fundings,
@@ -144,7 +150,7 @@ export function* handleCreateArbitration(args) {
     agreementHash
   ];
 
-  log('contractPayload', contractPayload);
+  log("contractPayload", contractPayload);
 
   let arbitrationAddress = null;
 
@@ -156,19 +162,17 @@ export function* handleCreateArbitration(args) {
     result => {
       log("[promise] handleCreateArbitration - arbitration tx result", result);
 
-      if (process.env.REACT_APP_VECHAIN_ENABLED === 'true')
-      { // Comet - VeChain Blockchain
+      if (process.env.REACT_APP_VECHAIN_ENABLED === "true") {
+        // Comet - VeChain Blockchain
         const { address } = result.outputs[0].events[0]; // get arbitration address
         log("handleCreateArbitration - arbitration address", address);
         arbitrationAddress = address;
-      }
-      else
-      { // Metamask - Ethereum Blockchain
-      const { _arbitration } = result.events.ArbitrationCreated.returnValues; // get arbitration address
-      log("handleCreateArbitration - arbitration address", _arbitration);
+      } else {
+        // Metamask - Ethereum Blockchain
+        const { _arbitration } = result.events.ArbitrationCreated.returnValues; // get arbitration address
+        log("handleCreateArbitration - arbitration address", _arbitration);
         arbitrationAddress = _arbitration;
       }
-
     },
     error => {
       log("handleCreateArbitration - arbitration tx error", error);
@@ -179,7 +183,6 @@ export function* handleCreateArbitration(args) {
   log("handleCreateArbitration - arbitration address", arbitrationAddress);
 
   if (arbitrationAddress) {
-
     // Step .2 - JURToken
 
     // approve
@@ -336,126 +339,32 @@ export function* handleAcceptArbitrationAmendment(args) {
   }
 }
 
-export function* handleAcceptArbitration({contractAddress, amount, dispatch}) {
-  // NOT WORKING
-  /*
-  const signJURFunction = {
-    "constant": false,
-    "inputs": [
-      {
-        "name": "_sender",
-        "type": "address"
-      }
-    ],
-    "name": "signJUR",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  };
+export function* handleAcceptArbitration({
+  contractAddress,
+  amount,
+  dispatch
+}) {
+  console.log("handleAcceptArbitration");
 
-  const wallet = yield select(getWallet);
-  const data = global.drizzle.web3.eth.abi.encodeFunctionSignature(signJURFunction, [wallet.address]);
+  // step 1
+  const token = new JURToken();
+  console.log("handleAcceptArbitration - JURToken", token);
+  yield token
+    .approve(contractAddress, amount)
+    .then(res => {
+      console.log("handleAcceptArbitration – step 1 finished", res);
 
-  amount = formatAmount(amount); // Avoid presicion issues on BN
-
-  const payload = [contractAddress, amount, data];
-
-  log("handleAcceptArbitration – payload", payload);
-
-  const r = yield sendToContract('JURToken', 'approveAndCall', payload);
-
-  log("handleAcceptArbitration – result", r);
-  */
-
-  // Check if Drizzle is initialized
-  const check = checkDrizzleInit();
-  if (!check) { return false; }
-
-  yield put({ type: CHAIN_APPROVE_JURTOKEN, contractAddress, amount, success: () => dispatch({ type: CHAIN_SIGN_ARBITRATION, contractAddress, amount, success: () => log('ACCEPTED!!') }) });
-
-  log('handleAcceptArbitration – last step?')
-
-  /*
-
-  log("handleAcceptArbitration - run", args);
-  const { id, address, value } = args;
-
-  const drizzleStatus = yield select(getDrizzleStatus);
-  log("handleAcceptArbitration - drizzleStatus", drizzleStatus);
-  if (drizzleStatus.initialized && global.drizzle) {
-    const { contracts } = global.drizzle;
-    log(`handleAcceptArbitration - current contract`, contracts[address]);
-    log(`handleAcceptArbitration - JURToken contract`, contracts["JURToken"]);
-
-    const wallet = yield select(getWallet);
-
-    const drizzleContracts = yield select(getDrizzleStoredContracts);
-    log(
-      `handleAcceptArbitration - current drizzle contract`,
-      drizzleContracts[address]
-    );
-
-    const hasAgreed = Object.values(drizzleContracts[address].hasAgreed).pop();
-
-    log(`handleAcceptArbitration - current user has agreed?`, hasAgreed);
-
-    // approve
-    try {
-      const funding = Object.values(drizzleContracts[address].funding).pop();
-      log("handleAcceptArbitration - arbitration funding", funding.value);
-      log(
-        "handleAcceptArbitration - arbitration funding parsedInt",
-        parseInt(funding.value)
-      );
-      log(
-        "handleAcceptArbitration - arbitration funding converted",
-        Number(humanToEth(ethToStore(ethToHuman(Number(funding.value)))))
-      );
-      log("handleAcceptArbitration - arbitration value", humanToEth(value));
-
-      // sign
-      const sign = contracts[address].methods["sign"].cacheSend({
-        from: wallet.address
-      });
-      log("handleAcceptArbitration - arbitration signed?", sign);
-
-      const approve = contracts["JURToken"].methods["approve"];
-      const approved = yield call(
-        approve.cacheSend,
-        address,
-        funding.value || humanToEth(value)
-      );
-
-      log("handleAcceptArbitration - approved?", approved);
-
-      // Status update
-      let toUpdate = new FormData();
-      toUpdate.append("code", 2);
-
-      try {
-        const response = yield call(Contracts.statusChange, toUpdate, id);
-        log("handleAcceptArbitration - contract status updated", response);
-        const { statusId, statusLabel, statusUpdatedAt } = response.data.data;
-        yield put({
-          type: SET_CONTRACT_STATUS,
-          statusId,
-          statusLabel,
-          statusUpdatedAt,
-          id
-        });
-        yield put({ type: FETCH_CONTRACTS });
-
-        // const { history } = action;
-        // history.push(`/contracts/detail/${id}`); // go to contract detail for furter operations
-      } catch (error) {
-        yield put({ type: API_CATCH, error });
-      }
-    } catch (error) {
-      log("handleAcceptArbitration - error", error);
-    }
-  }
-  */
+      // step 2
+      const arbitration = new Arbitration(contractAddress);
+      console.log("handleAcceptArbitration - Arbitration", arbitration);
+      return arbitration
+        .sign()
+        .then(res => console.log("handleAcceptArbitration – accepted", res))
+        .catch(err =>
+          console.log("handleAcceptArbitration – step 2 error", err)
+        );
+    })
+    .catch(err => console.log("handleAcceptArbitration – step 1 error", err));
 }
 
 export function* handleRejectArbitration(args) {
@@ -463,10 +372,14 @@ export function* handleRejectArbitration(args) {
 
   // Check if Drizzle is initialized
   const check = checkDrizzleInit();
-  if (!check) { return false; }
+  if (!check) {
+    return false;
+  }
 
   const { id, address } = args;
-  if (!address) { return false; } // proceed only if exist an arbitration on chain
+  if (!address) {
+    return false;
+  } // proceed only if exist an arbitration on chain
 
   const { contracts } = global.drizzle;
   log(`handleRejectArbitration - current contract`, contracts[address]);
@@ -488,9 +401,8 @@ export function* handleRejectArbitration(args) {
 
   // chain rejection
   if (hasSigned.value) {
-
     // Unsign
-    yield sendToContract(address, "unsign", { from: wallet.address })
+    yield sendToContract(address, "unsign", { from: wallet.address });
     // yield contracts[address].methods["unsign"].cacheSend();
   }
 
@@ -653,43 +565,49 @@ export function* handlePayArbitration(args) {
   }
 }
 
-export function* handleSignArbitration({contractAddress}) {
-  log('handleSignArbitration on', contractAddress);
+export function* handleSignArbitration({ contractAddress }) {
+  log("handleSignArbitration on", contractAddress);
 
-  const success = (data) => {
-    log('handleSignArbitration – success', data);
+  const success = data => {
+    log("handleSignArbitration – success", data);
     global.drizzle.store.dispatch({
       type: LOOKUP_WALLET_BALANCE
-    })
-  }
+    });
+  };
 
-  const fail = (data) => {
-    log('handleSignArbitration – fail', data);
-  }
+  const fail = data => {
+    log("handleSignArbitration – fail", data);
+  };
 
   const wallet = yield select(getWallet);
-  yield sendToContract(contractAddress, "sign", null, success, fail)
+  yield sendToContract(contractAddress, "sign", null, success, fail);
 }
 
-export function* handleWithdrawDispersal({contractAddress}) {
-  log('handleWithdrawDispersal');
+export function* handleWithdrawDispersal({ contractAddress }) {
+  log("handleWithdrawDispersal");
 
   const success = () => {
-    log('handleWithdrawDispersal – success');
+    log("handleWithdrawDispersal – success");
     global.drizzle.store.dispatch({
       type: LOOKUP_WALLET_BALANCE
-    })
-  }
+    });
+  };
 
   const fail = () => {
-    log('handleWithdrawDispersal – fail');
-  }
+    log("handleWithdrawDispersal – fail");
+  };
 
-  yield sendToContract(contractAddress, "withdrawDispersal", null, success, fail)
+  yield sendToContract(
+    contractAddress,
+    "withdrawDispersal",
+    null,
+    success,
+    fail
+  );
 }
 
-export function* handleAgreeArbitration({contractAddress}) {
-  log('handleAgreeArbitration');
+export function* handleAgreeArbitration({ contractAddress }) {
+  log("handleAgreeArbitration");
   const wallet = yield select(getWallet);
 
   const drizzleContracts = yield select(getDrizzleStoredContracts);
@@ -698,27 +616,38 @@ export function* handleAgreeArbitration({contractAddress}) {
 
   const { synced } = contract;
 
-  const hasAgreedAddress = yield callToContract(contractAddress, "hasAgreed", wallet.address)
-  const hasAgreed = typeof contract.hasAgreedAddress != 'undefined' ? contract.hasAgreedAddress.value : false;
+  const hasAgreedAddress = yield callToContract(
+    contractAddress,
+    "hasAgreed",
+    wallet.address
+  );
+  const hasAgreed =
+    typeof contract.hasAgreedAddress != "undefined"
+      ? contract.hasAgreedAddress.value
+      : false;
 
-  log('handleAgreeArbitration – hasAgreed', hasAgreedAddress, hasAgreed, synced);
+  log(
+    "handleAgreeArbitration – hasAgreed",
+    hasAgreedAddress,
+    hasAgreed,
+    synced
+  );
 
   if (synced && !hasAgreed) {
     const success = () => {
-      log('handleAgreeArbitration – success');
-    }
+      log("handleAgreeArbitration – success");
+    };
 
     const fail = () => {
-      log('handleAgreeArbitration – fail');
-    }
+      log("handleAgreeArbitration – fail");
+    };
 
-    yield sendToContract(contractAddress, "agree", null, success, fail)
-  } else
-    log('no agree, already agreed');
+    yield sendToContract(contractAddress, "agree", null, success, fail);
+  } else log("no agree, already agreed");
 }
 
-export function* handleWithdrawDispersalArbitration({contractAddress}) {
-  log('handleWithdrawDispersalArbitration');
+export function* handleWithdrawDispersalArbitration({ contractAddress }) {
+  log("handleWithdrawDispersalArbitration");
   const wallet = yield select(getWallet);
 
   const drizzleContracts = yield select(getDrizzleStoredContracts);
@@ -727,44 +656,66 @@ export function* handleWithdrawDispersalArbitration({contractAddress}) {
 
   const { synced } = contract;
 
-  const hasWithdrawnAddress = yield callToContract(contractAddress, "hasWithdrawn", wallet.address);
-  const hasWithdrawn = typeof contract.hasWithdrawnAddress != 'undefined' ? contract.hasWithdrawnAddress.value : false;
+  const hasWithdrawnAddress = yield callToContract(
+    contractAddress,
+    "hasWithdrawn",
+    wallet.address
+  );
+  const hasWithdrawn =
+    typeof contract.hasWithdrawnAddress != "undefined"
+      ? contract.hasWithdrawnAddress.value
+      : false;
 
-  log('handleWithdrawDispersalArbitration – hasWithdrawn', hasWithdrawn);
+  log("handleWithdrawDispersalArbitration – hasWithdrawn", hasWithdrawn);
 
   if (synced && !hasWithdrawn) {
     const success = () => {
-      log('handleWithdrawDispersalArbitration – success');
-    }
+      log("handleWithdrawDispersalArbitration – success");
+    };
 
     const fail = () => {
-      log('handleWithdrawDispersalArbitration – fail');
-    }
+      log("handleWithdrawDispersalArbitration – fail");
+    };
 
-    yield sendToContract(contractAddress, "withdrawDispersal", null, success, fail)
+    yield sendToContract(
+      contractAddress,
+      "withdrawDispersal",
+      null,
+      success,
+      fail
+    );
   }
 }
 
-export function* handleApproveJurToken({contractAddress, amount, success, fail}) {
-  log('handleApproveJurToken');
+export function* handleApproveJurToken({
+  contractAddress,
+  amount,
+  success,
+  fail
+}) {
+  log("handleApproveJurToken");
   // TODO: convert amount with 18 decimals
 
   amount = formatAmount(amount); // Avoid presicion issues on BN
-  log('xxx', [contractAddress, amount]);
+  log("xxx", [contractAddress, amount]);
 
   const onSuccess = () => {
-    log('handleApproveJurToken – success');
-    if (success && typeof success === 'function')
-      success();
-  }
+    log("handleApproveJurToken – success");
+    if (success && typeof success === "function") success();
+  };
 
   const onFail = () => {
-    log('handleApproveJurToken – fail');
-    if (fail && typeof fail === 'function')
-      fail();
-  }
+    log("handleApproveJurToken – fail");
+    if (fail && typeof fail === "function") fail();
+  };
 
-  return yield sendToContract("JURToken", "approve", [contractAddress, amount], onSuccess, onFail)
+  return yield sendToContract(
+    "JURToken",
+    "approve",
+    [contractAddress, amount],
+    onSuccess,
+    onFail
+  );
 }
 
 export function* handleSendToCounterparty() {
@@ -784,57 +735,71 @@ export function* handleSendToCounterparty() {
 export function* handleDisputeArbitration({ contractAddress, amount }) {
   const trai = 2;
 
-  if (trai == 1)
-  {
+  if (trai == 1) {
     const wallet = yield select(getWallet);
 
     let disputeJURFunction = {
-      name: 'disputeJUR',
-      type: 'function',
-      inputs: [{
-        type: 'address',
-        name: '_sender'
-      }, {
-        type: 'uint256',
-        name: '_voteAmount'
-      }, {
-        type: 'uint256[]',
-        name: '_dispersal'
-      }]
+      name: "disputeJUR",
+      type: "function",
+      inputs: [
+        {
+          type: "address",
+          name: "_sender"
+        },
+        {
+          type: "uint256",
+          name: "_voteAmount"
+        },
+        {
+          type: "uint256[]",
+          name: "_dispersal"
+        }
+      ]
     };
-    amount = parseInt(amount+'000000000000000000');
-    const signPayload = [wallet.address, amount, [10000000000000000000, 10000000000000000000]];
-    log('signPayload', signPayload);
-    const data = global.drizzle.web3.eth.abi.encodeFunctionSignature(disputeJURFunction, signPayload);
+    amount = parseInt(amount + "000000000000000000");
+    const signPayload = [
+      wallet.address,
+      amount,
+      [10000000000000000000, 10000000000000000000]
+    ];
+    log("signPayload", signPayload);
+    const data = global.drizzle.web3.eth.abi.encodeFunctionSignature(
+      disputeJURFunction,
+      signPayload
+    );
 
     const payload = [contractAddress, amount, data];
 
-    log('upayload', payload);
+    log("upayload", payload);
 
-    const r = yield sendToContract('JURToken', 'approveAndCall', payload);
-  }
-  else
-  {
+    const r = yield sendToContract("JURToken", "approveAndCall", payload);
+  } else {
     const drizzleContracts = yield select(getDrizzleStoredContracts);
     const contract = drizzleContracts[contractAddress];
 
     // get contract balance
-    const balance = yield callToContract("JURToken", "balanceOf", [contractAddress], () => { }, () => { });
+    const balance = yield callToContract(
+      "JURToken",
+      "balanceOf",
+      [contractAddress],
+      () => {},
+      () => {}
+    );
     const amount = parseInt(balance) * 0.1;
-    console.log('amount for dispute', amount, 'balance', balance);
+    console.log("amount for dispute", amount, "balance", balance);
     // amount = Number(humanToEth(amount));
 
-    alert('x');
+    alert("x");
 
     yield put({
       type: CHAIN_DISPUTE_ARBITRATION,
       contractAddress,
       amount,
       success: () => {
-        log('dispute success');
+        log("dispute success");
       },
       fail: () => {
-        log('dispute fail');
+        log("dispute fail");
       }
     });
 
@@ -868,21 +833,24 @@ export function* handleDisputeArbitration({ contractAddress, amount }) {
   }
 }
 
-export function* handleChainDisputeArbitration({contractAddress, amount, success, fail}) {
-  log('CHAIN_DISPUTE_ARBITRATION on', contractAddress);
-  log('CHAIN_DISPUTE_ARBITRATION', {contractAddress, amount, success, fail});
+export function* handleChainDisputeArbitration({
+  contractAddress,
+  amount,
+  success,
+  fail
+}) {
+  log("CHAIN_DISPUTE_ARBITRATION on", contractAddress);
+  log("CHAIN_DISPUTE_ARBITRATION", { contractAddress, amount, success, fail });
 
   const onSuccess = () => {
-    log('handleChainDisputeArbitration – success');
-    if (success && typeof success === 'function')
-      success();
-  }
+    log("handleChainDisputeArbitration – success");
+    if (success && typeof success === "function") success();
+  };
 
   const onFail = () => {
-    log('handleChainDisputeArbitration – fail');
-    if (fail && typeof fail === 'function')
-      fail();
-  }
+    log("handleChainDisputeArbitration – fail");
+    if (fail && typeof fail === "function") fail();
+  };
 
   return yield sendToContract(
     contractAddress,
@@ -890,11 +858,11 @@ export function* handleChainDisputeArbitration({contractAddress, amount, success
     [amount, [10, 10]],
     onSuccess,
     onFail
-  )
+  );
 }
 
-export function* handleChainVoteArbitration({contractAddress}) {
-  log('CHAIN_VOTE_ARBITRATION');
+export function* handleChainVoteArbitration({ contractAddress }) {
+  log("CHAIN_VOTE_ARBITRATION");
 }
 
 // spawn tasks base certain actions
@@ -911,11 +879,17 @@ export default function* arbitrationSagas() {
   yield takeEvery(CHAIN_APPROVE_JURTOKEN, handleApproveJurToken);
   yield takeEvery(CHAIN_SIGN_ARBITRATION, handleSignArbitration);
   yield takeEvery(CHAIN_AGREE_ARBITRATION, handleAgreeArbitration);
-  yield takeEvery(CHAIN_WITHDRAW_DISPERSAL_ARBITRATION, handleWithdrawDispersalArbitration);
+  yield takeEvery(
+    CHAIN_WITHDRAW_DISPERSAL_ARBITRATION,
+    handleWithdrawDispersalArbitration
+  );
   yield takeEvery(CHAIN_DISPUTE_ARBITRATION, handleChainDisputeArbitration);
   yield takeEvery(CHAIN_VOTE_ARBITRATION, handleChainVoteArbitration);
 
-  yield takeEvery(ACCEPT_ARBITRATION_AMENDMENT, handleAcceptArbitrationAmendment);
+  yield takeEvery(
+    ACCEPT_ARBITRATION_AMENDMENT,
+    handleAcceptArbitrationAmendment
+  );
   // yield takeEvery(ACCEPT_ARBITRATION, handleAcceptArbitration);
   // yield takeEvery(REJECT_ARBITRATION, handleRejectArbitration);
   // yield takeEvery(SUCCESS_ARBITRATION, handleSuccessArbitration);

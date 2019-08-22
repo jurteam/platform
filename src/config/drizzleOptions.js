@@ -7,6 +7,7 @@ const options = {
   web3: {
     block: false,
     vechain: "http://localhost:8669",
+    thorify: true,
     fallback: {
       type: "ws",
       url: "ws://127.0.0.1:8545"

@@ -16,7 +16,7 @@ contract('Mint Token - Add fundings', function (accounts) {
   it("0. mint token funds", async () => {
 
     // token = await JURToken.new(["sig1"], {from: party0});
-    token = await JURToken.at("0xd6bed7366bd3f97b341a4b12780df3f180192ed4", {from: party0});
+    token = await JURToken.at("0xe7ba600a074aa7fb9eb65a333b5d32bb1a5fbda6", {from: party0});
     console.log("JUR Token Address: ", token.address);
 
     //Mint some tokens for party1 and party2
