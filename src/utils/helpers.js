@@ -146,7 +146,7 @@ export const ellipsisString = (str, count, length) => {
   }
 };
 
-export const arrayColumn = (arr, n) => {arr.map(x => x[n]);};
+export const arrayColumn = (arr, n) => arr.map(x => x[n]);
 
 /**
  *
