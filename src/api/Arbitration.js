@@ -1,37 +1,217 @@
 import contract from "truffle-contract";
-import toAsciiFromByte32 from "../utils/toAsciiFromByte32";
-import getWeb3 from "../utils/getWeb3";
-import ArbitrationContractABI from "../build/contracts/Arbitration.json";
+// import toAsciiFromByte32 from "../utils/toAsciiFromByte32";
 
-let instance = null;
+let arbitrationSCInstance = null;
 
 export default class ArbitrationContract {
   constructor(address) {
-    if (!instance) {
-      instance = this;
+    if (!arbitrationSCInstance) {
+      arbitrationSCInstance = this;
       this.web3 = window.web3;
-      this.contract = contract({...global.drizzle.contracts[address], networks: { "5777": { address } }});
-      console.log('handleAcceptArbitration sign - contract', this.contract)
+      this.contract = contract({
+        ...global.drizzle.contracts[address],
+        networks: { "5777": { address } }
+      });
       this.contract.setProvider(this.web3.currentProvider);
-      // this.contract(address)
-      // this.contract.setProvider(this.web3.currentProvider);
     }
 
-    this.address = address
-    console.log('handleAcceptArbitration – address', address)
+    // define easy access variables
+    this.address = address;
 
-    return instance;
+    return arbitrationSCInstance;
   }
 
-  async sign() {
-    console.log('handleAcceptArbitration sign', 'start')
-    console.log('handleAcceptArbitration sign - at', this.address)
-    // await this.contract.at(this.address);
-    console.log('handleAcceptArbitration sign - deployed?')
+  // Helpers
+  /**
+   * @notice Returns contract agreement hash detail
+   * @notice Decoded value is a stringified object of arbitration kpi and resolution proof
+   */
+  async agreementHash() {
     const instance = await this.contract.deployed();
-    console.log('handleAcceptArbitration sign - call')
-    const [ account ] = await this.web3.eth.getAccounts()
-    return instance.sign({from: account});
+    const [account] = await this.web3.eth.getAccounts();
+    return instance.agreementHash({ from: account });
+  }
+
+  /**
+   * @notice Returns all contract parties
+   */
+  async allParties() {
+    const instance = await this.contract.deployed();
+    const [account] = await this.web3.eth.getAccounts();
+    return instance.allParties({ from: account });
+  }
+
+  /**
+   * @notice Returns current timestamp
+   */
+  async getNow() {
+    const instance = await this.contract.deployed();
+    const [account] = await this.web3.eth.getAccounts();
+    return instance.getNow({ from: account });
+  }
+
+  // Signs
+  /**
+   * @dev Allows sender to sign agreeement
+   */
+  async sign() {
+    const instance = await this.contract.deployed();
+    console.log("handleAcceptArbitration - Arbitration instance", instance);
+    const [account] = await this.web3.eth.getAccounts();
+    return instance.sign({ from: account });
+  }
+
+  /**
+   * @dev Allows sender to unsign agreeement
+   */
+  async unsign() {
+    const instance = await this.contract.deployed();
+    const [account] = await this.web3.eth.getAccounts();
+    return instance.unsign({ from: account });
+  }
+
+  // Simple close
+  /**
+   * @dev Allows sender to agree dispersals (so that funds can be dispursed)
+   */
+  async agree() {
+    const instance = await this.contract.deployed();
+    const [account] = await this.web3.eth.getAccounts();
+    return instance.agree({ from: account });
+  }
+
+  /**
+   * @dev Allows sender to unagree dispersals (so that funds cannot be dispursed)
+   */
+  async unagree() {
+    const instance = await this.contract.deployed();
+    const [account] = await this.web3.eth.getAccounts();
+    return instance.unagree({ from: account });
+  }
+
+  // Friendly
+  /**
+   * @dev Allows sender to propose a new dispersal and agreement hash
+   * @param _dispersal Dispersal of funds if arbitration agreed
+   * @param _funding Source of funds for arbitration
+   * @param _agreementHash Hash of arbitration agreement
+   */
+  async proposeAmendment(dispersal, funding, agreementHash) {
+    const instance = await this.contract.deployed();
+    const [account] = await this.web3.eth.getAccounts();
+    return instance.proposeAmendment(dispersal, funding, agreementHash, { from: account });
+  }
+
+  /**
+   * @dev Allows sender to agree an amendment to dispersals and agreement hash
+   */
+  async agreeAmendment() {
+    const instance = await this.contract.deployed();
+    const [account] = await this.web3.eth.getAccounts();
+    return instance.agreeAmendment({ from: account });
+  }
+
+  /**
+   * @dev Allows sender to unagree an amendment to dispersals and agreement hash
+   */
+  async unagreeAmendment() {
+    const instance = await this.contract.deployed();
+    const [account] = await this.web3.eth.getAccounts();
+    return instance.unagreeAmendment({ from: account });
+  }
+
+  // Dispute
+  /**
+   * @dev Allows sender to put the arbitration into a dispute State
+   * @param _voteAmount Amount of tokens to stake to the disputing parties side
+   * @param _dispersal Dispersal should the disputing party win
+   */
+  async dispute(amount, dispersal) {
+    const instance = await this.contract.deployed();
+    const [account] = await this.web3.eth.getAccounts();
+    return instance.dispute(this.web3.utils.toBN(amount), dispersal, { from: account });
+  }
+
+  /**
+   * @dev Calculates the current end time of the voting period
+   */
+  async calcDisputeEnds() {
+    const instance = await this.contract.deployed();
+    const [account] = await this.web3.eth.getAccounts();
+    return instance.calcDisputeEnds({ from: account });
+  }
+
+  /**
+   * @dev Allows sender to amend their dispersals should they win
+   * @param _dispersal Dispersal should the disputing party win
+   */
+  async amendDisputeDispersal(dispersal) {
+    const instance = await this.contract.deployed();
+    const [account] = await this.web3.eth.getAccounts();
+    return instance.amendDisputeDispersal(dispersal, { from: account });
+  }
+
+  // Voting
+  /**
+   * @dev Allows sender to vote
+   * @param _voteAddress Address of party who is being voted for (0 for reject option)
+   * @param _voteAmount Amount of tokens to stake to the _voteAddress side
+   */
+  async vote(address, amount) {
+    const instance = await this.contract.deployed();
+    const [account] = await this.web3.eth.getAccounts();
+    return instance.vote(address, this.web3.utils.toBN(amount), { from: account });
+  }
+
+  /**
+   * @notice Returns the current winner
+   */
+  async getWinner() {
+    const instance = await this.contract.deployed();
+    const [account] = await this.web3.eth.getAccounts();
+    return instance.getWinner({ from: account });
+  }
+
+  /**
+   * @notice Returns the current winner and next best minority party
+   */
+  async getWinnerAndBestMinorty() {
+    const instance = await this.contract.deployed();
+    const [account] = await this.web3.eth.getAccounts();
+    return instance.getWinnerAndBestMinorty({ from: account });
+  }
+
+
+  // Withdrawals
+  /**
+   * @dev Once a contract has been agreed withdrawals dispersal amount
+   */
+  async withdrawDispersal() {
+    const instance = await this.contract.deployed();
+    const [account] = await this.web3.eth.getAccounts();
+    return instance.withdrawDispersal({ from: account });
+  }
+
+  /**
+   * @dev Allows sender (party) to claim their dispersal tokens
+   */
+  async payoutParty() {
+    const instance = await this.contract.deployed();
+    const [account] = await this.web3.eth.getAccounts();
+    return instance.payoutParty({ from: account });
+  }
+
+  /**
+   * @dev Allows sender (voter) to claim their staked and reward tokens
+   * @param _start Index at which to start iterating through votes
+   * @param _end Index at which to end iterating through votes
+   */
+  async payoutVoter(start, end) {
+    if (typeof start === 'undefined') start = 0;
+    if (typeof end === 'undefined') end = 999999;
+    const instance = await this.contract.deployed();
+    const [account] = await this.web3.eth.getAccounts();
+    return instance.payoutVoter(start, end, { from: account });
   }
 
   /*
