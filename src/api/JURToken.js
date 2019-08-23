@@ -167,7 +167,7 @@ export default class JURToken {
 
     const [account] = await this.web3.eth.getAccounts();
 
-    const data = global.drizzle.web3.eth.abi.encodeFunctionSignature(
+    const data = global.drizzle.web3.eth.abi.encodeFunctionCall(
       this.signatures[method],
       [...params]
     );

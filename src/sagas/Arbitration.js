@@ -344,27 +344,71 @@ export function* handleAcceptArbitration({
   amount,
   dispatch
 }) {
-  console.log("handleAcceptArbitration");
 
-  // step 1
+  // single step with approve and call
+  const wallet = yield select(getWallet);
   const token = new JURToken();
-  console.log("handleAcceptArbitration - JURToken", token);
-  yield token
-    .approve(contractAddress, amount)
-    .then(res => {
-      console.log("handleAcceptArbitration – step 1 finished", res);
 
-      // step 2
-      const arbitration = new Arbitration(contractAddress);
-      console.log("handleAcceptArbitration - Arbitration", arbitration);
-      return arbitration
-        .sign()
-        .then(res => console.log("handleAcceptArbitration – accepted", res))
-        .catch(err =>
-          console.log("handleAcceptArbitration – step 2 error", err)
-        );
+  yield token
+    .approveAndCall(contractAddress, amount, 'sign', [wallet.address])
+    .then(res => {
+      console.log("handleAcceptArbitration – accepted", res);
     })
-    .catch(err => console.log("handleAcceptArbitration – step 1 error", err));
+    .catch(err =>
+      console.log("handleAcceptArbitration – error", err)
+    );
+
+  // Two Step method
+  // const tk = new JURToken();
+  // yield tk
+  //   .balanceOf(contractAddress)
+  //   .then(res => { console.log('TEST – balanceOf', res.toString())})
+
+  // // step 1
+  // const token = new JURToken();
+  // console.log("handleAcceptArbitration - JURToken", token);
+  // yield token
+  //   .approve(contractAddress, amount)
+  //   .then(res => {
+  //     console.log("handleAcceptArbitration – step 1 finished", res);
+
+  //     // step 2
+  //     const arbitration = new Arbitration(contractAddress);
+  //     console.log("handleAcceptArbitration - Arbitration", arbitration);
+  //     return arbitration
+  //       .sign()
+  //       .then(res => console.log("handleAcceptArbitration – accepted", res))
+  //       .catch(err =>
+  //         console.log("handleAcceptArbitration – step 2 error", err)
+  //       );
+  //   })
+  //   .catch(err => console.log("handleAcceptArbitration – step 1 error", err));
+
+
+
+      // // Status update
+      // let toUpdate = new FormData();
+      // toUpdate.append("code", 2);
+
+      // try {
+      //   const response = yield call(Contracts.statusChange, toUpdate, id);
+      //   log("handleAcceptArbitration - contract status updated", response);
+      //   const { statusId, statusLabel, statusUpdatedAt } = response.data.data;
+      //   yield put({
+      //     type: SET_CONTRACT_STATUS,
+      //     statusId,
+      //     statusLabel,
+      //     statusUpdatedAt,
+      //     id
+      //   });
+      //   yield put({ type: FETCH_CONTRACTS });
+
+      //   // const { history } = action;
+      //   // history.push(`/contracts/detail/${id}`); // go to contract detail for furter operations
+      // } catch (error) {
+      //   yield put({ type: API_CATCH, error });
+      // }
+
 }
 
 export function* handleRejectArbitration(args) {
