@@ -123,13 +123,13 @@ export default class JURToken {
   /**
    * @notice Returns JUR token transfer amount allowed for given address
    */
-  async allowance(address) {
-    if (typeof address === 'undefined' || !address) {
-      const [account] = await this.web3.eth.getAccounts();
-      address = account;
-    }
+  async allowance(spender, owner) {
     const instance = await this.contract.deployed();
-    return instance.allowance(address);
+    const [account] = await this.web3.eth.getAccounts();
+    if (typeof owner === 'undefined' || !owner) {
+      owner = account;
+    }
+    return instance.allowance(owner, spender);
   }
 
   /**

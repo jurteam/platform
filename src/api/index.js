@@ -7,3 +7,4 @@ export * from "./Faq";
 export * from "./Faq";
 export { default as JURToken } from './JURToken'
 export { default as Arbitration } from './Arbitration'
+export { default as ArbitrationFactory } from './ArbitrationFactory'

@@ -22,7 +22,7 @@ export const ActionsBar = props => {
   const { wallet, contract } = props;
   const { balance } = wallet;
 
-  const { address: currentContractAddress } = contract;
+  const { address: currentContractAddress, id } = contract;
 
   const createArbitration = () => {
     console.log("createArbitration - call");
@@ -53,6 +53,7 @@ export const ActionsBar = props => {
     dispatch({
       type: ACCEPT_ARBITRATION,
       contractAddress,
+      id,
       amount,
       dispatch
     });
@@ -60,8 +61,12 @@ export const ActionsBar = props => {
 
   const rejectArbitration = () => {
     console.log("rejectArbitration - call");
+    const contractAddress = currentContractAddress;
     global.drizzle.store.dispatch({
-      type: REJECT_ARBITRATION
+      type: REJECT_ARBITRATION,
+      address: contractAddress,
+      contractAddress,
+      id
     });
   };
 

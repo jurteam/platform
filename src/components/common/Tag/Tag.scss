@@ -27,7 +27,8 @@
     }
 
     &--1 ,
-    &--2 {
+    &--2 ,
+    &--3 {
       color: $tag-text-color-1;
       background-color: $tag-bg-color-1;
     }
@@ -37,12 +38,14 @@
       background-color: $tag-bg-color-5;
     }
 
+    &--7 ,
     &--8 {
       color: $tag-text-color-8;
       background-color: $tag-bg-color-8;
     }
 
-    &--9 {
+    &--9,
+    &--10 {
       color: $tag-text-color-9;
       background-color: $tag-bg-color-9;
     }

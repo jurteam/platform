@@ -33,12 +33,29 @@ export default class ArbitrationContract {
   }
 
   /**
-   * @notice Returns all contract parties
+   * @notice Returns a contract parties based on numeric key reference
    */
-  async allParties() {
+  async allParties(key) {
     const instance = await this.contract.deployed();
-    const [account] = await this.web3.eth.getAccounts();
-    return instance.allParties({ from: account });
+    if (typeof key === 'undefined' || !key) { // return all parties
+      const partyA = await instance.allParties(0);  // 0 = a / first party
+      const partyB = await instance.allParties(1);  // 1 = b
+      return [ partyA, partyB ];
+    } else { // single party based on key
+      return instance.allParties(key);
+    }
+  }
+
+  /**
+   * @notice Returns contract dispersal
+   */
+  async dispersal(address) {
+    const instance = await this.contract.deployed();
+    if (typeof address === 'undefined' || !address) {
+      const [account] = await this.web3.eth.getAccounts();
+      address = account;
+    }
+    return instance.dispersal(address);
   }
 
   /**
@@ -46,8 +63,55 @@ export default class ArbitrationContract {
    */
   async getNow() {
     const instance = await this.contract.deployed();
-    const [account] = await this.web3.eth.getAccounts();
-    return instance.getNow({ from: account });
+    return instance.getNow();
+  }
+
+  /**
+   * @notice Returns boolean if party address has signed or not
+   */
+  async hasSigned(address) {
+    if (typeof address === 'undefined' || !address) {
+      const [account] = await this.web3.eth.getAccounts();
+      address = account;
+    }
+    const instance = await this.contract.deployed();
+    return instance.hasSigned(address);
+  }
+
+  /**
+   * @notice Returns boolean if party address has agreed or not
+   */
+  async hasAgreed(address) {
+    if (typeof address === 'undefined' || !address) {
+      const [account] = await this.web3.eth.getAccounts();
+      address = account;
+    }
+    const instance = await this.contract.deployed();
+    return instance.hasAgreed(address);
+  }
+
+  /**
+   * @notice Returns boolean if party address has widthdrawn or not
+   */
+  async hasWithdrawn(address) {
+    if (typeof address === 'undefined' || !address) {
+      const [account] = await this.web3.eth.getAccounts();
+      address = account;
+    }
+    const instance = await this.contract.deployed();
+    return instance.hasWithdrawn(address);
+  }
+
+  /**
+   * @notice Returns boolean if party address has funded amendment or not
+   */
+  async hasFundedAmendment(address) {
+    if (typeof address === 'undefined' || !address) {
+      const [account] = await this.web3.eth.getAccounts();
+      address = account;
+    }
+    const instance = await this.contract.deployed();
+    return instance.hasFundedAmendment(address);
   }
 
   // Signs

@@ -39,6 +39,29 @@ export const checkConnection = (web3) => {
   }
 };
 
+export const chainErrorHandler = err => {
+  // if (err.message.includes('User denied transaction') ||
+  //     err.message.includes('Request has been rejected.') ||
+  //     err.message.includes('transaction has been discarded') ||
+  //     err.message.includes('Transaction not confirmed'))
+  //     throw new Error('web3UserTxRejected');
+
+  // if (err.message.includes('nonce too low'))
+  //     throw new Error('web3NonceTooLow');
+
+  // if (err.message.includes('nonce may not be larger than'))
+  //     throw new Error('web3NonceTooHigh');
+
+  // if (err.message.includes('insufficient funds for gas'))
+  //     throw new Error('web3InsufficientFundsForGas');
+
+  // if (err.message.includes('intrinsic gas too low'))
+  //     throw new Error('web3GasTooLow');
+
+  // throw new Error(err);
+  warn('chain exeption', err.message);
+}
+
 // Route redirect helper
 export const redirect = (...checks) => {
   log("redirect", { checks });

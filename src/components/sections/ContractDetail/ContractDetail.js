@@ -43,6 +43,7 @@ import {
   ACCEPT_ARBITRATION,
   ACCEPT_ARBITRATION_AMENDMENT,
   PAY_ARBITRATION,
+  WITHDRAW_ARBITRATION,
   EXPIRED_CONTRACT,
   SUCCESS_ARBITRATION,
   CONTRACT_MEDIA_DELETE,
@@ -75,7 +76,7 @@ export const ContractDetail = ( props ) => {
   const [filePath, setFilePath] = useState(null);
 
 
-  const { contract, updateContractField, history } = props;
+  const { contract, updateContractField, history, contracts } = props;
   const { updating } = contract;
 
   const {
@@ -211,6 +212,20 @@ export const ContractDetail = ( props ) => {
     });
   };
 
+  const onWithdraw = () => {
+
+    const {
+      id,
+      address
+    } = contract.current;
+
+    global.drizzle.store.dispatch({
+      type: WITHDRAW_ARBITRATION,
+      id,
+      address
+    });
+  };
+
   const onAccept = () => {
     const {
       id,
@@ -338,6 +353,7 @@ export const ContractDetail = ( props ) => {
     id,
     statusId,
     statusLabel,
+    statusFrom,
     statusUpdatedAt,
     kpi,
     resolutionProof,
@@ -352,8 +368,11 @@ export const ContractDetail = ( props ) => {
     hasPenaltyFee,
     partAPenaltyFee,
     partBPenaltyFee,
-    details: issues
+    details: issues,
+    address
   } = contract.current;
+
+  const chainContract = contracts[address]
 
   console.log("ContractDetail - contract", {
     isValid: isValid(),
@@ -524,6 +543,7 @@ export const ContractDetail = ( props ) => {
               disabled={contract.saving}
               submitDisabled={submitDisabled}
               currentWallet={wallet}
+              contractAddress={contract.current.address}
               currentPart={currentPart}
               notificationLoading={contract.notificationLoading}
               currentProposal={contract.currentProposal}
@@ -532,6 +552,8 @@ export const ContractDetail = ( props ) => {
               formUpdated={formUpdated}
               currentUserCanPay={currentUserCanPay}
               feeToPay={feeToPay}
+              statusFrom={statusFrom}
+              chainContract={chainContract}
               isValid={isValid()}
               hasError={hasError}
               lastPartInvolved={lastPartInvolved}
@@ -558,6 +580,7 @@ export const ContractDetail = ( props ) => {
               onAccept={() => setShowModalAccept(true)}
               onAcceptAmendment={() => setShowModalAcceptAmendment(true)}
               onSuccess={() => setShowModalSuccess(true)}
+              onWithdraw={onWithdraw}
               onChange={onInputChange}
               onView={onFileView}
               onChangeSelect={onChangeSelect}

@@ -14,6 +14,10 @@ import { AppContext } from "../../../bootstrap/AppProvider"; // context
 import "./ContractSidebar.scss";
 import { CONTRACT_READ_NOTIFICATIONS } from "../../../reducers/types";
 
+// Api layouts
+import { Arbitration } from "../../../api";
+import { chainErrorHandler } from "../../../utils/helpers";
+
 export const ContractSidebar = ({
   disabled,
   submitDisabled,
@@ -39,11 +43,15 @@ export const ContractSidebar = ({
   onView,
   onReject,
   onAccept,
+  onWithdraw,
   onAcceptAmendment,
   onChangeSelect,
   onSubmitProposal,
   onProposalFileAdded,
   history,
+  contractAddress,
+  statusFrom,
+  chainContract,
   onChangeValue
 }) => {
   const { labels } = useContext(AppContext);
@@ -102,7 +110,7 @@ export const ContractSidebar = ({
       );
     }
 
-    if (statusId === 2) {
+    if (statusId === 2 || statusId === 3) {
       // waiting actions
       return (
         <>
@@ -113,21 +121,19 @@ export const ContractSidebar = ({
       );
     }
 
-    if (statusId === 5) {
+    if (statusId === 5 || statusId === 7) {
       if (showProposalForm) {
         // ongoing actions
         return (
           <>
-            {!isPartB && (
-              <Button
-                color="friendly"
-                variant={showProposalForm === 2 ? "outlined" : "contained"}
-                onClick={() => setShowProposalForm(true)}
-                hoverColor="friendly"
-              >
-                {labels.friendlyResolution}
-              </Button>
-            )}
+            <Button
+              color="friendly"
+              variant={showProposalForm === 2 ? "outlined" : "contained"}
+              onClick={() => setShowProposalForm(true)}
+              hoverColor="friendly"
+            >
+              {labels.friendlyResolution}
+            </Button>
             <Button
               color="dispute"
               variant={
@@ -147,7 +153,6 @@ export const ContractSidebar = ({
         <>
           <Button
             color="dispute"
-            fullWidth={isPartB}
             hoverColor="dispute"
             onClick={() => {
               setShowProposalForm(isPartB ? 2 : true);
@@ -156,13 +161,30 @@ export const ContractSidebar = ({
           >
             {labels.dispute}
           </Button>
-          {!isPartB && (
-            <Button color="success" onClick={onSuccess} hoverColor="success">
-              {labels.success}
-            </Button>
-          )}
+          <Button color="success" onClick={onSuccess} hoverColor="success">
+            {labels.success}
+          </Button>
         </>
       );
+    }
+
+    if (statusId === 9 || statusId === 10) {
+      if (typeof chainContract !== 'undefined' && chainContract) { // handle contract loading
+        let { dispersal } = chainContract
+        dispersal = dispersal[Object.keys(dispersal)[0]]; // handle chain sync & missing info
+          if (typeof dispersal !== 'undefined' && dispersal) {
+
+          console.log('Sidebar dispersal', dispersal)
+          // waiting actions
+          return dispersal.value !== "0" ? (
+            <>
+              <Button color="gradient" variant="gradient" onClick={onWithdraw} fullWidth>
+                {labels.withdraw}
+              </Button>
+            </>
+          ) : null;
+        }
+      }
     }
 
     if (statusId === 21) {
@@ -256,7 +278,7 @@ export const ContractSidebar = ({
 
   return (
     <div>
-      <ContractActions statusId={statusId} part={currentPart} shouldWait={shouldWaitDispute} disabled={disabled}>
+      <ContractActions statusId={statusId} part={currentPart} statusFrom={statusFrom} currentWallet={currentWallet} shouldWait={shouldWaitDispute} disabled={disabled}>
         {availableActions()}
       </ContractActions>
       {statusId !== 0 && (
