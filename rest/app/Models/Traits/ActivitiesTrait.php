@@ -68,13 +68,13 @@ trait ActivitiesTrait
             $labelText = __("messages.labels.{$indexKey[0]}.label_name", [
                 'part' => $contract->part_b_name ? $contract->part_b_wallet : null
             ]);
-        } elseif ($contract->status->code == 2) {
+        } elseif ($contract->status->code == 2 || $contract->status->code == 3) {
             $labelText = __("messages.labels.{$indexKey[0]}.label_name", [
                 'name' => $contract->name
             ]);
-        } elseif ($contract->status->code == 5) {
+        } elseif ($contract->status->code == 5 || $contract->status->code == 10) {
             $labelText = __("messages.labels.{$indexKey[0]}.label_name", [
-                'value' => $contract->getWhoPaysAmount()
+                'value' => $contract->getWhoPaysAmount() // <-- this value should be passed via payload
             ]);
         }
         $abstract = [$labelText, $currentLabel['label_status']];

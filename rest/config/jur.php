@@ -30,8 +30,16 @@ return [
             'code' => 2
         ],
         [
+            'label' => 'Waiting for payment',
+            'code' => 3
+        ],
+        [
             'label' => 'Ongoing',
             'code' => 5
+        ],
+        [
+            'label' => 'Agreed',
+            'code' => 7
         ],
         [
             'label' => 'Expired',
@@ -40,6 +48,10 @@ return [
         [
             'label' => 'Contract Closed',
             'code' => 9
+        ],
+        [
+            'label' => 'Contract Closed',
+            'code' => 10
         ],
         [
             'label' => 'Open Friendly Resolution',
@@ -93,14 +105,29 @@ return [
                 'label_status' => null
             ],
             [
+                'status_code' => 3,
+                'label_name' => 'Paid contract value of :value JUR',
+                'label_status' => null
+            ],
+            [
                 'status_code' => 5,
                 'label_name' => 'Paid contract value of :value JUR',
+                'label_status' => null
+            ],
+            [
+                'status_code' => 7,
+                'label_name' => 'Agreed contract closing',
                 'label_status' => null
             ],
             [
                 'status_code' => 9,
                 'label_name' => null,
                 'label_status' => 'Contract closed'
+            ],
+            [
+                'status_code' => 10,
+                'label_name' => null,
+                'label_status' => 'Widthdrawn :value JUR from contract'
             ],
             [
                 'status_code' => 21,
