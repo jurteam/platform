@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Activity;
 use App\Models\Contract;
 use App\Models\ContractStatus;
+use Illuminate\Support\Facades\Log;
 
 trait ActivitiesTrait
 {
@@ -73,6 +74,8 @@ trait ActivitiesTrait
                 'name' => $contract->name
             ]);
         } elseif ($contract->status->code == 3 || $contract->status->code == 5 || $contract->status->code == 10) {
+            Log::info(json_encode($params));
+
             $labelText = __("messages.labels.{$indexKey[0]}.label_name", [
                 'value' => $params['interpolation']['value']
             ]);
