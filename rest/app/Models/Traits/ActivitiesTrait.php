@@ -74,7 +74,7 @@ trait ActivitiesTrait
             ]);
         } elseif ($contract->status->code == 5 || $contract->status->code == 10) {
             $labelText = __("messages.labels.{$indexKey[0]}.label_name", [
-                'value' => $params['interpolations']['value']
+                'value' => $params['interpolation']['value']
             ]);
         }
         $abstract = [$labelText, $currentLabel['label_status']];
