@@ -18,14 +18,29 @@ return [
             'label_status' => null
         ],
         [
+            'status_code' => 3,
+            'label_name' => 'Paid contract value of :value JUR',
+            'label_status' => null
+        ],
+        [
             'status_code' => 5,
             'label_name' => 'Paid contract value of :value JUR',
             'label_status' => null
         ],
         [
+            'status_code' => 7,
+            'label_name' => null,
+            'label_status' => 'Agreed contract closing'
+        ],
+        [
             'status_code' => 9,
             'label_name' => null,
             'label_status' => 'Contract closed'
+        ],
+        [
+            'status_code' => 10,
+            'label_name' => 'Widthdrawn :value JUR from contract',
+            'label_status' => null
         ],
         [
             'status_code' => 21,
