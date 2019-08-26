@@ -46,7 +46,10 @@ class ContractTransformer extends TransformerAbstract
                 ]
             ],
             'value' => $contract->value,
-            'whoPays' => $contract->who_pays
+            'whoPays' => $contract->who_pays,
+            'hasPenaltyFee' => $contract->has_penalty_fee,
+            'partAPenaltyFee' => $contract->part_a_penalty_fee,
+            'partBPenaltyFee' => $contract->part_b_penalty_fee
         ];
     }
 
