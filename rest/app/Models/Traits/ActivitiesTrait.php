@@ -30,7 +30,7 @@ trait ActivitiesTrait
     public function recordActivities($params, $user)
     {
         $attributes = array_merge($params, [
-            'abstract' => $this->getAbstractText($this),
+            'abstract' => $this->getAbstractText($this, $params),
             'user_id' => $user ? $user->id : null,
             'contract_id' => $this->id
         ]);
@@ -53,7 +53,7 @@ trait ActivitiesTrait
      *
      * @return string
      */
-    protected function getAbstractText(Contract $contract)
+    protected function getAbstractText(Contract $contract, array $params)
     {
         $labels = config('jur.activities.labels');
         $jurLabel = array_filter($labels, function($label) use($contract) {
@@ -74,7 +74,7 @@ trait ActivitiesTrait
             ]);
         } elseif ($contract->status->code == 5 || $contract->status->code == 10) {
             $labelText = __("messages.labels.{$indexKey[0]}.label_name", [
-                'value' => $contract->getWhoPaysAmount() // <-- this value should be passed via payload
+                'value' => $params['interpolations']['value']
             ]);
         }
         $abstract = [$labelText, $currentLabel['label_status']];
