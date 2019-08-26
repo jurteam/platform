@@ -33,7 +33,10 @@ class DisputeTransformer extends TransformerAbstract
             'value' => $contract->value,
             'balance' => $contract->balance,
             'earnings' => $contract->getEarnings(),
-            'oracle' => $contract->currentWalletIsAnOracle()
+            'oracle' => $contract->currentWalletIsAnOracle(),
+            'hasPenaltyFee' => $contract->has_penalty_fee,
+            'partAPenaltyFee' => $contract->part_a_penalty_fee,
+            'partBPenaltyFee' => $contract->part_b_penalty_fee
         ];
     }
 
