@@ -14,6 +14,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 -   **Truffle** as EVM framework _([more info here](https://truffleframework.com/docs/truffle/getting-started/installation))_;
 -   **Ganache CLI** for ETH test network _([more info here](https://github.com/trufflesuite/ganache-cli))_;
+-   **VeChain Thor** for VeChain Thor Blockchain test network _([more info here](https://github.com/vechain/thor))_;
 -   **Dot Env** for environment configuration _([more info here](https://github.com/motdotla/dotenv#readme))_;
 -   **Composer** as PHP package manager for Lumen/Laravel framework _([more info here](https://getcomposer.org/))_
 -   **Docker** for service containers management _([more info here](https://docs.docker.com/))_
@@ -61,8 +62,23 @@ _**You can find the environment configuration template [here](.env.template).**_
 
 ## Running Test Network
 
+### Ethereum
+
 To run a test ethereum network, in a separate terminal execute:
 `ganache-cli --gasLimit 7000000`
+
+### VeChain
+
+**!!! Before run !!!**
+> Make sure you've already installed [VeChain Thor](https://github.com/vechain/thor#installation)
+
+> Also make sure you've deployed smart contracts on local solo network using [Web3-Gear](https://github.com/vechain/web3-gear) using options `--log 1` and `--debug 1` for logging and debugghing purposes.
+
+To run a test vechain blockchain network, in a separate terminal execute:
+`$ bin/thor solo --gas-limit 7000000 --on-demand`
+
+#### Configuration
+Please select the network properly in `src/config/drizzleOptions.js` file where you can find a node `vechain` that can be filled with a boolean value (for mainnet) or a string of your host (in ex. http://localhost:8669 in SOLO mode)
 
 ## Rest API
 
@@ -94,7 +110,7 @@ On first run you should download and setup Laravel packages and database. Just f
 
 ### 2. Setup configuration
 
-Based on [.env.template](.env.template) create your local environment file and change `<api-base-url>` and `<provider>` constant in relation to your host.
+Based on [.env.template](.env.template) create your local environment file and change `<api-base-url>` and other constant in relation to your host.
 
 > A standard **.env.local** configuration can have `REACT_APP_API_BASE_URL=http://localhost/api/v1`
 

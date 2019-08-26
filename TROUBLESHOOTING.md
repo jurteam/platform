@@ -10,6 +10,16 @@ Truffle on you host should be at the correct version that is compatible with `op
 
 Web3 version should be the same between DApp and Protocol. Different versions are not compatible. Until now version is downgraded due protocol at `^1.0.0-beta.46`
 
+> On Vechain Blockchain this is donwgraded to version `^1.0.0-beta.37` due packages compatibility.
+
+### Drizzle
+
+This package has been forked from the original in order to make it compatible with Vechain. [See here](https://www.npmjs.com/package/drizzle-vechain) for more infos.
+
+### Truffle Contract
+
+This package has been forked from the original in order to make it compatible with Vechain. [See here](https://www.npmjs.com/package/truffle-contract-vechain) for more infos.
+
 ## Metamask
 
 ### Error: the tx doesn't have the correct nonce
