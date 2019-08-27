@@ -70,6 +70,8 @@ export const useFormValidation = (data, schema) => {
   };
 
   const validateForm = () => {
+    setFormData(data);
+
     let newErrors = [];
 
     // for each field
