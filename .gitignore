@@ -80,6 +80,7 @@ rest/storage/app/public*
 # misc
 .DS_Store
 .env.local
+.env.stage
 .env.development.local
 .env.test.local
 .env.production.local
@@ -87,3 +88,7 @@ rest/storage/app/public*
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# deploy
+deploy-conf.yml
+deploy-exclude.list

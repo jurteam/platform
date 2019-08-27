@@ -1,0 +1,32 @@
+# environments
+
+local:
+  vhost: "http://localhost"
+
+  # your local dev path
+  app_path: "[YOUR-LOCAL-WORKING-PATH]"
+  # use an absolute path here
+
+  database:
+    name: "[LOCAL-DB-NAME]"
+    user: "[LOCAL-DB-USER]"
+    password: "[LOCAL-DB-PASS]"
+    host: "127.0.0.1"
+    port: "3306"
+
+stage:
+  vhost: "http://68.183.13.0"
+
+  app_path: "/var/www"
+  # use an absolute path here
+
+  database:
+    name: "jur_mvp"
+    user: "jur_mvp"
+    password: "TA+1jDAFyHss1#aEGYaYhPOxXa"
+    host: "127.0.0.1"
+    port: "3306"
+
+#  ssh:
+#    user: "[SSH-USER]"
+#    host: "[SSH-HOST]"
