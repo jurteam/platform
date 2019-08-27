@@ -15,7 +15,7 @@ import { EllipsisVIcon } from "../Icons/EllipsisVIcon";
 
 import { Link, withRouter } from "react-router-dom";
 
-import { humanToEth } from "../../../utils/helpers"; // log helper
+import { humanToEth, getContractTotalValue } from "../../../utils/helpers"; // log helper
 import { EXPIRED_DISPUTE } from "../../../reducers/types";
 
 import "./DisputesTable.scss";
@@ -103,7 +103,7 @@ const DisputesTable = props => {
           </TableCell>
           <TableCell>{dispute.category}</TableCell>
           <TableCell className="jur-disputes__table__contract-value">
-            <Amount value={humanToEth(dispute.value)} />
+            <Amount value={humanToEth(getContractTotalValue(dispute, true))} />
           </TableCell>
           <TableCell className="jur-disputes__table__earning">
             {dispute.earning && <Amount value={dispute.earning} />}

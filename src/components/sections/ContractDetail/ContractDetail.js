@@ -169,13 +169,18 @@ export const ContractDetail = ( props ) => {
     console.error("onFileError", e);
   };
 
-  const onSubmitProposal = (issue, setShowProposalForm, setActivitiesOpen) => {
-    const { statusId, id } = contract.current;
+  const onSubmitProposal = (issue, setShowProposalForm, setActivitiesOpen, message) => {
+    const { statusId, id, value, address } = contract.current;
+
+    if (typeof message === 'undefined') message = ''; // handle nil
 
     global.drizzle.store.dispatch({
       type: CONTRACT_ISSUE,
       issue: statusId > 21 ? "disputes" : issue,
       proposalAttachments,
+      value,
+      message,
+      address,
       statusId,
       id,
       callback: () => {
@@ -198,10 +203,27 @@ export const ContractDetail = ( props ) => {
       value,
       counterparties,
       partAPenaltyFee,
-      partBPenaltyFee
+      partBPenaltyFee,
+      whoPays
     } = contract.current;
 
-    const amount = wallet.address.toLowerCase() === counterparties[1].wallet.toLowerCase() ? Number(value) + Number(partBPenaltyFee) : Number(value) + Number(partAPenaltyFee)
+    let amount = 0;
+
+    if (wallet.address.toLowerCase() === counterparties[1].wallet.toLowerCase()) { // is part b
+
+      amount = amount + Number(partBPenaltyFee)
+      if (whoPays.toLowerCase() == counterparties[1].wallet.toLowerCase()) {
+        amount = amount + Number(value);
+      }
+
+    } else {
+
+      amount = amount + Number(partAPenaltyFee)
+      if (whoPays.toLowerCase() == counterparties[0].wallet.toLowerCase()) {
+        amount = amount + Number(value);
+      }
+
+    }
 
     global.drizzle.store.dispatch({
       type: PAY_ARBITRATION,

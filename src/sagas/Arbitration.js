@@ -36,11 +36,21 @@ import {
   CHAIN_DISPUTE_ARBITRATION,
   CHAIN_VOTE_ARBITRATION,
   LOOKUP_WALLET_BALANCE,
-  WITHDRAW_ARBITRATION
+  WITHDRAW_ARBITRATION,
+  AMEND_DISPUTE_ARBITRATION,
+  CALC_DISPUTE_ENDS_ARBITRATION,
+  TOTAL_VOTES_ARBITRATION,
+  DISPUTE_WINDOW_VOTES_ARBITRATION,
+  DISPUTE_STARTS_ARBITRATION,
+  DISPUTE_ENDS_ARBITRATION,
+  SET_MOCKED_NOW,
+  GET_NOW,
+  DISPUTE_SAVING,
+  DISPUTE_UPDATING
 } from "../reducers/types";
 
 // Api layouts
-import { Contracts, JURToken, Arbitration, ArbitrationFactory } from "../api";
+import { Contracts, Oracles, JURToken, Arbitration, ArbitrationFactory, Disputes } from "../api";
 
 import {
   chainGetContract,
@@ -57,8 +67,10 @@ import {
   ethToStore,
   chainErrorHandler,
   formatAmount,
-  calculateFundingAndDispersal
+  calculateFundingAndDispersal,
+  getContractTotalValue
 } from "../utils/helpers"; // log helper
+import ArbitrationMock from "../api/ArbitrationMock";
 
 export function* fetchArbitrations(args) {
   log("fetchArbitrations", "run");
@@ -431,6 +443,8 @@ export function* handleRejectArbitration({ id, address: contractAddress }) {
 }
 
 export function* handleSuccessArbitration(args) {
+  yield put({ type: CONTRACT_SAVING, payload: true });
+  yield put({ type: CONTRACT_UPDATING, payload: true });
   const { id, address: contractAddress, onFail } = args;
 
   const arbitration = new Arbitration(contractAddress);
@@ -473,14 +487,20 @@ export function* handleSuccessArbitration(args) {
           id
         });
         yield put({ type: FETCH_CONTRACTS });
+        yield put({ type: CONTRACT_SAVING, payload: false });
+        yield put({ type: CONTRACT_UPDATING, payload: false });
 
         // const { history } = action;
         // history.push(`/contracts/detail/${id}`); // go to contract detail for furter operations
       } catch (error) {
         yield put({ type: API_CATCH, error });
+        yield put({ type: CONTRACT_SAVING, payload: false });
+        yield put({ type: CONTRACT_UPDATING, payload: false });
       }
     } else {
       if (typeof onFail === "function") onFail();
+      yield put({ type: CONTRACT_SAVING, payload: false });
+      yield put({ type: CONTRACT_UPDATING, payload: false });
     }
   }
 }
@@ -546,6 +566,10 @@ export function* pay(address, amount) {
 
 export function* handlePayArbitration(args) {
   log("handlePayArbitration - run", args);
+
+  yield put({ type: CONTRACT_SAVING, payload: true });
+  yield put({ type: CONTRACT_UPDATING, payload: true });
+
   const { id, address: contractAddress, onFail } = args;
   let { amount } = args;
 
@@ -553,6 +577,9 @@ export function* handlePayArbitration(args) {
   const wallet = yield select(getWallet);
   const token = new JURToken();
   const arbitration = new Arbitration(contractAddress);
+
+  // string interpolation for activities
+  const iValue = amount
 
   // fix amount decimals
   amount = amount * 10**18;
@@ -607,6 +634,7 @@ export function* handlePayArbitration(args) {
     // Status update
     let toUpdate = new FormData();
     toUpdate.append("code", code);
+    toUpdate.append("interpolation[value]", iValue);
 
     try {
       const response = yield call(Contracts.statusChange, toUpdate, id);
@@ -620,13 +648,19 @@ export function* handlePayArbitration(args) {
         id
       });
       yield put({ type: FETCH_CONTRACTS });
+      yield put({ type: CONTRACT_SAVING, payload: false });
+      yield put({ type: CONTRACT_UPDATING, payload: false });
 
       // const { history } = action;
       // history.push(`/contracts/detail/${id}`); // go to contract detail for furter operations
     } catch (error) {
+      yield put({ type: CONTRACT_SAVING, payload: false });
+      yield put({ type: CONTRACT_UPDATING, payload: false });
       yield put({ type: API_CATCH, error });
     }
   } else {
+    yield put({ type: CONTRACT_SAVING, payload: false });
+    yield put({ type: CONTRACT_UPDATING, payload: false });
     if (typeof onFail === "function") onFail();
   }
 }
@@ -649,9 +683,80 @@ export function* handleSignArbitration({ contractAddress }) {
   yield sendToContract(contractAddress, "sign", null, success, fail);
 }
 
+export function* handleAmendDisputeArbitration(args) {
+
+  log("handleAmendDisputeArbitration");
+  yield put({ type: DISPUTE_SAVING, payload: true });
+  yield put({ type: DISPUTE_UPDATING, payload: true });
+
+  const { id, code, message, callback } = args;
+  let { dispersal } = args;
+  const currentContract = yield select(getCurrentContract);
+  const { address: contractAddress } = currentContract;
+
+  const arbitration = new Arbitration(contractAddress);
+
+  const proposal_part_a = dispersal[0];
+  const proposal_part_b = dispersal[1];
+
+  // fix decimals
+  dispersal[0] = dispersal[0] * 10**18;
+  dispersal[1] = dispersal[1] * 10**18;
+
+  // fix strings
+  dispersal[0] = dispersal[0].toString();
+  dispersal[1] = dispersal[1].toString();
+
+  const amendDisputeTx = yield arbitration.amendDisputeDispersal(dispersal).catch(chainErrorHandler);
+
+  if (amendDisputeTx) { // only if there is a valid sign tx
+
+    log("handleAmendDisputeArbitration – amendDisputeTx", amendDisputeTx)
+
+    yield put({ type: LOOKUP_WALLET_BALANCE }); // update wallet balance
+
+    // Status update
+    let toUpdate = new FormData();
+    toUpdate.append("code", code);
+    toUpdate.append("message", message);
+    toUpdate.append("proposal_part_a", proposal_part_a);
+    toUpdate.append("proposal_part_b", proposal_part_b);
+
+    try {
+      let response = yield call(Disputes.store, toUpdate, id);
+      log("handleAmendDisputeArbitration - contract status updated", response);
+      // const { statusId, statusLabel, statusUpdatedAt } = response.data.data;
+      // yield put({
+      //   type: SET_CONTRACT_STATUS,
+      //   statusId,
+      //   statusLabel,
+      //   statusUpdatedAt,
+      //   id
+      // });
+      yield put({ type: FETCH_CONTRACTS });
+      yield put({ type: DISPUTE_SAVING, payload: false });
+      yield put({ type: DISPUTE_UPDATING, payload: false });
+      if (typeof callback === "function") callback();
+
+      // const { history } = action;
+      // history.push(`/contracts/detail/${id}`); // go to contract detail for furter operations
+    } catch (error) {
+      yield put({ type: API_CATCH, error });
+      yield put({ type: DISPUTE_SAVING, payload: false });
+      yield put({ type: DISPUTE_UPDATING, payload: false });
+    }
+  } else {
+    yield put({ type: DISPUTE_SAVING, payload: false });
+    yield put({ type: DISPUTE_UPDATING, payload: false });
+    if (typeof callback === "function") callback();
+  }
+}
+
 export function* handleWithdrawArbitration(args) {
 
   log("handleWithdrawArbitration");
+  yield put({ type: CONTRACT_SAVING, payload: true });
+  yield put({ type: CONTRACT_UPDATING, payload: true });
   const { id, address: contractAddress, onFail } = args;
 
   const arbitration = new Arbitration(contractAddress);
@@ -689,6 +794,7 @@ export function* handleWithdrawArbitration(args) {
       // Status update
       let toUpdate = new FormData();
       toUpdate.append("code", code);
+      toUpdate.append("interpolation[value]", ethToHuman(dispersal.toString()));
 
       try {
         const response = yield call(Contracts.statusChange, toUpdate, id);
@@ -702,13 +808,19 @@ export function* handleWithdrawArbitration(args) {
           id
         });
         yield put({ type: FETCH_CONTRACTS });
+        yield put({ type: CONTRACT_SAVING, payload: false });
+        yield put({ type: CONTRACT_UPDATING, payload: false });
 
         // const { history } = action;
         // history.push(`/contracts/detail/${id}`); // go to contract detail for furter operations
       } catch (error) {
         yield put({ type: API_CATCH, error });
+        yield put({ type: CONTRACT_SAVING, payload: false });
+        yield put({ type: CONTRACT_UPDATING, payload: false });
       }
     } else {
+      yield put({ type: CONTRACT_SAVING, payload: false });
+      yield put({ type: CONTRACT_UPDATING, payload: false });
       if (typeof onFail === "function") onFail();
     }
   }
@@ -840,104 +952,117 @@ export function* handleSendToCounterparty() {
   // yield put({ type: CHAIN_APPROVE_JURTOKEN, amount});
 }
 
-export function* handleDisputeArbitration({ contractAddress, amount }) {
-  const trai = 2;
+export function* handleDisputeArbitration(args) {
 
-  if (trai == 1) {
-    const wallet = yield select(getWallet);
+  yield put({ type: DISPUTE_SAVING, payload: true });
+  yield put({ type: DISPUTE_UPDATING, payload: true });
 
-    let disputeJURFunction = {
-      name: "disputeJUR",
-      type: "function",
-      inputs: [
-        {
-          type: "address",
-          name: "_sender"
-        },
-        {
-          type: "uint256",
-          name: "_voteAmount"
-        },
-        {
-          type: "uint256[]",
-          name: "_dispersal"
-        }
-      ]
-    };
-    amount = parseInt(amount + "000000000000000000");
-    const signPayload = [
-      wallet.address,
-      amount,
-      [10000000000000000000, 10000000000000000000]
-    ];
-    log("signPayload", signPayload);
-    const data = global.drizzle.web3.eth.abi.encodeFunctionSignature(
-      disputeJURFunction,
-      signPayload
-    );
+  const { id, statusId, message, callback } = args;
+  let { code, dispersal } = args;
+  log("handleDisputeArbitration – dispersal", dispersal)
+  log("handleDisputeArbitration – code", code)
 
-    const payload = [contractAddress, amount, data];
+  // single step with approve and call
+  const wallet = yield select(getWallet);
+  const currentContract = yield select(getCurrentContract);
+  const { address: contractAddress } = currentContract;
+  const token = new JURToken();
+  // const arbitration = new Arbitration(contractAddress);
 
-    log("upayload", payload);
+  // Init first vote payload
+  let firstVote = new FormData();
+  firstVote.append("oracle_wallet", wallet.address);
+  firstVote.append("wallet_part", wallet.address);
+  firstVote.append("contract_id", id);
+  firstVote.append("message", message);
 
-    const r = yield sendToContract("JURToken", "approveAndCall", payload);
+  const totalContractValue = getContractTotalValue(currentContract); // float value
+  log("handleDisputeArbitration – totalContractValue", totalContractValue)
+  log("handleDisputeArbitration – totalContractValue.toString()", totalContractValue.toString())
+  let amount = 0;
+
+  // amount should be value + 1% only first time – should check the contract status
+  if (statusId !== 31 && statusId === 5) { // open dispute and fist one to open a dispute
+
+    amount = totalContractValue * Number(process.env.REACT_APP_OPEN_DISPUTE_FEE);
+
+  } else { // ongoing dispute
+
+    /* do nothing for now */
+
+  }
+
+  log("handleDisputeArbitration – process.env.REACT_APP_OPEN_DISPUTE_FEE", process.env.REACT_APP_OPEN_DISPUTE_FEE)
+  log("handleDisputeArbitration – Number(process.env.REACT_APP_OPEN_DISPUTE_FEE)", Number(process.env.REACT_APP_OPEN_DISPUTE_FEE))
+  log("handleDisputeArbitration – amount", amount)
+  log("handleDisputeArbitration – amount.toString()", amount.toString())
+
+  firstVote.append("amount", amount);
+  const proposal_part_a = dispersal[0];
+  const proposal_part_b = dispersal[1];
+
+  // fix decimals
+  amount = amount * 10**18;
+  dispersal[0] = dispersal[0] * 10**18;
+  dispersal[1] = dispersal[1] * 10**18;
+
+  // fix strings
+  amount = amount.toString();
+  dispersal[0] = dispersal[0].toString();
+  dispersal[1] = dispersal[1].toString();
+
+  log("handleDisputeArbitration – payload", [wallet.address, amount, dispersal])
+
+  const disputeTx = yield token
+    .approveAndCall(contractAddress, amount, 'dispute', [wallet.address, amount, dispersal])
+    .catch(chainErrorHandler);
+
+  if (disputeTx) { // only if there is a valid dispute tx
+    log("handleDisputeArbitration – disputeTx", disputeTx)
+
+    yield put({ type: LOOKUP_WALLET_BALANCE }); // update wallet balance
+
+    // Status update
+    let toUpdate = new FormData();
+    toUpdate.append("code", code);
+    toUpdate.append("message", message);
+    toUpdate.append("proposal_part_a", proposal_part_a);
+    toUpdate.append("proposal_part_b", proposal_part_b);
+
+    try {
+      let response = yield call(Disputes.store, toUpdate, id);
+      log("handleDisputeArbitration - contract status updated", response);
+      // const { statusId, statusLabel, statusUpdatedAt } = response.data.data;
+      // yield put({
+      //   type: SET_CONTRACT_STATUS,
+      //   statusId,
+      //   statusLabel,
+      //   statusUpdatedAt,
+      //   id
+      // });
+      yield put({ type: FETCH_CONTRACTS });
+      yield put({ type: DISPUTE_SAVING, payload: false });
+      yield put({ type: DISPUTE_UPDATING, payload: false });
+
+      firstVote.append("hash", disputeTx.tx);
+
+      // Store first vote due dispute init
+      response = yield call(Oracles.store, firstVote);
+      log("handleDisputeArbitration - set first vote", response);
+
+      if (typeof callback === "function") callback();
+
+      // const { history } = action;
+      // history.push(`/contracts/detail/${id}`); // go to contract detail for furter operations
+    } catch (error) {
+      yield put({ type: API_CATCH, error });
+      yield put({ type: DISPUTE_SAVING, payload: false });
+      yield put({ type: DISPUTE_UPDATING, payload: false });
+    }
   } else {
-    const drizzleContracts = yield select(getDrizzleStoredContracts);
-    const contract = drizzleContracts[contractAddress];
-
-    // get contract balance
-    const balance = yield callToContract(
-      "JURToken",
-      "balanceOf",
-      [contractAddress],
-      () => {},
-      () => {}
-    );
-    const amount = parseInt(balance) * 0.1;
-    console.log("amount for dispute", amount, "balance", balance);
-    // amount = Number(humanToEth(amount));
-
-    alert("x");
-
-    yield put({
-      type: CHAIN_DISPUTE_ARBITRATION,
-      contractAddress,
-      amount,
-      success: () => {
-        log("dispute success");
-      },
-      fail: () => {
-        log("dispute fail");
-      }
-    });
-
-    /*
-    const success = () => {
-      log('CHAIN_APPROVE_JURTOKEN succedeed');
-      global.drizzle.store.dispatch({
-        type: CHAIN_DISPUTE_ARBITRATION,
-        contractAddress,
-        amount,
-        success: ()=>{
-          log('dispute success');
-        },
-        fail: ()=>{
-          log('dispute fail');
-        }
-      });
-    }
-
-    const fail = () => {
-      log('CHAIN_APPROVE_JURTOKEN failed');
-    }
-
-    yield put({ type: CHAIN_APPROVE_JURTOKEN,
-      contractAddress,
-      amount,
-      success,
-      fail
-    });
-    */
+    yield put({ type: DISPUTE_SAVING, payload: false });
+    yield put({ type: DISPUTE_UPDATING, payload: false });
+    if (typeof callback === "function") callback();
   }
 }
 
@@ -973,6 +1098,76 @@ export function* handleChainVoteArbitration({ contractAddress }) {
   log("CHAIN_VOTE_ARBITRATION");
 }
 
+export function* handleCalcDisputeEndsArbitration(args) {
+  const { id, contractAddress, onFail } = args;
+
+  const arbitration = new Arbitration(contractAddress);
+
+  const tx = yield arbitration.calcDisputeEnds().catch(chainErrorHandler);
+  log(`handleCalcDisputeEndsArbitration – result`, tx);
+  log(`handleCalcDisputeEndsArbitration – result.toString()`, tx.toString());
+}
+
+export function* handleTotalVotesArbitration(args) {
+  const { id, contractAddress, onFail } = args;
+
+  const arbitration = new Arbitration(contractAddress);
+
+  const tx = yield arbitration.totalVotes().catch(chainErrorHandler);
+  log(`handleTotalVotesArbitration – result`, tx);
+  log(`handleTotalVotesArbitration – result.toString()`, tx.toString());
+}
+
+export function* handleDisputeWindowVotesArbitration(args) {
+  const { id, contractAddress, onFail } = args;
+
+  const arbitration = new Arbitration(contractAddress);
+
+  const tx = yield arbitration.disputeWindowVotes().catch(chainErrorHandler);
+  log(`handleDisputeWindowVotesArbitration – result`, tx);
+  log(`handleDisputeWindowVotesArbitration – result.toString()`, tx.toString());
+}
+
+export function* handleDisputeStartsArbitration(args) {
+  const { id, contractAddress, onFail } = args;
+
+  const arbitration = new Arbitration(contractAddress);
+
+  const tx = yield arbitration.disputeStarts().catch(chainErrorHandler);
+  log(`handleDisputeStartsArbitration – result`, tx);
+  log(`handleDisputeStartsArbitration – result.toString()`, tx.toString());
+}
+
+export function* handleDisputeEndsArbitration(args) {
+  const { id, contractAddress, onFail } = args;
+
+  const arbitration = new Arbitration(contractAddress);
+
+  const tx = yield arbitration.disputeEnds().catch(chainErrorHandler);
+  log(`handleDisputeEndsArbitration – result`, tx);
+  log(`handleDisputeEndsArbitration – result.toString()`, tx.toString());
+}
+
+export function* handleSetMockedNow(args) {
+  const { id, contractAddress, onFail } = args;
+
+  const arbitration = new ArbitrationMock(contractAddress);
+
+  const tomorrow = 1 * 24 * 60 * 60; // +1 day
+
+  const tx = yield arbitration.setMockedNow(tomorrow).catch(chainErrorHandler);
+  log(`handleSetMockedNow – result`, tx);
+}
+
+export function* handleGetNow(args) {
+  const { id, contractAddress, onFail } = args;
+
+  const arbitration = new ArbitrationMock(contractAddress);
+
+  const tx = yield arbitration.getNow().catch(chainErrorHandler);
+  log(`handleGetNow – result`, tx);
+}
+
 // spawn tasks base certain actions
 export default function* arbitrationSagas() {
   log("run", "arbitrationSagas");
@@ -982,7 +1177,14 @@ export default function* arbitrationSagas() {
   yield takeEvery(SUCCESS_ARBITRATION, handleSuccessArbitration);
   yield takeEvery(PAY_ARBITRATION, handlePayArbitration);
   yield takeEvery(DISPUTE_ARBITRATION, handleDisputeArbitration);
+  yield takeEvery(AMEND_DISPUTE_ARBITRATION, handleAmendDisputeArbitration);
   yield takeEvery(WITHDRAW_ARBITRATION, handleWithdrawArbitration);
+
+  yield takeEvery(CALC_DISPUTE_ENDS_ARBITRATION, handleCalcDisputeEndsArbitration);
+  yield takeEvery(TOTAL_VOTES_ARBITRATION, handleTotalVotesArbitration);
+  yield takeEvery(DISPUTE_WINDOW_VOTES_ARBITRATION, handleDisputeWindowVotesArbitration);
+  yield takeEvery(DISPUTE_STARTS_ARBITRATION, handleDisputeStartsArbitration);
+  yield takeEvery(DISPUTE_ENDS_ARBITRATION, handleDisputeEndsArbitration);
 
   yield takeEvery(CHAIN_CREATE_ARBITRATION, handleCreateArbitration);
   yield takeEvery(CHAIN_APPROVE_JURTOKEN, handleApproveJurToken);
@@ -1007,4 +1209,7 @@ export default function* arbitrationSagas() {
   yield takeEvery(SET_BALANCE, fetchArbitrations);
   yield takeEvery(CHAIN_GET_CONTRACT, chainGetContract);
   yield takeEvery(CONTRACT_INITIALIZED, handleContractInitialized);
+
+  yield takeEvery(GET_NOW, handleGetNow);
+  yield takeEvery(SET_MOCKED_NOW, handleSetMockedNow);
 }

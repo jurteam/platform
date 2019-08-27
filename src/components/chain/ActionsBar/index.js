@@ -5,7 +5,8 @@ import { ActionsBar } from "./ActionsBar";
 const mapStateToProps = (state) => {
   return {
     wallet: state.wallet,
-    contract: state.contract.current
+    contract: state.contract.current,
+    dispute: state.dispute.current
   };
 };
 

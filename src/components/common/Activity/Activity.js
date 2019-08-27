@@ -43,7 +43,8 @@ export const Activity = ( props ) => {
             className={`dispute ${isOpen ? "dispute--open" : ""}`}
             onClick={() => setOpen(!isOpen)}
           >
-            {`${abstract || labels.createdAn} `}
+            {/* {`${abstract || labels.createdAn} `} */}
+            {`${labels.createdAn} `}
             <span>
               {labels.openDispute}
             </span>
@@ -57,7 +58,8 @@ export const Activity = ( props ) => {
             className={`dispute ${isOpen ? "dispute--open" : ""}`}
             onClick={() => setOpen(!isOpen)}
           >
-            {`${abstract || labels.sent} `}
+            {/* {`${abstract || labels.sent} `} */}
+            {`${labels.sent} `}
             <span>
               {labels.disputeProposal}
             </span>
@@ -71,7 +73,8 @@ export const Activity = ( props ) => {
             className={`friendly ${isOpen ? "friendly--open" : ""}`}
             onClick={() => setOpen(!isOpen)}
           >
-            {`${abstract || labels.offeredA} `}
+            {/* {`${abstract || labels.offeredA} `} */}
+            {`${labels.offeredA} `}
             <span>{`${labels.friendlyResolution}.`}</span>
             {typeof noPreview !== "undefined" && <CaretDownIcon className="friendly-caret" />}
           </span>

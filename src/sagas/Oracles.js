@@ -1,5 +1,5 @@
 import { call, put, select, takeLatest, takeEvery } from "redux-saga/effects";
-import { getUser } from "./Selectors";
+import { getUser, getCurrentContract, getCurrentDispute } from "./Selectors";
 import {
   FETCH_ORACLES,
   FETCH_CURRENT_ORACLES,
@@ -11,15 +11,18 @@ import {
   SET_ORACLE_CURRENT_PAGE,
   DISPUTE_UPDATING,
   RESET_VOTE,
-  PUT_VOTE
+  PUT_VOTE,
+  LOOKUP_WALLET_BALANCE,
+  FETCH_CONTRACTS,
+  SET_CONTRACT_STATUS
 } from "../reducers/types";
 
-import { log } from "../utils/helpers"; // log helper
+import { log, chainErrorHandler } from "../utils/helpers"; // log helper
 
 import contractStatuses from "../assets/i18n/en/status.json";
 
 // Api layouts
-import { Oracles, Disputes } from "../api";
+import { Oracles, Disputes, JURToken, Arbitration, Contracts } from "../api";
 
 import { getOracleOrder, getOracleListPage } from "./Selectors"; // selector
 
@@ -68,8 +71,12 @@ export function* onVote(action) {
   log("onVote - run");
   yield put({ type: DISPUTE_UPDATING, payload: true });
   const {
-    vote: { amount, contract_id, message, hash, oracle_wallet, wallet_part },
-    attachments
+    vote: { contract_id, message, hash, oracle_wallet, wallet_part },
+    attachments,
+    callback
+  } = action;
+  let {
+    vote: { amount }
   } = action;
 
   const zero = Number(0).toFixed(process.env.REACT_APP_TOKEN_DECIMALS);
@@ -80,7 +87,7 @@ export function* onVote(action) {
   voteData.append("hash", hash || "0x0");
   if (wallet_part) voteData.append("wallet_part", wallet_part);
   if (oracle_wallet) voteData.append("oracle_wallet", oracle_wallet);
-  if (message) voteData.append("message", message);
+  voteData.append("message", message ? message : ''); // empty string
   voteData.append(
     "amount",
     Number(amount).toFixed(process.env.REACT_APP_TOKEN_DECIMALS)
@@ -94,27 +101,75 @@ export function* onVote(action) {
   }
   // voteData.append("attachments[]", attachments);
 
+  log("onVote - action", action);
   log("onVote - voteData", voteData);
 
-  try {
-    const response = yield call(Disputes.vote, voteData);
-    log("onVote - vote created", response);
+  // single step with approve and call
+  const currentContract = yield select(getCurrentDispute);
+  log("onVote - currentContract", currentContract);
+  const { address: contractAddress } = currentContract;
 
+  const token = new JURToken();
+  // const arbitration = new Arbitration(contractAddress);
+
+  // fix amount decimals
+  amount = amount * 10**18;
+
+  // fix strings
+  amount = amount.toString();
+
+  const voteTx = yield token
+    .approveAndCall(contractAddress, amount, 'vote', [oracle_wallet, wallet_part, amount])
+    .catch(chainErrorHandler);
+
+  if (voteTx) { // only if there is a valid sign tx
+
+    yield put({ type: LOOKUP_WALLET_BALANCE }); // update wallet balance
+
+    voteData.append("hash", voteTx.tx); // chain transaction
+
+    try {
+      const response = yield call(Disputes.vote, voteData);
+      log("onVote - vote created", response);
+
+      yield put({ type: DISPUTE_UPDATING, payload: false });
+      yield put({ type: RESET_VOTE });
+      // TODO: fetch new votes
+
+      yield put({ type: FETCH_CONTRACTS });
+
+      if (typeof callback === "function") callback();
+
+      // const { history } = action;
+      // history.push(`/contracts/detail/${id}`); // go to contract detail for furter operations
+    } catch (error) {
+      yield put({ type: API_CATCH, error });
+      yield put({ type: DISPUTE_UPDATING, payload: false });
+    }
+  } else {
+    if (typeof callback === "function") callback();
     yield put({ type: DISPUTE_UPDATING, payload: false });
-    yield put({ type: RESET_VOTE });
-    // TODO: fetch new votes
-
-    if (typeof action.callback === "function") {
-      action.callback();
-    } // invoke callback if needed
-  } catch (error) {
-    yield put({ type: DISPUTE_UPDATING, payload: false });
-
-    yield put({ type: API_CATCH, error });
-    if (typeof action.callback === "function") {
-      action.callback();
-    } // invoke callback if needed
   }
+
+  // try {
+  //   const response = yield call(Disputes.vote, voteData);
+  //   log("onVote - vote created", response);
+
+  //   yield put({ type: DISPUTE_UPDATING, payload: false });
+  //   yield put({ type: RESET_VOTE });
+  //   // TODO: fetch new votes
+
+  //   if (typeof action.callback === "function") {
+  //     action.callback();
+  //   } // invoke callback if needed
+  // } catch (error) {
+  //   yield put({ type: DISPUTE_UPDATING, payload: false });
+
+  //   yield put({ type: API_CATCH, error });
+  //   if (typeof action.callback === "function") {
+  //     action.callback();
+  //   } // invoke callback if needed
+  // }
 }
 
 // spawn tasks base certain actions

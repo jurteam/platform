@@ -257,6 +257,31 @@ export const calculateFundingAndDispersal = (contractData) => {
   }
 }
 
+// @retun float value
+export const getContractTotalValue = (contract, toHuman) => {
+
+  if (typeof toHuman === 'undefined') toHuman = false;
+
+  log("getContractTotalValue – run", contract);
+  let value = 0
+
+  // base value
+  if (typeof contract.value !== 'undefined') {
+    value = Number(contract.value)
+  } else {
+    value = Number(contract.amount)
+  }
+
+  // penalties
+  if (typeof contract.partAPenaltyFee !== 'undefined') {
+    value = value + Number(contract.partAPenaltyFee) + Number(contract.partBPenaltyFee)
+  } else if (typeof contract.penaltyFee !== 'undefined') {
+    value = value + Number(contract.penaltyFee.partA) + Number(contract.penaltyFee.partB)
+  }
+
+  return toHuman ? ethToHuman(value) : value;
+}
+
 export const formatAmount = (amount) => {
 
   // TODO: WEI conversion

@@ -16,7 +16,7 @@ import ContractsFilters from "../ContractsFilters";
 import Pagination from "../Pagination";
 import { SpinnerOnly } from "../Spinner";
 
-import { humanToEth } from "../../../utils/helpers"; // log helper
+import { humanToEth, getContractTotalValue } from "../../../utils/helpers"; // log helper
 
 import { EXPIRED_CONTRACT } from "../../../reducers/types";
 
@@ -159,7 +159,7 @@ export const ContractsTable = props => {
                   ))}
                 </TableCell>
                 <TableCell>
-                  <Amount value={humanToEth(contract.value)} />
+                  <Amount value={humanToEth(getContractTotalValue(contract, true))} />
                 </TableCell>
                 <TableCell>
                   {!contract.archived &&

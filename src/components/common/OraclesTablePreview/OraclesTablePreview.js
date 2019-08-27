@@ -38,9 +38,9 @@ export const OraclesTablePreview = ( props ) => {
           </TableRow>
         </TableHead>
         <TableBody className="jur-oracles-table-preview__body">
-          {data.map(oracle => (
+          {data.map((oracle, idx) => (
             <TableRow
-              key={oracle.oracle_wallet.toLowerCase()}
+            key={`${idx}–${oracle.oracle_wallet.toLowerCase()}`}
               className={
                 oracle.oracle_wallet.toLowerCase() ===
                 currentUserWallet.toLowerCase()

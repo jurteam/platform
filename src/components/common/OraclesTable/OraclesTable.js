@@ -96,7 +96,7 @@ export const OraclesTable = ( props ) => {
 
               return (
                 <TableRow
-                  key={oracleWallet}
+                  key={`${idx}–${oracleWallet}`}
                   className={`${oracle.isOpen ? "active" : ""}`}
                   {...rowParams}
                 >

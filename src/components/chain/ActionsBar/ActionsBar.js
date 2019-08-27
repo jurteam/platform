@@ -15,14 +15,32 @@ import {
   CHAIN_AGREE_ARBITRATION,
   CHAIN_WITHDRAW_DISPERSAL_ARBITRATION,
   DISPUTE_ARBITRATION,
-  ACCEPT_ARBITRATION
+  ACCEPT_ARBITRATION,
+  CALC_DISPUTE_ENDS_ARBITRATION,
+  TOTAL_VOTES_ARBITRATION,
+  DISPUTE_WINDOW_VOTES_ARBITRATION,
+  DISPUTE_STARTS_ARBITRATION,
+  DISPUTE_ENDS_ARBITRATION,
+  SET_MOCKED_NOW,
+  GET_NOW
 } from "../../../reducers/types";
 
 export const ActionsBar = props => {
-  const { wallet, contract } = props;
+  const { wallet, contract, isDispute, dispute } = props;
   const { balance } = wallet;
 
-  const { address: currentContractAddress, id } = contract;
+  let currentContractAddress;
+  let id;
+
+  if (isDispute) {
+    id = dispute.id;
+    currentContractAddress = dispute.address;
+  } else {
+    id = contract.id;
+    currentContractAddress = contract.address;
+  }
+
+  console.log("ActionsBar", {currentContractAddress, id});
 
   const createArbitration = () => {
     console.log("createArbitration - call");
@@ -95,7 +113,7 @@ export const ActionsBar = props => {
     });
   };
 
-  const dispute = () => {
+  const onDispute = () => {
     console.log("Dispute - call");
     global.drizzle.store.dispatch({
       type: DISPUTE_ARBITRATION,
@@ -111,6 +129,61 @@ export const ActionsBar = props => {
       amount: amount
     });
   }
+
+  const calcDisputeEnds = () => {
+    console.log("calcDisputeEnds - call");
+    global.drizzle.store.dispatch({
+      type: CALC_DISPUTE_ENDS_ARBITRATION,
+      contractAddress: currentContractAddress
+    });
+  }
+
+  const totalVotes = () => {
+    console.log("calcDisputeEnds - call");
+    global.drizzle.store.dispatch({
+      type: TOTAL_VOTES_ARBITRATION,
+      contractAddress: currentContractAddress
+    });
+  }
+
+  const disputeWindowVotes = () => {
+    console.log("calcDisputeEnds - call");
+    global.drizzle.store.dispatch({
+      type: DISPUTE_WINDOW_VOTES_ARBITRATION,
+      contractAddress: currentContractAddress
+    });
+  }
+
+  const disputeStarts = () => {
+    console.log("disputeStarts - call");
+    global.drizzle.store.dispatch({
+      type: DISPUTE_STARTS_ARBITRATION,
+      contractAddress: currentContractAddress
+    });
+  }
+  const disputeEnds = () => {
+    console.log("disputeEnds - call");
+    global.drizzle.store.dispatch({
+      type: DISPUTE_ENDS_ARBITRATION,
+      contractAddress: currentContractAddress
+    });
+  }
+
+  const setMockedNow = () => {
+    console.log("setMockedNow - call");
+    global.drizzle.store.dispatch({
+      type: SET_MOCKED_NOW,
+      contractAddress: currentContractAddress
+    });
+  }
+  const getNow = () => {
+    console.log("getNow - call");
+    global.drizzle.store.dispatch({
+      type: GET_NOW,
+      contractAddress: currentContractAddress
+    });
+  }
+
   return (
     <>
       <div className="jur--actions--container">
@@ -143,7 +216,7 @@ export const ActionsBar = props => {
             3. sign() – pay [arbitration]
           </button>
           <button onClick={()=>approveToken(2)}>4.1 approve() [JURToken] + 1%</button>
-          <button onClick={dispute}>4.2 dispute() [arbitration]</button>
+          <button onClick={onDispute}>4.2 dispute() [arbitration]</button>
           <button style={{ backgroundColor: 'red', color: 'white' }} onClick={()=>disputeArbitration(2)}>4.2 dispute() [arbitration]</button>
           <button>5. amendDisputeDispersal() – other part [arbitration]</button>
           <button onClick={approveToken}>6.1 approve() [JURToken]</button>
@@ -156,6 +229,19 @@ export const ActionsBar = props => {
           </button>
           <button>7. payoutVoter() [arbitration]</button>
           <button>8. payoutParty() [arbitration]</button>
+        </div>
+      </div>
+
+      <div className="jur--actions--container">
+        <h5>Actions Bar – Helpers</h5>
+        <div className="jur--actions--inner-container">
+          <button onClick={calcDisputeEnds}>calcDisputeEnds()</button>
+          <button onClick={totalVotes}>totalVotes()</button>
+          <button onClick={disputeWindowVotes}>disputeWindowVotes()</button>
+          <button onClick={disputeStarts}>disputeStarts()</button>
+          <button onClick={disputeEnds}>disputeEnds()</button>
+          <button onClick={getNow}>getNow()</button>
+          <button onClick={setMockedNow}>setMockedNow(+1day)</button>
         </div>
       </div>
     </>

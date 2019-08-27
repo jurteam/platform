@@ -60,7 +60,7 @@ return [
         [
             'status_code' => 35,
             'label_name' => 'Sent',
-            'label_status' => 'Open Dispute'
+            'label_status' => 'Dispute Proposal'
         ]
     ]
 ];

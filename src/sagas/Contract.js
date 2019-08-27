@@ -31,7 +31,9 @@ import {
   READ_ACTIVITY,
   SET_ACTIVITY_STATUS_READED,
   DELETE_ALL_CONTRACTS,
-  RESET_ALL_CONTRACTS
+  RESET_ALL_CONTRACTS,
+  DISPUTE_ARBITRATION,
+  AMEND_DISPUTE_ARBITRATION
 } from "../reducers/types";
 
 import { log, arrayColumn } from "../utils/helpers"; // log helper
@@ -386,6 +388,8 @@ export function* handleContractIssues(action) {
   const { message, proposal_part_a, proposal_part_b, payed_at } = proposal;
   const { issue, statusId, proposalAttachments, id } = action;
 
+  log("handleContractIssues - proposal", proposal);
+
   let code = 21; // open friendly
   if (issue === "disputes") {
     code = statusId === 31 ? 35 : 31; // Ongoing Dispute vs Open Dispute
@@ -394,26 +398,34 @@ export function* handleContractIssues(action) {
   const nextStatus = contractStatuses.find(
     status => Number(status.value) === Number(code)
   );
+
   const { label: statusLabel } = nextStatus;
 
   const zero = Number(0).toFixed(process.env.REACT_APP_TOKEN_DECIMALS);
+
+  let dispersal = [0, 0]; // define new dispersal
+  let fee;
 
   const toSend = new FormData();
   // toSend.append('_method', 'PUT');
   if (message) toSend.append("message", message);
   if (proposal_part_a) {
+    fee = Number(proposal_part_a).toFixed(process.env.REACT_APP_TOKEN_DECIMALS)
     toSend.append(
       "proposal_part_a",
-      Number(proposal_part_a).toFixed(process.env.REACT_APP_TOKEN_DECIMALS)
+      fee
     );
+    dispersal[0] = proposal_part_a
   } else {
     toSend.append("proposal_part_a", zero);
   }
   if (proposal_part_b) {
+    fee = Number(proposal_part_b).toFixed(process.env.REACT_APP_TOKEN_DECIMALS)
     toSend.append(
       "proposal_part_b",
-      Number(proposal_part_b).toFixed(process.env.REACT_APP_TOKEN_DECIMALS)
+      fee
     );
+    dispersal[1] = proposal_part_b
   } else {
     toSend.append("proposal_part_b", zero);
   }
@@ -430,36 +442,21 @@ export function* handleContractIssues(action) {
     // toSend.append("attachments[]", proposalAttachments.files);
   }
 
-  try {
-    const response = yield call(Contracts.issue, toSend, issue, id);
-    log("handleContractIssues - issue created", response);
-    const {
-      data: {
-        data: { date: statusUpdatedAt }
-      }
-    } = response;
-    yield put({
-      type: SET_CONTRACT_STATUS,
-      statusId,
-      statusLabel,
-      statusUpdatedAt,
-      id
-    });
-    yield put({ type: CONTRACT_SAVING, payload: false });
-    yield put({ type: FETCH_CONTRACTS });
-
-    // const { history } = action;
-    // history.push(`/contracts/detail/${id}`); // go to contract detail for furter operations
-
+  const callback = () => {
     if (typeof action.callback === "function") {
       action.callback();
-    } // invoke callback if needed
-  } catch (error) {
-    yield put({ type: API_CATCH, error });
-    if (typeof action.callback === "function") {
-      action.callback();
-    } // invoke callback if needed
+    }
+  } // invoke callback if needed
+
+  // contract value + 1%
+  log("handleContractIssues", "prompt issue");
+  let resolve;
+  if (code === 31) {
+    resolve = yield put({ type: DISPUTE_ARBITRATION, id, dispersal, statusId, code, message, callback });
+  } else {
+    resolve = yield put({ type: AMEND_DISPUTE_ARBITRATION, id, dispersal, statusId, code, message, callback });
   }
+  log("handleContractIssues – issue resolved", resolve);
 }
 
 export function* onContractActivitiesSet(action) {

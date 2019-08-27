@@ -5,6 +5,9 @@ let arbitrationSCInstance = null;
 
 export default class ArbitrationContract {
   constructor(address) {
+
+    console.log("ArbitrationContract", address)
+
     if (!arbitrationSCInstance) {
       arbitrationSCInstance = this;
       this.web3 = window.web3;
@@ -56,6 +59,38 @@ export default class ArbitrationContract {
       address = account;
     }
     return instance.dispersal(address);
+  }
+
+  /**
+   * @notice Returns contract disputeStarts
+   */
+  async disputeStarts() {
+    const instance = await this.contract.deployed();
+    return instance.disputeStarts();
+  }
+
+  /**
+   * @notice Returns contract disputeEnds
+   */
+  async disputeEnds() {
+    const instance = await this.contract.deployed();
+    return instance.disputeEnds();
+  }
+
+  /**
+   * @notice Returns contract disputeWindowVotes
+   */
+  async disputeWindowVotes() {
+    const instance = await this.contract.deployed();
+    return instance.disputeWindowVotes();
+  }
+
+  /**
+   * @notice Returns contract totalVotes
+   */
+  async totalVotes() {
+    const instance = await this.contract.deployed();
+    return instance.totalVotes();
   }
 
   /**

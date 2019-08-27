@@ -7,7 +7,7 @@ import Button from "../Button";
 import UploadForm from "../UploadForm";
 import FileList from "../FileList";
 import File from "../File";
-import { toCurrencyFormat, ellipsisString } from "../../../utils/helpers";
+import { toCurrencyFormat, ellipsisString, getContractTotalValue } from "../../../utils/helpers";
 
 // form validation
 import { useFormValidation } from "../../../utils/hooks";
@@ -29,26 +29,28 @@ export const ProposalForm = ( props ) => {
     disabled,
     onProposalFileAdded,
     contract,
-    contract: { amount: contractValue, from, to }
+    contract: { from, to }
   } = props;
 
   const { wallet: fromWallet } = from;
   const { wallet: toWallet } = to;
 
+  const contractValue = getContractTotalValue(contract);
+
   const initalProposal = {
     from:
       from.proposal ||
       from.wallet.toLowerCase() === currentUserWallet.toLowerCase()
-        ? Number(contract.amount)
+        ? Number(contractValue)
         : 0,
     to:
       to.proposal || to.wallet.toLowerCase() === currentUserWallet.toLowerCase()
-        ? Number(contract.amount)
+        ? Number(contractValue)
         : 0
   };
 
   // validation setup
-  const [validateForm, setFormData] = useFormValidation(
+  const [isValid, errors, validateForm, setFormData] = useFormValidation(
     currentProposal,
     validationSchema
   );
@@ -74,7 +76,7 @@ export const ProposalForm = ( props ) => {
 
   const updateProposal = (counterparty, value) => {
     let newProposal = { ...proposal };
-    const contractAmount = Number(props.contract.amount);
+    const contractAmount = getContractTotalValue(props.contract);
 
     if (counterparty === "from") {
       newProposal = {
@@ -95,7 +97,7 @@ export const ProposalForm = ( props ) => {
     setProposal(newProposal);
   };
 
-  const onSubmit = () => props.onSubmit({ proposal, files });
+  const onSubmit = () => props.onSubmit({ proposal, files, proposalMessage });
 
   const updateFiles = files => {
     setFiles(files);

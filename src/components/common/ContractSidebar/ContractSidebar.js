@@ -131,15 +131,13 @@ export const ContractSidebar = ({
               variant={showProposalForm === 2 ? "outlined" : "contained"}
               onClick={() => setShowProposalForm(true)}
               hoverColor="friendly"
+              disabled={true}
             >
               {labels.friendlyResolution}
             </Button>
             <Button
               color="dispute"
-              variant={
-                isPartB || showProposalForm === 2 ? "contained" : "outlined"
-              }
-              fullWidth={isPartB}
+              variant={showProposalForm === 2 ? "contained" : "outlined"}
               onClick={() => setShowProposalForm(2)}
               hoverColor="dispute"
             >
@@ -155,7 +153,7 @@ export const ContractSidebar = ({
             color="dispute"
             hoverColor="dispute"
             onClick={() => {
-              setShowProposalForm(isPartB ? 2 : true);
+              setShowProposalForm(2);
               setActivitiesOpen(false);
             }}
           >
@@ -182,7 +180,9 @@ export const ContractSidebar = ({
                 {labels.withdraw}
               </Button>
             </>
-          ) : null;
+          ) : <span className="jur-contract-actions__text">
+          {labels.contractIsClosed}
+        </span>;
         }
       }
     }
@@ -339,7 +339,10 @@ export const ContractSidebar = ({
           contract={contract}
           onView={onView}
           onProposalFileAdded={onProposalFileAdded}
-          onSubmit={() => onSubmitProposal(issue, setShowProposalForm, setActivitiesOpen)}
+          onSubmit={(args) => {
+            const { /* files, proposal, */ proposalMessage } = args;
+            return onSubmitProposal(issue, setShowProposalForm, setActivitiesOpen, proposalMessage);
+          }}
         />
       )}
     </div>
