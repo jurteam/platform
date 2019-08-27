@@ -46,4 +46,15 @@ class ContractDetailsController extends Controller
 
         return $this->response->item($detail, new ContractStatusDetailTransformer);
     }
+
+    public function update(Request $request, $id)
+    {
+        $detail = ContractStatusDetail::findOrFail($id);
+        $detail->updateDetail(
+            $request, Contract::findOrFail($request->contract_id)
+        );
+        $detail->uploadMedia($request);
+
+        return $this->response->item($detail, new ContractStatusDetailTransformer);        
+    }
 }
