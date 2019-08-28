@@ -1,0 +1,35 @@
+put here files path to exclude
+from deploy operations
+one per line
+
+just create a new file deploy-exclude.list only with files path to exclude
+this can be an example
+
+deploy-conf.yml
+deploy-conf.template
+deploy-exclude.list
+deploy-exclude.template
+.DS_Store
+.git/
+.bzr/
+.storybook/
+.gitignore
+bin/
+docs/
+environment/
+node_modules/
+protocol/
+src/
+README.md
+CONTRIBUTING.md
+CHANGELOG.md
+TROUBLESHOOTING.md
+package.json
+package-lock.json
+.editorconfig
+.codacy.yml
+docker-compose.yml
+license.txt
+readme.rst
+application/cache/twig/
+

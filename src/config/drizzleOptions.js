@@ -6,7 +6,7 @@ import JURToken from "../build/contracts/JURToken.json";
 const options = {
   web3: {
     block: false,
-    vechain: "http://localhost:8669",
+    vechain: process.env.REACT_APP_VECHAIN_NETWORK_URL, // TODO: change API endpoint based on web3.eth.getChainTag()
     thorify: true,
     fallback: {
       type: "ws",

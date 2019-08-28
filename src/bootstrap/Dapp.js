@@ -15,6 +15,11 @@ export const init = () => {
   log("Dapp - web3", web3);
   log("Dapp - web3.currentProvider", web3.currentProvider);
   log("Dapp - web3.currentProvider._comet", web3.currentProvider._comet);
+  log("Dapp - web3.eth.getChainTag()", web3.eth.getChainTag());
+  log("Dapp - web3.eth.getBlock(0)", web3.eth.getBlock(0));
+  log("Dapp - process.env.REACT_APP_VECHAIN_NETWORK_URL", process.env.REACT_APP_VECHAIN_NETWORK_URL);
+
+  // TODO: change API endpoint based on web3.eth.getChainTag()
 
   // provider change handler
   if (web3.currentProvider._comet) {
