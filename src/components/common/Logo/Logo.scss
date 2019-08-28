@@ -2,23 +2,23 @@
   &-logo {
     position: relative;
 
-    &::before {
-      content: "";
-      position: absolute;
-      z-index: 1;
-      top: -6px;
-      left: 28px;
-      width: 90px;
-      height: 130%;
-      background-color: #233250;
-      background-color: #233250;
-      background-image: radial-gradient(rgba(22, 255, 255, 1), transparent);
-      filter: blur(8px);
-      background-blend-mode: overlay;
-    }
+    // &::before {
+    //   content: "";
+    //   position: absolute;
+    //   z-index: 1;
+    //   top: -6px;
+    //   left: 28px;
+    //   width: 90px;
+    //   height: 130%;
+    //   background-color: #233250;
+    //   background-color: #233250;
+    //   background-image: radial-gradient(rgba(22, 255, 255, 1), transparent);
+    //   filter: blur(8px);
+    //   background-blend-mode: overlay;
+    // }
 
     svg {
-      width: 100px;
+      width: 82px;
       position: relative;
       z-index: 2;
     }
