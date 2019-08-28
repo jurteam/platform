@@ -34,6 +34,7 @@ storiesOf("ContractSidebar", module)
         penaltyFee: null,
         duration:{days:4,hours:6,minutes:45}
       }}
+      currentWallet={{ address: "0xh845684f893689fh56347563fh3486539463"}}
       cases={[
         {
           label: "Open",
