@@ -95,8 +95,6 @@ export const humanToEth = ( value ) => {
 
 export const toCurrencyFormat = ( value ) => {
   const decimals = "1";
-
-  value = parseFloat(value)
   
   const num =
     Number(humanToEth(value)) /
