@@ -19,20 +19,14 @@ storiesOf("ContractSetPenaltyFee", module)
         from: {
           label: "partA",
           debtor: true,
-          wallet: {
-            address: "0xh845684f893689fh56347563fh3486539463",
-            amount: 8436758
-          },
+          wallet: "0xh845684f893689fh56347563fh3486539463",
           name: "Alice",
           shouldRenderName: true
         },
         to: {
           label: "partB",
           debtor: false,
-          wallet: {
-            address: "0x38683746f893457h6fh563487fh569834596",
-            amount: 72345
-          },
+          wallet: "0x38683746f893457h6fh563487fh569834596",
           name: "Bob",
           shouldRenderName: false
         },
@@ -48,20 +42,14 @@ storiesOf("ContractSetPenaltyFee", module)
         from: {
           label: "partA",
           debtor: true,
-          wallet: {
-            address: "0xh845684f893689fh56347563fh3486539463",
-            amount: 8436758
-          },
+          wallet: "0xh845684f893689fh56347563fh3486539463",
           name: "Alice",
           shouldRenderName: true
         },
         to: {
           label: "partB",
           debtor: false,
-          wallet: {
-            address: "0x38683746f893457h6fh563487fh569834596",
-            amount: 72345
-          },
+          wallet: "0x38683746f893457h6fh563487fh569834596",
           name: "Bob",
           shouldRenderName: false
         },
