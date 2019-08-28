@@ -25,6 +25,7 @@ $api->version('v1', function($api) {
             $api->delete('{id}', 'App\Http\Controllers\ContractsController@destroy');
 
             $api->group(['prefix' => 'status'], function($api) {
+                $api->get('{id}', 'App\Http\Controllers\ContractsController@getLastStatus');
                 $api->put('update/{id}', 'App\Http\Controllers\ContractsController@updateStatus');
             });
 
@@ -36,6 +37,7 @@ $api->version('v1', function($api) {
                 $api->get('all', 'App\Http\Controllers\DisputesController@index');
                 $api->get('{id}', 'App\Http\Controllers\DisputesController@show');
                 $api->post('{id}', 'App\Http\Controllers\ContractDetailsController@store');
+                $api->put('details/{id}', 'App\Http\Controllers\ContractDetailsController@update');
                 $api->group(['prefix' => 'evidences'], function($api) {
                     $api->delete('{id}', 'App\Http\Controllers\ContractDetailsController@deleteMedia');
                 });
