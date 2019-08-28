@@ -17,7 +17,7 @@ export const ContractAmount = ( props ) => {
       {debtorWalletAddress && amount && (
         <div className="jur-contract-amount__value">
           <Avatar seed={debtorWalletAddress} size="xxsmall" />
-          <Amount value={amount} />
+          <Amount value={parseFloat(amount)} />
         </div>
       )}
     </div>
