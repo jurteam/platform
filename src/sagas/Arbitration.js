@@ -782,7 +782,7 @@ export function* handleWithdrawArbitration(args) {
 
       yield put({ type: LOOKUP_WALLET_BALANCE }); // update wallet balance
 
-      let code = 9; // still waiting for success
+      let code = 10; // still waiting for success
 
       // NOTICE: this should be the normal behavior, since we have 100% to one party this can work only this way
       // let code = 9; // still waiting for withdrown from one party
