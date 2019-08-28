@@ -25,6 +25,7 @@ $api->version('v1', function($api) {
             $api->delete('{id}', 'App\Http\Controllers\ContractsController@destroy');
 
             $api->group(['prefix' => 'status'], function($api) {
+                $api->get('{id}', 'App\Http\Controllers\ContractsController@getLastStatus');
                 $api->put('update/{id}', 'App\Http\Controllers\ContractsController@updateStatus');
             });
 

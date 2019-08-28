@@ -100,6 +100,17 @@ class ContractsController extends Controller
         return response()->json(compact('id'));
     }
 
+    public function getLastStatus(Request $request, $id)
+    {
+        $contract = Contract::findOrFail($id);
+
+        if ($contract->isStatusChanged($request)) {
+            return $this->response->item($contract, new ContractDetailTransformer);
+        } 
+
+        return response()->json(['status' => 'not_changed']);
+    }
+
     /**
      * Update contract status.
      *
