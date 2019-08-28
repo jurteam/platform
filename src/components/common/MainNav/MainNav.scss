@@ -5,7 +5,7 @@
     list-style: none;
     display: flex;
     align-items: center;
-    margin: 0 0 0 110px;
+    margin: 0 0 0 111px;
     padding: 0;
 
     &__item {
@@ -22,7 +22,7 @@
 
       &--contracts {
         svg {
-          width: 17px;
+          width: 18px;
         }
       }
 
@@ -42,10 +42,10 @@
         &.active {
           // color: $white;
 
-          // span {
-          //   color: $main-nav-active-color;
-          //   font-weight: 600;
-          // }
+          span {
+            // color: $main-nav-active-color;
+            font-weight: 600;
+          }
 
           // svg {
           //   fill: $white;
@@ -76,7 +76,7 @@
         font-family: $font-poppins;
         font-size: 14px;
         font-weight: 400;
-        margin-left: 15px;
+        margin-left: 21px;
         z-index: 10;
 
         &:before {
