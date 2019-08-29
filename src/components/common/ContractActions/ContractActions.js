@@ -25,7 +25,7 @@ export const ContractActions = ( props ) => {
         ;
       case 3: // returns waiting only when last action is made for current part.
       case 7: // returns waiting only when last action is made for current part.
-      return statusFrom !== currentWallet.address ? children :
+      return (statusFrom !== currentWallet.address && children) ? children :
           <span className="jur-contract-actions__text">
             {labels.waitingForCounterparty}
           </span>
@@ -43,7 +43,7 @@ export const ContractActions = ( props ) => {
         ;
       case 9:
       case 10:
-        return (statusFrom !== currentWallet.address || children) ? children :
+        return (statusFrom !== currentWallet.address && children) ? children :
         <span className="jur-contract-actions__text">
             {labels.contractIsClosed}
           </span>
@@ -55,7 +55,7 @@ export const ContractActions = ( props ) => {
           </span>
         );
       case 31: // returns waiting based on last part involved.
-        return (!shouldWait || statusFrom !== currentWallet.address) && children ? children :
+        return (statusFrom !== currentWallet.address && children) ? children :
           <span className="jur-contract-actions__text">
             {labels.waitingForCounterparty}
           </span>

@@ -16,7 +16,7 @@ trait StatusesTrait
     {
         $activity = $this->activities->last();
 
-        return $activity->wallet;
+        return strtolower($activity->wallet);
     }
 
     /**
@@ -27,9 +27,9 @@ trait StatusesTrait
     {
         $wallet = $this->getLastStatusFrom();
 
-        if ($wallet == $this->part_a_wallet) {
+        if ($wallet == strtolower($this->part_a_wallet)) {
             return config('jur.part_a_label');
-        } elseif ($wallet == $this->part_b_wallet) {
+        } elseif ($wallet == strtolower($this->part_b_wallet)) {
             return config('jur.part_b_label');
         }
         return null;
@@ -85,5 +85,12 @@ trait StatusesTrait
             return $statusActivity->getUpdatedDate();
         }
         return $this->updated_at->valueOf();
+    }
+
+    public function isStatusChanged($params)
+    {
+        $wallet = $this->getLastStatusFrom();
+
+        return strtolower($params->header('wallet')) == $wallet;
     }
 }

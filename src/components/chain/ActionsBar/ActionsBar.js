@@ -184,7 +184,7 @@ export const ActionsBar = props => {
     });
   }
 
-  return (
+  return process.env.REACT_APP_DEBUG === "true" ? (
     <>
       <div className="jur--actions--container">
         <h5>Actions Bar – Simple Contract</h5>
@@ -245,5 +245,5 @@ export const ActionsBar = props => {
         </div>
       </div>
     </>
-  );
+  ) : null;
 };

@@ -215,10 +215,11 @@ export function* handleCreateArbitration(args) {
         try {
           response = yield call(Contracts.statusChange, toUpdate, id);
           log("handleCreateArbitration - contract status updated", response);
-          const { statusId, statusLabel, statusUpdatedAt } = response.data.data;
+          const { statusId, statusLabel, statusUpdatedAt, statusFrom } = response.data.data;
           yield put({
             type: SET_CONTRACT_STATUS,
             statusId,
+            statusFrom,
             statusLabel,
             statusUpdatedAt,
             id
@@ -328,10 +329,11 @@ export function* handleAcceptArbitrationAmendment(args) {
   try {
     const response = yield call(Contracts.statusChange, toUpdate, id);
     log("handleAcceptArbitrationAmendment - contract status updated", response);
-    const { statusId, statusLabel, statusUpdatedAt } = response.data.data;
+    const { statusId, statusLabel, statusUpdatedAt, statusFrom } = response.data.data;
     yield put({
       type: SET_CONTRACT_STATUS,
       statusId,
+      statusFrom,
       statusLabel,
       statusUpdatedAt,
       id
@@ -359,10 +361,11 @@ export function* handleAcceptArbitration({
 
   try {
     const response = yield call(Contracts.statusChange, toUpdate, id);
-    const { statusId, statusLabel, statusUpdatedAt } = response.data.data;
+    const { statusId, statusLabel, statusUpdatedAt, statusFrom } = response.data.data;
     yield put({
       type: SET_CONTRACT_STATUS,
       statusId,
+      statusFrom,
       statusLabel,
       statusUpdatedAt,
       id
@@ -425,10 +428,11 @@ export function* handleRejectArbitration({ id, address: contractAddress }) {
   try {
     const response = yield call(Contracts.statusChange, toUpdate, id);
     log("handleRejectArbitration - contract status updated", response);
-    const { statusId, statusLabel, statusUpdatedAt } = response.data.data;
+    const { statusId, statusLabel, statusUpdatedAt, statusFrom } = response.data.data;
     yield put({
       type: SET_CONTRACT_STATUS,
       statusId,
+      statusFrom,
       statusLabel,
       statusUpdatedAt,
       id
@@ -478,10 +482,11 @@ export function* handleSuccessArbitration(args) {
       try {
         const response = yield call(Contracts.statusChange, toUpdate, id);
         log("handleSuccessArbitration - contract status updated", response);
-        const { statusId, statusLabel, statusUpdatedAt } = response.data.data;
+        const { statusId, statusLabel, statusUpdatedAt, statusFrom } = response.data.data;
         yield put({
           type: SET_CONTRACT_STATUS,
           statusId,
+          statusFrom,
           statusLabel,
           statusUpdatedAt,
           id
@@ -639,10 +644,11 @@ export function* handlePayArbitration(args) {
     try {
       const response = yield call(Contracts.statusChange, toUpdate, id);
       log("handlePayArbitration - contract status updated", response);
-      const { statusId, statusLabel, statusUpdatedAt } = response.data.data;
+      const { statusId, statusLabel, statusUpdatedAt, statusFrom } = response.data.data;
       yield put({
         type: SET_CONTRACT_STATUS,
         statusId,
+        statusFrom,
         statusLabel,
         statusUpdatedAt,
         id
@@ -725,10 +731,11 @@ export function* handleAmendDisputeArbitration(args) {
     try {
       let response = yield call(Disputes.store, toUpdate, id);
       log("handleAmendDisputeArbitration - contract status updated", response);
-      // const { statusId, statusLabel, statusUpdatedAt } = response.data.data;
+      // const { statusId, statusLabel, statusUpdatedAt, statusFrom } = response.data.data;
       // yield put({
       //   type: SET_CONTRACT_STATUS,
       //   statusId,
+      //   statusFrom,
       //   statusLabel,
       //   statusUpdatedAt,
       //   id
@@ -775,7 +782,7 @@ export function* handleWithdrawArbitration(args) {
 
       yield put({ type: LOOKUP_WALLET_BALANCE }); // update wallet balance
 
-      let code = 9; // still waiting for success
+      let code = 10; // still waiting for success
 
       // NOTICE: this should be the normal behavior, since we have 100% to one party this can work only this way
       // let code = 9; // still waiting for withdrown from one party
@@ -799,10 +806,11 @@ export function* handleWithdrawArbitration(args) {
       try {
         const response = yield call(Contracts.statusChange, toUpdate, id);
         log("handleWithdrawArbitration - contract status updated", response);
-        const { statusId, statusLabel, statusUpdatedAt } = response.data.data;
+        const { statusId, statusLabel, statusUpdatedAt, statusFrom } = response.data.data;
         yield put({
           type: SET_CONTRACT_STATUS,
           statusId,
+          statusFrom,
           statusLabel,
           statusUpdatedAt,
           id
@@ -1032,14 +1040,15 @@ export function* handleDisputeArbitration(args) {
     try {
       let response = yield call(Disputes.store, toUpdate, id);
       log("handleDisputeArbitration - contract status updated", response);
-      // const { statusId, statusLabel, statusUpdatedAt } = response.data.data;
-      // yield put({
-      //   type: SET_CONTRACT_STATUS,
-      //   statusId,
-      //   statusLabel,
-      //   statusUpdatedAt,
-      //   id
-      // });
+      const { statusId, statusLabel, statusUpdatedAt, statusFrom } = response.data.data;
+      yield put({
+        type: SET_CONTRACT_STATUS,
+        statusId,
+        statusFrom,
+        statusLabel,
+        statusUpdatedAt,
+        id
+      });
       yield put({ type: FETCH_CONTRACTS });
       yield put({ type: DISPUTE_SAVING, payload: false });
       yield put({ type: DISPUTE_UPDATING, payload: false });
