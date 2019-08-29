@@ -43,7 +43,8 @@ export const UploadForm = (props) => {
       const selectedFile = inputFileList[0];
       const files = state.files;
       files[idx] = selectedFile;
-      setState(files);
+      setState({files});
+      onChange(files);
     }
   };
 
