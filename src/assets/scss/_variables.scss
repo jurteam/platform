@@ -40,6 +40,9 @@ $athens-gray: #e6eaee;
 
 $blue-new: #0077FF;
 $gray-new: #D8D8D8;
+$gray-light-new: #E8ECEF;
+$gradient1-new: #DE0977;
+$gradient2-new: #3139EC;
 
 $dodger-blue: $blue-new;
 
@@ -60,7 +63,7 @@ $btn-dispute-color: $rose;
 $btn-border-color: $mercury;
 $btn-dark-blue-color: $prussian-blue;
 $btn-muted-color: $gull-gray;
-$btn-gradient-color: linear-gradient(to right, $cerulean, $robin-blue);
+$btn-gradient-color: linear-gradient(to right, $gradient1-new, $gradient2-new);
 $btn-shadow: 0 3px 9px rgba($black, 0.1);
 $btn-font-size-default: 12px;
 
@@ -184,8 +187,8 @@ $counterparties-info-color: $prussian-blue;
 
 // Input range
 $input-range-bg-color: $cloud-burst;
-$input-range-selected-color: $btn-gradient-color;
-$input-range-slider-thumb: $robin-blue;
+$input-range-selected-color: $blue-new;
+$input-range-slider-thumb: $blue-new;
 
 // InfoTooltip
 $tooltip-bg: $cloud-burst;

@@ -25,7 +25,7 @@
     outline: none;
     border-radius: 4px;
     margin: 0;
-    background-image: $input-range-selected-color;
+    background-color: $input-range-selected-color;
     border: 0;
 
     &::-webkit-slider-thumb {
@@ -45,7 +45,7 @@
       z-index: 2;
       width: 16px;
       height: 16px;
-      background: #00e0b7;
+      background: $input-range-slider-thumb;
       cursor: pointer;
       border-radius: 50%;
       box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
