@@ -82,7 +82,7 @@ export const CountdownGraph = ( props ) => {
           <path
             d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
             fill="none"
-            stroke="url('#myGradient')"
+            stroke="#0077FF"
             strokeWidth="3"
             strokeDasharray={`${percentage.toString().replace("%", "")}, 100`}
           />

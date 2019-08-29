@@ -20,7 +20,7 @@ export const PaymentModal = ( props ) => {
         <p>{content}</p>
       </ModalBody>
       <ModalFooter>
-        <Button onClick={onAccept} color="gradient" size="medium" variant="contained">
+        <Button onClick={onAccept} size="medium" variant="contained">
           {labels.okUnderstood}
         </Button>
       </ModalFooter>
