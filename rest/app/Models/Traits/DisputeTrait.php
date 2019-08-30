@@ -2,6 +2,7 @@
 
 namespace App\Models\Traits;
 
+use App\Models\Contract;
 use App\Models\ContractStatusDetail;
 
 trait DisputeTrait
@@ -24,8 +25,10 @@ trait DisputeTrait
     public function getLastPart()
     {
         $last = $this->details->sortByDesc('id')->first();
-
-        return $last->contract_part;
+        if ($last) {
+            return $last->contract_part;
+        }
+        return null;
     }
 
     /**
@@ -155,5 +158,44 @@ trait DisputeTrait
         }
 
         return null;
+    }
+
+    protected function createProposalForCounterPart($params)
+    {
+        $counterPart = $this->getCounterPart($this, $params);
+        $attributes = [
+            'contract_part' => $counterPart['wallet'],
+            'proposal_part_a' => 0,
+            'proposal_part_b' => 0
+        ];
+
+        if ($counterPart['part'] == 'a') {
+            $attributes['proposal_part_a'] = $this->value + $this->part_a_penalty_fee + $this->part_b_penalty_fee;
+        } else {
+            $attributes['proposal_part_b'] = $this->value + $this->part_a_penalty_fee + $this->part_b_penalty_fee;
+        }
+
+        $detail = new ContractStatusDetail($attributes);
+        $detail
+            ->contract()
+            ->associate($this)
+            ->save();
+
+        return $detail;
+    }
+
+    protected function getCounterPart(Contract $contract, $params)
+    {
+        if ($contract->part_a_wallet == $params->header('wallet')) {
+            return [
+                'wallet' => $contract->part_b_wallet,
+                'part' => 'b'
+            ];
+        }
+
+        return [
+            'wallet' => $contract->part_a_wallet,
+            'part' => 'a'
+        ];
     }
 }
