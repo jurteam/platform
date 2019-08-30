@@ -48,8 +48,6 @@ class ContractStatusDetail extends Model implements HasMedia
         $detail->user()->associate($user);
         $detail->save();
 
-        $this->createProposalForCounterPart($contract, $params);
-
         return $detail;
     }
 
@@ -87,43 +85,5 @@ class ContractStatusDetail extends Model implements HasMedia
 
         $this->update($params->all());
         return $this;
-    }
-
-    protected function createProposalForCounterPart(Contract $contract, $params)
-    {
-        $counterPart = $this->getCounterPart($contract, $params);
-        $attributes = [
-            'contract_part' => $counterPart['wallet'],
-            'proposal_part_a' => 0,
-            'proposal_part_b' => 0
-        ];
-
-        if ($counterPart['part'] == 'a') {
-            $attributes['proposal_part_a'] = $contract->value + $contract->part_a_penalty_fee + $contract->part_b_penalty_fee;
-        } else {
-            $attributes['proposal_part_b'] = $contract->value + $contract->part_a_penalty_fee + $contract->part_b_penalty_fee;
-        }
-
-        $detail = new self($attributes);
-        $detail
-            ->contract()
-            ->associate($contract)
-            ->save();      
-        return $detail;  
-    }
-
-    protected function getCounterPart(Contract $contract, $params)
-    {
-        if ($contract->part_a_wallet == $params->header('wallet')) {
-            return [
-                'wallet' => $contract->part_b_wallet,
-                'part' => 'b'
-            ]; 
-        }
-        
-        return [
-            'wallet' => $contract->part_a_wallet,
-            'part' => 'a'
-        ];
     }
 }

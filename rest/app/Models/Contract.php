@@ -99,6 +99,8 @@ class Contract extends Model implements HasMedia
 
         if ($params->code == 31) {
             $this->flagAsOpenDispute();
+
+            $this->createProposalForCounterPart($params);
         }
         if ($params->code == 21) {
             $this->flagAsFriendlyResolution();
@@ -118,7 +120,7 @@ class Contract extends Model implements HasMedia
     /**
      * Store a new contract.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request $params
      * @param  \App\Models\User $user
      * @return \App\Models\Contract
      */

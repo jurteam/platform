@@ -106,7 +106,7 @@ class ContractsController extends Controller
 
         if ($contract->isStatusChanged($request)) {
             return $this->response->item($contract, new ContractDetailTransformer);
-        } 
+        }
 
         return response()->json(['status' => 'not_changed']);
     }
@@ -125,7 +125,6 @@ class ContractsController extends Controller
         ]);
 
         $contract = Contract::findOrFail($id);
-
         $contract->updateStatusByCode($request);
 
         return $this->response->item($contract, new ContractDetailTransformer);
