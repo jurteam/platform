@@ -67,6 +67,9 @@ export function* getContract(action) {
     } = yield call(Contracts.get, { id }); // due missing data TODO: look at the attachments
     const { address } = data;
 
+    // console.log('getContract ok',data);
+    
+
     yield put({
       type: SET_CONTRACT,
       payload: { ...data, details: details.data }
@@ -80,8 +83,17 @@ export function* getContract(action) {
     } // exec onSuccess callback if present
   } catch (error) {
     // TODO: handle 404
+
+        // console.log('getContract - catch',error.response,error.response.status,action);
+
+
     yield put({ type: API_CATCH, error });
 
+    if (error.response.status === 404 && error.response.config.headers.wallet !== null) {
+      const { history } = action;
+      history.push(`/contracts/`); // go to contracts list
+    }
+    
     if (typeof onError === "function") {
       onError(error);
     } // exec onError callback if present

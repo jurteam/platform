@@ -106,14 +106,16 @@ export const ContractDetail = ( props ) => {
     const {
       match: {
         params: { id }
-      }
+      },
+      history
     } = props;
 
     global.drizzle.store.dispatch({
       type: API_GET_CONTRACT,
       id,
       onSuccess: pageLoaded,
-      onError: pageLoaded
+      onError: pageLoaded,
+      history
     });
 
   }, [wallet.address]);
