@@ -57,10 +57,16 @@ $btn: ".jur-btn";
   border-color: $btn-primary-color;
 }
 
-@mixin infoOutlined {
+@mixin infoContainedHover {
   color: $btn-primary-color;
   background: $white;
   border-color: $btn-primary-color;
+}
+
+@mixin infoOutlined {
+  color: $btn-primary-color;
+  background: $white;
+  border-color: $btn-border-color;
 }
 
 @mixin infoRaised {
@@ -85,7 +91,7 @@ $btn: ".jur-btn";
       @include infoContained;
 
       &:hover {
-        @include infoOutlined;
+        @include infoContainedHover;
       }
     }
 

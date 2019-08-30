@@ -46,7 +46,7 @@
     @include infoContained;
 
     &:hover {
-      @include infoOutlined;
+      @include infoContainedHover;
     }
   }
 
