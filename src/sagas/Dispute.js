@@ -57,6 +57,11 @@ export function* getDispute(action) {
     // TODO: handle 404
     yield put({ type: API_CATCH, error });
 
+    if (error.response.status === 404 && error.response.config.headers.wallet !== null) {
+      const { history } = action;
+      history.push(`/disputes/`); // go to contracts list
+    }
+
     if (typeof onError === "function") {onError(error);} // exec onError callback if present
   }
 }

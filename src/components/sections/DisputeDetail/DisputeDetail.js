@@ -105,14 +105,16 @@ export const DisputeDetail = ( props ) => {
     const {
       match: {
         params: { id }
-      }
+      },
+      history
     } = props;
 
     global.drizzle.store.dispatch({
       type: API_GET_DISPUTE,
       id,
       onSuccess: pageLoaded,
-      onError: pageLoaded
+      onError: pageLoaded,
+      history
     });
   }, [wallet.address]);
 
