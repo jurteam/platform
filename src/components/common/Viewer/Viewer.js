@@ -78,20 +78,20 @@ export const Viewer = (props) => {
 
   // }, [contract]);
   // cDM
-  useEffect(() => {
+  // useEffect(() => {
 
-    console.log("Viewer - current changed");
+  //   console.log("Viewer - current changed",props);
 
-    const { current : { idx } } = props;
+  //   const { current : { idx } } = props;
 
-    setState({
-      selectedCounterpartyIndex: idx,
-      selectedCounterparty: counterparties[idx]
-    });
+  //   setState({
+  //     selectedCounterpartyIndex: idx,
+  //     selectedCounterparty: counterparties[idx]
+  //   });
 
-    return () => null; // do nothing on unmount
+  //   return () => null; // do nothing on unmount
 
-  }, [props.current]);
+  // }, [props.current]);
 
   // cDM
   useEffect(() => {
