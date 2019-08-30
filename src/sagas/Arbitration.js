@@ -695,7 +695,7 @@ export function* handleAmendDisputeArbitration(args) {
   yield put({ type: DISPUTE_SAVING, payload: true });
   yield put({ type: DISPUTE_UPDATING, payload: true });
 
-  const { id, code, message, callback } = args;
+  const { id, code, message, proposalAttachments, callback } = args;
   let { dispersal } = args;
   const currentContract = yield select(getCurrentContract);
   const { address: contractAddress } = currentContract;
@@ -727,6 +727,21 @@ export function* handleAmendDisputeArbitration(args) {
     toUpdate.append("message", message);
     toUpdate.append("proposal_part_a", proposal_part_a);
     toUpdate.append("proposal_part_b", proposal_part_b);
+
+    log("handleAmendDisputeArbitration - proposalAttachments", proposalAttachments);
+
+    if (proposalAttachments.files && proposalAttachments.files.length) {
+      for (let i = 0; i < proposalAttachments.files.length; i++) {
+        // iteate over any file sent over appending the files to the form data.
+        let file = proposalAttachments.files[i];
+  
+        log("handleAmendDisputeArbitration - for each file", file);
+  
+        toUpdate.append("attachments[" + i + "]", file);
+      }
+      // toSend.append("attachments[]", proposalAttachments.files);
+    }
+
 
     try {
       let response = yield call(Disputes.store, toUpdate, id);
@@ -965,7 +980,7 @@ export function* handleDisputeArbitration(args) {
   yield put({ type: DISPUTE_SAVING, payload: true });
   yield put({ type: DISPUTE_UPDATING, payload: true });
 
-  const { id, statusId, message, callback } = args;
+  const { id, statusId, message, proposalAttachments, callback } = args;
   let { code, dispersal } = args;
   log("handleDisputeArbitration – dispersal", dispersal)
   log("handleDisputeArbitration – code", code)
@@ -1036,6 +1051,22 @@ export function* handleDisputeArbitration(args) {
     toUpdate.append("message", message);
     toUpdate.append("proposal_part_a", proposal_part_a);
     toUpdate.append("proposal_part_b", proposal_part_b);
+
+    log("handleDisputeArbitration - proposalAttachments", proposalAttachments);
+
+    if (proposalAttachments.files && proposalAttachments.files.length) {
+      for (let i = 0; i < proposalAttachments.files.length; i++) {
+        // iteate over any file sent over appending the files to the form data.
+        let file = proposalAttachments.files[i];
+  
+        log("handleDisputeArbitration - for each file", file);
+  
+        toUpdate.append("attachments[" + i + "]", file);
+      }
+      // toSend.append("attachments[]", proposalAttachments.files);
+    }
+
+
 
     try {
       let response = yield call(Disputes.store, toUpdate, id);

@@ -437,6 +437,8 @@ export function* handleContractIssues(action) {
       // iteate over any file sent over appending the files to the form data.
       let file = proposalAttachments.files[i];
 
+      log("handleContractIssues - for each file", file);
+
       toSend.append("attachments[" + i + "]", file);
     }
     // toSend.append("attachments[]", proposalAttachments.files);
@@ -449,12 +451,12 @@ export function* handleContractIssues(action) {
   } // invoke callback if needed
 
   // contract value + 1%
-  log("handleContractIssues", "prompt issue");
+  log("handleContractIssues", "prompt issue",code);
   let resolve;
   if (code === 31) {
-    resolve = yield put({ type: DISPUTE_ARBITRATION, id, dispersal, statusId, code, message, callback });
+    resolve = yield put({ type: DISPUTE_ARBITRATION, id, dispersal, statusId, code, message, proposalAttachments, callback });
   } else {
-    resolve = yield put({ type: AMEND_DISPUTE_ARBITRATION, id, dispersal, statusId, code, message, callback });
+    resolve = yield put({ type: AMEND_DISPUTE_ARBITRATION, id, dispersal, statusId, code, message, proposalAttachments, callback });
   }
   log("handleContractIssues – issue resolved", resolve);
 }
