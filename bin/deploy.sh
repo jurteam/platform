@@ -78,7 +78,7 @@ if [ ! -z "$ENVIRONMENT" ] | [ ! -z "${!local_app_path}" ] | [ ! -z "${!vhost}" 
   # echo ${!ssh_user}
   # echo ${!ssh_host}
   # echo ${!ssh_password}
-  if [ ! -z "$ENVIRONMENT" ]; then
+  if [ ! -z "$FE" ]; then
     echo ""
   	echo "–– ${ORANGE}Frontend${NC} deploy to '${ENVIRONMENT}' environment –––––––––––––––––––––––––––––"
     if [ "$ENVIRONMENT" == "production" ]; then
