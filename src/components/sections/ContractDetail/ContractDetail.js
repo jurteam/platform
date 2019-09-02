@@ -120,6 +120,11 @@ export const ContractDetail = ( props ) => {
 
   }, [wallet.address]);
 
+  useEffect(() => {
+    setFormData(contract.current);
+    validateForm();
+  }, [contract.current]);
+
   const changeInput = (name, value) => {
     if (!formUpdated) setFormUpdated(true);
     setFormData({ ...contract.current, [name]: value });
