@@ -39,7 +39,7 @@ export const VoteProgress = ( props ) => {
         color={highlightColor}
       />
       <div className="jur-vote-progress__name">
-        {counterparty.renderName
+        {(counterparty.renderName && counterparty.name)
           ? counterparty.name
           : counterparty.wallet.toLowerCase()}
       </div>
