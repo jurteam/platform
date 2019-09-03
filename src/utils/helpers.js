@@ -247,7 +247,7 @@ export const getContractTotalValue = (contract, toHuman) => {
   // penalties
   if (typeof contract.partAPenaltyFee !== 'undefined') {
     value = value + Number(contract.partAPenaltyFee) + Number(contract.partBPenaltyFee)
-  } else if (typeof contract.penaltyFee !== 'undefined') {
+  } else if (typeof contract.penaltyFee !== 'undefined' && contract.penaltyFee !== null) {
     value = value + Number(contract.penaltyFee.partA) + Number(contract.penaltyFee.partB)
   }
 
