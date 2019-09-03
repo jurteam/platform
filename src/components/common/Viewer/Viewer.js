@@ -15,6 +15,11 @@ import Button from "../Button";
 import "./Viewer.scss";
 import { AppContext } from "../../../bootstrap/AppProvider"; // context
 
+
+import {
+  canVote
+} from "../../../utils/helpers";
+
 export const Viewer = (props) => {
 
   const [state, setState] = useState({
@@ -95,11 +100,12 @@ export const Viewer = (props) => {
   // }, [props.current]);
   useEffect(() => {
 
-    console.log("Viewer - mount",current);
+    if (typeof current !== "undefined") {
     setState({
       selectedCounterpartyIndex: current.idx,
       selectedCounterparty: current.counterparty
     });
+    }
 
   }, [current]);
 
@@ -270,7 +276,7 @@ export const Viewer = (props) => {
                   winner={contract.winner}
                   earnings={contract.earnings}
                   onReject={onReject}
-                  canVote={statusId === 35 && !!filePath}
+                  canVote={canVote(statusId)}
                 />
               </div>
             </div>

@@ -295,3 +295,10 @@ export const formatAmount = (amount) => {
 
   return amount
 }
+
+export const canVote = (statusId) => {
+
+  const canVote = [35,36].indexOf(statusId) >= 0;
+
+  return canVote
+}
