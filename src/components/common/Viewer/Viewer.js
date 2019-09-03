@@ -200,7 +200,7 @@ export const Viewer = (props) => {
                 <div className="jur-viewer__form__body">
                   <BlockTitle title={labels.jurTokens} hideIcon />
                   <Form.NumericInput
-                    initialValue={currentVote.amount.toFixed(2)}
+                    initialValue={Number.parseFloat(currentVote.amount).toFixed(2)}
                     step={0.01}
                     error={props.error || props.hasError("amount")}
                     errorMsg={props.error && labels.notEnoughTokenBalance}
