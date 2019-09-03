@@ -218,14 +218,14 @@ export const ContractDetail = ( props ) => {
 
     if (wallet.address.toLowerCase() === counterparties[1].wallet.toLowerCase()) { // is part b
 
-      amount = amount + Number(partBPenaltyFee)
+      if (typeof partBPenaltyFee !== 'undefined' && partBPenaltyFee) amount = amount + Number(partBPenaltyFee)
       if (whoPays.toLowerCase() == counterparties[1].wallet.toLowerCase()) {
         amount = amount + Number(value);
       }
 
     } else {
 
-      amount = amount + Number(partAPenaltyFee)
+      if (typeof partAPenaltyFee !== 'undefined' && partAPenaltyFee) amount = amount + Number(partAPenaltyFee)
       if (whoPays.toLowerCase() == counterparties[0].wallet.toLowerCase()) {
         amount = amount + Number(value);
       }

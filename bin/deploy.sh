@@ -24,6 +24,11 @@ case $key in
     ENVIRONMENT="$2"
     shift # past argument
     ;;
+    --all)
+    FE="yes"
+    BE="yes"
+    shift # past argument
+    ;;
     -f|--frontend)
     FE="yes"
     shift # past argument
@@ -66,48 +71,6 @@ echo "$FE";
 
 if [ ! -z "$ENVIRONMENT" ] | [ ! -z "${!local_app_path}" ] | [ ! -z "${!vhost}" ]; then
 
-  # echo ${!local_app_path}
-  #
-  # echo ${!vhost}
-  # echo ${!app_path}
-  # echo ${!db_name}
-  # echo ${!db_user}
-  # echo ${!db_pass}
-  # echo ${!db_host}
-  # echo ${!db_port}
-  # echo ${!ssh_user}
-  # echo ${!ssh_host}
-  # echo ${!ssh_password}
-  if [ ! -z "$ENVIRONMENT" ]; then
-    echo ""
-  	echo "–– ${ORANGE}Frontend${NC} deploy to '${ENVIRONMENT}' environment –––––––––––––––––––––––––––––"
-    if [ "$ENVIRONMENT" == "production" ]; then
-      echo "   ${PURPLE}local${NC}     build frontend application: npm run build"
-      npm run build
-    else
-      echo "   ${PURPLE}local${NC}     build frontend application: npm run build-${ENVIRONMENT}"
-      npm run build-${ENVIRONMENT}
-    fi
-  	echo ""
-  	echo "   ${PURPLE}local${NC}     origin directory: ${!local_app_path}/build"
-  	echo "   ${CYAN}remote${NC}    destination directory: ${!app_path}/html/public"
-  	echo ""
-    echo "   ${CYAN}remote${NC}    launching command: rsync -vzcrSLh --exclude-from=\"deploy-exclude.list\" ${!local_app_path}/build/. ${!ssh_user}@${!ssh_host}:${!app_path}/html/public"
-  	echo ""
-    # The options:
-    # v - verbose
-    # z - compress data
-    # c - checksum, use checksum to find file differences
-    # r - recursive
-    # S - handle sparse files efficiently
-    # L - follow links to copy actual files
-    # h - show numbers in human-readable format
-    # --exclude-from - Exclude files from being uploaded
-    rsync -vzcrSLh --exclude-from="deploy-exclude.list" ${!local_app_path}/build/. ${!ssh_user}@${!ssh_host}:${!app_path}/html/public
-    echo ""
-  	echo "   ${GREEN}success${NC}   files deploy to '${ENVIRONMENT}' environment done."
-  fi
-
   if [ ! -z "$BE" ]; then
     echo ""
   	echo "–– ${ORANGE}Backend${NC} deploy to '${ENVIRONMENT}' environment –––––––––––––––––––––––––––––"
@@ -134,6 +97,48 @@ if [ ! -z "$ENVIRONMENT" ] | [ ! -z "${!local_app_path}" ] | [ ! -z "${!vhost}" 
     echo "   ${CYAN}remote${NC}    optimizing configuration loading: ssh -t ${!ssh_user}@${!ssh_host} 'php artisan config:cache'"
   	echo ""
     # ssh -t ${!ssh_user}@${!ssh_host} 'php artisan config:cache'
+  	echo "   ${GREEN}success${NC}   files deploy to '${ENVIRONMENT}' environment done."
+  fi
+
+  # echo ${!local_app_path}
+  #
+  # echo ${!vhost}
+  # echo ${!app_path}
+  # echo ${!db_name}
+  # echo ${!db_user}
+  # echo ${!db_pass}
+  # echo ${!db_host}
+  # echo ${!db_port}
+  # echo ${!ssh_user}
+  # echo ${!ssh_host}
+  # echo ${!ssh_password}
+  if [ ! -z "$FE" ]; then
+    echo ""
+  	echo "–– ${ORANGE}Frontend${NC} deploy to '${ENVIRONMENT}' environment –––––––––––––––––––––––––––––"
+    if [ "$ENVIRONMENT" == "production" ]; then
+      echo "   ${PURPLE}local${NC}     build frontend application: npm run build"
+      npm run build
+    else
+      echo "   ${PURPLE}local${NC}     build frontend application: npm run build-${ENVIRONMENT}"
+      npm run build-${ENVIRONMENT}
+    fi
+  	echo ""
+  	echo "   ${PURPLE}local${NC}     origin directory: ${!local_app_path}/build"
+  	echo "   ${CYAN}remote${NC}    destination directory: ${!app_path}/html/public"
+  	echo ""
+    echo "   ${CYAN}remote${NC}    launching command: rsync -vzcrSLh --exclude-from=\"deploy-exclude.list\" ${!local_app_path}/build/. ${!ssh_user}@${!ssh_host}:${!app_path}/html/public"
+  	echo ""
+    # The options:
+    # v - verbose
+    # z - compress data
+    # c - checksum, use checksum to find file differences
+    # r - recursive
+    # S - handle sparse files efficiently
+    # L - follow links to copy actual files
+    # h - show numbers in human-readable format
+    # --exclude-from - Exclude files from being uploaded
+    rsync -vzcrSLh --exclude-from="deploy-exclude.list" ${!local_app_path}/build/. ${!ssh_user}@${!ssh_host}:${!app_path}/html/public
+    echo ""
   	echo "   ${GREEN}success${NC}   files deploy to '${ENVIRONMENT}' environment done."
   fi
 

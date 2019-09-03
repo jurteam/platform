@@ -126,8 +126,8 @@ return [
             ],
             [
                 'status_code' => 10,
-                'label_name' => null,
-                'label_status' => 'Widthdrawn :value JUR from contract'
+                'label_name' => 'Widthdrawn :value JUR from contract',
+                'label_status' => null
             ],
             [
                 'status_code' => 21,
