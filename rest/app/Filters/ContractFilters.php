@@ -51,8 +51,9 @@ class ContractFilters extends Filters
     public function status($value)
     {
         return $this->builder
-                    ->join('contract_statuses', 'contract_statuses.id', '=', 'contracts.contract_status_id')
-                    ->where('contract_statuses.code', $value);
+                    ->whereHas('status', function($q) use($value) {
+                        $q->where('code', $value);
+                    });
     }
 
     public function from($value)
