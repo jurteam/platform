@@ -92,6 +92,15 @@ export const Viewer = (props) => {
   //   return () => null; // do nothing on unmount
 
   // }, [props.current]);
+  useEffect(() => {
+
+    console.log("Viewer - mount",current);
+    setState({
+      selectedCounterpartyIndex: current.idx,
+      selectedCounterparty: current.counterparty
+    });
+
+  }, [current]);
 
   // cDM
   useEffect(() => {
