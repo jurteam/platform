@@ -59,6 +59,8 @@ export const chainErrorHandler = err => {
   //     throw new Error('web3GasTooLow');
 
   // throw new Error(err);
+  console.log('chain error', err);
+  console.log('chain error.message', err.message);
   warn('chain exeption', err.message);
 }
 
@@ -95,7 +97,7 @@ export const humanToEth = ( value ) => {
 
 export const toCurrencyFormat = ( value ) => {
   const decimals = "1";
-  
+
   const num =
     Number(humanToEth(value)) /
     Number(
@@ -182,74 +184,43 @@ export const calculateFundingAndDispersal = (contractData) => {
   const { partAPenaltyFee, partBPenaltyFee, whoPays, value } = contractData;
   const [ partA ] = contractData.counterparties;
 
+  console.log('calculateFundingAndDispersal – run', contractData);
+
   const {
     web3: { utils }
   } = global.drizzle;
 
   let fundings = {
-    a: Number(
-      humanToEth(ethToStore(ethToHuman(Number(humanToEth(partAPenaltyFee)))))
-    ),
-    b: Number(
-      humanToEth(ethToStore(ethToHuman(Number(humanToEth(partBPenaltyFee)))))
-    )
+    a: Number(partAPenaltyFee),
+    b: Number(partBPenaltyFee)
   };
   let dispersal = {
-    a: Number(
-      humanToEth(ethToStore(ethToHuman(Number(humanToEth(partAPenaltyFee)))))
-    ),
-    b: Number(
-      humanToEth(ethToStore(ethToHuman(Number(humanToEth(partBPenaltyFee)))))
-    )
+    a: Number(partAPenaltyFee),
+    b: Number(partBPenaltyFee)
   };
 
   if (whoPays === partA.wallet) {
-    fundings.a = Number(
-      humanToEth(
-        ethToStore(
-          ethToHuman(
-            Number(humanToEth(partAPenaltyFee)) + Number(humanToEth(value))
-          )
-        )
-      )
-    );
-    dispersal.b = Number(
-      humanToEth(
-        ethToStore(
-          ethToHuman(
-            Number(humanToEth(partBPenaltyFee)) + Number(humanToEth(value))
-          )
-        )
-      )
-    );
+    fundings.a = Number(partAPenaltyFee) + Number(value);
+    dispersal.b = Number(partBPenaltyFee) + Number(value);
   } else {
-    fundings.b = Number(
-      humanToEth(
-        ethToStore(
-          ethToHuman(
-            Number(humanToEth(partBPenaltyFee)) + Number(humanToEth(value))
-          )
-        )
-      )
-    );
-    dispersal.a = Number(
-      humanToEth(
-        ethToStore(
-          ethToHuman(
-            Number(humanToEth(partAPenaltyFee)) + Number(humanToEth(value))
-          )
-        )
-      )
-    );
+    fundings.b = Number(partBPenaltyFee) + Number(value);
+    dispersal.a = Number(partAPenaltyFee) + Number(value);
   }
 
   // Avoid presicion issues on BN
   if (process.env.REACT_APP_VECHAIN_ENABLED === 'true')
   { // Comet - VeChain Blockchain
-    fundings.a = fundings.a.toString();
-    fundings.b = fundings.b.toString();
-    dispersal.a = dispersal.a.toString();
-    dispersal.b = dispersal.b.toString();
+
+    let web3Utils = global.drizzle.web3.utils;
+    fundings.a = web3Utils.toWei(fundings.a.toString(), 'ether');
+    fundings.b = web3Utils.toWei(fundings.b.toString(), 'ether');
+    dispersal.a = web3Utils.toWei(dispersal.a.toString(), 'ether');
+    dispersal.b = web3Utils.toWei(dispersal.b.toString(), 'ether');
+
+    // fundings.a = web3Utils.toBN(fundings.a).toString();
+    // fundings.b = web3Utils.toBN(fundings.b).toString();
+    // dispersal.a = web3Utils.toBN(dispersal.a).toString();
+    // dispersal.b = web3Utils.toBN(dispersal.b).toString();
   }
 
   return {
