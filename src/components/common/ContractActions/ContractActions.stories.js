@@ -28,4 +28,4 @@ storiesOf("ContractActions", module)
     </ContractActions>
   ))
   .add("Rejected", () => <ContractActions statusId={-1} />)
-  .add("Waiting", () => <ContractActions statusId={31} />);
+  .add("Waiting", () => <ContractActions statusId={31} currentWallet={{address: "0x0"}} />);
