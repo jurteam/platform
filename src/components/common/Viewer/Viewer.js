@@ -38,6 +38,7 @@ export const Viewer = (props) => {
       countdownOptions,
       counterparties,
       onFileLoadingError,
+      submitDisabled,
       statusId,
       changeInput,
       currentVote,
@@ -222,7 +223,7 @@ export const Viewer = (props) => {
                     onFileAdded={onFileAdded}
                   />
                   <Button
-                    color={selectedCounterpartyIndex === 0 ? "success" : "info"}
+                    color={submitDisabled ? 'muted' : selectedCounterpartyIndex === 0 ? "success" : "info"}
                     className="ur-viewer__form__btn"
                     variant="contained"
                     fullWidth
