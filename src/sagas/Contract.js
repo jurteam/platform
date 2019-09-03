@@ -82,7 +82,6 @@ export function* getContract(action) {
       onSuccess();
     } // exec onSuccess callback if present
   } catch (error) {
-    // TODO: handle 404
 
         // console.log('getContract - catch',error.response,error.response.status,action);
 
