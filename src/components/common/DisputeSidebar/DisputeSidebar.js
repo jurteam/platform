@@ -10,6 +10,12 @@ import { AppContext } from "../../../bootstrap/AppProvider"; // context
 import "./DisputeSidebar.scss";
 import { CONTRACT_READ_NOTIFICATIONS } from "../../../reducers/types";
 
+
+import {
+  canVote
+} from "../../../utils/helpers";
+
+
 export const DisputeSidebar = ({
   disabled,
   submitDisabled,
@@ -81,7 +87,6 @@ export const DisputeSidebar = ({
     //   date: "2019-01-08T14:25:44.335Z"
     // }
 
-    const canVote = [35,36,38].indexOf(statusId) >= 0;
 
   return (
     <div>
@@ -95,7 +100,7 @@ export const DisputeSidebar = ({
           earnings={earnings}
           winner={winner}
           onReject={() => alert("Rejected Contract")}
-          canVote={canVote}
+          canVote={canVote(statusId)}
         />
       )}
       <ContractAccordion
