@@ -82,7 +82,7 @@ export const Activity = ( props ) => {
       case 1: // Waiting for counterparty
         return (
           <>
-            {`${abstract || labels.sentContractTo}: `}
+            {`${labels.sentContractTo}: `}
             <Avatar seed={to.toLowerCase()} size="xsmall" />
             {ellipsisString(to, 16, 16)}
           </>
