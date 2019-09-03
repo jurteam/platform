@@ -191,7 +191,7 @@ export const Viewer = (props) => {
                       variant="rounded"
                     />
                     <span>
-                      {selectedCounterpartyShouldRenderName
+                      {selectedCounterpartyShouldRenderName && selectedCounterpartyName !== ''
                         ? selectedCounterpartyName
                         : selectedCounterpartyAddress}
                     </span>
