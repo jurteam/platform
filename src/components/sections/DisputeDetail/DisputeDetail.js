@@ -514,6 +514,7 @@ export const DisputeDetail = ( props ) => {
           currentIdx={showVoteOverlay.idx}
           currentVote={dispute.vote}
           currentWallet={user.wallet}
+          submitDisabled={submitDisabled}
           hasError={hasError}
           counterparties={voteCounterparties}
           onVote={(counterparty, idx) => {

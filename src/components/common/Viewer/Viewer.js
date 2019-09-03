@@ -38,6 +38,7 @@ export const Viewer = (props) => {
       countdownOptions,
       counterparties,
       onFileLoadingError,
+      submitDisabled,
       statusId,
       changeInput,
       currentVote,
@@ -92,6 +93,15 @@ export const Viewer = (props) => {
   //   return () => null; // do nothing on unmount
 
   // }, [props.current]);
+  useEffect(() => {
+
+    console.log("Viewer - mount",current);
+    setState({
+      selectedCounterpartyIndex: current.idx,
+      selectedCounterparty: current.counterparty
+    });
+
+  }, [current]);
 
   // cDM
   useEffect(() => {
@@ -181,7 +191,7 @@ export const Viewer = (props) => {
                       variant="rounded"
                     />
                     <span>
-                      {selectedCounterpartyShouldRenderName
+                      {selectedCounterpartyShouldRenderName && selectedCounterpartyName !== ''
                         ? selectedCounterpartyName
                         : selectedCounterpartyAddress}
                     </span>
@@ -190,7 +200,7 @@ export const Viewer = (props) => {
                 <div className="jur-viewer__form__body">
                   <BlockTitle title={labels.jurTokens} hideIcon />
                   <Form.NumericInput
-                    initialValue={currentVote.amount.toFixed(2)}
+                    initialValue={Number.parseFloat(currentVote.amount).toFixed(2)}
                     step={0.01}
                     error={props.error || props.hasError("amount")}
                     errorMsg={props.error && labels.notEnoughTokenBalance}
@@ -213,7 +223,7 @@ export const Viewer = (props) => {
                     onFileAdded={onFileAdded}
                   />
                   <Button
-                    color={selectedCounterpartyIndex === 0 ? "success" : "info"}
+                    color={submitDisabled ? 'muted' : selectedCounterpartyIndex === 0 ? "success" : "info"}
                     className="ur-viewer__form__btn"
                     variant="contained"
                     fullWidth
