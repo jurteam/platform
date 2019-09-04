@@ -1,6 +1,7 @@
 import contract from "truffle-contract";
 // import toAsciiFromByte32 from "../utils/toAsciiFromByte32";
 import ArbitrationFactoryABI from "../build/contracts/ArbitrationFactory.json";
+import { log } from "../utils/helpers.js";
 
 let arbitrationFactorySCInstance = null;
 
@@ -26,6 +27,14 @@ export default class ArbitrationFactory {
   async createArbitration(parties, dispersal, funding, agreementHash) {
     const instance = await this.contract.deployed();
     const [account] = await this.web3.eth.getAccounts();
+    log('createArbitration', [
+      parties,
+      dispersal,
+      funding,
+      agreementHash,
+      {
+        from: account
+      }]);
     return instance.createArbitration(
       parties,
       dispersal,

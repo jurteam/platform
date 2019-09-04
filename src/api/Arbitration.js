@@ -1,4 +1,5 @@
 import contract from "truffle-contract";
+import { log } from "../utils/helpers";
 // import toAsciiFromByte32 from "../utils/toAsciiFromByte32";
 
 let arbitrationSCInstance = null;
@@ -6,14 +7,15 @@ let arbitrationSCInstance = null;
 export default class ArbitrationContract {
   constructor(address) {
 
-    console.log("ArbitrationContract", address)
+    log("ArbitrationContract", address)
+    log("ArbitrationContract – global.drizzle.contracts[address]", global.drizzle.contracts[address])
 
     if (!arbitrationSCInstance) {
       arbitrationSCInstance = this;
       this.web3 = window.web3;
       this.contract = contract({
         ...global.drizzle.contracts[address],
-        networks: { "5777": { address } }
+        networks: { "1": { address }, "3": { address }, "5777": { address } }
       });
       this.contract.setProvider(this.web3.currentProvider);
     }
