@@ -6,7 +6,11 @@ const root = "/user";
 
 export class User {
   static get() {
-    return axios.get(root);
+    const { API } = global;
+    if (typeof API !== "undefined" && API.defaults.headers.common['wallet'])
+    {
+      return axios.get(root);
+    }
   }
   static create(payload) {
     return axios.post(root, payload);
@@ -18,6 +22,11 @@ export class User {
     return axios.delete(root);
   }
   static getActivities(payload) {
-    return axios.get(`${root}/activities?byDate&orderBy=${payload.orderBy}&perPage=${process.env.REACT_APP_PER_PAGE_NOTIFICATIONS}`)
+
+    const { API } = global;
+    if (typeof API !== "undefined" && API.defaults.headers.common['wallet'])
+    {
+      return axios.get(`${root}/activities?byDate&orderBy=${payload.orderBy}&perPage=${process.env.REACT_APP_PER_PAGE_NOTIFICATIONS}`)
+    }
   }
 }
