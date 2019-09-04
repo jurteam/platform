@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+// eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect } from "react";
 
 import { log } from "./helpers"; // log helper
@@ -16,6 +18,7 @@ const FormValidation = {
   isTrue: (field) => (typeof field !== "undefined" ? field === true : true), // always true when null in case this field is optional
   isFalse: (field) => (typeof field !== "undefined" ? field === false : true), // always true when null in case this field is optional
   isEmail: email => {
+    // eslint-disable-next-line no-useless-escape
     const regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return email ? regex.test(email) : true; // always true when null in case this field is optional
   },
@@ -120,12 +123,17 @@ export const useFormValidation = (data, schema) => {
               delete newErrors[field.name][checkName];
             }
           }
+          return checkName;
         });
       }
+
+      return field;
     });
 
     console.log("Validation", newErrors);
     setErrors(newErrors);
+
+    return;
   };
 
   useEffect(() => {

@@ -51,7 +51,7 @@ export const Viewer = (props) => {
       onVote,
       current,
       contract,
-      onInputChange,
+      // onInputChange,
       onFileAdded,
       onReject,
       currentWallet,

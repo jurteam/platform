@@ -7,7 +7,7 @@ import { AppContext } from "../../../bootstrap/AppProvider"; // context
 
 export const DisputeVote = ( props ) => {
   const {
-    currentWallet,
+    // currentWallet,
     title,
     counterparties,
     statusId,

@@ -1,5 +1,4 @@
 import React, { useContext, useEffect } from "react";
-import { NavLink } from "react-router-dom";
 import TimeAgo from "react-timeago";
 import Tag from "../Tag";
 import Table from "../Table";

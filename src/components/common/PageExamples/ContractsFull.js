@@ -222,8 +222,9 @@ export class ContractsFull extends Component {
             headers={contractsTableHeader}
             data={contractsData}
             filters={filters}
+            user={{wallet:"0x0"}}
             loading={false}
-            handleArchive={contractId => alert("Contractid archived")}
+            handleArchive={contractId => alert("Contractid archived", contractId)}
           />
         </Main>
       </PageLayout>

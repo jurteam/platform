@@ -1,8 +1,8 @@
 import { call, put, select, takeLatest, takeEvery } from "redux-saga/effects";
 
 import {
-  RESET_DISPUTE,
-  PUT_DISPUTE,
+  // RESET_DISPUTE,
+  // PUT_DISPUTE,
   DISPUTE_UPDATING,
   UPDATE_DISPUTE_FILTER,
   FETCH_DISPUTES,
@@ -14,7 +14,7 @@ import {
   DISPUTES_FETCHED,
   DISPUTE_DELETED,
   API_CATCH,
-  READ_NOTIFICATIONS,
+  // READ_NOTIFICATIONS,
   DISPUTE_SAVING,
   DISPUTE_MEDIA_DELETE,
   DISPUTE_MEDIA_DELETED,
@@ -30,11 +30,11 @@ import { log } from "../utils/helpers"; // log helper
 import { Disputes } from "../api";
 
 import {
-  getNewDispute,
-  getCurrentDispute,
+  // getNewDispute,
+  // getCurrentDispute,
+  // getCurrentDisputeActivities,
   getDisputeListPage,
-  getDisputeFilters,
-  getCurrentDisputeActivities
+  getDisputeFilters
 } from "./Selectors"; // selector
 
 // Get

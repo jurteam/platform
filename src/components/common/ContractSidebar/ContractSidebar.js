@@ -15,8 +15,8 @@ import "./ContractSidebar.scss";
 import { CONTRACT_READ_NOTIFICATIONS } from "../../../reducers/types";
 
 // Api layouts
-import { Arbitration } from "../../../api";
-import { chainErrorHandler, log } from "../../../utils/helpers";
+// import { Arbitration } from "../../../api";
+import { log } from "../../../utils/helpers";
 
 export const ContractSidebar = ({
   disabled,

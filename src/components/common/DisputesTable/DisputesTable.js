@@ -39,7 +39,7 @@ const DisputesTable = props => {
     contractsPerPage,
     totalContracts,
     loading,
-    filtersDisabled,
+    // filtersDisabled,
     history
   } = props;
 

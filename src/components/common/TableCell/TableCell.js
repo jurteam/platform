@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import PropsTypes from "prop-types";
 import { CaretDownIcon } from "../Icons/CaretDownIcon";
 import { CaretUpIcon } from "../Icons/CaretUpIcon";
 

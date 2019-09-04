@@ -1,5 +1,4 @@
 import contract from "truffle-contract";
-import toAsciiFromByte32 from "../utils/toAsciiFromByte32";
 import JURTokenABI from "../build/contracts/JURToken.json";
 import { log } from "../utils/helpers";
 

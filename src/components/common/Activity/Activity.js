@@ -17,7 +17,7 @@ export const Activity = ( props ) => {
     to,
     contract_name,
     status,
-    message,
+    // message,
     abstract
   } = props.data;
 

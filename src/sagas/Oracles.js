@@ -1,5 +1,5 @@
 import { call, put, select, takeLatest, takeEvery } from "redux-saga/effects";
-import { getUser, getCurrentContract, getCurrentDispute } from "./Selectors";
+import { getCurrentDispute } from "./Selectors";
 import {
   FETCH_ORACLES,
   FETCH_CURRENT_ORACLES,
@@ -13,16 +13,16 @@ import {
   RESET_VOTE,
   PUT_VOTE,
   LOOKUP_WALLET_BALANCE,
-  FETCH_CONTRACTS,
-  SET_CONTRACT_STATUS
+  // SET_CONTRACT_STATUS
+  FETCH_CONTRACTS
 } from "../reducers/types";
 
 import { log, chainErrorHandler } from "../utils/helpers"; // log helper
 
-import contractStatuses from "../assets/i18n/en/status.json";
+// import contractStatuses from "../assets/i18n/en/status.json";
 
 // Api layouts
-import { Oracles, Disputes, JURToken, Arbitration, Contracts } from "../api";
+import { Oracles, Disputes, JURToken /*, Arbitration, Contracts*/ } from "../api";
 
 import { getOracleOrder, getOracleListPage } from "./Selectors"; // selector
 
@@ -79,7 +79,7 @@ export function* onVote(action) {
     vote: { amount }
   } = action;
 
-  const zero = Number(0).toFixed(process.env.REACT_APP_TOKEN_DECIMALS);
+  // const zero = Number(0).toFixed(process.env.REACT_APP_TOKEN_DECIMALS);
 
   const voteData = new FormData();
   // voteData.append('_method', 'PUT');

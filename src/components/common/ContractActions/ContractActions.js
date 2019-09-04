@@ -6,7 +6,7 @@ import { AppContext } from "../../../bootstrap/AppProvider"; // context
 import "./ContractActions.scss";
 
 export const ContractActions = ( props ) => {
-  const { children, statusId, statusFrom, currentWallet, part, shouldWait, disabled } = props;
+  const { children, statusId, statusFrom, currentWallet, part, disabled } = props;
   const { labels } = useContext(AppContext);
   console.log("ContractActions - props", { children, statusId, part });
   const renderSwitch = () => {

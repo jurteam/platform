@@ -1,20 +1,20 @@
-import { put, call, select, takeLatest, takeEvery } from "redux-saga/effects";
+import { put, call, select, takeEvery } from "redux-saga/effects";
 import {
-  getAccounts,
+  // getAccounts,
   getDrizzleStatus,
   getCurrentContract,
   getDrizzleStoredContracts,
-  getJURToken,
+  // getJURToken,
   getWallet
 } from "./Selectors";
 import {
-  DRIZZLE_INITIALIZED,
-  GOT_CONTRACT_VAR,
-  SET_CONTRACT,
+  // DRIZZLE_INITIALIZED,
+  // GOT_CONTRACT_VAR,
+  // SET_CONTRACT,
   SET_CONTRACT_STATUS,
   FETCH_CONTRACTS,
   API_CATCH,
-  NEW_ARBITRATION,
+  // NEW_ARBITRATION,
   PAY_ARBITRATION,
   DISPUTE_ARBITRATION,
   SUCCESS_ARBITRATION,
@@ -61,10 +61,10 @@ import {
 
 import {
   log,
-  warn,
-  humanToEth,
+  // warn,
+  // humanToEth,
   ethToHuman,
-  ethToStore,
+  // ethToStore,
   chainErrorHandler,
   formatAmount,
   calculateFundingAndDispersal,
@@ -83,8 +83,8 @@ export function* fetchArbitrations(args) {
   if (drizzleStatus.initialized && global.drizzle) {
     const {
       contracts,
-      web3,
-      web3: { utils }
+      // web3,
+      // web3: { utils }
     } = global.drizzle;
     log("fetchArbitrations - contracts", contracts);
 
@@ -124,7 +124,7 @@ export function* handleCreateArbitration(args) {
   yield put({ type: CONTRACT_SAVING, payload: true });
   yield put({ type: CONTRACT_UPDATING, payload: true });
 
-  const wallet = yield select(getWallet);
+  // const wallet = yield select(getWallet);
 
   const contractData = yield select(getCurrentContract);
   const [partA, partB] = contractData.counterparties;
@@ -142,7 +142,7 @@ export function* handleCreateArbitration(args) {
 
   log("handleCreateArbitration - agreementHash", agreementHash);
 
-  const { id, partAPenaltyFee, partBPenaltyFee, whoPays, value } = contractData;
+  const { id /*, partAPenaltyFee, partBPenaltyFee, whoPays, value*/ } = contractData;
   const { fundings, dispersal } = calculateFundingAndDispersal(contractData);
 
   log("handleCreateArbitration - fundings + dispersal", {
@@ -262,8 +262,8 @@ export function* handleEvents(args) {
   if (drizzleStatus.initialized && global.drizzle) {
     const {
       contracts,
-      web3,
-      web3: { utils }
+      // web3,
+      // web3: { utils }
     } = global.drizzle;
     log("handleEvents - contracts", contracts);
 
@@ -321,7 +321,7 @@ function* handleContractInitialized(args) {
 
 export function* handleAcceptArbitrationAmendment(args) {
   log("handleAcceptArbitrationAmendment - run", args);
-  const { id, address } = args;
+  const { id /*, address*/ } = args;
 
   // Status update
   let toUpdate = new FormData();
@@ -693,7 +693,7 @@ export function* handleSignArbitration({ contractAddress }) {
     log("handleSignArbitration – fail", data);
   };
 
-  const wallet = yield select(getWallet);
+  // const wallet = yield select(getWallet);
   yield sendToContract(contractAddress, "sign", null, success, fail);
 }
 
@@ -899,7 +899,7 @@ export function* handleAgreeArbitration({ contractAddress }) {
 
 export function* handleWithdrawDispersalArbitration({ contractAddress }) {
   log("handleWithdrawDispersalArbitration");
-  const wallet = yield select(getWallet);
+  // const wallet = yield select(getWallet);
 
   const drizzleContracts = yield select(getDrizzleStoredContracts);
   const contract = drizzleContracts[contractAddress];
@@ -907,11 +907,11 @@ export function* handleWithdrawDispersalArbitration({ contractAddress }) {
 
   const { synced } = contract;
 
-  const hasWithdrawnAddress = yield callToContract(
-    contractAddress,
-    "hasWithdrawn",
-    wallet.address
-  );
+  // const hasWithdrawnAddress = yield callToContract(
+  //   contractAddress,
+  //   "hasWithdrawn",
+  //   wallet.address
+  // );
   const hasWithdrawn =
     typeof contract.hasWithdrawnAddress != "undefined"
       ? contract.hasWithdrawnAddress.value
@@ -1143,11 +1143,11 @@ export function* handleChainDisputeArbitration({
 }
 
 export function* handleChainVoteArbitration({ contractAddress }) {
-  log("CHAIN_VOTE_ARBITRATION");
+  yield log("CHAIN_VOTE_ARBITRATION", contractAddress);
 }
 
 export function* handleCalcDisputeEndsArbitration(args) {
-  const { id, contractAddress, onFail } = args;
+  const { contractAddress, /*id, onFail*/ } = args;
 
   const arbitration = new Arbitration(contractAddress);
 
@@ -1157,7 +1157,7 @@ export function* handleCalcDisputeEndsArbitration(args) {
 }
 
 export function* handleTotalVotesArbitration(args) {
-  const { id, contractAddress, onFail } = args;
+  const { contractAddress /*, id, onFail*/ } = args;
 
   const arbitration = new Arbitration(contractAddress);
 
@@ -1167,7 +1167,7 @@ export function* handleTotalVotesArbitration(args) {
 }
 
 export function* handleDisputeWindowVotesArbitration(args) {
-  const { id, contractAddress, onFail } = args;
+  const { contractAddress /*, id, onFail*/ } = args;
 
   const arbitration = new Arbitration(contractAddress);
 
@@ -1177,7 +1177,7 @@ export function* handleDisputeWindowVotesArbitration(args) {
 }
 
 export function* handleDisputeStartsArbitration(args) {
-  const { id, contractAddress, onFail } = args;
+  const { contractAddress /*, id, onFail*/ } = args;
 
   const arbitration = new Arbitration(contractAddress);
 
@@ -1187,7 +1187,7 @@ export function* handleDisputeStartsArbitration(args) {
 }
 
 export function* handleDisputeEndsArbitration(args) {
-  const { id, contractAddress, onFail } = args;
+  const { contractAddress /*, id, onFail*/ } = args;
 
   const arbitration = new Arbitration(contractAddress);
 
@@ -1197,7 +1197,7 @@ export function* handleDisputeEndsArbitration(args) {
 }
 
 export function* handleSetMockedNow(args) {
-  const { id, contractAddress, onFail } = args;
+  const { contractAddress /*, id, onFail*/ } = args;
 
   const arbitration = new ArbitrationMock(contractAddress);
 
@@ -1208,7 +1208,7 @@ export function* handleSetMockedNow(args) {
 }
 
 export function* handleGetNow(args) {
-  const { id, contractAddress, onFail } = args;
+  const { contractAddress /*, id, onFail*/ } = args;
 
   const arbitration = new ArbitrationMock(contractAddress);
 

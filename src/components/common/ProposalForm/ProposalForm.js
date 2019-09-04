@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useState, useEffect } from "react";
 import Form from "../Form";
 import BlockTitle from "../BlockTitle";
@@ -50,7 +51,7 @@ export const ProposalForm = ( props ) => {
   };
 
   // validation setup
-  const [isValid, errors, validateForm, setFormData] = useFormValidation(
+  const [/*isValid, errors,*/ validateForm, setFormData] = useFormValidation(
     currentProposal,
     validationSchema
   );

@@ -15,7 +15,7 @@ import {
 } from "../reducers/types";
 
 import { log } from "../utils/helpers"; // log helper
-import { callToContract, checkDrizzleInit } from "../utils/sc";
+import { callToContract /*, checkDrizzleInit*/ } from "../utils/sc";
 
 // Reset
 export function* resetWallet() {

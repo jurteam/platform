@@ -4,7 +4,7 @@ import PageLayout from "../PageLayout";
 import Main from "../Main";
 import Aside from "../Aside";
 import InsertContractDetails from "../InsertContractDetails";
-import ContractSidebar from "../ContractSidebar";
+// import ContractSidebar from "../ContractSidebar";
 import ContractSummary from "../ContractSummary";
 import Disclaimer from "../Disclaimer";
 import ContractActions from "../ContractActions";

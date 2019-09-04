@@ -1,36 +1,19 @@
-import { put, call, select, takeLatest, takeEvery } from "redux-saga/effects";
+import {
+  // put,
+  // call,
+  // takeLatest,
+  // takeEvery,
+  select
+} from "redux-saga/effects";
 
 import {
-  getAccounts,
+  // getAccounts,
   getDrizzleStatus,
-  getCurrentContract,
-  getDrizzleStoredContracts,
-  getJURToken,
+  // getCurrentContract,
+  // getDrizzleStoredContracts,
+  // getJURToken,
   getWallet
 } from "../sagas/Selectors";
-
-import {
-  DRIZZLE_INITIALIZED,
-  GOT_CONTRACT_VAR,
-  SET_CONTRACT,
-  SET_CONTRACT_STATUS,
-  FETCH_CONTRACTS,
-  API_CATCH,
-  NEW_ARBITRATION,
-  PAY_ARBITRATION,
-  DISPUTE_ARBITRATION,
-  SUCCESS_ARBITRATION,
-  ACCEPT_ARBITRATION,
-  REJECT_ARBITRATION,
-  SEND_TO_COUNTERPARTY,
-  EVENT_FIRED,
-  SET_BALANCE,
-  CONTRACT_INITIALIZED,
-  CONTRACT_SAVING,
-  CONTRACT_UPDATING,
-  CHAIN_GET_CONTRACT,
-  ACCEPT_ARBITRATION_AMENDMENT
-} from "../reducers/types";
 
 import ArbitrationJsonInterface from "../build/contracts/Arbitration.json";
 
@@ -205,7 +188,7 @@ export function* chainGetContract(args) {
   const drizzleStatus = yield select(getDrizzleStatus);
   log("chainGetContract - drizzleStatus", drizzleStatus);
   if (drizzleStatus.initialized && global.drizzle) {
-    const { contracts, web3 } = global.drizzle;
+    const { web3 } = global.drizzle;
 
     const wallet = yield select(getWallet);
 

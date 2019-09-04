@@ -11,7 +11,7 @@ import { ProfileTerms } from "../PageExamples/ProfileTerms";
 import { ContractsEmpty } from "../PageExamples/ContractsEmpty";
 import { ContractsFull } from "../PageExamples/ContractsFull";
 import { CreateContract } from "../PageExamples/CreateContract";
-import { SetContractDetails } from "../PageExamples/SetContractDetails";
+// import { SetContractDetails } from "../PageExamples/SetContractDetails";
 
 storiesOf("Layouts", module)
 .addDecorator(withInfo)
@@ -30,4 +30,4 @@ storiesOf("Layouts", module)
     wallet: "0x55fe02aeff02f77364de339a1292923a15844b8"
   }} />)
   .add("Create Contract", () => <CreateContract />)
-  .add("Set contracts details", () => <SetContractDetails />);
+  // .add("Set contracts details", () => <SetContractDetails hasError={() => null}/>);

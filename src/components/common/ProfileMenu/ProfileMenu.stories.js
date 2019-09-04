@@ -1,7 +1,7 @@
 import React from "react";
 import { Route } from "react-router-dom";
 import { storiesOf } from "@storybook/react";
-import { withInfo } from "@storybook/addon-info";
+// import { withInfo } from "@storybook/addon-info";
 
 import ProfileMenu from "./";
 

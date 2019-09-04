@@ -186,9 +186,9 @@ export const calculateFundingAndDispersal = (contractData) => {
 
   console.log('calculateFundingAndDispersal – run', contractData);
 
-  const {
-    web3: { utils }
-  } = global.drizzle;
+  // const {
+  //   web3: { utils }
+  // } = global.drizzle;
 
   let fundings = {
     a: Number(partAPenaltyFee),
