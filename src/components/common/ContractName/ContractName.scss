@@ -20,6 +20,18 @@
     }
   }
 
+
+  &-div {
+    font-size: 20px;
+    word-break: break-word;
+    padding-left: 15px;
+    width: 100%;
+    border: none;
+    outline: none;
+    color: $contract-name-color;
+    font-family: $font-poppins;
+  }
+
   .jur-tag {
     position: absolute;
     top: 50%;

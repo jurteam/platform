@@ -18,14 +18,15 @@ export const ContractName = ( props ) => {
 
   return (
     <div className="jur-contract-name">
-      <input
+      {!dispute && <input
         type="text"
         name="contractName"
         placeholder={labels.contractNamePlaceholder}
         value={contractName || ""}
         onChange={onContractNameChange}
         readOnly={dispute}
-      />
+      />}
+      {dispute && <div className="jur-contract-name-div">{contractName || ""}</div>}
       <Tag statusId={statusId}>{statusIdLabel}</Tag>
     </div>
   );
