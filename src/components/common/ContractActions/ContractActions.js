@@ -43,7 +43,7 @@ export const ContractActions = ( props ) => {
         ;
       case 9:
       case 10:
-        return (statusFrom !== currentWallet.address && children) ? children :
+        return (statusFrom !== currentWallet.address || children) ? children :
         <span className="jur-contract-actions__text">
             {labels.contractIsClosed}
           </span>
