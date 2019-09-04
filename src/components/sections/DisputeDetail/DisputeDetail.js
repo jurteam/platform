@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect, useContext } from "react";
 import { Redirect } from "react-router-dom";
 
@@ -23,9 +24,6 @@ import Breadcrumbs from "../../common/Breadcrumbs";
 import ResolvedDisputeNotification from "../../common/ResolvedDisputeNotification";
 import Content from "../../common/Content";
 
-import ContractModal from "../../common/ContractModal";
-import PaymentModal from "../../common/PaymentModal";
-
 import Viewer from "../../common/Viewer";
 
 import { SpinnerOnly } from "../../common/Spinner";
@@ -34,23 +32,23 @@ import { SpinnerOnly } from "../../common/Spinner";
 import { useFormValidation } from "../../../utils/hooks";
 import validationSchema from "./_validationSchema";
 
-import { log, humanToEth, ethToHuman } from "../../../utils/helpers"; // log helper
+import { ethToHuman } from "../../../utils/helpers"; // log helper
 
 import {
   API_GET_DISPUTE,
-  PUT_CONTRACT,
+  // PUT_CONTRACT,
   PUT_VOTE,
-  NEW_ARBITRATION,
-  CONTRACT_ISSUE,
-  REJECT_ARBITRATION,
-  ACCEPT_ARBITRATION,
-  ACCEPT_ARBITRATION_AMENDMENT,
-  PAY_ARBITRATION,
+  // NEW_ARBITRATION,
+  // CONTRACT_ISSUE,
+  // REJECT_ARBITRATION,
+  // ACCEPT_ARBITRATION,
+  // ACCEPT_ARBITRATION_AMENDMENT,
+  // PAY_ARBITRATION,
   EXPIRED_CONTRACT,
-  SUCCESS_ARBITRATION,
-  CONTRACT_MEDIA_DELETE,
-  SEND_TO_COUNTERPARTY,
-  DISCLAIMER_MUST_BE_ACCEPTED
+  // SUCCESS_ARBITRATION,
+  // SEND_TO_COUNTERPARTY,
+  // DISCLAIMER_MUST_BE_ACCEPTED,
+  // CONTRACT_MEDIA_DELETE
 } from "../../../reducers/types";
 import ActionsBar from "../../chain/ActionsBar";
 
@@ -59,18 +57,18 @@ export const DisputeDetail = ( props ) => {
 
   const [loaded, setLoaded] = useState(false);
 
-  const [showModalSuccess, setShowModalSuccess] = useState(false);
+  // const [showModalSuccess, setShowModalSuccess] = useState(false);
 
-  const [showModalRejectPay, setShowModalRejectPay] = useState(false);
+  // const [showModalRejectPay, setShowModalRejectPay] = useState(false);
 
   const [showVoteOverlay, setShowVoteOverlay] = useState(false);
-  const [metaMaskError, setMetaMaskError] = useState(false);
+  const [metaMaskError /*, setMetaMaskError */] = useState(false);
 
   const [showModal, setShowModal] = useState(false);
   const [formUpdated, setFormUpdated] = useState(false);
   const [attachments, setAttachments] = useState([]);
 
-  const [proposalAttachments, setProposalAttachments] = useState([]);
+  // const [proposalAttachments, setProposalAttachments] = useState([]);
 
   const [openPreview, setOpenPreview] = useState(false);
   const [filePath, setFilePath] = useState(null);
@@ -174,26 +172,26 @@ export const DisputeDetail = ( props ) => {
     setShowVoteOverlay({ counterparty, idx });
   };
 
-  const onSend = () => {
-    console.log("onSend", "run");
+  // const onSend = () => {
+  //   console.log("onSend", "run");
 
-    global.drizzle.store.dispatch({
-      type: NEW_ARBITRATION
-    });
-  };
+  //   global.drizzle.store.dispatch({
+  //     type: NEW_ARBITRATION
+  //   });
+  // };
 
   const onProgress = percentage => {
     // console.log(percentage);
   };
 
-  const onFileDelete = (file) => {
-    console.log("file delete", file);
+  // const onFileDelete = (file) => {
+  //   console.log("file delete", file);
 
-    global.drizzle.store.dispatch({
-      type: CONTRACT_MEDIA_DELETE,
-      ...file
-    });
-  };
+  //   global.drizzle.store.dispatch({
+  //     type: CONTRACT_MEDIA_DELETE,
+  //     ...file
+  //   });
+  // };
 
   // form error handling
   const hasError = (field) =>
@@ -261,7 +259,7 @@ export const DisputeDetail = ( props ) => {
     totalTokensPartA,
     totalTokensPartB,
     earnings,
-    totalTokens,
+    // totalTokens,
     details: issues
   } = dispute.current;
 
