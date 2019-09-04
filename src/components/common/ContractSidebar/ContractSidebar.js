@@ -15,8 +15,8 @@ import "./ContractSidebar.scss";
 import { CONTRACT_READ_NOTIFICATIONS } from "../../../reducers/types";
 
 // Api layouts
-import { Arbitration } from "../../../api";
-import { chainErrorHandler } from "../../../utils/helpers";
+// import { Arbitration } from "../../../api";
+import { log } from "../../../utils/helpers";
 
 export const ContractSidebar = ({
   disabled,
@@ -168,13 +168,16 @@ export const ContractSidebar = ({
 
     if (statusId === 9 || statusId === 10) {
       if (typeof chainContract !== 'undefined' && chainContract) { // handle contract loading
-        let { dispersal } = chainContract
+        let { dispersal, hasWithdrawn } = chainContract
+        log('Sidebar chainContract', chainContract)
         dispersal = dispersal[Object.keys(dispersal)[0]]; // handle chain sync & missing info
-          if (typeof dispersal !== 'undefined' && dispersal) {
+        hasWithdrawn = hasWithdrawn[Object.keys(hasWithdrawn)[0]]; // handle chain sync & missing info
+          if (typeof dispersal !== 'undefined' && dispersal && typeof hasWithdrawn !== 'undefined' && hasWithdrawn) {
 
-          console.log('Sidebar dispersal', dispersal)
+          log('Sidebar dispersal', dispersal)
+          log('Sidebar hasWithdrawn', hasWithdrawn)
           // waiting actions
-          return dispersal.value !== "0" ? (
+          return dispersal.value !== "0" && hasWithdrawn.value === false ? (
             <>
               <Button color="gradient" variant="gradient" onClick={onWithdraw} fullWidth>
                 {labels.withdraw}

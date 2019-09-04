@@ -8,6 +8,10 @@
     outline: none;
   }
 
+  &__hidden {
+    display: none;
+  }
+
   &__close-btn {
     cursor: pointer;
     position: absolute;
@@ -103,6 +107,13 @@
           margin-right: 10px;
         }
       }
+
+      &.rejected {
+
+          display: flex;
+          align-items: center;
+          justify-content: center;
+      }
     }
 
     &__body {
@@ -170,6 +181,13 @@
         cursor: pointer;
         text-decoration: none;
         font-weight: $poppins-semibold;
+
+        .disabled {
+
+          opacity: 0.5;
+          user-select: none;
+          pointer-events: none;
+        }
       }
     }
   }

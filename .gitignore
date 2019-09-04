@@ -92,3 +92,4 @@ yarn-error.log*
 # deploy
 deploy-conf.yml
 deploy-exclude.list
+public/files/prova.pdf

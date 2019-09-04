@@ -55,7 +55,7 @@ abstract class Filters
      */
     protected function hasFilter($filter)
     {
-        return method_exists($this, $filter) && $this->request->has($filter) && ! empty($this->request->get($filter));
+        return method_exists($this, $filter) && $this->request->has($filter);
     }
 
     /**

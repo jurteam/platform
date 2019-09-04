@@ -15,7 +15,7 @@ import {
 } from "../reducers/types";
 
 import { log } from "../utils/helpers"; // log helper
-import { callToContract, checkDrizzleInit } from "../utils/sc";
+import { callToContract /*, checkDrizzleInit*/ } from "../utils/sc";
 
 // Reset
 export function* resetWallet() {
@@ -28,8 +28,11 @@ export function* setWalletAddress() {
   const accounts = yield select(getAccounts);
   log("setWalletAddress - accounts", accounts);
   const { API } = global;
-  API.defaults.headers.common['wallet'] = accounts[0].toLowerCase(); // update wallet in REST API request header
-  yield put({ type: SET_WALLET_ADDRESS, payload: accounts[0] });
+  if (typeof API !== 'undefined')
+  {
+    API.defaults.headers.common['wallet'] = accounts[0].toLowerCase(); // update wallet in REST API request header
+    yield put({ type: SET_WALLET_ADDRESS, payload: accounts[0] });
+  }
 }
 
 export function* handleLookupWalletBalance(args) {

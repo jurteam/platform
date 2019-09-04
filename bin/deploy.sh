@@ -88,7 +88,7 @@ if [ ! -z "$ENVIRONMENT" ] | [ ! -z "${!local_app_path}" ] | [ ! -z "${!vhost}" 
     # L - follow links to copy actual files
     # h - show numbers in human-readable format
     # --exclude-from - Exclude files from being uploaded
-    rsync -vzcrSLh --owner=www-data --group=www-data --exclude-from="deploy-exclude.list" ${!local_app_path}/rest/. ${!ssh_user}@${!ssh_host}:${!app_path}/html
+    rsync -vzcrSLh --rsync-path="sudo rsync" --owner=www-data --group=www-data --exclude-from="deploy-exclude.list" ${!local_app_path}/rest/. ${!ssh_user}@${!ssh_host}:${!app_path}/html
   	echo ""
     echo "   ${CYAN}remote${NC}    composer install: ssh -t ${!ssh_user}@${!ssh_host} 'composer install --optimize-autoloader --no-dev'"
   	echo ""
@@ -137,7 +137,7 @@ if [ ! -z "$ENVIRONMENT" ] | [ ! -z "${!local_app_path}" ] | [ ! -z "${!vhost}" 
     # L - follow links to copy actual files
     # h - show numbers in human-readable format
     # --exclude-from - Exclude files from being uploaded
-    rsync -vzcrSLh --exclude-from="deploy-exclude.list" ${!local_app_path}/build/. ${!ssh_user}@${!ssh_host}:${!app_path}/html/public
+    rsync -vzcrSLh --rsync-path="sudo rsync" --owner=www-data --group=www-data --exclude-from="deploy-exclude.list" ${!local_app_path}/build/. ${!ssh_user}@${!ssh_host}:${!app_path}/html/public
     echo ""
   	echo "   ${GREEN}success${NC}   files deploy to '${ENVIRONMENT}' environment done."
   fi

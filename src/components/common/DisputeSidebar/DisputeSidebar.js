@@ -3,7 +3,7 @@ import ActivityList from "../ActivityList";
 import DisputeVote from "../DisputeVote";
 import ContractAccordion from "../ContractAccordion";
 import OraclesTablePreview from "../OraclesTablePreview";
-import Button from "../Button";
+// import Button from "../Button";
 
 import { AppContext } from "../../../bootstrap/AppProvider"; // context
 
@@ -17,37 +17,37 @@ import {
 
 
 export const DisputeSidebar = ({
-  disabled,
-  submitDisabled,
-  formUpdated,
-  feeToPay,
+  // disabled,
+  // submitDisabled,
+  // formUpdated,
+  // feeToPay,
   contract,
-  currentUserCanPay,
-  cases,
+  // currentUserCanPay,
+  // cases,
   notificationLoading,
   voteCounterparties,
-  selectedOptionId,
-  onSubmit,
-  onSend,
+  // selectedOptionId,
+  // onSubmit,
+  // onSend,
   oracles,
   activities,
-  onDispute,
-  onSuccess,
+  // onDispute,
+  // onSuccess,
   currentWallet,
-  currentPart,
-  hasError,
-  isValid,
-  lastPartInvolved,
+  // currentPart,
+  // hasError,
+  // isValid,
+  // lastPartInvolved,
   onVote,
   onView,
   onReject,
-  onAccept,
-  onAcceptAmendment,
-  onChangeSelect,
-  onSubmitProposal,
-  onProposalFileAdded,
-  history,
-  onChangeValue
+  // onAccept,
+  // onAcceptAmendment,
+  // onChangeSelect,
+  // onSubmitProposal,
+  // onProposalFileAdded,
+  // history,
+  // onChangeValue
 }) => {
   const { labels, oraclesTableHeaders } = useContext(AppContext);
 
@@ -55,16 +55,16 @@ export const DisputeSidebar = ({
     statusId,
     winner,
     earnings,
-    counterparties,
-    percentagePartA,
-    percentagePartB,
-    totalTokensPartA,
-    totalTokensPartB,
-    totalTokens
+    // counterparties,
+    // percentagePartA,
+    // percentagePartB,
+    // totalTokensPartA,
+    // totalTokensPartB,
+    // totalTokens
   } = contract;
 
-  const [activitiesOpen, setActivitiesOpen] = useState(false);
-  const [oraclesOpen, setOraclesOpen] = useState(true);
+  const [activitiesOpen /* , setActivitiesOpen */] = useState(false);
+  const [oraclesOpen /*, setOraclesOpen */] = useState(true);
 
   const readActivities = () => {
     global.drizzle.store.dispatch({
@@ -99,7 +99,7 @@ export const DisputeSidebar = ({
           onVote={onVote}
           earnings={earnings}
           winner={winner}
-          onReject={() => alert("Rejected Contract")}
+          onReject={onReject}
           canVote={canVote(statusId)}
         />
       )}

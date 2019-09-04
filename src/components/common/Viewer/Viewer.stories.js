@@ -43,6 +43,7 @@ storiesOf("Viewer", module)
         onExpire: () => alert("countdown finished")
       }}
       statusId={35}
+      contract={{winner:"0x0"}}
       counterparties={[
         {
           wallet: "0x9h8563948567364975369h34789537645",
@@ -98,9 +99,12 @@ storiesOf("Viewer", module)
           winner: false
         }
       ]}
+      contract={{winner:"0x0"}}
+      currentVote={{amount:0.01}}
       onVote={(counterparty) => alert(`Votin for ${counterparty.name}`)}
       onReject={() => alert("Rejected Contract")}
       onFileLoadingError={() => alert("file error")}
+      hasError={() => null}
       onVoteSubmit={(data) => console.log(data)}
       metaMaskError={true}
     />

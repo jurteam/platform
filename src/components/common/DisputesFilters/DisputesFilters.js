@@ -19,7 +19,7 @@ export const DisputesFilters = ( props ) => {
     disabled: props.disabled
   });
 
-  const { myDispute, onChange, onSubmit, onReset } = props;
+  const { myDispute, onChange, onSubmit /*, onReset */ } = props;
 
   const handleChange = (type, value) => {
 
@@ -32,10 +32,9 @@ export const DisputesFilters = ( props ) => {
     });
   };
 
-  const handleReset = () => {
-    if (typeof onReset === "function") {onReset();};
-  };
-
+  // const handleReset = () => {
+  //   if (typeof onReset === "function") {onReset();};
+  // };
 
   const { labels } = useContext(AppContext);
 

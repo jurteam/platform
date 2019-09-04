@@ -44,7 +44,7 @@ import contractStatuses from "../assets/i18n/en/status.json";
 import { Contracts } from "../api";
 
 import {
-  getWallet,
+  // getWallet,
   getNewContract,
   getCurrentContract,
   getContractListPage,
@@ -68,7 +68,7 @@ export function* getContract(action) {
     const { address } = data;
 
     // console.log('getContract ok',data);
-    
+
 
     yield put({
       type: SET_CONTRACT,
@@ -92,7 +92,7 @@ export function* getContract(action) {
       const { history } = action;
       history.push(`/contracts/`); // go to contracts list
     }
-    
+
     if (typeof onError === "function") {
       onError(error);
     } // exec onError callback if present
@@ -412,6 +412,7 @@ export function* handleContractIssues(action) {
   );
 
   const { label: statusLabel } = nextStatus;
+  log("handleContractIssues – NEXT statusLabel", statusLabel);
 
   const zero = Number(0).toFixed(process.env.REACT_APP_TOKEN_DECIMALS);
 
@@ -511,6 +512,7 @@ export function* onContractActivitiesSet(action) {
       const { data } = response.data;
       log("onContractActivitiesSet - response", response);
       log("onContractActivitiesSet - response", ids);
+      log("onContractActivitiesSet - response data", data);
 
       yield put({ type: SET_ACTIVITY_STATUS_READED, ids });
     } catch (error) {

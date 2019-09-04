@@ -10,7 +10,7 @@ class Spinner extends Component {
 
     this.handleChange = this.handleChange.bind(this);
 
-    this.unsubscribe = this.store.subscribe(this.handleChange);
+    this.unsubscribe = typeof this.store !== 'undefined' ? this.store.subscribe(this.handleChange) : null;
 
     this.state = {
       loading: true

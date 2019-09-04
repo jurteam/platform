@@ -1,5 +1,4 @@
 import contract from "truffle-contract";
-import toAsciiFromByte32 from "../utils/toAsciiFromByte32";
 import ArbitrationMockABI from "../build/contracts/ArbitrationMock.json";
 
 let arbitrationMockSCInstance = null;

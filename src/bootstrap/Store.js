@@ -22,7 +22,7 @@ const history = createBrowserHistory();
 const sagaMiddleware = createSagaMiddleware();  // Redux Saga Middleware
 
 const composeEnhancers =
-  process.env.NODE_ENV === "development" &&
+  (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "stage") &&
   window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
     ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
     : compose;

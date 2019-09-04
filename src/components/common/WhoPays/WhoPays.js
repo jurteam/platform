@@ -13,7 +13,7 @@ export const WhoPays = (props) => {
   const { labels } = useContext(AppContext)
 
   const [openIndex, setOpenIndex] = useState(props.contract.from.debtor ? 0 : 1);
-  const [counterparties, setCounterparties] = useState([props.contract.from, props.contract.to]);
+  const [counterparties /*, setCounterparties */] = useState([props.contract.from, props.contract.to]);
   const [payer, setPayer] = useState({
     counterParty: props.contract.from.debtor ? props.contract.from : props.contract.to,
     value: Number(props.contract.amount)

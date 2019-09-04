@@ -1,11 +1,11 @@
-import { put, select, takeLatest } from "redux-saga/effects";
+import { put, takeLatest } from "redux-saga/effects";
 
 import { API_CATCH, SET_LOADING } from "../reducers/types"; // action types
 
 import { log, warn } from "../utils/helpers"; // log helper
 
 export function* handleApiErrors(action) {
-  const { type, error } = action;
+  const { error } = action;
 
   yield log("handleApiErrors - action", action);
 

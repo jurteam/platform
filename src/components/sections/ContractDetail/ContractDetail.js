@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect, useContext } from "react";
 import { Redirect } from "react-router-dom";
 
@@ -25,19 +26,18 @@ import PaymentModal from "../../common/PaymentModal";
 import Viewer from "../../common/Viewer";
 
 import { SpinnerOnly } from "../../common/Spinner";
-import Button from "../../common/Button";
 
 // form validation
 import { useFormValidation } from "../../../utils/hooks";
 import validationSchema from "./_validationSchema";
 
-import { log, humanToEth, ethToHuman } from "../../../utils/helpers"; // log helper
+import { ethToHuman } from "../../../utils/helpers"; // log helper
 
 import {
-  NEW_CONTRACT,
+  // NEW_CONTRACT,
   API_GET_CONTRACT,
   PUT_CONTRACT,
-  NEW_ARBITRATION,
+  // NEW_ARBITRATION,
   CONTRACT_ISSUE,
   REJECT_ARBITRATION,
   ACCEPT_ARBITRATION,
@@ -47,8 +47,8 @@ import {
   EXPIRED_CONTRACT,
   SUCCESS_ARBITRATION,
   CONTRACT_MEDIA_DELETE,
-  SEND_TO_COUNTERPARTY,
-  DISCLAIMER_MUST_BE_ACCEPTED
+  // DISCLAIMER_MUST_BE_ACCEPTED
+  SEND_TO_COUNTERPARTY
 } from "../../../reducers/types";
 import ActionsBar from "../../chain/ActionsBar";
 
@@ -220,14 +220,14 @@ export const ContractDetail = ( props ) => {
     if (wallet.address.toLowerCase() === counterparties[1].wallet.toLowerCase()) { // is part b
 
       if (typeof partBPenaltyFee !== 'undefined' && partBPenaltyFee) amount = amount + Number(partBPenaltyFee)
-      if (whoPays.toLowerCase() == counterparties[1].wallet.toLowerCase()) {
+      if (whoPays.toLowerCase() === counterparties[1].wallet.toLowerCase()) {
         amount = amount + Number(value);
       }
 
     } else {
 
       if (typeof partAPenaltyFee !== 'undefined' && partAPenaltyFee) amount = amount + Number(partAPenaltyFee)
-      if (whoPays.toLowerCase() == counterparties[0].wallet.toLowerCase()) {
+      if (whoPays.toLowerCase() === counterparties[0].wallet.toLowerCase()) {
         amount = amount + Number(value);
       }
 
@@ -447,7 +447,7 @@ export const ContractDetail = ( props ) => {
   };
 
   const penaltyFee =
-    hasPenaltyFee && hasPenaltyFee != "0"
+    hasPenaltyFee && hasPenaltyFee !== "0"
       ? {
           partA:
             Number(partAPenaltyFee) <= Number(value) ? partAPenaltyFee : value,

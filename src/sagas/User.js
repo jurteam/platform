@@ -23,7 +23,7 @@ import {
   RESET_USER
 } from "../reducers/types"; // action types
 
-import { log, warn } from "../utils/helpers"; // log helper
+import { log } from "../utils/helpers"; // log helper
 
 import { getUser } from "./Selectors"; // selector
 

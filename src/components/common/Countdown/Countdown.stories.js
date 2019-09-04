@@ -51,11 +51,7 @@ storiesOf("Countdown", module)
       days={5}
       hours={0}
       minutes={0}
-<<<<<<< HEAD
-      startDate={1552997513000}
-=======
       startDate="May 24, 2019 23:30:00"
->>>>>>> 19ff0efeca44af112493a3c49a02e7a9c8cb20cb
       statusId={5}
       expireAlertFrom={1000 * 60 * 60 * 24}
       onProgress={percentage => console.log(percentage)}

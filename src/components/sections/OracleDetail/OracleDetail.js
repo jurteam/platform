@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect, useContext } from "react";
 import { Redirect } from "react-router-dom";
 
@@ -7,39 +8,36 @@ import { AppContext } from "../../../bootstrap/AppProvider";
 // Components
 import PageLayout from "../../common/PageLayout";
 import Disclaimer, { ModalDiscliamer } from "../../common/Disclaimer";
-import Aside from "../../common/Aside";
+// import Aside from "../../common/Aside";
 import Main from "../../common/Main";
 
-import DisputeSidebar from "../../common/DisputeSidebar";
+// import DisputeSidebar from "../../common/DisputeSidebar";
 
-import ContractSummary from "../../common/ContractSummary";
+// import ContractSummary from "../../common/ContractSummary";
 
-import DisputeMainAccordions from "../../common/DisputeMainAccordions";
-import DisputeResolutionProposal from "../../common/DisputeResolutionProposal";
+// import DisputeMainAccordions from "../../common/DisputeMainAccordions";
+// import DisputeResolutionProposal from "../../common/DisputeResolutionProposal";
 
 import OraclesTable from "../../common/OraclesTable";
 
 import Viewer from "../../common/Viewer";
 
 import { SpinnerOnly } from "../../common/Spinner";
-import Button from "../../common/Button";
-
-import { log, humanToEth, ethToHuman } from "../../../utils/helpers"; // log helper
 
 import {
-  API_GET_DISPUTE,
-  PUT_CONTRACT,
-  NEW_ARBITRATION,
-  CONTRACT_ISSUE,
-  REJECT_ARBITRATION,
-  ACCEPT_ARBITRATION,
-  ACCEPT_ARBITRATION_AMENDMENT,
-  PAY_ARBITRATION,
-  EXPIRED_CONTRACT,
-  SUCCESS_ARBITRATION,
-  CONTRACT_MEDIA_DELETE,
-  SEND_TO_COUNTERPARTY,
-  DISCLAIMER_MUST_BE_ACCEPTED,
+  // API_GET_DISPUTE,
+  // PUT_CONTRACT,
+  // NEW_ARBITRATION,
+  // CONTRACT_ISSUE,
+  // REJECT_ARBITRATION,
+  // ACCEPT_ARBITRATION,
+  // ACCEPT_ARBITRATION_AMENDMENT,
+  // PAY_ARBITRATION,
+  // EXPIRED_CONTRACT,
+  // SUCCESS_ARBITRATION,
+  // CONTRACT_MEDIA_DELETE,
+  // SEND_TO_COUNTERPARTY,
+  // DISCLAIMER_MUST_BE_ACCEPTED,
   FETCH_ORACLES,
   ORACLE_PAGE_CHANGE
 } from "../../../reducers/types";
@@ -52,21 +50,21 @@ export const OracleDetail = ( props ) => {
     wallet
   } = props;
 
-  const [showModalSuccess, setShowModalSuccess] = useState(false);
+  // const [showModalSuccess, setShowModalSuccess] = useState(false);
 
   const [showModal, setShowModal] = useState(false);
-  const [formUpdated, setFormUpdated] = useState(false);
-  const [attachments, setAttachments] = useState([]);
+  // const [formUpdated, setFormUpdated] = useState(false);
+  // const [attachments, setAttachments] = useState([]);
 
-  const [proposalAttachments, setProposalAttachments] = useState([]);
+  // const [proposalAttachments, setProposalAttachments] = useState([]);
 
   const [openPreview, setOpenPreview] = useState(false);
   const [filePath, setFilePath] = useState(null);
 
-  const { dispute, user, oracle, contract, history } = props;
-  const { updating } = dispute;
+  const { dispute, oracle, /*user, contract, history*/ } = props;
+  // const { updating } = dispute;
 
-  const [userWallet, setUserWallet] = useState(wallet.address);
+  const [userWallet /*, setUserWallet */] = useState(wallet.address);
 
   // cDM
   useEffect(() => {

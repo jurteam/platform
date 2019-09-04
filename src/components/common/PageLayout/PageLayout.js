@@ -5,9 +5,6 @@ import Header from "../Header";
 import Breadcrumbs from "../Breadcrumbs";
 import Content from "../Content";
 import SubHeader from "../SubHeader";
-import ResolvedDisputeNotification from "../ResolvedDisputeNotification";
-import Logo from "../Logo";
-import NavigationWrapper from "../NavigationWrapper";
 
 export const PageLayout = ( props ) => {
   const {

@@ -1,6 +1,6 @@
 import contract from "truffle-contract";
-import toAsciiFromByte32 from "../utils/toAsciiFromByte32";
 import JURTokenABI from "../build/contracts/JURToken.json";
+import { log } from "../utils/helpers";
 
 let jurTokenSCInstance = null;
 
@@ -163,18 +163,28 @@ export default class JURToken {
    * @return true if the call function was executed successfully
    */
   async approveAndCall(address, amount, method, params) {
+    log('approveAndCall – args', {address, amount, method, params});
+    log('approveAndCall – web3', this.web3);
+    log('approveAndCall – this.contract', this.contract);
     const instance = await this.contract.deployed();
+    log('approveAndCall – instance', instance);
 
     const [account] = await this.web3.eth.getAccounts();
+    log('approveAndCall – account', account);
 
-    const data = global.drizzle.web3.eth.abi.encodeFunctionCall(
+    log('approveAndCall – global.drizzle.web3.eth.abi.encodeFunctionCall', global.drizzle.web3.eth.abi.encodeFunctionCall);
+    log('approveAndCall – this.web3.eth.abi.encodeFunctionCall', this.web3.eth.abi.encodeFunctionCall);
+
+    const data = this.web3.eth.abi.encodeFunctionCall(
       this.signatures[method],
       [...params]
-    );
+      );
+
+    log('approveAndCall – this.web3.utils.toBN(amount)', this.web3.utils.toBN(amount));
 
     return instance.approveAndCall(
       address,
-      this.web3.utils.toBN(amount),
+      this.web3.utils.toBN(amount).toString(),
       data,
       { from: account }
     );

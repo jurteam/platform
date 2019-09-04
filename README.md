@@ -156,6 +156,26 @@ This command will **launch** REST API service on your host.
 
 This command will **stop** REST API service on your host.
 
+
+## Deploy
+After you have configured the environment on remote machine and already [give the right permissions for rsync](https://askubuntu.com/questions/719439/using-rsync-with-sudo-on-the-destination-machine#answer-719440)
+
+You should use `./bin/deploy.sh` script in order to deploy.
+
+There are 3 parameteres to look at:
+
+- `-e|--environment` to specify an environment from **deploy-conf.yml** file;
+- `-f|--frontend` equals to 1 in order to deploy frontend only;
+- `-b|--backend` equals to 1 in order to deploy backend only;
+- `--all` equals to 1 to deploy both frontend and backend.
+
+This operation uses `rsync` with sudo and and excludes files and folder written in **deplpy-exclude.list** file.
+
+> Teke a look also to `.template` files for this.
+
+> Please note: this operation should be automated using a CI service like CircleCI. Feel free to use this script on a runner machine.
+
+
 ## Available Scripts
 
 > **NOTE** : see the [_Environment setup_](#environment-setup) section for further details before first run of the following scripts.

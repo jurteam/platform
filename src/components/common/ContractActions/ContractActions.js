@@ -6,7 +6,7 @@ import { AppContext } from "../../../bootstrap/AppProvider"; // context
 import "./ContractActions.scss";
 
 export const ContractActions = ( props ) => {
-  const { children, statusId, statusFrom, currentWallet, part, shouldWait, disabled } = props;
+  const { children, statusId, statusFrom, currentWallet, part, disabled } = props;
   const { labels } = useContext(AppContext);
   console.log("ContractActions - props", { children, statusId, part });
   const renderSwitch = () => {
@@ -43,7 +43,7 @@ export const ContractActions = ( props ) => {
         ;
       case 9:
       case 10:
-        return (statusFrom !== currentWallet.address && children) ? children :
+        return (statusFrom !== currentWallet.address || children) ? children :
         <span className="jur-contract-actions__text">
             {labels.contractIsClosed}
           </span>

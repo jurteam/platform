@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext } from "react";
 
 // Context
 import { AppContext } from "../../../bootstrap/AppProvider";

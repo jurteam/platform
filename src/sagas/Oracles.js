@@ -1,5 +1,5 @@
 import { call, put, select, takeLatest, takeEvery } from "redux-saga/effects";
-import { getUser, getCurrentContract, getCurrentDispute } from "./Selectors";
+import { getCurrentDispute } from "./Selectors";
 import {
   FETCH_ORACLES,
   FETCH_CURRENT_ORACLES,
@@ -13,16 +13,16 @@ import {
   RESET_VOTE,
   PUT_VOTE,
   LOOKUP_WALLET_BALANCE,
-  FETCH_CONTRACTS,
-  SET_CONTRACT_STATUS
+  // SET_CONTRACT_STATUS
+  FETCH_CONTRACTS
 } from "../reducers/types";
 
 import { log, chainErrorHandler } from "../utils/helpers"; // log helper
 
-import contractStatuses from "../assets/i18n/en/status.json";
+// import contractStatuses from "../assets/i18n/en/status.json";
 
 // Api layouts
-import { Oracles, Disputes, JURToken, Arbitration, Contracts } from "../api";
+import { Oracles, Disputes, JURToken /*, Arbitration, Contracts*/ } from "../api";
 
 import { getOracleOrder, getOracleListPage } from "./Selectors"; // selector
 
@@ -70,8 +70,11 @@ export function* onOraclePageChange(action) {
 export function* onVote(action) {
   log("onVote - run");
   yield put({ type: DISPUTE_UPDATING, payload: true });
+  let {
+    vote: { wallet_part }
+  } = action;
   const {
-    vote: { contract_id, message, hash, oracle_wallet, wallet_part },
+    vote: { contract_id, message, hash, oracle_wallet, reject },
     attachments,
     callback
   } = action;
@@ -79,13 +82,16 @@ export function* onVote(action) {
     vote: { amount }
   } = action;
 
-  const zero = Number(0).toFixed(process.env.REACT_APP_TOKEN_DECIMALS);
+  // const zero = Number(0).toFixed(process.env.REACT_APP_TOKEN_DECIMALS);
 
   const voteData = new FormData();
   // voteData.append('_method', 'PUT');
   if (contract_id) voteData.append("contract_id", contract_id);
   voteData.append("hash", hash || "0x0");
-  if (wallet_part) voteData.append("wallet_part", wallet_part);
+  if (wallet_part) {
+    voteData.append("wallet_part", wallet_part);
+    if (reject) wallet_part = "0x0000000000000000000000000000000000000000"; // set wallet_part properly for chain action
+  }
   if (oracle_wallet) voteData.append("oracle_wallet", oracle_wallet);
   voteData.append("message", message ? message : ''); // empty string
   voteData.append(
@@ -121,6 +127,8 @@ export function* onVote(action) {
   const voteTx = yield token
     .approveAndCall(contractAddress, amount, 'vote', [oracle_wallet, wallet_part, amount])
     .catch(chainErrorHandler);
+
+  log("onVote – voteTx", voteTx);
 
   if (voteTx) { // only if there is a valid sign tx
 
