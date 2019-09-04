@@ -768,6 +768,7 @@ export function* handleAmendDisputeArbitration(args) {
       yield put({ type: DISPUTE_UPDATING, payload: false });
     }
   } else {
+    yield put({ type: CONTRACT_SAVING, payload: false });
     yield put({ type: DISPUTE_SAVING, payload: false });
     yield put({ type: DISPUTE_UPDATING, payload: false });
     if (typeof callback === "function") callback();
@@ -1100,6 +1101,7 @@ export function* handleDisputeArbitration(args) {
       yield put({ type: DISPUTE_UPDATING, payload: false });
     }
   } else {
+    yield put({ type: CONTRACT_SAVING, payload: false });
     yield put({ type: DISPUTE_SAVING, payload: false });
     yield put({ type: DISPUTE_UPDATING, payload: false });
     if (typeof callback === "function") callback();
