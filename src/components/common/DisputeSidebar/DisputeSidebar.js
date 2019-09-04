@@ -40,7 +40,7 @@ export const DisputeSidebar = ({
   // lastPartInvolved,
   onVote,
   onView,
-  // onReject,
+  onReject,
   // onAccept,
   // onAcceptAmendment,
   // onChangeSelect,
@@ -99,7 +99,7 @@ export const DisputeSidebar = ({
           onVote={onVote}
           earnings={earnings}
           winner={winner}
-          onReject={() => alert("Rejected Contract")}
+          onReject={onReject}
           canVote={canVote(statusId)}
         />
       )}

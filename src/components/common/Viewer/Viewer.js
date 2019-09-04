@@ -51,6 +51,7 @@ export const Viewer = (props) => {
       onVote,
       current,
       contract,
+      shouldHide,
       // onInputChange,
       onFileAdded,
       onReject,
@@ -157,7 +158,7 @@ export const Viewer = (props) => {
     return (
       <ReactModal
         isOpen={isOpen}
-        className="jur-viewer"
+        className={shouldHide ? "jur-viewer jur-viewer__hidden" : "jur-viewer"}
         ariaHideApp={false}
         shouldCloseOnEsc={true}
         onRequestClose={onRequestClose}
@@ -187,22 +188,24 @@ export const Viewer = (props) => {
                     : "jur-viewer__form--blue"
                 }`}
               >
-                <div className="jur-viewer__form__header">
+                <div className={selectedCounterpartyIndex !== -1 ? "jur-viewer__form__header" : "jur-viewer__form__header rejected"}>
                   <div className="jur-viewer__form__header__title">
-                    {labels.voteFor}
+                    {selectedCounterpartyIndex !== -1 ? labels.voteFor : labels.voteForReject}
                   </div>
+                  {selectedCounterpartyIndex !== -1 && (
                   <div className="jur-viewer__form__header__user">
                     <Avatar
                       seed={selectedCounterpartyAddress}
                       size="xxxlarge"
                       variant="rounded"
-                    />
+                      />
                     <span>
                       {selectedCounterpartyShouldRenderName && selectedCounterpartyName !== ''
                         ? selectedCounterpartyName
                         : selectedCounterpartyAddress}
                     </span>
-                  </div>
+                  </div>)
+                      }
                 </div>
                 <div className="jur-viewer__form__body">
                   <BlockTitle title={labels.jurTokens} hideIcon />
@@ -241,7 +244,7 @@ export const Viewer = (props) => {
                 </div>
                 <div className="jur-viewer__form__note">
                   {labels.voteForRejectText}
-                  <span onClick={onReject}>{labels.voteForReject}</span>
+                  <span className={submitDisabled ? 'disabled' : null} onClick={onReject}>{labels.voteForReject}</span>
                 </div>
               </div>
             )}

@@ -169,6 +169,7 @@ export const DisputeDetail = ( props ) => {
     changeInput("contract_id", dispute.current.id);
     changeInput("oracle_wallet", wallet.address);
     changeInput("wallet_part", counterparty.wallet.toLowerCase());
+    changeInput("reject", false);
     setShowVoteOverlay({ counterparty, idx });
   };
 
@@ -218,6 +219,21 @@ export const DisputeDetail = ( props ) => {
         } // reset form
       });
     }
+  };
+
+  const onRejectOpener = () => {
+    onRequestClose();
+    changeInput("contract_id", dispute.current.id);
+    changeInput("oracle_wallet", wallet.address);
+    changeInput("wallet_part", "0x0");
+    changeInput("reject", true);
+    const counterparty = {
+      wallet: 0,
+      name: "",
+      winner: false
+    };
+    const idx = -1;
+    setShowVoteOverlay({counterparty, idx});
   };
 
   const breadcrumbs = [
@@ -476,6 +492,7 @@ export const DisputeDetail = ( props ) => {
                   oracles={oracle.currentList}
                   onSubmit={onSubmit}
                   onVote={onVote}
+                  onReject={onRejectOpener}
                   onView={onFileView}
                 />
               )}
@@ -496,11 +513,8 @@ export const DisputeDetail = ( props ) => {
             contract={contractData}
             currentWallet={user.wallet}
             counterparties={voteCounterparties}
-            onVote={(counterparty, idx) => {
-              onRequestClose();
-              setShowVoteOverlay({ counterparty, idx });
-            }}
-            onReject={() => alert("Rejected Contract")}
+            onVote={(counterparty, idx) => onVote(counterparty, idx)}
+            onReject={onRejectOpener}
             onFileLoadingError={onFileError}
             onRequestClose={onRequestClose}
           />
@@ -516,15 +530,13 @@ export const DisputeDetail = ( props ) => {
           current={showVoteOverlay}
           currentIdx={showVoteOverlay.idx}
           currentVote={dispute.vote}
+          shouldHide={dispute.updating || dispute.saving}
           currentWallet={user.wallet}
           submitDisabled={submitDisabled}
           hasError={hasError}
           counterparties={voteCounterparties}
-          onVote={(counterparty, idx) => {
-            onRequestClose();
-            setShowVoteOverlay({ counterparty, idx });
-          }}
-          onReject={() => alert("Rejected Contract")}
+          onVote={(counterparty, idx) => onVote(counterparty, idx)}
+          onReject={onRejectOpener}
           onInputChange={onInputChange}
           changeInput={changeInput}
           onFileAdded={onFileAdded}
