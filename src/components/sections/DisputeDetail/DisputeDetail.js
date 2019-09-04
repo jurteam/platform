@@ -274,9 +274,14 @@ export const DisputeDetail = ( props ) => {
 
   let currentPart = null;
   if (
+    typeof currentPart !== "undefined" &&
     typeof counterparties !== "undefined" &&
-    typeof counterparties[1] !== "undefined"
+    typeof counterparties[1] !== "undefined" &&
+    typeof counterparties[1].wallet !== "undefined" &&
+    typeof wallet !== "undefined" &&
+    typeof wallet.address !== "undefined" && wallet.address !== null
   ) {
+
     currentPart =
       wallet.address.toLowerCase() === counterparties[1].wallet.toLowerCase()
         ? "b"
