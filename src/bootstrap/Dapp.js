@@ -9,6 +9,7 @@ let dappHeartbeat = null;
 
 // Dapp init
 export const init = () => {
+  if (typeof global.drizzle === 'undefined') return;
   const { web3, store } = global.drizzle;
 
   log("Dapp - global.drizzle", global.drizzle);
