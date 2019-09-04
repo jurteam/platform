@@ -583,16 +583,23 @@ export function* handlePayArbitration(args) {
   const wallet = yield select(getWallet);
   const token = new JURToken();
   const arbitration = new Arbitration(contractAddress);
+  log("handlePayArbitration – arbitration", arbitration);
 
   // string interpolation for activities
   const iValue = amount
 
   // fix amount decimals
-  amount = amount * 10**18;
+  // amount = amount * 10**18;
+  amount = global.drizzle.web3.utils.toWei(amount.toString(), 'ether');
+
+  // // convert amout to string
+  // amount = amount.toString();
 
   const signTx = yield token
     .approveAndCall(contractAddress, amount, 'sign', [wallet.address])
     .catch(chainErrorHandler);
+
+  log("handlePayArbitration – signTx", signTx);
 
   // Two Step method
   // const tk = new JURToken();
@@ -735,9 +742,9 @@ export function* handleAmendDisputeArbitration(args) {
       for (let i = 0; i < proposalAttachments.files.length; i++) {
         // iteate over any file sent over appending the files to the form data.
         let file = proposalAttachments.files[i];
-  
+
         log("handleAmendDisputeArbitration - for each file", file);
-  
+
         toUpdate.append("attachments[" + i + "]", file);
       }
       // toSend.append("attachments[]", proposalAttachments.files);
@@ -1059,9 +1066,9 @@ export function* handleDisputeArbitration(args) {
       for (let i = 0; i < proposalAttachments.files.length; i++) {
         // iteate over any file sent over appending the files to the form data.
         let file = proposalAttachments.files[i];
-  
+
         log("handleDisputeArbitration - for each file", file);
-  
+
         toUpdate.append("attachments[" + i + "]", file);
       }
       // toSend.append("attachments[]", proposalAttachments.files);
