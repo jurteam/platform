@@ -11,10 +11,10 @@ import Avatar from "../Avatar";
 import Form from "../Form";
 import UploadForm from "../UploadForm";
 import Button from "../Button";
+import Spinner from "../Spinner";
 
 import "./Viewer.scss";
 import { AppContext } from "../../../bootstrap/AppProvider"; // context
-
 
 import {
   canVote
@@ -176,6 +176,7 @@ export const Viewer = (props) => {
                 filePath={filePath}
                 fileType={getFileType(filePath)}
                 onError={onFileLoadingError}
+                loadingComponent={<Spinner />}
               />
             )}
             {!filePath && (
