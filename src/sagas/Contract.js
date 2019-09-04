@@ -396,7 +396,8 @@ export function* handleContractIssues(action) {
   yield put({ type: CONTRACT_SAVING, payload: true });
   const proposal = yield select(getCurrentProposal);
 
-  const { message, proposal_part_a, proposal_part_b, payed_at } = proposal;
+  const { proposal_part_a, proposal_part_b, payed_at } = proposal;
+  let { message } = proposal;
   const { issue, statusId, proposalAttachments, id } = action;
 
   log("handleContractIssues - proposal", proposal);
@@ -419,7 +420,11 @@ export function* handleContractIssues(action) {
 
   const toSend = new FormData();
   // toSend.append('_method', 'PUT');
-  if (message) toSend.append("message", message);
+
+  // message filter
+  if (typeof message === 'undefined' || message === null) message = '';
+
+  if (message && message !== null) toSend.append("message", message);
   if (proposal_part_a) {
     fee = Number(proposal_part_a).toFixed(process.env.REACT_APP_TOKEN_DECIMALS)
     toSend.append(

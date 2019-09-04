@@ -81,7 +81,8 @@ export const ContractDetail = ( props ) => {
 
   const {
     match: { params },
-    wallet
+    wallet,
+    user: { disclaimer }
   } = props;
 
   // validation setup
@@ -569,7 +570,7 @@ export const ContractDetail = ( props ) => {
           </Main>
           <Aside>
             <ContractSidebar
-              disabled={contract.saving}
+              disabled={contract.saving || !disclaimer.optin}
               submitDisabled={submitDisabled}
               currentWallet={wallet}
               contractAddress={contract.current.address}

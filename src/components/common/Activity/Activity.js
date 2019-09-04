@@ -167,7 +167,7 @@ export const Activity = ( props ) => {
           <div className="jur-activity__info__message">{getMessage()}</div>
         </div>
       </div>
-      {status !== null && typeof noPreview === "undefined" && message && (
+      {status !== null && typeof noPreview === "undefined" && (
         <div
           className={`jur-activity__content ${
             isOpen ? "jur-activity__content--open" : ""
