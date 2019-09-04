@@ -296,6 +296,7 @@ function* handleContractInitialized(args) {
         parties: [wallet.address],
         hasAgreed: [wallet.address],
         hasSigned: [wallet.address],
+        hasWithdrawn: [wallet.address],
         hasFundedAmendment: [wallet.address],
         amendmentProposed: []
       };
