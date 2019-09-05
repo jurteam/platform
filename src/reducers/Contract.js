@@ -5,6 +5,7 @@ import {
   SET_CONTRACT_STATUS,
   SET_CONTRACT_ACTIVITIES,
   SET_CONTRACT_CURRENT_PAGE,
+  SET_CONTRACT_CURRENT_ORDER,
   // SET_ACTIVITY_STATUS_READED,
   API_DELETE_CONTRACT,
   UPDATE_CONTRACT_FILTER,
@@ -83,6 +84,7 @@ const INITIAL_STATE = {
   },
   list: [],
   page: 1,
+  order: [],
   pagination: [],
   currentProposal: {
     message: null,
@@ -116,6 +118,33 @@ export default (state = INITIAL_STATE, action) => {
 
     case SET_CONTRACT_CURRENT_PAGE:
       return { ...state, page: action.payload };
+
+    case SET_CONTRACT_CURRENT_ORDER:
+
+        let present = false;
+        let updatedOrder = [];
+       
+        state.order.forEach((ord) => {
+          if (ord.field === action.payload.field) {
+            present = true;
+            if (action.payload.type !== "") {
+              updatedOrder.push(action.payload)
+            }
+          }
+          else 
+          {
+            updatedOrder.push(ord)
+          }
+        });
+
+        if (!present) {
+          updatedOrder.push(action.payload)
+        }
+  
+        return {
+          ...state,
+          order: updatedOrder
+        };
 
     case SET_CONTRACT_STATUS:
       console.log(SET_CONTRACT_STATUS, action);

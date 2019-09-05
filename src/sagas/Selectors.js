@@ -16,6 +16,7 @@ export const getNewContract = (state) => (state.contract.new);
 export const getCurrentContract = (state) => (state.contract.current);
 export const getCurrentProposal = (state) => (state.contract.currentProposal);
 export const getContractListPage = (state) => (state.contract.page);
+export const getContractListOrder = (state) => (state.contract.order);
 export const getCurrentContractActivities = (state) => (state.contract.current.activities);
 
 // Drizzle Contract

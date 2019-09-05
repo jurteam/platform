@@ -8,13 +8,21 @@ export const TableCell = ( props ) => {
     parentComponent,
     children,
     onClick,
+    fieldName,
     noCarret,
     align
   } = props;
-  const [desc, setDesc] = useState(false);
-  const handleClick = (ev) => {
-    onClick.bind(this, ev, desc)();
-    setDesc(!desc);
+  const [order, setOrder] = useState(0);
+
+  // 0 - no order - no arrow
+  // 1 - asc - down arrow
+  // 2 - desc - up arrow
+
+  const handleClick = ev => {
+
+      let neworder = order > 1 ? 0 : order + 1
+      setOrder(neworder);
+      onClick.bind(this,fieldName, neworder)();
   };
   const Component = parentComponent === "thead" ? "th" : "td";
   return (
@@ -32,7 +40,7 @@ export const TableCell = ( props ) => {
       ) : (
         children
       )}
-      {onClick && typeof noCarret === "undefined" ? desc ? <CaretUpIcon /> : <CaretDownIcon /> : null}
+      {onClick && typeof noCarret === "undefined" ? order === 2 ? <CaretUpIcon /> : order === 1 ? <CaretDownIcon /> : null : null}
     </Component>
   );
 };

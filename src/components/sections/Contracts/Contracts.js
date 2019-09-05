@@ -25,6 +25,7 @@ import {
   UPDATE_CONTRACT_FILTER,
   API_DELETE_CONTRACT,
   CONTRACT_PAGE_CHANGE,
+  CONTRACT_ORDER_CHANGE,
   DISCLAIMER_MUST_BE_ACCEPTED
 } from "../../../reducers/types";
 
@@ -95,6 +96,13 @@ export const Contracts = ( props ) => {
     });
   };
 
+  const onSortChange = ( field, order ) => {
+    global.drizzle.store.dispatch({
+      type: CONTRACT_ORDER_CHANGE,
+      payload: { field: field, type: order }
+    });
+  };
+
   const breadcrumbs = [
     {
       label: labels.smartContracts,
@@ -125,6 +133,7 @@ export const Contracts = ( props ) => {
             newContract={newContract}
             initialPage={pagination.current_page}
             onPageChange={(pageNo) => onPageChange(pageNo)}
+            onSortChange={(field, order) => onSortChange(field, order)}
             contractsPerPage={pagination.per_page}
             totalContracts={pagination.total}
             loading={contract.updatingList}

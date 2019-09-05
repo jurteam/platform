@@ -34,10 +34,10 @@ class AppProvider extends Component {
       ],
       contractTableHeaders: [
         { label: i18n.status, sortable: false, className: "jur-col--status" },
-        { label: i18n.contractName, sortable: true },
+        { label: i18n.contractName, fieldName:'name', sortable: true },
         { label: i18n.duration, sortable: false, className: "jur-col--duration" },
         { label: i18n.couterpartyDetails, sortable: false, className: "jur-col--wallet" },
-        { label: i18n.contractValue, sortable: true, className: "jur-col--amount" },
+        { label: i18n.contractValue, fieldName:'value', sortable: true, className: "jur-col--amount" },
         { label: "", sortable: false, className: "jur-col--options" } // options
       ],
       disputeTableHeaders: [
