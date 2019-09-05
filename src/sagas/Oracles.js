@@ -14,7 +14,8 @@ import {
   PUT_VOTE,
   LOOKUP_WALLET_BALANCE,
   // SET_CONTRACT_STATUS
-  FETCH_CONTRACTS
+  FETCH_CONTRACTS,
+  DISPUTE_SAVING
 } from "../reducers/types";
 
 import { log, chainErrorHandler } from "../utils/helpers"; // log helper
@@ -126,7 +127,12 @@ export function* onVote(action) {
 
   const voteTx = yield token
     .approveAndCall(contractAddress, amount, 'vote', [oracle_wallet, wallet_part, amount])
-    .catch(chainErrorHandler);
+    .catch((err) => {
+      log("onVote – err", err);
+      put({ type: DISPUTE_UPDATING, payload: false });
+      put({ type: DISPUTE_SAVING, payload: false });
+      chainErrorHandler(err);
+    });
 
   log("onVote – voteTx", voteTx);
 
@@ -157,6 +163,7 @@ export function* onVote(action) {
   } else {
     if (typeof callback === "function") callback();
     yield put({ type: DISPUTE_UPDATING, payload: false });
+    yield put({ type: DISPUTE_SAVING, payload: false });
   }
 
   // try {
