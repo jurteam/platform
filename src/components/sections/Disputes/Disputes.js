@@ -23,7 +23,8 @@ import {
   FETCH_DISPUTES,
   UPDATE_DISPUTE_FILTER,
   API_DELETE_DISPUTE,
-  DISPUTE_PAGE_CHANGE
+  DISPUTE_PAGE_CHANGE,
+  DISPUTE_ORDER_CHANGE
 } from "../../../reducers/types";
 
 export const Disputes = ( props ) => {
@@ -87,6 +88,15 @@ export const Disputes = ( props ) => {
     });
   };
 
+  const onSortChange = ( field, order ) => {
+    global.drizzle.store.dispatch({
+      type: DISPUTE_ORDER_CHANGE,
+      payload: { field: field, type: order }
+    });
+  };
+
+
+
   const breadcrumbs = [
     {
       label: labels.disputes,
@@ -114,6 +124,7 @@ export const Disputes = ( props ) => {
             handleArchive={handleArchive}
             initialPage={pagination.current_page}
             onPageChange={(pageNo) => onPageChange(pageNo)}
+            onSortChange={(field, order) => onSortChange(field, order)}
             disputesPerPage={pagination.per_page}
             totalDisputes={pagination.total}
             loading={dispute.updatingList}

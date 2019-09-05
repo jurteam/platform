@@ -8,7 +8,9 @@ import {
   API_CATCH,
   API_GET_DISPUTE,
   ORACLE_PAGE_CHANGE,
+  ORACLE_ORDER_CHANGE,
   SET_ORACLE_CURRENT_PAGE,
+  SET_ORACLE_CURRENT_ORDER,
   DISPUTE_UPDATING,
   RESET_VOTE,
   PUT_VOTE,
@@ -24,7 +26,7 @@ import { log, chainErrorHandler } from "../utils/helpers"; // log helper
 // Api layouts
 import { Oracles, Disputes, JURToken /*, Arbitration, Contracts*/ } from "../api";
 
-import { getOracleOrder, getOracleListPage } from "./Selectors"; // selector
+import { getOracleOrder, getOracleListPage, getOracleListOrder } from "./Selectors"; // selector
 
 // Get
 export function* fetchOracles(action) {
@@ -33,12 +35,25 @@ export function* fetchOracles(action) {
   const { wallet_part } = yield select(getOracleOrder);
   const page = yield select(getOracleListPage);
 
+
+  const order = yield select(getOracleListOrder);
+
+  let orderby = {};
+  order.forEach((ord) => {
+    let fieldname = `orderBy[${ord.field}]`
+    orderby[fieldname] = ord.type
+  });
+  
+
+
+
   try {
     const response = yield call(Oracles.list, {
       id,
       include: "attachments",
-      "order[wallet_part]": wallet_part,
-      page
+      // "order[wallet_part]": wallet_part,
+      page,
+      ...orderby
     });
     log("oracles - fetch", response);
     yield put({ type: ORACLES_FETCHED, payload: response.data });
@@ -65,6 +80,13 @@ export function* fetchCurrentOracles(action) {
 export function* onOraclePageChange(action) {
   yield put({ type: SET_ORACLE_CURRENT_PAGE, payload: action.payload });
   yield put({ type: FETCH_ORACLES });
+  // TODO: maybe must be fixed with id with the following line 
+  // yield put({ type: FETCH_ORACLES, id: action.id });
+}
+
+export function* onOracleOrderChange(action) {
+  yield put({ type: SET_ORACLE_CURRENT_ORDER, payload: action.payload });
+  yield put({ type: FETCH_ORACLES, id: action.id });
 }
 
 export function* onVote(action) {
@@ -188,4 +210,5 @@ export default function* oracleSagas() {
   yield takeEvery(FETCH_CURRENT_ORACLES, fetchCurrentOracles);
   yield takeEvery(API_GET_DISPUTE, fetchCurrentOracles);
   yield takeLatest(ORACLE_PAGE_CHANGE, onOraclePageChange);
+  yield takeLatest(ORACLE_ORDER_CHANGE, onOracleOrderChange);
 }

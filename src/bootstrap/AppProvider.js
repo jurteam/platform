@@ -42,11 +42,11 @@ class AppProvider extends Component {
       ],
       disputeTableHeaders: [
         { label: i18n.status, sortable: false, className: "jur-col--status" },
-        { label: i18n.disputeName, sortable: true },
+        { label: i18n.disputeName, fieldName:'name', sortable: true },
         { label: i18n.duration, sortable: false, className: "jur-col--duration-with-seconds" },
-        { label: i18n.category, sortable: true, className: "jur-col--category" },
-        { label: i18n.contractValue, sortable: true, className: "jur-col--amount" },
-        { label: i18n.earnings, sortable: true, className: "jur-col--amount" },
+        { label: i18n.category, fieldName:'category', sortable: true, className: "jur-col--category" },
+        { label: i18n.contractValue, fieldName:'value', sortable: true, className: "jur-col--amount" },
+        { label: i18n.earnings, sortable: false, className: "jur-col--amount" },
         { label: "", sortable: false, className: "jur-col--options" } // options
       ],
       oraclesTableHeaders: [
@@ -58,10 +58,10 @@ class AppProvider extends Component {
       ],
       oraclesFullTableHeaders: [
         { label: i18n.ethAddress, sortable: false },
-        { label: i18n.vote, sortable: false },
+        { label: i18n.vote, fieldName:'wallet_part', sortable: true },
         { label: i18n.msg, sortable: false },
         { label: i18n.evidences, sortable: false },
-        { label: i18n.amount, sortable: false },
+        { label: i18n.amount, fieldName:'amount', sortable: true },
         { label: i18n.time, sortable: false }
       ],
       onNetwork: false,

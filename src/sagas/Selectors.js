@@ -26,10 +26,12 @@ export const getDrizzleStoredContracts = (state) => (state.contracts);
 export const getDisputeFilters = (state) => (state.dispute.filters);
 export const getCurrentDispute = (state) => (state.dispute.current);
 export const getDisputeListPage = (state) => (state.dispute.page);
+export const getDisputeListOrder = (state) => (state.dispute.order);
 
 // Oracle
 export const getOracleOrder = (state) => (state.oracle.order);
 export const getOracleListPage = (state) => (state.oracle.page);
+export const getOracleListOrder = (state) => (state.oracle.order);
 
 // User
 export const getUser = (state) => (state.user);
