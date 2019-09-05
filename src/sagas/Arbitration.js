@@ -754,16 +754,17 @@ export function* handleAmendDisputeArbitration(args) {
     try {
       let response = yield call(Disputes.store, toUpdate, id);
       log("handleAmendDisputeArbitration - contract status updated", response);
-      // const { statusId, statusLabel, statusUpdatedAt, statusFrom } = response.data.data;
-      // yield put({
-      //   type: SET_CONTRACT_STATUS,
-      //   statusId,
-      //   statusFrom,
-      //   statusLabel,
-      //   statusUpdatedAt,
-      //   id
-      // });
+      const { statusId, statusLabel, statusUpdatedAt, statusFrom } = response.data.data;
+      yield put({
+        type: SET_CONTRACT_STATUS,
+        statusId,
+        statusFrom,
+        statusLabel,
+        statusUpdatedAt,
+        id
+      });
       yield put({ type: FETCH_CONTRACTS });
+      yield put({ type: CONTRACT_SAVING, payload: false });
       yield put({ type: DISPUTE_SAVING, payload: false });
       yield put({ type: DISPUTE_UPDATING, payload: false });
       if (typeof callback === "function") callback();
@@ -776,6 +777,7 @@ export function* handleAmendDisputeArbitration(args) {
       yield put({ type: DISPUTE_UPDATING, payload: false });
     }
   } else {
+    yield put({ type: CONTRACT_SAVING, payload: false });
     yield put({ type: DISPUTE_SAVING, payload: false });
     yield put({ type: DISPUTE_UPDATING, payload: false });
     if (typeof callback === "function") callback();
@@ -1108,6 +1110,7 @@ export function* handleDisputeArbitration(args) {
       yield put({ type: DISPUTE_UPDATING, payload: false });
     }
   } else {
+    yield put({ type: CONTRACT_SAVING, payload: false });
     yield put({ type: DISPUTE_SAVING, payload: false });
     yield put({ type: DISPUTE_UPDATING, payload: false });
     if (typeof callback === "function") callback();

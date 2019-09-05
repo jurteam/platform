@@ -25,10 +25,14 @@ class ContractStatusDetailTransformer extends TransformerAbstract
      */
     public function transform(ContractStatusDetail $detail)
     {
+        $contract = $detail->contract;
+
         return [
             'id' => $detail->id,
             'date' => $detail->created_at->valueOf(),
             'contract' => $detail->contract_id,
+            'statusId' => $contract->status ? $contract->status->code : null,
+            'statusFrom' => $contract->getLastStatusFrom(),
             'from' => (object) [
                 'wallet' => $detail->contract_part,
                 'name' => $detail->user ? $detail->user->name : null,

@@ -51,7 +51,8 @@ export const ProposalForm = ( props ) => {
   };
 
   // validation setup
-  const [/*isValid, errors,*/ validateForm, setFormData] = useFormValidation(
+  // eslint-disable-next-line no-unused-vars
+  const [isValid, errors, validateForm, setFormData] = useFormValidation(
     currentProposal,
     validationSchema
   );
