@@ -14,7 +14,12 @@ trait StatusesTrait
      */
     public function getLastStatusFrom()
     {
-        $activity = $this->activities->last();
+        $activity = $this->activities
+            ->filter(function($activity) {
+                return is_null($activity->chain_update_to) 
+                    || !$activity->chain_update_to->isFuture();
+            })
+            ->last();
 
         return strtolower($activity->wallet);
     }

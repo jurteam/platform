@@ -25,7 +25,8 @@ class Activity extends Model implements HasMedia
         'status_code',
         'user_id',
         'contract_id',
-        'chain_updated_at'
+        'chain_updated_at',
+        'chain_update_to'
     ];
 
     protected $casts = [
@@ -33,7 +34,10 @@ class Activity extends Model implements HasMedia
         'readed_part_b' => 'boolean'
     ];
 
-    protected $dates = ['chain_updated_at'];
+    protected $dates = [
+        'chain_updated_at', 
+        'chain_update_to'
+    ];
 
     public function scopeFilters($query, $filters)
     {

@@ -7,15 +7,23 @@ use Carbon\Carbon;
 class ContractVoteFilters extends Filters
 {
     protected $filters = [
-        'order',
-        'live'
+        'live',
+        'orderBy'
     ];
 
-    public function order($value)
+    protected $orderBy = [
+        'wallet_part',
+        'amount'
+    ];
+
+    public function orderBy($value)
     {
         $query = $this->builder;
+
         foreach ($value as $field => $ordering) {
-            $query->orderBy($field, $ordering);
+            if (in_array($field, $this->orderBy)) {
+                $query->orderBy($field, $ordering);
+            }
         }
         return $query;
     }
@@ -24,5 +32,5 @@ class ContractVoteFilters extends Filters
     {
         $date = Carbon::parse($value);
         return $this->builder->where('created_at', '>=', $date->format('Y-m-d H:i:s'));
-    }
+    }  
 }
