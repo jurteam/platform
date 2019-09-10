@@ -36,6 +36,7 @@ const DisputesTable = props => {
     handleFilterSubmit,
     initialPage,
     onPageChange,
+    onSortChange,
     contractsPerPage,
     totalContracts,
     loading,
@@ -66,6 +67,18 @@ const DisputesTable = props => {
     setActivePage(pageNumber);
     onPageChange(pageNumber);
   };
+
+  const handleSortChange = (field,order) => {
+
+    // 0 - no order - no arrow
+    // 1 - asc - down arrow
+    // 2 - desc - up arrow
+
+    order = order === 1 ? 'asc' : order === 2 ? 'desc' : '';
+    
+    onSortChange(field,order);
+  };
+
 
   const emptyMyDisputesMessage = (
     <>
@@ -141,7 +154,7 @@ const DisputesTable = props => {
             {headers.map((header) => (
               <TableCell
                 key={header.label.toString()}
-                {...header.sortable && { onClick: header.sortable }}
+                {...header.sortable && { onClick: handleSortChange, fieldName: header.fieldName }}
                 {...header.className && { className: header.className }}
               >
                 {header.label}

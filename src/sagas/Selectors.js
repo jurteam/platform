@@ -16,6 +16,7 @@ export const getNewContract = (state) => (state.contract.new);
 export const getCurrentContract = (state) => (state.contract.current);
 export const getCurrentProposal = (state) => (state.contract.currentProposal);
 export const getContractListPage = (state) => (state.contract.page);
+export const getContractListOrder = (state) => (state.contract.order);
 export const getCurrentContractActivities = (state) => (state.contract.current.activities);
 
 // Drizzle Contract
@@ -25,10 +26,12 @@ export const getDrizzleStoredContracts = (state) => (state.contracts);
 export const getDisputeFilters = (state) => (state.dispute.filters);
 export const getCurrentDispute = (state) => (state.dispute.current);
 export const getDisputeListPage = (state) => (state.dispute.page);
+export const getDisputeListOrder = (state) => (state.dispute.order);
 
 // Oracle
 export const getOracleOrder = (state) => (state.oracle.order);
 export const getOracleListPage = (state) => (state.oracle.page);
+export const getOracleListOrder = (state) => (state.oracle.order);
 
 // User
 export const getUser = (state) => (state.user);

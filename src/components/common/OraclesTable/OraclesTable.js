@@ -24,6 +24,7 @@ export const OraclesTable = ( props ) => {
     headers,
     data,
     onPageChange,
+    onSortChange,
     initialPage,
     oraclesPerPage,
     totalOracles,
@@ -46,6 +47,19 @@ export const OraclesTable = ( props ) => {
     setActivePage(pageNumber);
     onPageChange(pageNumber);
   };
+
+  const handleSortChange = (field,order) => {
+
+    // 0 - no order - no arrow
+    // 1 - asc - down arrow
+    // 2 - desc - up arrow
+
+    order = order === 1 ? 'asc' : order === 2 ? 'desc' : '';
+    
+    onSortChange(field,order);
+  };
+
+
 
   const handleClick = idx => {
     const newRows = tableRows.map((row, rowIdx) => {
@@ -72,8 +86,8 @@ export const OraclesTable = ( props ) => {
               {headers.map((header) => (
                 <TableCell
                   key={header.label.toString()}
-                  {...header.sortable && { onClick: header.sortable }}
-                >
+                  {...header.sortable && { onClick: handleSortChange, fieldName: header.fieldName }}
+                  >
                   {header.label}
                 </TableCell>
               ))}

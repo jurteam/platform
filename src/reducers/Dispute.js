@@ -3,6 +3,7 @@ import {
   SET_DISPUTE,
   SET_DISPUTE_STATUS,
   SET_DISPUTE_CURRENT_PAGE,
+  SET_DISPUTE_CURRENT_ORDER,
   API_DELETE_DISPUTE,
   UPDATE_DISPUTE_FILTER,
   UPDATE_DISPUTE_VOTE_FIELD,
@@ -72,6 +73,7 @@ const INITIAL_STATE = {
   },
   list: [],
   page: 1,
+  order: [],
   pagination: []
 };
 
@@ -93,6 +95,33 @@ export default (state = INITIAL_STATE, action) => {
     case SET_DISPUTE_CURRENT_PAGE:
       return { ...state, page: action.payload };
 
+    case SET_DISPUTE_CURRENT_ORDER:
+
+        let present = false;
+        let updatedOrder = [];
+        
+        state.order.forEach((ord) => {
+          if (ord.field === action.payload.field) {
+            present = true;
+            if (action.payload.type !== "") {
+              updatedOrder.push(action.payload)
+            }
+          }
+          else 
+          {
+            updatedOrder.push(ord)
+          }
+        });
+
+        if (!present) {
+          updatedOrder.push(action.payload)
+        }
+  
+        return {
+          ...state,
+          order: updatedOrder
+        };  
+  
     case SET_DISPUTE_STATUS:
       console.log(SET_DISPUTE_STATUS, action);
       return {

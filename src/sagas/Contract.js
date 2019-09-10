@@ -11,6 +11,7 @@ import {
   SET_CONTRACT,
   SET_CONTRACT_ACTIVITIES,
   SET_CONTRACT_CURRENT_PAGE,
+  SET_CONTRACT_CURRENT_ORDER,
   CONTRACT_LIST_UPDATING,
   CONTRACT_ISSUE,
   API_DELETE_CONTRACT,
@@ -24,6 +25,7 @@ import {
   CONTRACT_MEDIA_DELETE,
   CONTRACT_MEDIA_DELETED,
   CONTRACT_PAGE_CHANGE,
+  CONTRACT_ORDER_CHANGE,
   UPDATE_NEW_CONTRACT_FIELD,
   CHAIN_GET_CONTRACT,
   SET_CONTRACT_STATUS,
@@ -48,6 +50,7 @@ import {
   getNewContract,
   getCurrentContract,
   getContractListPage,
+  getContractListOrder,
   getContractFilters,
   getCurrentProposal,
   getCurrentContractActivities
@@ -179,11 +182,22 @@ export function* fetchContracts() {
     getContractFilters
   );
   const page = yield select(getContractListPage);
+
+  const order = yield select(getContractListOrder);
+
+  let orderby = {};
+  order.forEach((ord) => {
+    let fieldname = `orderBy[${ord.field}]`
+    orderby[fieldname] = ord.type
+  });
+  
   log("contracts - filters", {
     status: status && typeof status.value !== "undefined" ? status.value : null,
     from: fromDate,
     to: toDate,
-    q: searchText
+    q: searchText,
+    page,
+    ...orderby
   });
   try {
     const response = yield call(Contracts.list, {
@@ -192,7 +206,8 @@ export function* fetchContracts() {
       from: fromDate,
       to: toDate,
       q: searchText,
-      page
+      page,
+      ...orderby
     });
     log("contracts - fetch", response);
     yield put({ type: CONTRACTS_FETCHED, payload: response.data });
@@ -385,6 +400,12 @@ export function* onContractPageChange(action) {
   yield put({ type: FETCH_CONTRACTS });
 }
 
+export function* onContractSortChange(action) {
+  yield put({ type: SET_CONTRACT_CURRENT_ORDER, payload: action.payload });
+  yield put({ type: CONTRACT_LIST_UPDATING, payload: true });
+  yield put({ type: FETCH_CONTRACTS });
+}
+
 export function* resetUpdating() {
   yield put({ type: CONTRACT_SAVING, payload: false });
   yield put({ type: CONTRACT_UPDATING, payload: false });
@@ -553,5 +574,6 @@ export default function* contractSagas() {
   yield takeLatest(CONTRACT_READ_NOTIFICATIONS, readActivities);
   yield takeLatest(CONTRACT_MEDIA_DELETE, deleteContractMedia);
   yield takeLatest(CONTRACT_PAGE_CHANGE, onContractPageChange);
+  yield takeLatest(CONTRACT_ORDER_CHANGE, onContractSortChange);
   yield takeLatest(DELETE_ALL_CONTRACTS, onDeleteAllContracts);
 }

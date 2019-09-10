@@ -39,7 +39,8 @@ import {
   // SEND_TO_COUNTERPARTY,
   // DISCLAIMER_MUST_BE_ACCEPTED,
   FETCH_ORACLES,
-  ORACLE_PAGE_CHANGE
+  ORACLE_PAGE_CHANGE,
+  ORACLE_ORDER_CHANGE
 } from "../../../reducers/types";
 
 export const OracleDetail = ( props ) => {
@@ -100,11 +101,36 @@ export const OracleDetail = ( props ) => {
   };
 
   const onPageChange = (page) => {
+
+    // TODO: maybe must be fixed with id with the followings line 
+    // const {
+    //   match: {
+    //     params: { id }
+    //   }
+    // } = props;
+
     global.drizzle.store.dispatch({
       type: ORACLE_PAGE_CHANGE,
-      payload: page
+      payload: page,
+      // id
     });
   };
+
+  const onSortChange = ( field, order ) => {
+
+    const {
+      match: {
+        params: { id }
+      }
+    } = props;
+
+    global.drizzle.store.dispatch({
+      type: ORACLE_ORDER_CHANGE,
+      payload: { field: field, type: order },
+      id
+    });
+  };
+
 
   const {
     match: {
@@ -148,6 +174,7 @@ export const OracleDetail = ( props ) => {
               onFileView={onFileView}
               initialPage={pagination.current_page}
               onPageChange={(pageNo) => onPageChange(pageNo)}
+              onSortChange={(field, order) => onSortChange(field, order)}
               contractsPerPage={pagination.per_page}
               totalContracts={pagination.total}
               loading={oracle.updatingList}

@@ -4,7 +4,8 @@ import {
   CURRENT_ORACLES_FETCHED,
   FETCH_CURRENT_ORACLES,
   UPDATE_ORACLE_ORDER,
-  SET_ORACLE_CURRENT_PAGE
+  SET_ORACLE_CURRENT_PAGE,
+  SET_ORACLE_CURRENT_ORDER
 } from "./types";
 
 const INITIAL_STATE = {
@@ -15,6 +16,7 @@ const INITIAL_STATE = {
     wallet_part: null
   },
   page: 1,
+  order: [],
   pagination: []
 };
 
@@ -30,6 +32,34 @@ export default (state = INITIAL_STATE, action) => {
     case SET_ORACLE_CURRENT_PAGE:
       return { ...state, page: action.payload };
 
+    case SET_ORACLE_CURRENT_ORDER:
+
+        let present = false;
+        let updatedOrder = [];
+        
+        state.order.forEach((ord) => {
+          if (ord.field === action.payload.field) {
+            present = true;
+            if (action.payload.type !== "") {
+              updatedOrder.push(action.payload)
+            }
+          }
+          else 
+          {
+            updatedOrder.push(ord)
+          }
+        });
+
+        if (!present) {
+          updatedOrder.push(action.payload)
+        }
+  
+        return {
+          ...state,
+          order: updatedOrder
+        };
+  
+  
     // Updates
     case UPDATE_ORACLE_ORDER:
       let orderToUpdate = {};

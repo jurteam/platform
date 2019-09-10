@@ -35,6 +35,7 @@ export const ContractsTable = props => {
     newContract,
     initialPage,
     onPageChange,
+    onSortChange,
     contractsPerPage,
     totalContracts,
     loading,
@@ -65,6 +66,17 @@ export const ContractsTable = props => {
   const handlePageChange = pageNumber => {
     setActivePage(pageNumber);
     onPageChange(pageNumber);
+  };
+
+  const handleSortChange = (field,order) => {
+
+    // 0 - no order - no arrow
+    // 1 - asc - down arrow
+    // 2 - desc - up arrow
+
+    order = order === 1 ? 'asc' : order === 2 ? 'desc' : '';
+    
+    onSortChange(field,order);
   };
 
   const showContract = to => {
@@ -116,7 +128,7 @@ export const ContractsTable = props => {
             {headers.map((header, idx) => (
               <TableCell
                 key={`thead-${idx}-${header.label.toString()}`}
-                {...header.sortable && { onClick: header.sortable }}
+                {...header.sortable && { onClick: handleSortChange, fieldName: header.fieldName }}
                 {...header.className && { className: header.className }}
               >
                 {header.label}

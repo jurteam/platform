@@ -9,6 +9,7 @@ import {
   API_GET_DISPUTE,
   SET_DISPUTE,
   SET_DISPUTE_CURRENT_PAGE,
+  SET_DISPUTE_CURRENT_ORDER,
   DISPUTE_LIST_UPDATING,
   API_DELETE_DISPUTE,
   DISPUTES_FETCHED,
@@ -19,6 +20,7 @@ import {
   DISPUTE_MEDIA_DELETE,
   DISPUTE_MEDIA_DELETED,
   DISPUTE_PAGE_CHANGE,
+  DISPUTE_ORDER_CHANGE,
   CHAIN_GET_DISPUTE,
   DELETE_ALL_DISPUTES,
   RESET_ALL_DISPUTES
@@ -34,6 +36,7 @@ import {
   // getCurrentDispute,
   // getCurrentDisputeActivities,
   getDisputeListPage,
+  getDisputeListOrder,
   getDisputeFilters
 } from "./Selectors"; // selector
 
@@ -91,6 +94,17 @@ export function* fetchDisputes() {
     getDisputeFilters
   );
   const page = yield select(getDisputeListPage);
+
+  const order = yield select(getDisputeListOrder);
+
+  let orderby = {};
+  order.forEach((ord) => {
+    let fieldname = `orderBy[${ord.field}]`
+    orderby[fieldname] = ord.type
+  });
+  
+
+
   log("Disputes - filters", {
     status: status && typeof status.value !== "undefined" ? status.value : null,
     from: fromDate,
@@ -109,7 +123,8 @@ export function* fetchDisputes() {
           : null,
       q: searchText,
       show: mine ? "my" : "all",
-      page
+      page,
+      ...orderby
     });
     log("Disputes - fetch", response);
     yield put({ type: DISPUTES_FETCHED, payload: response.data });
@@ -150,6 +165,12 @@ export function* onDisputePageChange(action) {
   yield put({ type: FETCH_DISPUTES });
 }
 
+export function* onDisputeOrderChange(action) {
+  yield put({ type: SET_DISPUTE_CURRENT_ORDER, payload: action.payload });
+  yield put({ type: DISPUTE_LIST_UPDATING, payload: true });
+  yield put({ type: FETCH_DISPUTES });
+}
+
 export function* resetUpdating() {
   yield put({ type: DISPUTE_SAVING, payload: false });
   yield put({ type: DISPUTE_UPDATING, payload: false });
@@ -176,5 +197,6 @@ export default function* disputeSagas() {
   yield takeLatest(SET_DISPUTE, resetUpdating);
   yield takeLatest(DISPUTE_MEDIA_DELETE, deleteDisputeMedia);
   yield takeLatest(DISPUTE_PAGE_CHANGE, onDisputePageChange);
+  yield takeLatest(DISPUTE_ORDER_CHANGE, onDisputeOrderChange);
   yield takeLatest(DELETE_ALL_DISPUTES, onDeleteAllDisputes);
 }
