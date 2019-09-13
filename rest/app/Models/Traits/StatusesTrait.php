@@ -76,9 +76,7 @@ trait StatusesTrait
     public function getCurrentStatusUpdatedAt()
     {
         if (! empty($this->chain_updated_at)) {
-            if (! $this->chain_updated_at->isFuture()) {
-                return $this->chain_updated_at->valueOf();
-            }
+            return $this->chain_updated_at->valueOf();
         }
 
         $code = $this->status->code;

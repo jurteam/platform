@@ -18,6 +18,7 @@ class ContractActivitiesController extends Controller
     public function getAllByWallet(ActivityFilters $filters, Request $request)
     {
         $activities = Activity::exceptDraft()
+                        ->exceptFuture()
                         ->filters($filters)
                         ->paginate($request->get('perPage', 10));
 
@@ -34,6 +35,7 @@ class ContractActivitiesController extends Controller
     public function index($id)
     {
         $activities = Activity::exceptDraft()
+                            ->exceptFuture()
                             ->byContract($id)
                             ->oldest('created_at')
                             ->get();

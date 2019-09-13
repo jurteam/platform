@@ -12,7 +12,7 @@ trait ActivitiesTrait
 {
     public function activities()
     {
-        return $this->hasMany(Activity::class);
+        return $this->hasMany(Activity::class)->exceptFuture();
     }
 
     public function storeActivity($params)
