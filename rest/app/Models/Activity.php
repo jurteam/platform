@@ -35,7 +35,7 @@ class Activity extends Model implements HasMedia
     ];
 
     protected $dates = [
-        'chain_updated_at', 
+        'chain_updated_at',
         'chain_update_to'
     ];
 
@@ -97,7 +97,9 @@ class Activity extends Model implements HasMedia
     public function getUpdatedDate()
     {
         if (! empty($this->chain_updated_at)) {
-            return $this->chain_updated_at->valueOf();
+            if (!$this->chain_updated_at->isFuture()) {
+                return $this->chain_updated_at->valueOf();
+            }
         }
         return $this->created_at->valueOf();
     }

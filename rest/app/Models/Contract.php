@@ -91,10 +91,11 @@ class Contract extends Model implements HasMedia
     {
         $user = User::byWallet($params->header('wallet'))->first();
         $status = ContractStatus::byCode($params->code)->firstOrFail();
+        $chainUpdatedAt = $this->getChainUpdatedAtFromRequest($params);
 
         $this->update([
             'contract_status_id' => $status->id,
-            'chain_updated_at' => $this->getChainUpdatedAtFromRequest($params)
+            'chain_updated_at' => $chainUpdatedAt
         ]);
 
         if ($params->code == 31) {

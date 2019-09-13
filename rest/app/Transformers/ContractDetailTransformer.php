@@ -92,7 +92,9 @@ class ContractDetailTransformer extends TransformerAbstract
      */
     public function includeDetails(Contract $contract)
     {
-        $details = $contract->details;
+        $details = $contract->details->filter(function($detail) {
+            return ! $detail->chain_updated_at->isFuture();
+        });
 
         return $this->collection($details, new ContractStatusDetailTransformer);
     }
