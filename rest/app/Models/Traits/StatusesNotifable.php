@@ -11,6 +11,10 @@ trait StatusesNotifable
 {
     public function notifyCounterPart(Activity $activity)
     {
+        if ($activity->isFuture()) {
+            return false;
+        }
+
         if ($activity->fromSystem()) {
             $recipients = $this->getContractRecipients();
 

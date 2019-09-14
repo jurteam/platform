@@ -162,4 +162,12 @@ class Activity extends Model implements HasMedia
             $activity->updateStatusFromWallet($currentWallet);
         }
     }
+
+    public function isFuture()
+    {
+        if (! empty($this->chain_updated_at)) {
+            return $this->chain_updated_at->isFuture()
+        }
+        return false;
+    }
 }
