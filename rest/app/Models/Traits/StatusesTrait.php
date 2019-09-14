@@ -76,7 +76,10 @@ trait StatusesTrait
     public function getCurrentStatusUpdatedAt()
     {
         $contractStatusHistory = $this->histories->filter(function($history) {
-            return !$history->chain_updated_at->isFuture();
+            if ($history->chain_updated_at) {
+                return !$history->chain_updated_at->isFuture();
+            }
+            return $history;
         })->last();
 
         if ($contractStatusHistory) {

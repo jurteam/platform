@@ -166,7 +166,7 @@ class Activity extends Model implements HasMedia
     public function isFuture()
     {
         if (! empty($this->chain_updated_at)) {
-            return $this->chain_updated_at->isFuture()
+            return $this->chain_updated_at->isFuture();
         }
         return false;
     }

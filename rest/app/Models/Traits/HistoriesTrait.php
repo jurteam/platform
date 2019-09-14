@@ -18,9 +18,13 @@ trait HistoriesTrait
     {
         $history = $this->histories
             ->filter(function($history) use($status) {
-                return $history->chain_updated_at->isFuture()
-                    && $history->contract_status_id == $status->id;
-            });
+                if ($history->chain_updated_at) {
+                    return $history->chain_updated_at->isFuture()
+                        && $history->contract_status_id == $status->id;
+                }
+                return $history;
+            })
+            ->last();
 
         if (! empty($history)) {
             $history->update([
