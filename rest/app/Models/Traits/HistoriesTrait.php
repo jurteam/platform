@@ -7,6 +7,19 @@ use App\Models\ContractStatusHistory;
 
 trait HistoriesTrait
 {
+    public function getCurrentStatus()
+    {
+        if ($this->histories->count() > 0) {
+            $this->histories->filter(function($history) {
+                if ($history->chain_updated_at) {
+                    return ! $history->chain_updated_at->isFuture()
+                }
+                return $history;
+            })->last();
+        }
+        return null;
+    }
+
     /**
      * Record status histories for contract.
      *
