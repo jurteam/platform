@@ -30,13 +30,13 @@ contract Arbitration {
   ERC20 public jurToken;
 
   //Globals - could be pulled from factory contract or passed in to constructor
-  uint256 public DISPUTE_VOTE_DURATION = 7 days;
-  uint256 public DISPUTE_DISPERSAL_DURATION = 1 days;
-  uint256 public DISPUTE_WINDOW = 30 minutes;
-  uint256 public DISPUTE_EXTENSION = 30 minutes;
-  uint256 public VOTE_LOCKUP = 24 hours; //amount of time users must wait to withdraw their tokens
-  uint256 public DISPUTE_WINDOW_MAX = 5 * 10**16; //percentage multiplued by 10**16
-  uint256 public MIN_VOTE = 1 * 10**16; //percentage multiplied by 10**16
+  uint256 public DISPUTE_VOTE_DURATION = 7 days; // minimum dispute time
+  uint256 public DISPUTE_DISPERSAL_DURATION = 2 days; // time for counterpart to submit dispute resolution proposal
+  uint256 public DISPUTE_WINDOW = 30 minutes; // time window where to check last minute votes
+  uint256 public DISPUTE_EXTENSION = 24 hours; // a dispute gets extended by this much if there are the tie conditions or more than x%
+  uint256 public VOTE_LOCKUP = 24 hours; // amount of time users must wait to withdraw their rewards
+  uint256 public DISPUTE_WINDOW_MAX = 5 * 10**16; // percentage of last minute votes to trigger extension
+  uint256 public MIN_VOTE = 1 * 10**16; // minimum vote possible is 1% of total votes at the time of voting
   uint256 public MIN_WIN = 1 * 10**16; //percentage multiplied by 10**16
 
   //Agreement Details
