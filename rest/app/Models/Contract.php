@@ -140,6 +140,8 @@ class Contract extends Model implements HasMedia
             'wallet' => $params->header('wallet')
         ]);
         $contract = static::create($attributes);
+        
+        $contract->recordHistories(null, $status);
 
         $contract->recordActivities([
             'status' => $status->label,
