@@ -35,12 +35,14 @@ class ContractFilters extends Filters
 
         return $this->builder
                     ->select('contracts.*')
-                    ->join('contract_statuses', 'contract_statuses.id', '=', 'contracts.contract_status_id')
+                    ->join('contract_status_histories', 'contract_status_histories.contract_id', '=', 'contracts.id')
+                    ->join('contract_statuses', 'contract_statuses.id', '=', 'contract_status_histories.contract_status_id')
                     ->whereRaw(
                         '(LOWER(contracts.part_a_wallet) = ?
                         OR IF (LOWER(contracts.part_b_wallet) = ? AND contract_statuses.code <> ?, 1, 0))',
                         [$lowerWallet, $lowerWallet, 0]
-                    );
+                    )
+                    ->groupBy('contracts.id');
     }
 
     public function owner($value)
@@ -51,9 +53,16 @@ class ContractFilters extends Filters
     public function status($value)
     {
         return $this->builder
-                    ->whereHas('status', function($q) use($value) {
-                        $q->where('code', $value);
-                    });
+                    ->join('contract_status_histories', 'contract_status_histories.contract_id', '=', 'contracts.id')
+                    ->join('contract_statuses', 'contract_statuses.id', '=', 'contract_status_histories.contract_status_id')
+                    ->whereRaw(
+                        '(contract_statuses.code = ?)',
+                        [$value]
+                    )
+                    ->groupBy('contracts.id');
+                    // ->whereHas('status', function($q) use($value) {
+                    //     $q->where('code', $value);
+                    // });
     }
 
     public function from($value)
