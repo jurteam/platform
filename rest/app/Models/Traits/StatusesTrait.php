@@ -16,8 +16,8 @@ trait StatusesTrait
     {
         $activity = $this->activities
             ->filter(function($activity) {
-                return is_null($activity->chain_update_to) 
-                    || !$activity->chain_update_to->isFuture();
+                return is_null($activity->chain_updated_at)
+                    || !$activity->chain_updated_at->isFuture();
             })
             ->last();
 
@@ -75,19 +75,15 @@ trait StatusesTrait
 
     public function getCurrentStatusUpdatedAt()
     {
-        if (! empty($this->chain_updated_at)) {
-            return $this->chain_updated_at->valueOf();
-        }
+        $contractStatusHistory = $this->histories->filter(function($history) {
+            if ($history->chain_updated_at) {
+                return !$history->chain_updated_at->isFuture();
+            }
+            return $history;
+        })->last();
 
-        $code = $this->status->code;
-
-        $statusActivity = $this->activities()
-            ->where('status_code', $code)
-            ->where('contract_id', $this->id)
-            ->first();
-
-        if ($statusActivity) {
-            return $statusActivity->getUpdatedDate();
+        if ($contractStatusHistory) {
+            return $contractStatusHistory->getUpdatedDate();
         }
         return $this->updated_at->valueOf();
     }

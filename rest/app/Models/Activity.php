@@ -35,7 +35,7 @@ class Activity extends Model implements HasMedia
     ];
 
     protected $dates = [
-        'chain_updated_at', 
+        'chain_updated_at',
         'chain_update_to'
     ];
 
@@ -47,6 +47,11 @@ class Activity extends Model implements HasMedia
     public function scopeExceptDraft($query)
     {
         return $query->where('status_code', '<>', 0);
+    }
+
+    public function scopeExceptFuture($query)
+    {
+        return $query->whereRaw('(chain_updated_at IS NULL OR chain_updated_at <= NOW())');
     }
 
     public function scopeByContract($query, int $contractId)
@@ -97,7 +102,9 @@ class Activity extends Model implements HasMedia
     public function getUpdatedDate()
     {
         if (! empty($this->chain_updated_at)) {
-            return $this->chain_updated_at->valueOf();
+            if (!$this->chain_updated_at->isFuture()) {
+                return $this->chain_updated_at->valueOf();
+            }
         }
         return $this->created_at->valueOf();
     }
@@ -154,5 +161,13 @@ class Activity extends Model implements HasMedia
             $activity = static::find($id);
             $activity->updateStatusFromWallet($currentWallet);
         }
+    }
+
+    public function isFuture()
+    {
+        if (! empty($this->chain_updated_at)) {
+            return $this->chain_updated_at->isFuture();
+        }
+        return false;
     }
 }

@@ -19,10 +19,12 @@ class ContractTransformer extends TransformerAbstract
      */
     public function transform(Contract $contract)
     {
+        $currentStatus = $contract->getCurrentStatus();
+
         return [
             'id' => $contract->id,
-            'statusId' => $contract->status ? $contract->status->code : null,
-            'statusLabel' => $contract->status ? $contract->status->label : null,
+            'statusId' => $currentStatus ? $currentStatus->code : null,
+            'statusLabel' => $currentStatus ? $currentStatus->label : null,
             'statusUpdatedAt' => $contract->getCurrentStatusUpdatedAt(),
             'statusFrom' => $contract->getLastStatusFrom(),
             'statusPart' => $contract->getLastStatusPart(),
