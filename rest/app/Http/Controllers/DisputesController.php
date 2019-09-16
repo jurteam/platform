@@ -14,11 +14,11 @@ class DisputesController extends Controller
 {
     use Helpers;
 
-    public function index(DisputeFilters $filters)
+    public function index(DisputeFilters $filters, Request $request)
     {
         $disputes = Contract::filters($filters)
                             ->latest('updated_at')
-                            ->paginate(10);
+                            ->paginate($request->get('perPage', 10));
 
         return $this->response->paginator($disputes, new DisputeTransformer);
     }
