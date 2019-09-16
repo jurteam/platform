@@ -35,21 +35,23 @@ trait HistoriesTrait
      */
     public function recordHistories($date, ContractStatus $status)
     {
+        $date = $date ? Carbon::createFromTimestamp($date) : null;
+
         $this->load('histories');
 
         $futureHistory = $this->histories
-                        ->filter(function($history) {
-                            if (! empty($history->chain_updated_at)) {
-                                return $history->chain_updated_at->isFuture();
-                            }
-                            return false;
-                        })->filter(function($history) use($status) {
-                            return $history->contract_status_id == $status->id;
-                        })->last();
+            ->filter(function($history) {
+                if (! empty($history->chain_updated_at)) {
+                    return $history->chain_updated_at->isFuture();
+                }
+                return false;
+            })->filter(function($history) use($status) {
+                return $history->contract_status_id == $status->id;
+            })->last();
 
         if (! empty($futureHistory)) {
             $futureHistory->update([
-                'chain_updated_at' => Carbon::createFromTimestamp($date)
+                'chain_updated_at' => $date
             ]);
         } elseif (empty($futureHistory)) {
             $pastHistory = $this->histories->filter(function($history) use($status) {
@@ -60,14 +62,14 @@ trait HistoriesTrait
                 $this->histories()
                     ->save(new ContractStatusHistory([
                         'contract_status_id' => $status->id,
-                        'chain_updated_at' => Carbon::createFromTimestamp($date)
+                        'chain_updated_at' => $date
                     ]));
             }
         } else {
             $this->histories()
                 ->save(new ContractStatusHistory([
                     'contract_status_id' => $status->id,
-                    'chain_updated_at' => Carbon::createFromTimestamp($date)
+                    'chain_updated_at' => $date
                 ]));
         }
     }
