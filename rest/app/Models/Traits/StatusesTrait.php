@@ -88,7 +88,7 @@ trait StatusesTrait
             if ($history->chain_updated_at) {
                 return !$history->chain_updated_at->isFuture();
             }
-            return $history;
+            return !$history->created_at->isFuture();
         })->last();
 
         if ($contractStatusHistory) {
