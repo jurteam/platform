@@ -25,6 +25,14 @@ class ContractStatusHistory extends Model
         return $this->created_at->valueOf();
     }
 
+    public function isPast()
+    {
+        if (! empty($this->chain_updated_at)) {
+            return $this->chain_updated_at->isPast();
+        }
+        return $this->created_at->isPast();
+    }
+
     public function status()
     {
         return $this->belongsTo(ContractStatus::class, 'contract_status_id');
