@@ -12,8 +12,15 @@ class DisputeFilters extends Filters
         'category',
         'from',
         'to',
-        'query'
+        'query',
+        'orderBy'
     ];
+
+    protected $orderBy = [
+        'name',
+        'category',
+        'value'
+    ];    
 
     public function category($value)
     {
@@ -22,7 +29,6 @@ class DisputeFilters extends Filters
 
     public function show($value)
     {
-        // TO-DO: change for status code instead of id
         $query = $this->builder
                         ->where('contracts.is_a_dispute', true)
                         ->where('contracts.contract_status_id', '>=', 11);
@@ -69,5 +75,23 @@ class DisputeFilters extends Filters
                     ->orWhereRaw('LOWER(contracts.part_b_wallet) = ?', [$lowerWallet])
                     ->orWhere('contracts.part_b_name', 'LIKE', "%{$value}%")
                     ->orWhere('contracts.part_b_email', 'LIKE', "%{$value}%");
+    }
+
+    /**
+     * Order by disputes by args.
+     * 
+     * @param  array $value
+     * @return Builder
+     */
+    public function orderBy($value)
+    {
+        $query = $this->builder;
+
+        foreach ($value as $field => $ordering) {
+            if (in_array($field, $this->orderBy)) {
+                $query->orderBy("contracts.{$field}", $ordering);
+            }
+        }
+        return $query;
     }
 }

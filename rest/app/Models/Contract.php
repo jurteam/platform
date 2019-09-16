@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Traits\DisputeTrait;
 use App\Models\Traits\StatusesTrait;
+use App\Models\Traits\HistoriesTrait;
 use App\Models\Traits\ActivitiesTrait;
 use App\Models\Traits\UploadableTrait;
 use Illuminate\Database\Eloquent\Model;
@@ -12,7 +13,7 @@ use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 
 class Contract extends Model implements HasMedia
 {
-    use HasMediaTrait, ActivitiesTrait, StatusesTrait, UploadableTrait, DisputeTrait;
+    use HasMediaTrait, ActivitiesTrait, StatusesTrait, UploadableTrait, DisputeTrait, HistoriesTrait;
 
     protected $fillable = [
         'name',
@@ -81,6 +82,11 @@ class Contract extends Model implements HasMedia
         return $this->hasMany(ContractStatusDetail::class);
     }
 
+    public function histories()
+    {
+        return $this->hasMany(ContractStatusHistory::class);
+    }
+
     /**
      * Update status, and save the activity.
      *
@@ -92,10 +98,9 @@ class Contract extends Model implements HasMedia
         $user = User::byWallet($params->header('wallet'))->first();
         $status = ContractStatus::byCode($params->code)->firstOrFail();
 
-        $this->update([
-            'contract_status_id' => $status->id,
-            'chain_updated_at' => $this->getChainUpdatedAtFromRequest($params)
-        ]);
+        $chainUpdatedAt = $this->getChainUpdatedAtFromRequest($params);
+
+        $this->recordHistories($chainUpdatedAt, $status);
 
         if ($params->code == 31) {
             $this->flagAsOpenDispute();

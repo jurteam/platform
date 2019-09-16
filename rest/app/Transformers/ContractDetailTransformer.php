@@ -28,10 +28,12 @@ class ContractDetailTransformer extends TransformerAbstract
      */
     public function transform(Contract $contract)
     {
+        $currentStatus = $contract->getCurrentStatus();
+
         return [
             'id' => $contract->id,
-            'statusId' => $contract->status ? $contract->status->code : null,
-            'statusLabel' => $contract->status ? $contract->status->label : null,
+            'statusId' => $currentStatus ? $currentStatus->code : null,
+            'statusLabel' => $currentStatus ? $currentStatus->label : null,
             'statusUpdatedAt' => $contract->getCurrentStatusUpdatedAt(),
             'statusFrom' => $contract->getLastStatusFrom(),
             'statusPart' => $contract->getLastStatusPart(),
@@ -92,7 +94,9 @@ class ContractDetailTransformer extends TransformerAbstract
      */
     public function includeDetails(Contract $contract)
     {
-        $details = $contract->details;
+        $details = $contract->details->filter(function($detail) {
+            return ! $detail->chain_updated_at->isFuture();
+        });
 
         return $this->collection($details, new ContractStatusDetailTransformer);
     }
