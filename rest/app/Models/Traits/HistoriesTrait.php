@@ -10,7 +10,7 @@ trait HistoriesTrait
     public function getCurrentStatus()
     {
         if ($this->histories->count() > 0) {
-            $this->histories->filter(function($history) {
+            return $this->histories->filter(function($history) {
                 if ($history->chain_updated_at) {
                     return ! $history->chain_updated_at->isFuture();
                 }
