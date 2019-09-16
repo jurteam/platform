@@ -9,6 +9,8 @@ trait HistoriesTrait
 {
     public function getCurrentStatus()
     {
+        $this->load('histories');
+
         if ($this->histories->count() > 0) {
             $history = $this->histories->filter(function($history) {
                 if ($history->chain_updated_at) {
@@ -37,7 +39,7 @@ trait HistoriesTrait
                     return $history->chain_updated_at->isFuture()
                         && $history->contract_status_id == $status->id;
                 }
-                return $history;
+                return $history->contract_status_id == $status->id;
             })
             ->last();
 
