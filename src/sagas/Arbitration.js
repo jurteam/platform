@@ -307,6 +307,9 @@ function* handleContractInitialized(args) {
         DISPUTE_WINDOW_MAX: [],
         MIN_VOTE: [],
         MIN_WIN: [],
+        disputeWindowVotes: [],
+        disputeStarts: [],
+        disputeEnds: [],
       };
 
       let idx = 1;
@@ -1008,7 +1011,7 @@ export function* handleDisputeArbitration(args) {
   const currentContract = yield select(getCurrentContract);
   const { address: contractAddress } = currentContract;
   const token = new JURToken();
-  // const arbitration = new Arbitration(contractAddress);
+  const arbitration = new Arbitration(contractAddress);
 
   // Init first vote payload
   let firstVote = new FormData();
@@ -1107,6 +1110,33 @@ export function* handleDisputeArbitration(args) {
       // Store first vote due dispute init
       response = yield call(Oracles.store, firstVote);
       log("handleDisputeArbitration - set first vote", response);
+
+      // future prevision
+      const disputeStartsTx = yield arbitration.disputeStarts()
+        .catch(chainErrorHandler);
+
+      if (disputeStartsTx) {
+        log("handleDisputeArbitration - disputeStartsTx.toString()", disputeStartsTx.toString());
+        // Status update Ongoing Dispute
+        toUpdate = new FormData();
+        toUpdate.append("code", 35);
+        toUpdate.append("chain_updated_at", disputeStartsTx.toString()); // * 1000 ?
+
+        yield call(Contracts.statusChange, toUpdate, id);
+
+        const disputeEndsTx = yield arbitration.disputeEnds()
+          .catch(chainErrorHandler);
+
+        if (disputeEndsTx) {
+          log("handleDisputeArbitration - disputeEndsTx.toString()", disputeEndsTx.toString());
+          // Status update Closed dispute
+          toUpdate = new FormData();
+          toUpdate.append("code", 39);
+          toUpdate.append("chain_updated_at", disputeEndsTx.toString()); // * 1000 ?
+
+          yield call(Contracts.statusChange, toUpdate, id);
+        }
+      }
 
       if (typeof callback === "function") callback();
 
