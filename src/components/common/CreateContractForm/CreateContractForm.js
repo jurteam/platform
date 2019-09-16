@@ -12,7 +12,7 @@ import { AppContext } from "../../../bootstrap/AppProvider"; // context
 import "./CreateContractForm.scss";
 
 export const CreateContractForm = ( props ) => {
-  const { onNext, contract, updateNewContractField, resetContract } = props;
+  const { onNext, contract, updateNewContractField, resetContract, user } = props;
 
   const [formUpdated, setFormUpdated] = useState(false);
 
@@ -23,6 +23,10 @@ export const CreateContractForm = ( props ) => {
   );
 
   const { labels } = useContext(AppContext);
+
+  const {
+    wallet
+  } = user;
 
   const {
     updating,
@@ -41,6 +45,12 @@ export const CreateContractForm = ( props ) => {
     resetContract();
     validateForm();
   }, []);
+
+  useEffect(() => {
+    if (part_a_wallet=== '') {
+      updateNewContractField('part_a_wallet', wallet); // dispatch action
+    }
+  }, [wallet]);
 
   const changeInput = (name, value) => {
     setFormUpdated(true);
