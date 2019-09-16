@@ -39,7 +39,7 @@ trait HistoriesTrait
                     return $history->chain_updated_at->isFuture()
                         && $history->contract_status_id == $status->id;
                 }
-                return $history;
+                return $history->contract_status_id == $status->id;
             })
             ->last();
 
