@@ -136,7 +136,7 @@ export const capitalize = (string) =>
   string.charAt(0).toUpperCase() + string.slice(1);
 
 export const urlify = (str) => {
-  const html = linkify(str, {
+  const html = str ? linkify(str, {
     target: (href, type) => {
       if (href.startsWith(window.location.origin)) {
         return "_self";
@@ -144,7 +144,7 @@ export const urlify = (str) => {
         return "_blank";
       }
     }
-  });
+  }) : '';
   return html;
 };
 
