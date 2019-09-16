@@ -12,6 +12,7 @@ import {
   RESET_USER,
   SET_FAQ,
   FETCH_FAQ,
+  HEARTBEAT,
   FETCH_CONTRACTS,
   RESET_APP_STATE,
   SET_TUTORIAL_VIEWED,
@@ -19,7 +20,7 @@ import {
   FETCH_ACTIVITIES
 } from "../reducers/types";
 
-import { getWallet } from "./Selectors"; // selectors
+import { getWallet, getCurrentContract } from "./Selectors"; // selectors
 
 // Api layouts
 import { Faq } from "../api";
@@ -114,6 +115,19 @@ export function* handleAppInit() {
   }
 }
 
+// handles app HeartBeat
+export function* handleHeartBeat() {
+
+  console.log('handleHeartBeat');
+  
+
+  const currContr = yield select(getCurrentContract);
+
+  log("handleHeartBeat",currContr);
+
+  
+}
+
 // handles app initialization
 export function* handleFetchFaq() {
   log("handleFetchFaq", Faq.get);
@@ -139,4 +153,5 @@ export default function* appSagas() {
   yield takeLatest(NETWORK_UPDATE, handleNetworkUpdate);
   yield takeLatest(APP_SHOULD_RESET, handleAppReset);
   yield takeLatest(FETCH_FAQ, handleFetchFaq);
+  yield takeLatest(HEARTBEAT, handleHeartBeat);
 }
