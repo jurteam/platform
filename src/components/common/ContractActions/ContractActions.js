@@ -60,6 +60,12 @@ export const ContractActions = ( props ) => {
             {labels.waitingForCounterparty}
           </span>
         ;
+      case 32: // returns waiting based on last part involved.
+        return (children) ? children :
+          <span className="jur-contract-actions__text">
+            {labels.waitingForDisputeOpening}
+          </span>
+        ;
       default:
         return props.children;
     }

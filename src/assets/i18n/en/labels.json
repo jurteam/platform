@@ -65,6 +65,7 @@
     "activities" : "Activities",
     "noActivities" : "Nothing to see. Contract activities will be visible here.",
     "waitingForCounterparty" : "Waiting for Counterparty",
+    "waitingForDisputeOpening" : "Waiting for vote opening",
     "contractWasRejected" : "The Contract was rejected",
     "contractIsClosed" : "The Contract is closed",
     "contractClosed" : "Contract closed",

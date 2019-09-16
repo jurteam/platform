@@ -190,7 +190,7 @@ export function* fetchContracts() {
     let fieldname = `orderBy[${ord.field}]`
     orderby[fieldname] = ord.type
   });
-  
+
   log("contracts - filters", {
     status: status && typeof status.value !== "undefined" ? status.value : null,
     from: fromDate,
@@ -425,7 +425,7 @@ export function* handleContractIssues(action) {
 
   let code = 21; // open friendly
   if (issue === "disputes") {
-    code = statusId === 31 ? 35 : 31; // Ongoing Dispute vs Open Dispute
+    code = statusId === 31 ? 32 : 31; // Open Dispute Dispersal vs Open Dispute
   }
 
   const nextStatus = contractStatuses.find(
@@ -494,7 +494,7 @@ export function* handleContractIssues(action) {
   if (code === 31) {
     resolve = yield put({ type: DISPUTE_ARBITRATION, id, dispersal, statusId, code, message, proposalAttachments, callback });
   } else {
-    resolve = yield put({ type: AMEND_DISPUTE_ARBITRATION, id, dispersal, statusId, code, message, proposalAttachments, callback });
+    resolve = yield put({ type: AMEND_DISPUTE_ARBITRATION, id, dispersal, statusId, code, message, proposalAttachments, callback }); // new status still remain 31
   }
   log("handleContractIssues – issue resolved", resolve);
 }
