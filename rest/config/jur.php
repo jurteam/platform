@@ -66,6 +66,10 @@ return [
             'code' => 31
         ],
         [
+            'label' => 'Open Dispute',
+            'code' => 32
+        ],
+        [
             'label' => 'Ongoing Dispute',
             'code' => 35
         ],
@@ -145,7 +149,7 @@ return [
                 'label_status' => 'Open Dispute'
             ],
             [
-                'status_code' => 35,
+                'status_code' => 32,
                 'label_name' => 'Sent',
                 'label_status' => 'Open Dispute'
             ]
