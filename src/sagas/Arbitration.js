@@ -298,7 +298,15 @@ function* handleContractInitialized(args) {
         hasSigned: [wallet.address],
         hasWithdrawn: [wallet.address],
         hasFundedAmendment: [wallet.address],
-        amendmentProposed: []
+        amendmentProposed: [],
+        DISPUTE_VOTE_DURATION: [],
+        DISPUTE_DISPERSAL_DURATION: [],
+        DISPUTE_WINDOW: [],
+        DISPUTE_EXTENSION: [],
+        VOTE_LOCKUP: [],
+        DISPUTE_WINDOW_MAX: [],
+        MIN_VOTE: [],
+        MIN_WIN: [],
       };
 
       let idx = 1;
