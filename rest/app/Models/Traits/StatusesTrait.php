@@ -70,7 +70,16 @@ trait StatusesTrait
 
     public function isNotDraft()
     {
-        return $this->status->code > config('jur.statuses')[1]['code'];
+        $history = $this->histories->filter(function($history) {
+            if (! empty($history->chain_updated_at)) {
+                return !$history->chain_updated_at->isFuture();
+            }
+            return true;
+        })->last();
+
+        if (! empty($history)) {
+            return $history->status->code > config('jur.statuses')[1]['code'];
+        }
     }
 
     public function getCurrentStatusUpdatedAt()
