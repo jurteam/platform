@@ -24,4 +24,9 @@ class ContractStatusHistory extends Model
         }
         return $this->created_at->valueOf();
     }
+
+    public function status()
+    {
+        return $this->belongsTo(ContractStatus::class, 'contract_status_id');
+    }
 }

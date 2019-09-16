@@ -20,7 +20,7 @@ class ContractTransformer extends TransformerAbstract
     public function transform(Contract $contract)
     {
         $currentStatus = $contract->getCurrentStatus();
-        
+
         return [
             'id' => $contract->id,
             'statusId' => $currentStatus ? $currentStatus->code : null,

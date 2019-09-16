@@ -10,12 +10,14 @@ trait HistoriesTrait
     public function getCurrentStatus()
     {
         if ($this->histories->count() > 0) {
-            return $this->histories->filter(function($history) {
+            $history = $this->histories->filter(function($history) {
                 if ($history->chain_updated_at) {
                     return ! $history->chain_updated_at->isFuture();
                 }
-                return $history;
+                return ! $history->created_at->isFuture();
             })->last();
+            
+            return $history->status;
         }
         return null;
     }

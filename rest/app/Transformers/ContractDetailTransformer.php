@@ -32,7 +32,7 @@ class ContractDetailTransformer extends TransformerAbstract
 
         return [
             'id' => $contract->id,
-            'statusId' => $currentStatus ? $$currentStatus->code : null,
+            'statusId' => $currentStatus ? $currentStatus->code : null,
             'statusLabel' => $currentStatus ? $currentStatus->label : null,
             'statusUpdatedAt' => $contract->getCurrentStatusUpdatedAt(),
             'statusFrom' => $contract->getLastStatusFrom(),
