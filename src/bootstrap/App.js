@@ -13,6 +13,9 @@ import Spinner from "../components/common/Spinner";
 
 import UnderAuth from "./UnderAuth";
 import Initializer from "./Initializer"; // Initializer
+import { log } from "../utils/helpers";
+
+log('App init', process.env);
 
 class App extends Component {
   render() {
