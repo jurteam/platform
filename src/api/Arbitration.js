@@ -10,15 +10,6 @@ export default class ArbitrationContract {
     log("ArbitrationContract", address)
     log("ArbitrationContract – global.drizzle.contracts[address]", global.drizzle.contracts[address])
 
-    if (!arbitrationSCInstance) {
-      arbitrationSCInstance = this;
-      this.web3 = window.web3;
-      this.contract = contract({
-        ...global.drizzle.contracts[address],
-        networks: { "1": { address }, "3": { address }, "5777": { address } }
-      });
-      this.contract.setProvider(this.web3.currentProvider);
-    }
 
     // define easy access variables
     this.address = address;
@@ -32,7 +23,16 @@ export default class ArbitrationContract {
     this.MIN_VOTE = null;
     this.MIN_WIN = null;
 
-    this.gameTheory(); // get game theory vars
+    if (!arbitrationSCInstance) {
+      arbitrationSCInstance = this;
+      this.web3 = window.web3;
+      this.contract = contract({
+        ...global.drizzle.contracts[address],
+        networks: { "1": { address }, "3": { address }, "5777": { address } }
+      });
+      this.contract.setProvider(this.web3.currentProvider);
+      this.gameTheory(); // get game theory vars
+    }
 
     log("ArbitrationContract – arbitrationSCInstance", arbitrationSCInstance)
 
@@ -44,16 +44,19 @@ export default class ArbitrationContract {
    * @notice Returns all infos regarding the game theory
    */
   async gameTheory() {
-    const instance = await this.contract.deployed();
+    if (this.contract) {
 
-    this.DISPUTE_VOTE_DURATION = await instance.DISPUTE_VOTE_DURATION();
-    this.DISPUTE_DISPERSAL_DURATION = await instance.DISPUTE_DISPERSAL_DURATION();
-    this.DISPUTE_WINDOW = await instance.DISPUTE_WINDOW();
-    this.DISPUTE_EXTENSION = await instance.DISPUTE_EXTENSION();
-    this.VOTE_LOCKUP = await instance.VOTE_LOCKUP();
-    this.DISPUTE_WINDOW_MAX = await instance.DISPUTE_WINDOW_MAX();
-    this.MIN_VOTE = await instance.MIN_VOTE();
-    this.MIN_WIN = await instance.MIN_WIN();
+      const instance = await this.contract.deployed();
+
+      this.DISPUTE_VOTE_DURATION = await instance.DISPUTE_VOTE_DURATION();
+      this.DISPUTE_DISPERSAL_DURATION = await instance.DISPUTE_DISPERSAL_DURATION();
+      this.DISPUTE_WINDOW = await instance.DISPUTE_WINDOW();
+      this.DISPUTE_EXTENSION = await instance.DISPUTE_EXTENSION();
+      this.VOTE_LOCKUP = await instance.VOTE_LOCKUP();
+      this.DISPUTE_WINDOW_MAX = await instance.DISPUTE_WINDOW_MAX();
+      this.MIN_VOTE = await instance.MIN_VOTE();
+      this.MIN_WIN = await instance.MIN_WIN();
+    }
 
     return;
   }
