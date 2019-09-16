@@ -78,7 +78,7 @@ trait StatusesTrait
         })->last();
 
         if (! empty($history)) {
-            return $history->status->code > config('jur.statuses')[1]['code'];
+            return $history->status->code !== config('jur.statuses')[1]['code'];
         }
     }
 
