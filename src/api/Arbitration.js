@@ -23,10 +23,41 @@ export default class ArbitrationContract {
     // define easy access variables
     this.address = address;
 
+    this.DISPUTE_VOTE_DURATION = null;
+    this.DISPUTE_DISPERSAL_DURATION = null;
+    this.DISPUTE_WINDOW = null;
+    this.DISPUTE_EXTENSION = null;
+    this.VOTE_LOCKUP = null;
+    this.DISPUTE_WINDOW_MAX = null;
+    this.MIN_VOTE = null;
+    this.MIN_WIN = null;
+
+    this.gameTheory(); // get game theory vars
+
+    log("ArbitrationContract – arbitrationSCInstance", arbitrationSCInstance)
+
     return arbitrationSCInstance;
   }
 
   // Helpers
+  /**
+   * @notice Returns all infos regarding the game theory
+   */
+  async gameTheory() {
+    const instance = await this.contract.deployed();
+
+    this.DISPUTE_VOTE_DURATION = await instance.DISPUTE_VOTE_DURATION();
+    this.DISPUTE_DISPERSAL_DURATION = await instance.DISPUTE_DISPERSAL_DURATION();
+    this.DISPUTE_WINDOW = await instance.DISPUTE_WINDOW();
+    this.DISPUTE_EXTENSION = await instance.DISPUTE_EXTENSION();
+    this.VOTE_LOCKUP = await instance.VOTE_LOCKUP();
+    this.DISPUTE_WINDOW_MAX = await instance.DISPUTE_WINDOW_MAX();
+    this.MIN_VOTE = await instance.MIN_VOTE();
+    this.MIN_WIN = await instance.MIN_WIN();
+
+    return;
+  }
+
   /**
    * @notice Returns contract agreement hash detail
    * @notice Decoded value is a stringified object of arbitration kpi and resolution proof
