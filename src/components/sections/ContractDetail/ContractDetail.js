@@ -412,6 +412,7 @@ export const ContractDetail = ( props ) => {
   });
 
   let currentPart = null;
+  let partAPays = true;
   if (
     typeof counterparties !== "undefined" &&
     typeof counterparties[1] !== "undefined"
@@ -420,16 +421,17 @@ export const ContractDetail = ( props ) => {
       wallet.address.toLowerCase() === counterparties[1].wallet.toLowerCase()
         ? "b"
         : "a";
+    partAPays = whoPays === wallet.address.toLowerCase()
   }
 
   const contractValue = Number(value);
-  let feeToPay = contractValue;
+  let feeToPay = partAPays ? contractValue : 0;
   if (hasPenaltyFee && currentPart) {
-    if (currentPart === "a") {
+    if (partAPays) {
       feeToPay = contractValue + Number(partAPenaltyFee);
     } else {
-      feeToPay = contractValue + Number(partBPenaltyFee);
-    }
+      feeToPay = Number(partAPenaltyFee);
+    }    
   }
 
   const currentUserCanPay = feeToPay <= Number(ethToHuman(wallet.balance));
