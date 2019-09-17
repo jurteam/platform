@@ -254,29 +254,35 @@ export const ContractSidebar = ({
       );
     }
 
-    const canSave = disabled || submitDisabled || !formUpdated ? false : true;
-    const canSend =
-      disabled || !isValid || !currentUserCanPay || formUpdated ? false : true;
+    if (statusId === 0) {
+      // initial state before saving and before sending to counterparty
+      const canSave = disabled || submitDisabled || !formUpdated ? false : true;
+      const canSend =
+        disabled || !isValid || !currentUserCanPay || formUpdated ? false : true;
 
-    // default actions
-    return (
-      <>
-        <Button
-          color={!canSave ? "muted" : null}
-          onClick={canSave ? onSubmit : null}
-        >
-          {labels.saveContract}
-        </Button>
-        <Button
-          color={!canSend ? "muted" : null}
-          variant={!canSend ? "contained" : "gradient"}
-          onClick={canSend ? onSend : null}
-          hoverColor="success"
-        >
-          {labels.sendToCounterparty}
-        </Button>
-      </>
-    );
+      return (
+        <>
+          <Button
+            color={!canSave ? "muted" : null}
+            onClick={canSave ? onSubmit : null}
+          >
+            {labels.saveContract}
+          </Button>
+          <Button
+            color={!canSend ? "muted" : null}
+            variant={!canSend ? "contained" : "gradient"}
+            onClick={canSend ? onSend : null}
+            hoverColor="success"
+          >
+            {labels.sendToCounterparty}
+          </Button>
+        </>
+      );
+    }
+
+      // default actions
+    return null; 
+
   };
 
   return (
