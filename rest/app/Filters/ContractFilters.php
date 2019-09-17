@@ -53,10 +53,10 @@ class ContractFilters extends Filters
     public function status($value)
     {
         return $this->builder
-                    ->join('contract_status_histories', 'contract_status_histories.contract_id', '=', 'contracts.id')
-                    ->join('contract_statuses', 'contract_statuses.id', '=', 'contract_status_histories.contract_status_id')
+                    ->join('contract_status_histories AS ch', 'ch.contract_id', '=', 'contracts.id')
+                    ->join('contract_statuses AS cs', 'cs.id', '=', 'ch.contract_status_id')
                     ->whereRaw(
-                        '(contract_statuses.code = ?)',
+                        '(cs.code = ?)',
                         [$value]
                     )
                     ->groupBy('contracts.id');
