@@ -9,6 +9,7 @@ contract('Mint Token - Add fundings', function (accounts) {
   var party1 = "0xd3ae78222beadb038203be21ed5ce7c9b1bff602";
   var party2 = "0x115eabb4f62973d0dba138ab7df5c0375ec87256";
   var voter1 = "0x733b7269443c70de16bbf9b0615307884bcc5636";
+  var voter2 = "0x8bf3fFFeEf48C1823041f62555549c17cAa29f5A";
 
   console.log("Available accounts", accounts);
 
@@ -16,7 +17,7 @@ contract('Mint Token - Add fundings', function (accounts) {
   it("0. mint token funds", async () => {
 
     // token = await JURToken.new(["sig1"], {from: party0});
-    token = await JURToken.at("0x45219ce53baa46097be46c1f3f0a0cc5e2b27891", {from: party0});
+    token = await JURToken.at("0x50501d1e7dbebb7dfe4fef71211302d4678a4f34", {from: party0});
     console.log("JUR Token Address: ", token.address);
 
     //Mint some tokens for party1 and party2
@@ -24,6 +25,7 @@ contract('Mint Token - Add fundings', function (accounts) {
     await token.mint(party1, 1222800000000000000000, {from: party0});
     await token.mint(party2, 1223800000000000000000, {from: party0});
     await token.mint(voter1, 1224800000000000000000, {from: party0});
+    await token.mint(voter2, 224800000000000000000, {from: party0});
 
   });
 });
