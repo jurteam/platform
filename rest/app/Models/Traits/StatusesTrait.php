@@ -22,15 +22,10 @@ trait StatusesTrait
                 return true;
             })
             ->last();
-<<<<<<< HEAD
-
-        return $activity ? strtolower($activity->wallet) : null;
-=======
         if ($activity) {
             return strtolower($activity->wallet);
         }
         return null;
->>>>>>> origin/feature/rest
     }
 
     /**

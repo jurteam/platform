@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, /* useEffect, */ useContext } from "react";
 
 // Context
 import { AppContext } from "../../../bootstrap/AppProvider";
@@ -38,8 +38,9 @@ export const Contracts = ( props ) => {
   const [showDataLostModal, setShowDataLostModal] = useState(false);
   const [contractToArchive, setContractToArchive] = useState(null);
 
-  // // cDM
+  // cDM
   // useEffect(() => {
+  //   log("Contracts - cDM", "fetch?");
   //   global.drizzle.store.dispatch({ type: FETCH_CONTRACTS });
   // }, []);
 
