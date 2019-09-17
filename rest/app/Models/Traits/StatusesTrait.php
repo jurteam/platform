@@ -16,12 +16,21 @@ trait StatusesTrait
     {
         $activity = $this->activities
             ->filter(function($activity) {
-                return is_null($activity->chain_updated_at)
-                    || !$activity->chain_updated_at->isFuture();
+                if (! empty($activity->chain_updated_at)) {
+                    return !$activity->chain_updated_at->isFuture();
+                }
+                return true;
             })
             ->last();
+<<<<<<< HEAD
 
         return $activity ? strtolower($activity->wallet) : null;
+=======
+        if ($activity) {
+            return strtolower($activity->wallet);
+        }
+        return null;
+>>>>>>> origin/feature/rest
     }
 
     /**
