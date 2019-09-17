@@ -47,6 +47,13 @@ trait DisputeTrait
         return $totalPart;
     }
 
+    public function getRejectVotes()
+    {
+        return $this->votes->filter(function($vote) {
+            return $vote->wallet_part === '0x0';
+        })->count();
+    }
+
     public function getCountPart($part)
     {
         $lowerWallet = strtolower($this->{$part});

@@ -26,7 +26,7 @@ class ContractsController extends Controller
     public function index(ContractFilters $filters, Request $request)
     {
         $contracts = Contract::filters($filters)
-                            ->latest('updated_at')
+                            ->latest('contracts.updated_at')
                             ->paginate($request->get('perPage', 10));
 
         return $this->response->paginator($contracts, new ContractTransformer);
