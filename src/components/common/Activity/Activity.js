@@ -11,8 +11,12 @@ import "./Activity.scss";
 import { AppContext } from "../../../bootstrap/AppProvider"; // context
 
 export const Activity = ( props ) => {
+  let {
+    from: { system: isSystem }
+  } = props.data;
+
   const {
-    from: { wallet: walletAddress, name: userName, system: isSystem },
+    from: { wallet: walletAddress, name: userName },
     date,
     to,
     contract_name,
@@ -25,8 +29,9 @@ export const Activity = ( props ) => {
 
   const { labels } = useContext(AppContext);
 
-  const getActivityUser = () => {
-    if (isSystem) {
+  const getActivityUser = (forced) => {
+    if (typeof forced === 'undefined') forced = false;
+    if (isSystem || forced) {
       return "Jur System";
     } else {
       return userName || ellipsisString(walletAddress, 16, 16);
@@ -52,7 +57,7 @@ export const Activity = ( props ) => {
           </span>
         );
 
-      case 35: // Ongoing Dispute
+      case 32: // Amend Dispute
         return (
           <span
             className={`dispute ${isOpen ? "dispute--open" : ""}`}
@@ -64,6 +69,20 @@ export const Activity = ( props ) => {
               {labels.disputeProposal}
             </span>
             {typeof noPreview !== "undefined" && <CaretDownIcon className="friendly-caret" />}
+          </span>
+        );
+
+        case 35: // Ongoing Dispute
+        return (
+          <span
+            className={`dispute ${isOpen ? "dispute--open" : ""}`}
+            onClick={() => setOpen(!isOpen)}
+          >
+            {/* {`${abstract || labels.sent} `} */}
+            {`${labels.started} `}
+            <span>
+              {labels.votingPhase}
+            </span>
           </span>
         );
 
@@ -146,10 +165,17 @@ export const Activity = ( props ) => {
     }
   };
 
+  const forceSystem = (status) => {
+    switch (status) {
+      case 35: return true;
+      default: return false;
+    };
+  }
+
   return (
     <div className="jur-activity">
       <div className="jur-activity__info">
-        {isSystem ? (
+        {isSystem || forceSystem(Number(status)) ? (
           <JurIcon className="jur-activity__info__avatar" />
         ) : (
           <Avatar
@@ -161,7 +187,7 @@ export const Activity = ( props ) => {
         )}
         <div className="jur-activity__info__details">
           <div className="jur-activity__info__from">
-            <span>{getActivityUser()}</span>
+            <span>{getActivityUser(forceSystem(Number(status)))}</span>
             {!hideTime && <TimeAgo date={date} />}
           </div>
           <div className="jur-activity__info__message">{getMessage()}</div>

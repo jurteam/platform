@@ -217,7 +217,7 @@ export const ContractSidebar = ({
       );
     }
 
-    if (statusId === 31) {
+    if (statusId === 31 || statusId === 32) {
       // ongoing actions fallback
       return (
         <>
@@ -231,7 +231,7 @@ export const ContractSidebar = ({
             fullWidth
             hoverColor="dispute"
           >
-            {labels.dispute}
+            {statusId === 31 ? labels.dispute : labels.amendDispute}
           </Button>
         </>
       );
@@ -327,7 +327,7 @@ export const ContractSidebar = ({
           />
         </>
       )}
-      {((statusId >= 4 && statusId <= 9) || statusId === 21 || statusId === 31) && showProposalForm && (
+      {((statusId >= 4 && statusId <= 9) || statusId === 21 || statusId === 31 || statusId === 32) && showProposalForm && (
         <ProposalForm
           extended={showProposalForm === 2 ? true : false}
           disabled={disabled}

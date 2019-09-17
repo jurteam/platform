@@ -425,12 +425,14 @@ export function* handleContractIssues(action) {
 
   let code = 21; // open friendly
   if (issue === "disputes") {
-    code = statusId === 31 ? 32 : 31; // Open Dispute Dispersal vs Open Dispute
+    code = statusId === 31 || statusId === 32 ? 32 : 31; // Open Dispute Dispersal vs Open Dispute
   }
+  log("handleContractIssues – contractStatuses", contractStatuses);
 
   const nextStatus = contractStatuses.find(
     status => Number(status.value) === Number(code)
   );
+  log("handleContractIssues – nextStatus", nextStatus);
 
   const { label: statusLabel } = nextStatus;
   log("handleContractIssues – NEXT statusLabel", statusLabel);
