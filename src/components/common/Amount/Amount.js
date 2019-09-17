@@ -9,7 +9,7 @@ export const Amount = ( props ) => {
   const { value, currency, className } = props;
   return (
     <span className={`jur-amount ${className || ""}`}>
-      {`${toCurrencyFormat(value)}${currency.toUpperCase()}`}
+      {`${toCurrencyFormat(value)} ${currency.toUpperCase()}`}
     </span>
   );
 };
