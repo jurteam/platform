@@ -20,7 +20,7 @@ class DisputeFilters extends Filters
         'name',
         'category',
         'value'
-    ];    
+    ];
 
     public function category($value)
     {
@@ -30,8 +30,7 @@ class DisputeFilters extends Filters
     public function show($value)
     {
         $query = $this->builder
-                        ->where('contracts.is_a_dispute', true)
-                        ->where('contracts.contract_status_id', '>=', 11);
+                        ->where('contracts.is_a_dispute', true);
 
         if ($value == 'my') {
             $lowerWallet = strtolower($this->request->header('wallet'));
@@ -47,13 +46,20 @@ class DisputeFilters extends Filters
     public function status($value)
     {
         return $this->builder
-                    ->join('contract_status_histories AS ch', 'ch.contract_id', '=', 'contracts.id')
-                    ->join('contract_statuses AS cs', 'cs.id', '=', 'ch.contract_status_id')
-                    ->whereRaw(
-                        '(cs.code = ?)',
-                        [$value]
+                    ->join(
+                        'contract_status_histories',
+                        'contract_status_histories.contract_id', '=', 'contracts.id'
                     )
-                    ->groupBy('contracts.id');
+                    ->join(
+                        'contract_statuses',
+                        'contract_statuses.id', '=', 'contract_status_histories.contract_status_id'
+                    )
+                    ->whereRaw(
+                        'contract_statuses.code = ?
+                        AND (contract_status_histories.chain_updated_at IS NULL
+                            OR NOW() >= contract_status_histories.chain_updated_at)',
+                        [$value]
+                    );
     }
 
     public function from($value)
@@ -84,7 +90,7 @@ class DisputeFilters extends Filters
 
     /**
      * Order by disputes by args.
-     * 
+     *
      * @param  array $value
      * @return Builder
      */

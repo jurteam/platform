@@ -61,6 +61,7 @@ trait HistoriesTrait
             if (empty($pastHistory)) {
                 $this->histories()
                     ->save(new ContractStatusHistory([
+                        'contract_status_code' => $status->code,
                         'contract_status_id' => $status->id,
                         'chain_updated_at' => $date
                     ]));
@@ -68,6 +69,7 @@ trait HistoriesTrait
         } else {
             $this->histories()
                 ->save(new ContractStatusHistory([
+                    'contract_status_code' => $status->code,
                     'contract_status_id' => $status->id,
                     'chain_updated_at' => $date
                 ]));
