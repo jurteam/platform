@@ -57,23 +57,25 @@ trait ActivitiesTrait
     protected function getAbstractText(Contract $contract, array $params)
     {
         $labels = config('jur.activities.labels');
-        $jurLabel = array_filter($labels, function($label) use($contract) {
-            return $label['status_code'] == $contract->status->code;
+        $currentStatus = $contract->getCurrentStatus();
+
+        $jurLabel = array_filter($labels, function($label) use($currentStatus) {
+            return $label['status_code'] == $currentStatus->status->code;
         });
 
         $indexKey = array_keys($jurLabel);
         $currentLabel = array_pop($jurLabel);
         $labelText = $currentLabel['label_name'];
 
-        if ($contract->status->code == 1) {
+        if ($currentStatus->status->code == 1) {
             $labelText = __("messages.labels.{$indexKey[0]}.label_name", [
                 'part' => $contract->part_b_name ? $contract->part_b_wallet : null
             ]);
-        } elseif ($contract->status->code == 2) {
+        } elseif ($currentStatus->status->code == 2) {
             $labelText = __("messages.labels.{$indexKey[0]}.label_name", [
                 'name' => $contract->name
             ]);
-        } elseif ($contract->status->code == 3 || $contract->status->code == 5 ||$contract->status->code == 10) {
+        } elseif ($currentStatus->status->code == 3 || $currentStatus->status->code == 5 ||$currentStatus->status->code == 10) {
             $labelText = __("messages.labels.{$indexKey[0]}.label_name", [
                 'value' => $params['interpolation']['value']
             ]);
