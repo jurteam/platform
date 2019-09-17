@@ -24,8 +24,9 @@ class ActivityFilters extends Filters
         $lowerWallet = strtolower($value);
         $user = User::byWallet($value)->firstOrFail();
 
-        return $this->builder->where('user_id', $user->id)
-                        ->orWhereRaw('LOWER(to_wallet) = ?', [$lowerWallet]);
+        return $this->builder
+                    ->where('user_id', $user->id)
+                    ->orWhereRaw('LOWER(to_wallet) = ?', [$lowerWallet]);
     }
 
     public function status($value)

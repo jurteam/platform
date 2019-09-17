@@ -67,11 +67,6 @@ class Contract extends Model implements HasMedia
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function status()
-    {
-        return $this->belongsTo(ContractStatus::class, 'contract_status_id');
-    }
-
     public function votes()
     {
         return $this->hasMany(ContractVote::class);
@@ -134,13 +129,13 @@ class Contract extends Model implements HasMedia
         $statuses = config('jur.statuses');
         $status = ContractStatus::byCode($statuses[1]['code'])->firstOrFail();
 
-        $attributes = array_merge($params->all(), [
-            'contract_status_id' => $status->id,
-            'user_id' => $user ? $user->id : null,
-            'wallet' => $params->header('wallet')
-        ]);
-        $contract = static::create($attributes);
-        
+        $contract = static::create(array_merge(
+            $params->all(), [
+                'user_id' => $user ? $user->id : null,
+                'wallet' => $params->header('wallet')
+            ]
+        ));
+
         $contract->recordHistories(null, $status);
 
         $contract->recordActivities([
