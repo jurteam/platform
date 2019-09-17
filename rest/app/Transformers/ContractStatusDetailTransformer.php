@@ -69,9 +69,13 @@ class ContractStatusDetailTransformer extends TransformerAbstract
     protected function getSystem(ContractStatusDetail $detail)
     {
         $status = $detail->contract->getCurrentStatus();
+        if (empty($status)) {
+            $status = $detail->contract->status;
+        }
+
         if (in_array($status->code, [8,39,38,36])) {
             return true;
-        }
+        }        
         return false;
     }
 }
