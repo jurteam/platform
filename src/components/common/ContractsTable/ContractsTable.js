@@ -28,6 +28,7 @@ export const ContractsTable = props => {
     headers,
     filters,
     data,
+    searching,
     handleArchive,
     filtersDisabled,
     handleFilterChange,
@@ -47,10 +48,8 @@ export const ContractsTable = props => {
 
   const emptyMessage = data.length === 0 && (
     <div className="jur-table__empty">
-      {filters.status === null &&
-      filters.fromDate === null &&
-      filters.toDate === null &&
-      filters.searchText === null ? (
+      {
+        searching === false ? (
         <>
           <p>{labels.anyContract}</p>
           <Button variant="gradient" onClick={newContract}>
@@ -75,7 +74,7 @@ export const ContractsTable = props => {
     // 2 - desc - up arrow
 
     order = order === 1 ? 'asc' : order === 2 ? 'desc' : '';
-    
+
     onSortChange(field,order);
   };
 

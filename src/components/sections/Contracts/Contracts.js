@@ -32,6 +32,8 @@ import {
 export const Contracts = ( props ) => {
   const { labels, contractTableHeaders } = useContext(AppContext);
 
+  const [searching, setSearching] = useState(false);
+
   const [showModal, setShowModal] = useState(false);
   const [showDataLostModal, setShowDataLostModal] = useState(false);
   const [contractToArchive, setContractToArchive] = useState(null);
@@ -56,6 +58,16 @@ export const Contracts = ( props ) => {
     });
   };
   const handleFilterSubmit = () => {
+    if (
+      filters.status === null &&
+      filters.fromDate === null &&
+      filters.toDate === null &&
+      filters.searchText === null
+    ) {
+      setSearching(false);
+    } else {
+      setSearching(true);
+    };
     global.drizzle.store.dispatch({ type: FETCH_CONTRACTS });
   };
 
@@ -128,6 +140,7 @@ export const Contracts = ( props ) => {
             handleFilterChange={handleFilterChange}
             handleFilterSubmit={handleFilterSubmit}
             headers={contractTableHeaders}
+            searching={searching}
             data={contract.list}
             handleArchive={handleArchive}
             newContract={newContract}
