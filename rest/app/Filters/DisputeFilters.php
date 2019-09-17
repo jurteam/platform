@@ -47,8 +47,13 @@ class DisputeFilters extends Filters
     public function status($value)
     {
         return $this->builder
-                    ->join('contract_statuses', 'contract_statuses.id', '=', 'contracts.contract_status_id')
-                    ->where('contract_statuses.code', $value);
+                    ->join('contract_status_histories AS ch', 'ch.contract_id', '=', 'contracts.id')
+                    ->join('contract_statuses AS cs', 'cs.id', '=', 'ch.contract_status_id')
+                    ->whereRaw(
+                        '(cs.code = ?)',
+                        [$value]
+                    )
+                    ->groupBy('contracts.id');
     }
 
     public function from($value)
