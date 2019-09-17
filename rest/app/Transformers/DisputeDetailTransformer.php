@@ -79,10 +79,10 @@ class DisputeDetailTransformer extends TransformerAbstract
             'earnings' => $contract->getEarnings(),
             'totalTokensPartA' => $totalTokensPartA,
             'totalTokensPartB' => $totalTokensPartB,
+            'totalTokensReject' => $totalRejectVotes,
             'totalTokens' => $totalTokensPartA + $totalTokensPartB + $totalRejectVotes,
             'percentagePartA' => $contract->getPercetangePart('part_a_wallet'),
             'percentagePartB' => $contract->getPercetangePart('part_b_wallet'),
-            'rejectVotes' => $totalRejectVotes,
             'winner' => $contract->getTheWinner()
         ];
     }
