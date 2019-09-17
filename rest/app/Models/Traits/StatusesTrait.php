@@ -21,7 +21,7 @@ trait StatusesTrait
             })
             ->last();
 
-        return strtolower($activity->wallet);
+        return $activity ? strtolower($activity->wallet) : null;
     }
 
     /**
