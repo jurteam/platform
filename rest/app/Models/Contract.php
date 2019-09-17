@@ -116,7 +116,7 @@ class Contract extends Model implements HasMedia
             'status_code' => $status->code,
             'to_wallet' => $this->getSendTo($params->header('wallet')),
             'wallet' => $params->header('wallet'),
-            'chain_updated_at' => $this->chain_updated_at
+            'chain_updated_at' => $chainUpdatedAt
         ]), $user);
 
         $this->notifyCounterPart($activity);
@@ -134,12 +134,12 @@ class Contract extends Model implements HasMedia
         $statuses = config('jur.statuses');
         $status = ContractStatus::byCode($statuses[1]['code'])->firstOrFail();
 
-        $attributes = array_merge($params->all(), [
-            'contract_status_id' => $status->id,
-            'user_id' => $user ? $user->id : null,
-            'wallet' => $params->header('wallet')
-        ]);
-        $contract = static::create($attributes);
+        $contract = static::create(array_merge(
+            $params->all(), [
+                'user_id' => $user ? $user->id : null,
+                'wallet' => $params->header('wallet')
+            ]
+        ));
         
         $contract->recordHistories(null, $status);
 
