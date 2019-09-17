@@ -111,7 +111,7 @@ class Contract extends Model implements HasMedia
             'status_code' => $status->code,
             'to_wallet' => $this->getSendTo($params->header('wallet')),
             'wallet' => $params->header('wallet'),
-            'chain_updated_at' => $this->chain_updated_at
+            'chain_updated_at' => $chainUpdatedAt
         ]), $user);
 
         $this->notifyCounterPart($activity);

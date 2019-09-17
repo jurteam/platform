@@ -17,7 +17,7 @@ class DisputesController extends Controller
     public function index(DisputeFilters $filters, Request $request)
     {
         $disputes = Contract::filters($filters)
-                            ->latest('updated_at')
+                            ->latest('contracts.updated_at')
                             ->paginate($request->get('perPage', 10));
 
         return $this->response->paginator($disputes, new DisputeTransformer);

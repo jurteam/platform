@@ -47,6 +47,15 @@ trait DisputeTrait
         return $totalPart;
     }
 
+    public function getRejectVotes()
+    {
+        $totalPart = $this->votes()
+                        ->whereRaw('LOWER(wallet_part) = ?', ['0x0'])
+                        ->sum('amount');
+
+        return $totalPart;
+    }
+
     public function getCountPart($part)
     {
         $lowerWallet = strtolower($this->{$part});
@@ -61,7 +70,7 @@ trait DisputeTrait
      */
     public function getPercetangePart($part)
     {
-        $totalCount = $this->getTokensPart('part_a_wallet') + $this->getTokensPart('part_b_wallet');
+        $totalCount = $this->getTokensPart('part_a_wallet') + $this->getTokensPart('part_b_wallet') + $this->getRejectVotes();
         $tokenPart = $this->getTokensPart($part);
 
         if ($totalCount > 0) {
@@ -83,6 +92,7 @@ trait DisputeTrait
 
         $totalPartA = $this->getTokensPart('part_a_wallet');
         $totalPartB = $this->getTokensPart('part_b_wallet');
+        $totalRejectVotes = $this->getRejectVotes();
         $voteForWinner = 0;
         if ($totalPartA > $totalPartB) {
             $voteForWinner = $this->getCountPart('part_a_wallet');
@@ -91,7 +101,7 @@ trait DisputeTrait
         }
 
         if ($voteForWinner > 0) {
-            return ($totalPartA + $totalPartB) / $voteForWinner;
+            return ($totalPartA + $totalPartB + $totalRejectVotes) / $voteForWinner;
         }
         return null;
     }

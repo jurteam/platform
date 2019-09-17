@@ -26,12 +26,13 @@ class ContractStatusDetailTransformer extends TransformerAbstract
     public function transform(ContractStatusDetail $detail)
     {
         $contract = $detail->contract;
+        $currentStatus = $contract->getCurrentStatus();
 
         return [
             'id' => $detail->id,
             'date' => $detail->created_at->valueOf(),
             'contract' => $detail->contract_id,
-            'statusId' => $contract->status ? $contract->status->code : null,
+            'statusId' => $currentStatus ? $currentStatus->code : null,
             'statusFrom' => $contract->getLastStatusFrom(),
             'from' => (object) [
                 'wallet' => $detail->contract_part,
@@ -67,10 +68,14 @@ class ContractStatusDetailTransformer extends TransformerAbstract
      */
     protected function getSystem(ContractStatusDetail $detail)
     {
-        $status = $detail->contract->status;
+        $status = $detail->contract->getCurrentStatus();
+        if (empty($status)) {
+            $status = $detail->contract->status;
+        }
+
         if (in_array($status->code, [8,39,38,36])) {
             return true;
-        }
+        }        
         return false;
     }
 }
