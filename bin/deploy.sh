@@ -115,13 +115,13 @@ if [ ! -z "$ENVIRONMENT" ] | [ ! -z "${!local_app_path}" ] | [ ! -z "${!vhost}" 
   if [ ! -z "$FE" ]; then
     echo ""
   	echo "–– ${ORANGE}Frontend${NC} deploy to '${ENVIRONMENT}' environment –––––––––––––––––––––––––––––"
-    if [ "$ENVIRONMENT" == "production" ]; then
-      echo "   ${PURPLE}local${NC}     build frontend application: npm run build"
-      npm run build
-    else
+    # if [ "$ENVIRONMENT" == "production" ]; then
+    #   echo "   ${PURPLE}local${NC}     build frontend application: npm run build"
+    #   npm run build
+    # else
       echo "   ${PURPLE}local${NC}     build frontend application: npm run build-${ENVIRONMENT}"
       npm run build-${ENVIRONMENT}
-    fi
+    # fi
   	echo ""
   	echo "   ${PURPLE}local${NC}     origin directory: ${!local_app_path}/build"
   	echo "   ${CYAN}remote${NC}    destination directory: ${!app_path}/html/public"
