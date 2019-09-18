@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import ActivityList from "../ActivityList";
 import DisputeVote from "../DisputeVote";
 import ContractAccordion from "../ContractAccordion";
@@ -8,7 +8,7 @@ import OraclesTablePreview from "../OraclesTablePreview";
 import { AppContext } from "../../../bootstrap/AppProvider"; // context
 
 import "./DisputeSidebar.scss";
-import { CONTRACT_READ_NOTIFICATIONS } from "../../../reducers/types";
+import { CONTRACT_READ_NOTIFICATIONS, DISPUTE_DETAIL_PAGE } from "../../../reducers/types";
 
 
 import {
@@ -65,6 +65,24 @@ export const DisputeSidebar = ({
 
   const [activitiesOpen /* , setActivitiesOpen */] = useState(false);
   const [oraclesOpen /*, setOraclesOpen */] = useState(true);
+
+  useEffect(() => {
+
+    console.log('DisputeSidebar - Mount');
+    global.drizzle.store.dispatch({
+      type: DISPUTE_DETAIL_PAGE,
+      payload: true
+    });
+
+    return () => {
+      console.log('DisputeSidebar - Unmount');
+      global.drizzle.store.dispatch({
+        type: DISPUTE_DETAIL_PAGE,
+        payload: false
+      });
+    }; 
+
+  }, []);
 
   const readActivities = () => {
     global.drizzle.store.dispatch({

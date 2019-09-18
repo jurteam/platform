@@ -17,6 +17,7 @@ import {
   RESET_DISPUTE,
   RESET_DISPUTES,
   RESET_ALL_DISPUTES,
+  DISPUTE_DETAIL_PAGE,
   RESET_VOTE
 } from "./types";
 
@@ -24,6 +25,7 @@ const INITIAL_STATE = {
   saving: false,
   updating: false,
   updatingList: true,
+  detailPage: false,
   current: {
     statusId: 0,
     statusLabel: "Draft",
@@ -90,6 +92,13 @@ export default (state = INITIAL_STATE, action) => {
         list: action.payload.data,
         pagination: action.payload.meta.pagination,
         updatingList: false
+      };
+
+    case DISPUTE_DETAIL_PAGE:
+      console.log(DISPUTE_DETAIL_PAGE, action);
+      return { 
+        ...state, 
+        detailPage: action.payload 
       };
 
     case SET_DISPUTE_CURRENT_PAGE:
