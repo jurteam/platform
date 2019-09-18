@@ -105,6 +105,6 @@ trait StatusesTrait
     {
         $wallet = $this->getLastStatusFrom();
 
-        return strtolower($params->header('wallet')) == $wallet;
+        return strtolower($params->header('wallet')) !== $wallet;
     }
 }
