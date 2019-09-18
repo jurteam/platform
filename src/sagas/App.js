@@ -17,10 +17,11 @@ import {
   RESET_APP_STATE,
   SET_TUTORIAL_VIEWED,
   FETCH_DISPUTES,
-  FETCH_ACTIVITIES
+  FETCH_ACTIVITIES,
+  API_GET_STATUS_CHANGE
 } from "../reducers/types";
 
-import { getWallet, getCurrentContract } from "./Selectors"; // selectors
+import { getWallet, getContractdetailPage, getDisputedetailPage, getCurrentContract, getCurrentDispute } from "./Selectors"; // selectors
 
 // Api layouts
 import { Faq } from "../api";
@@ -118,12 +119,23 @@ export function* handleAppInit() {
 // handles app HeartBeat
 export function* handleHeartBeat() {
 
-  console.log('handleHeartBeat');
-  
+  console.log('handleHeartBeat');  
 
-  const currContr = yield select(getCurrentContract);
+  const ContractDetailPage = yield select(getContractdetailPage);
+  const DisputeDetailPage = yield select(getDisputedetailPage);
 
-  log("handleHeartBeat",currContr);
+  if (ContractDetailPage) {
+    // nella pagina del contratto
+    
+    yield put({ type: API_GET_STATUS_CHANGE });
+
+  } else if (DisputeDetailPage) {
+    // nella pagina della disputa
+    const currDisp = yield select(getCurrentDispute);
+    log("handleHeartBeat",currDisp);
+
+  }
+
 
   
 }

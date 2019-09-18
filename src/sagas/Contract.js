@@ -8,6 +8,7 @@ import {
   UPDATE_CONTRACT_FILTER,
   FETCH_CONTRACTS,
   API_GET_CONTRACT,
+  API_GET_STATUS_CHANGE,
   SET_CONTRACT,
   SET_CONTRACT_ACTIVITIES,
   SET_CONTRACT_CURRENT_PAGE,
@@ -58,8 +59,12 @@ import {
 
 // Get
 export function* getContract(action) {
-  const { id, onSuccess, onError } = action;
-  yield put({ type: CONTRACT_UPDATING, payload: true });
+  let silentLoading = false
+  const { id, onSuccess, onError, silent } = action;
+  silentLoading = silent
+  if (!silentLoading) {
+    yield put({ type: CONTRACT_UPDATING, payload: true });
+  }
 
   try {
     const {
@@ -501,6 +506,7 @@ export function* handleContractIssues(action) {
   log("handleContractIssues – issue resolved", resolve);
 }
 
+
 export function* onContractActivitiesSet(action) {
   yield put({ type: CONTRACT_NOTIFICATIONS_LOADING, payload: false }); // loading off
 
@@ -554,6 +560,43 @@ export function* onDeleteAllContracts() {
   }
 }
 
+
+export function* getContractStatus() {
+
+  const currContr = yield select(getCurrentContract);
+
+  const response = yield call(Contracts.getStatusChange, { id: currContr.id });
+
+
+  console.log("getContractStatus - response", response.data.status );
+
+  if (typeof response.data.status === "undefined") {
+    // control if status is different from actual status
+    console.log("getContractStatus - response no status", response.data );
+
+    if (currContr.statusId !== response.data.data.statusId) {
+      // fetch contract without loading
+      console.log("getContractStatus - response - status diff", currContr.statusId,response.data.data.statusId );
+
+      global.drizzle.store.dispatch({
+        type: API_GET_CONTRACT,
+        id: currContr.id,
+        silent: true,
+        // onSuccess: pageLoaded,
+        // onError: pageLoaded,
+        // history
+      });
+
+    }
+
+  }
+  
+  // const {status,statusFrom,statusId,statusLabel,statusPart,statusUpdatedAt} = response.data.data
+  // console.log("getContractStatus - response", status, statusFrom,statusId,statusLabel,statusPart,statusUpdatedAt );
+
+
+}
+
 // spawn tasks base certain actions
 export default function* contractSagas() {
   log("run", "contractSagas");
@@ -570,6 +613,7 @@ export default function* contractSagas() {
   yield takeEvery(API_GET_DISPUTE, getContractActivities);
   yield takeEvery(SET_CONTRACT, getContractActivities);
   yield takeEvery(SET_CONTRACT_STATUS, getContractActivities);
+  yield takeEvery(API_GET_STATUS_CHANGE, getContractStatus);
   yield takeLatest(SET_CONTRACT_ACTIVITIES, onContractActivitiesSet);
   yield takeLatest(READ_ACTIVITY, onContractActivitiesSet);
   yield takeLatest(READ_NOTIFICATIONS, readActivities);

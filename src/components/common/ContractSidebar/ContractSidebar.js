@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import ActivityList from "../ActivityList";
 import ContractActions from "../ContractActions";
 import ContractAccordion from "../ContractAccordion";
@@ -12,7 +12,7 @@ import Button from "../Button";
 import { AppContext } from "../../../bootstrap/AppProvider"; // context
 
 import "./ContractSidebar.scss";
-import { CONTRACT_READ_NOTIFICATIONS } from "../../../reducers/types";
+import { CONTRACT_READ_NOTIFICATIONS, CONTRACT_DETAIL_PAGE } from "../../../reducers/types";
 
 // Api layouts
 // import { Arbitration } from "../../../api";
@@ -72,6 +72,24 @@ export const ContractSidebar = ({
         ? true
         : false;
   }
+
+  useEffect(() => {
+
+    console.log('ContractSidebar - Mount');
+    global.drizzle.store.dispatch({
+      type: CONTRACT_DETAIL_PAGE,
+      payload: true
+    });
+
+    return () => {
+      console.log('ContractSidebar - Unmount');
+      global.drizzle.store.dispatch({
+        type: CONTRACT_DETAIL_PAGE,
+        payload: false
+      });
+    }; 
+
+  }, []);
 
   const readActivities = () => {
     global.drizzle.store.dispatch({

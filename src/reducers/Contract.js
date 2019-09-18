@@ -23,7 +23,8 @@ import {
   CONTRACT_MEDIA_DELETED,
   RESET_CONTRACT,
   RESET_CONTRACTS,
-  RESET_ALL_CONTRACTS
+  RESET_ALL_CONTRACTS,
+  CONTRACT_DETAIL_PAGE
 } from "./types";
 
 const INITIAL_STATE = {
@@ -32,6 +33,7 @@ const INITIAL_STATE = {
   paying: false,
   notificationLoading: false,
   updatingList: true,
+  detailPage: false,
   new: {
     part_a_wallet: "",
     part_a_name: "",
@@ -116,8 +118,16 @@ export default (state = INITIAL_STATE, action) => {
         updatingList: false
       };
 
+    case CONTRACT_DETAIL_PAGE:
+      console.log(CONTRACT_DETAIL_PAGE, action);
+      return { 
+        ...state, 
+        detailPage: action.payload 
+      };
+
     case SET_CONTRACT_CURRENT_PAGE:
       return { ...state, page: action.payload };
+
 
     case SET_CONTRACT_CURRENT_ORDER:
 
