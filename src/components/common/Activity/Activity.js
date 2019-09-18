@@ -45,7 +45,7 @@ export const Activity = ( props ) => {
       case 31: // Open Dispute
         return (
           <span
-            className={`dispute ${isOpen ? "dispute--open" : ""}`}
+            className={`dispute ${isOpen ? "dispute--open" : ""} ${typeof noPreview === "undefined" ? '' : 'no-pointer'}`}
             onClick={() => setOpen(!isOpen)}
           >
             {/* {`${abstract || labels.createdAn} `} */}
@@ -53,14 +53,14 @@ export const Activity = ( props ) => {
             <span>
               {labels.openDispute}
             </span>
-            {typeof noPreview !== "undefined" && <CaretDownIcon className="friendly-caret" />}
+            {typeof noPreview === "undefined" && <CaretDownIcon className="friendly-caret" />}
           </span>
         );
 
       case 32: // Amend Dispute
         return (
           <span
-            className={`dispute ${isOpen ? "dispute--open" : ""}`}
+            className={`dispute ${isOpen ? "dispute--open" : ""} ${typeof noPreview === "undefined" ? '' : 'no-pointer'}`}
             onClick={() => setOpen(!isOpen)}
           >
             {/* {`${abstract || labels.sent} `} */}
@@ -68,7 +68,7 @@ export const Activity = ( props ) => {
             <span>
               {labels.disputeProposal}
             </span>
-            {typeof noPreview !== "undefined" && <CaretDownIcon className="friendly-caret" />}
+            {typeof noPreview === "undefined" && <CaretDownIcon className="friendly-caret" />}
           </span>
         );
 
@@ -95,7 +95,7 @@ export const Activity = ( props ) => {
             {/* {`${abstract || labels.offeredA} `} */}
             {`${labels.offeredA} `}
             <span>{`${labels.friendlyResolution}.`}</span>
-            {typeof noPreview !== "undefined" && <CaretDownIcon className="friendly-caret" />}
+            {typeof noPreview === "undefined" && <CaretDownIcon className="friendly-caret" />}
           </span>
         );
       case 1: // Waiting for counterparty

@@ -48,6 +48,9 @@
 
       .dispute {
         cursor: pointer;
+        &.no-pointer {
+          cursor: auto !important;
+        }
 
         span {
           color: $rose; 
