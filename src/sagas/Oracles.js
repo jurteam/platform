@@ -27,13 +27,13 @@ import { log, chainErrorHandler } from "../utils/helpers"; // log helper
 // Api layouts
 import { Oracles, Disputes, JURToken /*, Arbitration, Contracts*/ } from "../api";
 
-import { getOracleOrder, getOracleListPage, getOracleListOrder } from "./Selectors"; // selector
+import { /* getOracleOrder, */ getOracleListPage, getOracleListOrder } from "./Selectors"; // selector
 
 // Get
 export function* fetchOracles(action) {
   const { id } = action;
 
-  const { wallet_part } = yield select(getOracleOrder);
+  // const { wallet_part } = yield select(getOracleOrder);
   const page = yield select(getOracleListPage);
 
 
@@ -44,7 +44,7 @@ export function* fetchOracles(action) {
     let fieldname = `orderBy[${ord.field}]`
     orderby[fieldname] = ord.type
   });
-  
+
 
 
 
@@ -81,7 +81,7 @@ export function* fetchCurrentOracles(action) {
 export function* onOraclePageChange(action) {
   yield put({ type: SET_ORACLE_CURRENT_PAGE, payload: action.payload });
   yield put({ type: FETCH_ORACLES });
-  // TODO: maybe must be fixed with id with the following line 
+  // TODO: maybe must be fixed with id with the following line
   // yield put({ type: FETCH_ORACLES, id: action.id });
 }
 

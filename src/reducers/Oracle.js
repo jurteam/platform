@@ -12,9 +12,9 @@ const INITIAL_STATE = {
   updatingList: true,
   list: [],
   currentList: [],
-  order: {
-    wallet_part: null
-  },
+  // order: {
+  //   wallet_part: null
+  // },
   page: 1,
   order: [],
   pagination: []
@@ -36,7 +36,7 @@ export default (state = INITIAL_STATE, action) => {
 
         let present = false;
         let updatedOrder = [];
-        
+
         state.order.forEach((ord) => {
           if (ord.field === action.payload.field) {
             present = true;
@@ -44,7 +44,7 @@ export default (state = INITIAL_STATE, action) => {
               updatedOrder.push(action.payload)
             }
           }
-          else 
+          else
           {
             updatedOrder.push(ord)
           }
@@ -53,13 +53,13 @@ export default (state = INITIAL_STATE, action) => {
         if (!present) {
           updatedOrder.push(action.payload)
         }
-  
+
         return {
           ...state,
           order: updatedOrder
         };
-  
-  
+
+
     // Updates
     case UPDATE_ORACLE_ORDER:
       let orderToUpdate = {};
