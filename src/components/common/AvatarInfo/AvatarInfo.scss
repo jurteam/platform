@@ -21,6 +21,8 @@
       font-size: 13px;
       margin-left: 5px;
       line-height: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
   }
 }

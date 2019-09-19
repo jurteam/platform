@@ -25,7 +25,7 @@ export const AvatarInfo = ( props ) => {
       <Avatar seed={userWallet} size={size} variant={type} />
       <div
         className="jur-avatar-info__text"
-        style={{ width: maxTextWidth || 150 }}
+        style={{ width: maxTextWidth || '80%' }}
       >
         {shouldRenderName && userName ? userName : userWallet}
       </div>
