@@ -88,6 +88,9 @@ export class Countdown extends Component {
       (this.props.statusId === 35 && milliseconds <= this.props.expireAlertFrom) ||
       this.props.statusId === 36
     ) {
+      if (typeof this.props.onExpiring === "function") {
+        this.props.onExpiring();
+      }
       return true;
     }
   }

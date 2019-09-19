@@ -8,6 +8,11 @@
     svg {
       width: 50px;
       margin-right: 20px;
+      path {
+        &.expiring {
+          stroke: $countdown-expiring-color;
+        }
+      }
     }
   }
 

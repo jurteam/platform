@@ -14,11 +14,18 @@ export const CountdownGraph = ( props ) => {
     ...rest
   } = props;
   const [percentage, setPercentage] = useState(0);
+  const [expiring, setExpiring] = useState(0);
   const progressHandler = (percentage) => {
     setPercentage(percentage);
     if ( typeof onProgress === "function") onProgress(percentage);
   };
   const { labels } = useContext(AppContext);
+  
+  const expiringSet = () => {
+    console.log('expiringSet');
+    
+    setExpiring('expiring');
+  };
 
   const getMessage = () => {
     switch (rest.statusId) {
@@ -83,11 +90,12 @@ export const CountdownGraph = ( props ) => {
             d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
             fill="none"
             stroke="#0077FF"
+            className={`passed-time ${expiring}`}
             strokeWidth="3"
             strokeDasharray={`${percentage.toString().replace("%", "")}, 100`}
           />
         </svg>
-        <Countdown {...rest} onProgress={progressHandler} />
+        <Countdown {...rest} onProgress={progressHandler} onExpiring={expiringSet} />
       </div>
       {showMessage && (
         <div className="jur-countdown-graph__message">{getMessage()}</div>
