@@ -18,7 +18,7 @@ class FaqSeeder extends Seeder
         ]);
         DB::table('faqs')->insert([
             'title' => 'How do I create a contract?',
-            'description' => 'It\'s simple, login through Metamask and click on Create Smart Contract then you should be able to follow the wizard. Remember that you can upload also existing paper contracts by explaining its content in the KPI and the Resolution Proof. If you need any assistance feel free to contact us through the chat system we are here to help!'
+            'description' => 'It\'s simple, login through Comet and click on Create Smart Legal Contract then you should be able to follow the wizard. Remember that you can upload also existing paper contracts by explaining its content in the KPI and the Resolution Proof. If you need any assistance feel free to contact us through the Jur Official Telegram Community we are here to help!'
         ]);
         DB::table('faqs')->insert([
             'title' => 'How can I be sure that the dispute voting will be fair?',
@@ -30,7 +30,7 @@ class FaqSeeder extends Seeder
         ]);
         DB::table('faqs')->insert([
             'title' => 'Is this running in production? When you will be releasing the other features?',
-            'description' => 'As of now Jur has released this product in order to test the Open Layer voting system and hence is based on the Kovan testnet. In this way we can engage with the community in order to test and optimize this layer. As per the new features please do check out the following link with the updated tech roadmap, we are waiting for your contribution, feedback and ideas!'
+            'description' => 'As of now Jur has released this product in order to test the Open Layer voting system and hence is based on the VeChain Thor testnet and mainnet. In this way we can engage with the community in order to test and optimize this layer. As per the new features please do check out the following link with the updated tech roadmap, we are waiting for your contribution, feedback and ideas!'
         ]);
     }
 }

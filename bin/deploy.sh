@@ -77,7 +77,7 @@ if [ ! -z "$ENVIRONMENT" ] | [ ! -z "${!local_app_path}" ] | [ ! -z "${!vhost}" 
   	echo "   ${PURPLE}local${NC}     origin directory: ${!local_app_path}/rest"
   	echo "   ${CYAN}remote${NC}    destination directory: ${!app_path}/html"
   	echo ""
-    echo "   ${CYAN}remote${NC}    launching command: rsync -vzcrSLh --owner=www-data --group=www-data --exclude-from=\"deploy-exclude.list\" ${!local_app_path}/rest/. ${!ssh_user}@${!ssh_host}:${!app_path}/html"
+    echo "   ${CYAN}remote${NC}    launching command: rsync -vzcrSLh --rsync-path=\"sudo rsync\" --owner=www-data --group=www-data --exclude-from=\"deploy-exclude.list\" ${!local_app_path}/rest/. ${!ssh_user}@${!ssh_host}:${!app_path}/html"
   	echo ""
     # The options:
     # v - verbose
@@ -115,18 +115,24 @@ if [ ! -z "$ENVIRONMENT" ] | [ ! -z "${!local_app_path}" ] | [ ! -z "${!vhost}" 
   if [ ! -z "$FE" ]; then
     echo ""
   	echo "–– ${ORANGE}Frontend${NC} deploy to '${ENVIRONMENT}' environment –––––––––––––––––––––––––––––"
-    if [ "$ENVIRONMENT" == "production" ]; then
-      echo "   ${PURPLE}local${NC}     build frontend application: npm run build"
-      npm run build
-    else
-      echo "   ${PURPLE}local${NC}     build frontend application: npm run build-${ENVIRONMENT}"
-      npm run build-${ENVIRONMENT}
-    fi
   	echo ""
   	echo "   ${PURPLE}local${NC}     origin directory: ${!local_app_path}/build"
   	echo "   ${CYAN}remote${NC}    destination directory: ${!app_path}/html/public"
   	echo ""
-    echo "   ${CYAN}remote${NC}    launching command: rsync -vzcrSLh --exclude-from=\"deploy-exclude.list\" ${!local_app_path}/build/. ${!ssh_user}@${!ssh_host}:${!app_path}/html/public"
+    # if [ "$ENVIRONMENT" == "production" ]; then
+    #   echo "   ${PURPLE}local${NC}     build frontend application: npm run build"
+    #   npm run build
+    # else
+      echo "   ${PURPLE}local${NC}     delete frontend build application: rm -R build"
+  	  echo ""
+      rm -R build
+
+      echo "   ${PURPLE}local${NC}     build frontend application: npm run build-${ENVIRONMENT}"
+  	  echo ""
+      npm run build-${ENVIRONMENT}
+    # fi
+  	echo ""
+    echo "   ${CYAN}remote${NC}    launching command: rsync -vzcrSLh --rsync-path=\"sudo rsync\" --owner=www-data --group=www-data --exclude-from=\"deploy-exclude.list\" ${!local_app_path}/build/. ${!ssh_user}@${!ssh_host}:${!app_path}/html/public"
   	echo ""
     # The options:
     # v - verbose

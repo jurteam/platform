@@ -3,10 +3,12 @@
 import ArbitrationFactory from "../build/contracts/ArbitrationFactory.json";
 import JURToken from "../build/contracts/JURToken.json";
 
+import { log } from "../utils/helpers";
+
 const options = {
   web3: {
     block: false,
-    vechain: process.env.REACT_APP_VECHAIN_NETWORK_URL, // TODO: change API endpoint based on web3.eth.getChainTag()
+    vechain: (process.env.REACT_APP_VECHAIN_NETWORK_URL === "true") ? true : process.env.REACT_APP_VECHAIN_NETWORK_URL, // TODO: change API endpoint based on web3.eth.getChainTag()
     thorify: true,
     fallback: {
       type: "ws",
@@ -22,5 +24,8 @@ const options = {
   //   accounts: 1500
   // }
 };
+
+console.log("drizzleOptions", options);
+log("drizzleOptions", options);
 
 export default options;
