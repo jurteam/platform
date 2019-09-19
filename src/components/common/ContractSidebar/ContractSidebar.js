@@ -133,7 +133,7 @@ export const ContractSidebar = ({
       return (
         <>
           <Button color="gradient" variant="gradient" onClick={onPay} fullWidth>
-            {labels.payment}
+            {feeToPay > 0 ? labels.payment : labels.confirm}
           </Button>
         </>
       );
