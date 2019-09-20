@@ -96,13 +96,13 @@ export const ContractsTable = props => {
           {labels.noContractName
             .replace(
               "%partA%",
-              contract.counterparties[0].renderName
+              contract.counterparties[0].renderName && contract.counterparties[0].name
                 ? contract.counterparties[0].name
                 : contract.counterparties[0].wallet
             )
             .replace(
               "%partB%",
-              contract.counterparties[1].renderName
+              contract.counterparties[1].renderName && contract.counterparties[1].name
                 ? contract.counterparties[1].name
                 : contract.counterparties[1].wallet
             )}

@@ -431,7 +431,7 @@ export const ContractDetail = ( props ) => {
       feeToPay = contractValue + Number(partAPenaltyFee);
     } else {
       feeToPay = Number(partAPenaltyFee);
-    }    
+    }
   }
 
   const currentUserCanPay = feeToPay <= Number(ethToHuman(wallet.balance));

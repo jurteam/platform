@@ -7,12 +7,13 @@
     font-size: 20px;
     height: 40px;
     padding-left: 15px;
-    padding-right: 120px;
+    padding-right: 150px;
     width: 100%;
     border: none;
     outline: none;
     color: $contract-name-color;
     font-family: $font-poppins;
+    text-overflow: ellipsis;
 
     &:read-only {
       cursor: default;
