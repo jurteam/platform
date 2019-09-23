@@ -51,7 +51,7 @@ class ContractFilters extends Filters
                         ORDER BY contract_status_histories.id DESC
                         LIMIT 1) AS current_status, (SUM(contracts.value) + SUM(contracts.part_a_penalty_fee) + SUM(contracts.part_b_penalty_fee)) AS real_value'
                     )
-                    ->whereRaw('LOWER(contracts.part_a_wallet) = ?', [$lowerWallet])
+                    ->orWhereRaw('LOWER(contracts.part_a_wallet) = ?', [$lowerWallet])
                     ->groupBy('contracts.id');
     }
 
@@ -63,8 +63,14 @@ class ContractFilters extends Filters
     public function status($value)
     {
         $lowerWallet = strtolower($this->request->header('wallet'));
+        $query = $this->builder;
 
-        return $this->builder->havingRaw('current_status = ?', [$value]);
+        if ($value != 0) {
+            $query->orWhereRaw('LOWER(contracts.part_b_wallet) = ?', [$lowerWallet]);
+        }
+
+        $query->havingRaw('current_status = ?', [$value]);
+        return $query;
     }
 
     public function from($value)
