@@ -3,6 +3,7 @@
 namespace App\Filters;
 
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class ContractFilters extends Filters
 {
@@ -23,8 +24,13 @@ class ContractFilters extends Filters
     public function orderBy($value)
     {
         $query = $this->builder;
+
         foreach ($value as $field => $ordering) {
-            $query->orderBy("contracts.{$field}", $ordering);
+            if ($field == 'value') {
+                $query->orderBy("real_value", $ordering);
+            } else {
+                $query->orderBy("contracts.{$field}", $ordering);
+            }
         }
         return $query;
     }
@@ -34,11 +40,19 @@ class ContractFilters extends Filters
         $lowerWallet = strtolower($value);
 
         return $this->builder
-                    ->select('contracts.*')
-                    ->whereRaw(
-                        'LOWER(contracts.part_a_wallet) = ? OR LOWER(contracts.part_b_wallet) = ?',
-                        [$lowerWallet,$lowerWallet]
-                    );
+                    ->selectRaw('contracts.*, (SELECT
+                            contract_status_histories.contract_status_code
+                        FROM
+                            contract_status_histories
+                        WHERE
+                            contract_status_histories.contract_id = contracts.id
+                            AND IF(contract_status_histories.chain_updated_at IS NULL, 1,
+                            IF(NOW() > contract_status_histories.chain_updated_at, 1, 0)) = 1
+                        ORDER BY contract_status_histories.id DESC
+                        LIMIT 1) AS current_status, (SUM(contracts.value) + SUM(contracts.part_a_penalty_fee) + SUM(contracts.part_b_penalty_fee)) AS real_value'
+                    )
+                    ->whereRaw('LOWER(contracts.part_a_wallet) = ?', [$lowerWallet])
+                    ->groupBy('contracts.id');
     }
 
     public function owner($value)
@@ -50,29 +64,7 @@ class ContractFilters extends Filters
     {
         $lowerWallet = strtolower($this->request->header('wallet'));
 
-        $query = $this->builder
-                    ->join(
-                        'contract_status_histories',
-                        'contract_status_histories.contract_id', '=', 'contracts.id'
-                    )
-                    ->join(
-                        'contract_statuses',
-                        'contract_statuses.id', '=', 'contract_status_histories.contract_status_id'
-                    );
-
-        if ($value == 0) {
-            $query = $query->whereRaw(
-                'contract_statuses.code = ?
-                AND (contract_status_histories.chain_updated_at IS NULL
-                    OR NOW() >= contract_status_histories.chain_updated_at)
-                AND contracts.id IN (SELECT id FROM contracts WHERE part_a_wallet = ?)',
-                [$value, $lowerWallet]
-            );
-        } else {
-            $query = $query->whereRaw('contract_statuses.code = ?', [$value]);
-        }
-
-        return $query;
+        return $this->builder->havingRaw('current_status = ?', [$value]);
     }
 
     public function from($value)
