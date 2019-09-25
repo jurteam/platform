@@ -6,7 +6,6 @@ use App\Models\User;
 use App\Models\Activity;
 use App\Models\Contract;
 use App\Models\ContractStatus;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Lang;
 
 trait ActivitiesTrait
