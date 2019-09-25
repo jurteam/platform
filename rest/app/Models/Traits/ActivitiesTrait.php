@@ -83,7 +83,7 @@ trait ActivitiesTrait
             } else {
                 if (Lang::has("messages.labels.{$indexKey[0]}.label_name_empty")) {
                     $labelText = __("messages.labels.{$indexKey[0]}.label_name_empty", [
-                        'value' => $params['interpolation']['value']
+                        'value' => $params['interpolation']['contract_value']
                     ]);
                 }
             }
