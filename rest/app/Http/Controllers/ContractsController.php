@@ -7,17 +7,16 @@ use App\Models\Contract;
 use Illuminate\Http\Request;
 use Dingo\Api\Routing\Helpers;
 use App\Filters\ContractFilters;
-use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Gate;
 use App\Transformers\ContractTransformer;
 use App\Transformers\AttachmentTransformer;
 use App\Http\Controllers\Traits\MediableTrait;
 use App\Transformers\ContractDetailTransformer;
-use Illuminate\Pagination\LengthAwarePaginator;
+use App\Http\Controllers\Traits\CustomPaginationTrait;
 
 class ContractsController extends Controller
 {
-    use Helpers, MediableTrait;
+    use Helpers, MediableTrait, CustomPaginationTrait;
 
     /**
      * Retrieve all contracts for a single user.
@@ -140,22 +139,5 @@ class ContractsController extends Controller
         Contract::filters($filters)->delete();
 
         return response()->json(['status' => 'deleted']);
-    }
-
-    protected function customPagination($items, Request $request)
-    {
-        $page = $request->get('page', 1);
-        $perPage = $request->get('perPage', 10);
-        $offset = ($page * $perPage) - $perPage;
-
-        $paginator = new LengthAwarePaginator(
-            $items->forPage($page, $perPage)->values(),
-            $items->count(),
-            $perPage,
-            Paginator::resolveCurrentPage(),
-            ['path' => Paginator::resolveCurrentPath()]
-        );
-
-        return $paginator->appends($request->query());
     }
 }

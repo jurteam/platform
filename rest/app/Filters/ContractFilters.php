@@ -52,6 +52,7 @@ class ContractFilters extends Filters
                         LIMIT 1) AS current_status, (SUM(contracts.value) + SUM(contracts.part_a_penalty_fee) + SUM(contracts.part_b_penalty_fee)) AS real_value'
                     )
                     ->orWhereRaw('LOWER(contracts.part_a_wallet) = ?', [$lowerWallet])
+                    ->where('contracts.is_a_dispute', false)
                     ->groupBy('contracts.id');
     }
 
