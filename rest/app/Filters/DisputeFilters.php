@@ -30,7 +30,18 @@ class DisputeFilters extends Filters
     public function show($value)
     {
         $query = $this->builder
-                        ->where('contracts.is_a_dispute', true);
+                ->selectRaw('contracts.*, (SELECT
+                        contract_status_histories.contract_status_code
+                    FROM
+                        contract_status_histories
+                    WHERE
+                        contract_status_histories.contract_id = contracts.id
+                        AND IF(contract_status_histories.chain_updated_at IS NULL, 1,
+                        IF(NOW() > contract_status_histories.chain_updated_at, 1, 0)) = 1
+                    ORDER BY contract_status_histories.id DESC
+                    LIMIT 1) AS current_status'
+                )
+                ->where('contracts.is_a_dispute', true);
 
         if ($value == 'my') {
             $lowerWallet = strtolower($this->request->header('wallet'));
@@ -40,26 +51,12 @@ class DisputeFilters extends Filters
             );
         }
 
-        return $query;
+        return $query->groupBy('contracts.id');
     }
 
     public function status($value)
     {
-        return $this->builder
-                    ->join(
-                        'contract_status_histories',
-                        'contract_status_histories.contract_id', '=', 'contracts.id'
-                    )
-                    ->join(
-                        'contract_statuses',
-                        'contract_statuses.id', '=', 'contract_status_histories.contract_status_id'
-                    )
-                    ->whereRaw(
-                        'contract_statuses.code = ?
-                        AND (contract_status_histories.chain_updated_at IS NULL
-                            OR NOW() >= contract_status_histories.chain_updated_at)',
-                        [$value]
-                    );
+        return $this->builder->havingRaw('current_status = ?', [$value]);
     }
 
     public function from($value)

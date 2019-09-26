@@ -9,18 +9,27 @@ use App\Filters\DisputeFilters;
 use Illuminate\Support\Facades\Gate;
 use App\Transformers\DisputeTransformer;
 use App\Transformers\DisputeDetailTransformer;
+use App\Http\Controllers\Traits\CustomPaginationTrait;
 
 class DisputesController extends Controller
 {
-    use Helpers;
+    use Helpers, CustomPaginationTrait;
 
+    /**
+     * @param  \App\Filters\DisputeFilters  $filters
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function index(DisputeFilters $filters, Request $request)
     {
         $disputes = Contract::filters($filters)
                             ->latest('contracts.updated_at')
-                            ->paginate($request->get('perPage', 10));
+                            ->get();
 
-        return $this->response->paginator($disputes, new DisputeTransformer);
+        return $this->response->paginator(
+            $this->customPagination($disputes, $request),
+            new DisputeTransformer
+        );
     }
 
     public function show($id)

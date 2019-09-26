@@ -6,7 +6,7 @@ use App\Models\User;
 use App\Models\Activity;
 use App\Models\Contract;
 use App\Models\ContractStatus;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Lang;
 
 trait ActivitiesTrait
 {
@@ -76,9 +76,17 @@ trait ActivitiesTrait
                 'name' => $contract->name
             ]);
         } elseif ($currentStatus->code == 3 || $currentStatus->code == 5 ||$currentStatus->code == 10) {
-            $labelText = __("messages.labels.{$indexKey[0]}.label_name", [
-                'value' => $params['interpolation']['value']
-            ]);
+            if ($params['interpolation']['value'] > 0) {
+                $labelText = __("messages.labels.{$indexKey[0]}.label_name", [
+                    'value' => $params['interpolation']['value']
+                ]);
+            } else {
+                if (Lang::has("messages.labels.{$indexKey[0]}.label_name_empty")) {
+                    $labelText = __("messages.labels.{$indexKey[0]}.label_name_empty", [
+                        'value' => $params['interpolation']['contract_value']
+                    ]);
+                }
+            }
         }
         $abstract = [$labelText, $currentLabel['label_status']];
 

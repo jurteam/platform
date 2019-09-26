@@ -12,10 +12,11 @@ use App\Transformers\ContractTransformer;
 use App\Transformers\AttachmentTransformer;
 use App\Http\Controllers\Traits\MediableTrait;
 use App\Transformers\ContractDetailTransformer;
+use App\Http\Controllers\Traits\CustomPaginationTrait;
 
 class ContractsController extends Controller
 {
-    use Helpers, MediableTrait;
+    use Helpers, MediableTrait, CustomPaginationTrait;
 
     /**
      * Retrieve all contracts for a single user.
@@ -27,9 +28,12 @@ class ContractsController extends Controller
     {
         $contracts = Contract::filters($filters)
                             ->latest('contracts.updated_at')
-                            ->paginate($request->get('perPage', 10));
+                            ->get();
 
-        return $this->response->paginator($contracts, new ContractTransformer);
+        return $this->response->paginator(
+            $this->customPagination($contracts, $request),
+            new ContractTransformer
+        );
     }
 
     /**

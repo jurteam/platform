@@ -20,11 +20,13 @@ return [
         [
             'status_code' => 3,
             'label_name' => 'Paid contract value of :value JUR',
+            'label_name_empty' => 'Confirmed to enter :value JUR contract',
             'label_status' => null
         ],
         [
             'status_code' => 5,
             'label_name' => 'Paid contract value of :value JUR',
+            'label_name_empty' => 'Confirmed to enter :value JUR contract',
             'label_status' => null
         ],
         [
