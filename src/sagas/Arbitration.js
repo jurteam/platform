@@ -587,7 +587,7 @@ export function* handlePayArbitration(args) {
   yield put({ type: CONTRACT_SAVING, payload: true });
   yield put({ type: CONTRACT_UPDATING, payload: true });
 
-  const { id, address: contractAddress, onFail } = args;
+  const { id, address: contractAddress, onFail, totalValue } = args;
   let { amount } = args;
 
   // single step with approve and call
@@ -659,6 +659,7 @@ export function* handlePayArbitration(args) {
     let toUpdate = new FormData();
     toUpdate.append("code", code);
     toUpdate.append("interpolation[value]", iValue);
+    toUpdate.append("interpolation[contract_value]", totalValue);
 
     try {
       const response = yield call(Contracts.statusChange, toUpdate, id);
