@@ -39,19 +39,31 @@ class ContractFilters extends Filters
     {
         $lowerWallet = strtolower($value);
 
-        return $this->builder
-                    ->selectRaw('contracts.*, (SELECT
-                            contract_status_histories.contract_status_code
-                        FROM
-                            contract_status_histories
-                        WHERE
-                            contract_status_histories.contract_id = contracts.id
-                            AND IF(contract_status_histories.chain_updated_at IS NULL, 1,
-                            IF(NOW() > contract_status_histories.chain_updated_at, 1, 0)) = 1
-                        ORDER BY contract_status_histories.id DESC
-                        LIMIT 1) AS current_status, (SUM(contracts.value) + SUM(contracts.part_a_penalty_fee) + SUM(contracts.part_b_penalty_fee)) AS real_value'
-                    )
-                    ->orWhereRaw('LOWER(contracts.part_a_wallet) = ?', [$lowerWallet])
+        $query = $this->builder
+                        ->selectRaw('contracts.*, (SELECT
+                                contract_status_histories.contract_status_code
+                            FROM
+                                contract_status_histories
+                            WHERE
+                                contract_status_histories.contract_id = contracts.id
+                                AND IF(contract_status_histories.chain_updated_at IS NULL, 1,
+                                IF(NOW() > contract_status_histories.chain_updated_at, 1, 0)) = 1
+                            ORDER BY contract_status_histories.id DESC
+                            LIMIT 1) AS current_status, (SUM(contracts.value) + SUM(contracts.part_a_penalty_fee) + SUM(contracts.part_b_penalty_fee)) AS real_value'
+                        );
+
+        if ($this->hasFilter('status')) {
+            $status = $this->request->get('status');
+            if ($status != 0) {
+                $query = $query->whereRaw('LOWER(contracts.part_a_wallet) = ?', [$lowerWallet]);
+            } else {
+                $query = $query->orWhereRaw('LOWER(contracts.part_a_wallet) = ?', [$lowerWallet]);
+            }
+        } else {
+            $query = $query->whereRaw('LOWER(contracts.part_a_wallet) = ?', [$lowerWallet]);
+        }
+
+        return $query
                     ->where('contracts.is_a_dispute', false)
                     ->groupBy('contracts.id');
     }
@@ -92,10 +104,8 @@ class ContractFilters extends Filters
 
         return $this->builder
                     ->where('contracts.name', 'LIKE', "%{$value}%")
-                    ->orWhereRaw('LOWER(contracts.part_a_wallet) = ?', [$lowerWallet])
                     ->orWhere('contracts.part_a_name', 'LIKE', "%{$value}%")
                     ->orWhere('contracts.part_a_email', 'LIKE', "%{$value}%")
-                    ->orWhereRaw('LOWER(contracts.part_b_wallet) = ?', [$lowerWallet])
                     ->orWhere('contracts.part_b_name', 'LIKE', "%{$value}%")
                     ->orWhere('contracts..part_b_email', 'LIKE', "%{$value}%");
     }
