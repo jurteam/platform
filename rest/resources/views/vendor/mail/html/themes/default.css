@@ -84,6 +84,7 @@ img {
 /* Layout */
 
 .wrapper {
+    margin: auto;
     background-color: #f8fafc;
     margin: 0;
     padding: 0;

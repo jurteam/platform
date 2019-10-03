@@ -1,0 +1,289 @@
+body {
+    background-color: #fff;
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    color: #292A34;
+    line-height: 1.5;
+    margin: 0;
+    padding: 10px;
+}
+
+.wrapper {
+    margin: auto;
+    background-color: #f8fafc;
+    padding: 0;
+    width: 100%;
+    -premailer-cellpadding: 0;
+    -premailer-cellspacing: 0;
+    -premailer-width: 100%;
+    max-width: 600px;
+}
+
+.header,
+.title,
+.subtitle,
+.footer-text {
+    font-family: Helvetica, Arial, sans-serif;
+}
+
+.container-padding {
+    padding-left: 24px;
+    padding-right: 24px;
+}
+
+.header {
+    font-size: 40px;
+    font-weight: normal;
+    font-style: italic;
+    color: #ffffff;
+    background: #ffffff;
+    font-family: Georgia, Times New Roman, serif;
+    text-align: left !important;
+    padding: 10px 24px 12px 24px;
+    line-height: 1.2;
+    text-decoration: none;
+}
+
+.header a {
+    font-size: 40px;
+    font-weight: normal;
+    font-style: italic;
+    color: #ffffff;
+    font-family: Georgia, Times New Roman, serif;
+    text-decoration: none;
+}
+
+.header-image {
+    display: block;
+    max-height: 50px;
+    height: auto;
+    max-width: 100%;
+    border: none;
+}
+
+.header-image img {
+    max-height: 50px!important;
+}
+
+
+.full-width-header-image {
+    width: 100%;
+    display: block;
+}
+
+.footer-text,
+.footer-text th,
+.footer-text td,
+.footer-text li {
+    font-size: 12px;
+    line-height: 16px;
+    color: #aaaaaa;
+    background: #292a2e;
+}
+
+.footer-text a,
+.footer-text th a,
+.footer-text td a,
+.footer-text li a {
+    color: #aaaaaa;
+}
+
+.footerlink {
+    font-size: 11px;
+    text-transform: uppercase;
+    text-decoration: underline;
+}
+
+.container {
+    width: 600px;
+    max-width: 600px;
+}
+
+.content {
+    display: block;
+    min-height: 150px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    background-color: #FFFFFF;
+    border-top: 1px solid rgba(42, 43, 46, 0.05);
+    margin-top: 25px;
+}
+
+code {
+    background-color: #eee;
+    padding: 0 4px;
+    font-family: Courier, monospace;
+    font-size: 12px;
+}
+
+hr {
+    border: 0;
+    border-bottom: 1px solid #cccccc;
+}
+
+.hr {
+    height: 1px;
+    border-bottom: 1px solid #cccccc;
+}
+
+h1 {
+    font-size: 50px;
+    font-weight: 700;
+    font-family: 'Montserrat', sans-serif;
+    color: #292A34;
+    line-height: 60px;
+    text-align: center;
+}
+
+h2,
+h3,
+h4 {
+    font-size: 30px;
+    font-weight: 400;
+    font-family: 'Montserrat', sans-serif;
+    color: #292A34;
+    text-align: center;
+}
+
+.subtitle {
+    font-size: 16px;
+    font-weight: 600;
+    color: #2469A0;
+}
+
+.subtitle span {
+    font-weight: 400;
+    color: #999999;
+}
+
+.body-text,
+.body-text td,
+.body-text th,
+.body-text li {
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    color: #878787;
+    font-weight: normal;
+    font-style: normal;
+    line-height: 1.5;
+}
+
+.body-text,
+.body-text td,
+.body-text th {
+    text-align: left;
+}
+
+a {
+    color: #0077ff;
+    font-weight: bold;
+    font-style: normal;
+    text-decoration: underline;
+}
+
+.body-text .content-twocol td,
+.body-text .content-twocol h1,
+.body-text .content-twocol h2,
+.body-text .content-twocol h3,
+.body-text .content-twocol h4 {
+    text-align: left;
+    vertical-align: top;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+}
+
+table {
+    border-spacing: 0;
+}
+table.container {
+    width: 100%!important;
+}
+
+table td {
+    border-collapse: collapse;
+}
+
+.ExternalClass {
+    width: 100%;
+}
+
+.ExternalClass,
+.ExternalClass p,
+.ExternalClass span,
+.ExternalClass font,
+.ExternalClass td,
+.ExternalClass div {
+    line-height: 100%;
+}
+
+.ReadMsgBody {
+    width: 100%;
+    background-color: #ffffff;
+}
+
+table {
+    mso-table-lspace: 0pt;
+    mso-table-rspace: 0pt;
+}
+
+img {
+    -ms-interpolation-mode: bicubic;
+}
+
+a.footerlink {
+    font-size: 12px;
+    text-decoration: none;
+}
+
+.yshortcuts a {
+    border-bottom: none !important;
+}
+
+/**** ADD CSS HERE ****/
+
+@media screen and (max-width: 599px) {
+
+    table[class="force-row"],
+    table[class="container"] {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    td[class*="container-padding"] {
+        padding-left: 12px !important;
+        padding-right: 12px !important;
+    }
+
+    .header-image {
+        max-width: 100% !important;
+    }
+
+    table[class*="content-twocol"] {
+        float: none;
+    }
+
+    table[class*="content-twocol"],
+    table[class*="content-twocol"] p,
+    table[class*="content-twocol"] h1,
+    table[class*="content-twocol"] h2,
+    table[class*="content-twocol"] h3,
+    table[class*="content-twocol"] h4 {
+        text-align: left !important;
+    }
+}
+
+@media screen and (max-width: 400px) {}
+
+/**** ADD MOBILE CSS HERE ****/
+
+.ios-footer a {
+    color: #aaaaaa !important;
+    text-decoration: underline;
+}
