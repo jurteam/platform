@@ -64,6 +64,7 @@ export const ContractSummary = ( props ) => {
         statusId={statusId}
         statusIdLabel={statusIdLabel}
         dispute={dispute}
+        counterparties={[from, to]}
       />
       <div className="jur-contract-summary__columns">
         <div className="jur-contract-summary__column jur-contract-summary__counterparties">

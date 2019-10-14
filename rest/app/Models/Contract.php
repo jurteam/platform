@@ -83,6 +83,14 @@ class Contract extends Model implements HasMedia
     }
 
     /**
+     * hold for old jur db schema
+     */
+    public function status()
+    {
+        return $this->belongsTo(ContractStatus::class, 'contract_status_id');
+    }
+
+    /**
      * Update status, and save the activity.
      *
      * @param  \Illuminate\Http\Request $params

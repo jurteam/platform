@@ -233,11 +233,16 @@ export const ContractDetail = ( props ) => {
 
     }
 
+    let totalValue = Number(value) + Number(partAPenaltyFee) + Number(partBPenaltyFee);
+    if (typeof partAPenaltyFee !== 'undefined' && partAPenaltyFee) totalValue = totalValue + Number(partAPenaltyFee);
+    if (typeof partBPenaltyFee !== 'undefined' && partBPenaltyFee) totalValue = totalValue + Number(partBPenaltyFee);
+
     global.drizzle.store.dispatch({
       type: PAY_ARBITRATION,
       id,
       address,
       amount,
+      totalValue,
       onFail: () => setShowModalRejectPay(true)
     });
   };
@@ -431,7 +436,7 @@ export const ContractDetail = ( props ) => {
       feeToPay = contractValue + Number(partAPenaltyFee);
     } else {
       feeToPay = Number(partAPenaltyFee);
-    }    
+    }
   }
 
   const currentUserCanPay = feeToPay <= Number(ethToHuman(wallet.balance));

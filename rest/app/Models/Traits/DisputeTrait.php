@@ -86,7 +86,8 @@ trait DisputeTrait
      */
     public function getEarnings()
     {
-        if ($this->status->code < 39) {
+        $currentStatus = $this->status ?: $this->getCurrentStatus();
+        if ($currentStatus && $currentStatus->code < 39) {
             return null;
         }
 
