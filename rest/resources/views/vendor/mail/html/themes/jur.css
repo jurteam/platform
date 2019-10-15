@@ -287,3 +287,11 @@ a.footerlink {
     color: #aaaaaa !important;
     text-decoration: underline;
 }
+
+.button-jur {
+    background-color: #292a2e;
+    border-top: 10px solid #292a2e;
+    border-right: 18px solid #292a2e;
+    border-bottom: 10px solid #292a2e;
+    border-left: 18px solid #292a2e;
+}
