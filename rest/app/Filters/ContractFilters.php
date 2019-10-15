@@ -55,12 +55,16 @@ class ContractFilters extends Filters
         if ($this->hasFilter('status')) {
             $status = $this->request->get('status');
             if ($status != 0) {
-                $query = $query->whereRaw('LOWER(contracts.part_a_wallet) = ?', [$lowerWallet]);
-            } else {
                 $query = $query->orWhereRaw('LOWER(contracts.part_a_wallet) = ?', [$lowerWallet]);
+            } else {
+                $query = $query->whereRaw('LOWER(contracts.part_a_wallet) = ?', [$lowerWallet]);
             }
         } else {
-            $query = $query->whereRaw('LOWER(contracts.part_a_wallet) = ?', [$lowerWallet]);
+            $query = $query
+                        ->havingRaw('LOWER(contracts.part_a_wallet) = ? OR
+                            (current_status <> ? AND LOWER(contracts.part_b_wallet) = ?)',
+                            [$lowerWallet,0,$lowerWallet]
+                        );
         }
 
         return $query
