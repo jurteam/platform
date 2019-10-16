@@ -46,7 +46,8 @@ import {
   SET_MOCKED_NOW,
   GET_NOW,
   DISPUTE_SAVING,
-  DISPUTE_UPDATING
+  DISPUTE_UPDATING,
+  SET_WITHDRAW
 } from "../reducers/types";
 
 // Api layouts
@@ -814,26 +815,39 @@ export function* handleWithdrawArbitration(args) {
   if (!hasWithdrawn && dispersal.toString() !== "0") {
 
     const withdrawTx = yield arbitration.withdrawDispersal().catch(chainErrorHandler);
+    log(`handleWithdrawArbitration - current user has withdrawTx?`, withdrawTx);
 
     if (withdrawTx) { // only if there is a valid sign tx
 
       yield put({ type: LOOKUP_WALLET_BALANCE }); // update wallet balance
 
-      let code = 10; // still waiting for success
+      // let code = 10; // still waiting for success
 
       // NOTICE: this should be the normal behavior, since we have 100% to one party this can work only this way
-      // let code = 9; // still waiting for withdrown from one party
+      let code = 9; // still waiting for withdrown from one party
 
-      // const allParties = yield arbitration.allParties();
-      // log("handleWithdrawArbitration - allParties", allParties);
+      const allParties = yield arbitration.allParties();
+      log("handleWithdrawArbitration - allParties", allParties);
+      
+      const partyADispersal = yield arbitration.dispersal(allParties[0]);
+      const partyBDispersal = yield arbitration.dispersal(allParties[1]);
+      log("handleWithdrawArbitration - partyADispersal", partyADispersal.toString());
+      log("handleWithdrawArbitration - partyBDispersal", partyBDispersal.toString());
 
-      // const partyAHasWithdrawn = yield arbitration.hasWithdrawn(allParties[0]);
-      // const partyBHasWithdrawn = yield arbitration.hasWithdrawn(allParties[1]);
+      // set my witdrawn to true into store
+      yield put({type: SET_WITHDRAW});
+      
+      const partyAHasWithdrawn = yield arbitration.hasWithdrawn(allParties[0]);
+      const partyBHasWithdrawn = yield arbitration.hasWithdrawn(allParties[1]);
+      log("handleWithdrawArbitration - partyAHasWithdrawn", partyAHasWithdrawn);
+      log("handleWithdrawArbitration - partyBHasWithdrawn", partyBHasWithdrawn);
 
-      // const withdrawn = partyAHasWithdrawn && partyBHasWithdrawn; // assuming all party has payed
-      // if (withdrawn) {
-      //   code = 10; // closed – ready for withdrawn
-      // }
+      
+      const withdrawn = (partyAHasWithdrawn || partyADispersal.toString() ==='0' ) && (partyBHasWithdrawn|| partyBDispersal.toString() ==='0' ); // assuming all party has payed
+      log("handleWithdrawArbitration - withdrawn", withdrawn);
+      if (withdrawn) {
+        code = 10; // closed – ready for withdrawn
+      }
 
       // Status update
       let toUpdate = new FormData();

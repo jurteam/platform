@@ -618,6 +618,7 @@ export const ContractDetail = ( props ) => {
               onAcceptAmendment={() => setShowModalAcceptAmendment(true)}
               onSuccess={() => setShowModalSuccess(true)}
               onWithdraw={onWithdraw}
+              currentHasWithdrawn={contract.current.hasWithdrawn}
               onChange={onInputChange}
               onView={onFileView}
               onChangeSelect={onChangeSelect}
