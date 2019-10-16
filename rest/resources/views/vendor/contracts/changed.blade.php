@@ -3,7 +3,7 @@
 
 <p class="text-center">{{$attributes['name']}} {{$subject}}</p>
 
-@component('mail::button', ['url' => $contractUrl, 'color' => 'jur'])
+@component('mail::button-inline', ['url' => $contractUrl, 'color' => 'jur'])
 {{__('Show Contract Detail')}}
 @endcomponent
 
