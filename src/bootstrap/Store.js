@@ -57,9 +57,10 @@ export default function configureStore(
     middleware.push(
       reduxImmutableState(),
       reduxUnhandledAction((action) =>
-        console.warn(
+        log(
           `UNHANDLED ACTION: ${action} didn't lead to creation of a new state object`,
-          action
+          action,
+          1
         )
       )
     );

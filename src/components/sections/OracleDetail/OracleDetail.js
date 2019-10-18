@@ -98,7 +98,7 @@ export const OracleDetail = ( props ) => {
   };
 
   const onFileError = ( e ) => {
-    console.error("onFileError", e);
+    log("onFileError", e,-1);
   };
 
   const onPageChange = (page) => {
