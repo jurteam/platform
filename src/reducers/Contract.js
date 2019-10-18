@@ -6,6 +6,7 @@ import {
   SET_CONTRACT_ACTIVITIES,
   SET_CONTRACT_CURRENT_PAGE,
   SET_CONTRACT_CURRENT_ORDER,
+  SET_WITHDRAW,
   // SET_ACTIVITY_STATUS_READED,
   API_DELETE_CONTRACT,
   UPDATE_CONTRACT_FILTER,
@@ -67,6 +68,7 @@ const INITIAL_STATE = {
     //     email: ""
     //   }
     // ],
+    hasWithdrawn: false,
     kpi: "",
     resolution_proof: "",
     value: "",
@@ -107,6 +109,16 @@ export default (state = INITIAL_STATE, action) => {
         saving: false,
         updating: false,
         notificationLoading: true
+      };
+
+    case SET_WITHDRAW:
+      console.log(SET_WITHDRAW);
+      return {
+        ...state,
+        current: {
+          ...state.current,
+          hasWithdrawn: true,
+        }
       };
 
     case CONTRACTS_FETCHED:

@@ -49,6 +49,7 @@ export const ContractSidebar = ({
   onSubmitProposal,
   onProposalFileAdded,
   history,
+  currentHasWithdrawn,
   contractAddress,
   statusFrom,
   chainContract,
@@ -56,7 +57,7 @@ export const ContractSidebar = ({
 }) => {
   const { labels } = useContext(AppContext);
 
-  const { category, statusId, to, whoPays } = contract;
+  const { category, statusId, to, whoPays, address } = contract;
   const isPartB =
     currentWallet.address.toLowerCase() === to.wallet.toLowerCase()
       ? true
@@ -190,12 +191,15 @@ export const ContractSidebar = ({
         log('Sidebar chainContract', chainContract)
         dispersal = dispersal[Object.keys(dispersal)[0]]; // handle chain sync & missing info
         hasWithdrawn = hasWithdrawn[Object.keys(hasWithdrawn)[0]]; // handle chain sync & missing info
-          if (typeof dispersal !== 'undefined' && dispersal && typeof hasWithdrawn !== 'undefined' && hasWithdrawn) {
+
+        log('Sidebar currentHasWithdrawn', currentHasWithdrawn)
+
+        if (typeof dispersal !== 'undefined' && dispersal && typeof hasWithdrawn !== 'undefined' && hasWithdrawn) {
 
           log('Sidebar dispersal', dispersal)
           log('Sidebar hasWithdrawn', hasWithdrawn)
           // waiting actions
-          return dispersal.value !== "0" && hasWithdrawn.value === false ? (
+          return dispersal.value !== "0" && hasWithdrawn.value === false && currentHasWithdrawn !== true && statusId === 9 ? (
             <>
               <Button color="gradient" variant="gradient" onClick={onWithdraw} fullWidth>
                 {labels.withdraw}
