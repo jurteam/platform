@@ -16,7 +16,7 @@ storiesOf("ContractsFilters", module)
   })
   .add("Default", () => (
     <ContractsFilters
-      onChange={(value) => console.log(value)}
-      onSubmit={() => console.log("filter submit")}
+      onChange={(value) => log(value)}
+      onSubmit={() => log("filter submit")}
     />
   ));

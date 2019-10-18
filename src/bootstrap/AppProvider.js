@@ -3,6 +3,8 @@ import React, { Component } from "react";
 import appReference from "../../package.json"; // config
 import i18n from "../assets/i18n/en/labels.json"; // i18n
 
+import { log } from "../utils/helpers";
+
 // Comet
 import Comet from "../hooks/Comet";
 import { SET_LOADING, APP_EXIT } from "../reducers/types.js";
@@ -89,12 +91,12 @@ class AppProvider extends Component {
     Comet.auth(
       (customProvider) => {
         // success
-        console.log("AppProvider", "store should be updated");
+        log("AppProvider", "store should be updated");
         this.setState({ onNetwork: true, customProvider });
       },
       () => {
         // error
-        console.log("AppProvider", "network connection error!");
+        log("AppProvider", "network connection error!");
         this.setState({ cometLoading: false });
         this.store.dispatch({ type: SET_LOADING, payload: false });
       }

@@ -25,7 +25,7 @@ const options = {
   // }
 };
 
-console.log("drizzleOptions", options);
+log("drizzleOptions", options);
 log("drizzleOptions", options);
 
 export default options;

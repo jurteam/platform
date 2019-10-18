@@ -17,7 +17,7 @@ import "./Viewer.scss";
 import { AppContext } from "../../../bootstrap/AppProvider"; // context
 
 import {
-  canVote
+  canVote, log
 } from "../../../utils/helpers";
 
 export const Viewer = (props) => {
@@ -69,7 +69,7 @@ export const Viewer = (props) => {
 
   //     const { idx } = current;
 
-  //     console.log("Viewer - cDM", {
+  //     log("Viewer - cDM", {
   //       props: props,
   //       selectedCounterpartyIndex: idx,
   //       selectedCounterparty: counterparties[idx]
@@ -87,7 +87,7 @@ export const Viewer = (props) => {
   // cDM
   // useEffect(() => {
 
-  //   console.log("Viewer - current changed",props);
+  //   log("Viewer - current changed",props);
 
   //   const { current : { idx } } = props;
 
@@ -113,9 +113,9 @@ export const Viewer = (props) => {
   // cDM
   useEffect(() => {
 
-    console.log("Viewer - mount");
+    log("Viewer - mount");
 
-    return () => console.log("Viewer - umount"); // do something on unmount
+    return () => log("Viewer - umount"); // do something on unmount
 
   }, [state.selectedCounterpartyIndex]);
 
@@ -131,7 +131,7 @@ export const Viewer = (props) => {
   };
 
   const onVoteSubmit = () => {
-    console.log("onVoteSubmit", props.onVoteSubmit);
+    log("onVoteSubmit", props.onVoteSubmit);
     props.onVoteSubmit();
   };
 
@@ -153,7 +153,7 @@ export const Viewer = (props) => {
       }
     }
 
-    console.log("Viewer", current);
+    log("Viewer", current);
 
     return (
       <ReactModal

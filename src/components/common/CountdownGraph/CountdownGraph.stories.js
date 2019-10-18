@@ -21,7 +21,7 @@ storiesOf("CountdownGraph", module)
       startDate="February 24, 2019 23:30:00"
       statusId={-1}
       expireAlertFrom={1000 * 60 * 60 * 24}
-      onProgress={percentage => console.log(percentage)}
+      onProgress={percentage => log(percentage)}
     />
   ))
   .add("Draft", () => (
@@ -32,7 +32,7 @@ storiesOf("CountdownGraph", module)
       startDate="February 24, 2019 23:30:00"
       statusId={0}
       expireAlertFrom={1000 * 60 * 60 * 24}
-      onProgress={percentage => console.log(percentage)}
+      onProgress={percentage => log(percentage)}
     />
   ))
   .add("Waiting For Counterparty", () => (
@@ -43,7 +43,7 @@ storiesOf("CountdownGraph", module)
       startDate="February 24, 2019 23:30:00"
       statusId={1}
       expireAlertFrom={1000 * 60 * 60 * 24}
-      onProgress={percentage => console.log(percentage)}
+      onProgress={percentage => log(percentage)}
     />
   ))
   .add("OnGoing", () => (
@@ -54,7 +54,7 @@ storiesOf("CountdownGraph", module)
       startDate="February 24, 2019 23:30:00"
       statusId={5}
       expireAlertFrom={1000 * 60 * 60 * 24}
-      onProgress={percentage => console.log(percentage)}
+      onProgress={percentage => log(percentage)}
     />
   ))
   .add("Expired", () => (
@@ -65,7 +65,7 @@ storiesOf("CountdownGraph", module)
       startDate="February 24, 2019 23:30:00"
       statusId={8}
       expireAlertFrom={1000 * 60 * 60 * 24}
-      onProgress={percentage => console.log(percentage)}
+      onProgress={percentage => log(percentage)}
     />
   ))
   .add("Contract Closed", () => (
@@ -76,7 +76,7 @@ storiesOf("CountdownGraph", module)
       startDate="February 24, 2019 23:30:00"
       statusId={9}
       expireAlertFrom={1000 * 60 * 60 * 24}
-      onProgress={percentage => console.log(percentage)}
+      onProgress={percentage => log(percentage)}
     />
   ))
   .add("Open Friendly resolution", () => (
@@ -87,7 +87,7 @@ storiesOf("CountdownGraph", module)
       startDate="February 24, 2019 23:30:00"
       statusId={21}
       expireAlertFrom={1000 * 60 * 60 * 24}
-      onProgress={percentage => console.log(percentage)}
+      onProgress={percentage => log(percentage)}
     />
   ))
   .add("Closed Friendly resolution", () => (
@@ -98,7 +98,7 @@ storiesOf("CountdownGraph", module)
       startDate="February 24, 2019 23:30:00"
       statusId={29}
       expireAlertFrom={1000 * 60 * 60 * 24}
-      onProgress={percentage => console.log(percentage)}
+      onProgress={percentage => log(percentage)}
     />
   ))
   .add("Open Dispute", () => (
@@ -109,7 +109,7 @@ storiesOf("CountdownGraph", module)
       startDate="February 24, 2019 23:30:00"
       statusId={31}
       expireAlertFrom={1000 * 60 * 60 * 24}
-      onProgress={percentage => console.log(percentage)}
+      onProgress={percentage => log(percentage)}
     />
   ))
   .add("OnGoing Dispute", () => (
@@ -120,7 +120,7 @@ storiesOf("CountdownGraph", module)
       startDate={1552997513000}
       statusId={35}
       expireAlertFrom={1000 * 60 * 60 * 24}
-      onProgress={percentage => console.log(percentage)}
+      onProgress={percentage => log(percentage)}
     />
   ))
   .add("Extended Dispute", () => (
@@ -131,7 +131,7 @@ storiesOf("CountdownGraph", module)
       startDate={+new Date()}
       statusId={36}
       expireAlertFrom={1000 * 60 * 60 * 24}
-      onProgress={percentage => console.log(percentage)}
+      onProgress={percentage => log(percentage)}
       onExpire={() => alert("finished")}
     />
   ))
@@ -143,7 +143,7 @@ storiesOf("CountdownGraph", module)
       startDate={+new Date()}
       statusId={38}
       expireAlertFrom={1000 * 60 * 60 * 24}
-      onProgress={percentage => console.log(percentage)}
+      onProgress={percentage => log(percentage)}
     />
   ))
   .add("Dispute Closed", () => (
@@ -154,6 +154,6 @@ storiesOf("CountdownGraph", module)
       startDate={+new Date()}
       statusId={39}
       expireAlertFrom={1000 * 60 * 60 * 24}
-      onProgress={percentage => console.log(percentage)}
+      onProgress={percentage => log(percentage)}
     />
   ));

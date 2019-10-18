@@ -19,12 +19,12 @@ storiesOf("InsertContractDetails", module)
       resolutionPlaceholder={
         "Please provide evidence (including external links if appropriate) for assessing if the key performance indicators and contract terms have been met"
       }
-      onKpiChange={(e) => console.log("yo")}
-      onResolutionProofChange={(e) => console.log("yo")}
-      onFileAdded={addedFiles => console.log(addedFiles)}
+      onKpiChange={(e) => log("yo")}
+      onResolutionProofChange={(e) => log("yo")}
+      onFileAdded={addedFiles => log(addedFiles)}
       uploadedFiles={[{ fileName: "Hello worldl.pdf" }]}
-      onView={(e) => console.log("yo")}
-      onDelete={(e) => console.log("yo")}
+      onView={(e) => log("yo")}
+      onDelete={(e) => log("yo")}
       hasError={() => null}
     />
   ));

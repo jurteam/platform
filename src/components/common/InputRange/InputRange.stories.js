@@ -18,6 +18,6 @@ storiesOf("InputRange", module)
       min="0"
       max="100"
       defaultValue={0}
-      onValueChange={(value) => console.log(value)}
+      onValueChange={(value) => log(value)}
     />
   ));

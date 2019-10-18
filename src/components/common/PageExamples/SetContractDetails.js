@@ -90,8 +90,8 @@ export class SetContractDetails extends Component {
                 minutes: 0,
                 expireAlertFrom: ""
               },
-              onContractNameChange: (ev) => console.log(ev.target.value),
-              onProgress: percentage => console.log(percentage),
+              onContractNameChange: (ev) => log(ev.target.value),
+              onProgress: percentage => log(percentage),
               onExpire: () => alert("Countdown finished")
             }}
           />
@@ -100,12 +100,12 @@ export class SetContractDetails extends Component {
             resolutionPlaceholder={
               "Please provide evidence (including external links if appropriate) for assessing if the key performance indicators and contract terms have been met"
             }
-            onKpiChange={(e) => console.log("yo")}
-            onResolutionProofChange={(e) => console.log("yo")}
-            onFileAdded={addedFiles => console.log(addedFiles)}
+            onKpiChange={(e) => log("yo")}
+            onResolutionProofChange={(e) => log("yo")}
+            onFileAdded={addedFiles => log(addedFiles)}
             uploadedFiles={[{ name: "Hello worldl.pdf" }]}
-            onView={(e) => console.log("yo")}
-            onDelete={(e) => console.log("yo")}
+            onView={(e) => log("yo")}
+            onDelete={(e) => log("yo")}
           />
         </Main>
         <Aside>
@@ -113,12 +113,12 @@ export class SetContractDetails extends Component {
             <Button>Save Contract</Button>
             <Button variant="gradient">Send to counterparty</Button>
           </ContractActions>
-          <ContractSelectCategory onChange={(ev) => console.log(ev)} />
-          <ContractSetDuration onChange={(value) => console.log(value)} contract={contract} />
+          <ContractSelectCategory onChange={(ev) => log(ev)} />
+          <ContractSetDuration onChange={(value) => log(value)} contract={contract} />
           <ContractSetValue contract={contract} />
           <ContractSetCaseDispute
             cases={cases}
-            handleChange={(selectedOptionId) => console.log(selectedOptionId)}
+            handleChange={(selectedOptionId) => log(selectedOptionId)}
           />
         </Aside>
         <Disclaimer

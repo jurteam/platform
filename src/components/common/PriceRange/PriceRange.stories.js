@@ -19,6 +19,6 @@ storiesOf("PriceRange", module)
       max={326433}
       address="0xi8756435749843798734"
       defaultValue={0}
-      onChange={(value) => console.log(value)}
+      onChange={(value) => log(value)}
     />
   ));

@@ -81,19 +81,19 @@ storiesOf("DisputesTable", module)
       headers={headers}
       data={[]}
       myDisputes
-      getAllDisputes={() => console.log("get all disputes")}
-      getMyDisputes={() => console.log("get my disputes")}
-      handleFilterChange={(value) => console.log(value)}
-      handleFilterSubmit={() => console.log("submit filters")}
+      getAllDisputes={() => log("get all disputes")}
+      getMyDisputes={() => log("get my disputes")}
+      handleFilterChange={(value) => log(value)}
+      handleFilterSubmit={() => log("submit filters")}
     />
   ))
   .add("Disputes available", () => (
     <DisputesTable
       headers={headers}
       data={disputesData}
-      getAllDisputes={() => console.log("get all disputes")}
-      getMyDisputes={() => console.log("get my disputes")}
-      handleFilterChange={(value) => console.log(value)}
-      handleFilterSubmit={() => console.log("submit filters")}
+      getAllDisputes={() => log("get all disputes")}
+      getMyDisputes={() => log("get my disputes")}
+      handleFilterChange={(value) => log(value)}
+      handleFilterSubmit={() => log("submit filters")}
     />
   ));

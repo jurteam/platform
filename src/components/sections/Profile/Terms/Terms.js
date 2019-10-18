@@ -2,7 +2,7 @@ import React from "react"; // eslint-disable-line no-unused-vars
 
 // Components
 import UserTerms from "../../../common/UserTerms";
-
+import { log } from "../../../../utils/helpers";
 // Data
 import termsHtmlDev from "../../../../assets/i18n/en/termOfService.development"; // TODO: i18n
 import termsHtmlStage from "../../../../assets/i18n/en/termOfService.stage"; // TODO: i18n
@@ -21,7 +21,7 @@ export function Terms() {
   else if (process.env.NODE_ENV === "production") {
     termsHtml=termsHtmlProd
   }
-  console.log("Terms", termsHtml,process.env.NODE_ENV);
+  log("Terms", termsHtml,process.env.NODE_ENV);
 
   //process.env.NODE_ENV
 

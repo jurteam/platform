@@ -4,7 +4,7 @@ import BlockTitle from "../BlockTitle";
 import Switch from "../Switch";
 import PriceRange from "../PriceRange";
 
-import { ethToStore } from "../../../utils/helpers"; // helpers
+import { ethToStore, log } from "../../../utils/helpers"; // helpers
 
 import "./ContractSetPenaltyFee.scss";
 import { AppContext } from "../../../bootstrap/AppProvider"; // context
@@ -21,7 +21,7 @@ export const ContractSetPenaltyFee = ( props ) => {
   const [isActive, setActive] = useState(!!contract.penaltyFee);
 
   const onPriceChange = (counterparty, fee) => {
-    console.log("setPenaltyFee", counterparty, fee);
+    log("setPenaltyFee", counterparty, fee);
     setPenaltyFee(counterparty, fee);
   };
 

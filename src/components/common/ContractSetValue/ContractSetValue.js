@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 
 import WhoPays from "../WhoPays";
 import ContractSetPenaltyFee from "../ContractSetPenaltyFee";
-import { toCurrencyFormat, ellipsisString } from "../../../utils/helpers";
+import { toCurrencyFormat, ellipsisString, log } from "../../../utils/helpers";
 
 import "./ContractSetValue.scss";
 import { AppContext } from "../../../bootstrap/AppProvider"; // context
@@ -12,7 +12,7 @@ export const ContractSetValue = (props) => {
   const { contract } = props;
 
   const setPenaltyFeeStatus = (value) => {
-    console.log(value);
+    log(value);
 
     props.onChange("hasPenaltyFee", value);
   };
@@ -27,14 +27,14 @@ export const ContractSetValue = (props) => {
     //   return { contract };
     // });
 
-    console.log(`setPenaltyFee - counterparty`, counterparty);
-    console.log(`setPenaltyFee - fee`, fee);
-    console.log(`setPenaltyFee - ${counterparty.label}PenaltyFee`, fee);
+    log(`setPenaltyFee - counterparty`, counterparty);
+    log(`setPenaltyFee - fee`, fee);
+    log(`setPenaltyFee - ${counterparty.label}PenaltyFee`, fee);
     props.onChange(`${counterparty.label}PenaltyFee`, fee);
   };
 
   const handleSelectPayer = payer => {
-    console.log("handleSelectPayer", payer);
+    log("handleSelectPayer", payer);
 
     // props.onChange("value", payer.value);
     props.onChange("whoPays", payer.counterParty.wallet.toLowerCase());

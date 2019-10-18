@@ -13,6 +13,8 @@ import {
   SET_ACTIVITY_STATUS_READED
 } from "./types"; // action types
 
+import { log } from "../utils/helpers";
+
 const INITIAL_STATE = {
   disclaimer: {
     optin: false,
@@ -77,7 +79,7 @@ export default (state = INITIAL_STATE, action) => {
     case UPDATE_USER_FIELD:
       let toUpdate = {};
       toUpdate[action.field] = action.value;
-      console.log(UPDATE_USER_FIELD, toUpdate);
+      log(UPDATE_USER_FIELD, toUpdate);
       return { ...state, ...toUpdate };
 
     // Fetching

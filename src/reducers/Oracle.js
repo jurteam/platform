@@ -8,6 +8,8 @@ import {
   SET_ORACLE_CURRENT_ORDER
 } from "./types";
 
+import { log } from "../utils/helpers";
+
 const INITIAL_STATE = {
   updatingList: true,
   list: [],
@@ -67,11 +69,11 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, order: { ...state.order, ...orderToUpdate } };
 
     case ORACLES_FETCHED:
-      console.log(ORACLES_FETCHED, action.payload);
+      log(ORACLES_FETCHED, action.payload);
       return { ...state, list: action.payload.data, pagination: action.payload.meta.pagination, updatingList: false };
 
     case CURRENT_ORACLES_FETCHED:
-      console.log(ORACLES_FETCHED, action.payload);
+      log(ORACLES_FETCHED, action.payload);
       return { ...state, currentList: action.payload.data, updatingList: false };
 
     default:

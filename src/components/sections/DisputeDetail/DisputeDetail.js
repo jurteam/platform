@@ -32,7 +32,7 @@ import { SpinnerOnly } from "../../common/Spinner";
 import { useFormValidation } from "../../../utils/hooks";
 import validationSchema from "./_validationSchema";
 
-import { ethToHuman } from "../../../utils/helpers"; // log helper
+import { ethToHuman, log } from "../../../utils/helpers"; // log helper
 
 import {
   API_GET_DISPUTE,
@@ -126,7 +126,7 @@ export const DisputeDetail = ( props ) => {
 
   const onInputChange = (ev) => {
     const target = ev.target;
-    console.log("onInputChange", target, ev);
+    log("onInputChange", target, ev);
     if (target) {
       const value = target.type === "checkbox" ? target.checked : target.value;
       const name = target.name;
@@ -143,7 +143,7 @@ export const DisputeDetail = ( props ) => {
   const onFileView = (file) => {
     setFilePath(file.url);
     setOpenPreview(true);
-    console.log("onFileView", file);
+    log("onFileView", file);
   };
 
   const onRequestClose = () => {
@@ -174,7 +174,7 @@ export const DisputeDetail = ( props ) => {
   };
 
   // const onSend = () => {
-  //   console.log("onSend", "run");
+  //   log("onSend", "run");
 
   //   global.drizzle.store.dispatch({
   //     type: NEW_ARBITRATION
@@ -182,11 +182,11 @@ export const DisputeDetail = ( props ) => {
   // };
 
   const onProgress = percentage => {
-    // console.log(percentage);
+    // log(percentage);
   };
 
   // const onFileDelete = (file) => {
-  //   console.log("file delete", file);
+  //   log("file delete", file);
 
   //   global.drizzle.store.dispatch({
   //     type: CONTRACT_MEDIA_DELETE,
@@ -279,7 +279,7 @@ export const DisputeDetail = ( props ) => {
     details: issues
   } = dispute.current;
 
-  console.log("ContractDetail - contract", {
+  log("ContractDetail - contract", {
     isValid: isValid(),
     errors,
     validateForm,

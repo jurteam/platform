@@ -13,5 +13,5 @@ storiesOf("UploadForm", module)
     }
   })
   .add("Default", () => (
-    <UploadForm onFileAdded={files => console.log(files)} />
+    <UploadForm onFileAdded={files => log(files)} />
   ));

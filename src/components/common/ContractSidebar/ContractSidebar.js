@@ -76,14 +76,14 @@ export const ContractSidebar = ({
 
   useEffect(() => {
 
-    console.log('ContractSidebar - Mount');
+    log('ContractSidebar - Mount');
     global.drizzle.store.dispatch({
       type: CONTRACT_DETAIL_PAGE,
       payload: true
     });
 
     return () => {
-      console.log('ContractSidebar - Unmount');
+      log('ContractSidebar - Unmount');
       global.drizzle.store.dispatch({
         type: CONTRACT_DETAIL_PAGE,
         payload: false
@@ -355,7 +355,7 @@ export const ContractSidebar = ({
             cases={cases}
             disabled={disabled}
             selectedOptionId={selectedOptionId}
-            handleChange={(selectedOptionId) => console.log(selectedOptionId)}
+            handleChange={(selectedOptionId) => log(selectedOptionId)}
           />
         </>
       )}

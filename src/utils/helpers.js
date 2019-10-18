@@ -59,8 +59,8 @@ export const chainErrorHandler = err => {
   //     throw new Error('web3GasTooLow');
 
   // throw new Error(err);
-  console.log('chain error', err);
-  console.log('chain error.message', err.message);
+  log('chain error', err);
+  log('chain error.message', err.message);
   warn('chain exeption', err.message);
 }
 
@@ -184,7 +184,7 @@ export const calculateFundingAndDispersal = (contractData) => {
   const { partAPenaltyFee, partBPenaltyFee, whoPays, value } = contractData;
   const [ partA ] = contractData.counterparties;
 
-  console.log('calculateFundingAndDispersal – run', contractData);
+  log('calculateFundingAndDispersal – run', contractData);
 
   // const {
   //   web3: { utils }

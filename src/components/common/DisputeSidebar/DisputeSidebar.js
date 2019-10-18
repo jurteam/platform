@@ -12,7 +12,7 @@ import { CONTRACT_READ_NOTIFICATIONS, DISPUTE_DETAIL_PAGE } from "../../../reduc
 
 
 import {
-  canVote
+  canVote, log
 } from "../../../utils/helpers";
 
 
@@ -68,14 +68,14 @@ export const DisputeSidebar = ({
 
   useEffect(() => {
 
-    console.log('DisputeSidebar - Mount');
+    log('DisputeSidebar - Mount');
     global.drizzle.store.dispatch({
       type: DISPUTE_DETAIL_PAGE,
       payload: true
     });
 
     return () => {
-      console.log('DisputeSidebar - Unmount');
+      log('DisputeSidebar - Unmount');
       global.drizzle.store.dispatch({
         type: DISPUTE_DETAIL_PAGE,
         payload: false

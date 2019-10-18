@@ -32,8 +32,8 @@ storiesOf("ContractSetPenaltyFee", module)
         },
         penaltyFee: null
       }}
-      setPenaltyFeeStatus={(value) => console.log(value)}
-      ContractSetPenaltyFee={(value) => console.log(value)}
+      setPenaltyFeeStatus={(value) => log(value)}
+      ContractSetPenaltyFee={(value) => log(value)}
     />
   ))
   .add("Width Penalty fee", () => (
@@ -58,7 +58,7 @@ storiesOf("ContractSetPenaltyFee", module)
           partB: 32345
         }
       }}
-      setPenaltyFeeStatus={(value) => console.log(value)}
-      ContractSetPenaltyFee={(value) => console.log(value)}
+      setPenaltyFeeStatus={(value) => log(value)}
+      ContractSetPenaltyFee={(value) => log(value)}
     />
   ));

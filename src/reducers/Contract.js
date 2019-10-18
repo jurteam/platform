@@ -28,6 +28,8 @@ import {
   CONTRACT_DETAIL_PAGE
 } from "./types";
 
+import { log } from "../utils/helpers";
+
 const INITIAL_STATE = {
   saving: false,
   updating: false,
@@ -102,7 +104,7 @@ export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     // Setters
     case SET_CONTRACT:
-      console.log(SET_CONTRACT, action.payload);
+      log(SET_CONTRACT, action.payload);
       return {
         ...state,
         current: action.payload,
@@ -112,7 +114,7 @@ export default (state = INITIAL_STATE, action) => {
       };
 
     case SET_WITHDRAW:
-      console.log(SET_WITHDRAW);
+      log(SET_WITHDRAW);
       return {
         ...state,
         current: {
@@ -122,7 +124,7 @@ export default (state = INITIAL_STATE, action) => {
       };
 
     case CONTRACTS_FETCHED:
-      console.log(CONTRACTS_FETCHED, action.payload);
+      log(CONTRACTS_FETCHED, action.payload);
       return {
         ...state,
         list: action.payload.data,
@@ -131,7 +133,7 @@ export default (state = INITIAL_STATE, action) => {
       };
 
     case CONTRACT_DETAIL_PAGE:
-      console.log(CONTRACT_DETAIL_PAGE, action);
+      log(CONTRACT_DETAIL_PAGE, action);
       return { 
         ...state, 
         detailPage: action.payload 
@@ -169,7 +171,7 @@ export default (state = INITIAL_STATE, action) => {
         };
 
     case SET_CONTRACT_STATUS:
-      console.log(SET_CONTRACT_STATUS, action);
+      log(SET_CONTRACT_STATUS, action);
       return {
         ...state,
         current: {
@@ -249,7 +251,7 @@ export default (state = INITIAL_STATE, action) => {
     //     updatedActivities.forEach((activity) => (activity.readed = 1));
     //   }
 
-    //   console.log(SET_ACTIVITY_STATUS_READED, updatedActivities);
+    //   log(SET_ACTIVITY_STATUS_READED, updatedActivities);
 
     //   return {
     //     ...state,
