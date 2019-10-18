@@ -289,6 +289,7 @@ a.footerlink {
 }
 
 .button-jur {
+    font-size: 14px!important;
     background-color: #292a2e;
     border-top: 10px solid #292a2e;
     border-right: 18px solid #292a2e;
