@@ -73,7 +73,7 @@ export const Contracts = ( props ) => {
   };
 
   const handleArchive = (contractId) => {
-    console.log("Contracts", "handleArchive", contractId);
+    log("Contracts", "handleArchive", contractId);
 
     setContractToArchive(contractId);
     setShowDataLostModal(true);

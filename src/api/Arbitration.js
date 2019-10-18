@@ -191,7 +191,7 @@ export default class ArbitrationContract {
    */
   async sign() {
     const instance = await this.contract.deployed();
-    console.log("handleAcceptArbitration - Arbitration instance", instance);
+    log("handleAcceptArbitration - Arbitration instance", instance);
     const [account] = await this.web3.eth.getAccounts();
     return instance.sign({ from: account });
   }

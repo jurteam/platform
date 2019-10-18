@@ -65,7 +65,7 @@ export const Disputes = ( props ) => {
   };
 
   const handleArchive = disputeId => {
-    console.log("Disputes", "handleArchive", disputeId);
+    log("Disputes", "handleArchive", disputeId);
 
     setDisputeToArchive(disputeId);
     setShowDataLostModal(true);

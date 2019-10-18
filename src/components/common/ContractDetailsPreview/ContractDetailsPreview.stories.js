@@ -77,11 +77,11 @@ storiesOf("ContractDetailsPreview", module)
             name: "hello.pdf"
           }
         ],
-        onContractNameChange: (ev) => console.log(ev.target.value),
-        onProgress: percentage => console.log(percentage),
-        onExpire: (ev) => console.log(ev.target.value)
+        onContractNameChange: (ev) => log(ev.target.value),
+        onProgress: percentage => log(percentage),
+        onExpire: (ev) => log(ev.target.value)
       }}
-      onDelete={(ev) => console.log("dilghf")}
-      onView={(ev) => console.log("dilghf")}
+      onDelete={(ev) => log("dilghf")}
+      onView={(ev) => log("dilghf")}
     />
   ));

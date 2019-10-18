@@ -4,11 +4,12 @@ import React, {useContext} from "react";
 import { AppContext } from "../../../bootstrap/AppProvider"; // context
 
 import "./ContractActions.scss";
+import { log } from "../../../utils/helpers";
 
 export const ContractActions = ( props ) => {
   const { children, statusId, statusFrom, currentWallet, part, disabled } = props;
   const { labels } = useContext(AppContext);
-  console.log("ContractActions - props", { children, statusId, part });
+  log("ContractActions - props", { children, statusId, part });
   const renderSwitch = () => {
     switch (statusId) {
       case -1:

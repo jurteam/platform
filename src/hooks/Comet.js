@@ -13,7 +13,7 @@ class CometProvider {
 
   constructor() {
 
-    console.log('Before init – this.web3 [before]', this.web3);
+    log('Before init – this.web3 [before]', this.web3);
 
     // Checking if Thor has been injected by the browser
     if (typeof window.thor !== 'undefined') {
@@ -28,7 +28,7 @@ class CometProvider {
 
     window.web3 = this.web3;
 
-    console.log('Before init – this.web3 [after]', this.web3);
+    log('Before init – this.web3 [after]', this.web3);
 
     if (window.web3) {
       this.setProvider(window.web3.currentProvider);

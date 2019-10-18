@@ -37,7 +37,7 @@ storiesOf("WhoPays", module)
         }
       }}
       hasError={() => null}
-      handleSelectPayer={(value) => console.log(value)}
+      handleSelectPayer={(value) => log(value)}
     />
   ))
   .add("Error", () => (
@@ -64,6 +64,6 @@ storiesOf("WhoPays", module)
           partB: 1123
         }
       }}
-      handleSelectPayer={(value) => console.log(value)}
+      handleSelectPayer={(value) => log(value)}
     />
   ))

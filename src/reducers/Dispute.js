@@ -21,6 +21,8 @@ import {
   RESET_VOTE
 } from "./types";
 
+import { log } from "../utils/helpers";
+
 const INITIAL_STATE = {
   saving: false,
   updating: false,
@@ -86,7 +88,7 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, current: action.payload, vote: INITIAL_STATE.vote };
 
     case DISPUTES_FETCHED:
-      console.log(DISPUTES_FETCHED, action.payload);
+      log(DISPUTES_FETCHED, action.payload);
       return {
         ...state,
         list: action.payload.data,
@@ -95,7 +97,7 @@ export default (state = INITIAL_STATE, action) => {
       };
 
     case DISPUTE_DETAIL_PAGE:
-      console.log(DISPUTE_DETAIL_PAGE, action);
+      log(DISPUTE_DETAIL_PAGE, action);
       return { 
         ...state, 
         detailPage: action.payload 
@@ -132,7 +134,7 @@ export default (state = INITIAL_STATE, action) => {
         };  
   
     case SET_DISPUTE_STATUS:
-      console.log(SET_DISPUTE_STATUS, action);
+      log(SET_DISPUTE_STATUS, action);
       return {
         ...state,
         current: {

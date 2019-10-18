@@ -130,7 +130,7 @@ export const useFormValidation = (data, schema) => {
       return field;
     });
 
-    console.log("Validation", newErrors);
+    log("Validation", newErrors);
     setErrors(newErrors);
 
     return;

@@ -17,6 +17,6 @@ storiesOf("ContractTextarea", module)
     <ContractTextarea
       label="KPI of the contracts:"
       name="kpi"
-      onChange={(ev) => console.log(ev.target.value)}
+      onChange={(ev) => log(ev.target.value)}
     />
   ));

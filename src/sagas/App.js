@@ -119,7 +119,7 @@ export function* handleAppInit() {
 // handles app HeartBeat
 export function* handleHeartBeat() {
 
-  console.log('handleHeartBeat');  
+  log('handleHeartBeat');  
 
   const ContractDetailPage = yield select(getContractdetailPage);
   const DisputeDetailPage = yield select(getDisputedetailPage);

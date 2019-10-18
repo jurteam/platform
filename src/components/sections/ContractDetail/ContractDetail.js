@@ -31,7 +31,7 @@ import { SpinnerOnly } from "../../common/Spinner";
 import { useFormValidation } from "../../../utils/hooks";
 import validationSchema from "./_validationSchema";
 
-import { ethToHuman } from "../../../utils/helpers"; // log helper
+import { ethToHuman, log } from "../../../utils/helpers"; // log helper
 
 import {
   // NEW_CONTRACT,
@@ -165,7 +165,7 @@ export const ContractDetail = ( props ) => {
   const onFileView = (file) => {
     setFilePath(file.url);
     setOpenPreview(true);
-    console.log("onFileView", file);
+    log("onFileView", file);
   };
 
   const onRequestClose = () => {
@@ -327,7 +327,7 @@ export const ContractDetail = ( props ) => {
   };
 
   const onSend = () => {
-    console.log("onSend", "run");
+    log("onSend", "run");
 
     global.drizzle.store.dispatch({
       type: SEND_TO_COUNTERPARTY
@@ -335,11 +335,11 @@ export const ContractDetail = ( props ) => {
   };
 
   const onProgress = (percentage) => {
-    // console.log(percentage);
+    // log(percentage);
   };
 
   const onFileDelete = (file) => {
-    console.log("file delete", file);
+    log("file delete", file);
 
     global.drizzle.store.dispatch({
       type: CONTRACT_MEDIA_DELETE,
@@ -409,7 +409,7 @@ export const ContractDetail = ( props ) => {
 
   const chainContract = contracts[address]
 
-  console.log("ContractDetail - contract", {
+  log("ContractDetail - contract", {
     isValid: isValid(),
     errors,
     validateForm,

@@ -25,6 +25,8 @@ import {
   GET_NOW
 } from "../../../reducers/types";
 
+import { log } from "../../../utils/helpers";
+
 export const ActionsBar = props => {
   const { wallet, contract, isDispute, dispute } = props;
   const { balance } = wallet;
@@ -40,10 +42,10 @@ export const ActionsBar = props => {
     currentContractAddress = contract.address;
   }
 
-  console.log("ActionsBar", {currentContractAddress, id});
+  log("ActionsBar", {currentContractAddress, id});
 
   const createArbitration = () => {
-    console.log("createArbitration - call");
+    log("createArbitration - call");
     global.drizzle.store.dispatch({
       type: CHAIN_CREATE_ARBITRATION
     });
@@ -52,7 +54,7 @@ export const ActionsBar = props => {
   const approveToken = (amount) => {
     const contractAddress = currentContractAddress;
 
-    console.log("approveToken - call on contract", [contractAddress, currentContractAddress]);
+    log("approveToken - call on contract", [contractAddress, currentContractAddress]);
     amount = amount * 1000000000000000000; // 18 decimals
 
     global.drizzle.store.dispatch({
@@ -63,7 +65,7 @@ export const ActionsBar = props => {
   };
 
   const acceptArbitration = (amount) => {
-    console.log('acceptArbitration');
+    log('acceptArbitration');
     const contractAddress = currentContractAddress;
     amount = amount * 1000000000000000000; // 18 decimals
 
@@ -78,7 +80,7 @@ export const ActionsBar = props => {
   }
 
   const rejectArbitration = () => {
-    console.log("rejectArbitration - call");
+    log("rejectArbitration - call");
     const contractAddress = currentContractAddress;
     global.drizzle.store.dispatch({
       type: REJECT_ARBITRATION,
@@ -89,7 +91,7 @@ export const ActionsBar = props => {
   };
 
   const signArbitration = () => {
-    console.log("signArbitration - call");
+    log("signArbitration - call");
     global.drizzle.store.dispatch({
       type: CHAIN_SIGN_ARBITRATION,
       contractAddress: currentContractAddress
@@ -97,7 +99,7 @@ export const ActionsBar = props => {
   };
 
   const agreeArbitration = () => {
-    console.log("agreeArbitration - call");
+    log("agreeArbitration - call");
 
     global.drizzle.store.dispatch({
       type: CHAIN_AGREE_ARBITRATION,
@@ -106,7 +108,7 @@ export const ActionsBar = props => {
   };
 
   const withdrawFromArbitration = () => {
-    console.log("withdrawFromArbitration - call");
+    log("withdrawFromArbitration - call");
     global.drizzle.store.dispatch({
       type: CHAIN_WITHDRAW_DISPERSAL_ARBITRATION,
       contractAddress: currentContractAddress
@@ -114,7 +116,7 @@ export const ActionsBar = props => {
   };
 
   const onDispute = () => {
-    console.log("Dispute - call");
+    log("Dispute - call");
     global.drizzle.store.dispatch({
       type: DISPUTE_ARBITRATION,
       contractAddress: currentContractAddress
@@ -122,7 +124,7 @@ export const ActionsBar = props => {
   }
 
   const disputeArbitration = (amount) => {
-    console.log("approveAndDispute - call");
+    log("approveAndDispute - call");
     global.drizzle.store.dispatch({
       type: DISPUTE_ARBITRATION,
       contractAddress: currentContractAddress,
@@ -131,7 +133,7 @@ export const ActionsBar = props => {
   }
 
   const calcDisputeEnds = () => {
-    console.log("calcDisputeEnds - call");
+    log("calcDisputeEnds - call");
     global.drizzle.store.dispatch({
       type: CALC_DISPUTE_ENDS_ARBITRATION,
       contractAddress: currentContractAddress
@@ -139,7 +141,7 @@ export const ActionsBar = props => {
   }
 
   const totalVotes = () => {
-    console.log("calcDisputeEnds - call");
+    log("calcDisputeEnds - call");
     global.drizzle.store.dispatch({
       type: TOTAL_VOTES_ARBITRATION,
       contractAddress: currentContractAddress
@@ -147,7 +149,7 @@ export const ActionsBar = props => {
   }
 
   const disputeWindowVotes = () => {
-    console.log("calcDisputeEnds - call");
+    log("calcDisputeEnds - call");
     global.drizzle.store.dispatch({
       type: DISPUTE_WINDOW_VOTES_ARBITRATION,
       contractAddress: currentContractAddress
@@ -155,14 +157,14 @@ export const ActionsBar = props => {
   }
 
   const disputeStarts = () => {
-    console.log("disputeStarts - call");
+    log("disputeStarts - call");
     global.drizzle.store.dispatch({
       type: DISPUTE_STARTS_ARBITRATION,
       contractAddress: currentContractAddress
     });
   }
   const disputeEnds = () => {
-    console.log("disputeEnds - call");
+    log("disputeEnds - call");
     global.drizzle.store.dispatch({
       type: DISPUTE_ENDS_ARBITRATION,
       contractAddress: currentContractAddress
@@ -170,14 +172,14 @@ export const ActionsBar = props => {
   }
 
   const setMockedNow = () => {
-    console.log("setMockedNow - call");
+    log("setMockedNow - call");
     global.drizzle.store.dispatch({
       type: SET_MOCKED_NOW,
       contractAddress: currentContractAddress
     });
   }
   const getNow = () => {
-    console.log("getNow - call");
+    log("getNow - call");
     global.drizzle.store.dispatch({
       type: GET_NOW,
       contractAddress: currentContractAddress

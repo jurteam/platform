@@ -29,6 +29,6 @@ storiesOf("ContractSetCaseDispute", module)
           id: 2
         }
       ]}
-      handleChange={(selectedOptionId) => console.log(selectedOptionId)}
+      handleChange={(selectedOptionId) => log(selectedOptionId)}
     />
   ));

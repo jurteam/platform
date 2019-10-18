@@ -1,12 +1,14 @@
 import contract from "truffle-contract";
 import ArbitrationMockABI from "../build/contracts/ArbitrationMock.json";
 
+import { log } from "../utils/helpers";
+
 let arbitrationMockSCInstance = null;
 
 export default class ArbitrationMock {
   constructor(address) {
 
-    console.log("ArbitrationMock – Contract", global.drizzle.contracts[address])
+    log("ArbitrationMock – Contract", global.drizzle.contracts[address])
 
     if (!arbitrationMockSCInstance) {
       arbitrationMockSCInstance = this;

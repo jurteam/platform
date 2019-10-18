@@ -616,27 +616,27 @@ export function* handlePayArbitration(args) {
   // const tk = new JURToken();
   // yield tk
   //   .balanceOf(contractAddress)
-  //   .then(res => { console.log('TEST – balanceOf', res.toString())})
+  //   .then(res => { log('TEST – balanceOf', res.toString())})
 
   // // step 1
   // const token = new JURToken();
-  // console.log("handleAcceptArbitration - JURToken", token);
+  // log("handleAcceptArbitration - JURToken", token);
   // yield token
   //   .approve(contractAddress, amount)
   //   .then(res => {
-  //     console.log("handleAcceptArbitration – step 1 finished", res);
+  //     log("handleAcceptArbitration – step 1 finished", res);
 
   //     // step 2
   //     const arbitration = new Arbitration(contractAddress);
-  //     console.log("handleAcceptArbitration - Arbitration", arbitration);
+  //     log("handleAcceptArbitration - Arbitration", arbitration);
   //     return arbitration
   //       .sign()
-  //       .then(res => console.log("handleAcceptArbitration – accepted", res))
+  //       .then(res => log("handleAcceptArbitration – accepted", res))
   //       .catch(err =>
-  //         console.log("handleAcceptArbitration – step 2 error", err)
+  //         log("handleAcceptArbitration – step 2 error", err)
   //       );
   //   })
-  //   .catch(err => console.log("handleAcceptArbitration – step 1 error", err));
+  //   .catch(err => log("handleAcceptArbitration – step 1 error", err));
 
   if (signTx) { // only if there is a valid sign tx
 

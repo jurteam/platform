@@ -5,6 +5,7 @@ import BlockTitle from "../BlockTitle";
 
 import "./CountdownGraph.scss";
 import { AppContext } from "../../../bootstrap/AppProvider"; // context
+import { log } from "../../../utils/helpers";
 
 export const CountdownGraph = ( props ) => {
   const {
@@ -22,7 +23,7 @@ export const CountdownGraph = ( props ) => {
   const { labels } = useContext(AppContext);
   
   const expiringSet = () => {
-    console.log('expiringSet');
+    log('expiringSet');
     
     setExpiring('expiring');
   };

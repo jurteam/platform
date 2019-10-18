@@ -15,9 +15,9 @@ storiesOf("DisputesFilters", module)
   })
   .add("Default", () => (
     <DisputesFilters
-      getAllDisputes={() => console.log("get all disputes")}
-      getMyDisputes={() => console.log("get mys disputes")}
-      onChange={(value) => console.log(value)}
-      onSubmit={() => console.log("filter submit")}
+      getAllDisputes={() => log("get all disputes")}
+      getMyDisputes={() => log("get mys disputes")}
+      onChange={(value) => log(value)}
+      onSubmit={() => log("filter submit")}
     />
   ));

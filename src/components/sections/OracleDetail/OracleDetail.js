@@ -21,6 +21,7 @@ import Main from "../../common/Main";
 import OraclesTable from "../../common/OraclesTable";
 
 import Viewer from "../../common/Viewer";
+import { log } from "../../../utils/helpers";
 
 import { SpinnerOnly } from "../../common/Spinner";
 
@@ -88,7 +89,7 @@ export const OracleDetail = ( props ) => {
   const onFileView = (file) => {
     setFilePath(file.url);
     setOpenPreview(true);
-    console.log("onFileView", file);
+    log("onFileView", file);
   };
 
   const onRequestClose = () => {
@@ -159,7 +160,7 @@ export const OracleDetail = ( props ) => {
     }
   ];
 
-  console.log("Oracles - disputeID", disputeID);
+  log("Oracles - disputeID", disputeID);
 
   return typeof params.id !== "undefined" &&
     !(typeof disputeID === "undefined") ? (
