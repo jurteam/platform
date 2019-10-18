@@ -247,8 +247,12 @@ export const ContractSidebar = ({
             color="dispute"
             variant={showProposalForm === 2 ? "contained" : "outlined"}
             onClick={() => {
-              setShowProposalForm(2);
-              setActivitiesOpen(false);
+              if (showProposalForm === 2) {
+                onCancel()
+              } else {
+                setShowProposalForm(2);
+                setActivitiesOpen(false);
+              }
             }}
             fullWidth
             hoverColor="dispute"
