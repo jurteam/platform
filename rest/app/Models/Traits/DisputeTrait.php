@@ -152,12 +152,14 @@ trait DisputeTrait
 
     public function getTheWinner($partials = false)
     {
+        $status = $this->getCurrentStatus();
+
         $statuses = config('jur.statuses');
         $validStatus = array_filter($statuses, function($status) {
             return in_array($status['code'], [9,29,39]);
         });
 
-        if (in_array($this->status->code, $validStatus) || !$partials) {
+        if (in_array($status->code, $validStatus) || !$partials) {
             $totalPartA = $this->getTokensPart('part_a_wallet');
             $totalPartB = $this->getTokensPart('part_b_wallet');
 
