@@ -17,8 +17,9 @@ trait HistoriesTrait
                 if (! empty($history->chain_updated_at)) {
                     return !$history->chain_updated_at->isFuture();
                 }
-                return true;
+                return !$history->created_at->isPast();
             })->last();
+
             if (!empty($history)) {
                 return $history->status;
             }
