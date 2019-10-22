@@ -12,9 +12,16 @@ class ContractStatusHistory extends Model
         'contract_status_code'
     ];
 
+    protected $appends = ['custom_status_date'];
+
     protected $dates = [
         'chain_updated_at'
     ];
+
+    public function getCustomStatusDateAttribute()
+    {
+        return $this->getCustomCurrentStatusDate();
+    }
 
     public function getUpdatedDate()
     {
@@ -37,5 +44,13 @@ class ContractStatusHistory extends Model
     public function status()
     {
         return $this->belongsTo(ContractStatus::class, 'contract_status_id');
+    }
+
+    public function getCustomCurrentStatusDate()
+    {
+        if (is_null($this->chain_updated_at)) {
+            return $this->created_at;
+        }
+        return $this->chain_updated_at;
     }
 }

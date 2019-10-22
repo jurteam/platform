@@ -13,12 +13,9 @@ trait HistoriesTrait
         $this->load('histories');
 
         if ($this->histories->count() > 0) {
-            $history = $this->histories->filter(function($history) {
-                if (! empty($history->chain_updated_at)) {
-                    return !$history->chain_updated_at->isFuture();
-                }
-                return !$history->created_at->isPast();
-            })->last();
+            $history = $this->histories
+                        ->sortByDesc('custom_status_date')
+                        ->first();
 
             if (!empty($history)) {
                 return $history->status;
