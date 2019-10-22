@@ -50,7 +50,10 @@ class ContractStatusHistory extends Model
     {
         if (is_null($this->chain_updated_at)) {
             return $this->created_at;
+        } elseif (! $this->chain_updated_at->isFuture()) {
+            return $this->chain_updated_at;
         }
-        return $this->chain_updated_at;
+
+        return null;
     }
 }
