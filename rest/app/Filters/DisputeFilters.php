@@ -37,7 +37,7 @@ class DisputeFilters extends Filters
                     WHERE
                         contract_status_histories.contract_id = contracts.id
                     ORDER BY IF(contract_status_histories.chain_updated_at IS NULL,
-                        contract_status_histories.created_at, contract_status_histories.chain_updated_at) DESC
+                        contract_status_histories.created_at, IF (contract_status_histories.chain_updated_at > NOW(), NULL, contract_status_histories.chain_updated_at)) DESC
                     LIMIT 1) AS current_status, (SUM(contracts.value) + SUM(contracts.part_a_penalty_fee) + SUM(contracts.part_b_penalty_fee))'
                 )
                 ->where('contracts.is_a_dispute', true);
@@ -55,7 +55,7 @@ class DisputeFilters extends Filters
 
     public function status($value)
     {
-        return $this->builder->havingRaw('current_status = ?', [$value]);
+        return $this->builder->havingRaw('current_status IS NOT NULL AND current_status = ?', [$value]);
     }
 
     public function from($value)
