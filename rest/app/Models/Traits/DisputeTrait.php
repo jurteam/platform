@@ -173,6 +173,22 @@ trait DisputeTrait
         return null;
     }
 
+    /**
+     * Check for dispute update status
+     *
+     * @return  boolean
+     */
+    public function shouldRestoreStatus()
+    {
+        $status = $this->getCurrentStatus();
+        return $this->is_a_dispute && $status->code == 31;
+    }
+
+    public function resetOnFirstStatus()
+    {
+        $this->update(['is_a_dispute' => false]);
+    }
+
     protected function createProposalForCounterPart($params)
     {
         $counterPart = $this->getCounterPart($this, $params);

@@ -62,6 +62,11 @@ class Contract extends Model implements HasMedia
         return $filters->apply($query);
     }
 
+    public function scopeDisputes($query)
+    {
+        return $query->where('is_a_dispute', true);
+    }
+
     public function owner()
     {
         return $this->belongsTo(User::class, 'user_id');
