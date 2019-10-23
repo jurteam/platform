@@ -62,6 +62,11 @@ class Contract extends Model implements HasMedia
         return $filters->apply($query);
     }
 
+    public function scopeDisputes($query)
+    {
+        return $query->where('is_a_dispute', true);
+    }
+
     public function owner()
     {
         return $this->belongsTo(User::class, 'user_id');
@@ -106,12 +111,13 @@ class Contract extends Model implements HasMedia
         $this->recordHistories($chainUpdatedAt, $status);
 
         if ($params->code == 31) {
-            $this->flagAsOpenDispute();
-
             $this->createProposalForCounterPart($params);
         }
         if ($params->code == 21) {
             $this->flagAsFriendlyResolution();
+        }
+        if ($params->code == 35) {
+            $this->flagAsOpenDispute();
         }
 
         $activity = $this->recordActivities(array_merge($params->all(), [

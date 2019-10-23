@@ -62,14 +62,13 @@ class ContractFilters extends Filters
         } else {
             $query = $query
                         ->havingRaw('LOWER(contracts.part_a_wallet) = ? OR
-                            (current_status <> ? AND LOWER(contracts.part_b_wallet) = ?)',
-                            [$lowerWallet,0,$lowerWallet]
+                            (current_status <> ? AND LOWER(contracts.part_b_wallet) = ?) AND
+                            contracts.is_a_dispute = ?',
+                            [$lowerWallet, 0, $lowerWallet, false]
                         );
         }
 
-        return $query
-                    ->where('contracts.is_a_dispute', false)
-                    ->groupBy('contracts.id');
+        return $query->groupBy('contracts.id');
     }
 
     public function owner($value)
@@ -86,8 +85,7 @@ class ContractFilters extends Filters
             $query->orWhereRaw('LOWER(contracts.part_b_wallet) = ?', [$lowerWallet]);
         }
 
-        $query->havingRaw('current_status IS NOT NULL AND current_status = ?', [$value]);
-        return $query;
+        return $query->havingRaw('current_status IS NOT NULL AND current_status = ?', [$value]);
     }
 
     public function from($value)
