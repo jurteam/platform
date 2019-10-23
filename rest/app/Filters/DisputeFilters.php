@@ -50,12 +50,14 @@ class DisputeFilters extends Filters
             );
         }
 
-        return $query->groupBy('contracts.id');
+        return $query
+                ->havingRaw('current_status <> ?', [31])
+                ->groupBy('contracts.id');
     }
 
     public function status($value)
     {
-        return $this->builder->havingRaw('current_status IS NOT NULL AND current_status = ?', [$value]);
+        return $this->builder->havingRaw('current_status IS NOT NULL AND current_status = ? AND current_status <> ?', [$value, 31]);
     }
 
     public function from($value)
