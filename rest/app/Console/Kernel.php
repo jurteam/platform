@@ -17,6 +17,7 @@ class Kernel extends ConsoleKernel
         \App\Console\Commands\StorageLinkCommand::class,
         \App\Console\Commands\Notifications\NotificationMakeCommand::class,
         \App\Console\Commands\Mails\MailMakeCommand::class,
+        \App\Console\Commands\ResetDisputeStatusCommand::class,
     ];
 
     /**
