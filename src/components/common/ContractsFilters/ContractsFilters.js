@@ -4,7 +4,7 @@ import Form from "../Form";
 import Button from "../Button";
 import { SearchIcon } from "../Icons/SearchIcon";
 import statusList from "../../../assets/i18n/en/status.json"; // categories
-import { getFormattedDate } from "../../../utils/helpers"; // helpers
+import { getFormattedDate, log } from "../../../utils/helpers"; // helpers
 import "./ContractsFilters.scss";
 export class ContractsFilters extends Component {
   state = {
@@ -21,6 +21,13 @@ export class ContractsFilters extends Component {
       if (typeof this.props.onChange === "function") this.props.onChange(type, value);
       return newState;
     });
+    log('ContractsFilters handlechange',{type:type,value:value})
+
+    if (!(type === 'searchText' && value.length < 3 && value.length > 0)) {
+
+      this.props.onSubmit();
+      log('ContractsFilters submit')
+    }
   };
 
   handleReset = () => {
@@ -54,7 +61,7 @@ export class ContractsFilters extends Component {
         <Form.Search
           onChange={(value) => this.handleChange("searchText", value)}
         />
-        <Button
+        {/* <Button
           color="info"
           className="jur-contracts-filter__submit-btn"
           variant="contained"
@@ -63,7 +70,7 @@ export class ContractsFilters extends Component {
           hoverColor="info"
         >
           <SearchIcon />
-        </Button>
+        </Button> */}
       </div>
     );
   }
