@@ -59,8 +59,8 @@ export const chainErrorHandler = err => {
   //     throw new Error('web3GasTooLow');
 
   // throw new Error(err);
-  console.log('chain error', err);
-  console.log('chain error.message', err.message);
+  log('chain error', err);
+  log('chain error.message', err.message);
   warn('chain exeption', err.message);
 }
 
@@ -122,14 +122,18 @@ export const ethToStore = ( value ) => {
 };
 
 export const getFormattedDate = (date) => {
-  let year = date.getFullYear();
-  let month = (1 + date.getMonth()).toString().padStart(2, "0");
-  let day = date
-    .getDate()
-    .toString()
-    .padStart(2, "0");
+  if (date) {
+    let year = date.getFullYear();
+    let month = (1 + date.getMonth()).toString().padStart(2, "0");
+    let day = date
+      .getDate()
+      .toString()
+      .padStart(2, "0");
 
-  return `${year}-${month}-${day}`;
+    return `${year}-${month}-${day}`;
+  } 
+  return null;
+
 };
 
 export const capitalize = (string) =>
@@ -184,7 +188,7 @@ export const calculateFundingAndDispersal = (contractData) => {
   const { partAPenaltyFee, partBPenaltyFee, whoPays, value } = contractData;
   const [ partA ] = contractData.counterparties;
 
-  console.log('calculateFundingAndDispersal – run', contractData);
+  log('calculateFundingAndDispersal – run', contractData);
 
   // const {
   //   web3: { utils }
