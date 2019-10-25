@@ -13,6 +13,7 @@ export const FormDatePicker = ( props ) => {
         selected={selectedDate}
         onChange={onChange}
         dateFormat="dd/MM/yyyy"
+        isClearable
         {...rest}
       />
       {error && errorMsg && <Form.ErrorMsg msg={errorMsg} />}

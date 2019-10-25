@@ -210,7 +210,7 @@ export function* fetchContracts() {
         status && typeof status.value !== "undefined" ? status.value : null,
       from: fromDate,
       to: toDate,
-      q: searchText,
+      query: searchText,
       page,
       ...orderby
     });
@@ -604,7 +604,7 @@ export default function* contractSagas() {
   yield takeEvery(PUT_CONTRACT, updateContract);
   yield takeEvery(API_GET_CONTRACT, getContract);
   yield takeLatest(API_DELETE_CONTRACT, deleteContract);
-  yield takeEvery(FETCH_CONTRACTS, fetchContracts);
+  yield takeLatest(FETCH_CONTRACTS, fetchContracts);
   yield takeEvery(CONTRACT_ISSUE, handleContractIssues);
   yield takeLatest(CONTRACT_DELETED, onContractDelete);
   yield takeLatest(RESET_CONTRACT, onContractReset);

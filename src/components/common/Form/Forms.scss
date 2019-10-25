@@ -212,3 +212,9 @@
     }
   }
 }
+
+.react-datepicker__close-icon::after {
+  background-color: transparent;
+  color: #002257;
+  font-size: 16px;
+}

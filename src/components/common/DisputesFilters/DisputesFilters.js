@@ -6,7 +6,7 @@ import { SearchIcon } from "../Icons/SearchIcon";
 import statusList from "../../../assets/i18n/en/status.json"; // status
 import categories from "../../../assets/i18n/en/contractCategories.json"; // categories
 import "./DisputesFilters.scss";
-import { getFormattedDate } from "../../../utils/helpers"; // helpers
+import { getFormattedDate, log } from "../../../utils/helpers"; // helpers
 import { AppContext } from "../../../bootstrap/AppProvider"; // context
 
 export const DisputesFilters = ( props ) => {
@@ -23,11 +23,13 @@ export const DisputesFilters = ( props ) => {
 
   const handleChange = (type, value) => {
 
-    onChange(type, value);
+    value = type === 'searchText' && value === '' ? null : value
+    // onChange(type, value);
 
     setState((state) => {
       const newState = { ...state, [type]: value };
-      if (typeof onChange === "function") onChange(newState);
+      if (typeof onChange === "function") onChange(type, value);
+      //onChange(newState);
       return newState;
     });
   };
@@ -90,7 +92,7 @@ export const DisputesFilters = ( props ) => {
         onChange={(value) => handleChange("toDate", getFormattedDate(value))}
       />
       <Form.Search onChange={(value) => handleChange("searchText", value)} />
-      <Button
+      {/* <Button
         color="info"
         variant="contained"
         onClick={onSubmit}
@@ -99,7 +101,7 @@ export const DisputesFilters = ( props ) => {
         className="can-disable"
       >
         <SearchIcon />
-      </Button>
+      </Button> */}
     </div>
   );
 };
