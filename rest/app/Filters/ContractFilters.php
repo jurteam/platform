@@ -85,7 +85,13 @@ class ContractFilters extends Filters
             $query->orWhereRaw('LOWER(contracts.part_b_wallet) = ?', [$lowerWallet]);
         }
 
-        return $query->havingRaw('current_status IS NOT NULL AND current_status = ?', [$value]);
+        $placeholder = rtrim(str_repeat('?, ', count($value)), ', ');
+
+        return $query
+            ->havingRaw(
+                "current_status IS NOT NULL AND current_status IN ({$placeholder})",
+                $value
+            );
     }
 
     public function from($value)
