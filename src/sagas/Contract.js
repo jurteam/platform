@@ -439,8 +439,8 @@ export function* handleContractIssues(action) {
   );
   log("handleContractIssues – nextStatus", nextStatus);
 
-  const { label: statusLabel } = nextStatus;
-  log("handleContractIssues – NEXT statusLabel", statusLabel);
+  // const { label: statusLabel } = nextStatus;
+  // log("handleContractIssues – NEXT statusLabel", statusLabel);
 
   const zero = Number(0).toFixed(process.env.REACT_APP_TOKEN_DECIMALS);
 
@@ -496,7 +496,7 @@ export function* handleContractIssues(action) {
   } // invoke callback if needed
 
   // contract value + 1%
-  log("handleContractIssues", "prompt issue",code);
+  log("handleContractIssues - prompt issue",code);
   let resolve;
   if (code === 31) {
     resolve = yield put({ type: DISPUTE_ARBITRATION, id, dispersal, statusId, code, message, proposalAttachments, callback });
@@ -576,7 +576,7 @@ export function* getContractStatus() {
 
     if (currContr.statusId !== response.data.data.statusId) {
       // fetch contract without loading
-      log("getContractStatus - response - status diff", currContr.statusId,response.data.data.statusId );
+      log("getContractStatus - response - status diff "+ currContr.statusId, response.data.data.statusId );
 
       global.drizzle.store.dispatch({
         type: API_GET_CONTRACT,
