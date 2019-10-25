@@ -1,62 +1,58 @@
 [
   {
-    "value": -1,
+    "value": [-1],
     "label": "Rejected"
   },
   {
-    "value": 0,
+    "value": [0],
     "label": "Draft"
   },
   {
-    "value": 1,
+    "value": [1],
     "label": "Waiting for Counterparty"
   },
   {
-    "value": 2,
+    "value": [2],
     "label": "Waiting for Payment"
   },
   {
-    "value": 5,
+    "value": [5],
     "label": "Ongoing"
   },
   {
-    "value": 8,
+    "value": [8],
     "label": "Expired"
   },
   {
-    "value": 9,
+    "value": [9,10],
     "label": "Contract Closed"
   },
   {
-    "value": 21,
+    "value": [21],
     "label": "Open Friendly Resolution"
   },
   {
-    "value": 29,
+    "value": [29],
     "label": "Closed Friendly Resolution"
   },
   {
-    "value": 31,
+    "value": [31,32],
     "label": "Open Dispute"
   },
   {
-    "value": 32,
-    "label": "Open Dispute"
-  },
-  {
-    "value": 35,
+    "value": [35],
     "label": "OnGoing Dispute"
   },
   {
-    "value": 36,
+    "value": [36],
     "label": "Extended Dispute"
   },
   {
-    "value": 38,
+    "value": [38],
     "label": "Expired Dispute"
   },
   {
-    "value": 39,
+    "value": [39],
     "label": "Dispute Closed"
   }
 ]
