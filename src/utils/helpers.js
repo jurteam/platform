@@ -122,14 +122,18 @@ export const ethToStore = ( value ) => {
 };
 
 export const getFormattedDate = (date) => {
-  let year = date.getFullYear();
-  let month = (1 + date.getMonth()).toString().padStart(2, "0");
-  let day = date
-    .getDate()
-    .toString()
-    .padStart(2, "0");
+  if (date) {
+    let year = date.getFullYear();
+    let month = (1 + date.getMonth()).toString().padStart(2, "0");
+    let day = date
+      .getDate()
+      .toString()
+      .padStart(2, "0");
 
-  return `${year}-${month}-${day}`;
+    return `${year}-${month}-${day}`;
+  } 
+  return null;
+
 };
 
 export const capitalize = (string) =>

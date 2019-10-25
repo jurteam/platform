@@ -57,6 +57,10 @@ export const Contracts = ( props ) => {
       field: type,
       value
     });
+
+    if (!(type === 'searchText' && value !== null && value.length < 3)) {
+      handleFilterSubmit()
+    }
   };
   const handleFilterSubmit = () => {
     if (

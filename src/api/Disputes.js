@@ -1,12 +1,18 @@
 // first, include axios (or similar database talker)
+import { CancelToken } from 'axios'
 import axios from "../bootstrap/Api";
+import { CANCEL } from 'redux-saga'
 
 // endpoint root
 const root = "/contracts/disputes";
 
 export class Disputes {
   static list(payload) {
-    return axios.get(`${root}/all`, { params: payload });
+
+    const source = CancelToken.source()
+    const request = axios.get(`${root}/all`, { params: payload, cancelToken: source.token });
+    request[CANCEL] = () => source.cancel()
+    return request
   }
   static get(payload) {
     return axios.get(`${root}/${payload.id}?include=attachments`);

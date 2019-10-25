@@ -83,14 +83,14 @@ export const CountdownGraph = ( props ) => {
           <path
             d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
             fill="none"
-            stroke="#D8D8D8"
+            stroke="#0077FF"
             strokeWidth="3"
             strokeDasharray="100, 100"
           />
           <path
             d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
             fill="none"
-            stroke="#0077FF"
+            stroke="#D8D8D8"
             className={`passed-time ${expiring}`}
             strokeWidth="3"
             strokeDasharray={`${percentage.toString().replace("%", "")}, 100`}
