@@ -18,16 +18,13 @@ export class ContractsFilters extends Component {
   handleChange = (type, value) => {
     this.setState((state) => {
       const newState = { ...state, [type]: value };
+      value = type === 'searchText' && value === '' ? null : value
       if (typeof this.props.onChange === "function") this.props.onChange(type, value);
       return newState;
     });
     log('ContractsFilters handlechange',{type:type,value:value})
 
-    if (!(type === 'searchText' && value.length < 3 && value.length > 0)) {
-
-      this.props.onSubmit();
-      log('ContractsFilters submit')
-    }
+    
   };
 
   handleReset = () => {

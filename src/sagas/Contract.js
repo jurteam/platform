@@ -75,7 +75,7 @@ export function* getContract(action) {
     } = yield call(Contracts.get, { id }); // due missing data TODO: look at the attachments
     const { address } = data;
 
-    // console.log('getContract ok',data);
+    // log('getContract ok',data);
 
 
     yield put({
@@ -91,7 +91,7 @@ export function* getContract(action) {
     } // exec onSuccess callback if present
   } catch (error) {
 
-        // console.log('getContract - catch',error.response,error.response.status,action);
+        // log('getContract - catch',error.response,error.response.status,action);
 
 
     yield put({ type: API_CATCH, error });
@@ -111,7 +111,7 @@ export function* getContractActivities(action) {
   let { type } = action;
   let id = null;
 
-  console.log("getContractActivities", action);
+  log("getContractActivities", action);
 
   // retrieve correct id when SET_CONTRACT_STATUS or API_GET_DISPUTE action is dispatched
   if (type === SET_CONTRACT_STATUS || type === API_GET_DISPUTE) {
@@ -157,7 +157,7 @@ export function* deleteContract(action) {
 export function* readActivities(action) {
   let activities = [];
   const { type } = action;
-  console.log("readActivities - run", action);
+  log("readActivities - run", action);
 
   if (type === READ_NOTIFICATIONS) {
     // whole notifications
@@ -166,7 +166,7 @@ export function* readActivities(action) {
     activities = yield select(getCurrentContractActivities);
   }
 
-  console.log("readActivities - activities", activities);
+  log("readActivities - activities", activities);
 
   const filteredAcivities = activities.reduce(
     (acc, activity) => {
@@ -176,7 +176,7 @@ export function* readActivities(action) {
     { old: [], new: [] }
   );
 
-  console.log("readActivities - activities", filteredAcivities.new);
+  log("readActivities - activities", filteredAcivities.new);
   // loop filtered activities new
 }
 
@@ -210,7 +210,7 @@ export function* fetchContracts() {
         status && typeof status.value !== "undefined" ? status.value : null,
       from: fromDate,
       to: toDate,
-      q: searchText,
+      query: searchText,
       page,
       ...orderby
     });
@@ -510,7 +510,7 @@ export function* handleContractIssues(action) {
 export function* onContractActivitiesSet(action) {
   yield put({ type: CONTRACT_NOTIFICATIONS_LOADING, payload: false }); // loading off
 
-  console.log("onContractActivitiesSet - action", action);
+  log("onContractActivitiesSet - action", action);
 
   // set newactivities as read
   let { type } = action;
@@ -528,13 +528,13 @@ export function* onContractActivitiesSet(action) {
     ids = arrayColumn(ids, "id");
   }
 
-  console.log("onContractActivitiesSet - ids", ids);
+  log("onContractActivitiesSet - ids", ids);
   if (typeof ids !== "undefined" && ids.length > 0) {
     // only if needed
 
     ids.forEach((id) => toRead.append("ids[]", id));
 
-    console.log("onContractActivitiesSet - toRead", toRead);
+    log("onContractActivitiesSet - toRead", toRead);
 
     try {
       const response = yield call(Contracts.readActivities, toRead);
@@ -568,15 +568,15 @@ export function* getContractStatus() {
   const response = yield call(Contracts.getStatusChange, { id: currContr.id });
 
 
-  console.log("getContractStatus - response", response.data.status );
+  log("getContractStatus - response", response.data.status );
 
   if (typeof response.data.status === "undefined") {
     // control if status is different from actual status
-    console.log("getContractStatus - response no status", response.data );
+    log("getContractStatus - response no status", response.data );
 
     if (currContr.statusId !== response.data.data.statusId) {
       // fetch contract without loading
-      console.log("getContractStatus - response - status diff", currContr.statusId,response.data.data.statusId );
+      log("getContractStatus - response - status diff", currContr.statusId,response.data.data.statusId );
 
       global.drizzle.store.dispatch({
         type: API_GET_CONTRACT,
@@ -592,7 +592,7 @@ export function* getContractStatus() {
   }
   
   // const {status,statusFrom,statusId,statusLabel,statusPart,statusUpdatedAt} = response.data.data
-  // console.log("getContractStatus - response", status, statusFrom,statusId,statusLabel,statusPart,statusUpdatedAt );
+  // log("getContractStatus - response", status, statusFrom,statusId,statusLabel,statusPart,statusUpdatedAt );
 
 
 }
@@ -604,7 +604,7 @@ export default function* contractSagas() {
   yield takeEvery(PUT_CONTRACT, updateContract);
   yield takeEvery(API_GET_CONTRACT, getContract);
   yield takeLatest(API_DELETE_CONTRACT, deleteContract);
-  yield takeEvery(FETCH_CONTRACTS, fetchContracts);
+  yield takeLatest(FETCH_CONTRACTS, fetchContracts);
   yield takeEvery(CONTRACT_ISSUE, handleContractIssues);
   yield takeLatest(CONTRACT_DELETED, onContractDelete);
   yield takeLatest(RESET_CONTRACT, onContractReset);
