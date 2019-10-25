@@ -109,7 +109,7 @@ export function* fetchDisputes() {
     status: status && typeof status.value !== "undefined" ? status.value : null,
     from: fromDate,
     to: toDate,
-    q: searchText
+    query: searchText
   });
   try {
     const response = yield call(Disputes.list, {
@@ -121,7 +121,7 @@ export function* fetchDisputes() {
         category && typeof category.value !== "undefined"
           ? category.value
           : null,
-      q: searchText,
+      query: searchText,
       show: mine ? "my" : "all",
       page,
       ...orderby
@@ -191,7 +191,7 @@ export default function* disputeSagas() {
   log("run", "DisputeSagas");
   yield takeEvery(API_GET_DISPUTE, getDispute);
   yield takeLatest(API_DELETE_DISPUTE, deleteDispute);
-  yield takeEvery(FETCH_DISPUTES, fetchDisputes);
+  yield takeLatest(FETCH_DISPUTES, fetchDisputes);
   yield takeLatest(DISPUTE_DELETED, onDisputeDelete);
   yield takeLatest(API_CATCH, resetUpdating);
   yield takeLatest(SET_DISPUTE, resetUpdating);

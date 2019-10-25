@@ -59,6 +59,13 @@ export const Disputes = ( props ) => {
       field: type,
       value
     });
+
+
+    if (!(type === 'searchText' && value !== null && value.length < 3)) {
+      log('handleFilterChange ', type)
+      handleFilterSubmit()
+    }
+
   };
   const handleFilterSubmit = () => {
     global.drizzle.store.dispatch({ type: FETCH_DISPUTES });
