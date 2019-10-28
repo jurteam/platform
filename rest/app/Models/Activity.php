@@ -63,6 +63,16 @@ class Activity extends Model implements HasMedia
         return $query->whereUserId($userId);
     }
 
+    public function scopeByUpdatedDate($query)
+    {
+        return $query
+                ->selectRaw('
+                    *, IF(chain_updated_at IS NOT NULL AND NOW() > chain_updated_at,
+                        chain_updated_at,
+                        created_at) AS ordered_date_at
+                ')->orderByRaw('ordered_date_at ASC');
+    }
+
     /**
      * Retrieve contract.
      *
@@ -106,6 +116,16 @@ class Activity extends Model implements HasMedia
             }
         }
         return $this->created_at->valueOf();
+    }
+
+    public function getFormattedDate()
+    {
+        if (! empty($this->chain_updated_at)) {
+            if (!$this->chain_updated_at->isFuture()) {
+                return $this->chain_updated_at->format('d/m/Y H:i');
+            }
+        }
+        return $this->created_at->format('d/m/Y H:i');
     }
 
     public function getContractDetailsAttachments()
