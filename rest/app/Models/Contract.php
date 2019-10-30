@@ -120,10 +120,6 @@ class Contract extends Model implements HasMedia
             $this->flagAsOpenDispute();
         }
 
-        if ($this->shouldRestoreStatus()) {
-            $this->resetOnFirstStatus();
-        }
-
         $activity = $this->recordActivities(array_merge($params->all(), [
             'status' => $status->label,
             'status_code' => $status->code,
