@@ -116,7 +116,7 @@ class Contract extends Model implements HasMedia
         if ($params->code == 21) {
             $this->flagAsFriendlyResolution();
         }
-        if ($params->code == 35) {
+        if ($params->code >= 35) {
             $this->flagAsOpenDispute();
         }
 
