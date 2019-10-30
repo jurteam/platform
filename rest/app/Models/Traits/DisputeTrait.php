@@ -181,7 +181,7 @@ trait DisputeTrait
     public function shouldRestoreStatus()
     {
         $status = $this->getCurrentStatus();
-        return $this->is_a_dispute && $status->code == 31;
+        return $this->is_a_dispute && $status->code == 32;
     }
 
     public function resetOnFirstStatus()
