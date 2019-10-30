@@ -62,13 +62,12 @@ class ContractFilters extends Filters
         } else {
             $query = $query
                         ->havingRaw('LOWER(contracts.part_a_wallet) = ? OR
-                            (current_status <> ? AND LOWER(contracts.part_b_wallet) = ?) AND
-                            contracts.is_a_dispute = ?',
-                            [$lowerWallet, 0, $lowerWallet, false]
+                            (current_status <> ? AND LOWER(contracts.part_b_wallet) = ?)',
+                            [$lowerWallet, 0, $lowerWallet]
                         );
         }
 
-        return $query->groupBy('contracts.id');
+        return $query->where('contracts.is_a_dispute', false)->groupBy('contracts.id');
     }
 
     public function owner($value)
