@@ -88,15 +88,15 @@ trait StatusesTrait
 
     public function getCurrentStatusUpdatedAt()
     {
-        $contractStatusHistory = $this->histories->filter(function($history) {
-            if ($history->chain_updated_at) {
-                return !$history->chain_updated_at->isFuture();
-            }
-            return !$history->created_at->isFuture();
-        })->last();
+        $contractStatusHistory = $this->histories
+                        ->filter(function($item) {
+                            return !is_null($item->custom_status_date);
+                        })
+                        ->sortByDesc('custom_status_date')
+                        ->first();
 
         if ($contractStatusHistory) {
-            return $contractStatusHistory->getUpdatedDate();
+            return $contractStatusHistory->custom_status_date->valueOf();
         }
         return $this->updated_at->valueOf();
     }
