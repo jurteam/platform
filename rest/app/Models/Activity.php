@@ -117,15 +117,6 @@ class Activity extends Model implements HasMedia
         return null;
     }
 
-    public function getFormattedDate()
-    {
-        if (is_null($this->chain_updated_at)) {
-            return $this->created_at->format('d/m/Y H:i');
-        } elseif (! $this->chain_updated_at->isFuture()) {
-            return $this->chain_updated_at->format('d/m/Y H:i');
-        }
-    }
-
     public function getContractDetailsAttachments()
     {
         $attachments = collect([]);
