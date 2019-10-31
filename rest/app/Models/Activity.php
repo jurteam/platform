@@ -68,8 +68,7 @@ class Activity extends Model implements HasMedia
         return $query
                 ->selectRaw('
                     *, IF(chain_updated_at IS NOT NULL AND NOW() > chain_updated_at,
-                        chain_updated_at,
-                        created_at) AS ordered_date_at
+                        chain_updated_at, created_at) AS ordered_date_at
                 ')->orderByRaw('ordered_date_at ASC');
     }
 
@@ -110,22 +109,21 @@ class Activity extends Model implements HasMedia
 
     public function getUpdatedDate()
     {
-        if (! empty($this->chain_updated_at)) {
-            if (!$this->chain_updated_at->isFuture()) {
-                return $this->chain_updated_at->valueOf();
-            }
+        if (is_null($this->chain_updated_at)) {
+            return $this->created_at->valueOf();
+        } elseif (! $this->chain_updated_at->isFuture()) {
+            return $this->chain_updated_at->valueOf();
         }
-        return $this->created_at->valueOf();
+        return null;
     }
 
     public function getFormattedDate()
     {
-        if (! empty($this->chain_updated_at)) {
-            if (!$this->chain_updated_at->isFuture()) {
-                return $this->chain_updated_at->format('d/m/Y H:i');
-            }
+        if (is_null($this->chain_updated_at)) {
+            return $this->created_at->format('d/m/Y H:i');
+        } elseif (! $this->chain_updated_at->isFuture()) {
+            return $this->chain_updated_at->format('d/m/Y H:i');
         }
-        return $this->created_at->format('d/m/Y H:i');
     }
 
     public function getContractDetailsAttachments()
