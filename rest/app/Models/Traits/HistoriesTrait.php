@@ -2,16 +2,15 @@
 
 namespace App\Models\Traits;
 
+use Carbon\Carbon;
 use App\Models\ContractStatus;
 use App\Models\ContractStatusHistory;
-use Carbon\Carbon;
 
 trait HistoriesTrait
 {
     public function getCurrentStatus()
     {
         $this->load('histories');
-
         if ($this->histories->count() > 0) {
             $history = $this->histories
                             ->filter(function($item) {
@@ -24,6 +23,7 @@ trait HistoriesTrait
                 return $history->status;
             }
         }
+
         return null;
     }
 
@@ -40,40 +40,44 @@ trait HistoriesTrait
 
         $this->load('histories');
 
-        $futureHistory = $this->histories
-            ->filter(function($history) {
-                if (! empty($history->chain_updated_at)) {
-                    return $history->chain_updated_at->isFuture();
+        if ($status->shouldUpdate()) {
+            $futureHistory = $this->histories
+                ->filter(function($history) {
+                    if (! empty($history->chain_updated_at)) {
+                        return $history->chain_updated_at->isFuture();
+                    }
+                    return false;
+                })->filter(function($history) use($status) {
+                    return $history->contract_status_id == $status->id;
+                })->last();
+
+            if (! empty($futureHistory)) {
+                $futureHistory->update([
+                    'chain_updated_at' => $date
+                ]);
+            } elseif (empty($futureHistory)) {
+                $pastHistory = $this->histories->filter(function($history) use($status) {
+                    return $history->contract_status_id == $status->id;
+                })->last();
+
+                if (empty($pastHistory)) {
+                    $this->createHistory($status, $date);
                 }
-                return false;
-            })->filter(function($history) use($status) {
-                return $history->contract_status_id == $status->id;
-            })->last();
-
-        if (! empty($futureHistory)) {
-            $futureHistory->update([
-                'chain_updated_at' => $date
-            ]);
-        } elseif (empty($futureHistory)) {
-            $pastHistory = $this->histories->filter(function($history) use($status) {
-                return $history->contract_status_id == $status->id;
-            })->last();
-
-            if (empty($pastHistory)) {
-                $this->histories()
-                    ->save(new ContractStatusHistory([
-                        'contract_status_code' => $status->code,
-                        'contract_status_id' => $status->id,
-                        'chain_updated_at' => $date
-                    ]));
+            } else {
+                $this->createHistory($status, $date);
             }
         } else {
-            $this->histories()
-                ->save(new ContractStatusHistory([
-                    'contract_status_code' => $status->code,
-                    'contract_status_id' => $status->id,
-                    'chain_updated_at' => $date
-                ]));
+            $this->createHistory($status, $date);
         }
+    }
+
+    protected function createHistory($status, $date)
+    {
+        $this->histories()
+            ->save(new ContractStatusHistory([
+                'contract_status_code' => $status->code,
+                'contract_status_id' => $status->id,
+                'chain_updated_at' => $date
+            ]));
     }
 }
