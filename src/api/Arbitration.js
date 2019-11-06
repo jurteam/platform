@@ -23,7 +23,8 @@ export default class ArbitrationContract {
     this.MIN_VOTE = null;
     this.MIN_WIN = null;
 
-    if (!arbitrationSCInstance) {
+    // *** Removed to avoid SC cache for actions made on contracts during dApp navigation without page reload. ***
+    // if (!arbitrationSCInstance) {
       arbitrationSCInstance = this;
       this.web3 = window.web3;
       this.contract = contract({
@@ -32,7 +33,7 @@ export default class ArbitrationContract {
       });
       this.contract.setProvider(this.web3.currentProvider);
       this.gameTheory(); // get game theory vars
-    }
+    // }
 
     log("ArbitrationContract – arbitrationSCInstance", arbitrationSCInstance)
 
