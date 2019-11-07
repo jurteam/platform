@@ -25,3 +25,8 @@
     filter: blur(2px);
   }
 }
+
+.ReactModalPortal {
+  z-index: 0;
+  position: relative;
+}
