@@ -1,3 +1,9 @@
 import React from "react";
 
-export const NotFound = () => (<div className="jur--body">404 Not found</div>);
+export const NotFound = (props) => {
+      
+      // redirect to home
+      const { history } = props;
+      history.push("/");
+      return null
+ };
