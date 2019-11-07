@@ -5,6 +5,7 @@
   font-family: $font-poppins;
   color: $gull-gray;
   font-size: 13px;
+  overflow: hidden;
 
   &__info {
     display: flex;
@@ -36,6 +37,11 @@
         font-weight: $poppins-semibold;
         color: $scarlet;
         padding-right: 5px;
+        flex: 0 0 auto;
+      }
+
+      .contract-name {
+        flex: 0 0 auto;
       }
 
       .friendly {

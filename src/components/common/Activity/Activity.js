@@ -110,14 +110,14 @@ export const Activity = ( props ) => {
       case -1: // Rejected
         return (
           <>
-            <span className="alert">{labels.rejected}</span> {contract_name}
+            <span className="alert">{labels.rejected}</span> <span className="contract-name">{contract_name}</span>
           </>
         );
 
       case 8: // Expired
         return (
           <>
-            <span className="alert">{labels.contractExpired}</span> {contract_name}
+            <span className="alert">{labels.contractExpired}</span> <span className="contract-name">{contract_name}</span>
           </>
         );
 
@@ -126,7 +126,7 @@ export const Activity = ( props ) => {
       case 29:
         return (
           <>
-            <span className="alert">{labels.contractClosed}</span> {contract_name}
+            <span className="alert">{labels.contractClosed}</span> <span className="contract-name">{contract_name}</span>
           </>
         );
 
@@ -134,7 +134,7 @@ export const Activity = ( props ) => {
       case 36:
         return (
           <>
-            <span className="alert">{labels.disputeExtended}</span> {labels.for} {contract_name}
+            <span className="alert">{labels.disputeExtended}</span> <span className="contract-name">{labels.for} {contract_name}</span>
           </>
         );
 
@@ -142,7 +142,7 @@ export const Activity = ( props ) => {
       case 38:
         return (
           <>
-            <span className="alert">{labels.disputeExpired}</span> {labels.for} {contract_name}
+            <span className="alert">{labels.disputeExpired}</span> <span className="contract-name">{labels.for} {contract_name}</span>
           </>
         );
 
@@ -150,7 +150,7 @@ export const Activity = ( props ) => {
       case 39:
         return (
           <>
-            <span className="alert">{labels.disputeClosed}</span> {labels.for} {contract_name}
+            <span className="alert">{labels.disputeClosed}</span> <span className="contract-name">{labels.for} {contract_name}</span>
           </>
         );
 
