@@ -44,6 +44,7 @@ export const ContractName = props => {
           value={contractName || ""}
           onChange={onContractNameChange}
           readOnly={dispute || statusId !== 0}
+          maxLength={250}
         />
       )}
       {dispute && (
