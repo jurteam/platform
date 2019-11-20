@@ -3,13 +3,16 @@
 namespace App\Models\Traits;
 
 use App\Models\User;
+use App\Jobs\Ongoing;
 use App\Models\Activity;
+use App\Jobs\WaitingForPayment;
 use App\Events\NotifyCounterPart;
 use App\Events\NotifyContractParts;
+use App\Jobs\WaitingForCounterParty;
 
 trait StatusesNotifable
 {
-    public function notifyCounterPart(Activity $activity)
+    public function notifyParts(Activity $activity)
     {
         if ($activity->isFuture()) {
             return false;
@@ -22,9 +25,12 @@ trait StatusesNotifable
                 event(new NotifyContractParts($activity, $recipients));
             }
         } else {
-            $attributes = $this->getNotifyData($activity);
-            if (! empty($attributes['to']['address'])) {
-                event(new NotifyCounterPart($activity, $attributes));
+            if ($activity->status_code == 1) {
+                dispatch(new WaitingForCounterParty($activity));
+            } elseif ($activity->status_code == 2) {
+                dispatch(new WaitingForPayment($activity));
+            } elseif ($activity->status_code == 5) {
+                dispatch(new Ongoing($activity));
             }
         }
     }

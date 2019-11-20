@@ -178,4 +178,34 @@ class Activity extends Model implements HasMedia
         }
         return false;
     }
+
+    public function getCreator()
+    {
+        $contract = $this->contract;
+
+        return [
+            'address' => $contract->part_a_email ?: $this->getUserEmail($contract->part_a_wallet),
+            'name' => $contract->part_a_name ?: $contract->part_a_wallet
+        ];
+    }
+
+    public function getRecipient()
+    {
+        $contract = $this->contract;
+
+        return [
+            'address' => $contract->part_b_email ?: $this->getUserEmail($contract->part_b_wallet),
+            'name' => $contract->part_b_name ?: $contract->part_b_wallet
+        ];
+    }
+
+    protected function getUserEmail($wallet)
+    {
+        $user = User::byWallet($wallet)->first();
+
+        if ($user) {
+            return $user->email;
+        }
+        return null;
+    }
 }
