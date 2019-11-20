@@ -18,7 +18,7 @@ export const Avatar = ( props ) => {
           className={`jur-avatar ${className} jur-avatar--${size} ${currentVariant}`}
           {...rest}
         >
-          <Blockies seed={seed} />
+          <Blockies seed={seed.toLowerCase()} />
         </div>
       )}
     </Fragment>
