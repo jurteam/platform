@@ -41,6 +41,7 @@
     "start": "react-scripts start",
     "build": "react-scripts --max_old_space_size=4096 build",
     "build-stage": "node_modules/env-cmd/bin/env-cmd.js -f .env.stage react-scripts --max_old_space_size=4096 build",
+    "build-demo": "node_modules/env-cmd/bin/env-cmd.js -f .env.demo react-scripts --max_old_space_size=4096 build",
     "build-production": "node_modules/env-cmd/bin/env-cmd.js -f .env react-scripts --max_old_space_size=4096 build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
