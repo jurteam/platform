@@ -39,6 +39,7 @@ export const Activity = ( props ) => {
   };
 
   const [isOpen, setOpen] = useState(false);
+  const [isNow, setNow] = useState(false);
 
   const getMessage = () => {
     switch (Number(status)) {
@@ -164,13 +165,27 @@ export const Activity = ( props ) => {
         return abstract;
     }
   };
-
+  
   const forceSystem = (status) => {
     switch (status) {
       case 35: return true;
       default: return false;
     };
   }
+  
+  
+  const whatTimeIs = date => {
+    const d = new Date();
+    const n = d.getTime();
+    
+    setNow(date >= n)
+    if (date >= n) {      
+      return date;
+    } else {
+      return n;
+    }
+
+  };
 
   return (
     <div className="jur-activity">
@@ -188,7 +203,16 @@ export const Activity = ( props ) => {
         <div className="jur-activity__info__details">
           <div className="jur-activity__info__from">
             <span>{getActivityUser(forceSystem(Number(status)))}</span>
-            {!hideTime && <TimeAgo date={date} />}
+
+            {!hideTime &&
+                <>
+                  <span className={`${isNow ? 'hidden' : ''}`}>
+                    <TimeAgo date={date} now={() => whatTimeIs(date)} />
+                  </span>
+                  {isNow && 'now'}
+                </>
+            }
+            
           </div>
           <div className="jur-activity__info__message">{getMessage()}</div>
         </div>

@@ -26,6 +26,9 @@
           color: $prussian-blue;
           font-weight: $poppins-semibold;
         }
+        &.hidden {
+          display: none;
+        }
       }
     }
 
