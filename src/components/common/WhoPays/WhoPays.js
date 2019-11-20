@@ -69,6 +69,7 @@ export const WhoPays = (props) => {
                   disabled={props.disabled}
                   error={props.error || props.hasError("value")}
                   errorMsg={props.error && labels.notEnoughTokenBalance}
+                  max={999999999999999999}
                 />
               </>
             )}
