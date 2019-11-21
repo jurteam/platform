@@ -9,7 +9,9 @@
     flex: 0 0 auto;
 
     &--circle {
-      border-radius: 50%;
+      canvas {
+        border-radius: 50%;
+      }
     }
 
     &--xxsmall {
