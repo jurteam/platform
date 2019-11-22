@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Models\Activity;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\WaitingForPayment\RecipientAcceptContract;
 use App\Mail\WaitingForPayment\RecipientAcceptedContract;
