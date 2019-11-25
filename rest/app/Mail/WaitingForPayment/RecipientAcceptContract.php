@@ -40,7 +40,7 @@ class RecipientAcceptContract extends Mailable
         return $this
             ->subject('Fund your contract')
             ->markdown('emails.contracts.waiting-for-payment.recipient', [
-                'url' => $this->contract->getUrl(),
+                'url' => $this->contract->getContractUrl(),
                 'creator' => $this->creator['name'],
                 'recipient' => $this->recipient['name']
             ]);
