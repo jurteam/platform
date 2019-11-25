@@ -41,7 +41,7 @@ class CreatorSentContract extends Mailable
         return $this
             ->subject('Contract successfully sent')
             ->markdown('emails.contracts.waiting-for-counter-party.creator', [
-                'url' => $this->contract->getUrl(),
+                'url' => $this->contract->getContractUrl(),
                 'creator' => $this->creator['name'],
                 'recipient' => $this->recipient['name']
             ]);
