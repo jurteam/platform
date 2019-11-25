@@ -40,7 +40,7 @@ class RecipientRecieveContract extends Mailable
         return $this
             ->subject('You received a new contract')
             ->markdown('emails.contracts.waiting-for-counter-party.recipient', [
-                'url' => $this->contract->getUrl(),
+                'url' => $this->contract->getContractUrl(),
                 'creator' => $this->creator['name'],
                 'recipient' => $this->recipient['name']
             ]);
