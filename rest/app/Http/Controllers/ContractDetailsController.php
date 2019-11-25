@@ -55,6 +55,6 @@ class ContractDetailsController extends Controller
         );
         $detail->uploadMedia($request);
 
-        return $this->response->item($detail, new ContractStatusDetailTransformer);        
+        return $this->response->item($detail, new ContractStatusDetailTransformer);
     }
 }
