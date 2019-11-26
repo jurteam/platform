@@ -727,12 +727,16 @@ export function* handleAmendDisputeArbitration(args) {
   const proposal_part_b = dispersal[1];
 
   // fix decimals
-  dispersal[0] = dispersal[0] * 10**18;
-  dispersal[1] = dispersal[1] * 10**18;
+  // dispersal[0] = dispersal[0] * 10**18;
+  // dispersal[1] = dispersal[1] * 10**18;
 
   // fix strings
-  dispersal[0] = dispersal[0].toString();
-  dispersal[1] = dispersal[1].toString();
+  // dispersal[0] = dispersal[0].toString();
+  // dispersal[1] = dispersal[1].toString();
+
+  dispersal[0] = global.drizzle.web3.utils.toWei(dispersal[0].toString(), 'ether');
+  dispersal[1] = global.drizzle.web3.utils.toWei(dispersal[1].toString(), 'ether');
+
 
   const amendDisputeTx = yield arbitration.amendDisputeDispersal(dispersal).catch(chainErrorHandler);
 
@@ -1061,14 +1065,17 @@ export function* handleDisputeArbitration(args) {
   const proposal_part_b = dispersal[1];
 
   // fix decimals
-  amount = amount * 10**18;
-  dispersal[0] = dispersal[0] * 10**18;
-  dispersal[1] = dispersal[1] * 10**18;
+  // amount = amount * 10**18;
+  amount = global.drizzle.web3.utils.toWei(amount.toString(), 'ether');
+  dispersal[0] = global.drizzle.web3.utils.toWei(dispersal[0].toString(), 'ether');
+  dispersal[1] = global.drizzle.web3.utils.toWei(dispersal[1].toString(), 'ether');
+  // dispersal[0] = dispersal[0] * 10**18;
+  // dispersal[1] = dispersal[1] * 10**18;
 
   // fix strings
-  amount = amount.toString();
-  dispersal[0] = dispersal[0].toString();
-  dispersal[1] = dispersal[1].toString();
+  // amount = amount.toString();
+  // dispersal[0] = dispersal[0].toString();
+  // dispersal[1] = dispersal[1].toString();
 
   log("handleDisputeArbitration – payload", [wallet.address, amount, dispersal])
 
