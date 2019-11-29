@@ -8,7 +8,10 @@ import OraclesTablePreview from "../OraclesTablePreview";
 import { AppContext } from "../../../bootstrap/AppProvider"; // context
 
 import "./DisputeSidebar.scss";
-import { CONTRACT_READ_NOTIFICATIONS, DISPUTE_DETAIL_PAGE } from "../../../reducers/types";
+import { 
+  CONTRACT_READ_NOTIFICATIONS, 
+  DISPUTE_DETAIL_PAGE,
+} from "../../../reducers/types";
 
 
 import {
@@ -22,11 +25,13 @@ export const DisputeSidebar = ({
   // formUpdated,
   // feeToPay,
   contract,
+  onWithdraw,
+  onPayout,
   // currentUserCanPay,
   // cases,
   notificationLoading,
   voteCounterparties,
-  hasToWithdraw,
+  payout,
   // selectedOptionId,
   // onSubmit,
   // onSend,
@@ -117,7 +122,9 @@ export const DisputeSidebar = ({
           currentWallet={currentWallet}
           onVote={onVote}
           earnings={earnings}
-          hasToWithdraw={hasToWithdraw}
+          onWithdraw={onWithdraw}
+          onPayout={onPayout}
+          payout={payout}
           winner={winner}
           onReject={onReject}
           canVote={canVote(statusId)}

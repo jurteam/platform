@@ -4,30 +4,41 @@ import { toCurrencyFormat } from "../../../utils/helpers";
 
 import "./DisputeVote.scss";
 import { AppContext } from "../../../bootstrap/AppProvider"; // context
+import Button from "../Button";
 
 export const DisputeVote = ( props ) => {
   const {
-    hasToWithdraw,
+    payout,
     title,
     counterparties,
+    onWithdraw,
+    onPayout,
     statusId,
     onVote,
     canVote,
     winner,
-    earnings,
     onReject
   } = props;
+ 
   let resultNote = "";
   const { labels } = useContext(AppContext);
 
-  if (statusId === 39 && earnings) {
-    resultNote = (
-      <span
-        dangerouslySetInnerHTML={{
-          __html: labels.gained.replace("%tokens%", toCurrencyFormat(earnings))
-        }}
-      />
-    );
+  if (statusId === 39 && payout.hasWithdrawn && 
+    (payout.hasToGetReward === 3 || payout.hasToGetReward === 0)) {
+
+    const earnings = payout.sumToWithdraw + payout.reward
+
+    console.log('earnings',earnings);
+    if (earnings > 0) {
+      
+      resultNote = (
+        <span
+          dangerouslySetInnerHTML={{
+            __html: labels.gained.replace("%tokens%", toCurrencyFormat(earnings))
+          }}
+        />
+      );
+    }
   }
 
   return (
@@ -58,11 +69,40 @@ export const DisputeVote = ( props ) => {
           <span onClick={onReject}>{labels.voteForReject}</span>
         </div>
       )}
-      {!canVote && statusId === 39 && (
-        <div className="jur-dispute-vote__result-note">{resultNote}</div>
-      )}
-      {hasToWithdraw && 
-      <div className="jur-dispute-vote__result-note">WITHDRAW</div>}
+
+      {payout && 
+      <>
+
+        {payout.hasWithdrawn && 
+        (payout.hasToGetReward === 3 || payout.hasToGetReward === 0) && 
+        statusId === 39 &&         
+        (
+          <div className="jur-dispute-vote__result-note">{resultNote}</div>
+        )}
+
+        {payout.hasWithdrawn === false && 
+          <div className="jur-dispute-vote__result-note">
+            <Button color="gradient" 
+            variant="gradient" 
+            onClick={onWithdraw} 
+            fullWidth>
+              {labels.withdraw}
+            </Button>
+          </div>}
+
+        {payout.hasWithdrawn && 
+          payout.hasToGetReward === 2 && 
+          <div className="jur-dispute-vote__result-note">
+            <Button color="gradient" 
+            variant="gradient" 
+            onClick={onPayout} 
+            fullWidth>
+              {labels.reward}
+            </Button>
+          </div>}
+
+      </>}
+
     </div>
   );
 };

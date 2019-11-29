@@ -45,6 +45,8 @@ import {
   // ACCEPT_ARBITRATION_AMENDMENT,
   // PAY_ARBITRATION,
   EXPIRED_CONTRACT,
+  DISPUTE_PAYOUT_PARTY,
+  DISPUTE_PAYOUT_VOTER,
   // SUCCESS_ARBITRATION,
   // SEND_TO_COUNTERPARTY,
   // DISCLAIMER_MUST_BE_ACCEPTED,
@@ -162,6 +164,39 @@ export const DisputeDetail = ( props ) => {
       type: EXPIRED_CONTRACT,
       id
     });
+  };
+
+
+  const onWithdraw = () => {
+
+    const {
+      id,
+      address,
+      hasToWithdraw
+    } = dispute.current;
+
+    global.drizzle.store.dispatch({
+      type: DISPUTE_PAYOUT_PARTY,
+      id,
+      address
+    });
+
+  };
+
+  const onPayout = () => {
+
+    const {
+      id,
+      address,
+      hasToWithdraw
+    } = dispute.current;
+
+    global.drizzle.store.dispatch({
+      type: DISPUTE_PAYOUT_VOTER,
+      id,
+      address
+    });
+
   };
 
   const onVote = (counterparty, idx) => {
@@ -392,6 +427,7 @@ export const DisputeDetail = ( props ) => {
       onExpire
     };
 
+
     common = {
       part_a: contractData.from.wallet,
       part_b: contractData.to.wallet
@@ -409,8 +445,12 @@ export const DisputeDetail = ( props ) => {
         percentage: percentagePartB,
         value: totalTokensPartB,
         winner: false
-      },
-      {
+      }      
+    ];
+
+
+    if (statusId === 39) {
+      voteCounterparties.push({
         wallet: '0x0',
         name: 'Reject',
         email: null,
@@ -418,8 +458,8 @@ export const DisputeDetail = ( props ) => {
         percentage: (100-percentagePartB-percentagePartA),
         value: totalTokensReject,
         winner: false
-      }
-    ];
+      })
+    }
   }
 
   const uploadedFiles = contractAttachments ? contractAttachments.data : [];
@@ -498,7 +538,16 @@ export const DisputeDetail = ( props ) => {
                   currentUserCanPay={currentUserCanPay}
                   lastPartInvolved={lastPartInvolved}
                   voteCounterparties={voteCounterparties}
-                  hasToWithdraw={dispute.current.hasToWithdraw}
+                  onWithdraw={onWithdraw}
+                  onPayout={onPayout}
+                  payout={
+                    { 
+                      hasWithdrawn: dispute.current.hasWithdrawn,
+                      hasToGetReward: dispute.current.hasToGetReward,
+                      sumToWithdraw: dispute.current.sumToWithdraw,
+                      reward: dispute.current.reward,
+                    }                    
+                  }
                   history={history}
                   oracles={oracle.currentList}
                   onSubmit={onSubmit}
