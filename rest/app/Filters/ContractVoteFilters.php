@@ -13,7 +13,8 @@ class ContractVoteFilters extends Filters
 
     protected $orderBy = [
         'wallet_part',
-        'amount'
+        'amount',
+        'id'
     ];
 
     public function orderBy($value)
@@ -32,5 +33,5 @@ class ContractVoteFilters extends Filters
     {
         $date = Carbon::parse($value);
         return $this->builder->where('created_at', '>=', $date->format('Y-m-d H:i:s'));
-    }  
+    }
 }
