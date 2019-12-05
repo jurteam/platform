@@ -159,14 +159,16 @@ trait DisputeTrait
             return in_array($status['code'], [9,29,39]);
         });
 
-        if (in_array($status->code, $validStatus) || !$partials) {
-            $totalPartA = $this->getTokensPart('part_a_wallet');
-            $totalPartB = $this->getTokensPart('part_b_wallet');
+        if ($status) {
+            if (in_array($status->code, $validStatus) || !$partials) {
+                $totalPartA = $this->getTokensPart('part_a_wallet');
+                $totalPartB = $this->getTokensPart('part_b_wallet');
 
-            if ($totalPartA > $totalPartB) {
-                return $this->part_a_wallet;
-            } elseif ($totalPartB > $totalPartA) {
-                return $this->part_b_wallet;
+                if ($totalPartA > $totalPartB) {
+                    return $this->part_a_wallet;
+                } elseif ($totalPartB > $totalPartA) {
+                    return $this->part_b_wallet;
+                }
             }
         }
 
