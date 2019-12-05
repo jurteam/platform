@@ -53,6 +53,9 @@ class UserController extends Controller
             'accepted_terms' => 'accepted',
             'name' => [
                 Rule::unique('users')->ignore($user->id),
+            ],
+            'email' => [
+                Rule::unique('users')->ignore($user->id),
             ]
         ]);
 
