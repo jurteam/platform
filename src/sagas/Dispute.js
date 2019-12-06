@@ -235,17 +235,20 @@ export function* getDispute(action) {
          }
 
           
-        }
-        
-        
-      }
       data.hasWithdrawn = hasWithdrawn;
       data.hasToGetReward = hasToGetReward;
-      data.voteLookup = voteLookup;
+         data.voteLookup = lockupEnd;
       data.sumToWithdraw = Number.parseFloat(sumToWithdraw);
       data.reward = Number.parseFloat(reward);
             
       yield put({ type: SET_DISPUTE, payload: data });
+          
+    }
+
+      } else {
+              
+        yield put({ type: SET_DISPUTE, payload: data });
+      }
     }
 
     if (typeof onSuccess === "function") {onSuccess();} // exec onSuccess callback if present
