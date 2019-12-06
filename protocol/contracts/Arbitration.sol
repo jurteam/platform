@@ -30,11 +30,11 @@ contract Arbitration {
   ERC20 public jurToken;
 
   //Globals - could be pulled from factory contract or passed in to constructor
-  uint256 public DISPUTE_VOTE_DURATION = 7 days; // minimum dispute time
-  uint256 public DISPUTE_DISPERSAL_DURATION = 2 days; // time for counterpart to submit dispute resolution proposal
-  uint256 public DISPUTE_WINDOW = 30 minutes; // time window where to check last minute votes
-  uint256 public DISPUTE_EXTENSION = 24 hours; // a dispute gets extended by this much if there are the tie conditions or more than x%
-  uint256 public VOTE_LOCKUP = 24 hours; // amount of time users must wait to withdraw their rewards
+  uint256 public DISPUTE_VOTE_DURATION = 20 minutes; // minimum dispute time
+  uint256 public DISPUTE_DISPERSAL_DURATION = 5 minutes; // time for counterpart to submit dispute resolution proposal
+  uint256 public DISPUTE_WINDOW = 10 minutes; // time window where to check last minute votes
+  uint256 public DISPUTE_EXTENSION = 10 minutes; // a dispute gets extended by this much if there are the tie conditions or more than x%
+  uint256 public VOTE_LOCKUP = 10 minutes; // amount of time users must wait to withdraw their rewards
   uint256 public DISPUTE_WINDOW_MAX = 5 * 10**16; // percentage of last minute votes to trigger extension
   uint256 public MIN_VOTE = 1 * 10**16; // minimum vote possible is 1% of total votes at the time of voting
   uint256 public MIN_WIN = 1 * 10**16; //percentage multiplied by 10**16
@@ -79,22 +79,22 @@ contract Arbitration {
   uint256 constant DECIMALS = 10 ** 18;
 
   modifier onlyParties {
-    require(parties[msg.sender]);
+    require(parties[msg.sender], "Only invested parties allowed.");
     _;
   }
 
   modifier isParty(address _sender) {
-    require(parties[_sender]);
+    require(parties[_sender], "Not an invested party.");
     _;
   }
 
   modifier hasState(State _state) {
-    require(state == _state);
+    require(state == _state, "Incorrect State");
     _;
   }
 
   modifier onlyJUR {
-    require(msg.sender == address(jurToken));
+    require(msg.sender == address(jurToken), "Not the JUR Token.");
     _;
   }
 
@@ -109,10 +109,10 @@ contract Arbitration {
   constructor(address _jurToken, address[] _parties, uint256[] _dispersal, uint256[] _funding, bytes32 _agreementHash) public {
 
     //Check that we are only setting up an arbitration between two parties
-    require((_dispersal.length == 2) && (_funding.length == 2) && (_parties.length == 2));
+    require((_dispersal.length == 2) && (_funding.length == 2) && (_parties.length == 2), "Incorrect details.");
 
     //Check that party addresses are valid
-    require((_parties[0] != 0x0) && (_parties[1] != 0x0));
+    require((_parties[0] != 0x0) && (_parties[1] != 0x0), "Addresses cannot be zero.");
 
     //Check that dispersals match funding and initialise mappings
     uint256 totalFunding = 0;
@@ -124,7 +124,7 @@ contract Arbitration {
       totalDispersal = totalDispersal.add(_dispersal[i]);
       totalFunding = totalFunding.add(_funding[i]);
     }
-    require(totalFunding == totalDispersal);
+    require(totalFunding == totalDispersal, "Funding and Dispersal amounts should be equal.");
     allParties = _parties;
     agreementHash = _agreementHash;
 
@@ -157,9 +157,9 @@ contract Arbitration {
   }
 
   function _sign(address _sender) internal hasState(State.Unsigned) isParty(_sender) {
-    require(!hasSigned[_sender]);
+    require(!hasSigned[_sender], "User has already signed.");
     hasSigned[_sender] = true;
-    require(jurToken.transferFrom(_sender, address(this), funding[_sender]));
+    require(jurToken.transferFrom(_sender, address(this), funding[_sender]), "Cannot transfer funds from this address.");
     bool allSigned = true;
     for (uint8 i = 0; i < allParties.length; i++) {
       allSigned = allSigned && hasSigned[allParties[i]];
@@ -174,9 +174,9 @@ contract Arbitration {
    * @dev Allows sender to unsign agreeement
    */
   function unsign() public hasState(State.Unsigned) onlyParties {
-    require(hasSigned[msg.sender]);
+    require(hasSigned[msg.sender], "User has not signed yet.");
     hasSigned[msg.sender] = false;
-    require(jurToken.transfer(msg.sender, funding[msg.sender]));
+    require(jurToken.transfer(msg.sender, funding[msg.sender]), "Cannot transfer funds from this address.");
     emit ContractUnsigned(msg.sender, funding[msg.sender]);
   }
 
@@ -186,7 +186,7 @@ contract Arbitration {
    * @dev Allows sender to agree dispersals (so that funds can be dispursed)
    */
   function agree() public hasState(State.Signed) onlyParties {
-    require(!hasAgreed[msg.sender]);
+    require(!hasAgreed[msg.sender], "User has already agreed.");
     hasAgreed[msg.sender] = true;
     // If there is an amendment proposed, but not agreed refund all amendment funds
     if (amendmentProposed) {
@@ -206,7 +206,7 @@ contract Arbitration {
    * @dev Allows sender to unagree dispersals (so that funds cannot be dispursed)
    */
   function unagree() public hasState(State.Signed) onlyParties {
-    require(hasAgreed[msg.sender]);
+    require(hasAgreed[msg.sender], "User has not agreed yet.");
     hasAgreed[msg.sender] = false;
     emit ContractUnagreed(msg.sender);
   }
@@ -236,9 +236,9 @@ contract Arbitration {
 
   function _proposeAmendment(address _sender, uint256[] _dispersal, uint256[] _funding, bytes32 _agreementHash) internal hasState(State.Signed) isParty(_sender) {
     //There can only be one proposed amendment at a time
-    require(!amendmentProposed);
+    require(!amendmentProposed, "An amendment has already been proposed.");
     amendmentProposed = true;
-    require((_dispersal.length == allParties.length) && (_funding.length == allParties.length));
+    require((_dispersal.length == allParties.length) && (_funding.length == allParties.length), "Incorrect details");
     uint256 totalFunding = 0;
     uint256 totalDispersal = 0;
     for (uint8 i = 0; i < allParties.length; i++) {
@@ -247,7 +247,7 @@ contract Arbitration {
       totalDispersal = totalDispersal.add(_dispersal[i]);
       totalFunding = totalFunding.add(_funding[i]);
     }
-    require(totalFunding == totalDispersal);
+    require(totalFunding == totalDispersal, "Funding and Dispersal amounts should be equal.");
     amendedAgreementHash = _agreementHash;
     //Must pay any excess dispersal required
     _agreeAmendment(_sender);
@@ -272,12 +272,12 @@ contract Arbitration {
   }
 
   function _agreeAmendment(address _sender) internal hasState(State.Signed) isParty(_sender) {
-    require(amendmentProposed);
-    require(!hasFundedAmendment[_sender]);
+    require(amendmentProposed, "No amendment has been proposed.");
+    require(!hasFundedAmendment[_sender], "User not allowed.");
     hasFundedAmendment[_sender] = true;
     if (amendedFunding[_sender] > funding[_sender]) {
       uint256 deficit = amendedFunding[_sender].sub(funding[_sender]);
-      require(jurToken.transferFrom(_sender, address(this), deficit));
+      require(jurToken.transferFrom(_sender, address(this), deficit), "Cannot transfer funds from this address.");
     }
     emit ContractAmendmentAgreed(_sender);
     bool allFundedAmendment = true;
@@ -291,7 +291,7 @@ contract Arbitration {
         hasFundedAmendment[allParties[j]] = false;
         if (amendedFunding[allParties[j]] < funding[allParties[j]]) {
           uint256 excess = funding[allParties[j]].sub(amendedFunding[allParties[j]]);
-          require(jurToken.transfer(allParties[j], excess));
+          require(jurToken.transfer(allParties[j], excess), "Cannot transfer funds.");
         }
         funding[allParties[j]] = amendedFunding[allParties[j]];
         dispersal[allParties[j]] = amendedDispersal[allParties[j]];
@@ -307,7 +307,7 @@ contract Arbitration {
   function unagreeAmendment() public hasState(State.Signed) onlyParties {
     //Could be done by original proposer, or other party
     //If anyone disagrees, amendment is removed
-    require(amendmentProposed);
+    require(amendmentProposed, "No amendment has been proposed yet.");
     amendmentProposed = false;
     //Refund any deficits paid
     for (uint8 i = 0; i < allParties.length; i++) {
@@ -315,7 +315,7 @@ contract Arbitration {
         hasFundedAmendment[allParties[i]] = false;
         if (amendedFunding[allParties[i]] > funding[allParties[i]]) {
           uint256 excess = amendedFunding[allParties[i]].sub(funding[allParties[i]]);
-          require(jurToken.transfer(allParties[i], excess));
+          require(jurToken.transfer(allParties[i], excess), "Cannot transfer funds.");
         }
       }
     }
@@ -326,9 +326,9 @@ contract Arbitration {
    * @dev Once a contract has been agreed withdrawals dispersal amount
    */
   function withdrawDispersal() public hasState(State.Agreed) onlyParties {
-    require(!hasWithdrawn[msg.sender]);
+    require(!hasWithdrawn[msg.sender], "User has already withdrawn.");
     hasWithdrawn[msg.sender] = true;
-    require(jurToken.transfer(msg.sender, dispersal[msg.sender]));
+    require(jurToken.transfer(msg.sender, dispersal[msg.sender]), "Cannot transfer funds.");
     bool allWithdrawn = true;
     for (uint8 i = 0; i < allParties.length; i++) {
       allWithdrawn = allWithdrawn && (hasWithdrawn[allParties[i]] || (dispersal[allParties[i]] == 0));
@@ -361,7 +361,7 @@ contract Arbitration {
   }
 
   function _dispute(address _sender, uint256 _voteAmount, uint256[] _dispersal) internal hasState(State.Signed) isParty(_sender) {
-    require(_dispersal.length == allParties.length);
+    require(_dispersal.length == allParties.length, "Incorrect details.");
     // If there is an amendment proposed, but not agreed refund all amendment funds
     if (amendmentProposed) {
       unagreeAmendment();
@@ -374,8 +374,8 @@ contract Arbitration {
       totalDispersal = totalDispersal.add(_dispersal[i]);
       totalFunding = totalFunding.add(funding[allParties[i]]);
     }
-    require(totalDispersal == totalFunding);
-    require(_voteAmount >= totalFunding.mul(MIN_VOTE).div(10**18));
+    require(totalDispersal == totalFunding, "The funding and dispersal amounts should be equal.");
+    require(_voteAmount >= totalFunding.mul(MIN_VOTE).div(10**18), "Amount lower than minimum vote amount");
     disputeStarts = SafeMath.add(getNow(), DISPUTE_DISPERSAL_DURATION);
     disputeEnds = SafeMath.add(disputeStarts, DISPUTE_VOTE_DURATION);
     //Default other parties dispute dispersals
@@ -397,8 +397,8 @@ contract Arbitration {
    * @param _dispersal Dispersal should the disputing party win
    */
   function amendDisputeDispersal(uint256[] _dispersal) public hasState(State.Dispute) onlyParties {
-    require(_dispersal.length == allParties.length);
-    require(getNow() < disputeStarts);
+    require(_dispersal.length == allParties.length, "Incorrect details.");
+    require(getNow() < disputeStarts, "The dispute amendment window has closed.");
     uint256 totalDispersal = 0;
     uint256 totalFunding = 0;
     for (uint8 i = 0; i < allParties.length; i++) {
@@ -406,7 +406,7 @@ contract Arbitration {
       totalDispersal = totalDispersal.add(_dispersal[i]);
       totalFunding = totalFunding.add(funding[allParties[i]]);
     }
-    require(totalDispersal == totalFunding);
+    require(totalDispersal == totalFunding, "The funding and dispersal amounts should be equal.");
     emit ContractDisputeDispersalAmended(msg.sender, _dispersal);
   }
 
@@ -417,11 +417,10 @@ contract Arbitration {
     //Extend dispute period if:
     //  - vote is tied
     //  - more than 5% of votes places in last 30 minutes of dispute period
-    if (getNow() < disputeEnds) {
-      return (disputeEnds, disputeWindowVotes);
-    }
+    // if (getNow() <= disputeEnds.sub(DISPUTE_WINDOW)) {
+    //   return (disputeEnds, disputeWindowVotes);
+    // }
     if (disputeWindowVotes > totalVotes.mul(DISPUTE_WINDOW_MAX).div(10**18)) {
-      //disputeWindowVotes = 0;
       return (disputeEnds.add(DISPUTE_EXTENSION), 0);
     }
     uint256 winningVotes = partyVotes[address(0)];
@@ -440,11 +439,10 @@ contract Arbitration {
       }
     }
     if (countWinners > 1) {
-      //disputeWindowVotes = 0;
       //New end time is calculated from now
       return (getNow().add(DISPUTE_EXTENSION), 0);
     }
-    return (disputeEnds, disputeWindowVotes);
+    else return (disputeEnds, disputeWindowVotes);
   }
 
   //Functions to allow voting on disputed agreements
@@ -469,40 +467,29 @@ contract Arbitration {
   }
 
   function _vote(address _sender, address _voteAddress, uint256 _voteAmount) internal hasState(State.Dispute) {
-    (uint256 newDisputeEnds, uint256 newDisputeWindowVotes) = calcDisputeEnds();
-    if (newDisputeEnds != disputeEnds) {
-      emit DisputeEndsAdjusted(newDisputeEnds, disputeEnds);
-      disputeEnds = newDisputeEnds;
-      disputeWindowVotes = newDisputeWindowVotes;
-    }
-    require(getNow() < disputeEnds);
+    require(getNow() < disputeEnds, "The voting window is closed.");
     //Parties are allowed to vote straightaway
-    require((getNow() >= disputeStarts) || parties[_sender]);
+    require((getNow() >= disputeStarts) || parties[_sender], "The voting window hasn't opened yet.");
     //Check vote is for a valid address
-    require(parties[_voteAddress] || (_voteAddress == address(0)));
+    require(parties[_voteAddress] || (_voteAddress == address(0)), "Please vote for the valid party.");
     //Vote must be at least MIN_VOTE of the totalVotes
-    require(_voteAmount >= totalVotes.mul(MIN_VOTE).div(10**18));
+    require(_voteAmount >= totalVotes.mul(MIN_VOTE).div(10**18), "Please vote above the minimum vote requirement.");
     //Vote must not mean the new winning party after the vote has strictly more than twice the next best party
     if (totalVotes != 0) {
       address winnerParty;
       address bestMinortyParty;
       (winnerParty, bestMinortyParty) = getWinnerAndBestMinorty();
       if (_voteAddress == winnerParty) {
-        require(partyVotes[_voteAddress].add(_voteAmount) <=  partyVotes[bestMinortyParty].mul(2));
+        require(partyVotes[_voteAddress].add(_voteAmount) <= partyVotes[bestMinortyParty].mul(2), "Vote difference more than 100% is not allowed.");
       } else {
-        require(partyVotes[_voteAddress].add(_voteAmount) <=  partyVotes[winnerParty].mul(2));
+        require(partyVotes[_voteAddress].add(_voteAmount) <= partyVotes[winnerParty].mul(2), "Vote difference of more than 100% not allowed.");
       }
     }
 
     Vote memory newVote = Vote(_voteAmount, partyVotes[_voteAddress], false);
 
     //Commit votes
-    require(jurToken.transferFrom(_sender, address(this), _voteAmount));
-
-    //Track votes during last 30 mins of voting period
-    if (getNow() >= disputeEnds.sub(30 * 60)) {
-      disputeWindowVotes = disputeWindowVotes.add(_voteAmount);
-    }
+    require(jurToken.transferFrom(_sender, address(this), _voteAmount), "Cannot transfer funds.");
 
     //Record votes
     totalVotes = totalVotes.add(_voteAmount);
@@ -510,6 +497,18 @@ contract Arbitration {
     userVotes[_sender][_voteAddress].push(newVote);
 
     emit VoteCast(_sender, _voteAddress, _voteAmount);
+
+    (uint256 newDisputeEnds, uint256 newDisputeWindowVotes) = calcDisputeEnds();
+    if (newDisputeEnds != disputeEnds) {
+      emit DisputeEndsAdjusted(newDisputeEnds, disputeEnds);
+      disputeEnds = newDisputeEnds;
+      disputeWindowVotes = newDisputeWindowVotes;
+    }
+
+    //Track votes during last 30 mins of voting period
+    if (getNow() >= disputeEnds.sub(DISPUTE_WINDOW)) {
+      disputeWindowVotes = disputeWindowVotes.add(_voteAmount);
+    }
 
   }
 
@@ -526,7 +525,7 @@ contract Arbitration {
       disputeEnds = newDisputeEnds;
       disputeWindowVotes = newDisputeWindowVotes;
     }
-    require(getNow() >= disputeEnds.add(VOTE_LOCKUP));
+    require(getNow() >= disputeEnds.add(VOTE_LOCKUP), "Please wait for the Lockup window to be over.");
     //There should be a clear winner now, otherwise the dispute would have been extended.
     address winnerParty;
     address bestMinortyParty;
@@ -552,7 +551,7 @@ contract Arbitration {
         }
       }
     }
-    require(jurToken.transfer(msg.sender, stakedVotes.add(decimalMul(eligableVotes, reward))));
+    require(jurToken.transfer(msg.sender, stakedVotes.add(decimalMul(eligableVotes, reward))), "Cannot transfer funds.");
     emit VoterPayout(msg.sender, stakedVotes, decimalMul(eligableVotes, reward));
   }
 
@@ -657,12 +656,12 @@ contract Arbitration {
       disputeEnds = newDisputeEnds;
       disputeWindowVotes = newDisputeWindowVotes;
     }
-    require(getNow() >= disputeEnds);
-    require(!hasWithdrawn[msg.sender]);
+    require(getNow() >= disputeEnds, "The dispute hasn't been closed yet.");
+    require(!hasWithdrawn[msg.sender], "User has already withdrawn.");
     hasWithdrawn[msg.sender] = true;
     address winnerParty = getWinner();
     uint256 payout = disputeDispersal[winnerParty][msg.sender];
-    require(jurToken.transfer(msg.sender, payout));
+    require(jurToken.transfer(msg.sender, payout), "Cannot transfer funds.");
     emit PartyPayout(msg.sender, payout);
   }
 
@@ -670,7 +669,6 @@ contract Arbitration {
    * @dev Returns a bool if can withdraw and the amount of withdraw
    */
   function canWithdraw() public view returns(bool,uint256) {
-    
     address winnerParty = getWinner();
     uint256 payout = disputeDispersal[winnerParty][msg.sender];
 
@@ -694,7 +692,7 @@ contract Arbitration {
   /**
    * @notice Returns current timestamp
    */
-  function getNow() internal constant returns (uint256) {
+  function getNow() internal view returns (uint256) {
     return now;
   }
 
