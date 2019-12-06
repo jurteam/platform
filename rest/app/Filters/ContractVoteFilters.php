@@ -14,7 +14,8 @@ class ContractVoteFilters extends Filters
     protected $orderBy = [
         'wallet_part',
         'amount',
-        'id'
+        'id',
+        'created_at'
     ];
 
     public function orderBy($value)
