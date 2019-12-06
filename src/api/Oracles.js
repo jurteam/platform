@@ -9,6 +9,11 @@ export class Oracles {
     const { id, ...params } = payload;
     return axios.get(`${root}/${payload.id}`, { params });
   }
+  static live(payload) {
+    const { id, ...params } = payload;
+    return axios.get(`${root}/live/${payload.id}`, { params });
+    // return axios.get(`${root}/live/${payload.id}?live=${payload.created_at}`);
+  }
   static get(payload) {
     return axios.get(`${root}/${payload.id}?include=attachments`);
   }

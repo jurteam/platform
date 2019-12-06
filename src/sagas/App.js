@@ -18,7 +18,8 @@ import {
   SET_TUTORIAL_VIEWED,
   FETCH_DISPUTES,
   FETCH_ACTIVITIES,
-  API_GET_STATUS_CHANGE
+  API_GET_STATUS_CHANGE,
+  API_GET_LIVE_VOTES,
 } from "../reducers/types";
 
 import { getWallet, getContractdetailPage, getDisputedetailPage, getCurrentContract, getCurrentDispute } from "./Selectors"; // selectors
@@ -126,13 +127,18 @@ export function* handleHeartBeat() {
 
   if (ContractDetailPage) {
     // nella pagina del contratto
+
+
+    log("handleHeartBeat - ContractDetailPage",ContractDetailPage);
     
     yield put({ type: API_GET_STATUS_CHANGE });
 
   } else if (DisputeDetailPage) {
     // nella pagina della disputa
     const currDisp = yield select(getCurrentDispute);
-    log("handleHeartBeat",currDisp);
+    log("handleHeartBeat - DisputeDetailPage",currDisp);
+
+    yield put({ type: API_GET_LIVE_VOTES });
 
   }
 

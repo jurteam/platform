@@ -18,7 +18,8 @@ import {
   RESET_DISPUTES,
   RESET_ALL_DISPUTES,
   DISPUTE_DETAIL_PAGE,
-  RESET_VOTE
+  RESET_VOTE,
+  UPDATE_DISPUTE_LIVE
 } from "./types";
 
 import { log } from "../utils/helpers";
@@ -86,6 +87,14 @@ export default (state = INITIAL_STATE, action) => {
     // Setters
     case SET_DISPUTE:
       return { ...state, current: action.payload, vote: INITIAL_STATE.vote };
+
+    case UPDATE_DISPUTE_LIVE:
+      return { ...state, 
+        current: {
+          ...state.current,
+          ...action.payload
+        }, 
+      };
 
     case DISPUTES_FETCHED:
       log(DISPUTES_FETCHED, action.payload);

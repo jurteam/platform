@@ -5,7 +5,8 @@ import {
   FETCH_CURRENT_ORACLES,
   UPDATE_ORACLE_ORDER,
   SET_ORACLE_CURRENT_PAGE,
-  SET_ORACLE_CURRENT_ORDER
+  SET_ORACLE_CURRENT_ORDER,
+  CURRENT_ORACLES_LIVE
 } from "./types";
 
 import { log } from "../utils/helpers";
@@ -75,6 +76,20 @@ export default (state = INITIAL_STATE, action) => {
     case CURRENT_ORACLES_FETCHED:
       log(ORACLES_FETCHED, action.payload);
       return { ...state, currentList: action.payload.data, updatingList: false };
+
+    case CURRENT_ORACLES_LIVE:
+      log('CURRENT_ORACLES_LIVE', action.payload.oracles);
+    
+      // // unshift new votes
+      const newCurrentVotes = state.currentList;
+      newCurrentVotes.unshift(...action.payload.oracles);
+      // log('CURRENT_ORACLES_LIVE - newCurrentVotes', newCurrentVotes);
+      
+      return { 
+        ...state, 
+        currentList: newCurrentVotes,
+        updatingList: false 
+      };
 
     default:
       return state;

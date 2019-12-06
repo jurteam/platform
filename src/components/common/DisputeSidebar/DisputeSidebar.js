@@ -41,6 +41,7 @@ export const DisputeSidebar = ({
   onVote,
   onView,
   onReject,
+  voteReject,
   // onAccept,
   // onAcceptAmendment,
   // onChangeSelect,
@@ -118,6 +119,7 @@ export const DisputeSidebar = ({
           earnings={earnings}
           winner={winner}
           onReject={onReject}
+          voteReject={voteReject}
           canVote={canVote(statusId)}
         />
       )}
