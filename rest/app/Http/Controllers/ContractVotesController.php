@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Dingo\Api\Routing\Helpers;
 use App\Filters\ContractVoteFilters;
 use League\Fractal\Resource\Collection;
+use Illuminate\Database\Eloquent\Collection as EloquenCollection;
 use App\Transformers\ContractVoteTransformer;
 use App\Http\Controllers\Traits\MediableTrait;
 use League\Fractal\Serializer\ArraySerializer;
@@ -80,16 +81,16 @@ class ContractVotesController extends Controller
     }
 
     /**
-     * @param  \Illuminate\Models\Eloquent $model
+     * @param  \Illuminate\Database\Eloquent\Collection $collection
      * @param  \League\Fractal\TransformerAbstract $transformer
      */
-    protected function createDataFromResponse($model, $transformer)
+    protected function createDataFromResponse(EloquenCollection $collection, $transformer)
     {
         $manager = new Manager;
         $manager->setSerializer(new ArraySerializer);
 
         return $manager->createData(
-            new Collection($votes, $transformer)
+            new Collection($collection, $transformer)
         );
     }
 }
