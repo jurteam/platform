@@ -11,11 +11,13 @@ trait DisputeTrait
     {
         $totalTokensPartA = $this->getTokensPart('part_a_wallet');
         $totalTokensPartB = $this->getTokensPart('part_b_wallet');
+        $totalRejectVotes = $this->getRejectVotes();
 
         return [
             'totalTokensPartA' => $totalTokensPartA,
             'totalTokensPartB' => $totalTokensPartB,
-            'totalTokens' => $totalTokensPartA + $totalTokensPartB,
+            'totalTokensReject' => $totalRejectVotes,
+            'totalTokens' => $totalTokensPartA + $totalTokensPartB + $totalRejectVotes,
             'percentagePartA' => $this->getPercetangePart('part_a_wallet'),
             'percentagePartB' => $this->getPercetangePart('part_b_wallet'),
             'current_winner' => $this->getTheWinner(false),
