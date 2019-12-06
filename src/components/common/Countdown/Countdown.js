@@ -64,15 +64,15 @@ export class Countdown extends Component {
 
   calculateDuration() {
     if (this.props.statusId === 31) { // if shown // 2 days
-      return 2 * 24 * 60 * 60 * 1000; // TODO: change with proper value from chain DISPUTE_DISPERSAL_DURATION
+      return parseInt(process.env.REACT_APP_DISPUTE_DISPERSAL_DURATION);
     }
 
     if (this.props.statusId === 35) { // 7 days
-      return 7 * 24 * 60 * 60 * 1000; // TODO: change with proper value from chain DISPUTE_VOTE_DURATION
+      return parseInt(process.env.REACT_APP_DISPUTE_VOTE_DURATION);
     }
 
     if (this.props.statusId === 36) { // 24 hours
-      return 24 * 60 * 60 * 1000; // TODO: change with proper value from chain DISPUTE_EXTENSION
+      return parseInt(process.env.REACT_APP_DISPUTE_EXTENSION);
     }
 
     const hoursToMillisecodsn = this.props.days * 24 * 60 * 60 * 1000;
