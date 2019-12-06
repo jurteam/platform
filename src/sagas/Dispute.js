@@ -401,10 +401,12 @@ export function* handlePayoutParty(args) {
 
       yield put({ type: LOOKUP_WALLET_BALANCE }); // update wallet balance
 
-      put({
+      log(`handlePayoutParty - LOOKUP_WALLET_BALANCE`);
+      yield put({
         type: API_GET_DISPUTE,
         id,
       });
+      log(`handlePayoutParty - API_GET_DISPUTE`);
 
     }
   }
@@ -427,7 +429,7 @@ export function* handlePayoutVoter(args) {
 
     yield put({ type: LOOKUP_WALLET_BALANCE }); // update wallet balance
 
-    put({
+    yield put({
       type: API_GET_DISPUTE,
       id,
     });
