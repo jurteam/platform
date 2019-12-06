@@ -1,10 +1,11 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import VoteProgress from "../VoteProgress";
-import { toCurrencyFormat } from "../../../utils/helpers";
+import { toCurrencyFormat, log } from "../../../utils/helpers";
 
 import "./DisputeVote.scss";
 import { AppContext } from "../../../bootstrap/AppProvider"; // context
 import Button from "../Button";
+import TimeAgo from "react-timeago";
 
 export const DisputeVote = ( props ) => {
   const {
@@ -21,10 +22,10 @@ export const DisputeVote = ( props ) => {
   } = props;
  
   let resultNote = "";
-  let resultWaitReward = "";
+  // let resultWaitReward = "";
   const { labels } = useContext(AppContext);
 
-  if (statusId === 39 && payout.hasWithdrawn && 
+  if (statusId === 39 && (payout.hasWithdrawn || (payout.hasWithdrawn === false && payout.sumToWithdraw === 0)) && 
     (payout.hasToGetReward === 3 || payout.hasToGetReward === 0)) {
 
     const earnings = payout.sumToWithdraw + payout.reward
@@ -42,15 +43,42 @@ export const DisputeVote = ( props ) => {
     }   
   }
 
-  if (statusId === 39 && payout.hasWithdrawn && payout.reward > 0 && payout.hasToGetReward === 1) {
-    resultWaitReward = (
-      <span
-        dangerouslySetInnerHTML={{
-          __html: labels.rewardWait.replace("%waitTime%", payout.voteLookup)
-        }}
-      />
-    );
-  }
+  const rewardButton = (<Button color="gradient" 
+  variant="gradient" 
+  onClick={onPayout}
+  fullWidth>
+    {labels.reward}
+  </Button>)
+
+  const [isPassed, setPassed] = useState(false);
+
+
+  const isPassedTime = date => {
+    const d = new Date();
+    const n = d.getTime();
+     
+    log('isPassedTime',date < n)
+    setPassed(date < n)
+    // if (date < n) {
+    //   log('isPassedTime - date')
+    //   return date;
+    // } else {
+    //   log('isPassedTime - n')
+      return n;
+    // }
+
+  };
+
+
+  // if (statusId === 39 && (payout.hasWithdrawn || (payout.hasWithdrawn === false && payout.sumToWithdraw === 0)) && payout.reward > 0 && payout.hasToGetReward === 1) {
+  //   resultWaitReward = (
+  //     <span
+  //       dangerouslySetInnerHTML={{
+  //         __html: labels.rewardWait.replace("%waitTime%", payout.voteLookup)
+  //       }}
+  //     />
+  //   );
+  // }
 
   return (
     <div className="jur-dispute-vote">
@@ -81,24 +109,32 @@ export const DisputeVote = ( props ) => {
         </div>
       )}
 
+
       {payout && 
       <>
 
-        {payout.hasWithdrawn && 
+        {(payout.hasWithdrawn || (payout.hasWithdrawn === false && payout.sumToWithdraw === 0)) && 
         (payout.hasToGetReward === 3 || payout.hasToGetReward === 0) && 
         statusId === 39 &&         
         (
           <div className="jur-dispute-vote__result-note">{resultNote}</div>
         )}
 
-        {
-        payout.hasToGetReward === 1  && 
-        statusId === 39 &&         
-        (
-          <div className="jur-dispute-vote__result-note">{resultWaitReward}</div>
-        )}
+        {payout.hasToGetReward === 1 &&
+        (payout.hasWithdrawn || (payout.hasWithdrawn === false && payout.sumToWithdraw === 0)) &&
+        statusId === 39 &&
+        <div className="jur-dispute-vote__result-note">
+          
+          <div style={{display:(!isPassed?`block`:`none`)}}>
+            {labels.rewardWait1}
+            <TimeAgo date={(payout.voteLookup*1000)} now={() => isPassedTime(payout.voteLookup*1000)} />
+            {labels.rewardWait2}
+          </div>
+          
+          {isPassed && rewardButton}
+        </div>}
 
-        {payout.hasWithdrawn === false && 
+        {(payout.hasWithdrawn === false && payout.sumToWithdraw > 0) &&
           <div className="jur-dispute-vote__result-note">
             <Button color="gradient" 
             variant="gradient" 
@@ -108,15 +144,10 @@ export const DisputeVote = ( props ) => {
             </Button>
           </div>}
 
-        {payout.hasWithdrawn && 
+        {(payout.hasWithdrawn || (payout.hasWithdrawn === false && payout.sumToWithdraw === 0)) && 
           payout.hasToGetReward === 2 && 
           <div className="jur-dispute-vote__result-note">
-            <Button color="gradient" 
-            variant="gradient" 
-            onClick={onPayout} 
-            fullWidth>
-              {labels.reward}
-            </Button>
+            {rewardButton}
           </div>}
 
       </>}

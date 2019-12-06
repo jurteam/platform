@@ -234,17 +234,17 @@ export function* getDispute(action) {
            hasToGetReward = hasToGetReward === 1 ? 2 : hasToGetReward;
          }
 
-          
-      data.hasWithdrawn = hasWithdrawn;
-      data.hasToGetReward = hasToGetReward;
+         
+         data.hasWithdrawn = hasWithdrawn;
+         data.hasToGetReward = hasToGetReward;
          data.voteLookup = lockupEnd;
-      data.sumToWithdraw = Number.parseFloat(sumToWithdraw);
-      data.reward = Number.parseFloat(reward);
-            
-      yield put({ type: SET_DISPUTE, payload: data });
+         data.sumToWithdraw = Number.parseFloat(sumToWithdraw);
+         data.reward = Number.parseFloat(reward);
+               
+         yield put({ type: SET_DISPUTE, payload: data });
           
-    }
-
+        }
+        
       } else {
               
         yield put({ type: SET_DISPUTE, payload: data });
@@ -396,11 +396,11 @@ export function* handlePayoutParty(args) {
 
     const withdrawTx = yield arbitration.payoutParty().catch(chainErrorHandler);
     log(`handlePayoutParty - current user has withdrawTx?`, withdrawTx);
-
+    
     if (withdrawTx) { // only if there is a valid sign tx
-
+      
       yield put({ type: LOOKUP_WALLET_BALANCE }); // update wallet balance
-
+      
       log(`handlePayoutParty - LOOKUP_WALLET_BALANCE`);
       yield put({
         type: API_GET_DISPUTE,
