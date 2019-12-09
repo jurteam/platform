@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useEffect , useContext } from "react";
 
 // Context
 import { AppContext } from "../../../bootstrap/AppProvider";
@@ -24,7 +24,8 @@ import {
   UPDATE_DISPUTE_FILTER,
   API_DELETE_DISPUTE,
   DISPUTE_PAGE_CHANGE,
-  DISPUTE_ORDER_CHANGE
+  DISPUTE_ORDER_CHANGE,
+  DISPUTES_LIST_PAGE
 } from "../../../reducers/types";
 
 export const Disputes = ( props ) => {
@@ -36,10 +37,14 @@ export const Disputes = ( props ) => {
 
   const [myDispute, setMyDispute] = useState(false);
 
-  // // cDM
-  // useEffect(() => {
-  //   global.drizzle.store.dispatch({ type: FETCH_DISPUTES });
-  // }, []);
+  // cDM
+  useEffect(() => {
+    global.drizzle.store.dispatch({ type: DISPUTES_LIST_PAGE, payload: true });
+    return () => {
+      global.drizzle.store.dispatch({ type: DISPUTES_LIST_PAGE, payload: false });
+
+    }
+  }, []);
 
   const { dispute } = props;
   log("Disputes - dispute", dispute);

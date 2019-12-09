@@ -18,7 +18,8 @@ import {
   RESET_DISPUTES,
   RESET_ALL_DISPUTES,
   DISPUTE_DETAIL_PAGE,
-  RESET_VOTE
+  RESET_VOTE,
+  DISPUTES_LIST_PAGE
 } from "./types";
 
 import { log } from "../utils/helpers";
@@ -28,6 +29,7 @@ const INITIAL_STATE = {
   updating: false,
   updatingList: true,
   detailPage: false,
+  listPage: false,
   current: {
     statusId: 0,
     statusLabel: "Draft",
@@ -101,6 +103,13 @@ export default (state = INITIAL_STATE, action) => {
       return { 
         ...state, 
         detailPage: action.payload 
+      };
+
+    case DISPUTES_LIST_PAGE:
+      log(DISPUTES_LIST_PAGE, action);
+      return { 
+        ...state, 
+        listPage: action.payload 
       };
 
     case SET_DISPUTE_CURRENT_PAGE:
