@@ -30,11 +30,11 @@ contract Arbitration {
   ERC20 public jurToken;
 
   //Globals - could be pulled from factory contract or passed in to constructor
-  uint256 public DISPUTE_VOTE_DURATION = 20 minutes; // minimum dispute time
-  uint256 public DISPUTE_DISPERSAL_DURATION = 5 minutes; // time for counterpart to submit dispute resolution proposal
-  uint256 public DISPUTE_WINDOW = 10 minutes; // time window where to check last minute votes
-  uint256 public DISPUTE_EXTENSION = 10 minutes; // a dispute gets extended by this much if there are the tie conditions or more than x%
-  uint256 public VOTE_LOCKUP = 10 minutes; // amount of time users must wait to withdraw their rewards
+  uint256 public DISPUTE_VOTE_DURATION = 7 days; // minimum dispute time
+  uint256 public DISPUTE_DISPERSAL_DURATION = 2 days; // time for counterpart to submit dispute resolution proposal
+  uint256 public DISPUTE_WINDOW = 30 minutes; // time window where to check last minute votes
+  uint256 public DISPUTE_EXTENSION = 24 hours; // a dispute gets extended by this much if there are the tie conditions or more than x%
+  uint256 public VOTE_LOCKUP = 24 hours; // amount of time users must wait to withdraw their rewards
   uint256 public DISPUTE_WINDOW_MAX = 5 * 10**16; // percentage of last minute votes to trigger extension
   uint256 public MIN_VOTE = 1 * 10**16; // minimum vote possible is 1% of total votes at the time of voting
   uint256 public MIN_WIN = 1 * 10**16; //percentage multiplied by 10**16
@@ -413,16 +413,10 @@ contract Arbitration {
   /**
    * @dev Calculates the current end time of the voting period
    */
-  function calcDisputeEnds() public view hasState(State.Dispute) returns(uint256, uint256) {
+  function calcDisputeEnds() public hasState(State.Dispute) {
     //Extend dispute period if:
     //  - vote is tied
     //  - more than 5% of votes places in last 30 minutes of dispute period
-    // if (getNow() <= disputeEnds.sub(DISPUTE_WINDOW)) {
-    //   return (disputeEnds, disputeWindowVotes);
-    // }
-    if (disputeWindowVotes > totalVotes.mul(DISPUTE_WINDOW_MAX).div(10**18)) {
-      return (disputeEnds.add(DISPUTE_EXTENSION), 0);
-    }
     uint256 winningVotes = partyVotes[address(0)];
     for (uint8 i = 0; i < allParties.length; i++) {
       if (partyVotes[allParties[i]] > winningVotes) {
@@ -438,11 +432,14 @@ contract Arbitration {
         countWinners = countWinners + 1;
       }
     }
-    if (countWinners > 1) {
-      //New end time is calculated from now
-      return (getNow().add(DISPUTE_EXTENSION), 0);
+    if (getNow() <= disputeEnds.sub(DISPUTE_EXTENSION)) {
+      return;
     }
-    else return (disputeEnds, disputeWindowVotes);
+    else if ((countWinners > 1) || disputeWindowVotes > totalVotes.mul(DISPUTE_WINDOW_MAX).div(10**18)) {
+      emit DisputeEndsAdjusted(disputeEnds.add(DISPUTE_EXTENSION), disputeEnds);
+      disputeEnds = disputeEnds.add(DISPUTE_EXTENSION);
+      disputeWindowVotes = 0;
+    }
   }
 
   //Functions to allow voting on disputed agreements
@@ -467,6 +464,7 @@ contract Arbitration {
   }
 
   function _vote(address _sender, address _voteAddress, uint256 _voteAmount) internal hasState(State.Dispute) {
+    calcDisputeEnds();
     require(getNow() < disputeEnds, "The voting window is closed.");
     //Parties are allowed to vote straightaway
     require((getNow() >= disputeStarts) || parties[_sender], "The voting window hasn't opened yet.");
@@ -496,20 +494,12 @@ contract Arbitration {
     partyVotes[_voteAddress] = partyVotes[_voteAddress].add(_voteAmount);
     userVotes[_sender][_voteAddress].push(newVote);
 
-    emit VoteCast(_sender, _voteAddress, _voteAmount);
-
-    (uint256 newDisputeEnds, uint256 newDisputeWindowVotes) = calcDisputeEnds();
-    if (newDisputeEnds != disputeEnds) {
-      emit DisputeEndsAdjusted(newDisputeEnds, disputeEnds);
-      disputeEnds = newDisputeEnds;
-      disputeWindowVotes = newDisputeWindowVotes;
-    }
-
     //Track votes during last 30 mins of voting period
     if (getNow() >= disputeEnds.sub(DISPUTE_WINDOW)) {
       disputeWindowVotes = disputeWindowVotes.add(_voteAmount);
     }
 
+    emit VoteCast(_sender, _voteAddress, _voteAmount);
   }
 
   /**
@@ -519,12 +509,7 @@ contract Arbitration {
    */
   function payoutVoter(uint256 _start, uint256 _end) public hasState(State.Dispute) {
     //Generally setting _start to 0 and _end to a large number should be fine, but having the option avoids a possible block gas limit issue
-    (uint256 newDisputeEnds, uint256 newDisputeWindowVotes) = calcDisputeEnds();
-    if (newDisputeEnds != disputeEnds) {
-      emit DisputeEndsAdjusted(newDisputeEnds, disputeEnds);
-      disputeEnds = newDisputeEnds;
-      disputeWindowVotes = newDisputeWindowVotes;
-    }
+    calcDisputeEnds();
     require(getNow() >= disputeEnds.add(VOTE_LOCKUP), "Please wait for the Lockup window to be over.");
     //There should be a clear winner now, otherwise the dispute would have been extended.
     address winnerParty;
@@ -650,12 +635,7 @@ contract Arbitration {
    * @dev Allows sender (party) to claim their dispersal tokens
    */
   function payoutParty() public hasState(State.Dispute) onlyParties {
-    (uint256 newDisputeEnds, uint256 newDisputeWindowVotes) = calcDisputeEnds();
-    if (newDisputeEnds != disputeEnds) {
-      emit DisputeEndsAdjusted(newDisputeEnds, disputeEnds);
-      disputeEnds = newDisputeEnds;
-      disputeWindowVotes = newDisputeWindowVotes;
-    }
+    calcDisputeEnds();
     require(getNow() >= disputeEnds, "The dispute hasn't been closed yet.");
     require(!hasWithdrawn[msg.sender], "User has already withdrawn.");
     hasWithdrawn[msg.sender] = true;
@@ -693,7 +673,7 @@ contract Arbitration {
    * @notice Returns current timestamp
    */
   function getNow() internal view returns (uint256) {
-    return now;
+        return now;
   }
 
 }
