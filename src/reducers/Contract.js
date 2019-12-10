@@ -18,6 +18,7 @@ import {
   CONTRACT_SAVING,
   CONTRACT_PAYING,
   CONTRACT_UPDATING,
+  CONTRACTS_UPDATED,
   CONTRACT_LIST_UPDATING,
   CONTRACT_NOTIFICATIONS_LOADING,
   CONTRACT_MEDIA_DELETE,
@@ -132,6 +133,13 @@ export default (state = INITIAL_STATE, action) => {
         list: action.payload.data,
         pagination: action.payload.meta.pagination,
         updatingList: false
+      };
+
+    case CONTRACTS_UPDATED:
+      log(CONTRACTS_UPDATED, action.payload);
+      return {
+        ...state,
+        list: action.payload
       };
 
     case CONTRACT_DETAIL_PAGE:
