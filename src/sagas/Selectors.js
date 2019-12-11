@@ -30,8 +30,10 @@ export const getDrizzleStoredContracts = (state) => (state.contracts);
 export const getDisputeFilters = (state) => (state.dispute.filters);
 export const getCurrentDispute = (state) => (state.dispute.current);
 export const getDisputeListPage = (state) => (state.dispute.page);
+export const getDisputeList = (state) => (state.dispute.list);
 export const getDisputedetailPage = (state) => (state.dispute.detailPage);
 export const getDisputeIsListPage = (state) => (state.dispute.listPage);
+export const getDisputePageSize = (state) => (state.dispute.pagination.per_page);
 export const getDisputeListOrder = (state) => (state.dispute.order);
 
 // Oracle

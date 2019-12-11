@@ -36,6 +36,7 @@ import {
   getContractListPage,
   getDisputeFilters,
   getDisputeListOrder,
+  getDisputeListPage,
 } from "./Selectors"; // selectors
 
 // Api layouts
@@ -181,8 +182,33 @@ export function* handleHeartBeat() {
   } else if (DisputeIsListPage) {
     // into list disputes page
     log("handleHeartBeat - DisputeIsListPage",DisputeIsListPage);
-    
-    yield put({ type: UPDATE_LIVE_DISPUTES });
+
+
+    const DisputeOrder = yield select(getDisputeListOrder);
+
+    if (DisputeOrder.length === 0) {
+      // if no order is setted
+      const DisputeFilter = yield select(getDisputeFilters);
+      
+      if (DisputeFilter.status === null && 
+          DisputeFilter.mine === false && 
+          DisputeFilter.category === null && 
+          DisputeFilter.fromDate === null && 
+          DisputeFilter.toDate === null && 
+          DisputeFilter.searchText === null ) {
+        // if no filter is setted
+
+        const disputeListPage = yield select (getDisputeListPage)
+
+        if (disputeListPage === 1) {
+          // if is the first page of Disputes
+
+          yield put({ type: UPDATE_LIVE_DISPUTES });
+        }
+      }
+    }    
+
+
   }
 
 

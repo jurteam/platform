@@ -19,7 +19,8 @@ import {
   RESET_ALL_DISPUTES,
   DISPUTE_DETAIL_PAGE,
   RESET_VOTE,
-  DISPUTES_LIST_PAGE
+  DISPUTES_LIST_PAGE,
+  DISPUTES_UPDATED
 } from "./types";
 
 import { log } from "../utils/helpers";
@@ -96,6 +97,13 @@ export default (state = INITIAL_STATE, action) => {
         list: action.payload.data,
         pagination: action.payload.meta.pagination,
         updatingList: false
+      };
+
+    case DISPUTES_UPDATED:
+      log(DISPUTES_UPDATED, action.payload);
+      return {
+        ...state,
+        list: action.payload,
       };
 
     case DISPUTE_DETAIL_PAGE:
