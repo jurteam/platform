@@ -92,6 +92,7 @@
   "redeem": "Redeem",
   "withdraw": "Withdraw",
   "reward": "Get Reward",
+  "rewardWait": "You will have to wait about %waitTime% from dispute end before you can get your reward",
   "oracles": "Oracles",
   "noOracles": "Still no votes. New voters will be visibile here!",
   "oraclesDetails": "Voters Details",

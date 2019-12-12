@@ -544,6 +544,7 @@ export const DisputeDetail = ( props ) => {
                     { 
                       hasWithdrawn: dispute.current.hasWithdrawn,
                       hasToGetReward: dispute.current.hasToGetReward,
+                      voteLookup: dispute.current.voteLookup,
                       sumToWithdraw: dispute.current.sumToWithdraw,
                       reward: dispute.current.reward,
                     }                    

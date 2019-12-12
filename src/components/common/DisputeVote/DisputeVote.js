@@ -21,6 +21,7 @@ export const DisputeVote = ( props ) => {
   } = props;
  
   let resultNote = "";
+  let resultWaitReward = "";
   const { labels } = useContext(AppContext);
 
   if (statusId === 39 && payout.hasWithdrawn && 
@@ -38,7 +39,17 @@ export const DisputeVote = ( props ) => {
           }}
         />
       );
-    }
+    }   
+  }
+
+  if (statusId === 39 && payout.hasWithdrawn && payout.reward > 0 && payout.hasToGetReward === 1) {
+    resultWaitReward = (
+      <span
+        dangerouslySetInnerHTML={{
+          __html: labels.rewardWait.replace("%waitTime%", payout.voteLookup)
+        }}
+      />
+    );
   }
 
   return (
@@ -78,6 +89,13 @@ export const DisputeVote = ( props ) => {
         statusId === 39 &&         
         (
           <div className="jur-dispute-vote__result-note">{resultNote}</div>
+        )}
+
+        {
+        payout.hasToGetReward === 1  && 
+        statusId === 39 &&         
+        (
+          <div className="jur-dispute-vote__result-note">{resultWaitReward}</div>
         )}
 
         {payout.hasWithdrawn === false && 

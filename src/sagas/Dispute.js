@@ -111,8 +111,10 @@ export function* getDispute(action) {
           yield arbitration.gameTheory();
           const VOTE_LOCKUP = arbitration.VOTE_LOCKUP;
 
-          voteLookup = moment.duration(Number.parseInt(VOTE_LOCKUP)).humanize()
-          log("getDispute - VOTE_LOCKUP", VOTE_LOCKUP);
+          voteLookup = moment.duration(Number.parseInt(VOTE_LOCKUP.toString()),'seconds').humanize()
+          if (VOTE_LOCKUP)
+            log("getDispute - VOTE_LOCKUP", VOTE_LOCKUP.toString());
+            
           log("getDispute - voteLookup", voteLookup);
           const disputeEnd = yield arbitration.disputeEnds().catch(chainErrorHandler);
           const lockupEnd = disputeEnd ? Number.parseInt(disputeEnd.toString()) + Number.parseInt(VOTE_LOCKUP) : 0
