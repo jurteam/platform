@@ -13,6 +13,7 @@ import {
   DISPUTE_UPDATING,
   RESET_VOTE,
   PUT_VOTE,
+  SET_DISPUTE,
   LOOKUP_WALLET_BALANCE,
   // SET_CONTRACT_STATUS
   FETCH_CONTRACTS,
@@ -37,6 +38,21 @@ import { /* getOracleOrder, */ getOracleCurrentList, getCurrentDispute, getOracl
 export function* fetchOracles(action) {
   const { id } = action;
 
+  // if dispute detail is empty, get dispute detail
+
+  const currentDispute = yield select(getCurrentDispute);
+  if (!currentDispute.id) {
+    log('fetchOracles - currentdispute not present', currentDispute.id);
+    
+    const response = yield call(Disputes.get, { id });
+    let { data } = response.data;
+    yield put({ type: SET_DISPUTE, payload: data });
+  //   yield put({
+  //     type: API_GET_DISPUTE,
+  //     id,
+  //   });
+  }
+  
   // const { wallet_part } = yield select(getOracleOrder);
   const page = yield select(getOracleListPage);
 
@@ -48,6 +64,7 @@ export function* fetchOracles(action) {
     let fieldname = `orderBy[${ord.field}]`
     orderby[fieldname] = ord.type
   });
+
 
 
 

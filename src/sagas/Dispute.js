@@ -10,6 +10,7 @@ import {
   FETCH_DISPUTES,
   API_GET_DISPUTE,
   SET_DISPUTE,
+  RESET_DISPUTE,
   SET_DISPUTE_CURRENT_PAGE,
   SET_DISPUTE_CURRENT_ORDER,
   DISPUTE_LIST_UPDATING,
@@ -59,6 +60,9 @@ import {
 // Get
 export function* getDispute(action) {
   const { id, onSuccess, onError, history } = action;
+
+  yield put({ type: RESET_DISPUTE });
+
   yield put({ type: DISPUTE_UPDATING, payload: true });
   
   try {
