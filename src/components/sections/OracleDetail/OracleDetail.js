@@ -39,6 +39,7 @@ import {
   // CONTRACT_MEDIA_DELETE,
   // SEND_TO_COUNTERPARTY,
   // DISCLAIMER_MUST_BE_ACCEPTED,
+  ORACLES_LIST_UPDATING,
   FETCH_ORACLES,
   ORACLE_PAGE_CHANGE,
   ORACLE_ORDER_CHANGE
@@ -76,6 +77,13 @@ export const OracleDetail = ( props ) => {
         params: { id }
       }
     } = props;
+
+
+    // yield put({ type: ORACLES_LIST_UPDATING, payload: true });
+    global.drizzle.store.dispatch({
+      type: ORACLES_LIST_UPDATING,
+      payload: true
+    });
 
     global.drizzle.store.dispatch({
       type: FETCH_ORACLES,
@@ -164,7 +172,7 @@ export const OracleDetail = ( props ) => {
   return typeof params.id !== "undefined" &&
     !(typeof disputeID === "undefined") ? (
     <PageLayout breadcrumbs={breadcrumbs}>
-      {!oracle.updatingList && oracle.list ? (
+      {oracle.list ? (
         <>
           <Main>
             <OraclesTable

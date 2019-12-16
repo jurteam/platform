@@ -93,6 +93,7 @@ export const OraclesTable = ( props ) => {
               ))}
             </TableRow>
           </TableHead>
+          {data.length > 0 && loading === false ? (
           <TableBody className="jur-oracles-table__body">
             {tableRows.map((oracle, idx) => {
               const evidences = oracle.attachments.data || [];
@@ -168,11 +169,12 @@ export const OraclesTable = ( props ) => {
               );
             })}
           </TableBody>
-        </Table>
-        {data.length > 0 && loading === true && (
+          ) : null}
+    </Table>
+        {loading === true && (
           <SpinnerOnly loading={loading} className={"table__loading"} />
         )}
-        {data.length > 0 ? (
+        {data.length > 0 && loading === false ? (
           <Pagination
             activePage={activePage}
             itemsCountPerPage={oraclesPerPage}

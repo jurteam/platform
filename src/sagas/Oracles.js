@@ -90,6 +90,7 @@ export function* onOraclePageChange(action) {
 
 export function* onOracleOrderChange(action) {
   yield put({ type: SET_ORACLE_CURRENT_ORDER, payload: action.payload });
+  yield put({ type: ORACLES_LIST_UPDATING, payload: true });
   yield put({ type: FETCH_ORACLES, id: action.id });
 }
 
