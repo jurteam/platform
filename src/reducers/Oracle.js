@@ -6,7 +6,8 @@ import {
   UPDATE_ORACLE_ORDER,
   SET_ORACLE_CURRENT_PAGE,
   SET_ORACLE_CURRENT_ORDER,
-  CURRENT_ORACLES_LIVE
+  CURRENT_ORACLES_LIVE,
+  ORACLES_LIST_UPDATING
 } from "./types";
 
 import { log } from "../utils/helpers";
@@ -26,8 +27,8 @@ const INITIAL_STATE = {
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     // Setters
-    case FETCH_ORACLES: // saga
-      return { ...state, list: INITIAL_STATE.list, pagination: INITIAL_STATE.pagination, updatingList: false };
+    // case FETCH_ORACLES: // saga
+    //   return { ...state, list: INITIAL_STATE.list, pagination: INITIAL_STATE.pagination, updatingList: false };
 
     case FETCH_CURRENT_ORACLES: // saga
       return { ...state, currentList: INITIAL_STATE.currentList, updatingList: false };
@@ -76,6 +77,10 @@ export default (state = INITIAL_STATE, action) => {
     case CURRENT_ORACLES_FETCHED:
       log(ORACLES_FETCHED, action.payload);
       return { ...state, currentList: action.payload.data, updatingList: false };
+
+    case ORACLES_LIST_UPDATING:
+      return { ...state, updatingList: action.payload };
+
 
     case CURRENT_ORACLES_LIVE:
       log('CURRENT_ORACLES_LIVE', action.payload.oracles);

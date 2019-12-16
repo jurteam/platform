@@ -19,7 +19,8 @@ import {
   DISPUTE_SAVING,
   API_GET_LIVE_VOTES,
   CURRENT_ORACLES_LIVE,
-  UPDATE_DISPUTE_LIVE
+  UPDATE_DISPUTE_LIVE,
+  ORACLES_LIST_UPDATING,
 } from "../reducers/types";
 import moment from 'moment';
 
@@ -83,9 +84,8 @@ export function* fetchCurrentOracles(action) {
 
 export function* onOraclePageChange(action) {
   yield put({ type: SET_ORACLE_CURRENT_PAGE, payload: action.payload });
-  yield put({ type: FETCH_ORACLES });
-  // TODO: maybe must be fixed with id with the following line
-  // yield put({ type: FETCH_ORACLES, id: action.id });
+  yield put({ type: ORACLES_LIST_UPDATING, payload: true });
+  yield put({ type: FETCH_ORACLES, id: action.id });
 }
 
 export function* onOracleOrderChange(action) {

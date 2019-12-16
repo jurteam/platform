@@ -103,17 +103,16 @@ export const OracleDetail = ( props ) => {
 
   const onPageChange = (page) => {
 
-    // TODO: maybe must be fixed with id with the followings line 
-    // const {
-    //   match: {
-    //     params: { id }
-    //   }
-    // } = props;
+    const {
+      match: {
+        params: { id }
+      }
+    } = props;
 
     global.drizzle.store.dispatch({
       type: ORACLE_PAGE_CHANGE,
       payload: page,
-      // id
+      id
     });
   };
 
@@ -176,8 +175,8 @@ export const OracleDetail = ( props ) => {
               initialPage={pagination.current_page}
               onPageChange={(pageNo) => onPageChange(pageNo)}
               onSortChange={(field, order) => onSortChange(field, order)}
-              contractsPerPage={pagination.per_page}
-              totalContracts={pagination.total}
+              oraclesPerPage={pagination.per_page}
+              totalOracles={pagination.total}
               loading={oracle.updatingList}
               dispute={{
                 name: dispute.current.contractName,
