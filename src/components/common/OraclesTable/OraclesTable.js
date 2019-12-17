@@ -112,7 +112,7 @@ export const OraclesTable = ( props ) => {
               return (
                 <TableRow
                   key={`${idx}–${oracleWallet}`}
-                  className={`${oracle.isOpen ? "active" : ""}`}
+                  className={`${oracle.isOpen ? "active" : ""} ${oracle.new?'updated-oracle-'+oracle.new:''}`}
                   {...rowParams}
                 >
                   <TableCell className="jur-oracles-table__oracle">

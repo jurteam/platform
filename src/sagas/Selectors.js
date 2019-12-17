@@ -41,7 +41,8 @@ export const getOracleOrder = (state) => (state.oracle.order);
 export const getOracleListPage = (state) => (state.oracle.page);
 export const getOracleListOrder = (state) => (state.oracle.order);
 export const getOracleCurrentList = (state) => (state.oracle.currentList);
-export const getOracleList = (state) => (state.oracle.currentList);
+export const getOracleList = (state) => (state.oracle.list);
+export const getOracleIsListPage = (state) => (state.oracle.listPage);
 
 // User
 export const getUser = (state) => (state.user);

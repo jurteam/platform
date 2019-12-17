@@ -22,6 +22,8 @@ import {
   CURRENT_ORACLES_LIVE,
   UPDATE_DISPUTE_LIVE,
   ORACLES_LIST_UPDATING,
+  UPDATE_LIVE_ORACLES,
+  ORACLES_UPDATED,
 } from "../reducers/types";
 import moment from 'moment';
 
@@ -32,7 +34,7 @@ import { log, chainErrorHandler } from "../utils/helpers"; // log helper
 // Api layouts
 import { Oracles, Disputes, JURToken /*, Arbitration, Contracts*/ } from "../api";
 
-import { /* getOracleOrder, */ getOracleCurrentList, getCurrentDispute, getOracleListPage, getOracleListOrder } from "./Selectors"; // selector
+import { /* getOracleOrder, */ getOracleCurrentList, getCurrentDispute, getOracleListPage, getOracleListOrder, getOracleList } from "./Selectors"; // selector
 
 // Get
 export function* fetchOracles(action) {
@@ -307,8 +309,63 @@ export function* getOraclesLive() {
 }
 
 
+export function* handleUpdateLiveOracles() {
+  // const currVotes = yield select(getDisputesCurrentList);
+  const currOracles = yield select(getOracleList);
+  
+  const currDisp = yield select(getCurrentDispute);
+    
+
+  const response = yield call(Oracles.list, {  
+    id: currDisp.id,   
+    include: "attachments",
+    page: 1,
+    show: "all",
+  });
+
+
+  
+  let newOracles = response.data.data;
+  let newPagination = response.data.meta.pagination;
+
+
+  let different = false
+
+  // compare with old results
+  newOracles.forEach((nOrcl,i) => {
+
+  let presentOrEqual = false;
+
+  currOracles.forEach((cOrcl) => {
+
+    if (cOrcl.id === nOrcl.id 
+        && cOrcl.voted_at === nOrcl.voted_at
+        ) {
+        presentOrEqual = true;
+      }
+    })
+
+    if (!presentOrEqual) {
+      newOracles[i].new = (currOracles[i].new === 1 ? 2 : 1)
+      different = true
+    }
+
+  })
+
+
+  if (different) {
+    log('handleUpdateLiveOracles - different')
+    yield put({ type: ORACLES_UPDATED, payload: newOracles, pagination: newPagination });
+  }
+ 
+
+
+}
+
+
 
 // spawn tasks base certain actions
+
 export default function* oracleSagas() {
   log("run", "oracleSagas");
   yield takeEvery(PUT_VOTE, onVote);
@@ -319,4 +376,5 @@ export default function* oracleSagas() {
   yield takeLatest(ORACLE_ORDER_CHANGE, onOracleOrderChange);
 
   yield takeEvery(API_GET_LIVE_VOTES, getOraclesLive);
+  yield takeLatest(UPDATE_LIVE_ORACLES, handleUpdateLiveOracles);
 }

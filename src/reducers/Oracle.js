@@ -7,13 +7,16 @@ import {
   SET_ORACLE_CURRENT_PAGE,
   SET_ORACLE_CURRENT_ORDER,
   CURRENT_ORACLES_LIVE,
-  ORACLES_LIST_UPDATING
+  ORACLES_LIST_UPDATING,
+  ORACLES_LIST_PAGE,
+  ORACLES_UPDATED,
 } from "./types";
 
 import { log } from "../utils/helpers";
 
 const INITIAL_STATE = {
   updatingList: true,
+  listPage: false,
   list: [],
   currentList: [],
   // order: {
@@ -72,7 +75,10 @@ export default (state = INITIAL_STATE, action) => {
 
     case ORACLES_FETCHED:
       log(ORACLES_FETCHED, action.payload);
-      return { ...state, list: action.payload.data, pagination: action.payload.meta.pagination, updatingList: false };
+      return { ...state, 
+        list: action.payload.data, 
+        pagination: action.payload.meta.pagination, 
+        updatingList: false };
 
     case CURRENT_ORACLES_FETCHED:
       log(ORACLES_FETCHED, action.payload);
@@ -81,6 +87,21 @@ export default (state = INITIAL_STATE, action) => {
     case ORACLES_LIST_UPDATING:
       return { ...state, updatingList: action.payload };
 
+    case ORACLES_LIST_PAGE:
+      log(ORACLES_LIST_PAGE, action);
+      return { 
+        ...state, 
+        listPage: action.payload 
+      };
+
+    
+    case ORACLES_UPDATED:
+      log(ORACLES_UPDATED, action.payload);
+      return {
+        ...state,
+        list: action.payload,
+        pagination: action.pagination, 
+      };
 
     case CURRENT_ORACLES_LIVE:
       log('CURRENT_ORACLES_LIVE', action.payload.oracles);

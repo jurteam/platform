@@ -22,12 +22,16 @@ import {
   API_GET_LIVE_VOTES,
   UPDATE_LIVE_CONTRACTS,
   UPDATE_LIVE_DISPUTES,
+  UPDATE_LIVE_ORACLES,
 } from "../reducers/types";
 
 import { 
   getWallet, 
   getContractdetailPage, 
-  getDisputedetailPage, 
+  getOracleIsListPage,
+  getDisputedetailPage,
+  getOracleListOrder,
+  getOracleListPage,
   getCurrentContract, 
   getCurrentDispute,
   getContractIsListPage,
@@ -143,6 +147,7 @@ export function* handleHeartBeat() {
   
   const ContractIsListPage = yield select(getContractIsListPage);
   const DisputeIsListPage = yield select(getDisputeIsListPage);
+  const OracleIsListPage = yield select(getOracleIsListPage);
   
   if (ContractDetailPage) {
 
@@ -183,7 +188,7 @@ export function* handleHeartBeat() {
         }
       }
     }    
-    
+
   } else if (DisputeIsListPage) {
     // into list disputes page
     log("handleHeartBeat - DisputeIsListPage",DisputeIsListPage);
@@ -211,9 +216,26 @@ export function* handleHeartBeat() {
           yield put({ type: UPDATE_LIVE_DISPUTES });
         }
       }
-    }    
-
-
+    } 
+    
+  } else if (OracleIsListPage) {
+    // into list oracles page
+    log("handleHeartBeat - OracleIsListPage",OracleIsListPage);
+    
+    
+    const OraclesOrder = yield select(getOracleListOrder);
+    
+    if (OraclesOrder.length === 0) {
+      // if no order is setted
+      const oraclesListPage = yield select (getOracleListPage)
+  
+      if (oraclesListPage === 1) {
+        // if is the first page of Oracles
+  
+        yield put({ type: UPDATE_LIVE_ORACLES });
+      }
+      
+    }
   }
 
 

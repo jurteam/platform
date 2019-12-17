@@ -42,7 +42,8 @@ import {
   ORACLES_LIST_UPDATING,
   FETCH_ORACLES,
   ORACLE_PAGE_CHANGE,
-  ORACLE_ORDER_CHANGE
+  ORACLE_ORDER_CHANGE,
+  ORACLES_LIST_PAGE,
 } from "../../../reducers/types";
 
 export const OracleDetail = ( props ) => {
@@ -68,6 +69,17 @@ export const OracleDetail = ( props ) => {
   // const { updating } = dispute;
 
   const [userWallet /*, setUserWallet */] = useState(wallet.address);
+
+
+  // cDM
+  useEffect(() => {
+    global.drizzle.store.dispatch({ type: ORACLES_LIST_PAGE, payload: true });
+    return () => {
+      global.drizzle.store.dispatch({ type: ORACLES_LIST_PAGE, payload: false });
+
+    }
+  }, []);
+
 
   // cDM
   useEffect(() => {
