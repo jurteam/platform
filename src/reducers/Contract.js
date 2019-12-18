@@ -139,7 +139,8 @@ export default (state = INITIAL_STATE, action) => {
       log(CONTRACTS_UPDATED, action.payload);
       return {
         ...state,
-        list: action.payload
+        list: action.payload,
+        pagination: action.pagination,
       };
 
     case CONTRACT_DETAIL_PAGE:

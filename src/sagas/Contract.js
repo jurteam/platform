@@ -647,7 +647,11 @@ export function* handleUpdateLiveContracts() {
 
 
     if (different) {
-      yield put({ type: CONTRACTS_UPDATED, payload: newContracts });
+      yield put({ 
+        type: CONTRACTS_UPDATED, 
+        payload: newContracts,
+        pagination: response.data.meta.pagination
+      });
     }
 
   
