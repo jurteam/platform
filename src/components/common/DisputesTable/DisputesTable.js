@@ -15,7 +15,7 @@ import { EllipsisVIcon } from "../Icons/EllipsisVIcon";
 
 import { Link, withRouter } from "react-router-dom";
 
-import { humanToEth, getContractTotalValue } from "../../../utils/helpers"; // log helper
+import { humanToEth, getContractTotalValue, log } from "../../../utils/helpers"; // log helper
 import { EXPIRED_DISPUTE } from "../../../reducers/types";
 
 import "./DisputesTable.scss";
@@ -37,8 +37,8 @@ const DisputesTable = props => {
     initialPage,
     onPageChange,
     onSortChange,
-    contractsPerPage,
-    totalContracts,
+    disputesPerPage,
+    totalDisputes,
     loading,
     // filtersDisabled,
     history
@@ -171,8 +171,8 @@ const DisputesTable = props => {
       {data.length > 0 && (
         <Pagination
           activePage={activePage}
-          itemsCountPerPage={contractsPerPage}
-          totalItemsCount={totalContracts}
+          itemsCountPerPage={disputesPerPage}
+          totalItemsCount={totalDisputes}
           handlePageChange={handlePageChange}
           getPageUrl={(i) => "https://customLink/#" + i}
         />

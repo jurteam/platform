@@ -234,7 +234,10 @@ export function* handleUpdateLiveDisputes() {
 
 
   if (different) {
-    yield put({ type: DISPUTES_UPDATED, payload: newDisputes });
+    yield put({ type: DISPUTES_UPDATED, 
+      payload: newDisputes, 
+      pagination: response.data.meta.pagination 
+    });
   }
  
 
