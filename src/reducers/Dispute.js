@@ -117,6 +117,7 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         list: action.payload,
+        pagination: action.pagination,
       };
 
     case DISPUTE_DETAIL_PAGE:
