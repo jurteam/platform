@@ -20,8 +20,11 @@
     .jur-table__row {
       cursor: pointer;
       
-      &.updated-dispute {
-        animation: 3s ease-out 0s 1 shineOnAppear;
+      &.updated-dispute-1 {
+        animation: 3s ease-out 0s 1 shineOnAppear-1;
+      }
+      &.updated-dispute-2 {
+        animation: 3s ease-out 0s 1 shineOnAppear-2;
       }
 
     }

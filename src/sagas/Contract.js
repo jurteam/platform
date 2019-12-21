@@ -615,26 +615,19 @@ export function* handleUpdateLiveContracts() {
   });
   
   let newContracts = response.data.data;
-  let contractUpdated = []
-  let oldContracts = []
 
  
   log('handleUpdateLiveContracts - newContracts',newContracts)
   log('handleUpdateLiveContracts - currContracts',currContracts)
   
 
-
-    // // add shine to new contract
-    // newContracts.map((nContr) => {
-    //   nContr.new = true
-    //   return nContr
-    // })
-
     let different = false
 
     // compare with old results
     newContracts.forEach((nContr,i) => {
+
       let presentOrEqual = false;
+
       currContracts.forEach((cContr) => {
         if (cContr.id === nContr.id 
           && cContr.statusUpdatedAt === nContr.statusUpdatedAt
@@ -644,51 +637,14 @@ export function* handleUpdateLiveContracts() {
           presentOrEqual = true;
         }
       })
+
       if (!presentOrEqual) {
-        newContracts[i].new = true
+        newContracts[i].new = (currContracts[i].new === 1 ? 2 : 1)
         different = true
       }
 
     })
 
-    // // remove same results
-    // currContracts.forEach((cContr) => {
-    //   let present = false;
-    //   newContracts.forEach((nContr,i) => {
-    //     if (cContr.id === nContr.id) {
-    //       present = true;
-    //       if (cContr.statusUpdatedAt === nContr.statusUpdatedAt) {
-    //         newContracts[i].new = false
-    //       }
-    //     }
-    //   })
-    //   if (!present) {
-    //     oldContracts.push(cContr)
-    //   }
-    // })
-    
-    // unshift new results
-    // contractUpdated.unshift(...newContracts)
-    // contractUpdated = [...newContracts,...oldContracts]
-  
-    // limit to pagesize
-    // contractUpdated = contractUpdated.slice(0,contractPagesize)
-
-   
-
-    // log('handleUpdateLiveContracts - currContracts',currContracts)
-    
-    // // compare old and new
-    
-    // different = (contractUpdated.length !== currContracts.length)
-  
-    // if (!different) {
-    //   contractUpdated.forEach((nContr,i) => {
-    //     if (nContr.id !== currContracts[i].id || nContr.statusUpdatedAt !== currContracts[i].statusUpdatedAt) {
-    //       different = true
-    //     }
-    //   })
-    // }
 
     if (different) {
       yield put({ type: CONTRACTS_UPDATED, payload: newContracts });
