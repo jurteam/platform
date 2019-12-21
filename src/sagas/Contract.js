@@ -607,92 +607,50 @@ export function* handleUpdateLiveContracts() {
   // const currVotes = yield select(getContractsCurrentList);
   const currContracts = yield select(getContractList);
   
-  let dateStart = moment.utc().format("YYYY-MM-DD");
   
   
-  if (currContracts.length > 0) {
-    
-    dateStart = moment.unix(Math.floor(currContracts[0].statusUpdatedAt/1000))
-    .utc().format("YYYY-MM-DD");
-    
-  }
+
   const response = yield call(Contracts.list, {    
-    from: dateStart
+    page: 1
   });
   
   let newContracts = response.data.data;
-  let contractUpdated = []
-  let oldContracts = []
 
  
+  log('handleUpdateLiveContracts - newContracts',newContracts)
+  log('handleUpdateLiveContracts - currContracts',currContracts)
   
-  if (newContracts.length > 0) 
-  {
 
-    // contractUpdated.push(...currContracts)
-    
-    const contractPagesize = yield select(getContractPageSize);
+    let different = false
 
-    log('handleUpdateLiveContracts dateStart:'+dateStart, newContracts)
+    // compare with old results
+    newContracts.forEach((nContr,i) => {
 
-    // add shine to new contract
-    newContracts.map((nContr) => {
-      nContr.new = true
-      return nContr
+      let presentOrEqual = false;
+
+      currContracts.forEach((cContr) => {
+        if (cContr.id === nContr.id 
+          && cContr.statusUpdatedAt === nContr.statusUpdatedAt
+          && cContr.statusId === nContr.statusId
+          && cContr.statusLabel === nContr.statusLabel
+          ) {
+          presentOrEqual = true;
+        }
+      })
+
+      if (!presentOrEqual) {
+        newContracts[i].new = (currContracts[i].new === 1 ? 2 : 1)
+        different = true
+      }
+
     })
 
-    if (newContracts.length >= contractPagesize) {
-      // insert only firsts contractPagesize of new
-      contractUpdated.push(...newContracts)
-      contractUpdated.slice(0,contractPagesize)
-
-    } else {
-
-      // remove same results
-      currContracts.forEach((cContr) => {
-        let present = false;
-        newContracts.forEach((nContr,i) => {
-          if (cContr.id === nContr.id) {
-            present = true;
-            if (cContr.statusUpdatedAt === nContr.statusUpdatedAt) {
-              newContracts[i].new = false
-            }
-          }
-        })
-        if (!present) {
-          oldContracts.push(cContr)
-        }
-      })
-      
-      // unshift new results
-      // contractUpdated.unshift(...newContracts)
-      contractUpdated = [...newContracts,...oldContracts]
-    
-      // limit to pagesize
-      contractUpdated = contractUpdated.slice(0,contractPagesize)
-
-    }
-
-    log('handleUpdateLiveContracts - contractUpdated',contractUpdated)
-    log('handleUpdateLiveContracts - currContracts',currContracts)
-    
-    // compare old and new
-    let different = false
-    different = (contractUpdated.length !== currContracts.length)
-  
-    if (!different) {
-      contractUpdated.forEach((nContr,i) => {
-        if (nContr.id !== currContracts[i].id || nContr.statusUpdatedAt !== currContracts[i].statusUpdatedAt) {
-          different = true
-        }
-      })
-    }
 
     if (different) {
-      yield put({ type: CONTRACTS_UPDATED, payload: contractUpdated });
+      yield put({ type: CONTRACTS_UPDATED, payload: newContracts });
     }
 
-  }
+  
 
 
 }
