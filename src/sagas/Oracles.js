@@ -277,6 +277,7 @@ export function* getOraclesLive() {
           totalTokens: response.data.totalTokens,
           totalTokensPartA: response.data.totalTokensPartA,
           totalTokensPartB: response.data.totalTokensPartB,
+          totalTokensReject: response.data.totalTokensReject,
         };
 
         yield put({ type: UPDATE_DISPUTE_LIVE, payload: newPerc });
