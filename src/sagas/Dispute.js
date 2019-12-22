@@ -58,14 +58,23 @@ import {
 
 // Get
 export function* getDispute(action) {
-  const { id, onSuccess, onError } = action;
+  const { id, onSuccess, onError, history } = action;
   yield put({ type: DISPUTE_UPDATING, payload: true });
-
+  
   try {
     const response = yield call(Disputes.get, { id });
     let { data } = response.data;
     const { address } = data;
     log("getDispute", response);
+    
+    log("getDispute - data.statusId", data.statusId);
+    log("getDispute - data.id", data.id);
+    log("getDispute - history.location", history.location);
+    log("getDispute - history.locations", history.location.pathname.startsWith('/disputes/detail'));
+    // if this dispute is ongoing dispute redirect it to /contracts/detail/
+    if ((data.statusId === 31 || data.statusId === 32) && history.location.pathname.startsWith('/disputes/detail')) {
+      history.push('/contracts/detail/'+data.id)
+    }
     
     if (address) {
       log("getDispute - row", 63);
