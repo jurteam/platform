@@ -3,6 +3,7 @@ import { call, put, select, takeLatest, takeEvery } from "redux-saga/effects";
 import {
   // RESET_DISPUTE,
   // PUT_DISPUTE,
+  API_GET_CONTRACT,
   DISPUTE_UPDATING,
   UPDATE_DISPUTE_FILTER,
   FETCH_DISPUTES,
@@ -22,14 +23,18 @@ import {
   DISPUTE_PAGE_CHANGE,
   DISPUTE_ORDER_CHANGE,
   CHAIN_GET_DISPUTE,
+  CHAIN_GET_CONTRACT,
   DELETE_ALL_DISPUTES,
   RESET_ALL_DISPUTES
 } from "../reducers/types";
 
-import { log } from "../utils/helpers"; // log helper
+import { 
+  log, 
+  chainErrorHandler
+} from "../utils/helpers"; // log helper
 
 // Api layouts
-import { Disputes } from "../api";
+import { Disputes, Arbitration } from "../api";
 
 import {
   // getNewDispute,
@@ -37,7 +42,10 @@ import {
   // getCurrentDisputeActivities,
   getDisputeListPage,
   getDisputeListOrder,
-  getDisputeFilters
+  getDisputeFilters,
+  getUser,
+  getOracleList,
+  getDrizzleStoredContracts,
 } from "./Selectors"; // selector
 
 // Get
@@ -47,12 +55,137 @@ export function* getDispute(action) {
 
   try {
     const response = yield call(Disputes.get, { id });
-    const { data } = response.data;
+    let { data } = response.data;
     const { address } = data;
     log("getDispute", response);
-    yield put({ type: SET_DISPUTE, payload: data });
+    
     if (address) {
+      yield put({ type: CHAIN_GET_CONTRACT, address });
       yield put({ type: CHAIN_GET_DISPUTE, address });
+      
+      // if dispute is closed, get the real winner from chain
+      if (data.statusId === 39) {
+        
+        // yield put({ type: CHAIN_GET_CONTRACT, address });
+        
+        const arbitration = new Arbitration(address);
+        let winner = yield arbitration.getWinner().catch(chainErrorHandler);
+        log("getDispute - winner", winner);
+        let hasWithdrawn = yield arbitration.hasWithdrawn().catch(chainErrorHandler);
+        log("getDispute - hasWithdrawn", hasWithdrawn);
+        const drizzleContracts = yield select(getDrizzleStoredContracts);
+        const VOTE_LOCKUP = drizzleContracts[address].VOTE_LOCKUP['0x0'].value;
+        log("getDispute - VOTE_LOCKUP", VOTE_LOCKUP);
+        const disputeEnd = yield arbitration.disputeEnds().catch(chainErrorHandler);
+        const lockupEnd = disputeEnd ? Number.parseInt(disputeEnd.toString()) + Number.parseInt(VOTE_LOCKUP) : 0
+        log("getDispute - lockupEnd", lockupEnd);
+        const now = new Date();
+        const nowSecs = Math.floor(now.getTime()/1000)
+        log("getDispute - nowSecs", nowSecs);
+        
+        // let allParties = yield arbitration.allParties().catch(chainErrorHandler);
+        winner = winner === '0x0000000000000000000000000000000000000000' ? '0x0' : winner
+        
+        // log("getDispute - allParties", allParties);
+        log("getDispute - data", data);
+        
+        data.winner = winner;
+        let hasToWithdraw = false;
+        
+        if (winner) {
+          
+          // --- check if current user can do Payout
+          
+          const partA = data.counterparties[0];
+          const partB = data.counterparties[1];
+          const { wallet }  = yield select(getUser);
+          const iPay = (data.whoPays === wallet )
+          const oracles = yield select(getOracleList);
+          let myAmount = 0;
+
+          log('getDispute',{
+            partA:partA,
+            partB:partB,
+            wallet: wallet,
+            iPay:iPay,            
+          })
+    
+          // if I am a Party 
+          if (partA.wallet === wallet) {
+            // i am party A
+
+            if (winner === '0x0') {
+              // reject win 
+
+              // control my fund into contract
+              if (iPay) {
+                myAmount = Number.parseFloat(data.value) - Number.parseFloat(data.partAPenaltyFee);
+              } else {
+                myAmount = Number.parseFloat(data.partAPenaltyFee);
+              }
+              
+            } else if (winner === partA.wallet) {
+              myAmount = Number.parseFloat(data.proposalPartA.proposal.proposal_part_a);
+            } else if (winner === partB.wallet) {
+              myAmount = Number.parseFloat(data.proposalPartB.proposal.proposal_part_a);  
+            }
+
+            hasToWithdraw = myAmount > 0 && !hasWithdrawn;
+
+          } else if (partB.wallet === wallet) {
+            // i am party B  
+          
+            if (winner === '0x0') {
+              // reject win 
+    
+              // control my fund into contract
+              if (iPay) {
+                myAmount = Number.parseFloat(data.value) - Number.parseFloat(data.partBPenaltyFee);
+              } else {
+                myAmount = Number.parseFloat(data.partBPenaltyFee);
+              }
+              
+            } else if (winner === partA.wallet) {
+              myAmount = Number.parseFloat(data.proposalPartA.proposal.proposal_part_b);
+            } else if (winner === partB.wallet) {
+              myAmount = Number.parseFloat(data.proposalPartB.proposal.proposal_part_b);  
+            }
+
+            hasToWithdraw = myAmount > 0 && !hasWithdrawn;
+            
+    
+          } else {
+            // loop all vote
+    
+            oracles.forEach(oracle => {
+    
+              if (oracle.oracle_wallet === wallet) {
+                // I am a Voter
+    
+                if (oracle.wallet_part === winner) {
+                  // i voted winnin party
+    
+                  // control if has passed 24 h from closing dispute
+    
+                  if (nowSecs >= lockupEnd) {
+                    hasToWithdraw = true
+                  }
+                  // setShowWithdrawButton(true)
+                }
+              }
+              
+            })
+            
+          }
+
+          
+        }
+        
+        data.hasToWithdraw = hasToWithdraw;
+        
+      }
+            
+      yield put({ type: SET_DISPUTE, payload: data });
     }
 
     if (typeof onSuccess === "function") {onSuccess();} // exec onSuccess callback if present

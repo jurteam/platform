@@ -274,6 +274,7 @@ export const DisputeDetail = ( props ) => {
     percentagePartB,
     totalTokensPartA,
     totalTokensPartB,
+    totalTokensReject,
     earnings,
     // totalTokens,
     details: issues
@@ -408,6 +409,15 @@ export const DisputeDetail = ( props ) => {
         percentage: percentagePartB,
         value: totalTokensPartB,
         winner: false
+      },
+      {
+        wallet: '0x0',
+        name: 'Reject',
+        email: null,
+        renderName: true,
+        percentage: (100-percentagePartB-percentagePartA),
+        value: totalTokensReject,
+        winner: false
       }
     ];
   }
@@ -488,6 +498,7 @@ export const DisputeDetail = ( props ) => {
                   currentUserCanPay={currentUserCanPay}
                   lastPartInvolved={lastPartInvolved}
                   voteCounterparties={voteCounterparties}
+                  hasToWithdraw={dispute.current.hasToWithdraw}
                   history={history}
                   oracles={oracle.currentList}
                   onSubmit={onSubmit}

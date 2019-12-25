@@ -26,6 +26,7 @@ export const DisputeSidebar = ({
   // cases,
   notificationLoading,
   voteCounterparties,
+  hasToWithdraw,
   // selectedOptionId,
   // onSubmit,
   // onSend,
@@ -116,6 +117,7 @@ export const DisputeSidebar = ({
           currentWallet={currentWallet}
           onVote={onVote}
           earnings={earnings}
+          hasToWithdraw={hasToWithdraw}
           winner={winner}
           onReject={onReject}
           canVote={canVote(statusId)}

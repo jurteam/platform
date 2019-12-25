@@ -7,7 +7,7 @@ import { AppContext } from "../../../bootstrap/AppProvider"; // context
 
 export const DisputeVote = ( props ) => {
   const {
-    // currentWallet,
+    hasToWithdraw,
     title,
     counterparties,
     statusId,
@@ -50,7 +50,7 @@ export const DisputeVote = ( props ) => {
                 : false
             }
           />
-        ))}
+        ))}         
       </div>
       {canVote && (
         <div className="jur-dispute-vote__note">
@@ -61,6 +61,8 @@ export const DisputeVote = ( props ) => {
       {!canVote && statusId === 39 && (
         <div className="jur-dispute-vote__result-note">{resultNote}</div>
       )}
+      {hasToWithdraw && 
+      <div className="jur-dispute-vote__result-note">WITHDRAW</div>}
     </div>
   );
 };
