@@ -18,6 +18,7 @@ import {
   CONTRACT_SAVING,
   CONTRACT_PAYING,
   CONTRACT_UPDATING,
+  CONTRACTS_UPDATED,
   CONTRACT_LIST_UPDATING,
   CONTRACT_NOTIFICATIONS_LOADING,
   CONTRACT_MEDIA_DELETE,
@@ -25,7 +26,8 @@ import {
   RESET_CONTRACT,
   RESET_CONTRACTS,
   RESET_ALL_CONTRACTS,
-  CONTRACT_DETAIL_PAGE
+  CONTRACT_DETAIL_PAGE,
+  CONTRACTS_LIST_PAGE
 } from "./types";
 
 import { log } from "../utils/helpers";
@@ -37,6 +39,7 @@ const INITIAL_STATE = {
   notificationLoading: false,
   updatingList: true,
   detailPage: false,
+  listPage: false,
   new: {
     part_a_wallet: "",
     part_a_name: "",
@@ -132,11 +135,25 @@ export default (state = INITIAL_STATE, action) => {
         updatingList: false
       };
 
+    case CONTRACTS_UPDATED:
+      log(CONTRACTS_UPDATED, action.payload);
+      return {
+        ...state,
+        list: action.payload
+      };
+
     case CONTRACT_DETAIL_PAGE:
       log(CONTRACT_DETAIL_PAGE, action);
       return { 
         ...state, 
         detailPage: action.payload 
+      };
+
+    case CONTRACTS_LIST_PAGE:
+      log(CONTRACTS_LIST_PAGE, action);
+      return { 
+        ...state, 
+        listPage: action.payload 
       };
 
     case SET_CONTRACT_CURRENT_PAGE:

@@ -20,9 +20,25 @@ import {
   FETCH_ACTIVITIES,
   API_GET_STATUS_CHANGE,
   API_GET_LIVE_VOTES,
+  UPDATE_LIVE_CONTRACTS,
+  UPDATE_LIVE_DISPUTES,
 } from "../reducers/types";
 
-import { getWallet, getContractdetailPage, getDisputedetailPage, getCurrentContract, getCurrentDispute } from "./Selectors"; // selectors
+import { 
+  getWallet, 
+  getContractdetailPage, 
+  getDisputedetailPage, 
+  getCurrentContract, 
+  getCurrentDispute,
+  getContractIsListPage,
+  getContractFilters,
+  getContractListOrder,
+  getDisputeIsListPage,
+  getContractListPage,
+  getDisputeFilters,
+  getDisputeListOrder,
+  getDisputeListPage,
+} from "./Selectors"; // selectors
 
 // Api layouts
 import { Faq } from "../api";
@@ -124,21 +140,79 @@ export function* handleHeartBeat() {
 
   const ContractDetailPage = yield select(getContractdetailPage);
   const DisputeDetailPage = yield select(getDisputedetailPage);
-
+  
+  const ContractIsListPage = yield select(getContractIsListPage);
+  const DisputeIsListPage = yield select(getDisputeIsListPage);
+  
   if (ContractDetailPage) {
-    // nella pagina del contratto
-
 
     log("handleHeartBeat - ContractDetailPage",ContractDetailPage);
+    // into detail contract page
     
     yield put({ type: API_GET_STATUS_CHANGE });
-
+    
   } else if (DisputeDetailPage) {
-    // nella pagina della disputa
+    // into detail dispute page
     const currDisp = yield select(getCurrentDispute);
     log("handleHeartBeat - DisputeDetailPage",currDisp);
 
     yield put({ type: API_GET_LIVE_VOTES });
+    
+  } else if (ContractIsListPage) {
+    // into list contracts page
+    log("handleHeartBeat - ContractIsListPage",ContractIsListPage);
+
+    const ContractOrder = yield select(getContractListOrder);
+
+    if (ContractOrder.length === 0) {
+      // if no order is setted
+      const ContractFilter = yield select(getContractFilters);
+      
+      if (ContractFilter.status === null && 
+        ContractFilter.fromDate === null && 
+        ContractFilter.toDate === null && 
+        ContractFilter.searchText === null ) {
+        // if no filter is setted
+
+        const contractListPage = yield select (getContractListPage)
+
+        if (contractListPage === 1) {
+          // if is the first page of contracts
+
+          yield put({ type: UPDATE_LIVE_CONTRACTS });
+        }
+      }
+    }    
+    
+  } else if (DisputeIsListPage) {
+    // into list disputes page
+    log("handleHeartBeat - DisputeIsListPage",DisputeIsListPage);
+
+
+    const DisputeOrder = yield select(getDisputeListOrder);
+
+    if (DisputeOrder.length === 0) {
+      // if no order is setted
+      const DisputeFilter = yield select(getDisputeFilters);
+      
+      if (DisputeFilter.status === null && 
+          DisputeFilter.mine === false && 
+          DisputeFilter.category === null && 
+          DisputeFilter.fromDate === null && 
+          DisputeFilter.toDate === null && 
+          DisputeFilter.searchText === null ) {
+        // if no filter is setted
+
+        const disputeListPage = yield select (getDisputeListPage)
+
+        if (disputeListPage === 1) {
+          // if is the first page of Disputes
+
+          yield put({ type: UPDATE_LIVE_DISPUTES });
+        }
+      }
+    }    
+
 
   }
 

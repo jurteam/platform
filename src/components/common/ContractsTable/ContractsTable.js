@@ -141,6 +141,7 @@ export const ContractsTable = props => {
               <TableRow
                 key={`notification-row-${idx}-${contract.id}`}
                 onClick={() => showContract(`/contracts/detail/${contract.id}`)}
+                className={contract.new?'updated-contract':''}
               >
                 <TableCell>
                   <Tag statusId={contract.statusId}>{contract.statusLabel}</Tag>

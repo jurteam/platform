@@ -95,7 +95,8 @@ const DisputesTable = props => {
         <TableRow
           key={dispute.id}
           onClick={() => showDispute(`/disputes/detail/${dispute.id}`)}
-        >
+          className={dispute.new?'updated-dispute':''}
+          >
           <TableCell>
             <Tag statusId={dispute.statusId}>{dispute.statusLabel}</Tag>
           </TableCell>

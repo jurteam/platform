@@ -1,4 +1,5 @@
 import { call, put, select, takeLatest, takeEvery } from "redux-saga/effects";
+import moment from 'moment';
 
 import moment from 'moment';
 
@@ -16,6 +17,7 @@ import {
   DISPUTE_LIST_UPDATING,
   API_DELETE_DISPUTE,
   DISPUTES_FETCHED,
+  DISPUTES_UPDATED,
   DISPUTE_DELETED,
   API_CATCH,
   // READ_NOTIFICATIONS,
@@ -31,6 +33,7 @@ import {
   DISPUTE_PAYOUT_PARTY,
   DISPUTE_PAYOUT_VOTER,
   LOOKUP_WALLET_BALANCE,
+  UPDATE_LIVE_DISPUTES,
 } from "../reducers/types";
 
 import { 
@@ -51,6 +54,8 @@ import {
   getUser,
   getOracleList,
   getDrizzleStoredContracts,
+  getDisputeList,
+  getDisputePageSize,
 } from "./Selectors"; // selector
 
 // Get
@@ -438,6 +443,104 @@ export function* handlePayoutVoter(args) {
 
 }
 
+export function* handleUpdateLiveDisputes() {
+  // const currVotes = yield select(getDisputesCurrentList);
+  const currDisputes = yield select(getDisputeList);
+  
+  let dateStart = moment.utc().format("YYYY-MM-DD");
+  
+  
+  if (currDisputes.length > 0) {
+    
+    dateStart = moment.unix(Math.floor(currDisputes[0].statusUpdatedAt/1000))
+    .utc().format("YYYY-MM-DD");
+    
+  }
+  const response = yield call(Disputes.list, {    
+    from: dateStart,
+    show: "all",
+  });
+  
+  let newDisputes = response.data.data;
+  let disputeUpdated = []
+  let oldDisputes = []
+
+ 
+  
+  if (newDisputes.length > 0) 
+  {
+
+    // disputeUpdated.push(...currDisputes)
+    
+    const disputePagesize = yield select(getDisputePageSize);
+
+    log('handleUpdateLiveDisputes dateStart:'+dateStart, newDisputes)
+
+    // add shine to new dispute
+    newDisputes.map((nContr) => {
+      nContr.new = true
+      return nContr
+    })
+
+    if (newDisputes.length >= disputePagesize) {
+      // insert only firsts disputePagesize of new
+      disputeUpdated.push(...newDisputes)
+      disputeUpdated.slice(0,disputePagesize)
+
+    } else {
+
+      // remove same results
+      currDisputes.forEach((cContr) => {
+        let present = false;
+        newDisputes.forEach((nContr,i) => {
+          if (cContr.id === nContr.id) {
+            present = true;
+            if (cContr.statusUpdatedAt === nContr.statusUpdatedAt) {
+              newDisputes[i].new = false
+            }
+          }
+        })
+        if (!present) {
+          oldDisputes.push(cContr)
+        }
+      })
+      
+      // unshift new results
+      // disputeUpdated.unshift(...newDisputes)
+      disputeUpdated = [...newDisputes,...oldDisputes]
+    
+      // limit to pagesize
+      disputeUpdated = disputeUpdated.slice(0,disputePagesize)
+
+    }
+
+    log('handleUpdateLiveDisputes - disputeUpdated',disputeUpdated)
+    log('handleUpdateLiveDisputes - currDisputes',currDisputes)
+    
+    // compare old and new
+    let different = false
+    different = (disputeUpdated.length !== currDisputes.length)
+  
+    if (!different) {
+      disputeUpdated.forEach((nContr,i) => {
+        if (nContr.id !== currDisputes[i].id || nContr.statusUpdatedAt !== currDisputes[i].statusUpdatedAt) {
+          different = true
+        }
+      })
+    }
+
+    if (different) {
+      yield put({ type: DISPUTES_UPDATED, payload: disputeUpdated });
+    }
+
+  }
+
+
+}
+
+
+
+
 // spawn tasks base certain actions
 export default function* disputeSagas() {
   log("run", "DisputeSagas");
@@ -453,4 +556,5 @@ export default function* disputeSagas() {
   yield takeLatest(DELETE_ALL_DISPUTES, onDeleteAllDisputes);
   yield takeLatest(DISPUTE_PAYOUT_PARTY, handlePayoutParty);
   yield takeLatest(DISPUTE_PAYOUT_VOTER, handlePayoutVoter);
+  yield takeLatest(UPDATE_LIVE_DISPUTES, handleUpdateLiveDisputes);
 }
