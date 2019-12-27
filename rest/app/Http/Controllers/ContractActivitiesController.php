@@ -35,12 +35,16 @@ class ContractActivitiesController extends Controller
     public function index($id)
     {
         $activities = Activity::exceptDraft()
-                            ->exceptFuture()
                             ->byContract($id)
-                            ->oldest('created_at')
+                            ->byUpdatedDate()
                             ->get();
 
-        return $this->response->collection($activities, new ContractActivityTransformer);
+        return $this->response->collection(
+            $activities->filter(function($activity) {
+                return !is_null($activity->getUpdatedDate());
+            }),
+            new ContractActivityTransformer
+        );
     }
 
     /**

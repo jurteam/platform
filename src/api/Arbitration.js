@@ -349,6 +349,38 @@ export default class ArbitrationContract {
     const [account] = await this.web3.eth.getAccounts();
     return instance.payoutVoter(start, end, { from: account });
   }
+  
+
+  /**
+   * @dev Returns a state for vote to be claimed
+   * 0: now is before disputeEnd + vote_lookup
+   * 1: ok! Reward is claimable
+   * 2: reward is already claimed!
+   * @param _start Index at which to start iterating through votes
+   * @param _end Index at which to end iterating through votes
+   */
+  async canClaimReward(start, end) {
+    if (typeof start === 'undefined') start = 0;
+    if (typeof end === 'undefined') end = 999999;
+    const instance = await this.contract.deployed();
+    const [account] = await this.web3.eth.getAccounts();
+    return instance.canClaimReward(start, end, { from: account });
+  }
+
+  /**
+   * @dev Returns a bool if can withdraw and the amount of withdraw
+   */
+  async canWithdraw() {
+    const instance = await this.contract.deployed();
+    const [account] = await this.web3.eth.getAccounts();
+    return instance.canWithdraw({ from: account });
+  }   
+
+  async VoterPayout() {
+    const instance = await this.contract.deployed();
+    const [account] = await this.web3.eth.getAccounts();
+    return instance.VoterPayout({ from: account });
+  }
 
   /*
   async updateCandidatesEventListener(callback) {

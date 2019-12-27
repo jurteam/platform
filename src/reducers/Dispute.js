@@ -58,7 +58,11 @@ const INITIAL_STATE = {
     attachments: {
       data: []
     },
-    activities: []
+    activities: [],
+    hasWithdrawn: true,
+    hasToGetReward: 0,
+    sumToWithdraw: 0,
+    reward: 0,
   },
   filters: {
     mine: false,

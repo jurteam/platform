@@ -63,6 +63,15 @@ class Activity extends Model implements HasMedia
         return $query->whereUserId($userId);
     }
 
+    public function scopeByUpdatedDate($query)
+    {
+        return $query
+                ->selectRaw('
+                    *, IF(chain_updated_at IS NOT NULL AND NOW() > chain_updated_at,
+                        chain_updated_at, created_at) AS ordered_date_at
+                ')->orderByRaw('ordered_date_at ASC');
+    }
+
     /**
      * Retrieve contract.
      *
@@ -100,12 +109,12 @@ class Activity extends Model implements HasMedia
 
     public function getUpdatedDate()
     {
-        if (! empty($this->chain_updated_at)) {
-            if (!$this->chain_updated_at->isFuture()) {
-                return $this->chain_updated_at->valueOf();
-            }
+        if (is_null($this->chain_updated_at)) {
+            return $this->created_at->valueOf();
+        } elseif (! $this->chain_updated_at->isFuture()) {
+            return $this->chain_updated_at->valueOf();
         }
-        return $this->created_at->valueOf();
+        return null;
     }
 
     public function getContractDetailsAttachments()
@@ -168,5 +177,35 @@ class Activity extends Model implements HasMedia
             return $this->chain_updated_at->isFuture();
         }
         return false;
+    }
+
+    public function getCreator()
+    {
+        $contract = $this->contract;
+
+        return [
+            'address' => $contract->part_a_email ?: $this->getUserEmail($contract->part_a_wallet),
+            'name' => $contract->part_a_name ?: $contract->part_a_wallet
+        ];
+    }
+
+    public function getRecipient()
+    {
+        $contract = $this->contract;
+
+        return [
+            'address' => $contract->part_b_email ?: $this->getUserEmail($contract->part_b_wallet),
+            'name' => $contract->part_b_name ?: $contract->part_b_wallet
+        ];
+    }
+
+    protected function getUserEmail($wallet)
+    {
+        $user = User::byWallet($wallet)->first();
+
+        if ($user) {
+            return $user->email;
+        }
+        return null;
     }
 }

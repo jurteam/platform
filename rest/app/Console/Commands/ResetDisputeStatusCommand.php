@@ -38,13 +38,17 @@ class ResetDisputeStatusCommand extends Command
      */
     public function handle()
     {
-        Contract::disputes()
-            ->chunk(20, function($disputes) {
-                $disputes->each(function($dispute) {
+        Contract::chunk(20, function($disputes) {
+            $disputes->each(function($dispute) {
+                $status = $dispute->getCurrentStatus();
+                if ($status->code >= 35) {
+                    $dispute->update(['is_a_dispute' => true]);
+                } else {
                     if ($dispute->shouldRestoreStatus()) {
                         $dispute->resetOnFirstStatus();
                     }
-                });
+                }
             });
+        });
     }
 }

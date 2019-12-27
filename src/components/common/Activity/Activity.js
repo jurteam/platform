@@ -75,16 +75,9 @@ export const Activity = ( props ) => {
 
         case 35: // Ongoing Dispute
         return (
-          <span
-            className={`dispute ${isOpen ? "dispute--open" : ""}`}
-            onClick={() => setOpen(!isOpen)}
-          >
-            {/* {`${abstract || labels.sent} `} */}
-            {`${labels.started} `}
-            <span>
-              {labels.votingPhase}
-            </span>
-          </span>
+          <>
+             {labels.started}&nbsp;<span className="alert">{labels.votingPhase}</span>
+          </>
         );
 
       case 21: // Open Friendly Resolution

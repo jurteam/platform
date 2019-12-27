@@ -116,7 +116,7 @@ class Contract extends Model implements HasMedia
         if ($params->code == 21) {
             $this->flagAsFriendlyResolution();
         }
-        if ($params->code == 35) {
+        if ($params->code >= 35) {
             $this->flagAsOpenDispute();
         }
 
@@ -128,7 +128,7 @@ class Contract extends Model implements HasMedia
             'chain_updated_at' => $chainUpdatedAt
         ]), $user);
 
-        $this->notifyCounterPart($activity);
+        $this->notifyParts($activity);
     }
 
     /**
@@ -170,5 +170,18 @@ class Contract extends Model implements HasMedia
             return $this->value + $this->part_b_penalty_fee;
         }
         return 0;
+    }
+
+    public function getContractUrl()
+    {
+        return config('jur.url') . "/contacts/detail/{$this->id}";
+    }
+
+    public function getExpirationDate()
+    {
+        return $this->created_at
+            ->addDays($this->duration_days)
+            ->addHours($this->duration_hours)
+            ->addMinutes($this->duration_minutes);
     }
 }
