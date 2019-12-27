@@ -34,6 +34,7 @@ export const getDisputeListOrder = (state) => (state.dispute.order);
 export const getOracleOrder = (state) => (state.oracle.order);
 export const getOracleListPage = (state) => (state.oracle.page);
 export const getOracleListOrder = (state) => (state.oracle.order);
+export const getOracleCurrentList = (state) => (state.oracle.currentList);
 
 // User
 export const getUser = (state) => (state.user);

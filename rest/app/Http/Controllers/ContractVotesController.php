@@ -3,12 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\Contract;
+use League\Fractal\Manager;
 use App\Models\ContractVote;
 use Illuminate\Http\Request;
 use Dingo\Api\Routing\Helpers;
 use App\Filters\ContractVoteFilters;
+use League\Fractal\Resource\Collection;
+use Illuminate\Database\Eloquent\Collection as EloquenCollection;
 use App\Transformers\ContractVoteTransformer;
 use App\Http\Controllers\Traits\MediableTrait;
+use League\Fractal\Serializer\ArraySerializer;
 
 class ContractVotesController extends Controller
 {
@@ -40,11 +44,11 @@ class ContractVotesController extends Controller
                         ->filters($filters)
                         ->get();
 
-        $response = $this->response->collection($votes, new ContractVoteTransformer)->getContent();
+        $response = $this->createDataFromResponse($votes, new ContractVoteTransformer);
 
         return response()->json(array_merge(
             $contract->getPartialsData(), [
-                'data' => json_decode($response)
+                'data' => $response->toArray()
             ])
         );
     }
@@ -74,5 +78,19 @@ class ContractVotesController extends Controller
         ContractVote::destroy($id);
 
         return response()->json(compact('id'));
+    }
+
+    /**
+     * @param  \Illuminate\Database\Eloquent\Collection $collection
+     * @param  \League\Fractal\TransformerAbstract $transformer
+     */
+    protected function createDataFromResponse(EloquenCollection $collection, $transformer)
+    {
+        $manager = new Manager;
+        $manager->setSerializer(new ArraySerializer);
+
+        return $manager->createData(
+            new Collection($collection, $transformer)
+        );
     }
 }

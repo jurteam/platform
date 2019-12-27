@@ -1,5 +1,4 @@
 import { call, put, select, takeLatest, takeEvery } from "redux-saga/effects";
-import { getCurrentDispute } from "./Selectors";
 import {
   FETCH_ORACLES,
   FETCH_CURRENT_ORACLES,
@@ -17,8 +16,12 @@ import {
   LOOKUP_WALLET_BALANCE,
   // SET_CONTRACT_STATUS
   FETCH_CONTRACTS,
-  DISPUTE_SAVING
+  DISPUTE_SAVING,
+  API_GET_LIVE_VOTES,
+  CURRENT_ORACLES_LIVE,
+  UPDATE_DISPUTE_LIVE
 } from "../reducers/types";
+import moment from 'moment';
 
 import { log, chainErrorHandler } from "../utils/helpers"; // log helper
 
@@ -27,7 +30,7 @@ import { log, chainErrorHandler } from "../utils/helpers"; // log helper
 // Api layouts
 import { Oracles, Disputes, JURToken /*, Arbitration, Contracts*/ } from "../api";
 
-import { /* getOracleOrder, */ getOracleListPage, getOracleListOrder } from "./Selectors"; // selector
+import { /* getOracleOrder, */ getOracleCurrentList, getCurrentDispute, getOracleListPage, getOracleListOrder } from "./Selectors"; // selector
 
 // Get
 export function* fetchOracles(action) {
@@ -209,6 +212,83 @@ export function* onVote(action) {
   // }
 }
 
+
+export function* getOraclesLive() {
+
+  const currDisp = yield select(getCurrentDispute);
+  const currVotes = yield select(getOracleCurrentList);
+
+  log("getOraclesLive - currDisp", currDisp);
+  let createdAt = currDisp.statusUpdatedAt;
+  
+  if (currVotes.length > 0) {
+    createdAt = currVotes[0].voted_at;
+  }
+  
+  log("getOraclesLive - createdAt", createdAt);
+
+  let dateStart = moment.unix(Math.floor(createdAt/1000)).utc().format("YYYY-MM-DD HH:mm:ss");
+  
+  log("getOraclesLive - dateStart", dateStart);
+  // log("getOraclesLive - dateStart.toString()", dateStart.toString());
+  
+
+  const response = yield call(Oracles.live, { 
+    id: currDisp.id, 
+    live: dateStart.toString(),
+    "orderBy[created_at]": 'desc'
+   });
+
+
+  log("getOraclesLive - response", response);
+  // log("getOraclesLive - response", response.data.status );
+
+  let newOracles = response.data.data.data;
+
+  if (newOracles.length > 0) {
+
+    if (currVotes.length > 0) {
+
+      log('CURRENT_ORACLES_LIVE - newOracles1', newOracles);
+      
+      newOracles = newOracles.filter((nVote) => {
+        let votePresent = false;
+        currVotes.forEach((vote) => {
+          if (vote.id === nVote.id) {
+            // return false;
+            votePresent = true;
+            // log('CURRENT_ORACLES_LIVE - nVote.id', nVote.id);
+          }
+        });
+        log('CURRENT_ORACLES_LIVE - votePresent', votePresent);
+        return !votePresent;
+      });
+
+      log('CURRENT_ORACLES_LIVE - newOracles2', newOracles);
+
+      if (newOracles.length > 0) {
+        yield put({ type: CURRENT_ORACLES_LIVE, payload: {
+          oracles: newOracles
+        } });
+
+        const newPerc = {
+          percentagePartA: response.data.percentagePartA,
+          percentagePartB: response.data.percentagePartB,
+          totalTokens: response.data.totalTokens,
+          totalTokensPartA: response.data.totalTokensPartA,
+          totalTokensPartB: response.data.totalTokensPartB,
+        };
+
+        yield put({ type: UPDATE_DISPUTE_LIVE, payload: newPerc });
+      } 
+    } 
+    
+  }
+  
+}
+
+
+
 // spawn tasks base certain actions
 export default function* oracleSagas() {
   log("run", "oracleSagas");
@@ -218,4 +298,6 @@ export default function* oracleSagas() {
   yield takeEvery(API_GET_DISPUTE, fetchCurrentOracles);
   yield takeLatest(ORACLE_PAGE_CHANGE, onOraclePageChange);
   yield takeLatest(ORACLE_ORDER_CHANGE, onOracleOrderChange);
+
+  yield takeEvery(API_GET_LIVE_VOTES, getOraclesLive);
 }

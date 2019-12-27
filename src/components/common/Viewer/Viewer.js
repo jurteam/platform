@@ -49,6 +49,7 @@ export const Viewer = (props) => {
       currentVote,
       hasError,
       onVote,
+      voteReject,
       current,
       contract,
       shouldHide,
@@ -281,6 +282,7 @@ export const Viewer = (props) => {
                   earnings={contract.earnings}
                   onReject={onReject}
                   canVote={canVote(statusId)}
+                  voteReject={voteReject}
                 />
               </div>
             </div>

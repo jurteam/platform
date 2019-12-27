@@ -274,6 +274,7 @@ export const DisputeDetail = ( props ) => {
     percentagePartB,
     totalTokensPartA,
     totalTokensPartB,
+    totalTokensReject,
     earnings,
     // totalTokens,
     details: issues
@@ -338,6 +339,7 @@ export const DisputeDetail = ( props ) => {
 
   let common = {};
   let voteCounterparties = [];
+  let voteReject = {};
 
   // Cotract data
   let contractData = {};
@@ -410,6 +412,11 @@ export const DisputeDetail = ( props ) => {
         winner: false
       }
     ];
+
+    voteReject = {
+      percentage: (100 - percentagePartA - percentagePartB),
+      value: totalTokensReject,
+    }
   }
 
   const uploadedFiles = contractAttachments ? contractAttachments.data : [];
@@ -494,6 +501,7 @@ export const DisputeDetail = ( props ) => {
                   onVote={onVote}
                   onReject={onRejectOpener}
                   onView={onFileView}
+                  voteReject={voteReject}
                 />
               )}
             </Aside>
@@ -517,6 +525,7 @@ export const DisputeDetail = ( props ) => {
             onReject={onRejectOpener}
             onFileLoadingError={onFileError}
             onRequestClose={onRequestClose}
+            voteReject={voteReject}
           />
         )}
 
@@ -544,6 +553,7 @@ export const DisputeDetail = ( props ) => {
           onRequestClose={() => setShowVoteOverlay(false)}
           onVoteSubmit={() => onSubmit()}
           metaMaskError={metaMaskError}
+          voteReject={voteReject}
         />
 
         <ModalDiscliamer
