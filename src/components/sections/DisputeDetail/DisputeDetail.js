@@ -118,6 +118,13 @@ export const DisputeDetail = ( props ) => {
     });
   }, [wallet.address]);
 
+  useEffect(() => {
+    log('useEffect - showVoteOverlay',showVoteOverlay)
+    if (!showVoteOverlay) {
+      changeInput("amount", 0.01)
+    }
+  }, [showVoteOverlay]);
+
   const changeInput = (name, value) => {
     if (!formUpdated) {setFormUpdated(true);};
     setFormData({ ...dispute.vote, [name]: value });
@@ -235,8 +242,11 @@ export const DisputeDetail = ( props ) => {
     errors[field].length > 0 &&
     formUpdated; // show error only when form is update at least one time
 
+  const currentUserCanPay = dispute.vote.amount <= Number(ethToHuman(wallet.balance));
+
   // disable update
   const submitDisabled =
+    currentUserCanPay === false ||
     formUpdated === false ||
     updating === true ||
     dispute.saving === true ||
@@ -347,8 +357,6 @@ export const DisputeDetail = ( props ) => {
       feeToPay = contractValue + Number(partBPenaltyFee);
     }
   }
-
-  const currentUserCanPay = feeToPay <= Number(ethToHuman(wallet.balance));
 
   const part_a = {
     isDebtor:
@@ -580,8 +588,10 @@ export const DisputeDetail = ( props ) => {
             contract={contractData}
             currentWallet={user.wallet}
             counterparties={voteCounterparties}
+            currentUserCanPay={currentUserCanPay}
             onVote={(counterparty, idx) => onVote(counterparty, idx)}
             onReject={onRejectOpener}
+            error={!currentUserCanPay}
             onFileLoadingError={onFileError}
             onRequestClose={onRequestClose}
             voteReject={voteReject}
@@ -594,6 +604,7 @@ export const DisputeDetail = ( props ) => {
           }
           countdownOptions={countdownOptions}
           statusId={statusId}
+          error={!currentUserCanPay}
           contract={contractData}
           current={showVoteOverlay}
           currentIdx={showVoteOverlay.idx}
@@ -601,6 +612,7 @@ export const DisputeDetail = ( props ) => {
           shouldHide={dispute.updating || dispute.saving}
           currentWallet={user.wallet}
           submitDisabled={submitDisabled}
+          currentUserCanPay={currentUserCanPay}
           hasError={hasError}
           counterparties={voteCounterparties}
           onVote={(counterparty, idx) => onVote(counterparty, idx)}

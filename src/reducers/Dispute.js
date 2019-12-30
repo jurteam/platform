@@ -81,7 +81,7 @@ const INITIAL_STATE = {
     message: null,
     oracle_wallet: null,
     wallet_part: null,
-    amount: 0
+    amount: 0.01
   },
   list: [],
   page: 1,

@@ -15,7 +15,7 @@ export const FormNumericInput = ( props ) => {
     ...params
   } = props;
   const [value, setValue] = useState(
-    typeof initialValue === "number" ? initialValue : ""
+    typeof initialValue === "number" ? initialValue : '0.01'
   );
   const plus = () => {
     if (!params.disabled) {

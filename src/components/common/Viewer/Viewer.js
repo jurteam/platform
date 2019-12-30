@@ -209,7 +209,7 @@ export const Viewer = (props) => {
                       }
                 </div>
                 <div className="jur-viewer__form__body">
-                  <BlockTitle title={labels.jurTokens} hideIcon />
+                  <BlockTitle title={labels.tokensLabel} hideIcon />
                   <Form.NumericInput
                     initialValue={Number.parseFloat(currentVote.amount).toFixed(2)}
                     step={0.01}
