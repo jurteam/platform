@@ -277,3 +277,9 @@ export const canVote = (statusId) => {
 
   return canVote
 }
+
+export const randomHEXString = (byte) => {
+  var randomHex = require('randomhex');
+ 
+  return randomHex(byte);
+}

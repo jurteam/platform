@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import appReference from "../../package.json"; // config
 import i18n from "../assets/i18n/en/labels.json"; // i18n
 
-import { log } from "../utils/helpers";
+import { log, randomHEXString } from "../utils/helpers";
 
 // Comet
 import Comet from "../hooks/Comet";
@@ -28,6 +28,8 @@ class AppProvider extends Component {
       archivableCodes: [-1, 0, 9, 29, 39],
       cometLoading: true,
       customProvider: null,
+      connex: false,
+      web3: false,
       notificationsTableHeaders: [
         {label: "", className: "jur-col--options", key: "status"},
         {label: i18n.date, sortable: true, className: "jur-col--duration", key: "date"},
@@ -73,9 +75,16 @@ class AppProvider extends Component {
   }
 
   componentDidMount() {
+    log('AppProvider - componentDidMount',typeof window.connex)
+    // if(window.connex) {
+    //   log('AppProvider - componentDidMount - window.connex',window.connex)
+    //   this.connexAuth();
+    // } else 
     if (typeof window.web3 === "object") {
+      log('AppProvider - componentDidMount - window.web3',window.web3)
       this.auth();
     } else {
+      log('AppProvider - componentDidMount - else window.web3',window.web3)
       this.setState({ cometLoading: false });
       this.store.dispatch({ type: SET_LOADING, payload: false });
     }
@@ -85,6 +94,83 @@ class AppProvider extends Component {
     Comet.cancel()
   }
 
+  connexAuth() {
+
+        let address = '';
+        this.store.dispatch({ type: SET_LOADING, payload: true });
+        this.setState({ cometLoading: true });
+    
+        // try to connect via connex
+        if(window.connex && address === '') {
+
+          log("AppProvider - connexAuth", "connex ok");
+          const connex = window.connex
+          
+
+          const signingService = connex.vendor.sign('cert')
+          log("AppProvider - connexAuth - signingService1", signingService);
+          
+          // signingService.link('https://rugge.free.beeceptor.com/{certid}') // User will be back to the app by the url https://connex.vecha.in/0xffff....
+          
+          log("AppProvider - connexAuth - signingService2", signingService);
+
+
+          let rndString = randomHEXString(8);
+
+          // Generate a random string and request the identification
+          signingService.request({
+            purpose: 'identification',
+            payload: {
+                type: 'text',
+                content: rndString
+                //auth-429895D1-95D1-F11B-DD10 
+
+                //auth-0E51B805-B805-A668-71D1
+                //auth-7FF3228A-228A-71DB-BFBB
+            }
+          }).then(result=>{
+            log("AppProvider - connexAuth - result",result)
+            log("AppProvider - connexAuth - signer",result.annex.signer)
+            address = result.annex.signer
+
+            this.setState({ onNetwork: true, connex: true, connex });
+            global.connector = 'connex'
+
+          }).catch(err => {
+            log("AppProvider - connexAuth - catch",err)
+
+            log("AppProvider", "network connection error!");
+            this.setState({ cometLoading: false });
+            this.store.dispatch({ type: SET_LOADING, payload: false });
+          })
+
+          // location.href = 'https://env.vechain.org/r/#' + encodeURIComponent(location.href)
+
+          // const status = connex.thor.status
+          // log('AppProvider - You are `connexed` to vechain, the status is ' + (status.progress === 1 ? 'synced': 'syncing'))
+          // log('AppProvider - window',window)
+          // log('AppProvider - connex',connex)
+          // // log('AppProvider - connex.caller()',connex.caller())
+          // log('AppProvider - connex.vendor',connex.vendor)
+          // log('AppProvider - connex.vendor.owned',connex.vendor.owned)
+          // log('AppProvider - connex.vendor.sign',connex.vendor.sign)
+          // log('AppProvider - connex.thor',connex.thor)
+          // log('AppProvider - connex.thor.genesis',connex.thor.genesis)
+          // log('AppProvider - connex.account',connex.thor.account)
+          // log('AppProvider - connex.account.get',connex.account.get)
+          
+          // connex.vendor.owned('0x7567D83b7b8d80ADdCb281A71d54Fc7B4364ffed').then(owned =>{ 
+          //   console.log(owned)
+          // })
+
+        //   this.setState({ onNetwork: false });
+
+        // } else {
+
+          
+        }
+  }
+
   auth() {
     this.store.dispatch({ type: SET_LOADING, payload: true });
     this.setState({ cometLoading: true });
@@ -92,7 +178,13 @@ class AppProvider extends Component {
       (customProvider) => {
         // success
         log("AppProvider", "store should be updated");
-        this.setState({ onNetwork: true, customProvider });
+        log("AppProvider - customProvider", customProvider);
+
+
+        global.connector = 'web3'
+
+
+        this.setState({ onNetwork: true, web3: true, customProvider });
       },
       () => {
         // error
