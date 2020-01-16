@@ -174,7 +174,7 @@ class Contract extends Model implements HasMedia
 
     public function getContractUrl()
     {
-        return config('jur.url') . "/contacts/detail/{$this->id}";
+        return config('jur.url') . "/contracts/detail/{$this->id}";
     }
 
     public function getExpirationDate()
