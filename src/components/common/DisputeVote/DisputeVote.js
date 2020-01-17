@@ -79,7 +79,7 @@ export const DisputeVote = ( props ) => {
 
     const earnings = payout.sumToWithdraw + payout.reward
 
-    console.log('earnings',earnings);
+    log('earnings',earnings);
     if (earnings > 0) {
       
       resultNote = (
