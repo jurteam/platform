@@ -91,6 +91,7 @@ export function* getDispute(action) {
           log("getDispute - arbitration", arbitration);
           // let canWithdraw = false;
           let canWithdraw = yield arbitration.canWithdraw().catch(chainErrorHandler);
+          log("getDispute - canWithdraw", canWithdraw);
           hasWithdrawn = canWithdraw[0];
           sumToWithdraw =  global.drizzle.web3.utils.fromWei(canWithdraw[1].toString(), 'ether');
 
@@ -385,7 +386,8 @@ export function* onDeleteAllDisputes() {
 
 export function* handlePayoutParty(args) {
 
-  const { id, address } = args;
+  const { id, address,
+    history } = args;
 
   const arbitration = new Arbitration(address);
 
@@ -405,6 +407,7 @@ export function* handlePayoutParty(args) {
       yield put({
         type: API_GET_DISPUTE,
         id,
+        history
       });
       log(`handlePayoutParty - API_GET_DISPUTE`);
 
@@ -415,7 +418,7 @@ export function* handlePayoutParty(args) {
 
 export function* handlePayoutVoter(args) {
 
-  const { id, address } = args;
+  const { id, address, history } = args;
 
   const arbitration = new Arbitration(address);
 
@@ -432,6 +435,7 @@ export function* handlePayoutVoter(args) {
     yield put({
       type: API_GET_DISPUTE,
       id,
+      history
     });
 
   }
