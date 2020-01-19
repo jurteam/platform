@@ -1,6 +1,9 @@
 import { call, put, select, takeLatest, takeEvery } from "redux-saga/effects";
 import moment from 'moment';
 
+import configureStore from "../bootstrap/Store";
+
+
 import {
   // RESET_DISPUTE,
   // PUT_DISPUTE,
@@ -24,6 +27,7 @@ import {
   DISPUTE_MEDIA_DELETE,
   DISPUTE_MEDIA_DELETED,
   DISPUTE_PAGE_CHANGE,
+  API_GET_DISPUTE_STATUS_CHANGE,
   DISPUTE_ORDER_CHANGE,
   CHAIN_GET_DISPUTE,
   CHAIN_GET_CONTRACT,
@@ -41,7 +45,7 @@ import {
 } from "../utils/helpers"; // log helper
 
 // Api layouts
-import { Disputes, Arbitration } from "../api";
+import { Contracts, Disputes, Arbitration } from "../api";
 
 import {
   // getNewDispute,
@@ -55,21 +59,28 @@ import {
   getDrizzleStoredContracts,
   getDisputeList,
   getDisputePageSize,
+  getCurrentDispute,
 } from "./Selectors"; // selector
 
 // Get
 export function* getDispute(action) {
-  const { id, onSuccess, onError, history } = action;
-
-  yield put({ type: RESET_DISPUTE });
-
+  log("getDispute",action);
+  
+  const { id, onSuccess, onError } = action;  
+  log("getDispute",70);
+  const { history } = configureStore();
+  log("getDispute",72);
+  
   yield put({ type: DISPUTE_UPDATING, payload: true });
+  log("getDispute",75);
+  // yield put({ type: RESET_DISPUTE });
+  log("getDispute",77);
   
   try {
     const response = yield call(Disputes.get, { id });
     let { data } = response.data;
     const { address } = data;
-    log("getDispute", response);
+    log("getDispute - response", response);
     
     log("getDispute - data.statusId", data.statusId);
     log("getDispute - data.id", data.id);
@@ -274,8 +285,9 @@ export function* getDispute(action) {
     yield put({ type: API_CATCH, error });
 
     if (error.response.status === 404 && error.response.config.headers.wallet !== null) {
-      const { history } = action;
-      history.push(`/disputes/`); // go to contracts list
+      // const { history } = action;
+      history.push(`/disputes/`); // go to disputes list
+      // yield put(push('/disputes/'));
     }
 
     if (typeof onError === "function") {onError(error);} // exec onError callback if present
@@ -506,7 +518,42 @@ export function* handleUpdateLiveDisputes() {
       pagination: response.data.meta.pagination 
     });
   }
+
+}
  
+export function* getDisputeStatus(action) {
+
+  // log("getDisputeStatus - action", action );
+  const currContr = yield select(getCurrentDispute);
+
+  const response = yield call(Contracts.getStatusChange, { id: currContr.id });
+
+
+  log("getDisputeStatus - response", response.data.status );
+
+  if (typeof response.data.status === "undefined") {
+    // control if status is different from actual status
+    log("getDisputeStatus - response no status", response.data );
+
+    if (currContr.statusId !== response.data.data.statusId) {
+      // fetch contract without loading
+      log("getDisputeStatus - response - status diff "+ currContr.statusId, response.data.data.statusId );
+
+      global.drizzle.store.dispatch({
+        type: API_GET_DISPUTE,
+        id: currContr.id,
+        // silent: true,
+        // onSuccess: pageLoaded,
+        // onError: pageLoaded,
+        // history
+      });
+
+    }
+
+  }
+  
+  // const {status,statusFrom,statusId,statusLabel,statusPart,statusUpdatedAt} = response.data.data
+  // log("getDisputeStatus - response", status, statusFrom,statusId,statusLabel,statusPart,statusUpdatedAt );
 
 
 }
@@ -529,5 +576,6 @@ export default function* disputeSagas() {
   yield takeLatest(DELETE_ALL_DISPUTES, onDeleteAllDisputes);
   yield takeLatest(DISPUTE_PAYOUT_PARTY, handlePayoutParty);
   yield takeLatest(DISPUTE_PAYOUT_VOTER, handlePayoutVoter);
-  yield takeLatest(UPDATE_LIVE_DISPUTES, handleUpdateLiveDisputes);
+  yield takeLatest(UPDATE_LIVE_DISPUTES, handleUpdateLiveDisputes);  
+  yield takeLatest(API_GET_DISPUTE_STATUS_CHANGE, getDisputeStatus);
 }

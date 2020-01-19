@@ -19,6 +19,7 @@ import {
   FETCH_DISPUTES,
   FETCH_ACTIVITIES,
   API_GET_STATUS_CHANGE,
+  API_GET_DISPUTE_STATUS_CHANGE,
   API_GET_LIVE_VOTES,
   UPDATE_LIVE_CONTRACTS,
   UPDATE_LIVE_DISPUTES,
@@ -160,7 +161,8 @@ export function* handleHeartBeat() {
     // into detail dispute page
     const currDisp = yield select(getCurrentDispute);
     log("handleHeartBeat - DisputeDetailPage",currDisp);
-
+    
+    yield put({ type: API_GET_DISPUTE_STATUS_CHANGE });
     yield put({ type: API_GET_LIVE_VOTES });
     
   } else if (ContractIsListPage) {
