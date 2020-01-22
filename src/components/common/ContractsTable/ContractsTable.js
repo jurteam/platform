@@ -190,7 +190,7 @@ export const ContractsTable = props => {
           </TableBody>
         ) : null}
       </Table>
-      {data.length > 0 && loading === true && (
+      {loading === true && (
         <SpinnerOnly loading={loading} className={"table__loading"} />
       )}
       {data.length > 0 && (

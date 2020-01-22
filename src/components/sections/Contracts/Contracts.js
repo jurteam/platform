@@ -71,7 +71,7 @@ export const Contracts = ( props ) => {
       handleFilterSubmit()
     }
   };
-  const handleFilterSubmit = () => {
+  useEffect(() => {
     if (
       filters.status === null &&
       filters.fromDate === null &&
@@ -82,6 +82,9 @@ export const Contracts = ( props ) => {
     } else {
       setSearching(true);
     };
+  },[filters]);
+  
+  const handleFilterSubmit = () => {    
     global.drizzle.store.dispatch({ type: FETCH_CONTRACTS });
   };
 
