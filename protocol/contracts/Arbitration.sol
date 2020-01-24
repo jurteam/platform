@@ -486,7 +486,8 @@ contract Arbitration {
     if (totalVotes != 0) {
       address winnerParty;
       address bestMinortyParty;
-      (winnerParty, bestMinortyParty) = getWinnerAndBestMinorty();
+      address leastMinorityParty;
+      (winnerParty, bestMinortyParty, leastMinorityParty) = getWinnerAndMinorties();
       if (_voteAddress == winnerParty) {
         require(partyVotes[_voteAddress].add(_voteAmount) <=  partyVotes[bestMinortyParty].mul(2));
       } else {
@@ -530,30 +531,79 @@ contract Arbitration {
     //There should be a clear winner now, otherwise the dispute would have been extended.
     address winnerParty;
     address bestMinortyParty;
-    (winnerParty, bestMinortyParty) = getWinnerAndBestMinorty();
+    address leastMinorityParty;
+    (winnerParty, bestMinortyParty, leastMinorityParty) = getWinnerAndMinorties();
     uint256 totalMinorityVotes = totalVotes.sub(partyVotes[winnerParty]);
     uint256 bestMinorityVotes = partyVotes[bestMinortyParty];
+    uint leastMinorityVotes = partyVotes[leastMinorityParty];
+    
+    uint256 stakedVotes;
+    uint256 eligableVotes;
+    uint256 totalRewardAmount;
+    uint256 singleMatchReward;
+    uint256 doubleMatchReward;
+    uint256 singleMatchVoteCount;
 
-    //If there were no votes on any minority options (all votes on the winner) then there is no payout
-    uint256 reward = 0;
-    if (totalMinorityVotes != 0) {
-      reward = decimalDiv(totalMinorityVotes, bestMinorityVotes);
-    }
+    if(leastMinorityVotes > 0) {
+      //calculate 1% of the least minority votes and multiply it by 3.
+      uint256 doubleMatchVoteCount = SafeMath.mul(decimalDiv(leastMinorityVotes, 100), 3);
 
-    uint256 eligableVotes = 0;
-    uint256 stakedVotes = 0;
+      uint minimumRaise = decimalDiv(SafeMath.add(leastMinorityVotes, SafeMath.mul(bestMinorityVotes, 2)), 100);
+      singleMatchVoteCount = SafeMath.add(SafeMath.sub(bestMinorityVotes, doubleMatchVoteCount), minimumRaise);
 
-    for (uint256 i = _start; i < Math.min256(userVotes[msg.sender][winnerParty].length, _end); i++) {
-      if (!userVotes[msg.sender][winnerParty][i].claimed) {
-        userVotes[msg.sender][winnerParty][i].claimed = true;
-        stakedVotes = stakedVotes.add(userVotes[msg.sender][winnerParty][i].amount);
-        if (userVotes[msg.sender][winnerParty][i].previousVotes < bestMinorityVotes) {
-          eligableVotes = eligableVotes.add(Math.min256(bestMinorityVotes.sub(userVotes[msg.sender][winnerParty][i].previousVotes), userVotes[msg.sender][winnerParty][i].amount));
+      singleMatchReward = decimalDiv(SafeMath.mul(2, leastMinorityVotes), singleMatchVoteCount);
+      doubleMatchReward = decimalDiv(SafeMath.sub(bestMinorityVotes, leastMinorityVotes),doubleMatchVoteCount);
+
+      uint256 totalVotesToReward = SafeMath.add(singleMatchVoteCount, doubleMatchVoteCount);
+
+      for (uint256 i = _start; i < Math.min256(userVotes[msg.sender][winnerParty].length, _end); i++) {
+        uint previousVotes = userVotes[msg.sender][winnerParty][i].previousVotes;
+        if (!userVotes[msg.sender][winnerParty][i].claimed && previousVotes <= totalVotesToReward) {
+          userVotes[msg.sender][winnerParty][i].claimed = true;
+          uint amount = userVotes[msg.sender][winnerParty][i].amount;
+          stakedVotes = stakedVotes.add(amount);
+          if(previousVotes <= doubleMatchVoteCount && (SafeMath.add(previousVotes, amount) <= doubleMatchVoteCount)) {
+            if(previousVotes <= doubleMatchVoteCount) {
+              totalRewardAmount = totalRewardAmount.add(decimalMul(amount, doubleMatchReward));
+            } else {
+              totalRewardAmount = totalRewardAmount.add(decimalMul(doubleMatchReward, doubleMatchVoteCount.sub(previousVotes)));
+
+              uint remainingAmount = SafeMath.sub(previousVotes.add(amount),doubleMatchVoteCount);
+              totalRewardAmount = totalRewardAmount.add(decimalMul(remainingAmount, singleMatchReward));
+            }
+          }
+          else if(previousVotes > doubleMatchVoteCount ) {
+            if (previousVotes.add(amount) <= totalRewardAmount) {
+              totalRewardAmount = totalRewardAmount.add(decimalMul(amount, singleMatchReward));
+            } else {
+              uint eligibleAmt = totalRewardAmount.sub(previousVotes.add(amount));
+              totalRewardAmount = totalRewardAmount.add(decimalMul(eligibleAmt, singleMatchReward));
+            }
+          }
         }
       }
+      require(jurToken.transfer(msg.sender, stakedVotes.add(totalRewardAmount)));
+      emit VoterPayout(msg.sender, stakedVotes, decimalMul(eligableVotes, reward));
+
+    } else {
+      //If there were no votes on any minority options (all votes on the winner) then there is no payout
+      uint256 reward = 0;
+      if (totalMinorityVotes != 0) {
+        reward = decimalDiv(totalMinorityVotes, bestMinorityVotes);
+      }
+
+      for (uint256 j = _start; j < Math.min256(userVotes[msg.sender][winnerParty].length, _end); j++) {
+        if (!userVotes[msg.sender][winnerParty][j].claimed) {
+          userVotes[msg.sender][winnerParty][j].claimed = true;
+          stakedVotes = stakedVotes.add(userVotes[msg.sender][winnerParty][j].amount);
+          if (userVotes[msg.sender][winnerParty][j].previousVotes < bestMinorityVotes) {
+            eligableVotes = eligableVotes.add(Math.min256(bestMinorityVotes.sub(userVotes[msg.sender][winnerParty][j].previousVotes), userVotes[msg.sender][winnerParty][j].amount));
+          }
+        }
+      }
+      require(jurToken.transfer(msg.sender, stakedVotes.add(decimalMul(eligableVotes, reward))));
+      emit VoterPayout(msg.sender, stakedVotes, decimalMul(eligableVotes, reward));
     }
-    require(jurToken.transfer(msg.sender, stakedVotes.add(decimalMul(eligableVotes, reward))));
-    emit VoterPayout(msg.sender, stakedVotes, decimalMul(eligableVotes, reward));
   }
 
 
@@ -571,7 +621,8 @@ contract Arbitration {
 
     address winnerParty;
     address bestMinortyParty;
-    (winnerParty, bestMinortyParty) = getWinnerAndBestMinorty();
+    address leastMiorityParty;
+    (winnerParty, bestMinortyParty, leastMiorityParty) = getWinnerAndMinorties();
 
 
     if(getNow() < disputeEnds.add(VOTE_LOCKUP)) {
@@ -634,17 +685,21 @@ contract Arbitration {
   /**
    * @notice Returns the current winner and next best minority party
    */
-  function getWinnerAndBestMinorty() public view returns(address, address) {
+  function getWinnerAndMinorties() public view returns(address, address, address) {
     address winnerParty = getWinner();
     address bestMinorityParty = (winnerParty == address(0)) ? allParties[0] : address(0);
+    address leastMinortiyParty;
     uint256 bestMinorityVotes = partyVotes[bestMinorityParty];
     for (uint8 j = 0; j < allParties.length; j++) {
       if ((bestMinorityVotes < partyVotes[allParties[j]]) && (winnerParty != allParties[j])) {
         bestMinorityParty = allParties[j];
-        bestMinorityVotes = partyVotes[bestMinorityParty];
+        // bestMinorityVotes = partyVotes[bestMinorityParty];
+      }
+      if((winnerParty != allParties[j]) && (bestMinorityParty != allParties[j])) {
+        leastMinortiyParty = allParties[j];
       }
     }
-    return (winnerParty, bestMinorityParty);
+    return (winnerParty, bestMinorityParty, leastMinortiyParty);
   }
 
   /**
@@ -696,6 +751,51 @@ contract Arbitration {
    */
   function getNow() internal constant returns (uint256) {
     return now;
+  }
+
+}
+
+contract ArbitrationFactory is Ownable {
+
+  event ArbitrationCreated(address indexed _creator, address _arbitration, address indexed _party1, address indexed _party2, uint256[] _dispersal, uint256[] _funding, bytes32 _agreementHash);
+
+  address public jurToken;
+  address[] public arbirations;
+
+  /**
+   * @dev Constructor
+   * @param _jurToken Address of the JUR token
+   */
+  constructor(address _jurToken) public {
+    jurToken = _jurToken;
+  }
+
+  /**
+   * @dev Creates a new arbitration
+   * @param _parties Addresses of parties involved in arbitration
+   * @param _dispersal Dispersal of funds if arbitration agreed
+   * @param _funding Source of funds for arbitration
+   * @param _agreementHash Hash of arbitration agreement
+   */
+  function createArbitration(address[] _parties, uint256[] _dispersal, uint256[] _funding, bytes32 _agreementHash) public {
+    address newArbitration = new Arbitration(jurToken, _parties, _dispersal, _funding, _agreementHash);
+    arbirations.push(newArbitration);
+    emit ArbitrationCreated(msg.sender, newArbitration, _parties[0], _parties[1], _dispersal, _funding, _agreementHash);
+  }
+
+  /**
+   * @dev Changes the address of the JUR token
+   * @param _jurToken New address of the JUR token
+   */
+  function changeToken(address _jurToken) onlyOwner public {
+    jurToken = _jurToken;
+  }
+
+  /**
+   * @notice Returns the hash of an agreement string
+   */
+  function generateHash(string _input) pure public returns (bytes32) {
+    return keccak256(bytes(_input));
   }
 
 }
