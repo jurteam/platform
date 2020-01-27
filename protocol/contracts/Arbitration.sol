@@ -64,6 +64,10 @@ contract Arbitration {
   uint256 public disputeWindowVotes;
   mapping (address => uint256) public partyVotes;
   mapping (address => mapping (address => Vote[])) userVotes;
+
+  address winner;
+  address bestMinorty;
+  address leastMinority;
   uint256 internal singleMatchReward;
   uint256 internal doubleMatchReward;
   uint256 internal doubleMatchVoteCount;
@@ -83,22 +87,22 @@ contract Arbitration {
   uint256 constant DECIMALS = 10 ** 18;
 
   modifier onlyParties {
-    require(parties[msg.sender]);
+    require(parties[msg.sender], "Only parties are authorized.");
     _;
   }
 
   modifier isParty(address _sender) {
-    require(parties[_sender]);
+    require(parties[_sender], "Address is not a party.");
     _;
   }
 
   modifier hasState(State _state) {
-    require(state == _state);
+    require(state == _state, "Invalid state");
     _;
   }
 
   modifier onlyJUR {
-    require(msg.sender == address(jurToken));
+    require(msg.sender == address(jurToken), "Not authorized.");
     _;
   }
 
@@ -113,10 +117,10 @@ contract Arbitration {
   constructor(address _jurToken, address[] _parties, uint256[] _dispersal, uint256[] _funding, bytes32 _agreementHash) public {
 
     //Check that we are only setting up an arbitration between two parties
-    require((_dispersal.length == 2) && (_funding.length == 2) && (_parties.length == 2));
+    require((_dispersal.length == 2) && (_funding.length == 2) && (_parties.length == 2), "Agreement can only be between two parties.");
 
     //Check that party addresses are valid
-    require((_parties[0] != 0x0) && (_parties[1] != 0x0));
+    require((_parties[0] != 0x0) && (_parties[1] != 0x0), "Please provide valid addresses");
 
     //Check that dispersals match funding and initialise mappings
     uint256 totalFunding = 0;
@@ -128,7 +132,7 @@ contract Arbitration {
       totalDispersal = totalDispersal.add(_dispersal[i]);
       totalFunding = totalFunding.add(_funding[i]);
     }
-    require(totalFunding == totalDispersal);
+    require(totalFunding == totalDispersal, "Inconsistent funding and dispersal amounts.");
     allParties = _parties;
     agreementHash = _agreementHash;
 
@@ -161,9 +165,9 @@ contract Arbitration {
   }
 
   function _sign(address _sender) internal hasState(State.Unsigned) isParty(_sender) {
-    require(!hasSigned[_sender]);
+    require(!hasSigned[_sender], "User has already signed.");
     hasSigned[_sender] = true;
-    require(jurToken.transferFrom(_sender, address(this), funding[_sender]));
+    require(jurToken.transferFrom(_sender, address(this), funding[_sender]), "Could not transfer funds.");
     bool allSigned = true;
     for (uint8 i = 0; i < allParties.length; i++) {
       allSigned = allSigned && hasSigned[allParties[i]];
@@ -178,9 +182,9 @@ contract Arbitration {
    * @dev Allows sender to unsign agreeement
    */
   function unsign() public hasState(State.Unsigned) onlyParties {
-    require(hasSigned[msg.sender]);
+    require(hasSigned[msg.sender], "User has not signed yet.");
     hasSigned[msg.sender] = false;
-    require(jurToken.transfer(msg.sender, funding[msg.sender]));
+    require(jurToken.transfer(msg.sender, funding[msg.sender]), "Could not transfer funds.");
     emit ContractUnsigned(msg.sender, funding[msg.sender]);
   }
 
@@ -190,7 +194,7 @@ contract Arbitration {
    * @dev Allows sender to agree dispersals (so that funds can be dispursed)
    */
   function agree() public hasState(State.Signed) onlyParties {
-    require(!hasAgreed[msg.sender]);
+    require(!hasAgreed[msg.sender], "Party has unagreed.");
     hasAgreed[msg.sender] = true;
     // If there is an amendment proposed, but not agreed refund all amendment funds
     if (amendmentProposed) {
@@ -210,7 +214,7 @@ contract Arbitration {
    * @dev Allows sender to unagree dispersals (so that funds cannot be dispursed)
    */
   function unagree() public hasState(State.Signed) onlyParties {
-    require(hasAgreed[msg.sender]);
+    require(hasAgreed[msg.sender], "Party has not agreed.");
     hasAgreed[msg.sender] = false;
     emit ContractUnagreed(msg.sender);
   }
@@ -234,15 +238,33 @@ contract Arbitration {
    * @param _funding Source of funds for arbitration
    * @param _agreementHash Hash of arbitration agreement
    */
-  function proposeAmendmentJUR(address _sender, uint256[] _dispersal, uint256[] _funding, bytes32 _agreementHash) public onlyJUR {
+  function proposeAmendmentJUR
+  (
+    address _sender,
+    uint256[] _dispersal,
+    uint256[] _funding,
+    bytes32 _agreementHash
+  )
+    public onlyJUR
+  {
     _proposeAmendment(_sender, _dispersal, _funding, _agreementHash);
   }
 
-  function _proposeAmendment(address _sender, uint256[] _dispersal, uint256[] _funding, bytes32 _agreementHash) internal hasState(State.Signed) isParty(_sender) {
+  function _proposeAmendment
+  (
+    address _sender,
+    uint256[] _dispersal,
+    uint256[] _funding,
+    bytes32 _agreementHash
+  )
+    internal
+    hasState(State.Signed)
+    isParty(_sender)
+  {
     //There can only be one proposed amendment at a time
-    require(!amendmentProposed);
+    require(!amendmentProposed, "no amendment proposed.");
     amendmentProposed = true;
-    require((_dispersal.length == allParties.length) && (_funding.length == allParties.length));
+    require((_dispersal.length == allParties.length) && (_funding.length == allParties.length), "Please provide valid data.");
     uint256 totalFunding = 0;
     uint256 totalDispersal = 0;
     for (uint8 i = 0; i < allParties.length; i++) {
@@ -251,7 +273,7 @@ contract Arbitration {
       totalDispersal = totalDispersal.add(_dispersal[i]);
       totalFunding = totalFunding.add(_funding[i]);
     }
-    require(totalFunding == totalDispersal);
+    require(totalFunding == totalDispersal, "Funding are not consistent with dispersal.");
     amendedAgreementHash = _agreementHash;
     //Must pay any excess dispersal required
     _agreeAmendment(_sender);
@@ -276,12 +298,12 @@ contract Arbitration {
   }
 
   function _agreeAmendment(address _sender) internal hasState(State.Signed) isParty(_sender) {
-    require(amendmentProposed);
-    require(!hasFundedAmendment[_sender]);
+    require(amendmentProposed, "No amendment proposed.");
+    require(!hasFundedAmendment[_sender], "Not a valid party.");
     hasFundedAmendment[_sender] = true;
     if (amendedFunding[_sender] > funding[_sender]) {
       uint256 deficit = amendedFunding[_sender].sub(funding[_sender]);
-      require(jurToken.transferFrom(_sender, address(this), deficit));
+      require(jurToken.transferFrom(_sender, address(this), deficit), "Could not transfer funds.");
     }
     emit ContractAmendmentAgreed(_sender);
     bool allFundedAmendment = true;
@@ -295,7 +317,7 @@ contract Arbitration {
         hasFundedAmendment[allParties[j]] = false;
         if (amendedFunding[allParties[j]] < funding[allParties[j]]) {
           uint256 excess = funding[allParties[j]].sub(amendedFunding[allParties[j]]);
-          require(jurToken.transfer(allParties[j], excess));
+          require(jurToken.transfer(allParties[j], excess), "Could not transfer funds.");
         }
         funding[allParties[j]] = amendedFunding[allParties[j]];
         dispersal[allParties[j]] = amendedDispersal[allParties[j]];
@@ -311,7 +333,7 @@ contract Arbitration {
   function unagreeAmendment() public hasState(State.Signed) onlyParties {
     //Could be done by original proposer, or other party
     //If anyone disagrees, amendment is removed
-    require(amendmentProposed);
+    require(amendmentProposed, "No amendment proposed.");
     amendmentProposed = false;
     //Refund any deficits paid
     for (uint8 i = 0; i < allParties.length; i++) {
@@ -319,7 +341,7 @@ contract Arbitration {
         hasFundedAmendment[allParties[i]] = false;
         if (amendedFunding[allParties[i]] > funding[allParties[i]]) {
           uint256 excess = amendedFunding[allParties[i]].sub(funding[allParties[i]]);
-          require(jurToken.transfer(allParties[i], excess));
+          require(jurToken.transfer(allParties[i], excess), "Cannot transfer the funds.");
         }
       }
     }
@@ -330,9 +352,9 @@ contract Arbitration {
    * @dev Once a contract has been agreed withdrawals dispersal amount
    */
   function withdrawDispersal() public hasState(State.Agreed) onlyParties {
-    require(!hasWithdrawn[msg.sender]);
+    require(!hasWithdrawn[msg.sender], "User has already withdrawn the funds.");
     hasWithdrawn[msg.sender] = true;
-    require(jurToken.transfer(msg.sender, dispersal[msg.sender]));
+    require(jurToken.transfer(msg.sender, dispersal[msg.sender]), "Could not transfer the funds.");
     bool allWithdrawn = true;
     for (uint8 i = 0; i < allParties.length; i++) {
       allWithdrawn = allWithdrawn && (hasWithdrawn[allParties[i]] || (dispersal[allParties[i]] == 0));
@@ -364,8 +386,17 @@ contract Arbitration {
     _dispute(_sender, _voteAmount, _dispersal);
   }
 
-  function _dispute(address _sender, uint256 _voteAmount, uint256[] _dispersal) internal hasState(State.Signed) isParty(_sender) {
-    require(_dispersal.length == allParties.length);
+  function _dispute
+  (
+    address _sender,
+    uint256 _voteAmount,
+    uint256[] _dispersal
+  )
+    internal
+    hasState(State.Signed)
+    isParty(_sender)
+  {
+    require(_dispersal.length == allParties.length, "Please provide valid dispersal data.");
     // If there is an amendment proposed, but not agreed refund all amendment funds
     if (amendmentProposed) {
       unagreeAmendment();
@@ -378,8 +409,8 @@ contract Arbitration {
       totalDispersal = totalDispersal.add(_dispersal[i]);
       totalFunding = totalFunding.add(funding[allParties[i]]);
     }
-    require(totalDispersal == totalFunding);
-    require(_voteAmount >= totalFunding.mul(MIN_VOTE).div(10**18));
+    require(totalDispersal == totalFunding, "Inconsistent dispersal and funding.");
+    require(_voteAmount >= totalFunding.mul(MIN_VOTE).div(10**18), "Please vote above the minimum voting percentage.");
     disputeStarts = SafeMath.add(getNow(), DISPUTE_DISPERSAL_DURATION);
     disputeEnds = SafeMath.add(disputeStarts, DISPUTE_VOTE_DURATION);
     //Default other parties dispute dispersals
@@ -401,8 +432,8 @@ contract Arbitration {
    * @param _dispersal Dispersal should the disputing party win
    */
   function amendDisputeDispersal(uint256[] _dispersal) public hasState(State.Dispute) onlyParties {
-    require(_dispersal.length == allParties.length);
-    require(getNow() < disputeStarts);
+    require(_dispersal.length == allParties.length, "Please provide valid dispersals values");
+    require(getNow() < disputeStarts, "Dispute has begun.");
     uint256 totalDispersal = 0;
     uint256 totalFunding = 0;
     for (uint8 i = 0; i < allParties.length; i++) {
@@ -410,7 +441,7 @@ contract Arbitration {
       totalDispersal = totalDispersal.add(_dispersal[i]);
       totalFunding = totalFunding.add(funding[allParties[i]]);
     }
-    require(totalDispersal == totalFunding);
+    require(totalDispersal == totalFunding, "Inconsistent funding and dispersal.");
     emit ContractDisputeDispersalAmended(msg.sender, _dispersal);
   }
 
@@ -479,13 +510,13 @@ contract Arbitration {
       disputeEnds = newDisputeEnds;
       disputeWindowVotes = newDisputeWindowVotes;
     }
-    require(getNow() < disputeEnds);
+    require(getNow() < disputeEnds, "Dispute has ended.");
     //Parties are allowed to vote straightaway
-    require((getNow() >= disputeStarts) || parties[_sender]);
+    require((getNow() >= disputeStarts) || parties[_sender], "Not an allowed party.");
     //Check vote is for a valid address
-    require(parties[_voteAddress] || (_voteAddress == address(0)));
+    require(parties[_voteAddress] || (_voteAddress == address(0)), "Please vote for a valid party.");
     //Vote must be at least MIN_VOTE of the totalVotes
-    require(_voteAmount >= totalVotes.mul(MIN_VOTE).div(10**18));
+    require(_voteAmount >= totalVotes.mul(MIN_VOTE).div(10**18), "Please vote above the minimum vote percentage.");
     //Vote must not mean the new winning party after the vote has strictly more than twice the next best party
     if (totalVotes != 0) {
       address winnerParty;
@@ -493,16 +524,16 @@ contract Arbitration {
       address leastMinorityParty;
       (winnerParty, bestMinortyParty, leastMinorityParty) = getWinnerAndMinorties();
       if (_voteAddress == winnerParty) {
-        require(partyVotes[_voteAddress].add(_voteAmount) <=  partyVotes[bestMinortyParty].mul(2));
+        require(partyVotes[_voteAddress].add(_voteAmount) <= partyVotes[bestMinortyParty].mul(2),  "Party has a lead of 100%.");
       } else {
-        require(partyVotes[_voteAddress].add(_voteAmount) <=  partyVotes[winnerParty].mul(2));
+        require(partyVotes[_voteAddress].add(_voteAmount) <= partyVotes[winnerParty].mul(2), "Party has a lead of 100%.");
       }
     }
 
     Vote memory newVote = Vote(_voteAmount, partyVotes[_voteAddress], false);
 
     //Commit votes
-    require(jurToken.transferFrom(_sender, address(this), _voteAmount));
+    require(jurToken.transferFrom(_sender, address(this), _voteAmount), "Could not transfer the funds.");
 
     //Track votes during last 30 mins of voting period
     if (getNow() >= disputeEnds.sub(30 * 60)) {
@@ -515,7 +546,6 @@ contract Arbitration {
     userVotes[_sender][_voteAddress].push(newVote);
 
     emit VoteCast(_sender, _voteAddress, _voteAmount);
-
   }
 
   /**
@@ -532,153 +562,101 @@ contract Arbitration {
       disputeWindowVotes = newDisputeWindowVotes;
     }
     getRewardMultiplier();
-    require(getNow() >= disputeEnds.add(VOTE_LOCKUP));
+    require(getNow() >= disputeEnds.add(VOTE_LOCKUP), "Dispute has not ended yet.");
     //There should be a clear winner now, otherwise the dispute would have been extended.
 
-    (uint256 stakedVotes, uint256 totalRewardAmount) = calculateReward(msg.sender, _start, _end);
-    require(jurToken.transfer(msg.sender, stakedVotes.add(totalRewardAmount)));
-    emit VoterPayout(msg.sender, stakedVotes, stakedVotes.add(totalRewardAmount));
+    if (partyVotes[leastMinority] > 0) {
+      (uint256 stakedVotes, uint totalRewardAmount) = calcDoubleReward(msg.sender, _start, _end);
+      require(jurToken.transfer(msg.sender, stakedVotes.add(totalRewardAmount)), "Could not transfer fund.");
+      emit VoterPayout(msg.sender, stakedVotes, stakedVotes.add(totalRewardAmount));
+
+    } else {
+      (uint256 stakedVotes, uint totalRewardAmount) = calcSingleReward(msg.sender, _start, _end);
+      require(jurToken.transfer(msg.sender, stakedVotes.add(totalRewardAmount)), "Could not transfer fund.");
+      emit VoterPayout(msg.sender, stakedVotes, stakedVotes.add(totalRewardAmount));
+    }
   }
 
-  function getRewardMultiplier() internal view returns(uint256, uint256, uint256, uint256) {
-
-    address winnerParty;
-    address bestMinortyParty;
-    address leastMinorityParty;
-    (winnerParty, bestMinortyParty, leastMinorityParty) = getWinnerAndMinorties();
-    uint256 bestMinorityVotes = partyVotes[bestMinortyParty];
-    uint leastMinorityVotes = partyVotes[leastMinorityParty];
-    doubleMatchVoteCount = SafeMath.mul(decimalDiv(leastMinorityVotes, 100), 3);
-
-    uint256 minimumRaise = decimalDiv(SafeMath.add(leastMinorityVotes, SafeMath.mul(bestMinorityVotes, 2)), 100);
-    uint256 singleMatchVoteCount = SafeMath.add(SafeMath.sub(bestMinorityVotes, doubleMatchVoteCount), minimumRaise);
-
-    singleMatchReward = decimalDiv(SafeMath.mul(2, leastMinorityVotes), singleMatchVoteCount);
-    doubleMatchReward = decimalDiv(SafeMath.sub(bestMinorityVotes, leastMinorityVotes),doubleMatchVoteCount);
-
-    totalVotesToReward = SafeMath.add(singleMatchVoteCount, doubleMatchVoteCount);
-  }
-
-
-  function calculateReward(address _voter, uint256 _start, uint256 _end) internal returns(uint256, uint256) {
-    address winnerParty;
-    address bestMinortyParty;
-    address leastMinorityParty;
-    (winnerParty, bestMinortyParty, leastMinorityParty) = getWinnerAndMinorties();
-
+  function calcDoubleReward
+  (
+    address _voter,
+    uint _start,
+    uint256 _end
+  )
+    internal
+    returns (uint256, uint256)
+  {
     uint256 stakedVotes;
     uint256 totalRewardAmount;
-    // (uint256 singleMatchReward, uint256 doubleMatchReward, uint256 doubleMatchVoteCount, uint256 totalVotesToReward) = getRewardMultiplier();
 
-    if (partyVotes[leastMinorityParty] > 0) {
-      //calculate 1% of the least minority votes and multiply it by 3.
-
-      for (uint256 i = _start; i < Math.min256(userVotes[_voter][winnerParty].length, _end); i++) {
-        uint previousVotes = userVotes[_voter][winnerParty][i].previousVotes;
-        if (!userVotes[_voter][winnerParty][i].claimed && previousVotes <= totalVotesToReward) {
-          userVotes[_voter][winnerParty][i].claimed = true;
-          // uint amount = userVotes[_voter][winnerParty][i].amount;
-          stakedVotes = stakedVotes.add(userVotes[_voter][winnerParty][i].amount);
-          if (previousVotes <= doubleMatchVoteCount && (SafeMath.add(previousVotes, userVotes[_voter][winnerParty][i].amount) <= doubleMatchVoteCount)) {
+    for (uint256 i = _start; i < Math.min256(userVotes[_voter][winner].length, _end); i++) {
+        uint previousVotes = userVotes[_voter][winner][i].previousVotes;
+        if (!userVotes[_voter][winner][i].claimed && previousVotes <= totalVotesToReward) {
+          userVotes[_voter][winner][i].claimed = true;
+          stakedVotes = stakedVotes.add(userVotes[_voter][winner][i].amount);
+          if (previousVotes <= doubleMatchVoteCount && (SafeMath.add(previousVotes, userVotes[_voter][winner][i].amount) <= doubleMatchVoteCount)) {
             if (previousVotes <= doubleMatchVoteCount) {
-              totalRewardAmount = totalRewardAmount.add(decimalMul(userVotes[_voter][winnerParty][i].amount, doubleMatchReward));
+              totalRewardAmount = totalRewardAmount.add(decimalMul(userVotes[_voter][winner][i].amount, doubleMatchReward));
             } else {
               totalRewardAmount = totalRewardAmount.add(decimalMul(doubleMatchReward, doubleMatchVoteCount.sub(previousVotes)));
 
-              // uint remainingAmount = SafeMath.sub(previousVotes.add(amount), doubleMatchVoteCount);
-              totalRewardAmount = totalRewardAmount.add(decimalMul(SafeMath.sub(previousVotes.add(userVotes[_voter][winnerParty][i].amount), doubleMatchVoteCount), singleMatchReward));
+              totalRewardAmount = totalRewardAmount.add(decimalMul(SafeMath.sub(previousVotes.add(userVotes[_voter][winner][i].amount), doubleMatchVoteCount), singleMatchReward));
             }
           }
           else if (previousVotes > doubleMatchVoteCount) {
-            if (previousVotes.add(userVotes[_voter][winnerParty][i].amount) <= totalRewardAmount) {
-              totalRewardAmount = totalRewardAmount.add(decimalMul(userVotes[_voter][winnerParty][i].amount, singleMatchReward));
+            if (previousVotes.add(userVotes[_voter][winner][i].amount) <= totalRewardAmount) {
+              totalRewardAmount = totalRewardAmount.add(decimalMul(userVotes[_voter][winner][i].amount, singleMatchReward));
             } else {
-              // uint eligibleAmt = totalRewardAmount.sub(previousVotes.add(amount));
-              totalRewardAmount = totalRewardAmount.add(decimalMul(totalRewardAmount.sub(previousVotes.add(userVotes[_voter][winnerParty][i].amount)), singleMatchReward));
+              totalRewardAmount = totalRewardAmount.add(decimalMul(totalRewardAmount.sub(previousVotes.add(userVotes[_voter][winner][i].amount)), singleMatchReward));
             }
           }
         }
       }
-
-    } else {
-      //If there were no votes on any minority options (all votes on the winner) then there is no payout
-      if (totalVotes.sub(partyVotes[winnerParty]) != 0) {
-        singleMatchReward = decimalDiv(totalVotes.sub(partyVotes[winnerParty]), partyVotes[bestMinortyParty]);
-      }
-
-      for (uint256 j = _start; j < Math.min256(userVotes[msg.sender][winnerParty].length, _end); j++) {
-        if (!userVotes[msg.sender][winnerParty][j].claimed) {
-          userVotes[msg.sender][winnerParty][j].claimed = true;
-          stakedVotes = stakedVotes.add(userVotes[msg.sender][winnerParty][j].amount);
-          if (userVotes[msg.sender][winnerParty][j].previousVotes < partyVotes[bestMinortyParty]) {
-            totalRewardAmount = totalRewardAmount.add(Math.min256(partyVotes[bestMinortyParty].sub(userVotes[msg.sender][winnerParty][j].previousVotes), userVotes[msg.sender][winnerParty][j].amount));
-          }
-        }
-      }
-      require(jurToken.transfer(msg.sender, stakedVotes.add(decimalMul(totalRewardAmount, singleMatchReward))), "Could not transfer funds.");
-      emit VoterPayout(msg.sender, stakedVotes, decimalMul(totalRewardAmount, singleMatchReward));
-    }
+      return (stakedVotes, totalRewardAmount);
   }
 
-
-  /**
-   * @notice Returns a state for vote to be claimed and the amount of reward
-   * 0: reward not due
-   * 1: now is before disputeEnd + vote_lookup
-   * 2: ok! Reward is claimable
-   * 3: reward is already claimed!
-   */
-  function canClaimReward(uint256 _start, uint256 _end) public view returns(uint8,uint256) {
-
-    uint8 status;
-    uint256 amount = 0;
-
-    address winnerParty;
-    address bestMinortyParty;
-    address leastMinorityParty;
-    (winnerParty, bestMinortyParty, leastMinorityParty) = getWinnerAndMinorties();
-
-
-    if(getNow() < disputeEnds.add(VOTE_LOCKUP)) {
-      status = 1;
-    }
-    else
-    {
-      status = 2;
-    }
-
-    uint256 totalMinorityVotes = totalVotes.sub(partyVotes[winnerParty]);
-    uint256 bestMinorityVotes = partyVotes[bestMinortyParty];
+  function calcSingleReward
+  (
+    address _voter,
+    uint256 _start,
+    uint256 _end
+  )
+    internal
+    returns (uint256, uint256)
+  {
+    uint256 stakedVotes;
+    uint256 totalRewardAmount;
 
     //If there were no votes on any minority options (all votes on the winner) then there is no payout
-    uint256 reward = 0;
-    if (totalMinorityVotes != 0) {
-      reward = decimalDiv(totalMinorityVotes, bestMinorityVotes);
+    if (totalVotes.sub(partyVotes[winner]) != 0) {
+        singleMatchReward = decimalDiv(totalVotes.sub(partyVotes[winner]), partyVotes[bestMinorty]);
     }
 
-    uint256 eligableVotes = 0;
-    uint256 stakedVotes = 0;
-
-    for (uint256 i = _start; i < Math.min256(userVotes[msg.sender][winnerParty].length, _end); i++) {
-      if (userVotes[msg.sender][winnerParty][i].claimed) {
-        status = 3;
-      }
-
-      stakedVotes = stakedVotes.add(userVotes[msg.sender][winnerParty][i].amount);
-      if (userVotes[msg.sender][winnerParty][i].previousVotes < bestMinorityVotes) {
-        eligableVotes = eligableVotes.add(Math.min256(bestMinorityVotes.sub(userVotes[msg.sender][winnerParty][i].previousVotes), userVotes[msg.sender][winnerParty][i].amount));
+    for (uint256 j = _start; j < Math.min256(userVotes[_voter][winner].length, _end); j++) {
+      if (!userVotes[_voter][winner][j].claimed) {
+        userVotes[_voter][winner][j].claimed = true;
+        stakedVotes = stakedVotes.add(userVotes[_voter][winner][j].amount);
+        if (userVotes[_voter][winner][j].previousVotes < partyVotes[bestMinorty]) {
+          totalRewardAmount = totalRewardAmount.add(Math.min256(partyVotes[bestMinorty].sub(userVotes[_voter][winner][j].previousVotes), userVotes[_voter][winner][j].amount));
+        }
       }
     }
+    return (stakedVotes, totalRewardAmount);
+  }
 
-    amount = stakedVotes.add(decimalMul(eligableVotes, reward));
+  function getRewardMultiplier() internal returns(uint256, uint256, uint256, uint256) {
+      (winner, bestMinorty, leastMinority) = getWinnerAndMinorties();
+      uint256 bestMinorityVotes = partyVotes[bestMinorty];
+      uint leastMinorityVotes = partyVotes[leastMinority];
+      doubleMatchVoteCount = SafeMath.mul(decimalDiv(leastMinorityVotes, 100), 3);
 
-    if (amount == 0)
-    {
-      status = 0;
-    }
+      uint256 minimumRaise = decimalDiv(SafeMath.add(leastMinorityVotes, SafeMath.mul(bestMinorityVotes, 2)), 100);
+      uint256 singleMatchVoteCount = SafeMath.add(SafeMath.sub(bestMinorityVotes, doubleMatchVoteCount), minimumRaise);
 
-    return (status, amount);
+      singleMatchReward = decimalDiv(SafeMath.mul(2, leastMinorityVotes), singleMatchVoteCount);
+      doubleMatchReward = decimalDiv(SafeMath.sub(bestMinorityVotes, leastMinorityVotes),doubleMatchVoteCount);
 
+      totalVotesToReward = SafeMath.add(singleMatchVoteCount, doubleMatchVoteCount);
   }
 
   /**
@@ -726,20 +704,26 @@ contract Arbitration {
       disputeEnds = newDisputeEnds;
       disputeWindowVotes = newDisputeWindowVotes;
     }
-    require(getNow() >= disputeEnds);
-    require(!hasWithdrawn[msg.sender]);
+    require(getNow() >= disputeEnds, "Dispute has not ended yet.");
+    require(!hasWithdrawn[msg.sender], "Party has already withdrawn.");
     hasWithdrawn[msg.sender] = true;
     address winnerParty = getWinner();
-    uint256 payout = disputeDispersal[winnerParty][msg.sender];
-    require(jurToken.transfer(msg.sender, payout));
-    emit PartyPayout(msg.sender, payout);
+
+    uint256 payout;
+    if(winnerParty == address(0)) {
+      payout = dispersal[msg.sender];
+    } else {
+      payout = disputeDispersal[winnerParty][msg.sender];
+      require(jurToken.transfer(msg.sender, payout), "Could not transfer the funds.");
+      emit PartyPayout(msg.sender, payout);
+    }
   }
 
   /**
    * @dev Returns a bool if can withdraw and the amount of withdraw
    */
   function canWithdraw() public view returns(bool,uint256) {
-    
+
     address winnerParty = getWinner();
     uint256 payout = disputeDispersal[winnerParty][msg.sender];
 
@@ -763,53 +747,8 @@ contract Arbitration {
   /**
    * @notice Returns current timestamp
    */
-  function getNow() internal constant returns (uint256) {
+  function getNow() internal view returns (uint256) {
     return now;
-  }
-
-}
-
-contract ArbitrationFactory is Ownable {
-
-  event ArbitrationCreated(address indexed _creator, address _arbitration, address indexed _party1, address indexed _party2, uint256[] _dispersal, uint256[] _funding, bytes32 _agreementHash);
-
-  address public jurToken;
-  address[] public arbirations;
-
-  /**
-   * @dev Constructor
-   * @param _jurToken Address of the JUR token
-   */
-  constructor(address _jurToken) public {
-    jurToken = _jurToken;
-  }
-
-  /**
-   * @dev Creates a new arbitration
-   * @param _parties Addresses of parties involved in arbitration
-   * @param _dispersal Dispersal of funds if arbitration agreed
-   * @param _funding Source of funds for arbitration
-   * @param _agreementHash Hash of arbitration agreement
-   */
-  function createArbitration(address[] _parties, uint256[] _dispersal, uint256[] _funding, bytes32 _agreementHash) public {
-    address newArbitration = new Arbitration(jurToken, _parties, _dispersal, _funding, _agreementHash);
-    arbirations.push(newArbitration);
-    emit ArbitrationCreated(msg.sender, newArbitration, _parties[0], _parties[1], _dispersal, _funding, _agreementHash);
-  }
-
-  /**
-   * @dev Changes the address of the JUR token
-   * @param _jurToken New address of the JUR token
-   */
-  function changeToken(address _jurToken) onlyOwner public {
-    jurToken = _jurToken;
-  }
-
-  /**
-   * @notice Returns the hash of an agreement string
-   */
-  function generateHash(string _input) pure public returns (bytes32) {
-    return keccak256(bytes(_input));
   }
 
 }
