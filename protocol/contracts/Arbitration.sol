@@ -64,6 +64,10 @@ contract Arbitration {
   uint256 public disputeWindowVotes;
   mapping (address => uint256) public partyVotes;
   mapping (address => mapping (address => Vote[])) userVotes;
+  uint256 internal singleMatchReward;
+  uint256 internal doubleMatchReward;
+  uint256 internal doubleMatchVoteCount;
+  uint256 internal totalVotesToReward;
 
   struct Vote {
     uint256 amount;
@@ -527,82 +531,92 @@ contract Arbitration {
       disputeEnds = newDisputeEnds;
       disputeWindowVotes = newDisputeWindowVotes;
     }
+    getRewardMultiplier();
     require(getNow() >= disputeEnds.add(VOTE_LOCKUP));
     //There should be a clear winner now, otherwise the dispute would have been extended.
+
+    (uint256 stakedVotes, uint256 totalRewardAmount) = calculateReward(msg.sender, _start, _end);
+    require(jurToken.transfer(msg.sender, stakedVotes.add(totalRewardAmount)));
+    emit VoterPayout(msg.sender, stakedVotes, stakedVotes.add(totalRewardAmount));
+  }
+
+  function getRewardMultiplier() internal view returns(uint256, uint256, uint256, uint256) {
+
     address winnerParty;
     address bestMinortyParty;
     address leastMinorityParty;
     (winnerParty, bestMinortyParty, leastMinorityParty) = getWinnerAndMinorties();
-    uint256 totalMinorityVotes = totalVotes.sub(partyVotes[winnerParty]);
     uint256 bestMinorityVotes = partyVotes[bestMinortyParty];
     uint leastMinorityVotes = partyVotes[leastMinorityParty];
-    
+    doubleMatchVoteCount = SafeMath.mul(decimalDiv(leastMinorityVotes, 100), 3);
+
+    uint256 minimumRaise = decimalDiv(SafeMath.add(leastMinorityVotes, SafeMath.mul(bestMinorityVotes, 2)), 100);
+    uint256 singleMatchVoteCount = SafeMath.add(SafeMath.sub(bestMinorityVotes, doubleMatchVoteCount), minimumRaise);
+
+    singleMatchReward = decimalDiv(SafeMath.mul(2, leastMinorityVotes), singleMatchVoteCount);
+    doubleMatchReward = decimalDiv(SafeMath.sub(bestMinorityVotes, leastMinorityVotes),doubleMatchVoteCount);
+
+    totalVotesToReward = SafeMath.add(singleMatchVoteCount, doubleMatchVoteCount);
+  }
+
+
+  function calculateReward(address _voter, uint256 _start, uint256 _end) internal returns(uint256, uint256) {
+    address winnerParty;
+    address bestMinortyParty;
+    address leastMinorityParty;
+    (winnerParty, bestMinortyParty, leastMinorityParty) = getWinnerAndMinorties();
+
     uint256 stakedVotes;
-    uint256 eligableVotes;
     uint256 totalRewardAmount;
-    uint256 singleMatchReward;
-    uint256 doubleMatchReward;
-    uint256 singleMatchVoteCount;
+    // (uint256 singleMatchReward, uint256 doubleMatchReward, uint256 doubleMatchVoteCount, uint256 totalVotesToReward) = getRewardMultiplier();
 
-    if(leastMinorityVotes > 0) {
+    if (partyVotes[leastMinorityParty] > 0) {
       //calculate 1% of the least minority votes and multiply it by 3.
-      uint256 doubleMatchVoteCount = SafeMath.mul(decimalDiv(leastMinorityVotes, 100), 3);
 
-      uint minimumRaise = decimalDiv(SafeMath.add(leastMinorityVotes, SafeMath.mul(bestMinorityVotes, 2)), 100);
-      singleMatchVoteCount = SafeMath.add(SafeMath.sub(bestMinorityVotes, doubleMatchVoteCount), minimumRaise);
-
-      singleMatchReward = decimalDiv(SafeMath.mul(2, leastMinorityVotes), singleMatchVoteCount);
-      doubleMatchReward = decimalDiv(SafeMath.sub(bestMinorityVotes, leastMinorityVotes),doubleMatchVoteCount);
-
-      uint256 totalVotesToReward = SafeMath.add(singleMatchVoteCount, doubleMatchVoteCount);
-
-      for (uint256 i = _start; i < Math.min256(userVotes[msg.sender][winnerParty].length, _end); i++) {
-        uint previousVotes = userVotes[msg.sender][winnerParty][i].previousVotes;
-        if (!userVotes[msg.sender][winnerParty][i].claimed && previousVotes <= totalVotesToReward) {
-          userVotes[msg.sender][winnerParty][i].claimed = true;
-          uint amount = userVotes[msg.sender][winnerParty][i].amount;
-          stakedVotes = stakedVotes.add(amount);
-          if(previousVotes <= doubleMatchVoteCount && (SafeMath.add(previousVotes, amount) <= doubleMatchVoteCount)) {
-            if(previousVotes <= doubleMatchVoteCount) {
-              totalRewardAmount = totalRewardAmount.add(decimalMul(amount, doubleMatchReward));
+      for (uint256 i = _start; i < Math.min256(userVotes[_voter][winnerParty].length, _end); i++) {
+        uint previousVotes = userVotes[_voter][winnerParty][i].previousVotes;
+        if (!userVotes[_voter][winnerParty][i].claimed && previousVotes <= totalVotesToReward) {
+          userVotes[_voter][winnerParty][i].claimed = true;
+          // uint amount = userVotes[_voter][winnerParty][i].amount;
+          stakedVotes = stakedVotes.add(userVotes[_voter][winnerParty][i].amount);
+          if (previousVotes <= doubleMatchVoteCount && (SafeMath.add(previousVotes, userVotes[_voter][winnerParty][i].amount) <= doubleMatchVoteCount)) {
+            if (previousVotes <= doubleMatchVoteCount) {
+              totalRewardAmount = totalRewardAmount.add(decimalMul(userVotes[_voter][winnerParty][i].amount, doubleMatchReward));
             } else {
               totalRewardAmount = totalRewardAmount.add(decimalMul(doubleMatchReward, doubleMatchVoteCount.sub(previousVotes)));
 
-              uint remainingAmount = SafeMath.sub(previousVotes.add(amount),doubleMatchVoteCount);
-              totalRewardAmount = totalRewardAmount.add(decimalMul(remainingAmount, singleMatchReward));
+              // uint remainingAmount = SafeMath.sub(previousVotes.add(amount), doubleMatchVoteCount);
+              totalRewardAmount = totalRewardAmount.add(decimalMul(SafeMath.sub(previousVotes.add(userVotes[_voter][winnerParty][i].amount), doubleMatchVoteCount), singleMatchReward));
             }
           }
-          else if(previousVotes > doubleMatchVoteCount ) {
-            if (previousVotes.add(amount) <= totalRewardAmount) {
-              totalRewardAmount = totalRewardAmount.add(decimalMul(amount, singleMatchReward));
+          else if (previousVotes > doubleMatchVoteCount) {
+            if (previousVotes.add(userVotes[_voter][winnerParty][i].amount) <= totalRewardAmount) {
+              totalRewardAmount = totalRewardAmount.add(decimalMul(userVotes[_voter][winnerParty][i].amount, singleMatchReward));
             } else {
-              uint eligibleAmt = totalRewardAmount.sub(previousVotes.add(amount));
-              totalRewardAmount = totalRewardAmount.add(decimalMul(eligibleAmt, singleMatchReward));
+              // uint eligibleAmt = totalRewardAmount.sub(previousVotes.add(amount));
+              totalRewardAmount = totalRewardAmount.add(decimalMul(totalRewardAmount.sub(previousVotes.add(userVotes[_voter][winnerParty][i].amount)), singleMatchReward));
             }
           }
         }
       }
-      require(jurToken.transfer(msg.sender, stakedVotes.add(totalRewardAmount)));
-      emit VoterPayout(msg.sender, stakedVotes, decimalMul(eligableVotes, reward));
 
     } else {
       //If there were no votes on any minority options (all votes on the winner) then there is no payout
-      uint256 reward = 0;
-      if (totalMinorityVotes != 0) {
-        reward = decimalDiv(totalMinorityVotes, bestMinorityVotes);
+      if (totalVotes.sub(partyVotes[winnerParty]) != 0) {
+        singleMatchReward = decimalDiv(totalVotes.sub(partyVotes[winnerParty]), partyVotes[bestMinortyParty]);
       }
 
       for (uint256 j = _start; j < Math.min256(userVotes[msg.sender][winnerParty].length, _end); j++) {
         if (!userVotes[msg.sender][winnerParty][j].claimed) {
           userVotes[msg.sender][winnerParty][j].claimed = true;
           stakedVotes = stakedVotes.add(userVotes[msg.sender][winnerParty][j].amount);
-          if (userVotes[msg.sender][winnerParty][j].previousVotes < bestMinorityVotes) {
-            eligableVotes = eligableVotes.add(Math.min256(bestMinorityVotes.sub(userVotes[msg.sender][winnerParty][j].previousVotes), userVotes[msg.sender][winnerParty][j].amount));
+          if (userVotes[msg.sender][winnerParty][j].previousVotes < partyVotes[bestMinortyParty]) {
+            totalRewardAmount = totalRewardAmount.add(Math.min256(partyVotes[bestMinortyParty].sub(userVotes[msg.sender][winnerParty][j].previousVotes), userVotes[msg.sender][winnerParty][j].amount));
           }
         }
       }
-      require(jurToken.transfer(msg.sender, stakedVotes.add(decimalMul(eligableVotes, reward))));
-      emit VoterPayout(msg.sender, stakedVotes, decimalMul(eligableVotes, reward));
+      require(jurToken.transfer(msg.sender, stakedVotes.add(decimalMul(totalRewardAmount, singleMatchReward))), "Could not transfer funds.");
+      emit VoterPayout(msg.sender, stakedVotes, decimalMul(totalRewardAmount, singleMatchReward));
     }
   }
 
@@ -621,8 +635,8 @@ contract Arbitration {
 
     address winnerParty;
     address bestMinortyParty;
-    address leastMiorityParty;
-    (winnerParty, bestMinortyParty, leastMiorityParty) = getWinnerAndMinorties();
+    address leastMinorityParty;
+    (winnerParty, bestMinortyParty, leastMinorityParty) = getWinnerAndMinorties();
 
 
     if(getNow() < disputeEnds.add(VOTE_LOCKUP)) {
