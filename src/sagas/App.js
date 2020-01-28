@@ -19,6 +19,7 @@ import {
   FETCH_DISPUTES,
   FETCH_ACTIVITIES,
   API_GET_STATUS_CHANGE,
+  API_GET_DISPUTE_STATUS_CHANGE,
   API_GET_LIVE_VOTES,
 } from "../reducers/types";
 
@@ -137,7 +138,8 @@ export function* handleHeartBeat() {
     // nella pagina della disputa
     const currDisp = yield select(getCurrentDispute);
     log("handleHeartBeat - DisputeDetailPage",currDisp);
-
+    
+    yield put({ type: API_GET_DISPUTE_STATUS_CHANGE });
     yield put({ type: API_GET_LIVE_VOTES });
 
   }
