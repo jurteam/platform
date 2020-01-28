@@ -43,7 +43,7 @@ contract OathKeeper is Ownable {
     time period.
     @param _lockInPeriod - Number of months to lock the token for.
     */
-    function takeAnOath(uint _lockInPeriod) public onlyOwner {
+    function takeAnOath(uint _lockInPeriod) public {
         uint _amount = jurToken.allowance(msg.sender, address(this));
         require(vestingMap[msg.sender].startAt == 0, "Already under oath.");
         require(_amount > 0, "Please approve token transfer to the contract.");
