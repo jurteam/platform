@@ -39,7 +39,7 @@ class NotifyPartiesForContractDeadline extends Command
      */
     public function handle()
     {
-        $contracts = Contract::all()->chunk(20);
+        $contracts = Contract::nearDeadline()->chunk(20);
 
         $bar = $this->output->createProgressBar($contracts->count());
 
