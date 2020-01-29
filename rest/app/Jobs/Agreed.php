@@ -28,8 +28,8 @@ class Agreed extends Job
      */
     public function handle()
     {
-        $creator = $this->activity->getCreatorFromWallet();
-        $recipient = $this->activity->getRecipientFromWallet();
+        $creator = $this->activity->getCreator();
+        $recipient = $this->activity->getRecipient();
         $contract = $this->activity->contract;
 
         if (! empty($creator['address'])) {

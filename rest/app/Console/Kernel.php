@@ -18,6 +18,7 @@ class Kernel extends ConsoleKernel
         \App\Console\Commands\Notifications\NotificationMakeCommand::class,
         \App\Console\Commands\Mails\MailMakeCommand::class,
         \App\Console\Commands\ResetDisputeStatusCommand::class,
+        \App\Console\Commands\NotifyPartiesForContractDeadline::class,
     ];
 
     /**
@@ -28,6 +29,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        //
+        // Check for ongoing contract near to their deadline date
+        $schedule->command('jur:contract-deadline')->daily();
     }
 }

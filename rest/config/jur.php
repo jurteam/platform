@@ -158,5 +158,7 @@ return [
         ]
     ],
 
-    'feedback_url' => env('JUR_FEEDBACK_URL')
+    'feedback_url' => env('JUR_FEEDBACK_URL'),
+
+    'days_before_end' => env('JUR_DAYS_BEFORE_END')
 ];

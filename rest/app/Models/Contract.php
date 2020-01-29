@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\User;
 use App\Models\Traits\DisputeTrait;
 use App\Models\Traits\StatusesTrait;
 use App\Models\Traits\HistoriesTrait;
@@ -184,4 +185,63 @@ class Contract extends Model implements HasMedia
             ->addHours($this->duration_hours)
             ->addMinutes($this->duration_minutes);
     }
+
+    public static function nearDeadline()
+    {
+        return static::all()->filter(function($contract) {
+            $status = $contract->getCurrentStatus();
+            if (!is_null($status)) {
+                return $status->contract_status_code == 5;
+            }
+            return false;
+        })->filter(function($contract) {
+            return $contract->created_at->diffInDays(
+                $contract->getExpirationDate()
+            ) < config('jur.days_before_end');
+        });
+    }
+
+    public function getCreator()
+    {
+        return [
+            'address' => $this->part_a_email ?: $this->getUserEmail($this->part_a_wallet),
+            'name' => $this->part_a_name ?: $this->part_a_wallet
+        ];
+    }
+
+    public function getRecipient()
+    {
+        return [
+            'address' => $this->part_b_email ?: $this->getUserEmail($this->part_b_wallet),
+            'name' => $this->part_b_name ?: $this->part_b_wallet
+        ];
+    }
+
+    public function getCounterpartiesAddress()
+    {
+        $addresses = [];
+        $creator = $this->getCreator();
+        $recipient = $this->getRecipient();
+
+        if (!is_null($creator)) {
+            array_push($addresses, $creator);
+        }
+
+        if (!is_null($recipient)) {
+            array_push($addresses, $recipient);
+        }
+
+        return $addresses;
+    }
+
+    protected function getUserEmail($wallet)
+    {
+        $user = User::byWallet($wallet)->first();
+
+        if ($user) {
+            return $user->email;
+        }
+        return null;
+    }
+
 }
