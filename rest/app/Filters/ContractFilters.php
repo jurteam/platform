@@ -68,7 +68,7 @@ class ContractFilters extends Filters
         }
 
         return $query
-                ->where('contracts.is_a_dispute', false)
+                // ->where('contracts.is_a_dispute', false)
                 ->groupBy('contracts.id');
     }
 
