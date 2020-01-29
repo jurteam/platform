@@ -2,12 +2,15 @@
 
 namespace App\Models\Traits;
 
+use App\Jobs\Agreed;
 use App\Models\User;
 use App\Jobs\Ongoing;
 use App\Models\Activity;
+use App\Jobs\ContractClosed;
 use App\Jobs\WaitingForPayment;
 use App\Events\NotifyCounterPart;
 use App\Events\NotifyContractParts;
+use App\Jobs\OpenFriendlyResolution;
 use App\Jobs\WaitingForCounterParty;
 
 trait StatusesNotifable
@@ -31,6 +34,12 @@ trait StatusesNotifable
                 dispatch(new WaitingForPayment($activity));
             } elseif ($activity->status_code == 5) {
                 dispatch(new Ongoing($activity));
+            } elseif ($activity->status_code == 7) {
+                dispatch(new Agreed($activity));
+            } elseif ($activity->status_code == 9) {
+                dispatch(new ContractClosed($activity));
+            } elseif ($activity->status_code == 21) {
+                dispatch(new OpenFriendlyResolution($activity));
             }
         }
     }
