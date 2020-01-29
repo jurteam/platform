@@ -4,23 +4,23 @@ namespace App\Console\Commands;
 
 use App\Models\Contract;
 use Illuminate\Console\Command;
-use App\Jobs\OngoingContractReachDeadline;
+use App\Jobs\OngoingContractReachedDeadline;
 
-class NotifyPartiesForContractDeadline extends Command
+class NotifyPartiesForContractExpired extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'jur:contract-deadline';
+    protected $signature = 'jur:contract-expired';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Check for all contracts that are near to their deadline date and notify parties';
+    protected $description = 'Notify parties when the contract has reached deadline date.';
 
     /**
      * Create a new command instance.
@@ -39,12 +39,12 @@ class NotifyPartiesForContractDeadline extends Command
      */
     public function handle()
     {
-        $contracts = Contract::reachDeadline()->chunk(20);
+        $contracts = Contract::reachDeadline(true)->chunk(20);
 
         $bar = $this->output->createProgressBar($contracts->count());
 
         foreach ($contracts as $contractsSet) {
-            $job = (new OngoingContractReachDeadline($contractsSet))->delay(60);
+            $job = (new OngoingContractReachedDeadline($contractsSet))->delay(60);
 
             dispatch($job);
 
@@ -52,5 +52,6 @@ class NotifyPartiesForContractDeadline extends Command
         }
 
         $this->info('Done!');
+
     }
 }

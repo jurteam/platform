@@ -6,6 +6,7 @@ use App\Jobs\Agreed;
 use App\Models\User;
 use App\Jobs\Ongoing;
 use App\Models\Activity;
+use App\Jobs\OpenDispute;
 use App\Jobs\ContractClosed;
 use App\Jobs\WaitingForPayment;
 use App\Events\NotifyCounterPart;
@@ -40,6 +41,8 @@ trait StatusesNotifable
                 dispatch(new ContractClosed($activity));
             } elseif ($activity->status_code == 21) {
                 dispatch(new OpenFriendlyResolution($activity));
+            } elseif ($activity->status_code == 31) {
+                dispatch(new OpenDispute($activity));
             }
         }
     }

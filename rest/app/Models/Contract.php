@@ -186,7 +186,7 @@ class Contract extends Model implements HasMedia
             ->addMinutes($this->duration_minutes);
     }
 
-    public static function nearDeadline()
+    public static function reachDeadline($reached = false)
     {
         return static::all()->filter(function($contract) {
             $status = $contract->getCurrentStatus();
@@ -194,10 +194,12 @@ class Contract extends Model implements HasMedia
                 return $status->contract_status_code == 5;
             }
             return false;
-        })->filter(function($contract) {
-            return $contract->created_at->diffInDays(
-                $contract->getExpirationDate()
-            ) < config('jur.days_before_end');
+        })->filter(function($contract) use($reached) {
+            if (!$reached) {
+                return now()->diffInDays($contract->getExpirationDate()) < config('jur.days_before_end');
+            }
+
+            return now()->diffInDays($contract->getExpirationDate()) == 0;
         });
     }
 
