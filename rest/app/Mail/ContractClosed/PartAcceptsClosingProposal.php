@@ -41,6 +41,7 @@ class PartAcceptsClosingProposal extends Mailable
             ->subject('Contract successfully closed')
             ->markdown('emails.contracts.closed.creator', [
                 'url' => $this->contract->getContractUrl(),
+                'contract' => $this->contract,
                 'creator' => $this->creator['name'],
                 'recipient' => $this->recipient['name'],
                 'expirationDate' => $this->contract->getExpirationDate(),

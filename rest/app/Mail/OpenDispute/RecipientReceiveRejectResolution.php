@@ -1,33 +1,31 @@
 <?php
 
-namespace App\Mail\FriendlyResolution;
+namespace App\Mail\OpenDispute;
 
-use App\Models\Contract;
+use App\Models\Activity;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class CreatorSentFriendlyResolution extends Mailable
+class RecipientReceiveRejectResolution extends Mailable
 {
     use Queueable, SerializesModels;
 
-    private $creator;
-
     private $recipient;
 
-    private $contract;
+    private $activity;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(array $creator, array $recipient, Contract $contract)
+    public function __construct(array $creator, $recipient, Activity $activity)
     {
         $this->creator = $creator;
         $this->recipient = $recipient;
-        $this->contract = $contract;
+        $this->activity = $activity;
     }
 
     /**
@@ -38,13 +36,13 @@ class CreatorSentFriendlyResolution extends Mailable
     public function build()
     {
         return $this
-            ->subject('Friendly resolution sent')
-            ->markdown('emails.contracts.friendly-resolution.creator', [
+            ->subject('Dispute opened')
+            ->markdown('emails.contracts.open-dispute.recipient', [
                 'url' => $this->contract->getContractUrl(),
+                'expirationDate' => $this->contract->getExpirationDate(),
                 'contract' => $this->contract,
                 'creator' => $this->creator['name'],
-                'recipient' => $this->recipient['name'],
-                'expirationDate' => $this->contract->getExpirationDate()
+                'recipient' => $this->recipient['name']
             ]);
     }
 }

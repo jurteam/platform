@@ -40,6 +40,7 @@ class PartRecieveClosingProposal extends Mailable
         return $this
             ->markdown('emails.contracts.closed.recipient', [
                 'url' => $this->contract->getContractUrl(),
+                'contract' => $this->contract,
                 'creator' => $this->creator['name'],
                 'recipient' => $this->recipient['name'],
                 'expirationDate' => $this->contract->getExpirationDate(),

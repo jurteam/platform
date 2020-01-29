@@ -41,6 +41,7 @@ class RecipientRecieveFriendlyResolution extends Mailable
             ->subject('Friendly resolution received')
             ->markdown('emails.contracts.friendly-resolution.recipient', [
                 'url' => $this->contract->getContractUrl(),
+                'contract' => $this->contract,
                 'creator' => $this->creator['name'],
                 'recipient' => $this->recipient['name'],
                 'expirationDate' => $this->contract->getExpirationDate()
