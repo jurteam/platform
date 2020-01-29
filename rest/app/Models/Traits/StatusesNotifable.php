@@ -85,6 +85,11 @@ trait StatusesNotifable
         return null;
     }
 
+    protected function getAllMembersWithEmail()
+    {
+        return User::byEmail()->get();
+    }
+
     protected function getContractRecipients()
     {
         $recipients = [];

@@ -45,6 +45,16 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'show_fullname' => 'boolean'
     ];
 
+    public function scopeByEmail($query)
+    {
+        return $query->whereNotNull('email');
+    }
+
+    public function scopeExceptFromContracts($query, $collection)
+    {
+        return $query->byEmail()->whereNotIn('id', $collection->toArray());
+    }
+
     // Rest omitted for brevity
 
     /**

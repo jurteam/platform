@@ -186,6 +186,13 @@ class Contract extends Model implements HasMedia
             ->addMinutes($this->duration_minutes);
     }
 
+    public function getDisputeExpirationDate()
+    {
+        $status = $this->getCurrentStatus();
+
+        return $status->custom_status_date;
+    }
+
     public static function reachDeadline($reached = false)
     {
         return static::all()->filter(function($contract) {

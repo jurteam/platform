@@ -20,6 +20,7 @@ class Kernel extends ConsoleKernel
         \App\Console\Commands\ResetDisputeStatusCommand::class,
         \App\Console\Commands\NotifyPartiesForContractDeadline::class,
         \App\Console\Commands\NotifyPartiesForContractExpired::class,
+        \App\Console\Commands\NotifyUsersVotingSessionCommand::class,
     ];
 
     /**
@@ -35,5 +36,8 @@ class Kernel extends ConsoleKernel
 
         // Check for ongoing contract thas has reached their deadline date
         $schedule->command('jur:contract-expired')->daily();
+
+        // Check for open voting session for dispute contracts
+        $schedule->command('jur:dispute-voting-session')->daily();
     }
 }
