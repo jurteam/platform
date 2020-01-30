@@ -8,6 +8,7 @@ use League\Fractal\TransformerAbstract;
 use App\Transformers\AttachmentTransformer;
 use App\Transformers\ContractDetailTransformer;
 use App\Transformers\ContractActivityTransformer;
+// use ElfSundae\Laravel\Hashid\Facades\Hashid;
 
 class ContractTransformer extends TransformerAbstract
 {
@@ -21,8 +22,21 @@ class ContractTransformer extends TransformerAbstract
     {
         $currentStatus = $contract->getCurrentStatus();
 
+        // try {
+
+            $enc1 = hashid_encode(5664);
+
+            // $enc2 = hashid()->encode(5664);
+
+            // $enc3 = Hashid::encode(5664);
+        // }
+        // catch (Exception $e) {
+        //     return 'Caught exception: '.  $e->getMessage(). "\n";
+        // }
+
         return [
             'id' => $contract->id,
+            // 'idh' => hashid_encode(5664),
             'statusId' => $currentStatus ? $currentStatus->code : null,
             'statusLabel' => $currentStatus ? $currentStatus->label : null,
             'statusUpdatedAt' => $contract->getCurrentStatusUpdatedAt(),
