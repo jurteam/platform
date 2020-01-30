@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\User;
 use App\Models\Traits\DisputeTrait;
+use App\Models\Traits\VotableTrait;
 use App\Models\Traits\StatusesTrait;
 use App\Models\Traits\HistoriesTrait;
 use App\Models\Traits\ActivitiesTrait;
@@ -14,7 +15,7 @@ use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 
 class Contract extends Model implements HasMedia
 {
-    use HasMediaTrait, ActivitiesTrait, StatusesTrait, UploadableTrait, DisputeTrait, HistoriesTrait;
+    use HasMediaTrait, ActivitiesTrait, StatusesTrait, UploadableTrait, DisputeTrait, HistoriesTrait, VotableTrait;
 
     protected $fillable = [
         'name',
@@ -71,11 +72,6 @@ class Contract extends Model implements HasMedia
     public function owner()
     {
         return $this->belongsTo(User::class, 'user_id');
-    }
-
-    public function votes()
-    {
-        return $this->hasMany(ContractVote::class);
     }
 
     public function details()
@@ -188,9 +184,12 @@ class Contract extends Model implements HasMedia
 
     public function getDisputeExpirationDate()
     {
-        $status = $this->getCurrentStatus();
+        $history = $this->getCurrentHistory();
 
-        return $status->custom_status_date;
+        if ($history) {
+            return $history->custom_status_date;
+        }
+        return $this->updated_at;
     }
 
     public static function reachDeadline($reached = false)

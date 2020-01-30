@@ -1,26 +1,28 @@
 <?php
 
-namespace App\Mail\OngoingDispute;
+namespace App\Mail\Votes;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class NotifyMembersForVotingSession extends Mailable
+class VoteMajorityChanged extends Mailable
 {
     use Queueable, SerializesModels;
 
-    private $member;
+    private $partecipant;
+
+    private $contract;
 
     /**
-     * Create a new message instance.
+     * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($member, $contract)
+    public function __construct($partecipant, $contract)
     {
-        $this->member = $member;
+        $this->partecipant = $partecipant;
         $this->contract = $contract;
     }
 
@@ -32,11 +34,11 @@ class NotifyMembersForVotingSession extends Mailable
     public function build()
     {
         return $this
-            ->subject('A new dispute has been opened')
-            ->markdown('emails.contract.ongoing-dispute.members', [
-                'recipient' => $this->member,
-                'contract' => $this->contract,
+            ->subject('Majority vote has changed')
+            ->markdown('emails.contracts.votes.partecipant', [
                 'url' => $this->contract->getContractUrl(),
+                'partecipant' => $this->partecipant,
+                'dispute' => $this->contract,
                 'expirationDate' => $this->contract->getDisputeExpirationDate()
             ]);
     }

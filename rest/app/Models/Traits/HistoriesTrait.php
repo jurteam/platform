@@ -27,6 +27,23 @@ trait HistoriesTrait
         return null;
     }
 
+    public function getCurrentHistory()
+    {
+        $this->load('histories');
+        if ($this->histories->count() > 0) {
+            $history = $this->histories
+                ->filter(function($item) {
+                    return !is_null($item->custom_status_date);
+                })
+                ->sortByDesc('custom_status_date')
+                ->first();
+
+            return $history;
+        }
+
+        return null;
+    }
+
     /**
      * Record status histories for contract.
      *
