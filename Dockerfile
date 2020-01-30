@@ -3,7 +3,7 @@ FROM ubuntu:18.04
 ARG DEBIAN_FRONTEND=noninteractive
 # 1. nginx + php install
 RUN apt update  && \
-    apt install -y ufw curl zip unzip nano systemd php-fpm php-mysql php-mbstring php-xml php-cli php-zip php-xmlrpc php-soap php-curl php-gd nginx
+    apt install -y ufw curl zip unzip nano systemd php-fpm php-mysql php-mbstring php-xml php-cli php-zip php-xmlrpc php-soap php-curl php-gd php-bcmath nginx
     # apt-get -y -t bionic-backports
 
 # 3. virtual host setup
