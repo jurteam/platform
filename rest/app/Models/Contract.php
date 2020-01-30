@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Traits\DisputeTrait;
 use App\Models\Traits\VotableTrait;
@@ -197,15 +198,37 @@ class Contract extends Model implements HasMedia
         return static::all()->filter(function($contract) {
             $status = $contract->getCurrentStatus();
             if (!is_null($status)) {
-                return $status->contract_status_code == 5;
+                return $status->code == 5;
             }
             return false;
         })->filter(function($contract) use($reached) {
             if (!$reached) {
-                return now()->diffInDays($contract->getExpirationDate()) < config('jur.days_before_end');
+                return Carbon::now()->diffInDays(
+                    $contract->getExpirationDate()
+                ) == config('jur.days_before_end');
             }
 
             return now()->diffInDays($contract->getExpirationDate()) == 0;
+        });
+    }
+
+    public static function disputeDeadline($reached = false)
+    {
+        return static::disputes()->get()->filter(function($contract) {
+            $status = $contract->getCurrentStatus();
+            if (! is_null($status)) {
+                var_dump("$contract->id: $status->code");
+                return $status->code == 35;
+            }
+            return false;
+        })->filter(function($contract) use($reached) {
+            if (!$reached) {
+                return Carbon::now()->diffInDays(
+                    $contract->getDisputeExpirationDate()
+                ) == config('jur.days_before_end');
+            }
+
+            return now()->diffInDays($contract->getDisputeExpirationDate()) == 0;
         });
     }
 
