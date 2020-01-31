@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Jobs\NotifyForMajorityChange;
 use App\Models\Traits\UploadableTrait;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
@@ -22,6 +23,15 @@ class ContractVote extends Model implements HasMedia
         'message',
         'hash'
     ];
+
+    public static function boot()
+    {
+        parent::boot();
+
+        static::saved(function($model) {
+            $model->checkForMajorityChange();
+        });
+    }
 
     public function scopeFilters($query, $filters)
     {
@@ -56,5 +66,13 @@ class ContractVote extends Model implements HasMedia
     public function itsMe()
     {
         return $this->contract->part_a_wallet == $this->oracle_wallet;
+    }
+
+    public function checkForMajorityChange()
+    {
+        $partials = $this->contract->getPartialsData();
+        if ($partials['totalTokensPartA'] != $partials['totalTokensPartB']) {
+            dispatch(new NotifyForMajorityChange($this->contract));
+        }
     }
 }

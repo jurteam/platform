@@ -2,7 +2,10 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
+use App\Models\User;
 use App\Models\Traits\DisputeTrait;
+use App\Models\Traits\VotableTrait;
 use App\Models\Traits\StatusesTrait;
 use App\Models\Traits\HistoriesTrait;
 use App\Models\Traits\ActivitiesTrait;
@@ -13,7 +16,7 @@ use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 
 class Contract extends Model implements HasMedia
 {
-    use HasMediaTrait, ActivitiesTrait, StatusesTrait, UploadableTrait, DisputeTrait, HistoriesTrait;
+    use HasMediaTrait, ActivitiesTrait, StatusesTrait, UploadableTrait, DisputeTrait, HistoriesTrait, VotableTrait;
 
     protected $fillable = [
         'name',
@@ -70,11 +73,6 @@ class Contract extends Model implements HasMedia
     public function owner()
     {
         return $this->belongsTo(User::class, 'user_id');
-    }
-
-    public function votes()
-    {
-        return $this->hasMany(ContractVote::class);
     }
 
     public function details()
@@ -184,4 +182,97 @@ class Contract extends Model implements HasMedia
             ->addHours($this->duration_hours)
             ->addMinutes($this->duration_minutes);
     }
+
+    public function getDisputeExpirationDate()
+    {
+        $history = $this->getCurrentHistory();
+
+        if ($history) {
+            return $history->custom_status_date;
+        }
+        return $this->updated_at;
+    }
+
+    public static function reachDeadline($reached = false)
+    {
+        return static::all()->filter(function($contract) {
+            $status = $contract->getCurrentStatus();
+            if (!is_null($status)) {
+                return $status->code == 5;
+            }
+            return false;
+        })->filter(function($contract) use($reached) {
+            if (!$reached) {
+                return Carbon::now()->diffInDays(
+                    $contract->getExpirationDate()
+                ) == config('jur.days_before_end');
+            }
+
+            return now()->diffInDays($contract->getExpirationDate()) == 0;
+        });
+    }
+
+    public static function disputeDeadline($reached = false)
+    {
+        return static::disputes()->get()->filter(function($contract) {
+            $status = $contract->getCurrentStatus();
+            if (! is_null($status)) {
+                var_dump("$contract->id: $status->code");
+                return $status->code == 35;
+            }
+            return false;
+        })->filter(function($contract) use($reached) {
+            if (!$reached) {
+                return Carbon::now()->diffInDays(
+                    $contract->getDisputeExpirationDate()
+                ) == config('jur.days_before_end');
+            }
+
+            return now()->diffInDays($contract->getDisputeExpirationDate()) == 0;
+        });
+    }
+
+    public function getCreator()
+    {
+        return [
+            'address' => $this->part_a_email ?: $this->getUserEmail($this->part_a_wallet),
+            'name' => $this->part_a_name ?: $this->part_a_wallet
+        ];
+    }
+
+    public function getRecipient()
+    {
+        return [
+            'address' => $this->part_b_email ?: $this->getUserEmail($this->part_b_wallet),
+            'name' => $this->part_b_name ?: $this->part_b_wallet
+        ];
+    }
+
+    public function getCounterpartiesAddress()
+    {
+        $addresses = [];
+        $creator = $this->getCreator();
+        $recipient = $this->getRecipient();
+
+        if (!is_null($creator)) {
+            array_push($addresses, $creator);
+        }
+
+        if (!is_null($recipient)) {
+            array_push($addresses, $recipient);
+        }
+
+        return $addresses;
+    }
+
+    protected function getUserEmail($wallet)
+    {
+        $user = User::byWallet($wallet)->first();
+
+        if ($user) {
+            return $user->email;
+        }
+        return null;
+    }
+
 }

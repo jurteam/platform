@@ -14,7 +14,7 @@ trait WalletTrait
     public function scopeByWallet($query, $wallet)
     {
         $lowerWallet = strtolower($wallet);
-        
+
         return $query->whereRaw('LOWER(wallet) = ?', [$lowerWallet]);
     }
 
@@ -51,5 +51,10 @@ trait WalletTrait
     {
         $user = static::byWallet($request->header('wallet'))->firstOrFail();
         return $user->delete();
+    }
+
+    public function getPublicName()
+    {
+        return $this->show_fullname ? $this->name : $this->wallet;
     }
 }
