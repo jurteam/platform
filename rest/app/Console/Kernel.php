@@ -43,5 +43,8 @@ class Kernel extends ConsoleKernel
 
         // Check for disputes near to vote deadline
         $schedule->command('jur:dispute-deadline')->daily();
+
+        // Check for disputes that reached the vote deadline
+        $schedule->command('jur:dispute-closed')->daily();
     }
 }
