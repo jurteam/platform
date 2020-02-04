@@ -177,7 +177,9 @@ class Contract extends Model implements HasMedia
 
     public function getExpirationDate()
     {
-        return $this->created_at
+        $startingContractHistory = $this->getOpeningDate();
+
+        return $startingContractHistory->custom_status_date
             ->addDays($this->duration_days)
             ->addHours($this->duration_hours)
             ->addMinutes($this->duration_minutes);
