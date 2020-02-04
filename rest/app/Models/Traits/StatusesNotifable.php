@@ -75,7 +75,7 @@ trait StatusesNotifable
         }
     }
 
-    protected function getUserEmail($wallet)
+    public function getUserEmail($wallet)
     {
         $user = User::byWallet($wallet)->first();
 
@@ -90,7 +90,7 @@ trait StatusesNotifable
         return User::byEmail()->get();
     }
 
-    protected function getContractRecipients()
+    public function getContractRecipients()
     {
         $recipients = [];
         if (! empty($this->part_a_email)) {

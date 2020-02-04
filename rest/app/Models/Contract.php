@@ -217,7 +217,6 @@ class Contract extends Model implements HasMedia
         return static::disputes()->get()->filter(function($contract) {
             $status = $contract->getCurrentStatus();
             if (! is_null($status)) {
-                var_dump("$contract->id: $status->code");
                 return $status->code == 35;
             }
             return false;

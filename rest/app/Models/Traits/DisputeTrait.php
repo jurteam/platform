@@ -175,6 +175,16 @@ trait DisputeTrait
         return null;
     }
 
+    public function getTheLoser()
+    {
+        $winner = $this->getTheWinner();
+
+        if ($this->part_a_wallet == $winner) {
+            return $this->part_a_wallet;
+        }
+        return $this->part_b_wallet;
+    }
+
     /**
      * Check for dispute update status
      *
@@ -189,6 +199,28 @@ trait DisputeTrait
     public function resetOnFirstStatus()
     {
         $this->update(['is_a_dispute' => false]);
+    }
+
+    public function getWinner()
+    {
+        $winner = $this->getTheWinner();
+
+        if ($this->part_a_wallet == $winner) {
+            return $this->part_a_name ?: $this->part_a_wallet;
+        } elseif ($this->part_b_wallet == $winner) {
+            return $this->part_b_name ?: $this->part_b_wallet;
+        }
+    }
+
+    public function getLoser()
+    {
+        $winner = $this->getTheWinner();
+
+        if ($this->part_a_wallet <> $winner) {
+            return $this->part_a_name ?: $this->part_a_wallet;
+        } elseif ($this->part_b_wallet <> $winner) {
+            return $this->part_b_name ?: $this->part_b_wallet;
+        }
     }
 
     protected function createProposalForCounterPart($params)
