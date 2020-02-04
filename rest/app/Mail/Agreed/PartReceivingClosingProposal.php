@@ -40,6 +40,7 @@ class PartReceivingClosingProposal extends Mailable
         return $this
             ->subject('Successful closing proposal')
             ->markdown('emails.contracts.agreed.creator', [
+                'contract' => $this->contract,
                 'url' => $this->contract->getContractUrl(),
                 'creator' => $this->creator['name'],
                 'recipient' => $this->recipient['name'],
