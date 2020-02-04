@@ -34,14 +34,14 @@ class ContractClosed extends Job
 
         if (! empty($creator['address'])) {
             Mail::to($creator['address'])
-                ->send(new PartAcceptsClosingProposal(
+                ->send(new PartRecieveClosingProposal(
                     $creator, $recipient, $contract
                 ));
         }
-
+        
         if (! empty($recipient['address'])) {
             Mail::to($recipient['address'])
-                ->send(new PartRecieveClosingProposal(
+                ->send(new PartAcceptsClosingProposal(
                     $recipient, $creator, $contract
                 ));
         }

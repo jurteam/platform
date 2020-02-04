@@ -38,6 +38,7 @@ class PartRecieveClosingProposal extends Mailable
     public function build()
     {
         return $this
+            ->subject('Contract successfully closed')
             ->markdown('emails.contracts.closed.recipient', [
                 'url' => $this->contract->getContractUrl(),
                 'contract' => $this->contract,
