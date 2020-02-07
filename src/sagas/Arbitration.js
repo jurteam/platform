@@ -69,7 +69,8 @@ import {
   chainErrorHandler,
   formatAmount,
   calculateFundingAndDispersal,
-  getContractTotalValue
+  getContractTotalValue,
+  multiplication
 } from "../utils/helpers"; // log helper
 import ArbitrationMock from "../api/ArbitrationMock";
 
@@ -1047,7 +1048,7 @@ export function* handleDisputeArbitration(args) {
   // amount should be value + 1% only first time – should check the contract status
   if (statusId !== 31 && statusId === 5) { // open dispute and fist one to open a dispute
 
-    amount = totalContractValue * Number(process.env.REACT_APP_OPEN_DISPUTE_FEE);
+    amount = multiplication(totalContractValue, Number(process.env.REACT_APP_OPEN_DISPUTE_FEE))
 
   } else { // ongoing dispute
 
