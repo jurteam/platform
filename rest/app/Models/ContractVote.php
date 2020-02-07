@@ -4,13 +4,14 @@ namespace App\Models;
 
 use App\Jobs\NotifyForMajorityChange;
 use App\Models\Traits\UploadableTrait;
+use App\Models\Traits\HistoriesTrait;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 
 class ContractVote extends Model implements HasMedia
 {
-    use HasMediaTrait, UploadableTrait;
+    use HasMediaTrait, UploadableTrait, HistoriesTrait;
 
     /**
      * @var array
@@ -70,9 +71,20 @@ class ContractVote extends Model implements HasMedia
 
     public function checkForMajorityChange()
     {
-        $partials = $this->contract->getPartialsData();
-        if ($partials['totalTokensPartA'] != $partials['totalTokensPartB']) {
-            dispatch(new NotifyForMajorityChange($this->contract));
+        $status = $this->contract->getCurrentStatus();
+        
+        if ($status->code == 35) {
+            // only if is a ongoing dispute
+            
+            // check for majority change
+            $majorityChange = $this->contract->majorityChanged();
+
+            info('---- majorityChange', [$majorityChange]);
+            
+            if ($majorityChange) {
+                info('---- send NotifyForMajorityChange');
+                dispatch(new NotifyForMajorityChange($this->contract));
+            }
         }
     }
 }

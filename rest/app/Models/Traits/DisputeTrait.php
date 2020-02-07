@@ -7,6 +7,7 @@ use App\Models\ContractStatusDetail;
 
 trait DisputeTrait
 {
+
     public function getPartialsData()
     {
         $totalTokensPartA = $this->getTokensPart('part_a_wallet');
@@ -22,6 +23,67 @@ trait DisputeTrait
             'percentagePartB' => $this->getPercetangePart('part_b_wallet'),
             'current_winner' => $this->getTheWinner(false),
         ];
+    }
+
+    public function majorityChanged()
+    {
+        // compare actual majority with majority generated from all votes without last vote
+
+        $totalTokensPartANow = $this->getTokensPart('part_a_wallet');
+            // info('totalTokensPartANow', [$totalTokensPartANow]);
+        $totalTokensPartBNow = $this->getTokensPart('part_b_wallet');
+            // info('totalTokensPartBNow', [$totalTokensPartBNow]);
+        $totalRejectVotesNow = $this->getRejectVotes();
+            // info('totalRejectVotesNow', [$totalRejectVotesNow]);
+        
+        $majorityNow = $this->compareTokenSum($totalTokensPartANow, $totalTokensPartBNow, $totalRejectVotesNow );
+            // info('majorityNow', [$majorityNow]);
+        
+        $lastVote = $this->votes()->latest()->first();
+        
+            // info('lastVote', [$lastVote]);
+        
+        $totalTokensPartABefore = $lastVote->wallet_part === strtolower($this->part_a_wallet) ? ($totalTokensPartANow - $lastVote->amount) : $totalTokensPartANow;
+            // info('totalTokensPartABefore', [$totalTokensPartABefore]);
+        $totalTokensPartBBefore = $lastVote->wallet_part === strtolower($this->part_b_wallet) ? ($totalTokensPartBNow - $lastVote->amount) : $totalTokensPartBNow;
+            // info('totalTokensPartBBefore', [$totalTokensPartBBefore]);
+        $totalRejectVotesBefore = $lastVote->wallet_part === '0x0' ? ($totalRejectVotesNow - $lastVote->amount) : $totalRejectVotesNow;
+            // info('totalRejectVotesBefore', [$totalRejectVotesBefore]);
+        
+        $majorityBefore = $this->compareTokenSum($totalTokensPartABefore, $totalTokensPartBBefore, $totalRejectVotesBefore );
+            // info('majorityBefore', [$majorityBefore]);
+
+        $majorityHasChanged = false;
+        
+        if ($majorityBefore !== $majorityNow && $majorityNow !== 'draw') 
+        {
+            // majority change happens when there is a clare majority different from precedent state
+            $majorityHasChanged = true;
+        }
+
+        return $majorityHasChanged;
+    }
+
+    public function compareTokenSum($partAtoken, $partBtoken, $rejectTokens)
+    {
+        $result = '';
+        if ($partAtoken == $partBtoken && $partBtoken == $rejectTokens) {
+            $result = 'draw';
+        } elseif ($partAtoken == $partBtoken) {
+            $result = 'draw';//drawAB
+        } elseif ($partAtoken == $rejectTokens) {
+            $result = 'draw';//drawAR
+        } elseif ($partBtoken == $rejectTokens) {
+            $result = 'draw';//drawBR
+        } elseif ($rejectTokens > $partAtoken && $rejectTokens > $partBtoken) {
+            $result = 'reject';
+        } elseif ($partAtoken > $partBtoken) {
+            $result = 'partA';
+        } elseif ($partAtoken < $partBtoken) {
+            $result = 'partB';
+        }
+
+        return $result;
     }
 
     public function getLastPart()
@@ -165,7 +227,11 @@ trait DisputeTrait
             if (in_array($status->code, $validStatus) || !$partials) {
                 $totalPartA = $this->getTokensPart('part_a_wallet');
                 $totalPartB = $this->getTokensPart('part_b_wallet');
+                // $totalRejectVotes = $this->getRejectVotes();
 
+                // if ($totalRejectVotes > $totalPartA && $totalRejectVotes > $totalPartB) {
+                //     return '0x0';
+                // } else
                 if ($totalPartA > $totalPartB) {
                     return $this->part_a_wallet;
                 } elseif ($totalPartB > $totalPartA) {
