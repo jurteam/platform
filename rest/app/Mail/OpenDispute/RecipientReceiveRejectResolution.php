@@ -38,9 +38,9 @@ class RecipientReceiveRejectResolution extends Mailable
         return $this
             ->subject('Dispute opened')
             ->markdown('emails.contracts.open-dispute.recipient', [
-                'url' => $this->contract->getContractUrl(),
-                'expirationDate' => $this->contract->getExpirationDate(),
-                'contract' => $this->contract,
+                'url' => $this->activity->contract->getContractUrl(),
+                'expirationDate' => $this->activity->contract->getExpirationDate(),
+                'contract' => $this->activity->contract,
                 'creator' => $this->creator['name'],
                 'recipient' => $this->recipient['name']
             ]);

@@ -38,8 +38,8 @@ class CreatorSentRejectResolution extends Mailable
         return $this
             ->subject('Dispute opened')
             ->markdown('emails.contracts.open-dispute.creator', [
-                'url' => $this->contract->getContractUrl(),
-                'contract' => $this->contract,
+                'url' => $this->activity->contract->getContractUrl(),
+                'contract' => $this->activity->contract,
                 'creator' => $this->creator['name'],
                 'recipient' => $this->recipient['name']
             ]);

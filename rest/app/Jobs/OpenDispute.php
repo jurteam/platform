@@ -30,7 +30,7 @@ class OpenDispute extends Job
     {
         $creator = $this->activity->getCreator();
         $recipient = $this->activity->getRecipient();
-        $contract = $this->activity->contract;
+        $contract = $this->activity;
 
         if (! empty($creator['address'])) {
             Mail::to($creator['address'])
