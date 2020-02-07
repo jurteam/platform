@@ -293,3 +293,11 @@ export const multiplication = (a,b) => {
   return prod.toString()
 }
 
+export const toBigFixed = amount => {
+
+  const amountArray = amount.toString().split('.')
+  const decimalnumber = amountArray.length>1?amountArray[1].length:0
+  const amountFormat = amount.toString() + ('0').repeat(Number(process.env.REACT_APP_TOKEN_DECIMALS)-decimalnumber)
+
+  return amountFormat
+};
