@@ -2,6 +2,7 @@
 
 namespace App\Models\Traits;
 
+use App\Models\User;
 use App\Models\Contract;
 use App\Models\ContractStatusDetail;
 
@@ -221,6 +222,15 @@ trait DisputeTrait
         } elseif ($this->part_b_wallet <> $winner) {
             return $this->part_b_name ?: $this->part_b_wallet;
         }
+    }
+
+    public function getPartecipantsFromWallet($wallet)
+    {
+        $wallets = $this->votes
+            ->where('wallet_part', $wallet)
+            ->pluck('oracle_wallet');
+
+        return User::byWallets($wallets)->get()->unique('wallet');
     }
 
     protected function createProposalForCounterPart($params)

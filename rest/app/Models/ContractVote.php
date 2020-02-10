@@ -43,6 +43,11 @@ class ContractVote extends Model implements HasMedia
         return $query->whereContractId($contractId);
     }
 
+    public function scopeByWalletPart($query, $wallet)
+    {
+        return $query->whereWalletPart($wallet);
+    }
+
     /**
      * Retrieve contract.
      *

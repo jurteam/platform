@@ -14,9 +14,9 @@ class DisputeVoteReachDeadline extends Job
      *
      * @return void
      */
-    public function __construct($contract)
+    public function __construct($contracts)
     {
-        $this->contract = $contract;
+        $this->contracts = $contracts;
     }
 
     /**
@@ -26,23 +26,25 @@ class DisputeVoteReachDeadline extends Job
      */
     public function handle()
     {
-        $partecipants = $this->contract->getPartecipants()->chunk(20);
-        $members = $this->contract->getMembers()->chunk(20);
+        foreach ($this->contracts as $contract) {
+            $partecipants = $contract->getPartecipants()->chunk(20);
+            $members = $contract->getMembers()->chunk(20);
 
-        $partecipants->each(function($partecipantsSet) {
-            $job = (new NotifyPartecipantsForDisputeReachDeadline(
-                $partecipantsSet, $this->contract
-            ))->delay(60);
+            $partecipants->each(function($partecipantsSet) use($contract) {
+                $job = (new NotifyPartecipantsForDisputeReachDeadline(
+                    $partecipantsSet, $contract
+                ))->delay(60);
 
-            dispatch($job);
-        });
+                dispatch($job);
+            });
 
-        $members->each(function($membersSet) {
-            $job = (new NotifyMembersForDisputeReachDeadline(
-                $membersSet, $this->contract
-            ))->delay(60);
+            $members->each(function($membersSet) use($contract) {
+                $job = (new NotifyMembersForDisputeReachDeadline(
+                    $membersSet, $
+                ))->delay(60);
 
-            dispatch($job);
-        });
+                dispatch($job);
+            });
+        }
     }
 }

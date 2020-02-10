@@ -15,9 +15,9 @@ class DisputeVoteReachedDeadline extends Job
      *
      * @return void
      */
-    public function __construct($contract)
+    public function __construct($contracts)
     {
-        $this->contract = $contract;
+        $this->contracts = $contracts;
     }
 
     /**
@@ -27,21 +27,22 @@ class DisputeVoteReachedDeadline extends Job
      */
     public function handle()
     {
-        $winnerWallet = $this->contract->getTheWinner(true);
-        $loserWallet = $this->contract->getTheLoser();
+        foreach ($this->contracts as $contract) {
+            $winnerWallet = $contract->getTheWinner(true);
+            $loserWallet = $contract->getTheLoser();
 
-        $email = $this->contract->getUserEmail($winnerWallet);
+            $email = $contract->getUserEmail($winnerWallet);
 
-        if (! $email) {
-            Mail::to($email)
-                ->send(new DisputeWinningPart($this->contract));
+            if (! $email) {
+                Mail::to($email)
+                    ->send(new DisputeWinningPart($contract));
+            }
+
+            $email = $contract->getUserEmail($loserWallet);
+            if (! $email) {
+                Mail::to($email)
+                    ->send(new DisputeLosingPart($contract));
+            }
         }
-
-        $email = $this->contract->getUserEmail($loserWallet);
-        if (! $email) {
-            Mail::to($email)
-                ->send(new DisputeLosingPart($this->contract));
-        }
-
     }
 }

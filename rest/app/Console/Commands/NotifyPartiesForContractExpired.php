@@ -44,7 +44,8 @@ class NotifyPartiesForContractExpired extends Command
         $bar = $this->output->createProgressBar($contracts->count());
 
         foreach ($contracts as $contractsSet) {
-            $job = (new OngoingContractReachedDeadline($contractsSet))->delay(60);
+            $job = (new OngoingContractReachedDeadline($contractsSet))
+                ->delay(60);
 
             dispatch($job);
 
@@ -52,6 +53,5 @@ class NotifyPartiesForContractExpired extends Command
         }
 
         $this->info('Done!');
-
     }
 }
