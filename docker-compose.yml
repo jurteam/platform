@@ -3,23 +3,23 @@ services:
 
   jur:
     build: ./
-    # volumes:
-    #   # - ./rest/public:/var/www/html/rest/public
-    #   # - ./rest/storage:/var/www/html/rest/storage
-    #   # - ./build:/var/www/html/public
-    #   # - ./rest/composer.json:/var/www/html/rest/composer.json
-    #   # - ./rest/artisan:/var/www/html/rest/artisan
-    #   # - ./rest/.env:/var/www/html/rest/.env
-    #   # - ./rest/phpunit.xml:/var/www/html/rest/phpunit.xml
-    #   # - ./rest/app:/var/www/html/rest/app
-    #   # - ./rest/bootstrap:/var/www/html/rest/bootstrap
-    #   # - ./rest/config:/var/www/html/rest/config
-    #   # - ./rest/database:/var/www/html/rest/database
-    #   # - ./rest/resources:/var/www/html/rest/resources
-    #   # - ./rest/routes:/var/www/html/rest/routes
-    #   # - ./rest/tests:/var/www/html/rest/tests
-    #   # - ./rest/vendor:/var/www/html/rest/vendor
-    #   # - ./rest:/var/www/html
+    volumes:
+      # - ./build:/var/www/html/public
+      # - ./rest/phpunit.xml:/var/www/html/phpunit.xml
+      # - ./rest/.env:/var/www/html/.env
+      - ./rest/app:/var/www/html/app
+      # - ./rest/artisan:/var/www/html/artisan
+      # - ./rest/bootstrap:/var/www/html/bootstrap
+      # - ./rest/composer.json:/var/www/html/composer.json
+      - ./rest/config:/var/www/html/config
+      # - ./rest/database:/var/www/html/database
+      # - ./rest/public:/var/www/html/public
+      - ./rest/resources:/var/www/html/resources
+      # - ./rest/routes:/var/www/html/routes
+      # - ./rest/storage:/var/www/html/storage
+      # - ./rest/tests:/var/www/html/tests
+      # - ./rest/vendor:/var/www/html/vendor
+      # - ./rest:/var/www/html
     ports:
       - "80:80"
     links:
@@ -52,6 +52,14 @@ services:
       MAIL_HOST: smtp.mailtrap.io
       MAIL_PASSWORD: 63f73da428ac00
       MAIL_PORT: 2525
+
+      MAIL_FROM_NAME: "Jur Team"
+      MAIL_FROM_ADDRESS: noreply@jur.io
+      JUR_MAIL_FROM_NAME: "Jur Team"
+      JUR_MAIL_FROM_ADDRESS: noreply-compose@jur.io
+
+      JUR_FEEDBACK_URL: http://localhost/feedback-url?compose
+      JUR_DAYS_BEFORE_END: 1
 
       HASHIDS_SALT: 0J3RGHY4TGH
       HASHIDS_LENGTH: 6
