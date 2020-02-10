@@ -4,6 +4,16 @@ namespace App\Models\Traits;
 
 trait WalletTrait
 {
+    public function scopeByWallets($query, $collection)
+    {
+        return $query->byEmail()->whereIn('wallet', $collection->toArray());
+    }
+
+    public function scopeExcludeWallets($query, $collection)
+    {
+        return $query->byEmail()->whereNotIn('wallet', $collection->toArray());
+    }
+
     /**
      * Default query to find an user by wallet code.
      *

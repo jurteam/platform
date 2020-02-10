@@ -108,6 +108,24 @@ trait DisputeTrait
         return null;
     }
 
+    public function getTotalWithdraw($wallet)
+    {
+        $withdrawals = $this->withdrawals
+            ->filter(function($withdrawal) use($wallet) {
+                return strtolower($withdrawal->wallet) == strtolower($wallet);
+            });
+
+        $withdraw = $withdrawals->filter(function($withdrawal) {
+            return $withdrawal->type == 'withdraw'
+        })->sum('amount');
+
+        $payout = $withdrawals->filter(function($withdrawal) {
+            return $withdrawal->type == 'payout'
+        })->sum('amount');
+
+        return $withdraw + $payout;
+    }
+
     /**
      * Get the proposal part for current dispute.
      *
