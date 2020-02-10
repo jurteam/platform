@@ -21,7 +21,7 @@ class NotifyForDisputeVoteReachedDeadline extends Command
      *
      * @var string
      */
-    protected $description = 'Notify parties for the ending of the dispute (Winner, Loser)';
+    protected $description = 'Notify parties & members for the ending of the dispute (Winner, Loser)';
 
     /**
      * Create a new command instance.
