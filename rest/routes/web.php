@@ -42,10 +42,6 @@ $api->version('v1', function($api) {
                 $api->group(['prefix' => 'evidences'], function($api) {
                     $api->delete('{id}', 'App\Http\Controllers\ContractDetailsController@deleteMedia');
                 });
-
-                $api->group(['prefix' => 'withdrawal'], function($api) {
-                    $api->post('{id}', 'App\Http\Controllers\WithdrawalsController@store');
-                });
             });
 
             $api->group(['prefix' => 'friendly'], function($api) {
@@ -54,6 +50,10 @@ $api->version('v1', function($api) {
 
             $api->group(['prefix' => 'details'], function($api) {
                 $api->get('{id}', 'App\Http\Controllers\ContractDetailsController@index');
+            });
+
+            $api->group(['prefix' => 'withdrawal'], function($api) {
+                $api->post('{id}', 'App\Http\Controllers\WithdrawalsController@store');
             });
         });
 

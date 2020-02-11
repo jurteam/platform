@@ -4,28 +4,29 @@ namespace App\Http\Controllers;
 
 use App\Models\Withdrawal;
 use Illuminate\Http\Request;
+use Dingo\Api\Routing\Helpers;
 use App\Transformers\WithdrawalTransformer;
 
 class WithdrawalsController extends Controller
 {
+    use Helpers;
+
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, $id)
     {
         $this->validate($request, [
-            'contract_id' => 'required',
             'amount' => 'required',
-            'wallet' => 'required',
             'type' => 'required|in:withdraw,payout'
         ]);
 
-        $withdraw = Withdrawal::createWithdraw($request);
+        $withdraw = Withdrawal::createWithdraw($id, $request);
 
-        return $this->item($withdraw, new WithdrawalTransformer);
+        return $this->response->item($withdraw, new WithdrawalTransformer);
     }
 
     /**

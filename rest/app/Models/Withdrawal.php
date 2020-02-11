@@ -17,13 +17,18 @@ class Withdrawal extends Model
         'type'
     ];
 
-    public static function createWithdraw($params)
+    protected $casts = [
+        'amount' => 'double'
+    ];
+
+    public static function createWithdraw($id, $params)
     {
         $withdraw = static::create(array_merge($params->toArray(), [
+            'contract_id' => $id,
             'wallet' => $params->header('wallet')
         ]));
 
-        $user = $this->getUserFromWallet();
+        $user = $withdraw->getUserFromWallet();
         if ($user->email) {
             if ($withdraw->isWithdraw()) {
                 Mail::to($user->email)
@@ -33,6 +38,8 @@ class Withdrawal extends Model
                     ->send(new Payout($withdraw));
             }
         }
+
+        return $withdraw;
     }
 
     public function contract()
@@ -43,5 +50,10 @@ class Withdrawal extends Model
     public function getUserFromWallet()
     {
         return User::byWallet($this->wallet)->first();
+    }
+
+    public function isWithdraw()
+    {
+        return $this->type == 'withdraw';
     }
 }

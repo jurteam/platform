@@ -116,11 +116,11 @@ trait DisputeTrait
             });
 
         $withdraw = $withdrawals->filter(function($withdrawal) {
-            return $withdrawal->type == 'withdraw'
+            return $withdrawal->type == 'withdraw';
         })->sum('amount');
 
         $payout = $withdrawals->filter(function($withdrawal) {
-            return $withdrawal->type == 'payout'
+            return $withdrawal->type == 'payout';
         })->sum('amount');
 
         return $withdraw + $payout;
