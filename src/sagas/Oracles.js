@@ -27,7 +27,7 @@ import {
 } from "../reducers/types";
 import moment from 'moment';
 
-import { log, chainErrorHandler } from "../utils/helpers"; // log helper
+import { log, chainErrorHandler, multiplication, toBigFixed } from "../utils/helpers"; // log helper
 
 // import contractStatuses from "../assets/i18n/en/status.json";
 
@@ -140,11 +140,16 @@ export function* onVote(action) {
   }
   if (oracle_wallet) voteData.append("oracle_wallet", oracle_wallet);
   voteData.append("message", message ? message : ''); // empty string
+
   voteData.append(
     "amount",
-    Number(amount).toFixed(process.env.REACT_APP_TOKEN_DECIMALS)
+    toBigFixed(amount)
   ); // always
 
+  log("onVote - amount", amount);
+  log("onVote - Number(amount).toFixed", Number(amount).toFixed(process.env.REACT_APP_TOKEN_DECIMALS));
+  log("onVote - amountFormat----------", toBigFixed(amount));
+  
   for (let i = 0; i < attachments.length; i++) {
     // iteate over any file sent over appending the files to the form data.
     let file = attachments[i];
@@ -165,11 +170,15 @@ export function* onVote(action) {
   // const arbitration = new Arbitration(contractAddress);
 
   // fix amount decimals
-  amount = amount * 10**18;
+  amount = multiplication(amount,10**18);
+  
+  log('onVote - amount fixedBug', amount)
 
   // fix strings
   amount = amount.toString();
-
+  
+  log('onVote - amount to chain', amount)
+  
   const voteTx = yield token
     .approveAndCall(contractAddress, amount, 'vote', [oracle_wallet, wallet_part, amount])
     .catch((err) => {
