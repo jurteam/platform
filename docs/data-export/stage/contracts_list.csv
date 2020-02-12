@@ -1,0 +1,202 @@
+Contract id;Contract name;Contract address;part a wallet;part a email;part a name;part b wallet;part b email;part b name;kpi;resolution_proof;category;value;in_case_of_dispute;who_pays;has_penalty_fee;part_a_penalty_fee;part_b_penalty_fee;duration_days;duration_hours;duration_minutes;contract_status_id;user_id;wallet;is_a_dispute;is_a_friendly_resolution;created_at;updated_at;chain_updated_at;id;name;email;wallet;birth_date;gender;location;category;show_fullname;accepted_terms;accepted_disclaimer;created_at;updated_at;file_name
+151;NULL;0xd1ea07adf3f477c41fdb3751dcd817740db79b58;0x053ddc691fbc5d1c1d006af6857ace7c9197ad0d;michaeldeborst@gmail.com;Borrel ;0x17eB028888704c0537BCdf8426ec243008186274;ninabuwalda@gmail.com;Mr. Tortellini;"The Freelancer will update and maintain the information on the social media platforms
+of the Customer by meeting the following quotas during the period of the Contract :
+(i) Two news items on the Customer ’s website a week
+(ii) Four Facebook posts each week
+(iii) Two Instagram posts each week
+(iv) Interacting with reactions on the social media platforms at least five
+Interactions a day";"(i) Google Analytics Report for the Customer ’s Website
+(ii) Facebook EdgeRank Status, Likes, and Traffic
+(iii) Instagram EdgeRanks Status, Likes, and Traffic";Freelancer Agreement;800.000000000000000000;open;0x053ddc691fbc5d1c1d006af6857ace7c9197ad0d;1;0.000000000000000000;0.000000000000000000;180;0;0;0;47;0x053ddc691fbc5d1c1d006af6857ace7c9197ad0d;1;0;2019-12-02 16:56:29;2019-12-26 05:07:41;NULL;47;Michael de Borst;NULL;0x053ddc691fbc5d1c1d006af6857ace7c9197ad0d;1970-01-01;M;NULL;Other;1;1;1;2019-11-25 16:06:04;2019-12-02 16:34:25;Group-C---Contract-Final.pdf
+149;NULL;0xc1447c058fec3b8c2c409a00c3dc8cc88c26cb25;0x67977868745a2ffc1cda97eb2ac0c2aa3e9c930b;NULL;Lab for New Justice;0x17eB028888704c0537BCdf8426ec243008186274;;Christopher Leaner;"The Freelance undertakes to provide the Services
+The Service will take no longer than 6 hours, each weekly shift takes place on Monday between 09:00 AM and 06:00 PM.
+No dust will be visible on the furniture, no damage will be done to the furniture while dusting. 
+The windows will have no visible marks on them left by washing soap or residue. 
+All trash cans will have been emptied by 06:00 PM on each Monday. When the container outside is full, or almost full to such an extent that Freelancer can no longer empty the trash cans, Freelancer will notify the Consumer before the end of the shift.";The Freelancer is to take pictures of a finished (cleaned) room, for approval of the Customer. These pictures shall be uploaded to a shared Google Drive folder. ;Freelancer Agreement;10.000000000000000000;open;0x67977868745a2ffc1cda97eb2ac0c2aa3e9c930b;0;0.000000000000000000;0.000000000000000000;8;0;0;0;49;0x67977868745a2ffc1cda97eb2ac0c2aa3e9c930b;0;0;2019-12-02 16:51:59;2019-12-02 17:03:40;NULL;49;NULL;NULL;0x67977868745a2ffc1cda97eb2ac0c2aa3e9c930b;NULL;NULL;NULL;NULL;1;0;1;2019-12-02 16:26:57;2019-12-02 16:26:57;Jur---Lab-for-New-Justice---Radboud---Shared---Contracts---Contract-Team-B.pdf
+152;NULL;0x2c63c29e1b5e3400f20a9a0db7086c1a9c160b29;0xeba9abd1618c392f9c114076bf65f17c51915a9d;asiltanozen@gmail.com;Group D;0x17eB028888704c0537BCdf8426ec243008186274;;Jur;"The Parties acknowledge that the Services consists of illustrating a children’s book.
+The Freelance undertakes to provide the Services so as to meet the following conditions:
+The illustration shall be made with Adobe Illustrator.
+Every page needs to be illustrated authentically. Thus, every illustration on each page needs to be unique.
+There are fifteen pages, every page needs one illustration.
+The illustrations shall be according to the story which will be provided by the customer. 
+The freelancer should leave space next to each illustration for the texts. 
+The illustrations shall be in color.
+The horse as the main figure of the children’s book needs to resemble the horse  in the pictures which will be provided by the customer. The image provided by the customer can be seen in the attachment.
+As the picture illustrates, the horse shall be brown and shall have white spots on its belly. 
+The freelancer needs to upload her drafts and illustrations she has made so far, every five working days. The customer will review the drafts and illustrations uploaded to the shared folder  and the freelancer will make alterations according to the customers wish. 
+";"As soon as the illustration is finished, the Freelancer needs to upload the final product to a shared folder while respecting the time limit agreed by the parties (see the clause 5.3). If the Customer approves the uploaded illustrations, then the tokens will be transferred into the freelancer’s wallet. 
+The Freelancer represents to possess knowledge and equipment which is suitable for the correct performance of the Services.";OTC;1000.000000000000000000;open;0xeba9abd1618c392f9c114076bf65f17c51915a9d;0;0.000000000000000000;0.000000000000000000;5;0;0;0;53;0xeba9abd1618c392f9c114076bf65f17c51915a9d;0;0;2019-12-02 16:56:45;2019-12-02 17:04:40;NULL;53;NULL;NULL;0xeba9abd1618c392f9c114076bf65f17c51915a9d;NULL;NULL;NULL;NULL;1;0;1;2019-12-02 16:32:39;2019-12-02 16:32:39;Jur---Lab-for-New-Justice---Radboud---Shared---Contracts---Contract-Team-D.pdf
+148;NULL;0xffccf4bf77c62e829199a09dc644da0536f7ab3b;0x18643aace1ddf942bc7c3281fbc25af6b1c9ea37;;Radboud University;0x17eB028888704c0537BCdf8426ec243008186274;;John Carpenter;"3.2 The Freelancer undertakes to provide the Services in compliance with the following key
+performance indicators:
+(a) the benches are made of wood, suitable for two adults for purpose of sitting;
+(b) the benches should be of high quality, as those represented in the portfolio of the
+Freelancer;
+(c) the benches must be made in 6 weeks following the conclusion of the Contract;
+(d) the Freelancer will send the Costumer a technical draft of high quality 1 week following
+the signing of the Contract. The draft should be uploaded to a shared Google Drive folder
+in .pdf format;
+(e) the Freelancer may send a prototype of the benches, if required, within 2 weeks by the
+Customer after the inspection of the technical draft;
+(f) the Freelancer will upload a picture of the finished, delivered and installed benches.";"3.3 The Contract shall use the following Resolution Proof:
+a) The Freelancer will upload photographs of the finished and delivered benches.
+b) The photographs must show the benches at the place of delivery. The photographs shall
+be clear, with a minimum of 12 megapixel quality.
+c) The Freelancer must also upload a close-up photograph of the details of the benches,
+such as the handles and the sitting place and the manner of installation of the benches.
+d) The Freelancer must upload at least three photographs as specified above on the Jur
+Beta Platform.
+e) The photographs must be taken with a geolocation capability that reliably shows that
+they were taken at the premises of the Customer.
+f) The Customer will confirm the reception of the Services on the Jur Beta Platform.";Freelancer Agreement;1000.000000000000000000;open;0x18643aace1ddf942bc7c3281fbc25af6b1c9ea37;0;0.000000000000000000;0.000000000000000000;30;0;0;0;44;0x18643aace1ddf942bc7c3281fbc25af6b1c9ea37;0;0;2019-12-02 16:51:26;2019-12-02 17:05:50;NULL;44;Charli;charlijanssen@live.nl;0x18643aace1ddf942bc7c3281fbc25af6b1c9ea37;1970-01-01;NULL;NULL;NULL;1;1;1;2019-11-21 11:25:01;2019-12-02 16:55:34;Group-A-CONTRACT.pdf
+154;NULL;0x69aa2654a1b55fa21f32f35d084bba9ca943569b;0x514428b0857aae2e1cdb9fd0345c3a78d4f18e36;borrel.topfestjes@gmail.com;Borrel;0x91716604d4b7b5da11f7980c765bcc28b9b481a8;tortellini.socialmedia@gmail.com;mr Tortellini;"3.1 The Parties acknowledge that the Services consist of establishing the organization’s presence
+on the following social media platforms:
+3.2
+(i) Customer ’s ​ website (​ http://www.borrelnijmegen.com/ ​ )
+(ii) Facebook (​ https://www.facebook.com/borrelnijmegen/ ​ )
+(iii) Instagram (​ https://www.instagram.com/borrelnijmegen/ ​ )
+​ Customer upon
+The Freelancer undertakes to provide the Services so as to meet the following conditions:
+(a)
+(b)
+The Freelancer will update and maintain the information on the social media platforms
+of the ​ Customer ​ by meeting the following quotas during the period of the ​ Contract : ​
+(i) Two news items on the ​ Customer ’s ​ website a week
+(ii) Four Facebook posts each week
+(iii) Two Instagram posts each week
+(iv) Interacting with reactions on the social media platforms at least five
+Interactions ​ a day
+The Freelancer shall provide the ​ Customer with information about what he or she
+changed on the social media platforms by providing the following reports weekly:
+Customer ______
+initials
+3
+Freelancer ______(i) Google Analytics Report for the ​ Customer ’s ​ Website
+(ii) Facebook EdgeRank Status, Likes, and Traffic
+(iii) Instagram EdgeRanks Status, Likes, and Traffic
+(c) The Freelancer will communicate with the ​ Customer at the conclusion of each thirty
+day period (in person, by phone, or online) to discuss the progress of the
+​ Customer
+presence on Social Media Platforms, as defined under 3.1 and discuss strategy for
+the upcoming period (see also the definition of ​ Feedback Period .) ​
+(d) The ​ Customer may give ​ Instructions to The Freelancer and shall voice any concerns
+regarding the quality of the work by the Freelancer during the sharing of information
+as mentioned under ​ Feedback Period ​ regarding the activities under (3.2a) and (3.2b).
+The Freelancer will, within reason, alter his activities to the will of The ​ Customer .";Communication's folder https://drive.google.com/open?id=177dmZnWNk_fXexRpeAWiOxnzZgfo2I-b;Freelancer Agreement;100.000000000000000000;open;0x514428b0857aae2e1cdb9fd0345c3a78d4f18e36;0;0.000000000000000000;0.000000000000000000;180;0;0;0;45;0x514428b0857aae2e1cdb9fd0345c3a78d4f18e36;1;0;2019-12-09 14:44:45;2019-12-09 16:43:22;NULL;45;NULL;NULL;0x514428b0857aae2e1cdb9fd0345c3a78d4f18e36;NULL;NULL;NULL;NULL;1;0;1;2019-11-21 11:37:40;2019-11-21 11:37:40;contract_C_modified.pdf
+159;Contract A - Benches Case;0x97dc40eccbc34382e506e5a81a9df27df47cb702;0x91716604d4b7b5da11f7980c765bcc28b9b481a8;luigi@jur.io;Radboud University B.V.;0x514428b0857aae2e1cdb9fd0345c3a78d4f18e36;michele@jur.io;John Carpenter;"The following content is a transposition of Clauses 3.1 and 3.2 of the Contract.
+
+3.1 The Parties acknowledge that the Services consists of producing 5 wooden benches of standard quality and delivering them to the address of the Customer and installing them on the premises of the Customer. The benches will be placed on the land of the Radboud University by
+the Customer.
+
+3.2 The Freelancer undertakes to provide the Services in compliance with the following key
+performance indicators:
+(a) the benches are made of wood, suitable for two adults for purpose of sitting;
+(b) the benches should be of high quality, as those represented in the portfolio of the Freelancer;
+(c) the benches must be made in 6 weeks following the conclusion of the Contract;
+(d) the Freelancer will send the Costumer a technical draft of high quality 1 week following the signing of the Contract. The draft should be uploaded to a shared Google Drive folder in .pdf format;
+(e) the Freelancer may send a prototype of the benches, if required, within 2 weeks by the Customer after the inspection of the technical draft;
+(f) the Freelancer will upload a picture of the finished, delivered and installed benches.";"The following content is a transposition of Clauses 3.3 of the Contract.
+
+3.3 The Contract shall use the following Resolution Proof:
+a) The Freelancer will upload photographs of the finished and delivered benches.
+b) The photographs must show the benches at the place of delivery. The photographs shall be clear, with a minimum of 12 megapixel quality.
+c) The Freelancer must also upload a close-up photograph of the details of the benches, such as the handles and the sitting place and the manner of installation of the benches.
+d) The Freelancer must upload at least three photographs as specified above on the Jur Beta Platform.
+e) The photographs must be taken with a geolocation capability that reliably shows that they were taken at the premises of the Customer.
+f) The Customer will confirm the reception of the Services on the Jur Beta Platform.
+
+Link to the shared folder: https://drive.google.com/drive/u/1/folders/1fXst2pZ0rqkk5zydcOlZXJewIxpxshQt";Freelancer Agreement;100.000000000000000000;open;0x91716604d4b7b5da11f7980c765bcc28b9b481a8;0;0.000000000000000000;0.000000000000000000;30;0;0;0;43;0x91716604d4b7b5da11f7980c765bcc28b9b481a8;0;0;2019-12-12 12:01:03;2019-12-24 10:56:45;NULL;43;NULL;NULL;0x91716604d4b7b5da11f7980c765bcc28b9b481a8;NULL;NULL;NULL;NULL;1;0;1;2019-11-21 11:17:32;2019-11-21 11:17:32;Group-A-CONTRACT.pdf
+160;NULL;0x24c5af880ac3142c9c6d3f095085ae738266ced9;0x91716604d4b7b5da11f7980c765bcc28b9b481a8;borrel.topfestjes@gmail.com;Borrel;0x514428b0857aae2e1cdb9fd0345c3a78d4f18e36;tortellini.socialmedia@gmail.com;Mr. Tortellini;The following content is a transposition of Clauses 3.1, 3.2. 3.1 The Parties acknowledge that the Services consist of establishing the organization’s presence            on the following social media platforms: (i) Customer​ ’s website (​http://www.borrelnijmegen.com/​ ) (ii) Facebook (​https://www.facebook.com/borrelnijmegen/​ ) (iii) Instagram (​https://www.instagram.com/borrelnijmegen/​ ) 3.2 The Freelancer undertakes to provide the Services so as to meet the following conditions: (a) The Freelancer will update and maintain the information on the social media platforms             of the ​Customer​ by meeting the following quotas during the period of the ​Contract​ : (i) Two news items on the ​Customer​ ’s website a week (ii) Four Facebook posts each week (iii) Two Instagram posts each week (iv) Interacting with reactions on the social media platforms at least five           Interactions​ a day (b) The Freelancer shall provide the ​Customer with information about what he or she changed on the social media platforms by providing the following reports weekly: (i) Google Analytics Report for the ​Customer​ ’s Website (ii) Facebook EdgeRank Status, Likes, and Traffic (iii) Instagram EdgeRanks Status, Likes, and Traffic (c) The Freelancer will communicate with the ​Customer at the conclusion of each thirty             day period (in person, by phone, or online) to discuss the progress of the ​Customer               presence on Social Media Platforms, as defined under 3.1 and discuss strategy for the upcoming period (see also the definition of ​Feedback Period​) (d) The ​Customer may give ​Instructions to The Freelancer and shall voice any concerns regarding the quality of the work by the Freelancer during the sharing of information              as mentioned under ​Feedback Period​regarding the activities under (3.2a) and (3.2b). The Freelancer will, within reason, alter his activities to the will of The ​Customer​ .;Shared folder containing communications between the parties regarding instructions, activities and requests for fixing the contents: https://drive.google.com/drive/u/1/folders/177dmZnWNk_fXexRpeAWiOxnzZgfo2I-b;Freelancer Agreement;100.000000000000000000;open;0x91716604d4b7b5da11f7980c765bcc28b9b481a8;0;0.000000000000000000;0.000000000000000000;30;0;0;0;43;0x91716604d4b7b5da11f7980c765bcc28b9b481a8;0;0;2019-12-12 12:21:54;2019-12-24 10:56:45;NULL;43;NULL;NULL;0x91716604d4b7b5da11f7980c765bcc28b9b481a8;NULL;NULL;NULL;NULL;1;0;1;2019-11-21 11:17:32;2019-11-21 11:17:32;contract_C_modified.pdf
+161;NULL;0xe2b9999e774ba7d60651210757d1815b0dabc81b;0x514428b0857aae2e1cdb9fd0345c3a78d4f18e36;michele@jur.io;John Carpenter;0x91716604d4b7b5da11f7980c765bcc28b9b481a8;luigi@jur.io;Radboud University B.V.;"The following content is a transposition of Clauses 3.1 and 3.2 of the Contract. 3.1 The Parties acknowledge that the Services consists of producing 5 wooden benches of standard quality and delivering them to the address of the Customer and installing them on the premises of the Customer. The benches will be placed on the land of the Radboud University by the Customer. 3.2 The Freelancer undertakes to provide the Services in compliance with the following key performance indicators: (a) the benches are made of wood, suitable for two adults for purpose of sitting; (b) the benches should be of high quality, as those represented in the portfolio of the Freelancer; (c) the benches must be made in 6 weeks following the conclusion of the Contract; (d) the Freelancer will send the Costumer a technical draft of high quality 1 week following the signing of the Contract. The draft should be uploaded to a shared Google Drive folder in .pdf format; (e) the Freelancer may send a prototype of the benches, if required, within 2 weeks by the Customer after the inspection of the technical draft; (f) the Freelancer will upload a picture of the finished, delivered and installed benches.";The following content is a transposition of Clauses 3.3 of the Contract. 3.3 The Contract shall use the following Resolution Proof: a) The Freelancer will upload photographs of the finished and delivered benches. b) The photographs must show the benches at the place of delivery. The photographs shall be clear, with a minimum of 12 megapixel quality. c) The Freelancer must also upload a close-up photograph of the details of the benches, such as the handles and the sitting place and the manner of installation of the benches. d) The Freelancer must upload at least three photographs as specified above on the Jur Beta Platform. e) The photographs must be taken with a geolocation capability that reliably shows that they were taken at the premises of the Customer. f) The Customer will confirm the reception of the Services on the Jur Beta Platform. Link to the shared folder: https://drive.google.com/drive/u/1/folders/1fXst2pZ0rqkk5zydcOlZXJewIxpxshQt;Freelancer Agreement;200.000000000000000000;open;0x91716604d4b7b5da11f7980c765bcc28b9b481a8;0;0.000000000000000000;0.000000000000000000;20;0;0;0;45;0x514428b0857aae2e1cdb9fd0345c3a78d4f18e36;1;0;2019-12-30 18:09:13;2019-12-30 18:24:31;NULL;45;NULL;NULL;0x514428b0857aae2e1cdb9fd0345c3a78d4f18e36;NULL;NULL;NULL;NULL;1;0;1;2019-11-21 11:37:40;2019-11-21 11:37:40;Group-A-CONTRACT.pdf
+163;NULL;0xd815f71e07f0393a205ab004e343960a1d854131;0x514428b0857aae2e1cdb9fd0345c3a78d4f18e36;michele@jur.io;Mr Tortellini;0x91716604d4b7b5da11f7980c765bcc28b9b481a8;luigi@jur.io;Borrel;The following content is a transposition of Clauses 3.1, 3.2. 3.1 The Parties acknowledge that the Services consist of establishing the organization’s presence on the following social media platforms: (i) Customer​ ’s website (​http://www.borrelnijmegen.com/​ ) (ii) Facebook (​https://www.facebook.com/borrelnijmegen/​ ) (iii) Instagram (​https://www.instagram.com/borrelnijmegen/​ ) 3.2 The Freelancer undertakes to provide the Services so as to meet the following conditions: (a) The Freelancer will update and maintain the information on the social media platforms of the ​Customer​ by meeting the following quotas during the period of the ​Contract​ : (i) Two news items on the ​Customer​ ’s website a week (ii) Four Facebook posts each week (iii) Two Instagram posts each week (iv) Interacting with reactions on the social media platforms at least five Interactions​ a day (b) The Freelancer shall provide the ​Customer with information about what he or she changed on the social media platforms by providing the following reports weekly: (i) Google Analytics Report for the ​Customer​ ’s Website (ii) Facebook EdgeRank Status, Likes, and Traffic (iii) Instagram EdgeRanks Status, Likes, and Traffic (c) The Freelancer will communicate with the ​Customer at the conclusion of each thirty day period (in person, by phone, or online) to discuss the progress of the ​Customer presence on Social Media Platforms, as defined under 3.1 and discuss strategy for the upcoming period (see also the definition of ​Feedback Period​) (d) The ​Customer may give ​Instructions to The Freelancer and shall voice any concerns regarding the quality of the work by the Freelancer during the sharing of information as mentioned under ​Feedback Period​regarding the activities under (3.2a) and (3.2b). The Freelancer will, within reason, alter his activities to the will of The ​Customer​ .;Shared folder containing communications between the parties regarding instructions, activities and requests for fixing the contents: https://drive.google.com/drive/u/1/folders/177dmZnWNk_fXexRpeAWiOxnzZgfo2I-b;Freelancer Agreement;200.000000000000000000;open;0x91716604d4b7b5da11f7980c765bcc28b9b481a8;0;0.000000000000000000;0.000000000000000000;20;0;0;0;45;0x514428b0857aae2e1cdb9fd0345c3a78d4f18e36;1;0;2020-01-07 17:59:59;2020-01-08 07:44:11;NULL;45;NULL;NULL;0x514428b0857aae2e1cdb9fd0345c3a78d4f18e36;NULL;NULL;NULL;NULL;1;0;1;2019-11-21 11:37:40;2019-11-21 11:37:40;contract_C_modified.pdf
+164;NULL;0x456bade85165f18b81462e2906b656a8033c04d3;0x514428b0857aae2e1cdb9fd0345c3a78d4f18e36;NULL;Christopher Leaner;0x91716604d4b7b5da11f7980c765bcc28b9b481a8;luigi@jur.io;Lab For New Justice B.V.;"3.1 The Parties acknowledge that the Services consist of cleaning the inside of the building where
+the Customer is located. This only includes dusting furniture (specifically the desks), washing
+windows, vacuum cleaning the floors, and emptying all the trash cans (into the container
+outside) throughout the property.
+3.2 The Freelance undertakes to provide the Services
+(a) The Service will take no longer than 6 hours, each weekly shift takes place on Monday
+between 09:00 AM and 06:00 PM.
+(b) No dust will be visible on the furniture, no damage will be done to the furniture while
+dusting.
+(c) The windows will have no visible marks on them left by washing soap or residue.
+(d) All trash cans will have been emptied by 06:00 PM on each Monday. When the container
+outside is full, or almost full to such an extent that Freelancer can no longer empty the
+trash cans, Freelancer will notify the Consumer before the end of the shift.
+3.3 The Freelancer represents to possess knowledge and equipment which is suitable for the correct performance of the Services.";(clause 5.2) Freelancer will provide their geo-location and pictures of the cleaned rooms in the property.;Service Agreement;200.000000000000000000;open;0x91716604d4b7b5da11f7980c765bcc28b9b481a8;0;0.000000000000000000;0.000000000000000000;20;0;0;0;45;0x514428b0857aae2e1cdb9fd0345c3a78d4f18e36;1;0;2020-01-07 18:02:50;2020-01-08 09:47:51;NULL;45;NULL;NULL;0x514428b0857aae2e1cdb9fd0345c3a78d4f18e36;NULL;NULL;NULL;NULL;1;0;1;2019-11-21 11:37:40;2019-11-21 11:37:40;Legal-contract-group-B.pdf
+165;NULL;0x61403be364a62a03ee269039e3be669d9ab55748;0x514428b0857aae2e1cdb9fd0345c3a78d4f18e36;michele@jur.io;Children’sBook Illustrated;0xd9bf2E9f604a82cB366A47De50eb45ea86E8dd8a;micheledasaro@gmail.com;Anna Schmidt;"3.1 The Parties acknowledge that the Services consists of illustrating a children’s book.
+3.2 The Freelance undertakes to provide the Services so as to meet the following conditions:
+(a) The illustration shall be made with Adobe Illustrator.
+(b) Every page needs to be illustrated authentically. Thus, every illustration on each page needs
+to be unique.
+(c) There are fifteen pages, every page needs one illustration.
+(d) The illustrations shall be according to the story which will be provided by the customer.
+(e) The freelancer should leave space next to each illustration for the texts.
+(f) The illustrations shall be in color.
+(g) The horse as the main figure of the children’s book needs to resemble the horse in the
+pictures which will be provided by the customer. The image provided by the customer can be
+seen in the attachment.
+(h) As the picture illustrates, the horse shall be brown and shall have white spots on its belly.
+(i) The freelancer needs to upload her drafts and illustrations she has made so far, every five
+working days. The customer will review the drafts and illustrations uploaded to the shared
+folder and the freelancer will make alterations according to the customers wish.
+(j) As soon as the illustration is finished, the Freelancer needs to upload the final product to a
+shared folder while respecting the time limit agreed by the parties (see the clause 5.3). If the
+Customer approves the uploaded illustrations, then the tokens will be transferred into the
+freelancer’s wallet.
+(k) The Freelancer represents to possess knowledge and equipment which is suitable for the
+correct performance of the Services.";"3.2(i) The freelancer needs to upload her drafts and illustrations she has made so far, every five working days. The customer will review the drafts and illustrations uploaded to the shared folder and the freelancer will make alterations according to the customers wish.
+3.2(j) As soon as the illustration is finished, the Freelancer needs to upload the final product to a shared folder https://drive.google.com/drive/folders/1eTRSsTtI8itE3vQ1U4IxkVIn7jZ_cPJw while respecting the time limit agreed by the parties (see the clause 5.3). If the Customer approves the uploaded illustrations, then the tokens will be transferred into the
+freelancer’s wallet.";Freelancer Agreement;2000.000000000000000000;open;0x514428b0857aae2e1cdb9fd0345c3a78d4f18e36;0;0.000000000000000000;0.000000000000000000;20;0;0;0;45;0x514428b0857aae2e1cdb9fd0345c3a78d4f18e36;1;0;2020-01-14 16:04:06;2020-01-14 16:16:51;NULL;45;NULL;NULL;0x514428b0857aae2e1cdb9fd0345c3a78d4f18e36;NULL;NULL;NULL;NULL;1;0;1;2019-11-21 11:37:40;2019-11-21 11:37:40;Contract-D.pdf
+169;NULL;0xb04d9e5164ab32f2f49f9fc7a6b58fa2fbd78356;0x514428b0857aae2e1cdb9fd0345c3a78d4f18e36;NULL;Children’sBook Illustrate;0xd9bf2e9f604a82cb366a47de50eb45ea86e8dd8a;;Anna Schmid;"3.1 The Parties acknowledge that the Services consists of illustrating a children’s book.
+3.2 The Freelance undertakes to provide the Services so as to meet the following conditions:
+(a) The illustration shall be made with Adobe Illustrator.
+(b) Every page needs to be illustrated authentically. Thus, every illustration on each page needs
+to be unique.
+(c) There are fifteen pages, every page needs one illustration.
+(d) The illustrations shall be according to the story which will be provided by the customer.
+(e) The freelancer should leave space next to each illustration for the texts.
+(f) The illustrations shall be in color.
+(g) The horse as the main figure of the children’s book needs to resemble the horse in the
+pictures which will be provided by the customer. The image provided by the customer can be
+seen in the attachment.
+(h) As the picture illustrates, the horse shall be brown and shall have white spots on its belly.
+(i) The freelancer needs to upload her drafts and illustrations she has made so far, every five
+working days. The customer will review the drafts and illustrations uploaded to the shared
+folder and the freelancer will make alterations according to the customers wish.
+(j) As soon as the illustration is finished, the Freelancer needs to upload the final product to a
+shared folder while respecting the time limit agreed by the parties (see the clause 5.3). If the
+Customer approves the uploaded illustrations, then the tokens will be transferred into the
+freelancer’s wallet.
+(k) The Freelancer represents to possess knowledge and equipment which is suitable for the
+correct performance of the Services.
+5.1 The freelancer shall be rewarded by a sum upon completing the services. The sum consists of a
+fixed amount of €500,00 and a variable amount of €100,00 per page. The sum will be converted
+to JUR Tokens according to the exchange rate that applies at the time the contract is signed.
+5.2 The amount decided upon by the parties in article 5.1 of the present contract shall be deposited
+into an escrow account provided for by the Jur ecosystem which in turn will release the amount
+paid by customer into the wallet of the freelancer upon the completion of the contract. The
+escrow account shall use a wallet in order to hold the JUR Tokens.
+5.3 The freelancer has to deliver the final product within three months of signing the contract.
+5.4 If the time limit is not respected by the Freelancer, then the reward will be reduced by 5 percent
+per 24 hours.";"3.2(i) The freelancer needs to upload her drafts and illustrations she has made so far, every five working days. The customer will review the drafts and illustrations uploaded to the shared folder and the freelancer will make alterations according to the customers wish.
+3.2(j) As soon as the illustration is finished, the Freelancer needs to upload the final product to a shared folder https://drive.google.com/drive/folders/1eTRSsTtI8itE3vQ1U4IxkVIn7jZ_cPJw while respecting the time limit agreed by the parties (see the clause 5.3). If the Customer approves the uploaded illustrations, then the tokens will be transferred into the
+freelancer’s wallet.";Freelancer Agreement;2000.000000000000000000;open;0x514428b0857aae2e1cdb9fd0345c3a78d4f18e36;0;0.000000000000000000;0.000000000000000000;20;0;0;0;45;0x514428b0857aae2e1cdb9fd0345c3a78d4f18e36;1;0;2020-02-07 17:55:24;2020-02-07 18:23:12;NULL;45;NULL;NULL;0x514428b0857aae2e1cdb9fd0345c3a78d4f18e36;NULL;NULL;NULL;NULL;1;0;1;2019-11-21 11:37:40;2019-11-21 11:37:40;Contract-D.pdf
+142;NULL;NULL;0xe6813222c67dde46ee0618a4256373c9773b115d;;Cheon Illias Iman Krause ;0x381C46E8ce018cBf9560c88c55602Ce22d57c913;;Lisa Beijerinck;NULL;NULL;NULL;0.000000000000000000;NULL;NULL;0;0.000000000000000000;0.000000000000000000;0;0;0;0;48;0xe6813222c67dde46ee0618a4256373c9773b115d;0;0;2019-12-02 16:29:03;2019-12-02 16:29:03;NULL;48;NULL;NULL;0xe6813222c67dde46ee0618a4256373c9773b115d;NULL;NULL;NULL;NULL;1;0;1;2019-12-02 16:25:57;2019-12-02 16:25:57;NULL
+143;NULL;NULL;0x381c46e8ce018cbf9560c88c55602ce22d57c913;lisa.beijerinck@upcmail.nl;Lisa Beijerinck;0xe6813222c67dde46ee0618a4256373c9773b115d;just2tryout@hotmail.com;Cheon Krause;tekst en woorden;Sjalalalala;Freelancer Agreement;1.000000000000000000;open;0x381c46e8ce018cbf9560c88c55602ce22d57c913;1;0.000000000000000000;0.000000000000000000;21;21;21;0;50;0x381c46e8ce018cbf9560c88c55602ce22d57c913;0;0;2019-12-02 16:30:36;2019-12-02 16:32:12;NULL;50;Lisa Beijerinck;lisa.beijerinck@upcmail.nl;0x381c46e8ce018cbf9560c88c55602ce22d57c913;1998-03-27;F;NL;Lawyer;1;1;1;2019-12-02 16:29:10;2019-12-02 16:42:20;NULL
+144;NULL;NULL;0xe6813222c67dde46ee0618a4256373c9773b115d;;Cheon;0x67977868745a2ffc1cda97eb2ac0c2aa3e9c930b;;Tristan;jhh;jhjhh;Freelancer Agreement;10.000000000000000000;open;0x67977868745a2ffc1cda97eb2ac0c2aa3e9c930b;1;0.000000000000000000;0.000000000000000000;12;0;0;0;48;0xe6813222c67dde46ee0618a4256373c9773b115d;0;0;2019-12-02 16:40:50;2019-12-02 16:54:02;NULL;48;NULL;NULL;0xe6813222c67dde46ee0618a4256373c9773b115d;NULL;NULL;NULL;NULL;1;0;1;2019-12-02 16:25:57;2019-12-02 16:25:57;NULL
+145;NULL;NULL;0x381c46e8ce018cbf9560c88c55602ce22d57c913;lisa.beijerinck@upcmail.nl;Lisa Beijerinck;0x67977868745a2ffc1cda97eb2ac0c2aa3e9c930b;;Tristan Blankers;lol;lol;Freelancer Agreement;5.000000000000000000;open;0x67977868745a2ffc1cda97eb2ac0c2aa3e9c930b;1;0.000000000000000000;3.000000000000000000;21;0;0;0;50;0x381c46e8ce018cbf9560c88c55602ce22d57c913;0;0;2019-12-02 16:40:55;2019-12-02 16:49:10;NULL;50;Lisa Beijerinck;lisa.beijerinck@upcmail.nl;0x381c46e8ce018cbf9560c88c55602ce22d57c913;1998-03-27;F;NL;Lawyer;1;1;1;2019-12-02 16:29:10;2019-12-02 16:42:20;NULL
+147;The magic show of Hans Kazan;0x9a5f36e86320c966c9a32bd266e4bf712eb636e2;0x67977868745a2ffc1cda97eb2ac0c2aa3e9c930b;NULL;Hans Kazan;0xe6813222c67dde46ee0618a4256373c9773b115d;;Cheon;Cheon shall hand over the equiment during the magic show of Hans on Friday the 6th of december.;Cheon shall upload pictures of himself backstage with the equipment during the magic show. ;Freelancer Agreement;50.000000000000000000;open;0x67977868745a2ffc1cda97eb2ac0c2aa3e9c930b;0;0.000000000000000000;0.000000000000000000;6;0;0;0;49;0x67977868745a2ffc1cda97eb2ac0c2aa3e9c930b;1;0;2019-12-02 16:45:42;2019-12-02 17:12:11;NULL;49;NULL;NULL;0x67977868745a2ffc1cda97eb2ac0c2aa3e9c930b;NULL;NULL;NULL;NULL;1;0;1;2019-12-02 16:26:57;2019-12-02 16:26:57;NULL
+150;NULL;NULL;0x17eb028888704c0537bcdf8426ec243008186274;test@test.com;Test Jur;0x17eb028888704c0537bcdf8426ec243008186273;info@jur.io;Test Jur;NULL;NULL;NULL;0.000000000000000000;NULL;NULL;0;0.000000000000000000;0.000000000000000000;0;0;0;0;22;0x17eb028888704c0537bcdf8426ec243008186274;0;0;2019-12-02 16:56:06;2019-12-02 16:56:06;NULL;22;Test Jur;test@test.com;0x17eb028888704c0537bcdf8426ec243008186274;2000-01-20;F;IN;Lawyer;1;1;1;2019-08-28 06:25:04;2019-09-03 09:19:23;NULL
+153;NULL;NULL;0x64ce79817dc0fef55843e2d87ecd05e3134c5fed;NULL;NULL;0x64ce79817dc0fef55843e2d87ecd05e3134c5fef;;;NULL;NULL;NULL;0.000000000000000000;NULL;NULL;0;0.000000000000000000;0.000000000000000000;0;0;0;0;41;0x64ce79817dc0fef55843e2d87ecd05e3134c5fed;0;0;2019-12-03 15:42:08;2019-12-03 15:42:08;NULL;41;NULL;NULL;0x64ce79817dc0fef55843e2d87ecd05e3134c5fed;NULL;NULL;NULL;NULL;1;0;1;2019-11-06 14:54:12;2019-11-06 14:54:12;NULL
+158;NULL;0x88c5fa2272fe073b11d6975c9a8d8b58ad8bd6b2;0x053ddc691fbc5d1c1d006af6857ace7c9197ad0d;NULL;Michael de Borst;0xf8534Ee4017A5B0Ef2c4AaC229074A3bFB582aDc;;w2;t;t;OTC;9000.000000000000000000;open;0x053ddc691fbc5d1c1d006af6857ace7c9197ad0d;0;0.000000000000000000;0.000000000000000000;0;0;15;0;47;0x053ddc691fbc5d1c1d006af6857ace7c9197ad0d;0;0;2019-12-09 17:02:15;2019-12-09 17:03:10;NULL;47;Michael de Borst;NULL;0x053ddc691fbc5d1c1d006af6857ace7c9197ad0d;1970-01-01;M;NULL;Other;1;1;1;2019-11-25 16:06:04;2019-12-02 16:34:25;NULL
+162;NULL;NULL;0x514428b0857aae2e1cdb9fd0345c3a78d4f18e36;michele@jur.io;Mr Tortellini;0x91716604d4b7b5da11f7980c765bcc28b9b481a8;luigi@jur.io;Borrel;NULL;NULL;NULL;0.000000000000000000;NULL;NULL;0;0.000000000000000000;0.000000000000000000;0;0;0;0;45;0x514428b0857aae2e1cdb9fd0345c3a78d4f18e36;0;0;2020-01-07 16:01:06;2020-01-07 16:01:06;NULL;45;NULL;NULL;0x514428b0857aae2e1cdb9fd0345c3a78d4f18e36;NULL;NULL;NULL;NULL;1;0;1;2019-11-21 11:37:40;2019-11-21 11:37:40;NULL
+166;New contract between A and B;0x08bb072bc25ce376863bbafe11031cb3a0755b12;0x514428b0857aae2e1cdb9fd0345c3a78d4f18e36;NULL;NULL;0xd9bf2E9f604a82cB366A47De50eb45ea86E8dd8a;;;"Leak Jur tokens:
+Jur tokens will stream from A to B.";Unless it breaks.;Other;2000.000000000000000000;open;0x514428b0857aae2e1cdb9fd0345c3a78d4f18e36;0;0.000000000000000000;0.000000000000000000;0;1;0;0;45;0x514428b0857aae2e1cdb9fd0345c3a78d4f18e36;0;0;2020-01-15 13:50:35;2020-01-15 13:52:50;NULL;45;NULL;NULL;0x514428b0857aae2e1cdb9fd0345c3a78d4f18e36;NULL;NULL;NULL;NULL;1;0;1;2019-11-21 11:37:40;2019-11-21 11:37:40;NULL
+167;Testing;0x0724f68e2af74c115cffa4fae35d7d6933ad8513;0x17eb028888704c0537bcdf8426ec243008186274;luca@jur.io;Luca Daniel;0x17eb028888704c0537bcdf8426ec243008186273;info@jur.io;Jur Team;Just testing out;Just testing out;Freelancer Agreement;10.000000000000000000;open;0x17eb028888704c0537bcdf8426ec243008186274;0;0.000000000000000000;0.000000000000000000;0;1;0;0;22;0x17eb028888704c0537bcdf8426ec243008186274;0;0;2020-01-20 13:14:53;2020-01-20 13:18:21;NULL;22;Test Jur;test@test.com;0x17eb028888704c0537bcdf8426ec243008186274;2000-01-20;F;IN;Lawyer;1;1;1;2019-08-28 06:25:04;2019-09-03 09:19:23;NULL
+168;NULL;0x9d289e18e95ebe6e4ec7c593b7ee352990ea3620;0xcf997b47cbc37b7d486fe9efd3376c2b5cbd627f;ninabuwalda@gmail.com;Nina Buwalda;0xa522695722e3754d499f6a64f610a2b7d54cf8e9;;Xander Kranenberg;"Hereby, Nina Buwalda and Xander Kranenberg agree that Xander Kranenberg will open a JUR dispute with Nina Buwalda regarding this contract within 2 working days in which Xander Kranenberg will try his best to win.  If he wins, Nina Buwalda will reward him with 10 JUR Tokens.
+
+If one of the parties fails to follow these terms, a fine of 20 JUR tokens applies.";"'Trying their best' includes:
+(1) spending at least 20 Jur Tokens 
+(2) promote Xanders point of view towards other JUR Beta Platform members
+(3) check the Jur Beta platform daily";Entrepreneur;20.000000000000000000;open;0xcf997b47cbc37b7d486fe9efd3376c2b5cbd627f;1;20.000000000000000000;20.000000000000000000;7;0;0;0;52;0xcf997b47cbc37b7d486fe9efd3376c2b5cbd627f;1;0;2020-01-28 15:18:20;2020-01-29 10:41:31;NULL;52;Nina Buwalda;ninabuwalda@gmail.com;0xcf997b47cbc37b7d486fe9efd3376c2b5cbd627f;1996-12-22;F;NL;Lawyer;1;1;1;2019-12-02 16:29:55;2019-12-02 16:34:22;NULL
+170;NULL;NULL;0x17eb028888704c0537bcdf8426ec243008186274;test@test.com;Test Jur;0x17eb028888704c0537bcdf8426ec243008186273;;;NULL;NULL;NULL;0.000000000000000000;NULL;NULL;0;0.000000000000000000;0.000000000000000000;0;0;0;0;22;0x17eb028888704c0537bcdf8426ec243008186274;0;0;2020-02-11 09:15:05;2020-02-11 09:15:05;NULL;22;Test Jur;test@test.com;0x17eb028888704c0537bcdf8426ec243008186274;2000-01-20;F;IN;Lawyer;1;1;1;2019-08-28 06:25:04;2019-09-03 09:19:23;NULL
+171;NULL;NULL;0x17eb028888704c0537bcdf8426ec243008186274;test@test.com;Test Jur;0x17eb028888704c0537bcdf8426ec243008186271;;;NULL;NULL;NULL;0.000000000000000000;NULL;NULL;0;0.000000000000000000;0.000000000000000000;0;0;0;0;22;0x17eb028888704c0537bcdf8426ec243008186274;0;0;2020-02-12 08:56:36;2020-02-12 08:56:36;NULL;22;Test Jur;test@test.com;0x17eb028888704c0537bcdf8426ec243008186274;2000-01-20;F;IN;Lawyer;1;1;1;2019-08-28 06:25:04;2019-09-03 09:19:23;NULL
