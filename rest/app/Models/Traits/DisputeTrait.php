@@ -2,6 +2,7 @@
 
 namespace App\Models\Traits;
 
+use App\Models\User;
 use App\Models\Contract;
 use App\Models\ContractStatusDetail;
 
@@ -171,6 +172,24 @@ trait DisputeTrait
         return null;
     }
 
+    public function getTotalWithdraw($wallet)
+    {
+        $withdrawals = $this->withdrawals
+            ->filter(function($withdrawal) use($wallet) {
+                return strtolower($withdrawal->wallet) == strtolower($wallet);
+            });
+
+        $withdraw = $withdrawals->filter(function($withdrawal) {
+            return $withdrawal->type == 'withdraw';
+        })->sum('amount');
+
+        $payout = $withdrawals->filter(function($withdrawal) {
+            return $withdrawal->type == 'payout';
+        })->sum('amount');
+
+        return $withdraw + $payout;
+    }
+
     /**
      * Get the proposal part for current dispute.
      *
@@ -289,6 +308,15 @@ trait DisputeTrait
         } elseif ($this->part_b_wallet <> $winner) {
             return $this->part_b_name ?: $this->part_b_wallet;
         }
+    }
+
+    public function getPartecipantsFromWallet($wallet)
+    {
+        $wallets = $this->votes
+            ->where('wallet_part', $wallet)
+            ->pluck('oracle_wallet');
+
+        return User::byWallets($wallets)->get()->unique('wallet');
     }
 
     protected function createProposalForCounterPart($params)

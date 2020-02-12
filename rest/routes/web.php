@@ -38,6 +38,7 @@ $api->version('v1', function($api) {
                 $api->get('{id}', 'App\Http\Controllers\DisputesController@show');
                 $api->post('{id}', 'App\Http\Controllers\ContractDetailsController@store');
                 $api->put('details/{id}', 'App\Http\Controllers\ContractDetailsController@update');
+
                 $api->group(['prefix' => 'evidences'], function($api) {
                     $api->delete('{id}', 'App\Http\Controllers\ContractDetailsController@deleteMedia');
                 });
@@ -49,6 +50,10 @@ $api->version('v1', function($api) {
 
             $api->group(['prefix' => 'details'], function($api) {
                 $api->get('{id}', 'App\Http\Controllers\ContractDetailsController@index');
+            });
+
+            $api->group(['prefix' => 'withdrawal'], function($api) {
+                $api->post('{id}', 'App\Http\Controllers\WithdrawalsController@store');
             });
         });
 

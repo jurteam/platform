@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Models\Contract;
 use Illuminate\Console\Command;
 use App\Jobs\DisputeVoteReachedDeadline;
+use App\Jobs\MembersDisputeVotingClosed;
 
 class NotifyForDisputeVoteReachedDeadline extends Command
 {
@@ -20,7 +21,7 @@ class NotifyForDisputeVoteReachedDeadline extends Command
      *
      * @var string
      */
-    protected $description = 'Notify parties for the ending of the dispute (Winner, Loser)';
+    protected $description = 'Notify parties & members for the ending of the dispute (Winner, Loser)';
 
     /**
      * Create a new command instance.
@@ -44,13 +45,27 @@ class NotifyForDisputeVoteReachedDeadline extends Command
         $bar = $this->output->createProgressBar($disputes->count());
 
         foreach ($disputes as $disputesSet) {
-            $job = (new DisputeVoteReachedDeadline($disputesSet))->delay(60);
+            $this->dispatchJobParties($disputesSet);
 
-            dispatch($job);
+            $this->dispatchJobMembers($disputesSet);
 
             $bar->advance();
         }
 
         $this->info('Done!');
+    }
+
+    protected function dispatchJobParties($disputes)
+    {
+        $job = (new DisputeVoteReachedDeadline($disputes))->delay(60);
+
+        dispatch($job);
+    }
+
+    protected function dispatchJobMembers($disputes)
+    {
+        $job = (new MembersDisputeVotingClosed($disputes))->delay(60);
+
+        dispatch($job);
     }
 }
