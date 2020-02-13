@@ -174,6 +174,11 @@ trait DisputeTrait
 
     public function getTotalWithdraw($wallet)
     {
+        $currentStatus = $this->status ?: $this->getCurrentStatus();
+        if ($currentStatus && $currentStatus->code < 39) {
+            return null;
+        }
+        
         $withdrawals = $this->withdrawals
             ->filter(function($withdrawal) use($wallet) {
                 return strtolower($withdrawal->wallet) == strtolower($wallet);

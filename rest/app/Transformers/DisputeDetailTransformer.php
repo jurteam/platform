@@ -79,7 +79,7 @@ class DisputeDetailTransformer extends TransformerAbstract
             'proposalPartA' => (object) $contract->getProposalPart('part_a'),
             'proposalPartB' => (object) $contract->getProposalPart('part_b'),
             'earnings' => $contract->getEarnings(),
-            'totalWithdraw' => $contract->getTotalWithdraw($wallet);
+            'totalWithdraw' => $contract->getTotalWithdraw($wallet),
             'totalTokensPartA' => $totalTokensPartA,
             'totalTokensPartB' => $totalTokensPartB,
             'totalTokensReject' => $totalRejectVotes,
