@@ -3,23 +3,23 @@ services:
 
   jur:
     build: ./
-    # volumes:
-    #   # - ./rest/public:/var/www/html/rest/public
-    #   # - ./rest/storage:/var/www/html/rest/storage
-    #   # - ./build:/var/www/html/public
-    #   # - ./rest/composer.json:/var/www/html/rest/composer.json
-    #   # - ./rest/artisan:/var/www/html/rest/artisan
-    #   # - ./rest/.env:/var/www/html/rest/.env
-    #   # - ./rest/phpunit.xml:/var/www/html/rest/phpunit.xml
-    #   # - ./rest/app:/var/www/html/rest/app
-    #   # - ./rest/bootstrap:/var/www/html/rest/bootstrap
-    #   # - ./rest/config:/var/www/html/rest/config
-    #   # - ./rest/database:/var/www/html/rest/database
-    #   # - ./rest/resources:/var/www/html/rest/resources
-    #   # - ./rest/routes:/var/www/html/rest/routes
-    #   # - ./rest/tests:/var/www/html/rest/tests
-    #   # - ./rest/vendor:/var/www/html/rest/vendor
-    #   # - ./rest:/var/www/html
+    volumes:
+      # - ./rest/public:/var/www/html/public
+      # - ./rest/storage:/var/www/html/storage
+      # - ./build:/var/www/html/public
+      # - ./rest/composer.json:/var/www/html/composer.json
+      # - ./rest/artisan:/var/www/html/artisan
+      # - ./rest/.env:/var/www/html/.env
+      # - ./rest/phpunit.xml:/var/www/html/phpunit.xml
+      - ./rest/app:/var/www/html/app
+      # - ./rest/bootstrap:/var/www/html/bootstrap
+      # - ./rest/config:/var/www/html/config
+      - ./rest/database:/var/www/html/database
+      - ./rest/resources:/var/www/html/resources
+      - ./rest/routes:/var/www/html/routes
+      # - ./rest/tests:/var/www/html/tests
+      # - ./rest/vendor:/var/www/html/vendor
+      # - ./rest:/var/www/html
     ports:
       - "80:80"
     links:
