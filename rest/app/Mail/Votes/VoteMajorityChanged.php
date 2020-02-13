@@ -36,7 +36,7 @@ class VoteMajorityChanged extends Mailable
         return $this
             ->subject('Majority vote has changed')
             ->markdown('emails.contracts.votes.partecipant', [
-                'url' => $this->contract->getContractUrl(),
+                'url' => $this->contract->getDisputeUrl(),
                 'partecipant' => $this->partecipant,
                 'dispute' => $this->contract,
                 'expirationDate' => $this->contract->getDisputeExpirationDate()

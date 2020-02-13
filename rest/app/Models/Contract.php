@@ -175,6 +175,11 @@ class Contract extends Model implements HasMedia
         return config('jur.url') . "/contracts/detail/{$this->id}";
     }
 
+    public function getDisputeUrl()
+    {
+        return config('jur.url') . "/disputes/detail/{$this->id}";
+    }
+
     public function getExpirationDate()
     {
         $startingContractHistory = $this->getOpeningDate();
