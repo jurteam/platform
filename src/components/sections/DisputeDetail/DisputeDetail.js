@@ -185,7 +185,8 @@ export const DisputeDetail = ( props ) => {
     global.drizzle.store.dispatch({
       type: DISPUTE_PAYOUT_PARTY,
       id,
-      address
+      address,
+      history
     });
 
   };
@@ -201,7 +202,8 @@ export const DisputeDetail = ( props ) => {
     global.drizzle.store.dispatch({
       type: DISPUTE_PAYOUT_VOTER,
       id,
-      address
+      address,
+      history
     });
 
   };

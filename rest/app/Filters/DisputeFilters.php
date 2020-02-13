@@ -40,7 +40,8 @@ class DisputeFilters extends Filters
                         contract_status_histories.created_at, IF (contract_status_histories.chain_updated_at > NOW(), NULL, contract_status_histories.chain_updated_at)) DESC
                     LIMIT 1) AS current_status, (SUM(contracts.value) + SUM(contracts.part_a_penalty_fee) + SUM(contracts.part_b_penalty_fee))'
                 )
-                ->where('contracts.is_a_dispute', true);
+                // ->where('contracts.is_a_dispute', true)
+                ->havingRaw('current_status > ?', [34]);
 
         if ($value == 'my') {
             $lowerWallet = strtolower($this->request->header('wallet'));

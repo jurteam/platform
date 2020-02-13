@@ -1,42 +1,30 @@
 version: '3'
 services:
 
-  nginx:
-    build: environment/nginx
-    command: nginx -g "daemon off;"
-    links:
-      - php
-    volumes:
-      - ./rest/public:/var/www/html/rest/public
-      - ./rest/storage:/var/www/html/rest/storage
+  jur:
+    build: ./
+    # volumes:
+    #   # - ./rest/public:/var/www/html/rest/public
+    #   # - ./rest/storage:/var/www/html/rest/storage
+    #   # - ./build:/var/www/html/public
+    #   # - ./rest/composer.json:/var/www/html/rest/composer.json
+    #   # - ./rest/artisan:/var/www/html/rest/artisan
+    #   # - ./rest/.env:/var/www/html/rest/.env
+    #   # - ./rest/phpunit.xml:/var/www/html/rest/phpunit.xml
+    #   # - ./rest/app:/var/www/html/rest/app
+    #   # - ./rest/bootstrap:/var/www/html/rest/bootstrap
+    #   # - ./rest/config:/var/www/html/rest/config
+    #   # - ./rest/database:/var/www/html/rest/database
+    #   # - ./rest/resources:/var/www/html/rest/resources
+    #   # - ./rest/routes:/var/www/html/rest/routes
+    #   # - ./rest/tests:/var/www/html/rest/tests
+    #   # - ./rest/vendor:/var/www/html/rest/vendor
+    #   # - ./rest:/var/www/html
     ports:
       - "80:80"
-
-  php:
-    build: environment/php
-    volumes:
-      - ./rest/composer.json:/var/www/html/rest/composer.json
-      - ./rest/artisan:/var/www/html/rest/artisan
-      - ./rest/.env:/var/www/html/rest/.env
-      - ./rest/phpunit.xml:/var/www/html/rest/phpunit.xml
-      - ./rest/app:/var/www/html/rest/app
-      - ./rest/bootstrap:/var/www/html/rest/bootstrap
-      - ./rest/config:/var/www/html/rest/config
-      - ./rest/database:/var/www/html/rest/database
-      - ./rest/resources:/var/www/html/rest/resources
-      - ./rest/routes:/var/www/html/rest/routes
-      - ./rest/storage:/var/www/html/rest/storage
-      - ./rest/tests:/var/www/html/rest/tests
-      - ./rest/vendor:/var/www/html/rest/vendor
-      - ./rest/public:/var/www/html/rest/public
-      # - ./rest:/var/www/html
-    working_dir: /var/www/html/rest/public
-    command: php-fpm
     links:
       - db
       - cache
-    ports:
-      - "9000:9000"
     environment:
       APP_ENV: jur-mvp
       APP_URL: http://localhost
@@ -48,6 +36,8 @@ services:
       API_PREFIX: api/v1
       API_VERSION: v1
       API_DEBUG: 'true'
+      JUR_FE_URL: http://localhost
+      
       DB_CONNECTION: mysql
       DB_HOST: db
       DB_DATABASE: lumen
@@ -62,6 +52,78 @@ services:
       MAIL_HOST: smtp.mailtrap.io
       MAIL_PASSWORD: 63f73da428ac00
       MAIL_PORT: 2525
+
+      HASHIDS_SALT: 0J3RGHY4TGH
+      HASHIDS_LENGTH: 6
+      HASHIDS_ALPHABET: abcedfghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPAQRSTUVWXYZ1234567890
+
+  # nginx:
+  #   build: environment/nginx
+  #   command: nginx -g "daemon off;"
+  #   links:
+  #     - php
+  #   volumes:
+  #     - ./rest/public:/var/www/html/rest/public
+  #     - ./rest/storage:/var/www/html/rest/storage
+  #   ports:
+  #     - "80:80"
+
+  # php:
+  #   build: environment/php
+  #   volumes:
+  #     - ./rest/composer.json:/var/www/html/rest/composer.json
+  #     - ./rest/artisan:/var/www/html/rest/artisan
+  #     - ./rest/.env:/var/www/html/rest/.env
+  #     - ./rest/phpunit.xml:/var/www/html/rest/phpunit.xml
+  #     - ./rest/app:/var/www/html/rest/app
+  #     - ./rest/bootstrap:/var/www/html/rest/bootstrap
+  #     - ./rest/config:/var/www/html/rest/config
+  #     - ./rest/database:/var/www/html/rest/database
+  #     - ./rest/resources:/var/www/html/rest/resources
+  #     - ./rest/routes:/var/www/html/rest/routes
+  #     - ./rest/storage:/var/www/html/rest/storage
+  #     - ./rest/tests:/var/www/html/rest/tests
+  #     - ./rest/vendor:/var/www/html/rest/vendor
+  #     - ./rest/public:/var/www/html/rest/public
+  #     # - ./rest:/var/www/html
+  #   working_dir: /var/www/html/rest/public
+  #   command: php-fpm
+  #   links:
+  #     - db
+  #     - cache
+  #   ports:
+  #     - "9000:9000"
+  #   environment:
+  #     APP_ENV: jur-mvp
+  #     APP_URL: http://localhost
+  #     APP_TIMEZONE: UTC
+  #     APP_KEY: Secret!
+  #     APP_LOCALE: en
+  #     APP_FALLBACK_LOCALE: en
+  #     API_NAME: jur
+  #     API_PREFIX: api/v1
+  #     API_VERSION: v1
+  #     API_DEBUG: 'true'
+  #     JUR_FE_URL: https://test.jur.io
+      
+  #     DB_CONNECTION: mysql
+  #     DB_HOST: db
+  #     DB_DATABASE: lumen
+  #     DB_USERNAME: lumen
+  #     DB_PASSWORD: secret
+
+  #     MEMCACHED_HOST: cache
+  #     CACHE_DRIVER: file
+
+  #     MAIL_DRIVER: smtp
+  #     MAIL_USERNAME: bad3282d3a5c38
+  #     MAIL_HOST: smtp.mailtrap.io
+  #     MAIL_PASSWORD: 63f73da428ac00
+  #     MAIL_PORT: 2525
+
+  #     HASHIDS_SALT: 0J3RGHY4TGH
+  #     HASHIDS_LENGTH: 6
+  #     HASHIDS_ALPHABET: abcedfghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPAQRSTUVWXYZ1234567890
 
   db:
     image: mysql:5.7
