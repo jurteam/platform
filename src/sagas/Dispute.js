@@ -1,8 +1,6 @@
 import { call, put, select, takeLatest, takeEvery } from "redux-saga/effects";
 import moment from 'moment';
 
-import moment from 'moment';
-
 import {
   // RESET_DISPUTE,
   // PUT_DISPUTE,
