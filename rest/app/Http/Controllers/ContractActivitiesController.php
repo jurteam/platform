@@ -34,8 +34,9 @@ class ContractActivitiesController extends Controller
      */
     public function index($id)
     {
+        $idc = decodeId($id);        
         $activities = Activity::exceptDraft()
-                            ->byContract($id)
+                            ->byContract($idc)
                             ->byUpdatedDate()
                             ->get();
 
@@ -55,7 +56,8 @@ class ContractActivitiesController extends Controller
      */
     public function store(Request $request, $id)
     {
-        $contract = Contract::findOrFail($id);
+        $idc = decodeId($id);
+        $contract = Contract::findOrFail($idc);
         $activity = $contract->storeActivity($request);
         $activity->uploadMedia($request);
 

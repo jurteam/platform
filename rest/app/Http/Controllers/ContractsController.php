@@ -66,7 +66,8 @@ class ContractsController extends Controller
      */
     public function show($id)
     {
-        $contract = Contract::findOrFail($id);
+        $idc = decodeId($id);
+        $contract = Contract::findOrFail($idc);
         if (Gate::denies('view-contract', $contract)) {
             abort(404);
         }
@@ -83,7 +84,8 @@ class ContractsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $contract = Contract::findOrFail($id);
+        $idc = decodeId($id);
+        $contract = Contract::findOrFail($idc);
 
         $contract->update($request->all());
         $contract->uploadMedia($request);
@@ -99,14 +101,16 @@ class ContractsController extends Controller
      */
     public function destroy($id)
     {
-        Contract::destroy($id);
+        $idc = decodeId($id);
+        Contract::destroy($idc);
 
         return response()->json(compact('id'));
     }
 
     public function getLastStatus(Request $request, $id)
     {
-        $contract = Contract::findOrFail($id);
+        $idc = decodeId($id);
+        $contract = Contract::findOrFail($idc);
 
         // if ($contract->isStatusChanged($request)) {
             return $this->response->item($contract, new ContractDetailTransformer);
@@ -128,7 +132,8 @@ class ContractsController extends Controller
             'code' => 'required|exists:contract_statuses,code'
         ]);
 
-        $contract = Contract::findOrFail($id);
+        $idc = decodeId($id);
+        $contract = Contract::findOrFail($idc);
         $contract->updateStatusByCode($request);
 
         return $this->response->item($contract, new ContractDetailTransformer);

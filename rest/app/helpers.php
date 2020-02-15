@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use Hashids\Hashids;
 
 if (! function_exists('request')) {
     /**
@@ -65,5 +66,37 @@ if ( ! function_exists('asset'))
     function asset($path, $secure = null)
     {
         return app('url')->asset($path, $secure);
+    }
+}
+
+if ( ! function_exists('encodeId'))
+{
+    /**
+     * Generate an asset path for the application.
+     *
+     * @param  integer  $id
+     * @return string
+     */
+    function encodeId($id)
+    {
+        $hashids = new Hashids( env('HASHIDS_SALT'), env('HASHIDS_LENGTH'), env('HASHIDS_ALPHABET'));
+        
+        return $hashids->encode($id);
+    }
+}
+
+if ( ! function_exists('decodeId'))
+{
+    /**
+     * Generate an asset path for the application.
+     *
+     * @param  string  $hashedId
+     * @return integer
+     */
+    function decodeId($hashedId)
+    {
+        $hashids = new Hashids( env('HASHIDS_SALT'), env('HASHIDS_LENGTH'), env('HASHIDS_ALPHABET'));
+        
+        return $hashids->decode($hashedId)[0];
     }
 }
