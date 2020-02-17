@@ -1,5 +1,9 @@
 import linkify from "linkifyjs/string";
 
+
+import { drizzleConnect } from "drizzle-react";
+import { connect } from 'react-redux';
+
 // Log helper only on DEVELOPMENT environmentexport const warn = (mixed, obj) => {
 export const log = (mixed, obj, type) => {
   let out = [];
@@ -283,3 +287,19 @@ export const randomHEXString = (byte) => {
  
   return randomHex(byte);
 }
+
+// ---- connex/comet switches
+
+export const connector = () => {
+  return 'web3';//global.connector ? global.connector : window.connex ? 'connex' : window.web3 ? 'web3' : '';
+};
+
+export const connection = () => {
+
+  const aaaa= connect
+  log('connnnnnnnnnection--s-', typeof connect)
+  log('connnnnnnnnnection--f-', typeof aaaa)
+  // log('connnnnnnnnnection---', drizzleConnect())
+  return connector === 'connex' ? connect : connector === 'web3' ? drizzleConnect : null;
+};
+
