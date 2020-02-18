@@ -7,7 +7,7 @@ import { log, randomHEXString } from "../utils/helpers";
 
 // Comet
 import Comet from "../hooks/Comet";
-import { SET_LOADING, APP_EXIT } from "../reducers/types.js";
+import { SET_LOADING, APP_EXIT, SET_WALLET_ADDRESS } from "../reducers/types.js";
 
 // Application Context
 export const AppContext = React.createContext();
@@ -103,6 +103,7 @@ class AppProvider extends Component {
         // try to connect via connex
         if(window.connex && address === '') {
 
+          global.dispatcher = this.store.dispatch;
           log("AppProvider - connexAuth", "connex ok");
           const connex = window.connex
           
@@ -132,6 +133,8 @@ class AppProvider extends Component {
             log("AppProvider - connexAuth - result",result)
             log("AppProvider - connexAuth - signer",result.annex.signer)
             address = result.annex.signer
+
+            this.store.dispatch({ type: SET_WALLET_ADDRESS, payload: address });
 
             this.setState({ onNetwork: true, connex: true, connex });
             global.connector = 'connex'

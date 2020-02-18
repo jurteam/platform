@@ -303,3 +303,16 @@ export const connection = () => {
   return connector === 'connex' ? connect : connector === 'web3' ? drizzleConnect : null;
 };
 
+export const getMethodABI = (contract,method) => {
+
+  let methABI = null
+  contract.forEach(meth => {    
+
+    if (meth.name === method) {
+      methABI = meth; 
+    }
+  });
+
+  return methABI;
+
+};
