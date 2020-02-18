@@ -45,7 +45,7 @@ import {
 } from "../utils/helpers"; // log helper
 
 // Api layouts
-import { Contracts, Disputes, Arbitration } from "../api";
+import { Contracts, Disputes, Arbitration, Withdraval } from "../api";
 
 import {
   // getNewDispute,
@@ -430,6 +430,21 @@ export function* handlePayoutParty(args) {
     if (withdrawTx) { // only if there is a valid sign tx
       
       yield put({ type: LOOKUP_WALLET_BALANCE }); // update wallet balance
+
+      // call rest api to save withdraw
+      let withdrawalData = new FormData();
+      
+      const currContr = yield select(getCurrentDispute);
+      
+      withdrawalData.append("amount", currContr.sumToWithdraw);
+      withdrawalData.append("type", 'withdraw');
+      
+      let response = yield call(Withdraval.store, withdrawalData, id);
+      
+      log(`handlePayoutParty - response`, response);
+      
+      
+      
       
       log(`handlePayoutParty - LOOKUP_WALLET_BALANCE`);
       yield put({
