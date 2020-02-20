@@ -4,9 +4,9 @@ import axios from "../bootstrap/Api";
 import { CANCEL } from 'redux-saga'
 
 // endpoint root
-const root = "/contracts/withdraval";
+const root = "/contracts/withdrawal";
 
-export class Withdraval {
+export class Withdrawal {
 
   static store(payload, id) {
     return axios.post(`${root}/${id}`, payload);
