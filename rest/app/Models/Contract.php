@@ -212,10 +212,14 @@ class Contract extends Model implements HasMedia
             if (!$reached) {
                 return Carbon::now()->diffInDays(
                     $contract->getExpirationDate()
-                ) == config('jur.days_before_end');
+                ) == config('jur.days_before_end') && Carbon::now()->isBefore(
+                    $contract->getExpirationDate()
+                );
             }
 
-            return Carbon::now()->diffInDays($contract->getExpirationDate()) == 0;
+            return Carbon::now()->diffInDays($contract->getExpirationDate()) == 0 && Carbon::now()->isAfter(
+                $contract->getExpirationDate()
+            );
         });
     }
 
