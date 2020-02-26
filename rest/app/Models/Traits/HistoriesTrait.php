@@ -76,6 +76,22 @@ trait HistoriesTrait
         return null;
     }
 
+    public function getDisputeEndDate()
+    {
+        $this->load('histories');
+        if ($this->histories->count() > 0) {
+            $history = $this->histories
+                ->filter(function($item) {
+                    return $item->contract_status_code === 39;
+                })
+                ->first();
+
+            return $history->chain_updated_at;
+        }
+
+        return null;
+    }
+
     /**
      * Record status histories for contract.
      *
