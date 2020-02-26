@@ -192,12 +192,9 @@ class Contract extends Model implements HasMedia
 
     public function getDisputeExpirationDate()
     {
-        $history = $this->getCurrentHistory();
 
-        if ($history) {
-            return $history->custom_status_date;
-        }
-        return $this->updated_at;
+
+        return $this->getDisputeEndDate();
     }
 
     public static function reachDeadline($reached = false)
@@ -217,18 +214,20 @@ class Contract extends Model implements HasMedia
                 );
             }
 
-            return Carbon::now()->diffInDays($contract->getExpirationDate()) == 0 && Carbon::now()->isAfter(
-                $contract->getExpirationDate()
-            );
+            return Carbon::now()->diffInDays($contract->getExpirationDate()) == 0 && $contract->getExpirationDate()->isPast();
         });
     }
 
     public static function disputeDeadline($reached = false)
     {
-        return static::disputes()->get()->filter(function($contract) {
+        return static::disputes()->get()->filter(function($contract) use($reached) {
             $status = $contract->getCurrentStatus();
             if (! is_null($status)) {
-                return $status->code == 35;
+                if (!$reached) {
+                    return $status->code == 35;
+                } else {
+                    return $status->code == 39;                    
+                }
             }
             return false;
         })->filter(function($contract) use($reached) {
