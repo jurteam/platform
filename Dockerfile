@@ -46,12 +46,7 @@ RUN (cd /var/www/html/;composer install)
 ADD environment/supervisor/jur.conf /etc/supervisor/conf.d
 
 # crontab config
-    # crontab -e
-    # paste this line: * * * * * cd /var/www/html/ && php artisan schedule:run >> /dev/null 2>&1
-    # save
-
-
-
+ADD environment/cron/jur.conf /var/spool/cron/crontabs/root
 
 
 
