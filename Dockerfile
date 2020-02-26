@@ -3,7 +3,7 @@ FROM ubuntu:18.04
 ARG DEBIAN_FRONTEND=noninteractive
 # 1. nginx + php install
 RUN apt update  && \
-    apt install -y ufw curl zip unzip nano systemd php-fpm php-mysql php-mbstring php-xml php-cli php-zip php-xmlrpc php-soap php-curl php-gd nginx
+    apt install -y ufw curl zip unzip nano systemd cron supervisor php-fpm php-mysql php-mbstring php-xml php-cli php-zip php-xmlrpc php-soap php-curl php-gd nginx
     # apt-get -y -t bionic-backports
 
 # 3. virtual host setup
@@ -41,6 +41,14 @@ ADD rest/public/ /var/www/html/public/
 # 8. install composer and launch it into root folder
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 RUN (cd /var/www/html/;composer install)
+
+# supervisor config
+ADD environment/supervisor/jur.conf /etc/supervisor/conf.d
+
+# crontab config
+ADD environment/cron/jur.conf /var/spool/cron/crontabs/root
+
+
 
 # Nginx config
 ADD environment/nginx/nginx.conf /etc/nginx/sites-available/default
