@@ -60,6 +60,22 @@ trait HistoriesTrait
         return null;
     }
 
+    public function getOpeningVotingSessionDate()
+    {
+        $this->load('histories');
+        if ($this->histories->count() > 0) {
+            $history = $this->histories
+                ->filter(function($item) {
+                    return $item->contract_status_code === 35;
+                })
+                ->first();
+
+            return $history->chain_updated_at;
+        }
+
+        return null;
+    }
+
     /**
      * Record status histories for contract.
      *

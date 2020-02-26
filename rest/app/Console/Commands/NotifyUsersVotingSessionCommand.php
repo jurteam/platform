@@ -44,8 +44,11 @@ class NotifyUsersVotingSessionCommand extends Command
     {
         $contracts = Contract::disputes()->get();
         $contracts = $contracts->filter(function($contract) {
-            $status = $contract->getCurrentStatus();
-            return Carbon::now()->diffInDays($status->custom_status_date) == 0;
+
+            // get date starting votes session
+            $openingVoteDate = $contract->getOpeningVotingSessionDate();
+
+            return Carbon::now()->diffInDays($openingVoteDate) == 0 && $openingVoteDate->isPast();
         })->chunk(20);
 
         $contracts->each(function($contractsSet) {
