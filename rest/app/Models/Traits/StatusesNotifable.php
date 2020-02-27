@@ -10,6 +10,7 @@ use App\Jobs\OpenDispute;
 use App\Jobs\ContractClosed;
 use App\Jobs\WaitingForPayment;
 use App\Events\NotifyCounterPart;
+use App\Jobs\WaitingForCounterPartyPayment;
 use App\Events\NotifyContractParts;
 use App\Jobs\OpenFriendlyResolution;
 use App\Jobs\WaitingForCounterParty;
@@ -33,6 +34,8 @@ trait StatusesNotifable
                 dispatch(new WaitingForCounterParty($activity));
             } elseif ($activity->status_code == 2) {
                 dispatch(new WaitingForPayment($activity));
+            } elseif ($activity->status_code == 3) {
+                dispatch(new WaitingForCounterPartyPayment($activity));
             } elseif ($activity->status_code == 5) {
                 dispatch(new Ongoing($activity));
             } elseif ($activity->status_code == 7) {
