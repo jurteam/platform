@@ -28,8 +28,8 @@ class OpenDispute extends Job
      */
     public function handle()
     {
-        $creator = $this->activity->getCreator();
-        $recipient = $this->activity->getRecipient();
+        $creator = $this->activity->getProposer();
+        $recipient = $this->activity->getReceiver();
         $contract = $this->activity;
 
         if (! empty($creator['address'])) {
