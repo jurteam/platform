@@ -32,7 +32,7 @@ class DisputeWinningPart extends Mailable
     {
         return $this
             ->subject('You have won the dispute')
-            ->markdown('emails.contracts.dispute-closd.winner', [
+            ->markdown('emails.contracts.dispute-closed.winner', [
                 'winner' => $this->contract->getWinner(),
                 'loser' => $this->contract->getLoser(),
                 'dispute' => $this->contract,
