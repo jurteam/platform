@@ -19,7 +19,7 @@ trait VotableTrait
      */
     public function getPartecipants()
     {
-        $wallets = $this->votes->pluck('oracle_wallet');
+        $wallets = $this->votes->pluck('oracle_wallet')->merge([$this->part_a_wallet,$this->part_b_wallet]);
 
         return User::byWallets($wallets)->get()->unique('wallet');
     }
@@ -32,7 +32,7 @@ trait VotableTrait
 
     public function getMembers()
     {
-        $wallets = $this->votes->pluck('oracle_wallet');
+        $wallets = $this->votes->pluck('oracle_wallet')->merge([$this->part_a_wallet,$this->part_b_wallet]);
 
         return User::excludeWallets($wallets)->get()->unique('wallet');
     }

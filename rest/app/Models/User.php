@@ -52,7 +52,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
     public function scopeExceptFromContracts($query, $collection)
     {
-        return $query->byEmail()->whereNotIn('id', $collection->toArray());
+        return $query->byEmail()->whereNotIn('wallet', $collection->toArray());
     }
 
     // Rest omitted for brevity

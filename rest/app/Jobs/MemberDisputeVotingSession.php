@@ -2,12 +2,12 @@
 
 namespace App\Jobs;
 
+use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\OngoingDispute\NotifyMembersForVotingSession;
 
 class MemberDisputeVotingSession extends Job
 {
-    private $members;
 
     private $disputes;
 
@@ -16,9 +16,8 @@ class MemberDisputeVotingSession extends Job
      *
      * @return void
      */
-    public function __construct($members, $disputes)
+    public function __construct($disputes)
     {
-        $this->members = $members;
         $this->disputes = $disputes;
     }
 
@@ -30,9 +29,20 @@ class MemberDisputeVotingSession extends Job
     public function handle()
     {
         foreach ($this->disputes as $dispute) {
-            foreach ($this->members as $member) {
-                Mail::to($member->email)
-                    ->queue(new NotifyMembersForVotingSession($member, $dispute));
+
+            $members = User::exceptFromContracts(
+                collect([$dispute->part_a_wallet, $dispute->part_b_wallet])
+            )->get();
+
+            foreach ($members as $member) 
+            {
+                if ($member->email && $member->accepted_terms)
+                {
+                    $memberName = $member->name ?: $member->wallet;
+                    
+                    Mail::to($member->email)
+                        ->queue(new NotifyMembersForVotingSession($memberName, $dispute));
+                }
             }
         }
     }

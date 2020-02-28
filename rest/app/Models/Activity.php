@@ -268,7 +268,7 @@ class Activity extends Model implements HasMedia
         return [
             'address' => $receiverAddress,
             'name' => $receiverName,
-            'amountToPay' => $amountToPay
+            'amountToPay' => $amountToPay.' JUR'
         ];
     }
 

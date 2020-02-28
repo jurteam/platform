@@ -30,10 +30,13 @@ class NotifyMembersForDisputeReachDeadline extends Job
     public function handle()
     {
         foreach ($this->members as $member) {
-            Mail::to($member->email)
-                ->queue(new MemberDisputeReachDeadline(
-                    $member, $this->contract
-                ));
+            if ($member->email && $member->accepted_terms) 
+            {
+                Mail::to($member->email)
+                    ->queue(new MemberDisputeReachDeadline(
+                        $member, $this->contract
+                    ));
+            }
         }
     }
 }

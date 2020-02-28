@@ -57,13 +57,13 @@ class NotifyUsersVotingSessionCommand extends Command
             dispatch($job);
         });
 
-        $contracts->each(function($contractsSet) {
-            $members = User::exceptFromContracts(
-                $contractsSet->pluck('user_id')->unique()
-            )->get();
+        $contracts->each(function($contractsSet) 
+        {
+
+            
 
             $job = (new MemberDisputeVotingSession(
-                $members, $contractsSet
+                $contractsSet
             ))->delay(60);
 
             dispatch($job);

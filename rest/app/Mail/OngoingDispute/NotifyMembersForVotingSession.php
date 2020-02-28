@@ -12,16 +12,18 @@ class NotifyMembersForVotingSession extends Mailable
     use Queueable, SerializesModels;
 
     private $member;
+    
+    private $dispute;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($member, $contract)
+    public function __construct($member, $dispute)
     {
         $this->member = $member;
-        $this->contract = $contract;
+        $this->dispute = $dispute;
     }
 
     /**
@@ -33,11 +35,11 @@ class NotifyMembersForVotingSession extends Mailable
     {
         return $this
             ->subject('A new dispute has been opened')
-            ->markdown('emails.contract.ongoing-dispute.members', [
+            ->markdown('emails.contracts.ongoing-dispute.members', [
                 'recipient' => $this->member,
-                'contract' => $this->contract,
-                'url' => $this->contract->getContractUrl(),
-                'expirationDate' => $this->contract->getDisputeExpirationDate()
+                'contract' => $this->dispute,
+                'url' => $this->dispute->getContractUrl(),
+                'expirationDate' => $this->dispute->getDisputeExpirationDate()
             ]);
     }
 }
