@@ -31,18 +31,26 @@ class DisputeVoteReachedDeadline extends Job
             $winnerWallet = $contract->getTheWinner(true);
             $loserWallet = $contract->getTheLoser();
 
-            $email = $contract->getUserEmail($winnerWallet);
 
-            if (! $email) {
-                Mail::to($email)
-                    ->send(new DisputeWinningPart($contract));
+            if ($winnerWallet) 
+            {
+                $email = $contract->getUserEmail($winnerWallet);
+    
+                if (! $email) {
+                    Mail::to($email)
+                        ->send(new DisputeWinningPart($contract));
+                }
             }
 
-            $email = $contract->getUserEmail($loserWallet);
-            if (! $email) {
-                Mail::to($email)
-                    ->send(new DisputeLosingPart($contract));
+            if ($loserWallet) 
+            {
+                $email = $contract->getUserEmail($loserWallet);
+                if (! $email) {
+                    Mail::to($email)
+                        ->send(new DisputeLosingPart($contract));
+                }
             }
+
         }
     }
 }

@@ -299,12 +299,15 @@ class Contract extends Model implements HasMedia
         return $addresses;
     }
 
-    protected function getUserEmail($wallet)
+    public function getUserEmail($wallet)
     {
-        $user = User::byWallet($wallet)->first();
+        info('contract --- getUserEmail---wallet:'.$wallet);
+        if ($wallet) {
+            $user = User::byWallet($wallet)->first();
 
-        if ($user) {
-            return $user->email;
+            if ($user) {
+                return $user->email;
+            }
         }
         return null;
     }

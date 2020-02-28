@@ -201,10 +201,12 @@ class Activity extends Model implements HasMedia
 
     protected function getUserEmail($wallet)
     {
-        $user = User::byWallet($wallet)->first();
+        if ($wallet) {
+            $user = User::byWallet($wallet)->first();
 
-        if ($user) {
-            return $user->email;
+            if ($user) {
+                return $user->email;
+            }
         }
         return null;
     }

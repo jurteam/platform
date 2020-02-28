@@ -252,13 +252,15 @@ trait DisputeTrait
     {
         $status = $this->getCurrentStatus();
 
+        $validStatusCode = [9,29,39];
+
         $statuses = config('jur.statuses');
         $validStatus = array_filter($statuses, function($status) {
             return in_array($status['code'], [9,29,39]);
         });
 
         if ($status) {
-            if (in_array($status->code, $validStatus) || !$partials) {
+            if (in_array($status->code, $validStatusCode) || !$partials) {
                 $totalPartA = $this->getTokensPart('part_a_wallet');
                 $totalPartB = $this->getTokensPart('part_b_wallet');
                 // $totalRejectVotes = $this->getRejectVotes();
@@ -282,9 +284,9 @@ trait DisputeTrait
         $winner = $this->getTheWinner();
 
         if ($this->part_a_wallet == $winner) {
-            return $this->part_a_wallet;
+            return $this->part_b_wallet;
         }
-        return $this->part_b_wallet;
+        return $this->part_a_wallet;
     }
 
     /**

@@ -80,10 +80,12 @@ trait StatusesNotifable
 
     public function getUserEmail($wallet)
     {
-        $user = User::byWallet($wallet)->first();
-
-        if ($user) {
-            return $user->email;
+        if ($wallet) {
+            $user = User::byWallet($wallet)->first();
+            
+            if ($user) {
+                return $user->email;
+            }
         }
         return null;
     }

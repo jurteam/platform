@@ -7,7 +7,7 @@ use App\Jobs\NotifyPartecipantsForDisputeReachDeadline;
 
 class DisputeVoteReachDeadline extends Job
 {
-    private $contract;
+    private $contracts;
 
     /**
      * Create a new job instance.
