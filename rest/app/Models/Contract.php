@@ -177,12 +177,14 @@ class Contract extends Model implements HasMedia
 
     public function getContractUrl()
     {
-        return config('jur.url') . "/contracts/detail/{$this->id}";
+        $hashid = encodeId($this->id);
+        return config('jur.url') . "/contracts/detail/{$hashid}";
     }
 
     public function getDisputeUrl()
     {
-        return config('jur.url') . "/disputes/detail/{$this->id}";
+        $hashid = encodeId($this->id);
+        return config('jur.url') . "/disputes/detail/{$hashid}";
     }
 
     public function getExpirationDate()
