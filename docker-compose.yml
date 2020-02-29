@@ -11,11 +11,11 @@ services:
       # - ./rest/artisan:/var/www/html/artisan
       # - ./rest/bootstrap:/var/www/html/bootstrap
       # - ./rest/composer.json:/var/www/html/composer.json
-      - ./rest/config:/var/www/html/config
-      # - ./rest/database:/var/www/html/database
+      # - ./rest/config:/var/www/html/config
+      - ./rest/database:/var/www/html/database
       # - ./rest/public:/var/www/html/public
       - ./rest/resources:/var/www/html/resources
-      # - ./rest/routes:/var/www/html/routes
+      - ./rest/routes:/var/www/html/routes
       # - ./rest/storage:/var/www/html/storage
       # - ./rest/tests:/var/www/html/tests
       # - ./rest/vendor:/var/www/html/vendor
@@ -44,22 +44,21 @@ services:
       DB_USERNAME: lumen
       DB_PASSWORD: secret
 
+      CHAIN_DISPUTE_DISPERSAL_DURATION: 48
+
       MEMCACHED_HOST: cache
       CACHE_DRIVER: file
 
       MAIL_DRIVER: smtp
-      MAIL_USERNAME: bad3282d3a5c38
       MAIL_HOST: smtp.mailtrap.io
-      MAIL_PASSWORD: 63f73da428ac00
       MAIL_PORT: 2525
+      MAIL_USERNAME: b030cd9cbc38f8
+      MAIL_PASSWORD: 9e5854eff67b7a
 
       MAIL_FROM_NAME: "Jur Team"
       MAIL_FROM_ADDRESS: noreply@jur.io
       JUR_MAIL_FROM_NAME: "Jur Team"
-      JUR_MAIL_FROM_ADDRESS: noreply-compose@jur.io
-
-      JUR_FEEDBACK_URL: http://localhost/feedback-url?compose
-      JUR_DAYS_BEFORE_END: 1
+      JUR_MAIL_FROM_ADDRESS: noreply@jur.io
 
       HASHIDS_SALT: 0J3RGHY4TGH
       HASHIDS_LENGTH: 6

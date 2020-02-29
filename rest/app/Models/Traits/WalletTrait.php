@@ -4,6 +4,16 @@ namespace App\Models\Traits;
 
 trait WalletTrait
 {
+    public function scopeByWallets($query, $collection)
+    {
+        return $query->byEmail()->whereIn('wallet', $collection->toArray());
+    }
+
+    public function scopeExcludeWallets($query, $collection)
+    {
+        return $query->byEmail()->whereNotIn('wallet', $collection->toArray());
+    }
+
     /**
      * Default query to find an user by wallet code.
      *
@@ -14,7 +24,7 @@ trait WalletTrait
     public function scopeByWallet($query, $wallet)
     {
         $lowerWallet = strtolower($wallet);
-        
+
         return $query->whereRaw('LOWER(wallet) = ?', [$lowerWallet]);
     }
 
@@ -51,5 +61,10 @@ trait WalletTrait
     {
         $user = static::byWallet($request->header('wallet'))->firstOrFail();
         return $user->delete();
+    }
+
+    public function getPublicName()
+    {
+        return $this->show_fullname ? $this->name : $this->wallet;
     }
 }

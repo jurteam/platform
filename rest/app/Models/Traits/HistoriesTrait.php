@@ -13,15 +13,80 @@ trait HistoriesTrait
         $this->load('histories');
         if ($this->histories->count() > 0) {
             $history = $this->histories
-                            ->filter(function($item) {
-                                return !is_null($item->custom_status_date);
-                            })
-                            ->sortByDesc('custom_status_date')
-                            ->first();
+                ->filter(function($item) {
+                    return !is_null($item->custom_status_date);
+                })
+                ->sortByDesc('custom_status_date')
+                ->first();
 
             if (!empty($history)) {
                 return $history->status;
             }
+        }
+
+        return null;
+    }
+
+    public function getCurrentHistory()
+    {
+        $this->load('histories');
+        if ($this->histories->count() > 0) {
+            $history = $this->histories
+                ->filter(function($item) {
+                    return !is_null($item->custom_status_date);
+                })
+                ->sortByDesc('custom_status_date')
+                ->first();
+
+            return $history;
+        }
+
+        return null;
+    }
+
+    public function getOpeningDate()
+    {
+        $this->load('histories');
+        if ($this->histories->count() > 0) {
+            $history = $this->histories
+                ->filter(function($item) {
+                    return (!is_null($item->custom_status_date) && $item->contract_status_code === 5);
+                })
+                ->first();
+
+            return $history;
+        }
+
+        return null;
+    }
+
+    public function getOpeningVotingSessionDate()
+    {
+        $this->load('histories');
+        if ($this->histories->count() > 0) {
+            $history = $this->histories
+                ->filter(function($item) {
+                    return $item->contract_status_code === 35;
+                })
+                ->first();
+
+            return $history->chain_updated_at;
+        }
+
+        return null;
+    }
+
+    public function getDisputeEndDate()
+    {
+        $this->load('histories');
+        if ($this->histories->count() > 0) {
+            $history = $this->histories
+                ->filter(function($item) {
+                    return $item->contract_status_code === 39;
+                })
+                ->first();
+
+            return $history->chain_updated_at;
         }
 
         return null;

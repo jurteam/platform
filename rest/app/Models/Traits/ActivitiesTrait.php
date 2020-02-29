@@ -49,6 +49,22 @@ trait ActivitiesTrait
         return $this->part_a_wallet;
     }
 
+
+
+    public function getCurrentActivity()
+    {
+        $this->load('activities');
+        if ($this->activities->count() > 0) {
+            $activity = $this->activities                
+                ->sortByDesc('id')
+                ->first();
+
+            return $activity;
+        }
+
+        return null;
+    }
+
     /**
      * Get the label from the status changed
      *
