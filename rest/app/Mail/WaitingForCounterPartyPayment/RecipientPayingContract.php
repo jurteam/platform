@@ -35,7 +35,7 @@ class RecipientPayingContract extends Mailable
     public function build()
     {
         return $this
-            ->subject('Fund your contract')
+            ->subject('Waiting for your counterparty')
             ->markdown('emails.contracts.waiting-for-counter-party-payment.paying', [
                 'url' => $this->contract->getContractUrl(),
                 'paying' => $this->paying['name']

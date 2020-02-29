@@ -19,6 +19,7 @@ class Kernel extends ConsoleKernel
         \App\Console\Commands\Mails\MailMakeCommand::class,
         \App\Console\Commands\ResetDisputeStatusCommand::class,
         \App\Console\Commands\NotifyPartiesForContractDeadline::class,
+        \App\Console\Commands\NotifyPartyForWaitingPayment::class,
         \App\Console\Commands\NotifyPartiesForContractExpired::class,
         \App\Console\Commands\NotifyUsersVotingSessionCommand::class,
         \App\Console\Commands\NotifyForDisputeVoteDeadline::class,
@@ -33,6 +34,9 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
+        // Check for party waiting to pay for contract
+        $schedule->command('jur:contract-payment-pending')->daily();
+
         // Check for ongoing contract near to reach their deadline date
         $schedule->command('jur:contract-deadline')->daily();
 

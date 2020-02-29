@@ -85,6 +85,11 @@ class Contract extends Model implements HasMedia
         return $this->hasMany(ContractStatusHistory::class);
     }
 
+    public function activities()
+    {
+        return $this->hasMany(Activity::class);
+    }
+
     /**
      * hold for old jur db schema
      */
@@ -215,6 +220,26 @@ class Contract extends Model implements HasMedia
             }
 
             return Carbon::now()->diffInDays($contract->getExpirationDate()) == 0 && $contract->getExpirationDate()->isPast();
+        });
+    }
+
+    public static function waitingForPayment()
+    {
+        return static::all()->filter(function($contract) 
+        {            
+            $status = $contract->getCurrentStatus();
+            if (!is_null($status)) {
+                return $status->code == 3;
+            }
+            return false;
+        })->filter(function($contract) 
+        {
+            $history = $contract->getCurrentHistory();
+
+            return Carbon::now()->diffInDays(
+                $history->custom_status_date
+            ) == config('jur.days_before_end');
+            
         });
     }
 
