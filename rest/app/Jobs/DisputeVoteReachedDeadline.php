@@ -29,23 +29,23 @@ class DisputeVoteReachedDeadline extends Job
     {
         foreach ($this->contracts as $contract) {
             $winnerWallet = $contract->getTheWinner(true);
-            $loserWallet = $contract->getTheLoser();
+            $loserWallets = $contract->getTheLoser();
 
 
-            if ($winnerWallet) 
+            if ($winnerWallet != null && $winnerWallet != '0x0')
             {
                 $email = $contract->getUserEmail($winnerWallet);
     
-                if (! $email) {
+                if ($email) {
                     Mail::to($email)
                         ->send(new DisputeWinningPart($contract));
                 }
             }
 
-            if ($loserWallet) 
+            foreach ($loserWallets as $loserWallet) 
             {
                 $email = $contract->getUserEmail($loserWallet);
-                if (! $email) {
+                if ($email) {
                     Mail::to($email)
                         ->send(new DisputeLosingPart($contract));
                 }

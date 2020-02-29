@@ -259,19 +259,29 @@ trait DisputeTrait
             return in_array($status['code'], [9,29,39]);
         });
 
-        if ($status) {
-            if (in_array($status->code, $validStatusCode) || !$partials) {
+        if ($status) 
+        {
+            if (in_array($status->code, $validStatusCode) || !$partials) 
+            {
                 $totalPartA = $this->getTokensPart('part_a_wallet');
                 $totalPartB = $this->getTokensPart('part_b_wallet');
-                // $totalRejectVotes = $this->getRejectVotes();
+                $totalRejectVotes = $this->getRejectVotes();
 
-                // if ($totalRejectVotes > $totalPartA && $totalRejectVotes > $totalPartB) {
-                //     return '0x0';
-                // } else
-                if ($totalPartA > $totalPartB) {
-                    return $this->part_a_wallet;
-                } elseif ($totalPartB > $totalPartA) {
-                    return $this->part_b_wallet;
+                
+                if ($totalRejectVotes > $totalPartA && $totalRejectVotes > $totalPartB) 
+                {
+                    return '0x0';
+                } 
+                else 
+                {                    
+                    if ($totalPartA > $totalPartB) 
+                    {
+                        return $this->part_a_wallet;
+                    }
+                    elseif ($totalPartB > $totalPartA) 
+                    {
+                        return $this->part_b_wallet;
+                    }
                 }
             }
         }
@@ -283,10 +293,16 @@ trait DisputeTrait
     {
         $winner = $this->getTheWinner();
 
-        if ($this->part_a_wallet == $winner) {
-            return $this->part_b_wallet;
+        if ($winner == '0x0') 
+        {
+            return [$this->part_a_wallet,$this->part_b_wallet];
+
+        } 
+        elseif ($this->part_a_wallet == $winner) 
+        {
+            return [$this->part_b_wallet];
         }
-        return $this->part_a_wallet;
+        return [$this->part_a_wallet];
     }
 
     /**

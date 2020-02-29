@@ -29,7 +29,7 @@ class MembersDisputeVotingClosed extends Job
     {
         foreach ($this->contracts as $contract) {
             $winnerWallet = $contract->getTheWinner(true);
-            $loserWallet = $contract->getTheLoser();
+            $loserWallets = $contract->getTheLoser();
 
             $winners = $contract->getPartecipantsFromWallet(
                 $winnerWallet
@@ -41,15 +41,18 @@ class MembersDisputeVotingClosed extends Job
             });
 
             sleep(3);
+            
+            foreach ($loserWallets as $loserWallet) 
+            {
+                $losers = $contract->getPartecipantsFromWallet(
+                    $loserWallet
+                );
 
-            $losers = $contract->getPartecipantsFromWallet(
-                $loserWallet
-            );
-
-            $losers->each(function($loser) use($contract) {
-                Mail::to($loser->email)
-                    ->queue(new DisputeLosingMember($loser, $contract));
-            });
+                $losers->each(function($loser) use($contract) {
+                    Mail::to($loser->email)
+                        ->queue(new DisputeLosingMember($loser, $contract));
+                });
+            }
         }
     }
 }

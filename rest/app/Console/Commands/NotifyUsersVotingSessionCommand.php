@@ -3,7 +3,6 @@
 namespace App\Console\Commands;
 
 use Carbon\Carbon;
-use App\Models\User;
 use App\Models\Contract;
 use Illuminate\Console\Command;
 use App\Jobs\DisputeVotingSession;
