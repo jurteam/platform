@@ -28,21 +28,21 @@ class ContractClosed extends Job
      */
     public function handle()
     {
-        $creator = $this->activity->getCreator();
-        $recipient = $this->activity->getRecipient();
+        $proposer = $this->activity->getProposer();
+        $receiver = $this->activity->getReceiver();
         $contract = $this->activity->contract;
 
-        if (! empty($creator['address'])) {
-            Mail::to($creator['address'])
+        if (! empty($receiver['address'])) {
+            Mail::to($receiver['address'])
                 ->send(new PartRecieveClosingProposal(
-                    $creator, $recipient, $contract
+                    $receiver, $proposer, $contract
                 ));
         }
         
-        if (! empty($recipient['address'])) {
-            Mail::to($recipient['address'])
+        if (! empty($proposer['address'])) {
+            Mail::to($proposer['address'])
                 ->send(new PartAcceptsClosingProposal(
-                    $recipient, $creator, $contract
+                    $proposer, $receiver, $contract
                 ));
         }
     }
