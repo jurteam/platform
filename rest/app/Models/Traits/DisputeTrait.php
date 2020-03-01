@@ -179,6 +179,10 @@ trait DisputeTrait
             return null;
         }
         
+        if ($this->withdrawals === null) {            
+            return 0;
+        }
+        
         $withdrawals = $this->withdrawals
             ->filter(function($withdrawal) use($wallet) {
                 return strtolower($withdrawal->wallet) == strtolower($wallet);

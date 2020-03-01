@@ -34,7 +34,7 @@ class Withdraw extends Mailable
         return $this
             ->subject('Your resolution has been credited')
             ->markdown('emails.contracts.disputes.withdraw', [
-                'withdrawal' => $this->withdrawal,
+                'contract' => $this->withdrawal->contract,
                 'user' => $this->withdrawal->getUserFromWallet()
             ]);
     }

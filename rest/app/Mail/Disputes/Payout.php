@@ -35,7 +35,8 @@ class Payout extends Mailable
             ->subject('Your reward has been credited')
             ->markdown('emails.contracts.disputes.payout', [
                 'user' => $this->withdrawal->getUserFromWallet(),
-                'withdrawal' => $this->withdrawal
+                'withdrawal' => $this->withdrawal,
+                'contract' => $this->withdrawal->contract
             ]);
     }
 }
