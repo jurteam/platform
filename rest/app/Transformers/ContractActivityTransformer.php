@@ -33,7 +33,7 @@ class ContractActivityTransformer extends TransformerAbstract
             'readed' => $activity->getStatusFromWallet($wallet),
             'date' => $activity->getUpdatedDate(),
             'contract_name' => $activity->contract->name,
-            'contract' => $activity->contract_id,
+            'contract' => encodeId($activity->contract_id),
             'part_a' => $activity->contract->part_a_wallet,
             'part_b' => $activity->contract->part_b_wallet,
             'from' => (object) [

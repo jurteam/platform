@@ -22,7 +22,8 @@ class ContractDetailsController extends Controller
      */
     public function index($id)
     {
-        $contract = Contract::findOrFail($id);
+        $idc = decodeId($id);
+        $contract = Contract::findOrFail($idc);
         $details = $contract->details;
 
         return $this->response->collection($details, new ContractStatusDetailTransformer);
@@ -35,12 +36,13 @@ class ContractDetailsController extends Controller
      */
     public function store(Request $request, $id)
     {
+        $idc = decodeId($id);
         $this->validate($request, [
             'code' => 'required|exists:contract_statuses,code'
         ]);
 
         $detail = ContractStatusDetail::storeDetail(
-            $request, Contract::findOrFail($id)
+            $request, Contract::findOrFail($idc)
         );
         $detail->uploadMedia($request);
 

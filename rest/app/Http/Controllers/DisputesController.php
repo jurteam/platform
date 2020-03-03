@@ -34,7 +34,8 @@ class DisputesController extends Controller
 
     public function show($id)
     {
-        $contract = Contract::findOrFail($id);
+        $idc = decodeId($id);   
+        $contract = Contract::findOrFail($idc);
         if (Gate::denies('view-dispute', $contract)) {
             abort(404);
         }

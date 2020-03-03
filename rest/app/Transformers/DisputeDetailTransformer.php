@@ -27,13 +27,15 @@ class DisputeDetailTransformer extends TransformerAbstract
      */
     public function transform(Contract $contract)
     {
+        $wallet = request()->header('wallet');
+
         $totalTokensPartA = $contract->getTokensPart('part_a_wallet');
         $totalTokensPartB = $contract->getTokensPart('part_b_wallet');
         $totalRejectVotes = $contract->getRejectVotes();
         $currentStatus = $contract->getCurrentStatus();
 
         return [
-            'id' => $contract->id,
+            'id' => encodeId($contract->id),
             'statusId' => $currentStatus ? $currentStatus->code : null,
             'statusLabel' => $currentStatus ? $currentStatus->label : null,
             'statusUpdatedAt' => $contract->getCurrentStatusUpdatedAt(),
@@ -77,6 +79,7 @@ class DisputeDetailTransformer extends TransformerAbstract
             'proposalPartA' => (object) $contract->getProposalPart('part_a'),
             'proposalPartB' => (object) $contract->getProposalPart('part_b'),
             'earnings' => $contract->getEarnings(),
+            'totalWithdraw' => $contract->getTotalWithdraw($wallet),
             'totalTokensPartA' => $totalTokensPartA,
             'totalTokensPartB' => $totalTokensPartB,
             'totalTokensReject' => $totalRejectVotes,

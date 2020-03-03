@@ -1,5 +1,8 @@
 import linkify from "linkifyjs/string";
 
+import Big from "big.js"
+
+
 // Log helper only on DEVELOPMENT environmentexport const warn = (mixed, obj) => {
 export const log = (mixed, obj, type) => {
   let out = [];
@@ -277,3 +280,24 @@ export const canVote = (statusId) => {
 
   return canVote
 }
+
+export const multiplication = (a,b) => {
+
+  let x = new Big(a);
+  const prod = x.times(b);
+
+  log('handleDisputeArbitration - multiplication', x)
+  log('handleDisputeArbitration - multiplication', x.toString())
+  log('handleDisputeArbitration - multiplication', prod.toString())
+
+  return prod.toString()
+}
+
+export const toBigFixed = amount => {
+
+  const amountArray = amount.toString().split('.')
+  const decimalnumber = amountArray.length>1?amountArray[1].length:0
+  const amountFormat = amount.toString() + ('0').repeat(Number(process.env.REACT_APP_TOKEN_DECIMALS)-decimalnumber)
+
+  return amountFormat
+};

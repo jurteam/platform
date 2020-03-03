@@ -42,7 +42,7 @@ class WaitingForCounterParty extends Job
         if (! empty($recipient['address'])) {
             Mail::to($recipient['address'])
                 ->send(new RecipientRecieveContract(
-                    $recipient, $creator, $contract
+                    $creator, $recipient, $contract
                 ));
         }
     }
