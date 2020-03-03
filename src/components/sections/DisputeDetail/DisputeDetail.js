@@ -459,8 +459,11 @@ export const DisputeDetail = ( props ) => {
       }      
     ];
 
+    let rejectPercentage = (100 - percentagePartA - percentagePartB);
+    rejectPercentage =rejectPercentage > 0 ? rejectPercentage : 0;
+
     voteReject = {
-      percentage: (100 - percentagePartA - percentagePartB),
+      percentage: rejectPercentage,
       value: totalTokensReject,
     }
     
