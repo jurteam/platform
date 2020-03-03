@@ -37,6 +37,7 @@ services:
       API_VERSION: v1
       API_DEBUG: 'true'
       JUR_FE_URL: http://localhost
+      JUR_MAIL_LOGO_URL: https://jbp.fra1.cdn.digitaloceanspaces.com/mail_logo.svg
       
       DB_CONNECTION: mysql
       DB_HOST: db
@@ -63,6 +64,9 @@ services:
       HASHIDS_SALT: 0J3RGHY4TGH
       HASHIDS_LENGTH: 6
       HASHIDS_ALPHABET: abcedfghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPAQRSTUVWXYZ1234567890
+
+      JUR_FEEDBACK_URL: https://jur.io/frequently-asked-questions/
+      JUR_DAYS_BEFORE_END: 1
 
   # nginx:
   #   build: environment/nginx
