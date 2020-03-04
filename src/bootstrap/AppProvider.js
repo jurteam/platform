@@ -22,6 +22,7 @@ class AppProvider extends Component {
   constructor(props) {
     super(props);
     this.auth = this.auth.bind(this);
+    this.connexAuth = this.connexAuth.bind(this);
     this.exit = this.exit.bind(this);
     global.exit = this.exit; // available everywhere for sync purposes
 
@@ -78,6 +79,7 @@ class AppProvider extends Component {
       ],
       onNetwork: false,
       auth: this.auth,
+      connexAuth: this.connexAuth,
       exit: this.exit
     };
   }
