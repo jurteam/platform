@@ -25,7 +25,8 @@ class ContractVotesController extends Controller
      */
     public function index(ContractVoteFilters $filters, $id)
     {
-        $votes = ContractVote::byContract($id)
+        $idc = decodeId($id);
+        $votes = ContractVote::byContract($idc)
                         ->filters($filters)
                         ->latest()->paginate(15);
 
@@ -39,8 +40,9 @@ class ContractVotesController extends Controller
      */
     public function liveVotes(ContractVoteFilters $filters, $id)
     {
-        $contract = Contract::findOrFail($id);
-        $votes = ContractVote::byContract($id)
+        $idc = decodeId($id);  
+        $contract = Contract::findOrFail($idc);
+        $votes = ContractVote::byContract($idc)
                         ->filters($filters)
                         ->get();
 
@@ -61,7 +63,12 @@ class ContractVotesController extends Controller
      */
     public function store(Request $request)
     {
-        $vote = ContractVote::create($request->all());
+
+        // decode contract_id
+        $allParam = $request->all();
+        $allParam['contract_id'] = decodeId($allParam['contract_id']);
+
+        $vote = ContractVote::create($allParam);
         $vote->uploadMedia($request);
 
         return $this->response->item($vote, new ContractVoteTransformer);

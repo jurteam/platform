@@ -120,7 +120,10 @@ const DisputesTable = props => {
             <Amount value={humanToEth(getContractTotalValue(dispute, true))} />
           </TableCell>
           <TableCell className="jur-disputes__table__earning">
-            {dispute.earning && <Amount value={dispute.earning} />}
+            {
+              dispute.totalWithdraw > 0 && 
+              <Amount value={dispute.totalWithdraw} />
+            }
           </TableCell>
           {dispute.archived ? (
             <TableCell>

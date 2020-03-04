@@ -16,6 +16,7 @@ deploy-exclude.template
 .gitignore
 bin/
 docs/
+files/*
 environment/
 node_modules/
 protocol/

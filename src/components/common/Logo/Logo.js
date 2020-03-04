@@ -52,7 +52,7 @@ export const Logo = () => (
 			fill="#0077FF"
 			style={{fontFamily:'ArialMT',fontSize:'9px'}}
 		>
-			v. 0.9.1
+			v. 0.9.2
 		</text>
     </svg>
   </div>

@@ -3,23 +3,23 @@ services:
 
   jur:
     build: ./
-    # volumes:
-    #   # - ./rest/public:/var/www/html/rest/public
-    #   # - ./rest/storage:/var/www/html/rest/storage
-    #   # - ./build:/var/www/html/public
-    #   # - ./rest/composer.json:/var/www/html/rest/composer.json
-    #   # - ./rest/artisan:/var/www/html/rest/artisan
-    #   # - ./rest/.env:/var/www/html/rest/.env
-    #   # - ./rest/phpunit.xml:/var/www/html/rest/phpunit.xml
-    #   # - ./rest/app:/var/www/html/rest/app
-    #   # - ./rest/bootstrap:/var/www/html/rest/bootstrap
-    #   # - ./rest/config:/var/www/html/rest/config
-    #   # - ./rest/database:/var/www/html/rest/database
-    #   # - ./rest/resources:/var/www/html/rest/resources
-    #   # - ./rest/routes:/var/www/html/rest/routes
-    #   # - ./rest/tests:/var/www/html/rest/tests
-    #   # - ./rest/vendor:/var/www/html/rest/vendor
-    #   # - ./rest:/var/www/html
+    volumes:
+      # - ./build:/var/www/html/public
+      # - ./rest/phpunit.xml:/var/www/html/phpunit.xml
+      # - ./rest/.env:/var/www/html/.env
+      - ./rest/app:/var/www/html/app
+      # - ./rest/artisan:/var/www/html/artisan
+      # - ./rest/bootstrap:/var/www/html/bootstrap
+      # - ./rest/composer.json:/var/www/html/composer.json
+      # - ./rest/config:/var/www/html/config
+      - ./rest/database:/var/www/html/database
+      # - ./rest/public:/var/www/html/public
+      - ./rest/resources:/var/www/html/resources
+      - ./rest/routes:/var/www/html/routes
+      # - ./rest/storage:/var/www/html/storage
+      # - ./rest/tests:/var/www/html/tests
+      # - ./rest/vendor:/var/www/html/vendor
+      # - ./rest:/var/www/html
     ports:
       - "80:80"
     links:
@@ -37,6 +37,7 @@ services:
       API_VERSION: v1
       API_DEBUG: 'true'
       JUR_FE_URL: http://localhost
+      JUR_MAIL_LOGO_URL: https://jbp.fra1.cdn.digitaloceanspaces.com/mail_logo.svg
       
       DB_CONNECTION: mysql
       DB_HOST: db
@@ -44,18 +45,28 @@ services:
       DB_USERNAME: lumen
       DB_PASSWORD: secret
 
+      CHAIN_DISPUTE_DISPERSAL_DURATION: 48
+
       MEMCACHED_HOST: cache
       CACHE_DRIVER: file
 
       MAIL_DRIVER: smtp
-      MAIL_USERNAME: bad3282d3a5c38
       MAIL_HOST: smtp.mailtrap.io
-      MAIL_PASSWORD: 63f73da428ac00
       MAIL_PORT: 2525
+      MAIL_USERNAME: b030cd9cbc38f8
+      MAIL_PASSWORD: 9e5854eff67b7a
+
+      MAIL_FROM_NAME: "Jur Team"
+      MAIL_FROM_ADDRESS: noreply@jur.io
+      JUR_MAIL_FROM_NAME: "Jur Team"
+      JUR_MAIL_FROM_ADDRESS: noreply@jur.io
 
       HASHIDS_SALT: 0J3RGHY4TGH
       HASHIDS_LENGTH: 6
       HASHIDS_ALPHABET: abcedfghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPAQRSTUVWXYZ1234567890
+
+      JUR_FEEDBACK_URL: https://jur.io/frequently-asked-questions/
+      JUR_DAYS_BEFORE_END: 1
 
   # nginx:
   #   build: environment/nginx
