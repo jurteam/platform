@@ -46,7 +46,7 @@ export const ActionsBar = props => {
 
   const createArbitration = () => {
     log("createArbitration - call");
-    global.drizzle.store.dispatch({
+    global.store.dispatch({
       type: CHAIN_CREATE_ARBITRATION
     });
   };
@@ -57,7 +57,7 @@ export const ActionsBar = props => {
     log("approveToken - call on contract", [contractAddress, currentContractAddress]);
     amount = amount * 1000000000000000000; // 18 decimals
 
-    global.drizzle.store.dispatch({
+    global.store.dispatch({
       type: CHAIN_APPROVE_JURTOKEN,
       contractAddress,
       amount
@@ -82,7 +82,7 @@ export const ActionsBar = props => {
   const rejectArbitration = () => {
     log("rejectArbitration - call");
     const contractAddress = currentContractAddress;
-    global.drizzle.store.dispatch({
+    global.store.dispatch({
       type: REJECT_ARBITRATION,
       address: contractAddress,
       contractAddress,
@@ -92,7 +92,7 @@ export const ActionsBar = props => {
 
   const signArbitration = () => {
     log("signArbitration - call");
-    global.drizzle.store.dispatch({
+    global.store.dispatch({
       type: CHAIN_SIGN_ARBITRATION,
       contractAddress: currentContractAddress
     });
@@ -101,7 +101,7 @@ export const ActionsBar = props => {
   const agreeArbitration = () => {
     log("agreeArbitration - call");
 
-    global.drizzle.store.dispatch({
+    global.store.dispatch({
       type: CHAIN_AGREE_ARBITRATION,
       contractAddress: currentContractAddress
     });
@@ -109,7 +109,7 @@ export const ActionsBar = props => {
 
   const withdrawFromArbitration = () => {
     log("withdrawFromArbitration - call");
-    global.drizzle.store.dispatch({
+    global.store.dispatch({
       type: CHAIN_WITHDRAW_DISPERSAL_ARBITRATION,
       contractAddress: currentContractAddress
     });
@@ -117,7 +117,7 @@ export const ActionsBar = props => {
 
   const onDispute = () => {
     log("Dispute - call");
-    global.drizzle.store.dispatch({
+    global.store.dispatch({
       type: DISPUTE_ARBITRATION,
       contractAddress: currentContractAddress
     });
@@ -125,7 +125,7 @@ export const ActionsBar = props => {
 
   const disputeArbitration = (amount) => {
     log("approveAndDispute - call");
-    global.drizzle.store.dispatch({
+    global.store.dispatch({
       type: DISPUTE_ARBITRATION,
       contractAddress: currentContractAddress,
       amount: amount
@@ -134,7 +134,7 @@ export const ActionsBar = props => {
 
   const calcDisputeEnds = () => {
     log("calcDisputeEnds - call");
-    global.drizzle.store.dispatch({
+    global.store.dispatch({
       type: CALC_DISPUTE_ENDS_ARBITRATION,
       contractAddress: currentContractAddress
     });
@@ -142,7 +142,7 @@ export const ActionsBar = props => {
 
   const totalVotes = () => {
     log("calcDisputeEnds - call");
-    global.drizzle.store.dispatch({
+    global.store.dispatch({
       type: TOTAL_VOTES_ARBITRATION,
       contractAddress: currentContractAddress
     });
@@ -150,7 +150,7 @@ export const ActionsBar = props => {
 
   const disputeWindowVotes = () => {
     log("calcDisputeEnds - call");
-    global.drizzle.store.dispatch({
+    global.store.dispatch({
       type: DISPUTE_WINDOW_VOTES_ARBITRATION,
       contractAddress: currentContractAddress
     });
@@ -158,14 +158,14 @@ export const ActionsBar = props => {
 
   const disputeStarts = () => {
     log("disputeStarts - call");
-    global.drizzle.store.dispatch({
+    global.store.dispatch({
       type: DISPUTE_STARTS_ARBITRATION,
       contractAddress: currentContractAddress
     });
   }
   const disputeEnds = () => {
     log("disputeEnds - call");
-    global.drizzle.store.dispatch({
+    global.store.dispatch({
       type: DISPUTE_ENDS_ARBITRATION,
       contractAddress: currentContractAddress
     });
@@ -173,14 +173,14 @@ export const ActionsBar = props => {
 
   const setMockedNow = () => {
     log("setMockedNow - call");
-    global.drizzle.store.dispatch({
+    global.store.dispatch({
       type: SET_MOCKED_NOW,
       contractAddress: currentContractAddress
     });
   }
   const getNow = () => {
     log("getNow - call");
-    global.drizzle.store.dispatch({
+    global.store.dispatch({
       type: GET_NOW,
       contractAddress: currentContractAddress
     });

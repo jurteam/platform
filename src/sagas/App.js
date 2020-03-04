@@ -2,6 +2,7 @@ import { put, call, takeEvery, takeLatest, select } from "redux-saga/effects";
 import {
   DRIZZLE_INITIALIZING,
   DRIZZLE_INITIALIZED,
+  CONNEX_INITIALIZED,
   SET_WALLET_ADDRESS,
   NETWORK_ID_FAILED,
   NETWORK_UPDATE,
@@ -252,8 +253,8 @@ export function* handleFetchFaq() {
 }
 
 // handles app ready
-export function* handleAppReady() {
-  yield init();
+export function* handleAppReady(args) {
+  yield init(args);
   yield put({ type: FETCH_FAQ });
   yield put({ type: FETCH_USER });
   yield put({ type: FETCH_CONTRACTS });
@@ -265,6 +266,7 @@ export function* handleAppReady() {
 export default function* appSagas() {
   yield takeEvery(DRIZZLE_INITIALIZING, handleAppInit);
   yield takeLatest(DRIZZLE_INITIALIZED, handleAppReady);
+  yield takeLatest(CONNEX_INITIALIZED, handleAppReady);
   yield takeEvery(NETWORK_ID_FAILED, disableLoading);
   yield takeLatest(NETWORK_UPDATE, handleNetworkUpdate);
   yield takeLatest(APP_SHOULD_RESET, handleAppReset);

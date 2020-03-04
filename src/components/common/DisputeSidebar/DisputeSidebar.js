@@ -76,14 +76,14 @@ export const DisputeSidebar = ({
   useEffect(() => {
 
     log('DisputeSidebar - Mount');
-    global.drizzle.store.dispatch({
+    global.store.dispatch({
       type: DISPUTE_DETAIL_PAGE,
       payload: true
     });
 
     return () => {
       log('DisputeSidebar - Unmount');
-      global.drizzle.store.dispatch({
+      global.store.dispatch({
         type: DISPUTE_DETAIL_PAGE,
         payload: false
       });
@@ -92,7 +92,7 @@ export const DisputeSidebar = ({
   }, []);
 
   const readActivities = () => {
-    global.drizzle.store.dispatch({
+    global.store.dispatch({
       type: CONTRACT_READ_NOTIFICATIONS
     });
   };

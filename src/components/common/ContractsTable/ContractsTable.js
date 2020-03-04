@@ -83,7 +83,7 @@ export const ContractsTable = props => {
   };
 
   const onExpire = id => {
-    global.drizzle.store.dispatch({
+    global.store.dispatch({
       type: EXPIRED_CONTRACT,
       id
     });

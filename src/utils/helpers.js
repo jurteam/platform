@@ -1,6 +1,6 @@
 import linkify from "linkifyjs/string";
 
-
+import JURToken from "../build/contracts/JURToken.json";
 import { drizzleConnect } from "drizzle-react";
 import { connect } from 'react-redux';
 
@@ -291,15 +291,18 @@ export const randomHEXString = (byte) => {
 // ---- connex/comet switches
 
 export const connector = () => {
-  return 'web3';//global.connector ? global.connector : window.connex ? 'connex' : window.web3 ? 'web3' : '';
+  // return 'web3';
+  return global.connector ? global.connector : window.connex ? 'connex' : window.web3 ? 'web3' : '';
 };
 
-export const connection = () => {
+export const connection = (component,state = null,dispatch = null) => {
 
-  const aaaa= connect
-  log('connnnnnnnnnection--s-', typeof connect)
-  log('connnnnnnnnnection--f-', typeof aaaa)
-  // log('connnnnnnnnnection---', drizzleConnect())
+  if (connector() === 'connex') {
+    return connect(state,dispatch)(component);
+  } else if (connector() === 'web3') {
+    return drizzleConnect(component,state,dispatch);
+  }
+
   return connector === 'connex' ? connect : connector === 'web3' ? drizzleConnect : null;
 };
 
@@ -314,5 +317,32 @@ export const getMethodABI = (contract,method) => {
   });
 
   return methABI;
+
+};
+
+export const getJURTokenAddresConnex = () => {
+
+  const thorGenesisId = window.connex.thor.genesis.id;
+
+  const chainTag = thorGenesisId.substring(-2);
+
+  log('getJURTokenAddresConnex - chainTag',chainTag);
+
+  let chainNetworkID;
+
+  switch(chainTag) {
+    case '4a':  // mainnet
+      chainNetworkID = 1;
+      break;
+    case '27':  // testnet
+      chainNetworkID = 3;
+      break;
+    default:      // localhost / other
+      chainNetworkID = 5777;
+      break;
+  }
+  log('getJURTokenAddresConnex - JURToken.networks[chainNetworkID].address',JURToken.networks[chainNetworkID].address);
+  return JURToken.networks[chainNetworkID].address;
+
 
 };

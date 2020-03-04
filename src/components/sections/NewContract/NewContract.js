@@ -26,7 +26,7 @@ export const NewContract = ( props ) => {
 
   // reset contract on each new contract creation
   useEffect(() => {
-    global.drizzle.store.dispatch({ type: RESET_CONTRACT })
+    global.store.dispatch({ type: RESET_CONTRACT })
   }, []);
 
   const initContract = () => {
@@ -36,10 +36,10 @@ export const NewContract = ( props ) => {
     } = props;
     if (disclaimer.optin) {
       const { history } = props;
-      global.drizzle.store.dispatch({ type: NEW_CONTRACT, history });
+      global.store.dispatch({ type: NEW_CONTRACT, history });
     } else {
       setShowModal(true); // show disclaimer modal
-      global.drizzle.store.dispatch({ type: DISCLAIMER_MUST_BE_ACCEPTED });
+      global.store.dispatch({ type: DISCLAIMER_MUST_BE_ACCEPTED });
     }
   };
 

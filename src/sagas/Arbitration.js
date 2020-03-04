@@ -697,7 +697,7 @@ export function* handleSignArbitration({ contractAddress }) {
 
   const success = data => {
     log("handleSignArbitration – success", data);
-    global.drizzle.store.dispatch({
+    global.store.dispatch({
       type: LOOKUP_WALLET_BALANCE
     });
   };

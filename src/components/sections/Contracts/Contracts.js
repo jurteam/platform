@@ -42,10 +42,10 @@ export const Contracts = ( props ) => {
   // cDM
   useEffect(() => {
     log("Contracts - cDM", "");
-    global.drizzle.store.dispatch({ type: CONTRACTS_LIST_PAGE, payload: true });
+    global.store.dispatch({ type: CONTRACTS_LIST_PAGE, payload: true });
     return () => {
       
-      global.drizzle.store.dispatch({ type: CONTRACTS_LIST_PAGE, payload: false });
+      global.store.dispatch({ type: CONTRACTS_LIST_PAGE, payload: false });
     }
   }, []);
 
@@ -61,7 +61,7 @@ export const Contracts = ( props ) => {
   // filters
   const { disabled: filtersDisabled, ...filters } = contract.filters;
   const handleFilterChange = (type, value) => {
-    global.drizzle.store.dispatch({
+    global.store.dispatch({
       type: UPDATE_CONTRACT_FILTER,
       field: type,
       value
@@ -85,7 +85,7 @@ export const Contracts = ( props ) => {
   },[filters]);
   
   const handleFilterSubmit = () => {    
-    global.drizzle.store.dispatch({ type: FETCH_CONTRACTS });
+    global.store.dispatch({ type: FETCH_CONTRACTS });
   };
 
   const handleArchive = (contractId) => {
@@ -98,7 +98,7 @@ export const Contracts = ( props ) => {
   const archive = () => {
     setShowDataLostModal(false);
 
-    global.drizzle.store.dispatch({
+    global.store.dispatch({
       type: API_DELETE_CONTRACT,
       id: contractToArchive
     });
@@ -114,19 +114,19 @@ export const Contracts = ( props ) => {
       history.push("/contracts/new");
     } else {
       setShowModal(true); // show disclaimer modal
-      global.drizzle.store.dispatch({ type: DISCLAIMER_MUST_BE_ACCEPTED });
+      global.store.dispatch({ type: DISCLAIMER_MUST_BE_ACCEPTED });
     }
   };
 
   const onPageChange = (page) => {
-    global.drizzle.store.dispatch({
+    global.store.dispatch({
       type: CONTRACT_PAGE_CHANGE,
       payload: page
     });
   };
 
   const onSortChange = ( field, order ) => {
-    global.drizzle.store.dispatch({
+    global.store.dispatch({
       type: CONTRACT_ORDER_CHANGE,
       payload: { field: field, type: order }
     });

@@ -539,7 +539,7 @@ export function* getDisputeStatus(action) {
       // fetch contract without loading
       log("getDisputeStatus - response - status diff "+ currContr.statusId, response.data.data.statusId );
 
-      global.drizzle.store.dispatch({
+      global.store.dispatch({
         type: API_GET_DISPUTE,
         id: currContr.id,
         // silent: true,

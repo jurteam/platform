@@ -77,14 +77,14 @@ export const ContractSidebar = ({
   useEffect(() => {
 
     log('ContractSidebar - Mount');
-    global.drizzle.store.dispatch({
+    global.store.dispatch({
       type: CONTRACT_DETAIL_PAGE,
       payload: true
     });
 
     return () => {
       log('ContractSidebar - Unmount');
-      global.drizzle.store.dispatch({
+      global.store.dispatch({
         type: CONTRACT_DETAIL_PAGE,
         payload: false
       });
@@ -93,7 +93,7 @@ export const ContractSidebar = ({
   }, []);
 
   const readActivities = () => {
-    global.drizzle.store.dispatch({
+    global.store.dispatch({
       type: CONTRACT_READ_NOTIFICATIONS
     });
   };

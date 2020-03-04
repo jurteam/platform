@@ -57,7 +57,7 @@ const DisputesTable = props => {
   const emptyDisputesMessage = <p>{labels.noDisputes}</p>;
 
   const onExpire = (id) => {
-    global.drizzle.store.dispatch({
+    global.store.dispatch({
       type: EXPIRED_DISPUTE,
       id
     });

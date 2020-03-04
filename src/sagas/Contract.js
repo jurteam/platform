@@ -584,7 +584,7 @@ export function* getContractStatus() {
       // fetch contract without loading
       log("getContractStatus - response - status diff "+ currContr.statusId, response.data.data.statusId );
 
-      global.drizzle.store.dispatch({
+      global.store.dispatch({
         type: API_GET_CONTRACT,
         id: currContr.id,
         silent: true,

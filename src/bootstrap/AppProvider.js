@@ -3,11 +3,17 @@ import React, { Component } from "react";
 import appReference from "../../package.json"; // config
 import i18n from "../assets/i18n/en/labels.json"; // i18n
 
-import { log, randomHEXString } from "../utils/helpers";
+import { log, randomHEXString, connector } from "../utils/helpers";
 
 // Comet
 import Comet from "../hooks/Comet";
-import { SET_LOADING, APP_EXIT, SET_WALLET_ADDRESS } from "../reducers/types.js";
+import { 
+  SET_LOADING,
+   APP_EXIT,
+   CONNEX_INITIALIZED,
+   CONNEX_SETWALLETAPI,
+   SET_WALLET_ADDRESS 
+  } from "../reducers/types.js";
 
 // Application Context
 export const AppContext = React.createContext();
@@ -20,6 +26,8 @@ class AppProvider extends Component {
     global.exit = this.exit; // available everywhere for sync purposes
 
     this.store = props.store;
+
+    global.store = props.store;
 
     this.state = {
       version: appReference.version,
@@ -75,12 +83,14 @@ class AppProvider extends Component {
   }
 
   componentDidMount() {
-    log('AppProvider - componentDidMount',typeof window.connex)
-    // if(window.connex) {
-    //   log('AppProvider - componentDidMount - window.connex',window.connex)
-    //   this.connexAuth();
-    // } else 
-    if (typeof window.web3 === "object") {
+
+    const connectorValue = connector();
+    log('AppProvider - componentDidMount',connectorValue)
+    
+    if(connectorValue === 'connex') {
+      log('AppProvider - componentDidMount - window.connex',window.connex)
+      this.connexAuth();
+    } else if (connectorValue === 'web3') {
       log('AppProvider - componentDidMount - window.web3',window.web3)
       this.auth();
     } else {
@@ -134,17 +144,18 @@ class AppProvider extends Component {
             log("AppProvider - connexAuth - signer",result.annex.signer)
             address = result.annex.signer
 
-            this.store.dispatch({ type: SET_WALLET_ADDRESS, payload: address });
+            global.dispatcher({ type: SET_WALLET_ADDRESS, payload: address });
 
             this.setState({ onNetwork: true, connex: true, connex });
             global.connector = 'connex'
+            global.dispatcher({type: CONNEX_INITIALIZED, address: address });
 
           }).catch(err => {
             log("AppProvider - connexAuth - catch",err)
 
             log("AppProvider", "network connection error!");
             this.setState({ cometLoading: false });
-            this.store.dispatch({ type: SET_LOADING, payload: false });
+            global.dispatcher({ type: SET_LOADING, payload: false });
           })
 
           // location.href = 'https://env.vechain.org/r/#' + encodeURIComponent(location.href)

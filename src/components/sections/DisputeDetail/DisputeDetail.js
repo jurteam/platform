@@ -109,7 +109,7 @@ export const DisputeDetail = ( props ) => {
       history
     } = props;
 
-    global.drizzle.store.dispatch({
+    global.store.dispatch({
       type: API_GET_DISPUTE,
       id,
       onSuccess: pageLoaded,
@@ -167,7 +167,7 @@ export const DisputeDetail = ( props ) => {
   const onExpire = () => {
     const { id } = dispute.current;
 
-    global.drizzle.store.dispatch({
+    global.store.dispatch({
       type: EXPIRED_CONTRACT,
       id
     });
@@ -182,7 +182,7 @@ export const DisputeDetail = ( props ) => {
       hasToWithdraw
     } = dispute.current;
 
-    global.drizzle.store.dispatch({
+    global.store.dispatch({
       type: DISPUTE_PAYOUT_PARTY,
       id,
       address,
@@ -199,7 +199,7 @@ export const DisputeDetail = ( props ) => {
       hasToWithdraw
     } = dispute.current;
 
-    global.drizzle.store.dispatch({
+    global.store.dispatch({
       type: DISPUTE_PAYOUT_VOTER,
       id,
       address,
@@ -220,7 +220,7 @@ export const DisputeDetail = ( props ) => {
   // const onSend = () => {
   //   log("onSend", "run");
 
-  //   global.drizzle.store.dispatch({
+  //   global.store.dispatch({
   //     type: NEW_ARBITRATION
   //   });
   // };
@@ -232,7 +232,7 @@ export const DisputeDetail = ( props ) => {
   // const onFileDelete = (file) => {
   //   log("file delete", file);
 
-  //   global.drizzle.store.dispatch({
+  //   global.store.dispatch({
   //     type: CONTRACT_MEDIA_DELETE,
   //     ...file
   //   });
@@ -256,7 +256,7 @@ export const DisputeDetail = ( props ) => {
 
   const onSubmit = () => {
     if (!submitDisabled) {
-      global.drizzle.store.dispatch({
+      global.store.dispatch({
         type: PUT_VOTE,
         vote: dispute.vote,
         attachments,

@@ -28,7 +28,7 @@ export const UserNotification = ( props ) => {
   // cDM
   useEffect(() => {
 
-    global.drizzle.store.dispatch({
+    global.store.dispatch({
       type: FETCH_ACTIVITIES
     });
 
@@ -37,7 +37,7 @@ export const UserNotification = ( props ) => {
   }, []);
 
   const handleRead = (activityId) => {
-    global.drizzle.store.dispatch({
+    global.store.dispatch({
       type: READ_ACTIVITY,
       activityId
     });
