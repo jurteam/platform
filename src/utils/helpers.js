@@ -1,13 +1,10 @@
 import linkify from "linkifyjs/string";
 
-<<<<<<< HEAD
 import JURToken from "../build/contracts/JURToken.json";
 import { drizzleConnect } from "drizzle-react";
 import { connect } from 'react-redux';
-=======
 import Big from "big.js"
 
->>>>>>> beta
 
 // Log helper only on DEVELOPMENT environmentexport const warn = (mixed, obj) => {
 export const log = (mixed, obj, type) => {
