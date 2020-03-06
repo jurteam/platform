@@ -16,10 +16,12 @@ import {
   LOOKUP_WALLET_BALANCE
 } from "../reducers/types";
 
-import JURTokenABI from "../build/contracts/JURToken.json";
-
-import { log, connector, getMethodABI, getJURTokenAddresConnex } from "../utils/helpers"; // log helper
+import { log, connector } from "../utils/helpers"; // log helper
 import { callToContract /*, checkDrizzleInit*/ } from "../utils/sc";
+
+// Api layouts
+import { connexJURToken } from "../api";
+
 
 // Reset
 export function* resetWallet() {
@@ -127,51 +129,21 @@ export function* getBalance(args) {
     else if (connectorValue === 'connex') 
     {
 
-      // Caching for method balanceOf, for my addresses
-      // Solidity function balanceOf(address _owner) public view returns(uint256 balance) 
-      // const balanceOfABI = {"constant":true,"inputs":[{"name":"_owner","type":"address"}],"name":"balanceOf","outputs":[{"name":"balance","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"}
-      log('getBalance - JURTokenABI',JURTokenABI)
-      const balanceOfABI = getMethodABI(JURTokenABI.abi, "balanceOf");
-      log('getBalance - balanceOfABI',balanceOfABI)
+      const connexToken = new connexJURToken();
 
-      // const balanceOfMethod = window.connex.thor.account('0x0000000000000000000000000000456E65726779').method(balanceOfABI)
-      // TODO: read properly correct jurtoken contract address
-
-      // getchaintag da drizzle > 3 risposte 
-      
-      
       log('getBalance - payload',payload)
 
       const address = payload.toLowerCase();
 
-      const balanceOfMethod = window.connex.thor.account(getJURTokenAddresConnex()).method(balanceOfABI)
-      // Set this method to expire when my account being seen
-      balanceOfMethod.cache([address])
-      // Get balance of my account, we will get cached result on most blocks
-      // Event Transfer(_from = '0x7567d83b7b8d80addcb281a71d54fc7b3364ffed', ....) would make cache expired
-      
-      let userBalance = 0;
-      
-      yield balanceOfMethod.call(address).then(output=>{
-        log('getBalance - balanceOfMethod',output)
+      let userBalance = yield connexToken.balanceOf(address);
 
-        userBalance = output.decoded[0];
-        
-        log('getBalance - userBalance (then)',userBalance)
-      })
-      
       log('getBalance - userBalance',userBalance)
 
       yield put({
         type: SET_BALANCE,
         amount: userBalance,
         argsHash: null
-      });
-        
-      // const acc = window.connex.thor.account('0x7567d83b7b8d80addcb281a71d54fc7b3364ffed')
-      // acc.get().then(accInfo=>{
-      //     log('getBalance - connex',accInfo);
-      // })
+      });        
       
     }
 

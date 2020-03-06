@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import appReference from "../../package.json"; // config
 import i18n from "../assets/i18n/en/labels.json"; // i18n
 
-import { log, randomHEXString, connector } from "../utils/helpers";
+import { log, connector } from "../utils/helpers";
 
 // Comet
 import Comet from "../hooks/Comet";
@@ -14,6 +14,9 @@ import {
    CONNEX_SETWALLETAPI,
    SET_WALLET_ADDRESS 
   } from "../reducers/types.js";
+
+// Api layouts
+import { connexSign } from "../api";
 
 // Application Context
 export const AppContext = React.createContext();
@@ -106,60 +109,43 @@ class AppProvider extends Component {
     Comet.cancel()
   }
 
-  connexAuth() {
+  connexAuth() 
+  {
 
-        let address = '';
-        this.store.dispatch({ type: SET_LOADING, payload: true });
-        this.setState({ cometLoading: true });
+    let address='';
     
-        // try to connect via connex
-        if(window.connex && address === '') {
+    this.store.dispatch({ type: SET_LOADING, payload: true });
+    this.setState({ cometLoading: true });
 
-          global.dispatcher = this.store.dispatch;
-          log("AppProvider - connexAuth", "connex ok");
-          const connex = window.connex
-          
+    // try to connect via connex
+    if(window.connex) {
 
-          const signingService = connex.vendor.sign('cert')
-          log("AppProvider - connexAuth - signingService1", signingService);
-          
-          // signingService.link('https://rugge.free.beeceptor.com/{certid}') // User will be back to the app by the url https://connex.vecha.in/0xffff....
-          
-          log("AppProvider - connexAuth - signingService2", signingService);
+      global.dispatcher = this.store.dispatch;
+      log("AppProvider - connexAuth", "connex ok");
+      const connex = window.connex
 
+      const signApp = new connexSign();
 
-          let rndString = randomHEXString(8);
+      signApp.signCertIdentification()
+      .then(result=>{
 
-          // Generate a random string and request the identification
-          signingService.request({
-            purpose: 'identification',
-            payload: {
-                type: 'text',
-                content: rndString
-                //auth-429895D1-95D1-F11B-DD10 
-
-                //auth-0E51B805-B805-A668-71D1
-                //auth-7FF3228A-228A-71DB-BFBB
-            }
-          }).then(result=>{
-            log("AppProvider - connexAuth - result",result)
-            log("AppProvider - connexAuth - signer",result.annex.signer)
-            address = result.annex.signer
-
-            global.dispatcher({ type: SET_WALLET_ADDRESS, payload: address });
-
-            this.setState({ onNetwork: true, connex: true, connex });
-            global.connector = 'connex'
-            global.dispatcher({type: CONNEX_INITIALIZED, address: address });
-
-          }).catch(err => {
-            log("AppProvider - connexAuth - catch",err)
-
-            log("AppProvider", "network connection error!");
-            this.setState({ cometLoading: false });
-            global.dispatcher({ type: SET_LOADING, payload: false });
-          })
-
+          log("AppProvider - connexAuth - result",result)
+          log("AppProvider - connexAuth - signer",result.annex.signer)
+          address = result.annex.signer
+  
+          global.dispatcher({ type: SET_WALLET_ADDRESS, payload: address });
+  
+          this.setState({ onNetwork: true, connex: true, connex });
+          global.connector = 'connex'
+          global.dispatcher({type: CONNEX_INITIALIZED, address: address });
+  
+        }).catch(err => {
+          log("AppProvider - connexAuth - catch",err)
+  
+          log("AppProvider", "network connection error!");
+          this.setState({ cometLoading: false });
+          global.dispatcher({ type: SET_LOADING, payload: false });
+        })
           // location.href = 'https://env.vechain.org/r/#' + encodeURIComponent(location.href)
 
           // const status = connex.thor.status
