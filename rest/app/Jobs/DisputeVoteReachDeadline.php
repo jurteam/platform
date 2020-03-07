@@ -40,7 +40,7 @@ class DisputeVoteReachDeadline extends Job
 
             $members->each(function($membersSet) use($contract) {
                 $job = (new NotifyMembersForDisputeReachDeadline(
-                    $membersSet, $
+                    $membersSet, $contract
                 ))->delay(60);
 
                 dispatch($job);

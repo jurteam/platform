@@ -215,7 +215,7 @@ class Contract extends Model implements HasMedia
                 ) == config('jur.days_before_end');
             }
 
-            return now()->diffInDays($contract->getExpirationDate()) == 0;
+            return Carbon::now()->diffInDays($contract->getExpirationDate()) == 0;
         });
     }
 
@@ -234,7 +234,7 @@ class Contract extends Model implements HasMedia
                 ) == config('jur.days_before_end');
             }
 
-            return now()->diffInDays($contract->getDisputeExpirationDate()) == 0;
+            return Carbon::now()->diffInDays($contract->getDisputeExpirationDate()) == 0;
         });
     }
 

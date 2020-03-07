@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Contract;
 use Illuminate\Console\Command;
@@ -44,7 +45,7 @@ class NotifyUsersVotingSessionCommand extends Command
         $contracts = Contract::disputes()->get();
         $contracts = $contracts->filter(function($contract) {
             $status = $contract->getCurrentStatus();
-            return now()->diffInDays($status->custom_status_date) == 0;
+            return Carbon::now()->diffInDays($status->custom_status_date) == 0;
         })->chunk(20);
 
         $contracts->each(function($contractsSet) {

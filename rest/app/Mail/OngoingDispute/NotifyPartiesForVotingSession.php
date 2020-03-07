@@ -37,6 +37,7 @@ class NotifyPartiesForVotingSession extends Mailable
             ->subject('Dispute voting starts')
             ->markdown('emails.contracts.ongoing-dispute.counterparties', [
                 'recipient' => $this->party['name'],
+                'url' => $this->contract->getContractUrl(),
                 'contract' => $this->contract,
                 'expirationDate' => $this->contract->getDisputeExpirationDate()
             ]);

@@ -8,7 +8,7 @@ use App\Mail\DisputeClosed\DisputeWinningPart;
 
 class DisputeVoteReachedDeadline extends Job
 {
-    private $contract;
+    private $contracts;
 
     /**
      * Create a new job instance.
