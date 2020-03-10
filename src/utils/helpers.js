@@ -1,9 +1,10 @@
 import linkify from "linkifyjs/string";
 
-import JURToken from "../build/contracts/JURToken.json";
 import { drizzleConnect } from "drizzle-react";
 import { connect } from 'react-redux';
 import Big from "big.js"
+
+import {makeBN} from './utils'
 
 
 // Log helper only on DEVELOPMENT environmentexport const warn = (mixed, obj) => {
@@ -221,11 +222,25 @@ export const calculateFundingAndDispersal = (contractData) => {
   if (process.env.REACT_APP_VECHAIN_ENABLED === 'true')
   { // Comet - VeChain Blockchain
 
-    let web3Utils = global.drizzle.web3.utils;
-    fundings.a = web3Utils.toWei(fundings.a.toString(), 'ether');
-    fundings.b = web3Utils.toWei(fundings.b.toString(), 'ether');
-    dispersal.a = web3Utils.toWei(dispersal.a.toString(), 'ether');
-    dispersal.b = web3Utils.toWei(dispersal.b.toString(), 'ether');
+
+    const connectorValue = connector();
+
+    if (connectorValue === 'web3') 
+    {
+      let web3Utils = global.drizzle.web3.utils;
+      fundings.a = web3Utils.toWei(fundings.a.toString(), 'ether');
+      fundings.b = web3Utils.toWei(fundings.b.toString(), 'ether');
+      dispersal.a = web3Utils.toWei(dispersal.a.toString(), 'ether');
+      dispersal.b = web3Utils.toWei(dispersal.b.toString(), 'ether');
+
+    }
+    else if (connectorValue === 'connex') 
+    {
+      fundings.a = connexToWei(fundings.a.toString(), 'ether');
+      fundings.b = connexToWei(fundings.b.toString(), 'ether');
+      dispersal.a = connexToWei(dispersal.a.toString(), 'ether');
+      dispersal.b = connexToWei(dispersal.b.toString(), 'ether');
+    }
 
     // fundings.a = web3Utils.toBN(fundings.a).toString();
     // fundings.b = web3Utils.toBN(fundings.b).toString();
@@ -238,6 +253,7 @@ export const calculateFundingAndDispersal = (contractData) => {
     dispersal: dispersal
   }
 }
+
 
 // @retun float value
 export const getContractTotalValue = (contract, toHuman) => {
@@ -308,12 +324,13 @@ export const toBigFixed = amount => {
 
 // ---- connex/comet switches
 
-export const randomHEXString = (byte) => {
-  var randomHex = require('randomhex');
- 
-  return randomHex(byte);
-}
 
+export const connexChainErrorHandler = err => {
+  
+  log('connex chain error', err);
+  log('connex chain error.message', err.message);
+  warn('connex chain exeption', err.message);
+}
 
 export const connector = () => {
   // return 'web3';
@@ -331,43 +348,21 @@ export const connection = (component,state = null,dispatch = null) => {
   return connector === 'connex' ? connect : connector === 'web3' ? drizzleConnect : null;
 };
 
-export const getMethodABI = (contract,method) => {
 
-  let methABI = null
-  contract.forEach(meth => {    
+export const connexToWei = (value, size) => {
 
-    if (meth.name === method) {
-      methABI = meth; 
-    }
-  });
+  let multiplicator;
 
-  return methABI;
-
-};
-
-export const getJURTokenAddresConnex = () => {
-
-  const thorGenesisId = window.connex.thor.genesis.id;
-
-  const chainTag = thorGenesisId.substring(-2);
-
-  log('getJURTokenAddresConnex - chainTag',chainTag);
-
-  let chainNetworkID;
-
-  switch(chainTag) {
-    case '4a':  // mainnet
-      chainNetworkID = 1;
+  switch (size) {
+    case 'ether':
+      multiplicator = 10 ** 18;
       break;
-    case '27':  // testnet
-      chainNetworkID = 3;
+    default:
+      multiplicator = 10 ** 18;
       break;
-    default:      // localhost / other
-      chainNetworkID = 5777;
-      break;
-  }
-  log('getJURTokenAddresConnex - JURToken.networks[chainNetworkID].address',JURToken.networks[chainNetworkID].address);
-  return JURToken.networks[chainNetworkID].address;
+  } 
 
 
+
+  return multiplication(value,multiplicator);
 };

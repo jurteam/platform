@@ -5,6 +5,7 @@ import {
   getCurrentContract,
   getDrizzleStoredContracts,
   // getJURToken,
+  getUser,
   getWallet
 } from "./Selectors";
 import {
@@ -51,7 +52,16 @@ import {
 } from "../reducers/types";
 
 // Api layouts
-import { Contracts, Oracles, JURToken, Arbitration, ArbitrationFactory, Disputes } from "../api";
+import { 
+  Contracts,
+  Oracles,
+  JURToken,
+  connexJURToken,
+  Arbitration,
+  ArbitrationFactory,
+  connexArbitrationFactory,
+  Disputes 
+} from "../api";
 
 import {
   chainGetContract,
@@ -67,10 +77,13 @@ import {
   ethToHuman,
   // ethToStore,
   chainErrorHandler,
+  connexChainErrorHandler,
   formatAmount,
   calculateFundingAndDispersal,
   getContractTotalValue,
-  multiplication
+  multiplication,
+  connexToWei,
+  connector
 } from "../utils/helpers"; // log helper
 import ArbitrationMock from "../api/ArbitrationMock";
 
@@ -113,21 +126,13 @@ export function* handleCreateArbitration(args) {
   log("handleCreateArbitration", "run");
   log("handleCreateArbitration - args", args);
 
-  // Check if Drizzle is initialized
-  const check = checkDrizzleInit();
-  if (!check) {
-    return false;
-  }
-
-  const {
-    web3: { utils }
-  } = global.drizzle;
 
   yield put({ type: CONTRACT_SAVING, payload: true });
   yield put({ type: CONTRACT_UPDATING, payload: true });
 
-  // const wallet = yield select(getWallet);
 
+
+  // contract data
   const contractData = yield select(getCurrentContract);
   const [partA, partB] = contractData.counterparties;
 
@@ -139,100 +144,183 @@ export function* handleCreateArbitration(args) {
     resolutionProof: contractData.resolutionProof
   };
 
-  const factory = new ArbitrationFactory();
-  const agreementHash = yield factory.generateHash(JSON.stringify(agreement));
-
-  log("handleCreateArbitration - agreementHash", agreementHash);
-
-  const { id /*, partAPenaltyFee, partBPenaltyFee, whoPays, value*/ } = contractData;
-  const { fundings, dispersal } = calculateFundingAndDispersal(contractData);
-
-  log("handleCreateArbitration - fundings + dispersal", {
-    fundings,
-    dispersal
-  });
-
-  // createArbitration([party1, party2], [0, 150], [50, 100], "Do some work...")
-  const contractPayload = [
-    [
-      utils.toChecksumAddress(partA.wallet),
-      utils.toChecksumAddress(partB.wallet)
-    ],
-    Object.values(dispersal),
-    Object.values(fundings),
-    agreementHash
-  ];
-
-  log("contractPayload", contractPayload);
-
   let arbitrationAddress = null;
+  let contractId;
 
-  const tx = yield factory.createArbitration(...contractPayload).catch(chainErrorHandler)
+  // check connex or web3
+  const connectorValue = connector()
 
-  if (tx) { // only if tx resolved properly
-    log("[promise] handleCreateArbitration - arbitration tx result", tx);
+  if(connectorValue === 'connex') 
+  {
 
-    if (process.env.REACT_APP_VECHAIN_ENABLED === "true") {
-      // Comet - VeChain Blockchain
-      const { receipt } = tx;
-      const { address } = receipt.outputs[0].events[0]; // get arbitration address
-      log("handleCreateArbitration - arbitration address", address);
-      arbitrationAddress = address;
-    } else {
-      // Metamask - Ethereum Blockchain
-      const { receipt } = tx;
-      const { _arbitration } = receipt.events.ArbitrationCreated.returnValues; // get arbitration address
-      log("handleCreateArbitration - arbitration address", _arbitration);
-      arbitrationAddress = _arbitration;
+    const factory = new connexArbitrationFactory();
+    const agreementHash = yield factory.generateHash(JSON.stringify(agreement));
+
+    log("handleCreateArbitration - agreementHash", agreementHash);
+
+    const { id /*, partAPenaltyFee, partBPenaltyFee, whoPays, value*/ } = contractData;
+    const { fundings, dispersal } = calculateFundingAndDispersal(contractData);
+
+    contractId = id
+
+    log("handleCreateArbitration - fundings + dispersal", {
+      fundings,
+      dispersal
+    });
+
+    const user = yield select(getUser);
+
+    // createArbitration([party1, party2], [0, 150], [50, 100], "Do some work...")
+    const contractPayload = [
+      [
+        (partA.wallet),
+        (partB.wallet)
+      ],
+      Object.values(dispersal),
+      Object.values(fundings),
+      agreementHash,
+      user.wallet,
+      contractId
+    ];
+
+    log("contractPayload", contractPayload);
+
+    // let arbitrationAddress = null;
+
+    const contractAddress = yield factory.createArbitration(...contractPayload).catch(connexChainErrorHandler)
+
+    log('handleCreateArbitration - contractAddress',contractAddress);
+
+    if (contractAddress) { // only if tx resolved properly
+      // log("[promise] handleCreateArbitration - contractAddress result", contractAddress);
+
+      // const { events } = tx;
+      // const { address } = events[0]; // get arbitration address
+      // log("handleCreateArbitration - arbitration address", address);
+
+      arbitrationAddress = contractAddress;
     }
 
-    log("handleCreateArbitration - arbitration tx", tx);
-    log("handleCreateArbitration - arbitration address", arbitrationAddress);
 
-    if (arbitrationAddress) {
-      // Step .2 - JURToken
 
-      // approve
-      /*
-      let approveFundings =
-        partA.wallet === wallet.address ? fundings.a : fundings.b;
-      const approved = yield sendToContract("JURToken", "approve", [
-        wallet.address,
-        approveFundings
-      ]);
-      log("handleCreateArbitration - jur Token approved?", approved);
-      */
 
-      // Update contract address
-      let toUpdate = new FormData();
-      // toUpdate.append('_method', 'PUT');
-      toUpdate.append("address", arbitrationAddress);
+
+  } 
+  else if (connectorValue === 'web3') 
+  {
+    
+
+    // Check if Drizzle is initialized
+    const check = checkDrizzleInit();
+    if (!check) {
+      return false;
+    }
+
+    const {
+      web3: { utils }
+    } = global.drizzle;
+
+
+    // const wallet = yield select(getWallet);
+
+
+    const factory = new ArbitrationFactory();
+    const agreementHash = yield factory.generateHash(JSON.stringify(agreement));
+
+    log("handleCreateArbitration - agreementHash", agreementHash);
+
+    const { id /*, partAPenaltyFee, partBPenaltyFee, whoPays, value*/ } = contractData;
+    const { fundings, dispersal } = calculateFundingAndDispersal(contractData);
+
+    contractId = id
+
+    log("handleCreateArbitration - fundings + dispersal", {
+      fundings,
+      dispersal
+    });
+
+    // createArbitration([party1, party2], [0, 150], [50, 100], "Do some work...")
+    const contractPayload = [
+      [
+        utils.toChecksumAddress(partA.wallet),
+        utils.toChecksumAddress(partB.wallet)
+      ],
+      Object.values(dispersal),
+      Object.values(fundings),
+      agreementHash
+    ];
+
+    log("contractPayload", contractPayload);
+
+    // let arbitrationAddress = null;
+
+    const tx = yield factory.createArbitration(...contractPayload).catch(chainErrorHandler)
+
+    if (tx) { // only if tx resolved properly
+      log("[promise] handleCreateArbitration - arbitration tx result", tx);
+
+      if (process.env.REACT_APP_VECHAIN_ENABLED === "true") {
+        // Comet - VeChain Blockchain
+        const { receipt } = tx;
+        const { address } = receipt.outputs[0].events[0]; // get arbitration address
+        log("handleCreateArbitration - arbitration address", address);
+        arbitrationAddress = address;
+      } else {
+        // Metamask - Ethereum Blockchain
+        const { receipt } = tx;
+        const { _arbitration } = receipt.events.ArbitrationCreated.returnValues; // get arbitration address
+        log("handleCreateArbitration - arbitration address", _arbitration);
+        arbitrationAddress = _arbitration;
+      }
+
+      log("handleCreateArbitration - arbitration tx", tx);
+      log("handleCreateArbitration - arbitration address", arbitrationAddress);
+
+    }
+    
+  }
+
+  log('handleCreateArbitration - arbitrationAddress',arbitrationAddress)
+  
+  if (arbitrationAddress) {
+    log('handleCreateArbitration - arbitrationAddress ok')
+    // Step .2 - JURToken
+
+    // approve
+    /*
+    let approveFundings =
+      partA.wallet === wallet.address ? fundings.a : fundings.b;
+    const approved = yield sendToContract("JURToken", "approve", [
+      wallet.address,
+      approveFundings
+    ]);
+    log("handleCreateArbitration - jur Token approved?", approved);
+    */
+
+    // Update contract address
+    let toUpdate = new FormData();
+    // toUpdate.append('_method', 'PUT');
+    toUpdate.append("address", arbitrationAddress);
+    try {
+      let response = yield call(Contracts.update, toUpdate, contractId);
+      log("handleCreateArbitration - contract address updated", response);
+
+      // Status update
+      toUpdate = new FormData();
+      toUpdate.append("code", 1);
       try {
-        let response = yield call(Contracts.update, toUpdate, id);
-        log("handleCreateArbitration - contract address updated", response);
-
-        // Status update
-        toUpdate = new FormData();
-        toUpdate.append("code", 1);
-        try {
-          response = yield call(Contracts.statusChange, toUpdate, id);
-          log("handleCreateArbitration - contract status updated", response);
-          const { statusId, statusLabel, statusUpdatedAt, statusFrom } = response.data.data;
-          yield put({
-            type: SET_CONTRACT_STATUS,
-            statusId,
-            statusFrom,
-            statusLabel,
-            statusUpdatedAt,
-            id
-          });
-          yield put({ type: FETCH_CONTRACTS });
-
-          // const { history } = action;
-          // history.push(`/contracts/detail/${id}`); // go to contract detail for furter operations
-        } catch (error) {
-          yield put({ type: API_CATCH, error });
-        }
+        response = yield call(Contracts.statusChange, toUpdate, contractId);
+        log("handleCreateArbitration - contract status updated", response);
+        const { statusId, statusLabel, statusUpdatedAt, statusFrom } = response.data.data;
+        yield put({
+          type: SET_CONTRACT_STATUS,
+          statusId,
+          statusFrom,
+          statusLabel,
+          statusUpdatedAt,
+          contractId
+        });
+        yield put({ type: FETCH_CONTRACTS });
 
         // const { history } = action;
         // history.push(`/contracts/detail/${id}`); // go to contract detail for furter operations
@@ -240,12 +328,20 @@ export function* handleCreateArbitration(args) {
         yield put({ type: API_CATCH, error });
       }
 
-      yield put({ type: CHAIN_GET_CONTRACT, address: arbitrationAddress });
-
-      // Read arbitrations
-      // const txArbitrations = yield callToContract("ArbitrationFactory", "arbirations", [wallet.address]);
-      // log("handleCreateArbitration - txArbitrations", txArbitrations);
+      // const { history } = action;
+      // history.push(`/contracts/detail/${id}`); // go to contract detail for furter operations
+    } catch (error) {
+      yield put({ type: API_CATCH, error });
     }
+
+    if (connectorValue === 'web3') 
+    {
+
+      yield put({ type: CHAIN_GET_CONTRACT, address: arbitrationAddress });
+    }
+    // Read arbitrations
+    // const txArbitrations = yield callToContract("ArbitrationFactory", "arbirations", [wallet.address]);
+    // log("handleCreateArbitration - txArbitrations", txArbitrations);
   }
 
   yield put({ type: CONTRACT_SAVING, payload: false });

@@ -10,6 +10,7 @@ export default class connexJURToken
   constructor() 
   {
     this.contract = JURTokenABI;
+    this.thorAccount = global.connex.thor.account(this.getJURTokenAddres())
   }
 
   /**
@@ -28,7 +29,7 @@ export default class connexJURToken
     
     log('balanceOf - address',address)
 
-    const balanceOfMethod = global.connex.thor.account(this.getJURTokenAddres()).method(balanceOfABI)
+    const balanceOfMethod = this.thorAccount.method(balanceOfABI)
     // Set this method to expire when my account being seen
     balanceOfMethod.cache([address])
     // Get balance of my account, we will get cached result on most blocks
@@ -52,7 +53,7 @@ export default class connexJURToken
 
     const thorGenesisId = global.connex.thor.genesis.id;
 
-    const chainTag = thorGenesisId.substring(-2);
+    const chainTag = thorGenesisId.toString().substr(-2);
 
     log('getJURTokenAddres - chainTag',chainTag);
 
@@ -69,7 +70,7 @@ export default class connexJURToken
         chainNetworkID = 5777;
         break;
     }
-    log('getJURTokenAddres - JURToken.networks[chainNetworkID].address',this.contract.networks[chainNetworkID].address);
+    log('getJURTokenAddres - JURToken.networks['+chainNetworkID+'].address',this.contract.networks[chainNetworkID].address);
     return this.contract.networks[chainNetworkID].address;
 
   }
