@@ -1,6 +1,6 @@
 pragma solidity >=0.5.0 <0.7.0;
 
-import "@openzeppelin/contracts/token//ERC20/ERC20.sol";
+import "@openzeppelin/contracts/token//ERC20/IERC20.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/ownership/Ownable.sol";
 import "./utils/DateTimeLib.sol";
@@ -26,7 +26,7 @@ contract OathKeeper is Ownable {
     mapping(address => mapping(uint => LockSchedule)) public lockMap;
     mapping(address => Oaths) oathStats;
     /** JUR Token for distribution */
-    ERC20 public jurToken;
+    IERC20 public jurToken;
     /** Keeps stats on oaths */
     uint256 public totalLockedTokens;
     uint256 public totalActiveLockedTokens;
@@ -45,7 +45,7 @@ contract OathKeeper is Ownable {
     tokens.
     */
     constructor(address _jurToken) public {
-        jurToken = ERC20(_jurToken);
+        jurToken = IERC20(_jurToken);
     }
 
     /**
@@ -54,6 +54,7 @@ contract OathKeeper is Ownable {
     @param _lockInPeriod - Number of months to lock the token for.
     */
     function takeAnOath(uint _lockInPeriod) public {
+        uint _releaseAt;
         uint256 _amount = jurToken.allowance(msg.sender, address(this));
         require(_amount > 0, "Please approve token transfer to the contract.");
         require(_lockInPeriod >= minimumLockPeriod && _lockInPeriod <= maximumLockPeriod, "Please choose a valid lock in period.");
@@ -65,12 +66,12 @@ contract OathKeeper is Ownable {
         totalOathCount = SafeMath.add(totalOathCount, 1);
         totalActiveOathCount = SafeMath.add(totalActiveOathCount, 1);
 
-        _releaseAt = DateTimeLib.addMonths(block.timeStamp, _lockInPeriod);
+        _releaseAt = DateTimeLib.addMonths(now, _lockInPeriod);
         lockMap[msg.sender][oathStats[msg.sender].count] = LockSchedule(_amount, now, _lockInPeriod, _releaseAt, false);
         // check if tokens can be transferred to this contract.
         require(jurToken.transferFrom(msg.sender, address(this), _amount), "Not able to transfer funds.");
 
-        emit OathTaken(_beneficiary, _amount, _lockInPeriod);
+        emit OathTaken(msg.sender, _amount, _lockInPeriod);
     }
 
     /**
@@ -97,9 +98,9 @@ contract OathKeeper is Ownable {
     */
     function updateLockPeriod(uint _minimumLockPeriod, uint _maximumLockPeriod) public onlyOwner {
         if(_minimumLockPeriod != 0) {
-            minimumLockPeriod == _minimumLockPeriod;
+            minimumLockPeriod = _minimumLockPeriod;
         } if(_maximumLockPeriod != 0) {
-            maximumLockPeriod == _maximumLockPeriod;
+            maximumLockPeriod = _maximumLockPeriod;
         }
         require(minimumLockPeriod < maximumLockPeriod, "Something is not right.");
     }
@@ -110,13 +111,13 @@ contract OathKeeper is Ownable {
     @param _promisee - Address of the oath holder.
     @param _newRelease - uint timestamp of the new release date and time.
     */
-    function renege(address _promisee, uint _newRelease) public onlyOwner {
-        LockSchedule storage _lockSchedule = lockMap[msg.sender];
+    // function renege(address _promisee, uint _newRelease) public onlyOwner {
+    //     LockSchedule storage _lockSchedule = lockMap[msg.sender];
 
-        require(now < _lockSchedule.releaseAt, "Oath is over");
-        _lockSchedule.releaseAt = _newRelease;
+    //     require(now < _lockSchedule.releaseAt, "Oath is over");
+    //     _lockSchedule.releaseAt = _newRelease;
 
-        emit ABrokenOath(_promisee, _newRelease);
-    }
+    //     emit ABrokenOath(_promisee, _newRelease);
+    // }
 
 }
