@@ -9,24 +9,31 @@ contract OathKeeper is Ownable {
     using SafeMath for uint;
     using DateTimeLib for uint;
 
-    /** JUR Token for distribution */
-    ERC20 public jurToken;
-    /** Keeps track of total tokens locked*/
-    uint256 public totalLockedTokens;
-    /** Vesting structure */
-    struct VestingSchedule {
+    struct LockSchedule {
         uint256 amount;
         uint256 startAt;
         uint256 releaseAt;
         uint256 lockInPeriod;
         bool isOathFulfilled;
     }
-    /** Each address can have multiple funds vesting under different schedules */
-    mapping (uint => VestingSchedule) public vestingMap;
-    /** No. of vestings associated with an address */
-    uint public oathCount;
 
-    event OathTaken(address _beneficiary, uint _amount);
+    struct Oaths {
+        uint256 count;
+        uint256 activeAmountLocked;
+        uint256 totalAmountLocked;
+    }
+    /** Each address can have multiple funds locked under different schedules */
+    mapping(address => mapping(uint => LockSchedule)) public lockMap;
+    mapping(address => Oaths) oathStats;
+    /** JUR Token for distribution */
+    ERC20 public jurToken;
+    /** Keeps stats on oaths */
+    uint256 public totalLockedTokens;
+    uint256 public totalActiveLockedTokens;
+    uint256 public totalOathCount;
+    uint256 public totalActiveOathCount;
+
+    event OathTaken(address _beneficiary, uint _amount, uint _lockInPeriod);
     event IHoldYourOathFulfilled(address _beneficiary, uint _amount);
     event ABrokenOath(address _beneficiary, uint _newRelease);
 
@@ -44,35 +51,41 @@ contract OathKeeper is Ownable {
     @param _lockInPeriod - Number of months to lock the token for.
     */
     function takeAnOath(uint _lockInPeriod) public {
-        uint _amount = jurToken.allowance(msg.sender, address(this));
-        require(vestingMap[msg.sender].startAt == 0, "Already under oath.");
+        uint256 _amount = jurToken.allowance(msg.sender, address(this));
         require(_amount > 0, "Please approve token transfer to the contract.");
+        oathStats[msg.sender].count = SafeMath.add(oathStats[msg.sender].count, 1);
+        oathStats[msg.sender].activeAmountLocked = SafeMath.add(oathStats[msg.sender].activeAmountLocked, _amount);
+        oathStats[msg.sender].totalAmountLocked = SafeMath.add(oathStats[msg.sender].totalAmountLocked, _amount);
+        totalLockedTokens = SafeMath.add(totalLockedTokens, _amount);
+        totalActiveLockedTokens = SafeMath.add(totalActiveLockedTokens, _amount);
+        totalOathCount = SafeMath.add(totalOathCount, 1);
+        totalActiveOathCount = SafeMath.add(totalActiveOathCount, 1);
 
         _releaseAt = DateTimeLib.addMonths(block.timeStamp, _lockInPeriod);
-        vestingMap[msg.sender] = VestingSchedule(_amount, now, _lockInPeriod, _releaseAt, false);
-        totalLockedTokens = SafeMath.add(totalLockedTokens, _amount);
-        oathCount = SafeMath.add(oathCount, 1);
+        lockMap[msg.sender][oathStats[msg.sender].count] = LockSchedule(_amount, now, _lockInPeriod, _releaseAt, false);
         // check if tokens can be transferred to this contract.
         require(jurToken.transferFrom(msg.sender, address(this), _amount), "Not able to transfer funds.");
 
-        emit OathTaken(_beneficiary, _amount);
+        emit OathTaken(_beneficiary, _amount, _lockInPeriod);
     }
 
     /**
     @dev releaseOath() - Release tokens as per vesting schedule, called by the owner.
     */
-    function releaseOath() public {
-        VestingSchedule storage _vestingSchedule = vestingMap[msg.sender];
+    function releaseOath(uint _oathId) public {
+        LockSchedule storage _lockSchedule = lockMap[msg.sender][_oathId];
 
-        require(now >= _vestingSchedule.releaseAt, "You are still under an oath.");
-        require(!_vestingSchedule.isOathFulfilled, "Oath has been fulfilled.");
+        require(now >= _lockSchedule.releaseAt, "You are still under an oath.");
+        require(!_lockSchedule.isOathFulfilled, "Oath has been fulfilled.");
 
-        // decrement overall unreleased token count
-        totalLockedTokens = SafeMath.sub(totalLockedTokens, _vestingSchedule.amount);
-        _vestingSchedule.isOathFulfilled = true;
+        _lockSchedule.isOathFulfilled = true;
+        // update overall stats
+        oathStats[msg.sender].activeAmountLocked = SafeMath.sub(oathStats[msg.sender].activeAmountLocked, _lockSchedule.amount);
+        totalActiveLockedTokens = SafeMath.sub(totalActiveLockedTokens, _lockSchedule.amount);
+        totalActiveOathCount = SafeMath.sub(totalActiveOathCount, 1);
 
-        require(jurToken.transfer(msg.sender, _vestingSchedule.amount), "Funds cannot be transferred.");
-        emit IHoldYourOathFulfilled(msg.sender, _vestingSchedule.amount);
+        require(jurToken.transfer(msg.sender, _lockSchedule.amount), "Funds cannot be transferred");
+        emit IHoldYourOathFulfilled(msg.sender, _lockSchedule.amount);
     }
 
     /**
@@ -82,10 +95,10 @@ contract OathKeeper is Ownable {
     @param _newRelease - uint timestamp of the new release date and time.
     */
     function renege(address _promisee, uint _newRelease) public onlyOwner {
-        VestingSchedule storage _vestingSchedule = vestingMap[msg.sender];
+        LockSchedule storage _lockSchedule = lockMap[msg.sender];
 
-        require(now < _vestingSchedule.releaseAt, "You are still under an oath.");
-        _vestingSchedule.releaseAt = _newRelease;
+        require(now < _lockSchedule.releaseAt, "Oath is over");
+        _lockSchedule.releaseAt = _newRelease;
 
         emit ABrokenOath(_promisee, _newRelease);
     }
