@@ -75,6 +75,12 @@ $api->version('v1', function($api) {
                 $api->delete('{id}', 'App\Http\Controllers\ContractActivitiesController@deleteMedia');
             });
         });
+
+        $api->group(['prefix' => 'transactions'], function($api) {
+            $api->get('/', 'App\Http\Controllers\TransactionsController@getResolvableByWallet');
+            $api->post('/', 'App\Http\Controllers\TransactionsController@store');
+            $api->post('{id}', 'App\Http\Controllers\TransactionsController@update');            
+        });
     });
 
     $api->get('faqs', 'App\Http\Controllers\FaqsController@index');
