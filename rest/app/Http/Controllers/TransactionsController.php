@@ -16,10 +16,12 @@ class TransactionsController extends Controller
     {
       $wallet = $request->header('wallet');
 
-      $transactions = Transaction::notResolved()
+      $waiting = Transaction::notResolved()
         ->byWallet($wallet)->get();
 
-        return response()->json(compact('transactions'));
+        $lastBlockNumber = Transaction::max('block');
+
+        return response()->json(compact('lastBlockNumber','waiting'));
     }
 
 
