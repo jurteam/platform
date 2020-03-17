@@ -33,6 +33,9 @@ contract OathKeeper is Ownable {
     uint256 public totalOathCount;
     uint256 public totalActiveOathCount;
 
+    uint256 public minimumLockPeriod = 1;
+    uint256 public maximumLockPeriod = 36;
+
     event OathTaken(address _beneficiary, uint _amount, uint _lockInPeriod);
     event IHoldYourOathFulfilled(address _beneficiary, uint _amount);
     event ABrokenOath(address _beneficiary, uint _newRelease);
@@ -53,6 +56,7 @@ contract OathKeeper is Ownable {
     function takeAnOath(uint _lockInPeriod) public {
         uint256 _amount = jurToken.allowance(msg.sender, address(this));
         require(_amount > 0, "Please approve token transfer to the contract.");
+        require(_lockInPeriod >= minimumLockPeriod && _lockInPeriod <= maximumLockPeriod, "Please choose a valid lock in period.");
         oathStats[msg.sender].count = SafeMath.add(oathStats[msg.sender].count, 1);
         oathStats[msg.sender].activeAmountLocked = SafeMath.add(oathStats[msg.sender].activeAmountLocked, _amount);
         oathStats[msg.sender].totalAmountLocked = SafeMath.add(oathStats[msg.sender].totalAmountLocked, _amount);
@@ -86,6 +90,18 @@ contract OathKeeper is Ownable {
 
         require(jurToken.transfer(msg.sender, _lockSchedule.amount), "Funds cannot be transferred");
         emit IHoldYourOathFulfilled(msg.sender, _lockSchedule.amount);
+    }
+
+    /**
+    @dev updateLockPeriod() - Function for owner to update the lockin period requirements.
+    */
+    function updateLockPeriod(uint _minimumLockPeriod, uint _maximumLockPeriod) public onlyOwner {
+        if(_minimumLockPeriod != 0) {
+            minimumLockPeriod == _minimumLockPeriod;
+        } if(_maximumLockPeriod != 0) {
+            maximumLockPeriod == _maximumLockPeriod;
+        }
+        require(minimumLockPeriod < maximumLockPeriod, "Something is not right.");
     }
 
     /**
