@@ -1,7 +1,7 @@
 pragma solidity >=0.5.1 <0.7.0;
 
 
-import "openzeppelin-solidity/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 contract JURTokenMock is ERC20 {
     string public constant symbol = "JUR";
