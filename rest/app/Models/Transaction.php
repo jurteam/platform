@@ -17,6 +17,7 @@ class Transaction extends Model
     'param',
     'block',
     'time',
+    'contract_id'
   ];
 
 
@@ -25,6 +26,10 @@ class Transaction extends Model
       return $query->whereNull('block');
   }
 
+  public function contract()
+  {
+      return $this->belongsTo(Contract::class);
+  }
 
   /**
    * Store a new transaction.

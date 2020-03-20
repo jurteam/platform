@@ -4,9 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Dingo\Api\Routing\Helpers;
+use League\Fractal\Manager;
+use League\Fractal\Resource\Collection;
+use App\Transformers\TransactionTransformer;
 
 class TransactionsController extends Controller
 {
+    use Helpers;
     /**
      * Return the list of transactions.
      *
@@ -14,14 +19,25 @@ class TransactionsController extends Controller
      */
     public function getResolvableByWallet(Request $request)
     {
-      $wallet = $request->header('wallet');
+        $wallet = $request->header('wallet');
 
-      $waiting = Transaction::notResolved()
-        ->byWallet($wallet)->get();
+        $waitingList = Transaction::notResolved()
+            ->byWallet($wallet)->get();
 
         $lastBlockNumber = Transaction::max('block');
 
-        return response()->json(compact('lastBlockNumber','waiting'));
+        $waitingColl = new Collection($waitingList, new TransactionTransformer);
+
+        $fractal = new Manager();
+
+        $waiting = $fractal->createData($waitingColl)->toArray();
+
+        return response()->json(
+            array_merge(
+                ['lastBlockNumber' => $lastBlockNumber],
+                ['waiting' => $waiting["data"]]
+            )
+        );
     }
 
 

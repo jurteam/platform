@@ -21,7 +21,10 @@ class CreateTransactionsTable extends Migration
             $table->string('param')->nullable();
             $table->string('block')->nullable();
             $table->string('time')->nullable();
+            $table->unsignedInteger('contract_id');            
             $table->timestamps();
+
+            $table->foreign('contract_id')->references('id')->on('contracts')->onDelete('cascade');
         });
     }
 
