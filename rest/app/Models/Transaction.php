@@ -40,7 +40,8 @@ class Transaction extends Model
   {
       $transaction = static::create(array_merge(
           $params->all(), [
-              'wallet' => $params->header('wallet')
+              'wallet' => $params->header('wallet'),
+              'contract_id' => decodeId($params->contract_id)
           ]
       ));
 

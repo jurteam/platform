@@ -55,7 +55,8 @@ class TransactionsController extends Controller
 
         $transaction = Transaction::storeTransaction($request);
 
-        return response()->json(compact('transaction'), 201);
+        return $this->item($transaction, new TransactionTransformer);
+        // return response()->json(compact('transaction'), 201);
     }
 
     /**
@@ -70,6 +71,7 @@ class TransactionsController extends Controller
 
         $transaction->update($request->all());
 
-        return response()->json(compact('transaction'), 201);
+        return $this->item($transaction, new TransactionTransformer);
+        // return response()->json(compact('transaction'), 201);
     }
 }
