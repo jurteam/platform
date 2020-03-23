@@ -7,6 +7,7 @@ import wallet from "./Wallet";
 import contract from "./Contract";
 import dispute from "./Dispute";
 import oracle from "./Oracle";
+import transaction from "./Transaction";
 
 // Export root reducer
 export default (history) =>
@@ -18,5 +19,6 @@ export default (history) =>
     contract,
     dispute,
     oracle,
+    transaction,
     ...drizzleReducers
   });

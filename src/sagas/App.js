@@ -12,6 +12,8 @@ import {
   FETCH_USER,
   RESET_USER,
   SET_FAQ,
+  FETCH_TRANSACTIONS,
+  CATCH_EVENTS,
   FETCH_FAQ,
   HEARTBEAT,
   FETCH_CONTRACTS,
@@ -254,7 +256,9 @@ export function* handleFetchFaq() {
 
 // handles app ready
 export function* handleAppReady(args) {
+  log('handleAppReady')
   yield init(args);
+  yield put({ type: FETCH_TRANSACTIONS });
   yield put({ type: FETCH_FAQ });
   yield put({ type: FETCH_USER });
   yield put({ type: FETCH_CONTRACTS });

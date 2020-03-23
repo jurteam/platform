@@ -9,6 +9,7 @@ import disputeSagas from "./Dispute";
 import oracleSagas from "./Oracles";
 import mediaSagas from "./Media";
 import arbitrationSagas from "./Arbitration";
+import transactionSagas from "./Transaction";
 
 // Join all sagas
 const sagas = [...drizzleSagas];
@@ -21,6 +22,7 @@ sagas.push(contractSagas);
 sagas.push(disputeSagas);
 sagas.push(oracleSagas);
 sagas.push(arbitrationSagas);
+sagas.push(transactionSagas);
 
 export default function* rootSaga() {
   yield all(sagas.map(saga => fork(saga)));

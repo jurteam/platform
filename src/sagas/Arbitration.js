@@ -278,49 +278,55 @@ export function* handleCreateArbitration(args) {
 
     }
     
-  }
-
-  log('handleCreateArbitration - arbitrationAddress',arbitrationAddress)
   
-  if (arbitrationAddress) {
-    log('handleCreateArbitration - arbitrationAddress ok')
-    // Step .2 - JURToken
 
-    // approve
-    /*
-    let approveFundings =
-      partA.wallet === wallet.address ? fundings.a : fundings.b;
-    const approved = yield sendToContract("JURToken", "approve", [
-      wallet.address,
-      approveFundings
-    ]);
-    log("handleCreateArbitration - jur Token approved?", approved);
-    */
+    log('handleCreateArbitration - arbitrationAddress',arbitrationAddress)
+    
+    if (arbitrationAddress) {
+      log('handleCreateArbitration - arbitrationAddress ok')
+      // Step .2 - JURToken
 
-    // Update contract address
-    let toUpdate = new FormData();
-    // toUpdate.append('_method', 'PUT');
-    toUpdate.append("address", arbitrationAddress);
-    try {
-      let response = yield call(Contracts.update, toUpdate, contractId);
-      log("handleCreateArbitration - contract address updated", response);
+      // approve
+      /*
+      let approveFundings =
+        partA.wallet === wallet.address ? fundings.a : fundings.b;
+      const approved = yield sendToContract("JURToken", "approve", [
+        wallet.address,
+        approveFundings
+      ]);
+      log("handleCreateArbitration - jur Token approved?", approved);
+      */
 
-      // Status update
-      toUpdate = new FormData();
-      toUpdate.append("code", 1);
+      // Update contract address
+      let toUpdate = new FormData();
+      // toUpdate.append('_method', 'PUT');
+      toUpdate.append("address", arbitrationAddress);
       try {
-        response = yield call(Contracts.statusChange, toUpdate, contractId);
-        log("handleCreateArbitration - contract status updated", response);
-        const { statusId, statusLabel, statusUpdatedAt, statusFrom } = response.data.data;
-        yield put({
-          type: SET_CONTRACT_STATUS,
-          statusId,
-          statusFrom,
-          statusLabel,
-          statusUpdatedAt,
-          contractId
-        });
-        yield put({ type: FETCH_CONTRACTS });
+        let response = yield call(Contracts.update, toUpdate, contractId);
+        log("handleCreateArbitration - contract address updated", response);
+
+        // Status update
+        toUpdate = new FormData();
+        toUpdate.append("code", 1);
+        try {
+          response = yield call(Contracts.statusChange, toUpdate, contractId);
+          log("handleCreateArbitration - contract status updated", response);
+          const { statusId, statusLabel, statusUpdatedAt, statusFrom } = response.data.data;
+          yield put({
+            type: SET_CONTRACT_STATUS,
+            statusId,
+            statusFrom,
+            statusLabel,
+            statusUpdatedAt,
+            contractId
+          });
+          yield put({ type: FETCH_CONTRACTS });
+
+          // const { history } = action;
+          // history.push(`/contracts/detail/${id}`); // go to contract detail for furter operations
+        } catch (error) {
+          yield put({ type: API_CATCH, error });
+        }
 
         // const { history } = action;
         // history.push(`/contracts/detail/${id}`); // go to contract detail for furter operations
@@ -328,24 +334,20 @@ export function* handleCreateArbitration(args) {
         yield put({ type: API_CATCH, error });
       }
 
-      // const { history } = action;
-      // history.push(`/contracts/detail/${id}`); // go to contract detail for furter operations
-    } catch (error) {
-      yield put({ type: API_CATCH, error });
+      if (connectorValue === 'web3') 
+      {
+
+        yield put({ type: CHAIN_GET_CONTRACT, address: arbitrationAddress });
+      }
+      // Read arbitrations
+      // const txArbitrations = yield callToContract("ArbitrationFactory", "arbirations", [wallet.address]);
+      // log("handleCreateArbitration - txArbitrations", txArbitrations);
     }
 
-    if (connectorValue === 'web3') 
-    {
-
-      yield put({ type: CHAIN_GET_CONTRACT, address: arbitrationAddress });
-    }
-    // Read arbitrations
-    // const txArbitrations = yield callToContract("ArbitrationFactory", "arbirations", [wallet.address]);
-    // log("handleCreateArbitration - txArbitrations", txArbitrations);
+    yield put({ type: CONTRACT_SAVING, payload: false });
+    yield put({ type: CONTRACT_UPDATING, payload: false });
+    
   }
-
-  yield put({ type: CONTRACT_SAVING, payload: false });
-  yield put({ type: CONTRACT_UPDATING, payload: false });
 }
 
 export function* handleEvents(args) {
@@ -690,63 +692,92 @@ export function* handlePayArbitration(args) {
 
   // single step with approve and call
   const wallet = yield select(getWallet);
-  const token = new JURToken();
-  const arbitration = new Arbitration(contractAddress);
-  log("handlePayArbitration – arbitration", arbitration);
 
-  // string interpolation for activities
-  const iValue = amount
 
-  // fix amount decimals
-  // amount = amount * 10**18;
-  amount = global.drizzle.web3.utils.toWei(amount.toString(), 'ether');
 
-  // // convert amout to string
-  // amount = amount.toString();
 
-  const signTx = yield token
-    .approveAndCall(contractAddress, amount, 'sign', [wallet.address])
-    .catch(chainErrorHandler);
+  let signTx, iValue, code, partyAHasPayed,  partyBHasPayed
+  
 
-  log("handlePayArbitration – signTx", signTx);
+  // check connex or web3
+  const connectorValue = connector()
 
-  // Two Step method
-  // const tk = new JURToken();
-  // yield tk
-  //   .balanceOf(contractAddress)
-  //   .then(res => { log('TEST – balanceOf', res.toString())})
+  if(connectorValue === 'connex') 
+  {
 
-  // // step 1
-  // const token = new JURToken();
-  // log("handleAcceptArbitration - JURToken", token);
-  // yield token
-  //   .approve(contractAddress, amount)
-  //   .then(res => {
-  //     log("handleAcceptArbitration – step 1 finished", res);
 
-  //     // step 2
-  //     const arbitration = new Arbitration(contractAddress);
-  //     log("handleAcceptArbitration - Arbitration", arbitration);
-  //     return arbitration
-  //       .sign()
-  //       .then(res => log("handleAcceptArbitration – accepted", res))
-  //       .catch(err =>
-  //         log("handleAcceptArbitration – step 2 error", err)
-  //       );
-  //   })
-  //   .catch(err => log("handleAcceptArbitration – step 1 error", err));
 
+    const user = yield select(getUser);
+
+    const connexToken = new connexJURToken();
+
+    iValue = amount  
+    
+    amount = connexToWei(amount.toString(), 'ether');
+
+    signTx = yield connexToken
+      .approveAndCall(contractAddress, amount, 'sign', [wallet.address], user.wallet, id)
+      .catch(connexChainErrorHandler);
+
+    log("handlePayArbitration – signTx", signTx);
+
+    signTx = null
+
+
+
+  } 
+  else if (connectorValue === 'web3') 
+  {
+
+
+
+    const token = new JURToken();
+    const arbitration = new Arbitration(contractAddress);
+    log("handlePayArbitration – arbitration", arbitration);
+  
+    // string interpolation for activities
+    iValue = amount
+  
+    // fix amount decimals
+    // amount = amount * 10**18;
+    amount = global.drizzle.web3.utils.toWei(amount.toString(), 'ether');
+  
+    // // convert amout to string
+    // amount = amount.toString();
+  
+    signTx = yield token
+      .approveAndCall(contractAddress, amount, 'sign', [wallet.address])
+      .catch(chainErrorHandler);
+  
+    log("handlePayArbitration – signTx", signTx);
+
+
+    if (signTx) { // only if there is a valid sign tx
+    
+      yield put({ type: LOOKUP_WALLET_BALANCE }); // update wallet balance
+            
+      code = 3; // still waiting for payment
+      
+      const allParties = yield arbitration.allParties();
+      log("handlePayArbitration - allParties", allParties);
+      
+      partyAHasPayed = yield arbitration.hasSigned(allParties[0]);
+      partyBHasPayed = yield arbitration.hasSigned(allParties[1]);
+
+    }
+
+
+
+
+
+  }
+
+
+  
+    
+    
   if (signTx) { // only if there is a valid sign tx
 
-    yield put({ type: LOOKUP_WALLET_BALANCE }); // update wallet balance
-
-    let code = 3; // still waiting for payment
-
-    const allParties = yield arbitration.allParties();
-    log("handlePayArbitration - allParties", allParties);
-
-    const partyAHasPayed = yield arbitration.hasSigned(allParties[0]);
-    const partyBHasPayed = yield arbitration.hasSigned(allParties[1]);
 
     const fullfilled = partyAHasPayed && partyBHasPayed; // assuming all party has payed
     if (fullfilled) {
@@ -789,7 +820,10 @@ export function* handlePayArbitration(args) {
   }
 }
 
-export function* handleSignArbitration({ contractAddress }) {
+
+
+export function* handleSignArbitration({ contractAddress }) 
+{
   log("handleSignArbitration on", contractAddress);
 
   const success = data => {

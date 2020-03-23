@@ -10,6 +10,7 @@ import Comet from "../hooks/Comet";
 import { 
   SET_LOADING,
    APP_EXIT,
+   CATCH_EVENTS,
    CONNEX_INITIALIZED,
    CONNEX_SETWALLETAPI,
    SET_WALLET_ADDRESS 
@@ -26,6 +27,7 @@ class AppProvider extends Component {
     super(props);
     this.auth = this.auth.bind(this);
     this.connexAuth = this.connexAuth.bind(this);
+    this.tickerLoop = this.tickerLoop.bind(this);
     this.exit = this.exit.bind(this);
     global.exit = this.exit; // available everywhere for sync purposes
 
@@ -137,6 +139,9 @@ class AppProvider extends Component {
   
           this.setState({ onNetwork: true, connex: true, connex });
           global.connector = 'connex'
+
+          this.tickerLoop()
+
           global.dispatcher({type: CONNEX_INITIALIZED, address: address });
   
         }).catch(err => {
@@ -145,32 +150,24 @@ class AppProvider extends Component {
           log("AppProvider", "network connection error!");
           this.setState({ cometLoading: false });
           global.dispatcher({ type: SET_LOADING, payload: false });
-        })
-          // location.href = 'https://env.vechain.org/r/#' + encodeURIComponent(location.href)
+        })   
+      
+    }
 
-          // const status = connex.thor.status
-          // log('AppProvider - You are `connexed` to vechain, the status is ' + (status.progress === 1 ? 'synced': 'syncing'))
-          // log('AppProvider - window',window)
-          // log('AppProvider - connex',connex)
-          // // log('AppProvider - connex.caller()',connex.caller())
-          // log('AppProvider - connex.vendor',connex.vendor)
-          // log('AppProvider - connex.vendor.owned',connex.vendor.owned)
-          // log('AppProvider - connex.vendor.sign',connex.vendor.sign)
-          // log('AppProvider - connex.thor',connex.thor)
-          // log('AppProvider - connex.thor.genesis',connex.thor.genesis)
-          // log('AppProvider - connex.account',connex.thor.account)
-          // log('AppProvider - connex.account.get',connex.account.get)
-          
-          // connex.vendor.owned('0x7567D83b7b8d80ADdCb281A71d54Fc7B4364ffed').then(owned =>{ 
-          //   console.log(owned)
-          // })
+  }
 
-        //   this.setState({ onNetwork: false });
+  tickerLoop() {
+    log('tickerLoop')
+    if(window.connex) 
+    {
+      log('tickerLoop - connex')
+      const ticker = window.connex.thor.ticker()
+      ticker.next().then((head)=>{
+        this.tickerLoop()
 
-        // } else {
-
-          
-        }
+        global.dispatcher({type: CATCH_EVENTS, block: head });
+      })
+    }
   }
 
   auth() {

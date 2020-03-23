@@ -3,6 +3,17 @@
 import ArbitrationFactoryABI from "../../build/contracts/ArbitrationFactory.json";
 import { log } from "../../utils/helpers";
 
+import { 
+  ADD_TRANSACTION,
+  TRANSACTION_ADDED,
+  UPDATE_TRANSACTION,
+  TRANSACTION_UPDATED,
+  TRANSACTIONS_FETCHED,
+} from "../../reducers/types";
+
+
+
+
 export default class connexArbitrationFactory
 {
   constructor() 
@@ -50,8 +61,6 @@ export default class connexArbitrationFactory
 
     let txid = null
 
-
-    let transactionRequest 
     await signingService.request([
       {
         ...createArbitrationClause,
@@ -61,9 +70,19 @@ export default class connexArbitrationFactory
 
       log('createArbitration - signingService then()',tx)
 
-      transactionRequest=tx
+      // call transaction saving endpoint
+      // ADD_TRANSACTION
       
-      txid = transactionRequest.txid
+      txid = tx.txid
+
+      const filter = {
+        _creator: account,
+        _party1: parties[0],
+        _party2: parties[1],
+      }
+      
+      global.dispatcher({type: ADD_TRANSACTION,txid: tx.txid, event: 'ArbitrationCreated', param: filter, contract_id: contractId})
+      
 
       log('createArbitration - signingService then() txid',txid)
       
@@ -112,6 +131,7 @@ export default class connexArbitrationFactory
     filter.order('desc') 
     
     const events = await filter.apply(0, 1)
+
     log('ArbitrationCreated - events',events)
     log('ArbitrationCreated - events.length',events.length)
     log('ArbitrationCreated - events[0]',events[0])
@@ -129,6 +149,42 @@ export default class connexArbitrationFactory
           log('ArbitrationCreated - lastEvent.decoded[1]',lastEvent.decoded[1])
           log('ArbitrationCreated - lastEvent.decoded._arbitration',lastEvent.decoded._arbitration)
           return lastEvent.decoded[1]
+        }
+      }
+    }
+    return null
+
+  }
+
+  async EventCatch(param, event, blockNum, txid)
+  {
+    const eventABI = this.getMethodABI(event);
+    const eventMethod = this.thorAccount.event(eventABI)
+
+    const filter = eventMethod.filter([param])
+
+    filter.order('desc')
+
+    filter.range({
+      unit: 'block',
+      from: blockNum,
+      to: blockNum
+    })
+
+    const events = await filter.apply(0, 1) 
+
+    if (events) 
+    {
+      const lastEvent = events[0]
+      if (lastEvent) 
+      {
+        log('EventCatch - lastEvent',lastEvent)
+        log('EventCatch - txid',txid)
+        log('EventCatch - lastEvent.meta.txid',lastEvent.meta.txID)
+        if (lastEvent.meta.txID === txid) 
+        {
+          return lastEvent.decoded
+          // return lastEvent.decoded[1]
         }
       }
     }

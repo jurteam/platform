@@ -44,5 +44,9 @@ export const getOracleCurrentList = (state) => (state.oracle.currentList);
 export const getOracleList = (state) => (state.oracle.list);
 export const getOracleIsListPage = (state) => (state.oracle.listPage);
 
+// Transactions
+export const getTransactionsList = (state) => (state.transaction.waiting);
+export const getTransactionsLastBlock = (state) => (state.transaction.lastBlockNumber);
+
 // User
 export const getUser = (state) => (state.user);
