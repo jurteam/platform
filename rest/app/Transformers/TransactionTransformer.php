@@ -23,8 +23,10 @@ class TransactionTransformer extends TransformerAbstract
             'event' => $transaction->event,
             'wallet' => $transaction->wallet,
             'param' => $transaction->param,
-            'contract_id' => encodeId($transaction->contract_id)
+            'contract_id' => encodeId($transaction->contract_id),
+            'contract_address' => $transaction->contract->address,
         ];
     }
 
 }
+//
