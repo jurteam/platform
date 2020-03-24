@@ -7,10 +7,11 @@ import { log } from "../../utils/helpers";
 
 export default class connexArbitrationContract
 {
-  constructor() 
+  constructor(address) 
   {
     this.contract = ArbitrationContractABI;
-    this.thorAccount = global.connex.thor.account(this.getArbitrationContractAddres())
+    this.thorAccount = global.connex.thor.account(address)
+    // this.thorAccount = global.connex.thor.account(this.getArbitrationContractAddres())
   }
 
   async EventCatch(param,event,blockNum,txid)
@@ -49,32 +50,32 @@ export default class connexArbitrationContract
 
   }
 
-  getArbitrationContractAddres()
-  {
+  // getArbitrationContractAddres()
+  // {
 
-    const thorGenesisId = global.connex.thor.genesis.id;
+  //   const thorGenesisId = global.connex.thor.genesis.id;
 
-    const chainTag = thorGenesisId.substr(-2);
+  //   const chainTag = thorGenesisId.substr(-2);
 
-    log('getArbitrationContractAddres - chainTag',chainTag);
+  //   log('getArbitrationContractAddres - chainTag',chainTag);
 
-    let chainNetworkID;
+  //   let chainNetworkID;
 
-    switch(chainTag) {
-      case '4a':  // mainnet
-        chainNetworkID = 1;
-        break;
-      case '27':  // testnet
-        chainNetworkID = 3;
-        break;
-      default:      // localhost / other
-        chainNetworkID = 5777;
-        break;
-    }
-    log('getArbitrationContractAddres - ArbitrationContract.networks[chainNetworkID].address',this.contract.networks[chainNetworkID].address);
-    return this.contract.networks[chainNetworkID].address;
+  //   switch(chainTag) {
+  //     case '4a':  // mainnet
+  //       chainNetworkID = 1;
+  //       break;
+  //     case '27':  // testnet
+  //       chainNetworkID = 3;
+  //       break;
+  //     default:      // localhost / other
+  //       chainNetworkID = 5777;
+  //       break;
+  //   }
+  //   log('getArbitrationContractAddres - ArbitrationContract.networks[chainNetworkID].address',this.contract.networks[chainNetworkID].address);
+  //   return this.contract.networks[chainNetworkID].address;
 
-  }
+  // }
 
 
   getMethodABI(method) 

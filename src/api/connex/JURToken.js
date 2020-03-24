@@ -4,6 +4,13 @@ import JURTokenABI from "../../build/contracts/JURToken.json";
 
 import { log } from "../../utils/helpers";
 
+import { 
+  ADD_TRANSACTION,
+  TRANSACTION_ADDED,
+  UPDATE_TRANSACTION,
+  TRANSACTION_UPDATED,
+  TRANSACTIONS_FETCHED,
+} from "../../reducers/types";
 
 export default class connexJURToken 
 {
@@ -187,12 +194,22 @@ export default class connexJURToken
     .then(async (tx)=>{
       
       log('approveAndCall - signingService then()',tx)
-      transactionRequest=tx
       
-      txid = transactionRequest.txid
+      txid = tx.txid
       log('approveAndCall - signingService then() txid',txid)
 
-      return txid
+        // event to wait:           ContractSigned
+        // param to search event:   _party      
+
+      const filter = {
+        _party: account,
+      }
+      
+      global.dispatcher({type: ADD_TRANSACTION,txid: tx.txid, event: 'ContractSigned', param: filter, contract_id: contractId})
+      
+
+
+      // return txid
 
       // let ijdfsoijsdf = await this.getAddressByTransaction(txid)
 

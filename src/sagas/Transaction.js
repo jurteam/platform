@@ -14,6 +14,7 @@ import {
   API_CATCH,
   RESOLVE_TX,
   TRANSACTIONS_FETCHED,
+  LOOKUP_WALLET_BALANCE,
 } from "../reducers/types";
 
 import { getTransactionsList, getTransactionsLastBlock, getWallet } from './Selectors'
@@ -58,12 +59,12 @@ export function* handleAddTransaction(args)
   
   
   const txWaiting = yield select(getTransactionsList);
-  log('handleAddTransaction - txWaiting',txWaiting);
+  log('handleAddTransaction - txWaiting.length',txWaiting.length);
   
   yield put({ type: TRANSACTION_ADDED, payload: response.data });
   
   const txWaiting2 = yield select(getTransactionsList);
-  log('handleAddTransaction - txWaiting2',txWaiting2);
+  log('handleAddTransaction - txWaiting2.length',txWaiting2.length);
   
 }
 
@@ -188,20 +189,21 @@ export function* getEventUpdateTx(args)
   } 
   else 
   {
-    const contract = new connexArbitrationContract();
+    const contract = new connexArbitrationContract(txw.contract_address);
     eventDecoded = yield contract.EventCatch(param, txw.event, blockNumber, txw.txid);
   }
   log('getEventUpdateTx - eventDecoded',eventDecoded)
 
   // manage event
-  yield manageEvent(txw.event, txw.contract_id, eventDecoded)
+  yield manageEvent(txw, eventDecoded)
 
   // update tx
   yield put({type:UPDATE_TRANSACTION, id: txw.id , block: blockNumber ,time: timestamp })
 }
 
-function* manageEvent(event,contractId,decoded) 
+function* manageEvent(txw,decoded) 
 {
+  const { event, contractId, contract_address } = txw
   log('manageEvent - event',event)
   log('manageEvent - decoded',decoded)
   
@@ -277,6 +279,72 @@ function* manageEvent(event,contractId,decoded)
             yield put({ type: CONTRACT_SAVING, payload: false });
             yield put({ type: CONTRACT_UPDATING, payload: false });
                   
+
+
+      // -----------------------------------------------------
+
+      break;
+
+    case "ContractSigned":
+      
+      const party = decoded._party
+
+      log('manageEvent - party',party)
+
+      // ============== dispatch event contract signed ----------------------
+
+
+              // TODO: get contract info from store
+
+              yield put({ type: LOOKUP_WALLET_BALANCE }); // update wallet balance
+                    
+              let code = 3; // still waiting for payment
+
+
+              const arbitration = new connexArbitrationContract(contract_address);
+              
+              const allParties = yield arbitration.allParties();
+              log("handlePayArbitration - allParties", allParties);
+              
+              const partyAHasPayed = yield arbitration.hasSigned(allParties[0]);
+              const partyBHasPayed = yield arbitration.hasSigned(allParties[1]);
+
+
+              const fullfilled = partyAHasPayed && partyBHasPayed; // assuming all party has payed
+              if (fullfilled) {
+                code = 5; // ongoing
+              }
+
+              // Status update
+              let toUpdate = new FormData();
+              toUpdate.append("code", code);
+              toUpdate.append("interpolation[value]", iValue);
+              toUpdate.append("interpolation[contract_value]", totalValue);
+
+              try {
+                const response = yield call(Contracts.statusChange, toUpdate, id);
+                log("handlePayArbitration - contract status updated", response);
+                const { statusId, statusLabel, statusUpdatedAt, statusFrom } = response.data.data;
+                yield put({
+                  type: SET_CONTRACT_STATUS,
+                  statusId,
+                  statusFrom,
+                  statusLabel,
+                  statusUpdatedAt,
+                  id
+                });
+                yield put({ type: FETCH_CONTRACTS });
+                yield put({ type: CONTRACT_SAVING, payload: false });
+                yield put({ type: CONTRACT_UPDATING, payload: false });
+
+                // const { history } = action;
+                // history.push(`/contracts/detail/${id}`); // go to contract detail for furter operations
+              } catch (error) {
+                yield put({ type: CONTRACT_SAVING, payload: false });
+                yield put({ type: CONTRACT_UPDATING, payload: false });
+                yield put({ type: API_CATCH, error });
+              }
+              
 
 
       // -----------------------------------------------------

@@ -25,11 +25,8 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, waiting: state.waiting.concat(action.payload.waiting), lastBlockNumber: action.payload.lastBlockNumber };
 
     case TRANSACTION_ADDED:
-      const newWaiting = state.waiting
-      log(TRANSACTION_ADDED, newWaiting);
-      log(TRANSACTION_ADDED, action.payload.data);
+      const newWaiting = [...state.waiting]
       newWaiting.push(action.payload.data)
-      log(TRANSACTION_ADDED, newWaiting);
 
       return { ...state, waiting: newWaiting};
 

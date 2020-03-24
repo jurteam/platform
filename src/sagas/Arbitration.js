@@ -721,7 +721,12 @@ export function* handlePayArbitration(args) {
 
     log("handlePayArbitration – signTx", signTx);
 
-    signTx = null
+    // event to wait:           ContractSigned
+    // param to search event:   _party
+
+    // dispatch tx
+
+    // signTx = null
 
 
 
@@ -764,62 +769,56 @@ export function* handlePayArbitration(args) {
       partyAHasPayed = yield arbitration.hasSigned(allParties[0]);
       partyBHasPayed = yield arbitration.hasSigned(allParties[1]);
 
-    }
+    // }
 
 
+    // if (signTx) { // only if there is a valid sign tx
 
 
+      const fullfilled = partyAHasPayed && partyBHasPayed; // assuming all party has payed
+      if (fullfilled) {
+        code = 5; // ongoing
+      }
 
-  }
+      // Status update
+      let toUpdate = new FormData();
+      toUpdate.append("code", code);
+      toUpdate.append("interpolation[value]", iValue);
+      toUpdate.append("interpolation[contract_value]", totalValue);
 
+      try {
+        const response = yield call(Contracts.statusChange, toUpdate, id);
+        log("handlePayArbitration - contract status updated", response);
+        const { statusId, statusLabel, statusUpdatedAt, statusFrom } = response.data.data;
+        yield put({
+          type: SET_CONTRACT_STATUS,
+          statusId,
+          statusFrom,
+          statusLabel,
+          statusUpdatedAt,
+          id
+        });
+        yield put({ type: FETCH_CONTRACTS });
+        yield put({ type: CONTRACT_SAVING, payload: false });
+        yield put({ type: CONTRACT_UPDATING, payload: false });
 
-  
-    
-    
-  if (signTx) { // only if there is a valid sign tx
-
-
-    const fullfilled = partyAHasPayed && partyBHasPayed; // assuming all party has payed
-    if (fullfilled) {
-      code = 5; // ongoing
-    }
-
-    // Status update
-    let toUpdate = new FormData();
-    toUpdate.append("code", code);
-    toUpdate.append("interpolation[value]", iValue);
-    toUpdate.append("interpolation[contract_value]", totalValue);
-
-    try {
-      const response = yield call(Contracts.statusChange, toUpdate, id);
-      log("handlePayArbitration - contract status updated", response);
-      const { statusId, statusLabel, statusUpdatedAt, statusFrom } = response.data.data;
-      yield put({
-        type: SET_CONTRACT_STATUS,
-        statusId,
-        statusFrom,
-        statusLabel,
-        statusUpdatedAt,
-        id
-      });
-      yield put({ type: FETCH_CONTRACTS });
+        // const { history } = action;
+        // history.push(`/contracts/detail/${id}`); // go to contract detail for furter operations
+      } catch (error) {
+        yield put({ type: CONTRACT_SAVING, payload: false });
+        yield put({ type: CONTRACT_UPDATING, payload: false });
+        yield put({ type: API_CATCH, error });
+      }
+    } else {
       yield put({ type: CONTRACT_SAVING, payload: false });
       yield put({ type: CONTRACT_UPDATING, payload: false });
-
-      // const { history } = action;
-      // history.push(`/contracts/detail/${id}`); // go to contract detail for furter operations
-    } catch (error) {
-      yield put({ type: CONTRACT_SAVING, payload: false });
-      yield put({ type: CONTRACT_UPDATING, payload: false });
-      yield put({ type: API_CATCH, error });
+      if (typeof onFail === "function") onFail();
     }
-  } else {
-    yield put({ type: CONTRACT_SAVING, payload: false });
-    yield put({ type: CONTRACT_UPDATING, payload: false });
-    if (typeof onFail === "function") onFail();
-  }
+
+  }  
+    
+    
 }
-
 
 
 export function* handleSignArbitration({ contractAddress }) 
