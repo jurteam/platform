@@ -5,10 +5,6 @@ import { log } from "../../utils/helpers";
 
 import { 
   ADD_TRANSACTION,
-  TRANSACTION_ADDED,
-  UPDATE_TRANSACTION,
-  TRANSACTION_UPDATED,
-  TRANSACTIONS_FETCHED,
 } from "../../reducers/types";
 
 
@@ -92,29 +88,6 @@ export default class connexArbitrationFactory
 
 
 
-    let contractAddress 
-    // ticker
-
-    const ticker = global.connex.thor.ticker()
-    await ticker.next().then(async (head)=>{
-
-        log('createArbitration - ticker',head)
-        log('createArbitration - ticker - txid',txid)
-
-        let contractAddressTransaction = await this.getAddressByTransaction(txid)
-
-        let contractAddressEvent = await this.ArbitrationCreated(account,txid)
-        log('createArbitration - ticker - contractAddressTransaction',contractAddressTransaction)
-        log('createArbitration - ticker - contractAddressEvent',contractAddressEvent)
-
-        contractAddress = contractAddressTransaction
-    })
-    
-
-    log('createArbitration - contractAddress', contractAddress)
-
-
-    return contractAddress
   }
 
   async ArbitrationCreated(creator,txid) 

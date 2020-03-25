@@ -34,12 +34,14 @@ export default (state = INITIAL_STATE, action) => {
       log(TRANSACTION_UPDATED, action.payload);
       log('TRANSACTION_UPDATED - state.waiting', state.waiting);
       
-      const txUpdted = state.waiting.map(tx => {
-        if (tx.id === action.payload.data.id) {
-          return null
+      const txUpdted = []
+
+      state.waiting.map(tx => {
+        if (tx.id !== action.payload.data.id) {
+          txUpdted.push(tx)
         }
-        return tx
       })
+      
       log('TRANSACTION_UPDATED - txUpdted', txUpdted);
       
       return { ...state, waiting: txUpdted};

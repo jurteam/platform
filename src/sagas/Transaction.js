@@ -56,21 +56,17 @@ export function* handleAddTransaction(args)
 
   log('handleAddTransaction - response',response);
   
-  
-  
-  const txWaiting = yield select(getTransactionsList);
-  log('handleAddTransaction - txWaiting.length',txWaiting.length);
-  
   yield put({ type: TRANSACTION_ADDED, payload: response.data });
+
+  yield put({ type: CATCH_EVENTS });
   
-  const txWaiting2 = yield select(getTransactionsList);
-  log('handleAddTransaction - txWaiting2.length',txWaiting2.length);
   
 }
 
 
 export function* handleUpdateTransaction(args) 
 {
+  log('handleUpdateTransaction - args',args);
 
   const { id, block ,time } = args
   
@@ -129,14 +125,17 @@ export function* handleCatchEvents(args) {
 
         const txw = txWaiting[k]
         log('handleCatchEvents - txw',txw)
-            
-        if (tx === txw.txid)
+        
+        if (txw !== null) 
         {
-          log('handleCatchEvents - (tx === txw.txid)')
-          // transaction writed into blockchain  
-          // getEventUpdateTx(txw, i, thisBlock.timestamp) 
-          yield put({type:RESOLVE_TX, txw:txw, blockNumber:i, timestamp:thisBlock.timestamp})
-
+          if (tx === txw.txid)
+          {
+            log('handleCatchEvents - (tx === txw.txid)')
+            // transaction writed into blockchain  
+            // getEventUpdateTx(txw, i, thisBlock.timestamp) 
+            yield put({type:RESOLVE_TX, txw:txw, blockNumber:i, timestamp:thisBlock.timestamp})
+  
+          }
         }
       }
     }
@@ -189,7 +188,7 @@ export function* getEventUpdateTx(args)
   } 
   else 
   {
-    const contract = new connexArbitrationContract(txw.contract_address);
+    const contract = new connexArbitrationContract(txw.contract.address);
     eventDecoded = yield contract.EventCatch(param, txw.event, blockNumber, txw.txid);
   }
   log('getEventUpdateTx - eventDecoded',eventDecoded)
@@ -203,7 +202,7 @@ export function* getEventUpdateTx(args)
 
 function* manageEvent(txw,decoded) 
 {
-  const { event, contractId, contract_address } = txw
+  const { event, contract: { id } } = txw
   log('manageEvent - event',event)
   log('manageEvent - decoded',decoded)
   
@@ -238,14 +237,14 @@ function* manageEvent(txw,decoded)
               // toUpdate.append('_method', 'PUT');
               toUpdate.append("address", arbitrationAddress);
               try {
-                let response = yield call(Contracts.update, toUpdate, contractId);
+                let response = yield call(Contracts.update, toUpdate, id);
                 log("handleCreateArbitration - contract address updated", response);
           
                 // Status update
                 toUpdate = new FormData();
                 toUpdate.append("code", 1);
                 try {
-                  response = yield call(Contracts.statusChange, toUpdate, contractId);
+                  response = yield call(Contracts.statusChange, toUpdate, id);
                   log("handleCreateArbitration - contract status updated", response);
                   const { statusId, statusLabel, statusUpdatedAt, statusFrom } = response.data.data;
                   yield put({
@@ -254,7 +253,7 @@ function* manageEvent(txw,decoded)
                     statusFrom,
                     statusLabel,
                     statusUpdatedAt,
-                    contractId
+                    id
                   });
                   yield put({ type: FETCH_CONTRACTS });
           
@@ -294,21 +293,54 @@ function* manageEvent(txw,decoded)
       // ============== dispatch event contract signed ----------------------
 
 
-              // TODO: get contract info from store
+              const { contract: { address, value, counterparties, part_a_penalty_fee, part_b_penalty_fee, who_pays } } = txw
+
+              let amount = 0;
+              const wallet = yield select(getWallet);
+              const partAPenaltyFee = part_a_penalty_fee
+              const partBPenaltyFee = part_b_penalty_fee
+              const whoPays = who_pays
+
+              if (wallet.address.toLowerCase() === counterparties[1].wallet.toLowerCase()) { // is part b
+          
+                if (typeof partBPenaltyFee !== 'undefined' && partBPenaltyFee) amount = amount + Number(partBPenaltyFee)
+                if (whoPays.toLowerCase() === counterparties[1].wallet.toLowerCase()) {
+                  amount = amount + Number(value);
+                }
+          
+              } else {
+          
+                if (typeof partAPenaltyFee !== 'undefined' && partAPenaltyFee) amount = amount + Number(partAPenaltyFee)
+                if (whoPays.toLowerCase() === counterparties[0].wallet.toLowerCase()) {
+                  amount = amount + Number(value);
+                }
+          
+              }
+          
+              let totalValue = Number(value) + Number(partAPenaltyFee) + Number(partBPenaltyFee);
+              if (typeof partAPenaltyFee !== 'undefined' && partAPenaltyFee) totalValue = totalValue + Number(partAPenaltyFee);
+              if (typeof partBPenaltyFee !== 'undefined' && partBPenaltyFee) totalValue = totalValue + Number(partBPenaltyFee);
+  
+
+
+
 
               yield put({ type: LOOKUP_WALLET_BALANCE }); // update wallet balance
+              // TODO: check for wallet balance on connex
                     
               let code = 3; // still waiting for payment
 
 
-              const arbitration = new connexArbitrationContract(contract_address);
+              const arbitration = new connexArbitrationContract(address);
               
               const allParties = yield arbitration.allParties();
-              log("handlePayArbitration - allParties", allParties);
+              log("manageEvent (ContractSigned) - allParties", allParties);
               
               const partyAHasPayed = yield arbitration.hasSigned(allParties[0]);
               const partyBHasPayed = yield arbitration.hasSigned(allParties[1]);
-
+              
+              log("manageEvent (ContractSigned) - partyAHasPayed", partyAHasPayed);
+              log("manageEvent (ContractSigned) - partyBHasPayed", partyBHasPayed);
 
               const fullfilled = partyAHasPayed && partyBHasPayed; // assuming all party has payed
               if (fullfilled) {
@@ -318,12 +350,12 @@ function* manageEvent(txw,decoded)
               // Status update
               let toUpdate = new FormData();
               toUpdate.append("code", code);
-              toUpdate.append("interpolation[value]", iValue);
+              toUpdate.append("interpolation[value]", amount);
               toUpdate.append("interpolation[contract_value]", totalValue);
 
               try {
                 const response = yield call(Contracts.statusChange, toUpdate, id);
-                log("handlePayArbitration - contract status updated", response);
+                log("manageEvent (ContractSigned) - contract status updated", response);
                 const { statusId, statusLabel, statusUpdatedAt, statusFrom } = response.data.data;
                 yield put({
                   type: SET_CONTRACT_STATUS,

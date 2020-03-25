@@ -50,32 +50,55 @@ export default class connexArbitrationContract
 
   }
 
-  // getArbitrationContractAddres()
-  // {
 
-  //   const thorGenesisId = global.connex.thor.genesis.id;
 
-  //   const chainTag = thorGenesisId.substr(-2);
+  async allParties(key) 
+  {
 
-  //   log('getArbitrationContractAddres - chainTag',chainTag);
+    log('allParties - ArbitrationFactoryABI',this.contract)
+    const allPartiesABI = this.getMethodABI("allParties");
+    log('allParties - allPartiesABI',allPartiesABI)
+    
 
-  //   let chainNetworkID;
+    const allPartiesMethod = this.thorAccount.method(allPartiesABI)
 
-  //   switch(chainTag) {
-  //     case '4a':  // mainnet
-  //       chainNetworkID = 1;
-  //       break;
-  //     case '27':  // testnet
-  //       chainNetworkID = 3;
-  //       break;
-  //     default:      // localhost / other
-  //       chainNetworkID = 5777;
-  //       break;
-  //   }
-  //   log('getArbitrationContractAddres - ArbitrationContract.networks[chainNetworkID].address',this.contract.networks[chainNetworkID].address);
-  //   return this.contract.networks[chainNetworkID].address;
 
-  // }
+    if (typeof key === 'undefined' || !key) { // return all parties
+      const partyA = await allPartiesMethod.call(0);  // 0 = a / first party
+      const partyB = await allPartiesMethod.call(1);  // 1 = b
+      return [ partyA.decoded[0], partyB.decoded[0] ];
+    } else { // single party based on key
+      const party = await allPartiesMethod.call(key);  // 1 = b
+      return party.decoded[0]
+    }
+
+
+  }
+
+  async hasSigned(party) 
+  {
+
+    log('hasSigned - ArbitrationFactoryABI',this.contract)
+    const hasSignedABI = this.getMethodABI("hasSigned");
+    log('hasSigned - hasSignedABI',hasSignedABI)
+    
+    const hasSignedMethod = this.thorAccount.method(hasSignedABI)
+
+    let hash = '';
+    
+    await hasSignedMethod.call(party).then(output=>{
+      log('hasSigned - hasSignedMethod',output)
+      log('hasSigned - hasSignedMethod',output.data)
+
+      hash = output.decoded[0];
+      
+    })
+
+    return hash;
+
+  }
+
+  
 
 
   getMethodABI(method) 
