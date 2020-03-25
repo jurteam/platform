@@ -23,8 +23,23 @@ class TransactionTransformer extends TransformerAbstract
             'event' => $transaction->event,
             'wallet' => $transaction->wallet,
             'param' => $transaction->param,
-            'contract_id' => encodeId($transaction->contract_id),
-            'contract_address' => $transaction->contract->address,
+            'contract' => (object)[
+                'id' => encodeId($transaction->contract_id),
+                'address' => $transaction->contract->address,
+                'value' => $transaction->contract->value,
+                'who_pays' => $transaction->contract->who_pays,
+                'part_a_penalty_fee' => $transaction->contract->part_a_penalty_fee,
+                'part_b_penalty_fee' => $transaction->contract->part_b_penalty_fee,
+                'counterparties' => [
+                    (object)[
+                        'wallet' => $transaction->contract->part_a_wallet,
+                    ],
+                    (object)[
+                        'wallet' => $transaction->contract->part_b_wallet,
+                    ]
+                ],
+            ],
+            // 'contract_complete' => $transaction->contract
         ];
     }
 

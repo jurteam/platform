@@ -24,7 +24,7 @@ class TransactionsController extends Controller
         $waitingList = Transaction::notResolved()
             ->byWallet($wallet)->get();
 
-        $lastBlockNumber = Transaction::max('block');
+        $lastBlockNumber = Transaction::byWallet($wallet)->max('block');
 
         $waitingColl = new Collection($waitingList, new TransactionTransformer);
 
