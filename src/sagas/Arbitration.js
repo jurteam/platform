@@ -59,6 +59,7 @@ import {
   connexJURToken,
   Arbitration,
   ArbitrationFactory,
+  connexArbitrationContract,
   connexArbitrationFactory,
   Disputes 
 } from "../api";
@@ -85,7 +86,9 @@ import {
   connexToWei,
   connector
 } from "../utils/helpers"; // log helper
+
 import ArbitrationMock from "../api/ArbitrationMock";
+
 
 export function* fetchArbitrations(args) {
   log("fetchArbitrations", "run");
@@ -558,68 +561,98 @@ export function* handleRejectArbitration({ id, address: contractAddress }) {
   }
 }
 
-export function* handleSuccessArbitration(args) {
+export function* handleSuccessArbitration(args) 
+{
   yield put({ type: CONTRACT_SAVING, payload: true });
   yield put({ type: CONTRACT_UPDATING, payload: true });
   const { id, address: contractAddress, onFail } = args;
 
-  const arbitration = new Arbitration(contractAddress);
+  log(`handleSuccessArbitration - args`, args);
 
-  const hasAgreed = yield arbitration.hasAgreed().catch(chainErrorHandler);
-  log(`handleSuccessArbitration - current user has hasAgreed?`, hasAgreed);
+  // check connex or web3
+  const connectorValue = connector()
 
-  if (!hasAgreed) {
+  if(connectorValue === 'connex') 
+  {
 
-    const agreeTx = yield arbitration.agree().catch(chainErrorHandler);
+    const wallet = yield select(getWallet);
 
-    if (agreeTx) { // only if there is a valid sign tx
+    const arbitration = new connexArbitrationContract(contractAddress);
 
-      let code = 7; // still waiting for success
+    const hasAgreed = yield arbitration.hasAgreed(wallet.address);
+    log(`handleSuccessArbitration - current user has hasAgreed?`, hasAgreed);
 
-      const allParties = yield arbitration.allParties();
-      log("handleSuccessArbitration - allParties", allParties);
-
-      const partyAHasAgreed = yield arbitration.hasAgreed(allParties[0]);
-      const partyBHasAgreed = yield arbitration.hasAgreed(allParties[1]);
-
-      const agreed = partyAHasAgreed && partyBHasAgreed; // assuming all party has payed
-      if (agreed) {
-        code = 9; // closed – ready for withdrawn
-      }
-
-      // Status update
-      let toUpdate = new FormData();
-      toUpdate.append("code", code);
-
-      try {
-        const response = yield call(Contracts.statusChange, toUpdate, id);
-        log("handleSuccessArbitration - contract status updated", response);
-        const { statusId, statusLabel, statusUpdatedAt, statusFrom } = response.data.data;
-        yield put({
-          type: SET_CONTRACT_STATUS,
-          statusId,
-          statusFrom,
-          statusLabel,
-          statusUpdatedAt,
-          id
-        });
-        yield put({ type: FETCH_CONTRACTS });
-        yield put({ type: CONTRACT_SAVING, payload: false });
-        yield put({ type: CONTRACT_UPDATING, payload: false });
-
-        // const { history } = action;
-        // history.push(`/contracts/detail/${id}`); // go to contract detail for furter operations
-      } catch (error) {
-        yield put({ type: API_CATCH, error });
-        yield put({ type: CONTRACT_SAVING, payload: false });
-        yield put({ type: CONTRACT_UPDATING, payload: false });
-      }
-    } else {
-      if (typeof onFail === "function") onFail();
-      yield put({ type: CONTRACT_SAVING, payload: false });
-      yield put({ type: CONTRACT_UPDATING, payload: false });
+    if (!hasAgreed) 
+    {
+      // agree
+      yield arbitration.agree(wallet.address,id);
     }
+
+
+  } 
+  else if (connectorValue === 'web3') 
+  {
+
+    const arbitration = new Arbitration(contractAddress);
+
+    const hasAgreed = yield arbitration.hasAgreed().catch(chainErrorHandler);
+    log(`handleSuccessArbitration - current user has hasAgreed?`, hasAgreed);
+
+    if (!hasAgreed) {
+
+      const agreeTx = yield arbitration.agree().catch(chainErrorHandler);
+
+      if (agreeTx) { // only if there is a valid sign tx
+
+        let code = 7; // still waiting for success
+
+        const allParties = yield arbitration.allParties();
+        log("handleSuccessArbitration - allParties", allParties);
+
+        const partyAHasAgreed = yield arbitration.hasAgreed(allParties[0]);
+        const partyBHasAgreed = yield arbitration.hasAgreed(allParties[1]);
+
+        const agreed = partyAHasAgreed && partyBHasAgreed; // assuming all party has payed
+        if (agreed) {
+          code = 9; // closed – ready for withdrawn
+        }
+
+        // Status update
+        let toUpdate = new FormData();
+        toUpdate.append("code", code);
+
+        try {
+          const response = yield call(Contracts.statusChange, toUpdate, id);
+          log("handleSuccessArbitration - contract status updated", response);
+          const { statusId, statusLabel, statusUpdatedAt, statusFrom } = response.data.data;
+          yield put({
+            type: SET_CONTRACT_STATUS,
+            statusId,
+            statusFrom,
+            statusLabel,
+            statusUpdatedAt,
+            id
+          });
+          yield put({ type: FETCH_CONTRACTS });
+          yield put({ type: CONTRACT_SAVING, payload: false });
+          yield put({ type: CONTRACT_UPDATING, payload: false });
+
+          // const { history } = action;
+          // history.push(`/contracts/detail/${id}`); // go to contract detail for furter operations
+        } catch (error) {
+          yield put({ type: API_CATCH, error });
+          yield put({ type: CONTRACT_SAVING, payload: false });
+          yield put({ type: CONTRACT_UPDATING, payload: false });
+        }
+      } else {
+        if (typeof onFail === "function") onFail();
+        yield put({ type: CONTRACT_SAVING, payload: false });
+        yield put({ type: CONTRACT_UPDATING, payload: false });
+      }
+    }
+
   }
+
 }
 
 export function* pay(address, amount) {

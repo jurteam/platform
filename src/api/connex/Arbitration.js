@@ -4,6 +4,9 @@ import ArbitrationContractABI from "../../build/contracts/Arbitration.json";
 
 import { log } from "../../utils/helpers";
 
+import { 
+  ADD_TRANSACTION,
+} from "../../reducers/types";
 
 export default class connexArbitrationContract
 {
@@ -49,8 +52,6 @@ export default class connexArbitrationContract
     return null
 
   }
-
-
 
   async allParties(key) 
   {
@@ -98,7 +99,93 @@ export default class connexArbitrationContract
 
   }
 
-  
+  async hasAgreed(party) 
+  {
+    log('hasAgreed - ArbitrationFactoryABI',party)
+    const hasAgreedABI = this.getMethodABI("hasAgreed");
+    log('hasAgreed - hasAgreedABI',hasAgreedABI)
+    
+    const hasAgreedMethod = this.thorAccount.method(hasAgreedABI)
+
+    let hash = '';
+    
+    await hasAgreedMethod.call(party).then(output=>{
+      log('hasAgreed - hasAgreedMethod',output)
+
+      hash = output.decoded[0];
+      
+    }).catch(err=>{  
+      log('hasAgreed - catch() err',err)
+    })
+
+    return hash;
+
+  }
+
+
+  async agree(account, contractId) 
+  {
+    
+    const agreeABI = this.getMethodABI("agree");
+
+    log('agree - agreeABI',agreeABI)    
+
+    const agreeMethod = this.thorAccount.method(agreeABI)
+
+    log('agree - agreeMethod',agreeMethod)
+    
+
+    // --##################--- asClause
+
+    log('agree - parameter',{account})
+
+    const agreeClause = agreeMethod.asClause()
+    
+    log('agree - agreeClause',agreeClause) 
+    
+    const signingService = global.connex.vendor.sign('tx')
+    
+    log('agree - signingService',signingService)
+
+
+    signingService
+    .signer(account) // Enforce signer
+    .gas(global.connex.thor.genesis.gasLimit) // Set maximum gas
+    .link('http://localhost:3000/contracts/detail/'+contractId) // User will be back to the app by the url https://connex.vecha.in/0xffff....
+    .comment('agree contract')
+
+    let txid = null
+
+    await signingService.request([
+      {
+        ...agreeClause,
+      }
+    ])
+    .then(async (tx)=>{
+
+      log('agree - signingService then()',tx)
+
+      // call transaction saving endpoint
+      // ADD_TRANSACTION
+      
+      txid = tx.txid
+
+      const filter = {
+        _party1: account,
+      }
+      
+      global.dispatcher({type: ADD_TRANSACTION,txid: tx.txid, event: 'ContractAgreed', param: filter, contract_id: contractId})
+      
+
+      log('agree - signingService then() txid',txid)
+      
+    }).catch(err=>{  
+      log('agree - signingService catch() err',err)
+    })
+
+
+  }
+
 
 
   getMethodABI(method) 

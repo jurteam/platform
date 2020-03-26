@@ -202,9 +202,11 @@ export function* getEventUpdateTx(args)
 
 function* manageEvent(txw,decoded) 
 {
-  const { event, contract: { id } } = txw
+  const { event, contract: { id, address, value, counterparties, part_a_penalty_fee, part_b_penalty_fee, who_pays } } = txw
   log('manageEvent - event',event)
   log('manageEvent - decoded',decoded)
+
+  let party, code, arbitration, allParties, toUpdate
   
   switch (event) 
   {
@@ -233,7 +235,7 @@ function* manageEvent(txw,decoded)
               */
           
               // Update contract address
-              let toUpdate = new FormData();
+              toUpdate = new FormData();
               // toUpdate.append('_method', 'PUT');
               toUpdate.append("address", arbitrationAddress);
               try {
@@ -286,14 +288,14 @@ function* manageEvent(txw,decoded)
 
     case "ContractSigned":
       
-      const party = decoded._party
+      party = decoded._party
 
       log('manageEvent - party',party)
 
       // ============== dispatch event contract signed ----------------------
 
 
-              const { contract: { address, value, counterparties, part_a_penalty_fee, part_b_penalty_fee, who_pays } } = txw
+              
 
               let amount = 0;
               const wallet = yield select(getWallet);
@@ -328,12 +330,12 @@ function* manageEvent(txw,decoded)
               yield put({ type: LOOKUP_WALLET_BALANCE }); // update wallet balance
               // TODO: check for wallet balance on connex
                     
-              let code = 3; // still waiting for payment
+              code = 3; // still waiting for payment
 
 
-              const arbitration = new connexArbitrationContract(address);
+              arbitration = new connexArbitrationContract(address);
               
-              const allParties = yield arbitration.allParties();
+              allParties = yield arbitration.allParties();
               log("manageEvent (ContractSigned) - allParties", allParties);
               
               const partyAHasPayed = yield arbitration.hasSigned(allParties[0]);
@@ -348,7 +350,7 @@ function* manageEvent(txw,decoded)
               }
 
               // Status update
-              let toUpdate = new FormData();
+              toUpdate = new FormData();
               toUpdate.append("code", code);
               toUpdate.append("interpolation[value]", amount);
               toUpdate.append("interpolation[contract_value]", totalValue);
@@ -376,6 +378,64 @@ function* manageEvent(txw,decoded)
                 yield put({ type: CONTRACT_UPDATING, payload: false });
                 yield put({ type: API_CATCH, error });
               }
+              
+
+
+      // -----------------------------------------------------
+
+      break;
+
+    case "ContractAgreed":
+      
+      party = decoded._party
+
+      log('manageEvent - party',party)
+
+      // ============== dispatch event contract signed ----------------------
+
+
+            code = 7; // still waiting for success
+
+            arbitration = new connexArbitrationContract(address);
+
+            allParties = yield arbitration.allParties();
+            log("handleSuccessArbitration - allParties", allParties);
+
+            const partyAHasAgreed = yield arbitration.hasAgreed(allParties[0]);
+            const partyBHasAgreed = yield arbitration.hasAgreed(allParties[1]);
+
+            const agreed = partyAHasAgreed && partyBHasAgreed; // assuming all party has payed
+            if (agreed) {
+              code = 9; // closed – ready for withdrawn
+            }
+
+            // Status update
+            toUpdate = new FormData();
+            toUpdate.append("code", code);
+
+            try {
+              const response = yield call(Contracts.statusChange, toUpdate, id);
+              log("handleSuccessArbitration - contract status updated", response);
+              const { statusId, statusLabel, statusUpdatedAt, statusFrom } = response.data.data;
+              yield put({
+                type: SET_CONTRACT_STATUS,
+                statusId,
+                statusFrom,
+                statusLabel,
+                statusUpdatedAt,
+                id
+              });
+              yield put({ type: FETCH_CONTRACTS });
+              yield put({ type: CONTRACT_SAVING, payload: false });
+              yield put({ type: CONTRACT_UPDATING, payload: false });
+
+              // const { history } = action;
+              // history.push(`/contracts/detail/${id}`); // go to contract detail for furter operations
+            } catch (error) {
+              yield put({ type: API_CATCH, error });
+              yield put({ type: CONTRACT_SAVING, payload: false });
+              yield put({ type: CONTRACT_UPDATING, payload: false });
+            }
               
 
 
