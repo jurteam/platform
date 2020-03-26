@@ -70,8 +70,23 @@ export function* handleLookupWalletBalance(args) {
 
   const wallet = yield select(getWallet);
 
-  // it will sync automatically token balance using Drizzle fresh data
-  const jurTokenBalance = yield callToContract("JURToken", "balanceOf", [wallet.address]);
+  const connectorValue = connector();
+    log("getBalance - connector()", connectorValue);
+
+  let jurTokenBalance
+
+  if (connectorValue === 'web3') {
+
+    // it will sync automatically token balance using Drizzle fresh data
+     jurTokenBalance = yield callToContract("JURToken", "balanceOf", [wallet.address]);
+  }
+  else if (connectorValue === 'connex') 
+  {
+
+    const connexToken = new connexJURToken();
+    jurTokenBalance = yield connexToken.balanceOf(wallet.address);
+
+  }
 
   if (typeof jurTokenBalance !== 'undefined' && jurTokenBalance) {
     yield put({
