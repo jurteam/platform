@@ -1,5 +1,4 @@
 import { call, put, select, takeLatest, takeEvery } from "redux-saga/effects";
-import moment from 'moment';
 import { getUser } from "./Selectors";
 import {
   RESET_CONTRACT,
@@ -43,12 +42,12 @@ import {
 } from "../reducers/types";
 
 
-import { log, arrayColumn } from "../utils/helpers"; // log helper
+import { log, arrayColumn, connector } from "../utils/helpers"; // log helper
 
 import contractStatuses from "../assets/i18n/en/status.json";
 
 // Api layouts
-import { Contracts } from "../api";
+import { Contracts, connexArbitrationContract } from "../api";
 
 import {
   // getWallet,
@@ -64,7 +63,8 @@ import {
 } from "./Selectors"; // selector
 
 // Get
-export function* getContract(action) {
+export function* getContract(action) 
+{
   let silentLoading = false
   const { id, onSuccess, onError, silent } = action;
   silentLoading = silent
@@ -81,12 +81,33 @@ export function* getContract(action) {
     } = yield call(Contracts.get, { id }); // due missing data TODO: look at the attachments
     const { address } = data;
 
+    let fromChain = null;
+
     // log('getContract ok',data);
+    if (connector() === 'connex')
+    {
+      // get contract details from chain
+      const user = yield select(getUser);
+
+      const arbitration = new connexArbitrationContract(data.address);
+
+      const hasWithdrawn = yield arbitration.hasWithdrawn(user.wallet);
+      const dispersal = yield arbitration.dispersal(user.wallet);
+
+      log('getContract - hasWithdrawn',hasWithdrawn);
+      log('getContract - dispersal',dispersal);
+
+      fromChain = {
+        hasWithdrawn: hasWithdrawn,
+        dispersal: dispersal
+      }
+
+    }
 
 
     yield put({
       type: SET_CONTRACT,
-      payload: { ...data, details: details.data }
+      payload: { ...data, details: details.data, fromChain: fromChain }
     });
     if (address) {
       yield put({ type: CHAIN_GET_CONTRACT, address });

@@ -591,6 +591,7 @@ export const ContractDetail = ( props ) => {
               feeToPay={feeToPay}
               statusFrom={statusFrom}
               chainContract={chainContract}
+              fromChain={contract.current.fromChain}
               isValid={isValid()}
               hasError={hasError}
               lastPartInvolved={lastPartInvolved}

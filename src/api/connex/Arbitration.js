@@ -122,6 +122,52 @@ export default class connexArbitrationContract
 
   }
 
+  async hasWithdrawn(party) 
+  {
+    log('hasWithdrawn - ArbitrationFactoryABI',party)
+    const hasWithdrawnABI = this.getMethodABI("hasWithdrawn");
+    log('hasWithdrawn - hasWithdrawnABI',hasWithdrawnABI)
+    
+    const hasWithdrawnMethod = this.thorAccount.method(hasWithdrawnABI)
+
+    let hash = '';
+    
+    await hasWithdrawnMethod.call(party).then(output=>{
+      log('hasWithdrawn - hasWithdrawnMethod',output)
+
+      hash = output.decoded[0];
+      
+    }).catch(err=>{  
+      log('hasWithdrawn - catch() err',err)
+    })
+
+    return hash;
+
+  }
+
+  async dispersal(party) 
+  {
+    log('dispersal - ArbitrationFactoryABI',party)
+    const dispersalABI = this.getMethodABI("dispersal");
+    log('dispersal - dispersalABI',dispersalABI)
+    
+    const dispersalMethod = this.thorAccount.method(dispersalABI)
+
+    let hash = '';
+    
+    await dispersalMethod.call(party).then(output=>{
+      log('dispersal - dispersalMethod',output)
+
+      hash = output.decoded[0];
+      
+    }).catch(err=>{  
+      log('dispersal - catch() err',err)
+    })
+
+    return hash;
+
+  }
+
 
   async agree(account, contractId) 
   {
