@@ -1,8 +1,8 @@
 pragma solidity >=0.5.0 <0.7.0;
 
-import "node_modules/@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "node_modules/@openzeppelin/contracts/math/SafeMath.sol";
-import "node_modules/@openzeppelin/contracts/ownership/Ownable.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/math/SafeMath.sol";
+import "@openzeppelin/contracts/ownership/Ownable.sol";
 import "./utils/DateTimeLib.sol";
 
 contract OathKeeper is Ownable {
@@ -24,7 +24,7 @@ contract OathKeeper is Ownable {
     }
     /** Each address can have multiple funds locked under different schedules */
     mapping(address => mapping(uint => LockSchedule)) public lockMap;
-    mapping(address => Oaths) oathStats;
+    mapping(address => Oaths) public oathStats;
     /** JUR Token for distribution */
     IERC20 public jurToken;
     /** Keeps stats on oaths */

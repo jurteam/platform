@@ -23,7 +23,7 @@ contract OathKeeperMock is Ownable {
     }
     /** Each address can have multiple funds locked under different schedules */
     mapping(address => mapping(uint => LockSchedule)) public lockMap;
-    mapping(address => Oaths) oathStats;
+    mapping(address => Oaths) public oathStats;
     /** JUR Token for distribution */
     IERC20 public jurToken;
     /** Keeps stats on oaths */
