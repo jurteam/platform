@@ -16,7 +16,6 @@ contract OathKeeperMock is Ownable {
         uint256 lockInPeriod;
         bool isOathFulfilled;
     }
-
     struct Oaths {
         uint256 count;
         uint256 activeAmountLocked;
@@ -62,7 +61,7 @@ contract OathKeeperMock is Ownable {
         totalActiveOathCount = SafeMath.add(totalActiveOathCount, 1);
 
         _releaseAt = DateTimeLib.addSeconds(now, _lockInPeriod);
-        lockMap[msg.sender][oathStats[msg.sender].count] = LockSchedule(_amount, now, _lockInPeriod, _releaseAt, false);
+        lockMap[msg.sender][oathStats[msg.sender].count] = LockSchedule(_amount, now, _releaseAt, _lockInPeriod, false);
         // check if tokens can be transferred to this contract.
         require(jurToken.transferFrom(msg.sender, address(this), _amount), "Not able to transfer funds.");
 

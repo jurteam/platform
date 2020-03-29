@@ -1,8 +1,8 @@
 pragma solidity >=0.5.0 <0.7.0;
 
-import "@openzeppelin/contracts/token//ERC20/IERC20.sol";
-import "@openzeppelin/contracts/math/SafeMath.sol";
-import "@openzeppelin/contracts/ownership/Ownable.sol";
+import "node_modules/@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "node_modules/@openzeppelin/contracts/math/SafeMath.sol";
+import "node_modules/@openzeppelin/contracts/ownership/Ownable.sol";
 import "./utils/DateTimeLib.sol";
 
 contract OathKeeper is Ownable {
@@ -67,7 +67,7 @@ contract OathKeeper is Ownable {
         totalActiveOathCount = SafeMath.add(totalActiveOathCount, 1);
 
         _releaseAt = DateTimeLib.addMonths(now, _lockInPeriod);
-        lockMap[msg.sender][oathStats[msg.sender].count] = LockSchedule(_amount, now, _lockInPeriod, _releaseAt, false);
+        lockMap[msg.sender][oathStats[msg.sender].count] = LockSchedule(_amount, now, _releaseAt, _lockInPeriod, false);
         // check if tokens can be transferred to this contract.
         require(jurToken.transferFrom(msg.sender, address(this), _amount), "Not able to transfer funds.");
 
