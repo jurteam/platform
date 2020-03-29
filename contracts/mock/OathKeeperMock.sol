@@ -47,7 +47,7 @@ contract OathKeeperMock is Ownable {
         jurToken = IERC20(_jurToken);
     }
 
-    function takeAnOath(uint _lockInPeriod) public {
+    function takeAnOath(uint _lockInPeriod, uint _startAt) public {
         uint _releaseAt;
         uint256 _amount = jurToken.allowance(msg.sender, address(this));
         require(_amount > 0, "Please approve token transfer to the contract.");
@@ -61,7 +61,7 @@ contract OathKeeperMock is Ownable {
         totalActiveOathCount = SafeMath.add(totalActiveOathCount, 1);
 
         _releaseAt = DateTimeLib.addSeconds(now, _lockInPeriod);
-        lockMap[msg.sender][oathStats[msg.sender].count] = LockSchedule(_amount, now, _releaseAt, _lockInPeriod, false);
+        lockMap[msg.sender][oathStats[msg.sender].count] = LockSchedule(_amount, _startAt, _releaseAt, _lockInPeriod, false);
         // check if tokens can be transferred to this contract.
         require(jurToken.transferFrom(msg.sender, address(this), _amount), "Not able to transfer funds.");
 
@@ -98,20 +98,5 @@ contract OathKeeperMock is Ownable {
         }
         require(minimumLockPeriod < maximumLockPeriod, "Something is not right.");
     }
-
-    /**
-    @dev renege() - A public function which can be called by the owner to provide flexibility
-    with the release date.
-    @param _promisee - Address of the oath holder.
-    @param _newRelease - uint timestamp of the new release date and time.
-    */
-    // function renege(address _promisee, uint _newRelease) public onlyOwner {
-    //     LockSchedule storage _lockSchedule = lockMap[msg.sender];
-
-    //     require(now < _lockSchedule.releaseAt, "Oath is over");
-    //     _lockSchedule.releaseAt = _newRelease;
-
-    //     emit ABrokenOath(_promisee, _newRelease);
-    // }
 
 }
