@@ -4,7 +4,7 @@ const OathKeeper = artifacts.require("./OathKeeper.sol");
 
 const ERC20 = artifacts.require("./mock/JURTokenMock.sol");
 
-contract('Oath Keeping - Taking an oath', function (accounts) {
+contract('Oath Keeping - Releasing an oath', function (accounts) {
 
   var token;
   var oathKeeper;
@@ -25,36 +25,57 @@ contract('Oath Keeping - Taking an oath', function (accounts) {
     //Initialise the oath keeper
     oathKeeper = await OathKeeper.new(token.address, {from: jurAdmin});
     await token.approve(oathKeeper.address, 200, {from: promisee1});
-    await oathKeeper.takeAnOath(2, {from: promisee1});
+    await oathKeeper.takeAnOath(11, {from: promisee1});
     await assertFail(async () => {
-        await oathKeeper.releaseOath({from: promisee1});
+        await oathKeeper.releaseOath(1, {from: promisee1});
     });
   });
 
   it("2. Tokens should release after vesting", async () => {
 
     await token.approve(oathKeeper.address, 200, {from: promisee2});
-    await oathKeeper.takeAnOath(1, {from: promisee2});
+    await oathKeeper.takeAnOath(10, {from: promisee2});
+    const details = await oathKeeper.lockMap(promisee2, 1);
+    console.log("============================================");
+    console.log("Oath Details: ", details.releaseAt.toNumber());
+    console.log("============================================");
 
     function timeout(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
-    await timeout(60000);
-    await oathKeeper.releaseOath({from: promisee2});
+    await timeout(12000);
+    console.log("============================================");
+    console.log("Current time: ", Math.round((new Date()).getTime() / 1000));
+    console.log("============================================");
+    await oathKeeper.releaseOath(1, { from: promisee2});
 
-    assert.equal((await token.balanceOf(promisee2)).toNumber(), 1000);
-    assert.equal((await oathKeeper.totalLockedTokens.call()).toNumber(), 100);
-    assert.equal(await oathKeeper.vestingMap[promisee2].isOathFulfilled, true);
+    assert.equal((await token.balanceOf(promisee2)).toNumber(), 200);
   });
 
-  it("3. Admin should be able to change the release date", async() => {
-    
-    var _releaseAt = Math.round((new Date()).getTime() / 1000) + 1000;
-    
-    await oathKeeper.renege(promisee1, _releaseAt, {from: jurAdmin});
+  it("3. Oath stats should change for a promisee after release", async () => {
 
-    assert.equal(await oathKeeper.vestingMap[promisee1].releaseAt, _releaseAt);
+    const details = await oathKeeper.oathStats(promisee2);
 
-  })
+    assert.equal(details.count.toNumber(), 1);
+    assert.equal(details.activeAmountLocked.toNumber(), 0);
+    assert.equal(details.totalAmountLocked.toNumber(), 200);
+  });
+
+  it("4. Overall contract stats should change after release", async () => {
+
+    assert.equal((await oathKeeper.totalLockedTokens.call()).toNumber(), 200);
+    assert.equal((await oathKeeper.totalActiveLockedTokens.call()).toNumber(), 0);
+    assert.equal((await oathKeeper.totalOathCount.call()).toNumber(), 1);
+    assert.equal((await oathKeeper.totalActiveOathCount.call()).toNumber(), 0);
+  });
+
+  it("5. LockSchedule details should be updated after a release.", async () => {
+
+    const details = await oathKeeper.lockMap(promisee2, 1);
+
+    assert.equal(details.amount.toNumber(), 200);
+    assert.equal(details.lockInPeriod.toNumber(), 10);
+    assert.equal(details.isOathFulfilled, true);
+  });
 
 });
