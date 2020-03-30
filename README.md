@@ -24,6 +24,7 @@ constructor(address _jurToken)
 The address used to deploy the contract **OathKeeper.sol** automatically becomes the owner/admin of the contract.
 1. **_jurToken** - The JUR Token address
 
+
 ## Write methods
 ### 1. Adding an oath
 ```
@@ -39,12 +40,14 @@ releaseOath(uint _id)
 ```
 Once the lock-in period is over, the owner of the locked tokens can call this function to release the tokens from the oath
 and receive them in their designated address by providing the array index of the oath related to the address.
+1. **_id** - The array index of the oath related to the address
 
 ### 3. Updating minimum and maximum lock-in duration requirements
 ```
 updateLockPeriod(uint _minimumLockPeriod, uint _maximumLockPeriod) 
 ```
 The owner of the contract can update the minimum and maximum lock-in duration requirements of the contract. This is set in terms of months. The default values are 1 to 36 months.
+
 
 ## Read-only methods
 ### 1. lockMap(address, id)
