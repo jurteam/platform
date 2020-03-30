@@ -19,6 +19,7 @@ class CreateTransactionsTable extends Migration
             $table->string('event')->nullable();
             $table->string('wallet');
             $table->string('param')->nullable();
+            $table->string('locked_by')->nullable();
             $table->string('block')->nullable();
             $table->string('time')->nullable();
             $table->unsignedInteger('contract_id');            
