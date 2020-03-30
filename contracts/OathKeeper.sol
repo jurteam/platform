@@ -24,10 +24,11 @@ contract OathKeeper is Ownable {
     }
     /** Each address can have multiple funds locked under different schedules */
     mapping(address => mapping(uint => LockSchedule)) public lockMap;
+    /** The overall oath stats related to each address */
     mapping(address => Oaths) public oathStats;
     /** JUR Token for distribution */
     IERC20 public jurToken;
-    /** Keeps stats on oaths */
+    /** Stats on oaths in the contract overall */
     uint256 public totalLockedTokens;
     uint256 public totalActiveLockedTokens;
     uint256 public totalOathCount;
@@ -38,7 +39,6 @@ contract OathKeeper is Ownable {
 
     event OathTaken(address _beneficiary, uint _amount, uint _lockInPeriod);
     event IHoldYourOathFulfilled(address _beneficiary, uint _amount);
-    event ABrokenOath(address _beneficiary, uint _newRelease);
 
     /**
     @param _jurToken - Address of the JUR token contract which will be used for transferring the
