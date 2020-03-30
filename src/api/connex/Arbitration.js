@@ -168,7 +168,6 @@ export default class connexArbitrationContract
 
   }
 
-
   async agree(account, contractId) 
   {
     
@@ -224,6 +223,69 @@ export default class connexArbitrationContract
       
 
       log('agree - signingService then() txid',txid)
+      
+    }).catch(err=>{  
+      log('agree - signingService catch() err',err)
+    })
+
+
+  }
+
+  async withdrawDispersal(account, contractId) 
+  {
+    
+    const withdrawDispersalABI = this.getMethodABI("withdrawDispersal");
+
+    log('withdrawDispersal - withdrawDispersalABI',withdrawDispersalABI)    
+
+    const withdrawDispersalMethod = this.thorAccount.method(withdrawDispersalABI)
+
+    log('withdrawDispersal - withdrawDispersalMethod',withdrawDispersalMethod)
+    
+
+    // --##################--- asClause
+
+    log('withdrawDispersal - parameter',{account})
+
+    const withdrawDispersalClause = withdrawDispersalMethod.asClause()
+    
+    log('withdrawDispersal - withdrawDispersalClause',withdrawDispersalClause) 
+    
+    const signingService = global.connex.vendor.sign('tx')
+    
+    log('withdrawDispersal - signingService',signingService)
+
+
+    signingService
+    .signer(account) // Enforce signer
+    .gas(global.connex.thor.genesis.gasLimit) // Set maximum gas
+    .link('http://localhost:3000/contracts/detail/'+contractId) // User will be back to the app by the url https://connex.vecha.in/0xffff....
+    .comment('withdrawDispersal contract')
+
+    let txid = null
+
+    await signingService.request([
+      {
+        ...withdrawDispersalClause,
+      }
+    ])
+    .then(async (tx)=>{
+
+      log('withdrawDispersal - signingService then()',tx)
+
+      // call transaction saving endpoint
+      // ADD_TRANSACTION
+      
+      txid = tx.txid
+
+      const filter = {
+        _party: account,
+      }
+      
+      global.dispatcher({type: ADD_TRANSACTION,txid: tx.txid, event: 'ContractWithdrawn', param: filter, contract_id: contractId})
+      
+
+      log('withdrawDispersal - signingService then() txid',txid)
       
     }).catch(err=>{  
       log('agree - signingService catch() err',err)

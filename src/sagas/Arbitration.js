@@ -971,6 +971,39 @@ export function* handleWithdrawArbitration(args) {
   yield put({ type: CONTRACT_UPDATING, payload: true });
   const { id, address: contractAddress, onFail } = args;
 
+
+// check connex or web3
+const connectorValue = connector()
+
+if(connectorValue === 'connex') 
+{
+
+  const user = yield select(getUser);
+
+  const arbitration = new connexArbitrationContract(contractAddress);
+
+
+  const dispersal = yield arbitration.dispersal(user.wallet);
+  log(`handleWithdrawArbitration - current user has dispersal?`, dispersal.toString());
+
+  const hasWithdrawn = yield arbitration.hasWithdrawn(user.wallet);
+  log(`handleWithdrawArbitration - current user has hasWithdrawn?`, hasWithdrawn);
+
+  if (!hasWithdrawn && dispersal.toString() !== "0") 
+  {
+
+    const withdrawTx = yield arbitration.withdrawDispersal(user.wallet, id);
+    log(`handleWithdrawArbitration - current user has withdrawTx?`, withdrawTx);
+
+
+  }
+
+
+
+}
+else if(connectorValue === 'web3') 
+{
+
   const arbitration = new Arbitration(contractAddress);
 
   const dispersal = yield arbitration.dispersal().catch(chainErrorHandler);
@@ -1050,6 +1083,12 @@ export function* handleWithdrawArbitration(args) {
       if (typeof onFail === "function") onFail();
     }
   }
+
+
+  
+}
+
+
 }
 
 export function* handleAgreeArbitration({ contractAddress }) {

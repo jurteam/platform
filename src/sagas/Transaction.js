@@ -15,11 +15,12 @@ import {
   RESOLVE_TX,
   TRANSACTIONS_FETCHED,
   LOOKUP_WALLET_BALANCE,
+  SET_WITHDRAW,
 } from "../reducers/types";
 
 import { getTransactionsList, getTransactionsLastBlock, getWallet } from './Selectors'
 
-import { log } from "../utils/helpers";
+import { log, ethToHuman } from "../utils/helpers";
 
 import { 
   Contracts,
@@ -207,6 +208,8 @@ function* manageEvent(txw,decoded)
   log('manageEvent - decoded',decoded)
 
   let party, code, arbitration, allParties, toUpdate
+
+  const wallet = yield select(getWallet);
   
   switch (event) 
   {
@@ -298,7 +301,7 @@ function* manageEvent(txw,decoded)
               
 
               let amount = 0;
-              const wallet = yield select(getWallet);
+              
               const partAPenaltyFee = part_a_penalty_fee
               const partBPenaltyFee = part_b_penalty_fee
               const whoPays = who_pays
@@ -437,6 +440,84 @@ function* manageEvent(txw,decoded)
               yield put({ type: CONTRACT_UPDATING, payload: false });
             }
               
+
+
+      // -----------------------------------------------------
+
+      break;
+
+    case "ContractWithdrawn":
+      
+      party = decoded._party
+
+      log('manageEvent - party',party)
+
+      // ============== dispatch event Contract Withdrawn ----------------------
+
+            
+
+            arbitration = new connexArbitrationContract(address);
+
+            const dispersal = yield arbitration.dispersal(wallet.address.toLowerCase());
+
+            yield put({ type: LOOKUP_WALLET_BALANCE }); // update wallet balance
+      
+            // let code = 10; // still waiting for success
+      
+            // NOTICE: this should be the normal behavior, since we have 100% to one party this can work only this way
+            let code = 9; // still waiting for withdrown from one party
+      
+            const allParties = yield arbitration.allParties();
+            log("handleWithdrawArbitration - allParties", allParties);
+             
+            const partyADispersal = yield arbitration.dispersal(allParties[0]);
+            const partyBDispersal = yield arbitration.dispersal(allParties[1]);
+            log("handleWithdrawArbitration - partyADispersal", partyADispersal.toString());
+            log("handleWithdrawArbitration - partyBDispersal", partyBDispersal.toString());
+      
+            // set my witdrawn to true into store
+            yield put({type: SET_WITHDRAW});
+            
+            const partyAHasWithdrawn = yield arbitration.hasWithdrawn(allParties[0]);
+            const partyBHasWithdrawn = yield arbitration.hasWithdrawn(allParties[1]);
+            log("handleWithdrawArbitration - partyAHasWithdrawn", partyAHasWithdrawn);
+            log("handleWithdrawArbitration - partyBHasWithdrawn", partyBHasWithdrawn);
+      
+            
+            const withdrawn = (partyAHasWithdrawn || partyADispersal.toString() ==='0' ) && (partyBHasWithdrawn|| partyBDispersal.toString() ==='0' ); // assuming all party has payed
+            log("handleWithdrawArbitration - withdrawn", withdrawn);
+            if (withdrawn) {
+              code = 10; // closed – ready for withdrawn
+            }
+      
+            // Status update
+            let toUpdate = new FormData();
+            toUpdate.append("code", code);
+            toUpdate.append("interpolation[value]", ethToHuman(dispersal.toString()));
+      
+            try {
+              const response = yield call(Contracts.statusChange, toUpdate, id);
+              log("handleWithdrawArbitration - contract status updated", response);
+              const { statusId, statusLabel, statusUpdatedAt, statusFrom } = response.data.data;
+              yield put({
+                type: SET_CONTRACT_STATUS,
+                statusId,
+                statusFrom,
+                statusLabel,
+                statusUpdatedAt,
+                id
+              });
+              yield put({ type: FETCH_CONTRACTS });
+              yield put({ type: CONTRACT_SAVING, payload: false });
+              yield put({ type: CONTRACT_UPDATING, payload: false });
+      
+              // const { history } = action;
+              // history.push(`/contracts/detail/${id}`); // go to contract detail for furter operations
+            } catch (error) {
+              yield put({ type: API_CATCH, error });
+              yield put({ type: CONTRACT_SAVING, payload: false });
+              yield put({ type: CONTRACT_UPDATING, payload: false });
+            }
 
 
       // -----------------------------------------------------
