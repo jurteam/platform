@@ -80,6 +80,8 @@ $api->version('v1', function($api) {
             $api->get('/', 'App\Http\Controllers\TransactionsController@getResolvableByWallet');
             $api->post('/', 'App\Http\Controllers\TransactionsController@store');
             $api->post('{id}', 'App\Http\Controllers\TransactionsController@update');            
+            $api->post('{id}/lock', 'App\Http\Controllers\TransactionsController@lock');            
+            $api->post('{id}/unlock', 'App\Http\Controllers\TransactionsController@unlock');            
         });
     });
 

@@ -21,23 +21,11 @@ class TransactionsController extends Controller
     {
         $wallet = $request->header('wallet');
 
-        $waitingList = Transaction::notResolved()
-            ->byWallet($wallet)->get();
+        $waitingList = Transaction::mine($wallet)
+            ->lockedByMeOrUnlocked($wallet)->get();
 
-        $lastBlockNumber = Transaction::byWallet($wallet)->max('block');
 
-        $waitingColl = new Collection($waitingList, new TransactionTransformer);
-
-        $fractal = new Manager();
-
-        $waiting = $fractal->createData($waitingColl)->toArray();
-
-        return response()->json(
-            array_merge(
-                ['lastBlockNumber' => $lastBlockNumber],
-                ['waiting' => $waiting["data"]]
-            )
-        );
+        return $this->response->collection($waitingList, new TransactionTransformer);
     }
 
 
@@ -67,11 +55,56 @@ class TransactionsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $transaction = Transaction::findOrFail($id);
+        $wallet = $request->header('wallet');
+        $transaction = Transaction::lockedByMe($wallet)->findOrFail($id);
 
         $transaction->update($request->all());
 
         return $this->item($transaction, new TransactionTransformer);
         // return response()->json(compact('transaction'), 201);
+    }
+
+    /**
+     * Lock transaction.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
+     */
+    public function lock(Request $request, $id)
+    {
+        $wallet = $request->header('wallet');
+        $transaction = Transaction::findOrFail($id);
+        $result = ($transaction->locked_by == $wallet);
+
+        if ($transaction->locked_by == null ) 
+        {
+            $lowerWallet = strtolower($wallet);
+
+            $result = $transaction->update(['locked_by' => $lowerWallet]);
+        }
+
+        return ['response' => $result];
+    }
+
+    /**
+     * Unlock transaction.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
+     */
+    public function unlock(Request $request, $id)
+    {
+        $wallet = $request->header('wallet');
+        $lowerWallet = strtolower($wallet);
+
+        $transaction = Transaction::findOrFail($id);
+
+        $result = false;
+        if ($transaction->locked_by == $lowerWallet ) 
+        {
+            $result = $transaction->update(['locked_by' => null]);
+        }
+
+        return ['response' => $result];
     }
 }
