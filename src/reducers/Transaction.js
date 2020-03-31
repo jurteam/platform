@@ -10,7 +10,6 @@ import { log } from "../utils/helpers";
 
 
 const INITIAL_STATE = {
-  lastBlockNumber: 0,
   waiting: [],
 };
 
@@ -22,7 +21,7 @@ export default (state = INITIAL_STATE, action) => {
 
     case TRANSACTIONS_FETCHED:
       log(TRANSACTIONS_FETCHED, action.payload);
-      return { ...state, waiting: state.waiting.concat(action.payload.waiting), lastBlockNumber: action.payload.lastBlockNumber };
+      return { ...state, waiting: state.waiting.concat(action.payload.data) };
 
     case TRANSACTION_ADDED:
       const newWaiting = [...state.waiting]

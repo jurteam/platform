@@ -6,6 +6,7 @@ import {
   ADD_TRANSACTION,
   TRANSACTION_ADDED,
   UPDATE_TRANSACTION,
+  UNLOCK_TRANSACTION,
   TRANSACTION_UPDATED,
   SET_CONTRACT_STATUS,
   FETCH_CONTRACTS,
@@ -65,6 +66,14 @@ export function* handleAddTransaction(args)
 }
 
 
+export function* handleUnlockTransaction(args) 
+{
+  log('handleUnlockTransaction - args',args);
+  const { id } = args
+  yield call(Transactions.unlock, id);
+}
+
+
 export function* handleUpdateTransaction(args) 
 {
   log('handleUpdateTransaction - args',args);
@@ -109,56 +118,41 @@ export function* handleCatchEvents(args) {
   log('handleCatchEvents - lastblockresolved',lastblockresolved)
   
   
-  for (let i = lastblockresolvedInt; i <= lastblock; i++) 
-  {
-    const thisBlock = yield getblockBynumber(i);
-    const blockTxs = thisBlock.transactions
-    
-    log('handleCatchEvents - thisBlock',thisBlock)
-    log('handleCatchEvents - blockTxs',blockTxs)
-    
-    for (let j = 0; j < blockTxs.length; j++) {
-      
-      const tx = blockTxs[j]
-      log('handleCatchEvents - tx',tx)
-
-      for (let k = 0; k < txWaiting.length; k++) {
-
-        const txw = txWaiting[k]
-        log('handleCatchEvents - txw',txw)
-        
-        if (txw !== null) 
-        {
-          if (tx === txw.txid)
-          {
-            log('handleCatchEvents - (tx === txw.txid)')
-            // transaction writed into blockchain  
-            // getEventUpdateTx(txw, i, thisBlock.timestamp) 
-            yield put({type:RESOLVE_TX, txw:txw, blockNumber:i, timestamp:thisBlock.timestamp})
+  // if tx not resolved are waiting
   
-          }
-        }
-      }
-    }
-
-    // yield blockTxs.forEach(tx=>{
+  if (txWaiting.length > 0) 
+  {
+    log('handleCatchEvents - txWaiting.length > 0')
+    for (let k = 0; k < txWaiting.length; k++) 
+    {
       
-    //   log('handleCatchEvents - tx',tx)
+      const txw = txWaiting[k]
+      log('handleCatchEvents - txw',txw)
       
-    //   txWaiting.forEach(txw=>{
-
-    //     log('handleCatchEvents - txw',txw)
+      const thisTx = yield getTxByAddress(txw.txid);
+      log('handleCatchEvents - thisTx',thisTx)
+      
+      if (thisTx !== null) 
+      {
+        log('handleCatchEvents - thisTx !== null')
+        // lock this tx to resolve it
+        let response = yield call(Transactions.lock, txw.id);
+        log('handleCatchEvents - response',response)
         
-    //     if (tx === txw.txid)
-    //     {
-    //       log('handleCatchEvents - (tx === txw.txid)')
-    //       // transaction writed into blockchain  
-    //       getEventUpdateTx(txw, i, thisBlock.timestamp) 
+        if (response.data.response) 
+        {
 
-    //     }
-    //   })
-    // });
+          // locked by me
+          log('handleCatchEvents - locked by me')
 
+          // if no one is resolving it, resolve it
+          yield put({type:RESOLVE_TX, txw:txw, blockNumber: thisTx.meta.blockNumber, timestamp: thisTx.meta.blockTimestamp})
+        }
+
+      }
+
+
+    }
   }
 
 }
@@ -167,6 +161,13 @@ async function getblockBynumber(i)
 {
   return await global.connex.thor.block(i).get();
 }
+
+async function getTxByAddress(txAddress) 
+{
+  return await global.connex.thor.transaction(txAddress).getReceipt();
+}
+
+
 
 export function* getEventUpdateTx(args) 
 {
@@ -182,23 +183,35 @@ export function* getEventUpdateTx(args)
 
   let eventDecoded        
   // call event
-  if (txw.event === 'ArbitrationCreated') 
+
+  try 
   {
-    const factory = new connexArbitrationFactory();
-    eventDecoded = yield factory.EventCatch(param, txw.event, blockNumber, txw.txid);
+    if (txw.event === 'ArbitrationCreated') 
+    {
+      const factory = new connexArbitrationFactory();
+      eventDecoded = yield factory.EventCatch(param, txw.event, blockNumber, txw.txid);
+    } 
+    else 
+    {
+      const contract = new connexArbitrationContract(txw.contract.address);
+      eventDecoded = yield contract.EventCatch(param, txw.event, blockNumber, txw.txid);
+    }
+    log('getEventUpdateTx - eventDecoded',eventDecoded)
+
+    // manage event
+    yield manageEvent(txw, eventDecoded)
+
+    // update tx
+    yield put({type:UPDATE_TRANSACTION, id: txw.id , block: blockNumber ,time: timestamp })
   } 
-  else 
+  catch (error) 
   {
-    const contract = new connexArbitrationContract(txw.contract.address);
-    eventDecoded = yield contract.EventCatch(param, txw.event, blockNumber, txw.txid);
+
+    log('getEventUpdateTx - error',error)
+    yield put({ type: UNLOCK_TRANSACTION, id: txw.id });
   }
-  log('getEventUpdateTx - eventDecoded',eventDecoded)
 
-  // manage event
-  yield manageEvent(txw, eventDecoded)
 
-  // update tx
-  yield put({type:UPDATE_TRANSACTION, id: txw.id , block: blockNumber ,time: timestamp })
 }
 
 function* manageEvent(txw,decoded) 
@@ -544,4 +557,5 @@ export default function* transactionSagas() {
 
   yield takeEvery(ADD_TRANSACTION, handleAddTransaction);
   yield takeEvery(UPDATE_TRANSACTION, handleUpdateTransaction);
+  yield takeEvery(UNLOCK_TRANSACTION, handleUnlockTransaction);
 }

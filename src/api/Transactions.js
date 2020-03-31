@@ -12,6 +12,12 @@ export class Transactions {
   static create(payload) {
     return axios.post(root, payload);
   }
+  static lock(id) {
+    return axios.post(`${root}/${id}/lock`);
+  }
+  static unlock(id) {
+    return axios.post(`${root}/${id}/unlock`);
+  }
   static update(payload, id) {
     return axios.post(`${root}/${id}`, payload);
   }
