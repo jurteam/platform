@@ -537,6 +537,21 @@ function* manageEvent(txw,decoded)
 
       break;
 
+    case "ContractDisputed":
+      
+      party = decoded._party
+
+      log('manageEvent - party',party)
+
+      // ============== dispatch event Contract Disputed ----------------------
+
+            
+
+
+      // -----------------------------------------------------
+
+      break;
+
     default:
       break;
   }

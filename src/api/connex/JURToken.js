@@ -184,6 +184,20 @@ export default class connexJURToken
     log('approveAndCall - signingService',signingService)
     
     let txid = null
+    let waitingEvent = '';
+
+    switch (method) {
+      case 'sign':
+        waitingEvent = 'ContractSigned';
+        break;
+    
+      case 'dispute':
+        waitingEvent = 'ContractDisputed';
+        break;
+    
+      default:
+        break;
+    }
     
     let transactionRequest 
     await signingService.request([
@@ -205,7 +219,7 @@ export default class connexJURToken
         _party: account,
       }
       
-      global.dispatcher({type: ADD_TRANSACTION,txid: tx.txid, event: 'ContractSigned', param: filter, contract_id: contractId})
+      global.dispatcher({type: ADD_TRANSACTION,txid: tx.txid, event: waitingEvent, param: filter, contract_id: contractId})
       
 
 
