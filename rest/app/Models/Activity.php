@@ -25,7 +25,8 @@ class Activity extends Model implements HasMedia
         'status_code',
         'user_id',
         'contract_id',
-        'chain_updated_at'
+        'chain_updated_at',
+        'waiting'
     ];
 
     protected $casts = [

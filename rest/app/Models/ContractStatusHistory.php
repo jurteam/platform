@@ -9,7 +9,8 @@ class ContractStatusHistory extends Model
     protected $fillable = [
         'chain_updated_at',
         'contract_status_id',
-        'contract_status_code'
+        'contract_status_code',
+        'waiting'
     ];
 
     protected $appends = ['custom_status_date'];

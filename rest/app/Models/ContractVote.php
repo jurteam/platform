@@ -22,7 +22,8 @@ class ContractVote extends Model implements HasMedia
         'oracle_wallet',
         'contract_id',
         'message',
-        'hash'
+        'hash',
+        'waiting'
     ];
 
     public static function boot()

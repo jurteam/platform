@@ -17,7 +17,8 @@ class ContractStatusDetail extends Model implements HasMedia
         'proposal_part_a',
         'proposal_part_b',
         'payed_at',
-        'user_id'
+        'user_id',
+        'waiting'
     ];
 
     /**
