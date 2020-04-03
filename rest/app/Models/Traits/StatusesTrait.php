@@ -90,6 +90,7 @@ trait StatusesTrait
     {
         $contractStatusHistory = $this->histories
                         ->filter(function($item) {
+                            if ( $item->waiting ) return false;
                             return !is_null($item->custom_status_date);
                         })
                         ->sortByDesc('custom_status_date')

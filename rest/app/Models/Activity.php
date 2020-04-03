@@ -49,6 +49,11 @@ class Activity extends Model implements HasMedia
         return $query->where('status_code', '<>', 0);
     }
 
+    public function scopeExceptWaiting($query)
+    {
+        return $query->where('waiting', 0);
+    }
+
     public function scopeExceptFuture($query)
     {
         return $query->whereRaw('(chain_updated_at IS NULL OR chain_updated_at <= NOW())');

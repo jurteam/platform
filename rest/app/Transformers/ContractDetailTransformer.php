@@ -95,6 +95,7 @@ class ContractDetailTransformer extends TransformerAbstract
     public function includeDetails(Contract $contract)
     {
         $details = $contract->details->filter(function($detail) {
+            if ( $detail->waiting )  return false;
             if ( $detail->chain_updated_at === null ) return true;
             return ! $detail->chain_updated_at->isFuture();
         });
