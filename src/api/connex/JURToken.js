@@ -184,57 +184,69 @@ export default class connexJURToken
     log('approveAndCall - signingService',signingService)
     
     let txid = null
-    let waitingEvent = '';
+    // let waitingEvent = '';
 
-    switch (method) {
-      case 'sign':
-        waitingEvent = 'ContractSigned';
-        break;
+    // switch (method) {
+    //   case 'sign':
+    //     waitingEvent = 'ContractSigned';
+    //     break;
     
-      case 'dispute':
-        waitingEvent = 'ContractDisputed';
-        break;
+    //   case 'dispute':
+    //     waitingEvent = 'ContractDisputed';
+    //     break;
     
-      default:
-        break;
-    }
+    //   default:
+    //     break;
+    // }
     
-    let transactionRequest 
-    await signingService.request([
+    let transactionRequest = await signingService.request([
       {
         ...approveAndCallClause,
       }
     ])
-    .then(async (tx)=>{
+
+    // .then(async (tx)=>{
       
-      log('approveAndCall - signingService then()',tx)
+    //   log('approveAndCall - signingService then()',tx)
       
-      txid = tx.txid
+    //   txid = tx.txid
+    //   log('approveAndCall - signingService then() txid',txid)
+
+    //     // event to wait:           ContractSigned
+    //     // param to search event:   _party      
+
+    //   const filter = {
+    //     _party: account,
+    //   }
+      
+    //   global.dispatcher({type: ADD_TRANSACTION,txid: tx.txid, event: waitingEvent, param: filter, contract_id: contractId})
+      
+
+
+    //   // return txid
+
+    //   // let ijdfsoijsdf = await this.getAddressByTransaction(txid)
+
+    //   // log('ijdfsoijsdf',ijdfsoijsdf)
+      
+    // }).catch(err=>{  
+    //   log('approveAndCall - signingService catch() err',err)
+    // })
+
+    txid = transactionRequest.txid
       log('approveAndCall - signingService then() txid',txid)
 
         // event to wait:           ContractSigned
-        // param to search event:   _party      
+        // param to search event:   _party  
 
-      const filter = {
-        _party: account,
-      }
-      
-      global.dispatcher({type: ADD_TRANSACTION,txid: tx.txid, event: waitingEvent, param: filter, contract_id: contractId})
-      
+    // const filter = {
+    //   _party: account,
+    // }
+    
+    // global.dispatcher({type: ADD_TRANSACTION,txid: tx.txid, event: waitingEvent, param: filter, contract_id: contractId})
+    
 
-
-      // return txid
-
-      // let ijdfsoijsdf = await this.getAddressByTransaction(txid)
-
-      // log('ijdfsoijsdf',ijdfsoijsdf)
-      
-    }).catch(err=>{  
-      log('approveAndCall - signingService catch() err',err)
-    })
-
-
-
+    return txid
 
 
   }

@@ -48,7 +48,8 @@ import {
   GET_NOW,
   DISPUTE_SAVING,
   DISPUTE_UPDATING,
-  SET_WITHDRAW
+  SET_WITHDRAW,
+  ADD_TRANSACTION
 } from "../reducers/types";
 
 // Api layouts
@@ -754,6 +755,14 @@ export function* handlePayArbitration(args) {
 
     log("handlePayArbitration – signTx", signTx);
 
+
+    const filter = {
+      _party: user.wallet,
+    }
+    
+    global.dispatcher({type: ADD_TRANSACTION,txid: signTx, event: 'ContractSigned', param: filter, contract_id: id})
+    
+
     // event to wait:           ContractSigned
     // param to search event:   _party
 
@@ -1240,7 +1249,16 @@ export function* handleDisputeArbitration(args) {
   {
     // ContractDisputed
 
-    const connexToken = new connexJURToken();    
+    const connexToken = new connexJURToken();
+    
+    // Init first vote payload
+    let firstVote = new FormData();
+    firstVote.append("oracle_wallet", wallet.address);
+    firstVote.append("wallet_part", wallet.address);
+    firstVote.append("contract_id", id);
+    firstVote.append("message", message);
+    // waiting event resolution
+    firstVote.append("waiting", 1);
 
     let amount = 0;
     const totalContractValue = getContractTotalValue(currentContract)
@@ -1262,16 +1280,77 @@ export function* handleDisputeArbitration(args) {
     log("handleDisputeArbitration – amount", amount)
     log("handleDisputeArbitration – amount.toString()", amount.toString())
 
+    firstVote.append("amount", amount);
+
+    const proposal_part_a = dispersal[0];
+    const proposal_part_b = dispersal[1];
+
     amount = connexToWei(amount.toString(), 'ether');
     dispersal[0] = connexToWei(dispersal[0].toString(), 'ether');
     dispersal[1] = connexToWei(dispersal[1].toString(), 'ether');
 
     log("handleDisputeArbitration – payload", [wallet.address, amount, dispersal])
     
-    yield connexToken
+    const disputeTx = yield connexToken
       .approveAndCall(contractAddress, amount, 'dispute', [wallet.address, amount, dispersal], wallet.address, id)
       .catch(chainErrorHandler);
 
+
+      let toUpdate = new FormData();
+      toUpdate.append("code", code);
+      toUpdate.append("message", message);
+      toUpdate.append("proposal_part_a", proposal_part_a);
+      toUpdate.append("proposal_part_b", proposal_part_b);
+
+      // waiting event resolution
+      toUpdate.append("waiting", 1);
+
+
+      log("handleDisputeArbitration - proposalAttachments", proposalAttachments);
+
+
+      if (proposalAttachments.files && proposalAttachments.files.length) 
+      {
+        for (let i = 0; i < proposalAttachments.files.length; i++) 
+        {
+          // iteate over any file sent over appending the files to the form data.
+          let file = proposalAttachments.files[i];
+
+          log("handleDisputeArbitration - for each file", file);
+
+          toUpdate.append("attachments[" + i + "]", file);
+        }
+        // toSend.append("attachments[]", proposalAttachments.files);
+      }
+
+      try {
+
+        let response = yield call(Disputes.store, toUpdate, id);
+        log("handleDisputeArbitration - contract status updated", response);
+
+        firstVote.append("hash", disputeTx.tx);
+
+        // Store first vote due dispute init
+        response = yield call(Oracles.store, firstVote);
+        log("handleDisputeArbitration - set first vote", response);
+        
+      } catch (error) {
+
+        log("handleDisputeArbitration - error", error);
+
+      }
+
+
+
+
+
+
+
+    const filter = {
+      _party: wallet.address,
+    }
+    
+    global.dispatcher({type: ADD_TRANSACTION,txid: disputeTx, event: 'ContractDisputed', param: filter, contract_id: id})
 
 
   }
