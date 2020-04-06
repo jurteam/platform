@@ -76,6 +76,44 @@ export default class connexArbitrationContract
 
   }
 
+  async disputeStarts() 
+  {
+
+    log('disputeStarts - ArbitrationFactoryABI',this.contract)
+    const disputeStartsABI = this.getMethodABI("disputeStarts");
+    log('disputeStarts - disputeStartsABI',disputeStartsABI)
+    
+    
+    const disputeStartsMethod = this.thorAccount.method(disputeStartsABI)
+    
+    
+    const disputeStarts = await disputeStartsMethod.call(); 
+    
+    log('disputeStarts - disputeStarts',disputeStarts)
+
+    return disputeStarts.decoded[0]
+
+  }
+
+  async disputeEnds() 
+  {
+
+    log('disputeEnds - ArbitrationFactoryABI',this.contract)
+    const disputeEndsABI = this.getMethodABI("disputeEnds");
+    log('disputeEnds - disputeEndsABI',disputeEndsABI)
+    
+    
+    const disputeEndsMethod = this.thorAccount.method(disputeEndsABI)
+    
+    
+    const disputeEnds = await disputeEndsMethod.call(); 
+    
+    log('disputeEnds - disputeEnds',disputeEnds)
+
+    return disputeEnds.decoded[0]
+
+  }
+
   async hasSigned(party) 
   {
 

@@ -1328,7 +1328,7 @@ export function* handleDisputeArbitration(args) {
         let response = yield call(Disputes.store, toUpdate, id);
         log("handleDisputeArbitration - contract status updated", response);
 
-        firstVote.append("hash", disputeTx.tx);
+        firstVote.append("hash", disputeTx);
 
         // Store first vote due dispute init
         response = yield call(Oracles.store, firstVote);

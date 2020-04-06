@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Transaction;
+use App\Models\Activity;
+use App\Models\ContractStatusDetail;
+use App\Models\ContractVote;
 use Illuminate\Http\Request;
 use Dingo\Api\Routing\Helpers;
 use League\Fractal\Manager;
@@ -57,6 +60,26 @@ class TransactionsController extends Controller
     {
         $wallet = $request->header('wallet');
         $transaction = Transaction::lockedByMe($wallet)->findOrFail($id);
+
+        if ($transaction->event == 'ContractDisputed') 
+        {
+            // remove waiting from activities, contract_status_details and contract_votes
+
+            $contractId = $transaction->contract->id;
+
+            Activity::where('waiting', '=', 1)
+            ->where('contract_id','=',$contractId)
+            ->update(['waiting' => 0]);
+
+            ContractStatusDetail::where('waiting', '=', 1)
+            ->where('contract_id','=',$contractId)
+            ->update(['waiting' => 0]);
+
+            ContractVote::where('waiting', '=', 1)
+            ->where('contract_id','=',$contractId)
+            ->update(['waiting' => 0]);
+            
+        }
 
         $transaction->update($request->all());
 

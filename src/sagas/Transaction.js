@@ -17,6 +17,8 @@ import {
   TRANSACTIONS_FETCHED,
   LOOKUP_WALLET_BALANCE,
   SET_WITHDRAW,
+  DISPUTE_SAVING,
+  DISPUTE_UPDATING,
 } from "../reducers/types";
 
 import { getTransactionsList, getTransactionsLastBlock, getWallet } from './Selectors'
@@ -545,7 +547,38 @@ function* manageEvent(txw,decoded)
 
       // ============== dispatch event Contract Disputed ----------------------
 
+
+              arbitration = new connexArbitrationContract(address);
+
+              // future prevision
+              const disputeStartsTx = yield arbitration.disputeStarts()
             
+              if (disputeStartsTx) {
+                log("handleDisputeArbitration - disputeStartsTx.toString()", disputeStartsTx.toString());
+                // Status update Ongoing Dispute
+                toUpdate = new FormData();
+                toUpdate.append("code", 35);
+                toUpdate.append("chain_updated_at", disputeStartsTx.toString()); // * 1000 ?
+
+                yield call(Contracts.statusChange, toUpdate, id);
+
+                const disputeEndsTx = yield arbitration.disputeEnds()
+
+                if (disputeEndsTx) {
+                  log("handleDisputeArbitration - disputeEndsTx.toString()", disputeEndsTx.toString());
+                  // Status update Closed dispute
+                  toUpdate = new FormData();
+                  toUpdate.append("code", 39);
+                  toUpdate.append("chain_updated_at", disputeEndsTx.toString()); // * 1000 ?
+
+                  yield call(Contracts.statusChange, toUpdate, id);
+                }
+              }
+
+              yield put({ type: FETCH_CONTRACTS });
+              yield put({ type: DISPUTE_SAVING, payload: false });
+              yield put({ type: DISPUTE_UPDATING, payload: false });
+      
 
 
       // -----------------------------------------------------
