@@ -65,6 +65,8 @@ import {
 // Get
 export function* getContract(action) 
 {
+  log('getContract - action',action);
+
   let silentLoading = false
   const { id, onSuccess, onError, silent } = action;
   silentLoading = silent
@@ -83,18 +85,20 @@ export function* getContract(action)
 
     let fromChain = null;
 
-    // log('getContract ok',data);
-    if (connector() === 'connex')
+    log('getContract ok',data);
+    if (data.address && connector() === 'connex')
     {
       // get contract details from chain
       const user = yield select(getUser);
-
+      log('getContract - user',user);
+      
       const arbitration = new connexArbitrationContract(data.address);
-
+      log('getContract - arbitration',arbitration);
+      
       const hasWithdrawn = yield arbitration.hasWithdrawn(user.wallet);
+      log('getContract - hasWithdrawn',hasWithdrawn);
       const dispersal = yield arbitration.dispersal(user.wallet);
 
-      log('getContract - hasWithdrawn',hasWithdrawn);
       log('getContract - dispersal',dispersal);
 
       fromChain = {
@@ -595,6 +599,7 @@ export function* getContractStatus() {
   const response = yield call(Contracts.getStatusChange, { id: currContr.id });
 
 
+  log("getContractStatus ");
   log("getContractStatus - response", response.data.status );
 
   if (typeof response.data.status === "undefined") {
