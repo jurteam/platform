@@ -610,7 +610,24 @@ function* manageEvent(txw,decoded)
 
       break;
 
+    case "ContractDisputeDispersalAmended":
+      
+      party = decoded._party
+
+      log('manageEvent - party',party)
+
+      // ============== dispatch event ContractDisputeDispersalAmended ----------------------
+
+
+      yield put({ type: LOOKUP_WALLET_BALANCE }); // update wallet balance
+
+      // -----------------------------------------------------
+
+      break;
+
+
     default:
+
       break;
   }
 
@@ -634,6 +651,29 @@ function* postAction(txw)
   switch (event) 
   {
     case "ContractDisputed":
+
+      // -----------------------------------------------------
+
+          if (ContractDetailPage && currContr.id === id) 
+          {
+
+            global.store.dispatch({
+              type: API_GET_CONTRACT,
+              id: currContr.id,
+              silent: false,
+              // onSuccess: pageLoaded,
+              // onError: pageLoaded,
+              // history
+            });
+
+            // close form ?
+          }
+
+      // -----------------------------------------------------
+
+      break;
+
+    case "ContractDisputeDispersalAmended":
 
       // -----------------------------------------------------
 

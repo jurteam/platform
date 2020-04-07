@@ -332,6 +332,69 @@ export default class connexArbitrationContract
 
   }
 
+  async amendDisputeDispersal(dispersal, account, contractId) 
+  {
+    
+    const amendDisputeDispersalABI = this.getMethodABI("amendDisputeDispersal");
+
+    log('amendDisputeDispersal - amendDisputeDispersalABI',amendDisputeDispersalABI)    
+
+    const amendDisputeDispersalMethod = this.thorAccount.method(amendDisputeDispersalABI)
+
+    log('amendDisputeDispersal - amendDisputeDispersalMethod',amendDisputeDispersalMethod)
+    
+
+    // --##################--- asClause
+
+    log('amendDisputeDispersal - parameter',{account})
+
+    const amendDisputeDispersalClause = amendDisputeDispersalMethod.asClause(dispersal)
+    
+    log('amendDisputeDispersal - amendDisputeDispersalClause',amendDisputeDispersalClause) 
+    
+    const signingService = global.connex.vendor.sign('tx')
+    
+    log('amendDisputeDispersal - signingService',signingService)
+
+
+    signingService
+    .signer(account) // Enforce signer
+    .gas(global.connex.thor.genesis.gasLimit) // Set maximum gas
+    .link('http://localhost:3000/contracts/detail/'+contractId) // User will be back to the app by the url https://connex.vecha.in/0xffff....
+    .comment('amendDisputeDispersal contract')
+
+    let txid = null
+
+    await signingService.request([
+      {
+        ...amendDisputeDispersalClause,
+      }
+    ])
+    .then(async (tx)=>{
+
+      log('amendDisputeDispersal - signingService then()',tx)
+
+      // call transaction saving endpoint
+      // ADD_TRANSACTION
+      
+      txid = tx.txid
+
+      const filter = {
+        _party: account,
+      }
+      
+      global.dispatcher({type: ADD_TRANSACTION,txid: tx.txid, event: 'ContractDisputeDispersalAmended', param: filter, contract_id: contractId})
+      
+
+      log('amendDisputeDispersal - signingService then() txid',txid)
+      
+    }).catch(err=>{  
+      log('agree - signingService catch() err',err)
+    })
+
+
+  }
+
 
 
   getMethodABI(method) 

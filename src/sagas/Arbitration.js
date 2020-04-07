@@ -884,46 +884,44 @@ export function* handleSignArbitration({ contractAddress })
 
 export function* handleAmendDisputeArbitration(args) {
 
-  log("handleAmendDisputeArbitration");
+  log("handleAmendDisputeArbitration - args",args);
   yield put({ type: DISPUTE_SAVING, payload: true });
   yield put({ type: DISPUTE_UPDATING, payload: true });
-
+  
   const { id, code, message, proposalAttachments, callback } = args;
   let { dispersal } = args;
   const currentContract = yield select(getCurrentContract);
+  log("handleAmendDisputeArbitration - currentContract",currentContract);
   const { address: contractAddress } = currentContract;
-
-  const arbitration = new Arbitration(contractAddress);
-
+  
   const proposal_part_a = dispersal[0];
   const proposal_part_b = dispersal[1];
+  
+  
+  
+  // check connex or web3
+  const connectorValue = connector()
 
-  // fix decimals
-  // dispersal[0] = dispersal[0] * 10**18;
-  // dispersal[1] = dispersal[1] * 10**18;
+  if(connectorValue === 'connex') 
+  {
 
-  // fix strings
-  // dispersal[0] = dispersal[0].toString();
-  // dispersal[1] = dispersal[1].toString();
-
-  dispersal[0] = global.drizzle.web3.utils.toWei(dispersal[0].toString(), 'ether');
-  dispersal[1] = global.drizzle.web3.utils.toWei(dispersal[1].toString(), 'ether');
+    const wallet = yield select(getWallet);
+    log("handleAmendDisputeArbitration - contractAddress",contractAddress);
+    const arbitration = new connexArbitrationContract(contractAddress);
 
 
-  const amendDisputeTx = yield arbitration.amendDisputeDispersal(dispersal).catch(chainErrorHandler);
+    dispersal[0] = connexToWei(dispersal[0].toString(), 'ether');
+    dispersal[1] = connexToWei(dispersal[1].toString(), 'ether');
 
-  if (amendDisputeTx) { // only if there is a valid sign tx
 
-    log("handleAmendDisputeArbitration – amendDisputeTx", amendDisputeTx)
-
-    yield put({ type: LOOKUP_WALLET_BALANCE }); // update wallet balance
-
-    // Status update
     let toUpdate = new FormData();
     toUpdate.append("code", code);
     toUpdate.append("message", message);
     toUpdate.append("proposal_part_a", proposal_part_a);
     toUpdate.append("proposal_part_b", proposal_part_b);
+
+    // waiting event resolution
+    toUpdate.append("waiting", 1);
 
     log("handleAmendDisputeArbitration - proposalAttachments", proposalAttachments);
 
@@ -943,34 +941,106 @@ export function* handleAmendDisputeArbitration(args) {
     try {
       let response = yield call(Disputes.store, toUpdate, id);
       log("handleAmendDisputeArbitration - contract status updated", response);
-      const { statusId, statusLabel, statusUpdatedAt, statusFrom } = response.data.data;
-      yield put({
-        type: SET_CONTRACT_STATUS,
-        statusId,
-        statusFrom,
-        statusLabel,
-        statusUpdatedAt,
-        id
-      });
-      yield put({ type: FETCH_CONTRACTS });
-      yield put({ type: CONTRACT_SAVING, payload: false });
-      yield put({ type: DISPUTE_SAVING, payload: false });
-      yield put({ type: DISPUTE_UPDATING, payload: false });
-      if (typeof callback === "function") callback();
 
-      // const { history } = action;
-      // history.push(`/contracts/detail/${id}`); // go to contract detail for furter operations
     } catch (error) {
       yield put({ type: API_CATCH, error });
       yield put({ type: DISPUTE_SAVING, payload: false });
       yield put({ type: DISPUTE_UPDATING, payload: false });
     }
-  } else {
-    yield put({ type: CONTRACT_SAVING, payload: false });
-    yield put({ type: DISPUTE_SAVING, payload: false });
-    yield put({ type: DISPUTE_UPDATING, payload: false });
-    if (typeof callback === "function") callback();
+
+
+
+    const amendDisputeTx = yield arbitration.amendDisputeDispersal(dispersal,wallet.address,id);
+
+
+    // event ContractDisputeDispersalAmended
+
+
+
   }
+  else if(connectorValue === 'web3') 
+  {
+
+    const arbitration = new Arbitration(contractAddress);
+
+    // fix decimals
+    // dispersal[0] = dispersal[0] * 10**18;
+    // dispersal[1] = dispersal[1] * 10**18;
+
+    // fix strings
+    // dispersal[0] = dispersal[0].toString();
+    // dispersal[1] = dispersal[1].toString();
+
+    dispersal[0] = global.drizzle.web3.utils.toWei(dispersal[0].toString(), 'ether');
+    dispersal[1] = global.drizzle.web3.utils.toWei(dispersal[1].toString(), 'ether');
+
+
+    const amendDisputeTx = yield arbitration.amendDisputeDispersal(dispersal).catch(chainErrorHandler);
+
+    if (amendDisputeTx) { // only if there is a valid sign tx
+
+      log("handleAmendDisputeArbitration – amendDisputeTx", amendDisputeTx)
+
+      yield put({ type: LOOKUP_WALLET_BALANCE }); // update wallet balance
+
+      // Status update
+      let toUpdate = new FormData();
+      toUpdate.append("code", code);
+      toUpdate.append("message", message);
+      toUpdate.append("proposal_part_a", proposal_part_a);
+      toUpdate.append("proposal_part_b", proposal_part_b);
+
+      log("handleAmendDisputeArbitration - proposalAttachments", proposalAttachments);
+
+      if (proposalAttachments.files && proposalAttachments.files.length) {
+        for (let i = 0; i < proposalAttachments.files.length; i++) {
+          // iteate over any file sent over appending the files to the form data.
+          let file = proposalAttachments.files[i];
+
+          log("handleAmendDisputeArbitration - for each file", file);
+
+          toUpdate.append("attachments[" + i + "]", file);
+        }
+        // toSend.append("attachments[]", proposalAttachments.files);
+      }
+
+
+      try {
+        let response = yield call(Disputes.store, toUpdate, id);
+        log("handleAmendDisputeArbitration - contract status updated", response);
+        const { statusId, statusLabel, statusUpdatedAt, statusFrom } = response.data.data;
+        yield put({
+          type: SET_CONTRACT_STATUS,
+          statusId,
+          statusFrom,
+          statusLabel,
+          statusUpdatedAt,
+          id
+        });
+        yield put({ type: FETCH_CONTRACTS });
+        yield put({ type: CONTRACT_SAVING, payload: false });
+        yield put({ type: DISPUTE_SAVING, payload: false });
+        yield put({ type: DISPUTE_UPDATING, payload: false });
+        if (typeof callback === "function") callback();
+
+        // const { history } = action;
+        // history.push(`/contracts/detail/${id}`); // go to contract detail for furter operations
+      } catch (error) {
+        yield put({ type: API_CATCH, error });
+        yield put({ type: DISPUTE_SAVING, payload: false });
+        yield put({ type: DISPUTE_UPDATING, payload: false });
+      }
+    } else {
+      yield put({ type: CONTRACT_SAVING, payload: false });
+      yield put({ type: DISPUTE_SAVING, payload: false });
+      yield put({ type: DISPUTE_UPDATING, payload: false });
+      if (typeof callback === "function") callback();
+    }
+
+
+
+  }
+
 }
 
 export function* handleWithdrawArbitration(args) {
