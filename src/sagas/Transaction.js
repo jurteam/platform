@@ -19,9 +19,16 @@ import {
   SET_WITHDRAW,
   DISPUTE_SAVING,
   DISPUTE_UPDATING,
+  API_GET_CONTRACT,
 } from "../reducers/types";
 
-import { getTransactionsList, getTransactionsLastBlock, getWallet } from './Selectors'
+import { 
+  getTransactionsList, 
+  getTransactionsLastBlock, 
+  getWallet,
+  getContractdetailPage, 
+  getCurrentContract,
+ } from './Selectors'
 
 import { log, ethToHuman } from "../utils/helpers";
 
@@ -199,12 +206,19 @@ export function* getEventUpdateTx(args)
       eventDecoded = yield contract.EventCatch(param, txw.event, blockNumber, txw.txid);
     }
     log('getEventUpdateTx - eventDecoded',eventDecoded)
-
+    
     // manage event
     yield manageEvent(txw, eventDecoded)
-
+    
     // update tx
     yield put({type:UPDATE_TRANSACTION, id: txw.id , block: blockNumber ,time: timestamp })
+    
+    log('getEventUpdateTx - transaction updated')
+    
+    yield postAction(txw);
+
+    log('getEventUpdateTx - post postAction')
+    
   } 
   catch (error) 
   {
@@ -482,7 +496,7 @@ function* manageEvent(txw,decoded)
             // NOTICE: this should be the normal behavior, since we have 100% to one party this can work only this way
             let code = 9; // still waiting for withdrown from one party
       
-            const allParties = yield arbitration.allParties();
+            allParties = yield arbitration.allParties();
             log("handleWithdrawArbitration - allParties", allParties);
              
             const partyADispersal = yield arbitration.dispersal(allParties[0]);
@@ -547,7 +561,9 @@ function* manageEvent(txw,decoded)
 
       // ============== dispatch event Contract Disputed ----------------------
 
-
+              yield put({ type: DISPUTE_SAVING, payload: true });
+              yield put({ type: DISPUTE_UPDATING, payload: true });
+    
               arbitration = new connexArbitrationContract(address);
 
               // future prevision
@@ -575,6 +591,15 @@ function* manageEvent(txw,decoded)
                 }
               }
 
+              // yield put({
+              //   type: SET_CONTRACT_STATUS,
+              //   statusId,
+              //   statusFrom,
+              //   statusLabel,
+              //   statusUpdatedAt,
+              //   id
+              // });
+
               yield put({ type: FETCH_CONTRACTS });
               yield put({ type: DISPUTE_SAVING, payload: false });
               yield put({ type: DISPUTE_UPDATING, payload: false });
@@ -593,6 +618,50 @@ function* manageEvent(txw,decoded)
 
 }
 
+
+function* postAction(txw)
+{
+  const currContr = yield select(getCurrentContract);
+  const ContractDetailPage = yield select(getContractdetailPage);
+  const wallet = yield select(getWallet);
+
+  const { event, contract: { id } } = txw
+  log('postAction - txw',txw)
+  log('postAction - event',event)
+  log('postAction - currContr',currContr)
+  log('postAction - ContractDetailPage',ContractDetailPage)
+  
+  switch (event) 
+  {
+    case "ContractDisputed":
+
+      // -----------------------------------------------------
+
+          if (ContractDetailPage && currContr.id === id) 
+          {
+
+            global.store.dispatch({
+              type: API_GET_CONTRACT,
+              id: currContr.id,
+              silent: false,
+              // onSuccess: pageLoaded,
+              // onError: pageLoaded,
+              // history
+            });
+
+            // close form ?
+          }
+
+      // -----------------------------------------------------
+
+      break;
+
+    default:
+      break;
+  }
+
+  return null
+}
 
 
 // spawn tasks base certain actions
