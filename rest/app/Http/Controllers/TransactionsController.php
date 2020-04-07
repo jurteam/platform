@@ -81,6 +81,21 @@ class TransactionsController extends Controller
             ->update(['waiting' => 0]);
             
         }
+        elseif ($transaction->event == 'ContractDisputeDispersalAmended') 
+        {
+            // remove waiting from activities, contract_status_details and contract_votes
+
+            $contractId = $transaction->contract->id;
+
+            Activity::where('waiting', '=', 1)
+            ->where('contract_id','=',$contractId)
+            ->update(['waiting' => 0]);
+
+            ContractStatusDetail::where('waiting', '=', 1)
+            ->where('contract_id','=',$contractId)
+            ->update(['waiting' => 0]);
+            
+        }
 
         $transaction->update($request->all());
 
