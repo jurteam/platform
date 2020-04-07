@@ -24,7 +24,8 @@ class TransactionsController extends Controller
     {
         $wallet = $request->header('wallet');
 
-        $waitingList = Transaction::mine($wallet)
+        $waitingList = Transaction::notResolved()
+            ->mine($wallet)
             ->lockedByMeOrUnlocked($wallet)->get();
 
 
