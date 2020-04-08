@@ -5,9 +5,15 @@ namespace App\Models\Traits;
 use App\Models\User;
 use App\Models\Contract;
 use App\Models\ContractStatusDetail;
+use App\Models\Withdrawal;
 
 trait DisputeTrait
 {
+
+    public function Withdrawals()
+    {
+        return $this->hasMany(Withdrawal::class);
+    }
 
     public function getPartialsData()
     {
@@ -179,7 +185,7 @@ trait DisputeTrait
             return null;
         }
         
-        if ($this->withdrawals === null) {            
+        if ($this->withdrawals == null) {
             return 0;
         }
         
