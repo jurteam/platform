@@ -18,7 +18,8 @@ class Transaction extends Model
     'locked_by',
     'block',
     'time',
-    'contract_id'
+    'contract_id',
+    'vote_id'
   ];
 
 
