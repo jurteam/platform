@@ -96,6 +96,23 @@ class TransactionsController extends Controller
             ->update(['waiting' => 0]);
             
         }
+        elseif ($transaction->event == 'VoteCast') 
+        {
+            // remove waiting from activities, contract_status_details and contract_votes
+
+            $contractId = $transaction->contract->id;
+
+            $voteId = $transaction->vote_id;
+
+            if ($voteId != null) 
+            {
+                ContractVote::where('waiting', '=', 1)
+                ->where('id','=',$voteId)
+                ->where('contract_id','=',$contractId)
+                ->update(['waiting' => 0]);
+            }
+            
+        }
 
         $transaction->update($request->all());
 
