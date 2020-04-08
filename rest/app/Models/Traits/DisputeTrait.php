@@ -112,6 +112,7 @@ trait DisputeTrait
     {
         $part = strtolower($this->{$part});
         $totalPart = $this->votes()
+                        ->exceptWaiting()
                         ->whereRaw('LOWER(wallet_part) = ?', [$part])
                         ->sum('amount');
 
@@ -121,6 +122,7 @@ trait DisputeTrait
     public function getRejectVotes()
     {
         $totalPart = $this->votes()
+                        ->exceptWaiting()
                         ->whereRaw('LOWER(wallet_part) = ?', ['0x0'])
                         ->sum('amount');
 

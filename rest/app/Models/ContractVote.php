@@ -40,6 +40,11 @@ class ContractVote extends Model implements HasMedia
         return $filters->apply($query);
     }
 
+    public function scopeExceptWaiting($query)
+    {
+        return $query->where('waiting', 0);
+    }
+
     public function scopeByContract($query, $contractId)
     {
         return $query->whereContractId($contractId);
