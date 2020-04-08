@@ -63,7 +63,15 @@ export function* handleFetchTransactions(args)
 export function* handleAddTransaction(args) 
 {
   const { txid, event, param, contract_id } = args
-  const response = yield call(Transactions.create, { txid: txid, event: event, param: JSON.stringify(param), contract_id: contract_id });
+
+  let params = { txid: txid, event: event, param: JSON.stringify(param), contract_id: contract_id }
+
+  if (args.vote_id)
+  {
+    params = { txid: txid, event: event, param: JSON.stringify(param), contract_id: contract_id, vote_id:args.vote_id }
+  }
+
+  const response = yield call(Transactions.create, params);
 
   log('handleAddTransaction - response',response);
   

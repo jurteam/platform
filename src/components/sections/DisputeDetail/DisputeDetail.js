@@ -259,6 +259,7 @@ export const DisputeDetail = ( props ) => {
       global.store.dispatch({
         type: PUT_VOTE,
         vote: dispute.vote,
+        contractAddress: dispute.current.address,
         attachments,
         callback: () => {
           setFormUpdated(false);

@@ -15,6 +15,7 @@ import {
   PUT_VOTE,
   SET_DISPUTE,
   LOOKUP_WALLET_BALANCE,
+  ADD_TRANSACTION,
   // SET_CONTRACT_STATUS
   FETCH_CONTRACTS,
   DISPUTE_SAVING,
@@ -27,14 +28,26 @@ import {
 } from "../reducers/types";
 import moment from 'moment';
 
-import { log, chainErrorHandler, multiplication, toBigFixed } from "../utils/helpers"; // log helper
+import { log, connector, connexChainErrorHandler, chainErrorHandler, multiplication, toBigFixed } from "../utils/helpers"; // log helper
 
 // import contractStatuses from "../assets/i18n/en/status.json";
 
 // Api layouts
-import { Oracles, Disputes, JURToken /*, Arbitration, Contracts*/ } from "../api";
+import { 
+  Oracles, 
+  Disputes, 
+  JURToken, 
+  connexJURToken, 
+  /*, Arbitration, Contracts*/ } from "../api";
 
-import { /* getOracleOrder, */ getOracleCurrentList, getCurrentDispute, getOracleListPage, getOracleListOrder, getOracleList } from "./Selectors"; // selector
+import { /* getOracleOrder, */ 
+  getOracleCurrentList, 
+  getCurrentDispute,
+  getOracleListPage, 
+  getOracleListOrder, 
+  getOracleList,
+  getUser
+ } from "./Selectors"; // selector
 
 // Get
 export function* fetchOracles(action) {
@@ -113,7 +126,8 @@ export function* onOracleOrderChange(action) {
   yield put({ type: FETCH_ORACLES, id: action.id });
 }
 
-export function* onVote(action) {
+export function* onVote(action) 
+{
   log("onVote - run");
   yield put({ type: DISPUTE_UPDATING, payload: true });
   let {
@@ -164,60 +178,127 @@ export function* onVote(action) {
   // single step with approve and call
   const currentContract = yield select(getCurrentDispute);
   log("onVote - currentContract", currentContract);
+  log("onVote - action.contractAddress", action.contractAddress);
   const { address: contractAddress } = currentContract;
 
-  const token = new JURToken();
   // const arbitration = new Arbitration(contractAddress);
-
+  
   // fix amount decimals
   amount = multiplication(amount,10**18);
   
   log('onVote - amount fixedBug', amount)
-
+  
   // fix strings
   amount = amount.toString();
   
   log('onVote - amount to chain', amount)
   
-  const voteTx = yield token
-    .approveAndCall(contractAddress, amount, 'vote', [oracle_wallet, wallet_part, amount])
-    .catch((err) => {
-      log("onVote – err", err);
-      put({ type: DISPUTE_UPDATING, payload: false });
-      put({ type: DISPUTE_SAVING, payload: false });
-      chainErrorHandler(err);
-    });
+  
+  
+  // check connex or web3
+  const connectorValue = connector()
+  
+  if(connectorValue === 'connex') 
+  {
+    
+    // const user = yield select(getUser);
+    const connexToken = new connexJURToken();
 
-  log("onVote – voteTx", voteTx);
+    log('onVote - approveAndCall contractAddress', contractAddress)
+    log('onVote - approveAndCall amount', amount)
+    log('onVote - approveAndCall oracle_wallet', oracle_wallet)
+    log('onVote - approveAndCall wallet_part', wallet_part)
+    log('onVote - approveAndCall contract_id', contract_id)
 
-  if (voteTx) { // only if there is a valid sign tx
+    const addressContract = contractAddress || action.contractAddress
 
-    yield put({ type: LOOKUP_WALLET_BALANCE }); // update wallet balance
+    const voteTx = yield connexToken
+    .approveAndCall(addressContract, amount, 'vote', [oracle_wallet, wallet_part, amount], oracle_wallet, contract_id)
+    .catch(connexChainErrorHandler);
 
-    voteData.append("hash", voteTx.tx); // chain transaction
+    log("onVote – voteTx", voteTx);
 
-    try {
-      const response = yield call(Disputes.vote, voteData);
-      log("onVote - vote created", response);
+    if (voteTx) 
+    { // only if there is a valid sign tx
 
-      yield put({ type: DISPUTE_UPDATING, payload: false });
-      yield put({ type: RESET_VOTE });
-      // TODO: fetch new votes
+      voteData.append("hash", voteTx); // chain transaction
 
-      yield put({ type: FETCH_CONTRACTS });
+      // waiting event resolution
+      voteData.append("waiting", 1);
 
+      try 
+      {
+        const response = yield call(Disputes.vote, voteData);
+        log("onVote - vote created", response);
+
+        const idVote = response.data.data.id
+    
+        const filter = {
+          _voter: oracle_wallet,
+          _party: wallet_part,
+        }
+        
+        global.dispatcher({type: ADD_TRANSACTION,txid: voteTx, event: 'VoteCast', param: filter, contract_id: contract_id, vote_id:idVote})
+
+      } 
+      catch (error) 
+      {
+        yield put({ type: API_CATCH, error });
+        yield put({ type: DISPUTE_UPDATING, payload: false });
+      }
+    } else {
       if (typeof callback === "function") callback();
-
-      // const { history } = action;
-      // history.push(`/contracts/detail/${id}`); // go to contract detail for furter operations
-    } catch (error) {
-      yield put({ type: API_CATCH, error });
       yield put({ type: DISPUTE_UPDATING, payload: false });
+      yield put({ type: DISPUTE_SAVING, payload: false });
     }
-  } else {
-    if (typeof callback === "function") callback();
-    yield put({ type: DISPUTE_UPDATING, payload: false });
-    yield put({ type: DISPUTE_SAVING, payload: false });
+    
+
+  } 
+  else if (connectorValue === 'web3') 
+  {
+
+    const token = new JURToken();
+    
+    const voteTx = yield token
+      .approveAndCall(contractAddress, amount, 'vote', [oracle_wallet, wallet_part, amount])
+      .catch((err) => {
+        log("onVote – err", err);
+        put({ type: DISPUTE_UPDATING, payload: false });
+        put({ type: DISPUTE_SAVING, payload: false });
+        chainErrorHandler(err);
+      });
+
+    log("onVote – voteTx", voteTx);
+
+    if (voteTx) { // only if there is a valid sign tx
+
+      yield put({ type: LOOKUP_WALLET_BALANCE }); // update wallet balance
+
+      voteData.append("hash", voteTx.tx); // chain transaction
+
+      try {
+        const response = yield call(Disputes.vote, voteData);
+        log("onVote - vote created", response);
+
+        yield put({ type: DISPUTE_UPDATING, payload: false });
+        yield put({ type: RESET_VOTE });
+        // TODO: fetch new votes
+
+        yield put({ type: FETCH_CONTRACTS });
+
+        if (typeof callback === "function") callback();
+
+        // const { history } = action;
+        // history.push(`/contracts/detail/${id}`); // go to contract detail for furter operations
+      } catch (error) {
+        yield put({ type: API_CATCH, error });
+        yield put({ type: DISPUTE_UPDATING, payload: false });
+      }
+    } else {
+      if (typeof callback === "function") callback();
+      yield put({ type: DISPUTE_UPDATING, payload: false });
+      yield put({ type: DISPUTE_SAVING, payload: false });
+    }
   }
 
   // try {
