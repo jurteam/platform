@@ -633,6 +633,21 @@ function* manageEvent(txw,decoded)
 
       break;
 
+    case "VoteCast":
+      
+      party = decoded._party
+
+      log('manageEvent - party',party)
+
+      // ============== dispatch event VoteCast ----------------------
+
+
+      yield put({ type: LOOKUP_WALLET_BALANCE }); // update wallet balance
+
+      // -----------------------------------------------------
+
+      break;
+
 
     default:
 
