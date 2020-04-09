@@ -72,4 +72,23 @@ class UserUpdateTest extends TestCase
         $this->seeStatusCode(422);
     }
 
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function should_not_update_user_with_non_existing_wallet()
+    {
+        $header = ['wallet' => '0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A6'];
+        $data = ['name' => 'John Nash'];
+
+        // create user
+        $this->post("api/v1/user", [], $header)->seeStatusCode(201);
+
+        $wallet = '0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A5'; // non-existing wallet address
+
+        $this->put("api/v1/user", [], ['wallet' => $wallet])
+            ->seeStatusCode(404);
+    }
+
 }
