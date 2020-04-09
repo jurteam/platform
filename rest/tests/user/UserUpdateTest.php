@@ -43,7 +43,7 @@ class UserUpdateTest extends TestCase
         $data = ['name' => 'John Nash'];
 
         // create user
-        $this->post("api/v1/user", [], $header);
+        $this->post("api/v1/user", ['accepted_disclaimer' => 1, 'accepted_terms' => 1], $header);
 
         // validate status of create
         $this->seeStatusCode(201);
@@ -108,7 +108,7 @@ class UserUpdateTest extends TestCase
         $data = ['name' => 'John Nash'];
 
         // create user
-        $this->post("api/v1/user", [], $header)->seeStatusCode(201);
+        $this->post("api/v1/user", ['accepted_disclaimer' => 1, 'accepted_terms' => 1], $header)->seeStatusCode(201);
 
         $wallet = '0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A5'; // non-existing wallet address
 
@@ -136,7 +136,7 @@ class UserUpdateTest extends TestCase
         ];
 
         // create user
-        $this->post("api/v1/user", [], $header);
+        $this->post("api/v1/user", ['accepted_disclaimer' => 1, 'accepted_terms' => 1], $header);
 
         // validate status
         $this->seeStatusCode(201);
@@ -196,7 +196,7 @@ class UserUpdateTest extends TestCase
         ];
 
         // create user
-        $this->post("api/v1/user", [], $header);
+        $this->post("api/v1/user", ['accepted_disclaimer' => 1, 'accepted_terms' => 1], $header);
 
         // validate status
         $this->seeStatusCode(201);
@@ -253,11 +253,11 @@ class UserUpdateTest extends TestCase
         $header2 = ['wallet' => '0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A3'];
 
         // create user1
-        $this->post("api/v1/user", ['name' => 'Ashly'], $header1)
+        $this->post("api/v1/user", ['name' => 'Ashly', 'accepted_disclaimer' => 1, 'accepted_terms' => 1], $header1)
             ->seeStatusCode(201);
 
         // create user2
-        $this->post("api/v1/user", ['name' => 'Johny'], $header2)
+        $this->post("api/v1/user", ['name' => 'Johny', 'accepted_disclaimer' => 1, 'accepted_terms' => 1], $header2)
             ->seeStatusCode(201);
 
         // name should be unique for update

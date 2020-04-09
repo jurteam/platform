@@ -42,7 +42,7 @@ class UserDeleteTest extends TestCase
         $header = ['wallet' => '0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A7'];
 
         // create user
-        $this->post("api/v1/user", [], $header);
+        $this->post("api/v1/user", ['accepted_disclaimer' => 1, 'accepted_terms' => 1], $header);
 
         // validate status of create
         $this->seeStatusCode(201);
@@ -129,6 +129,8 @@ class UserDeleteTest extends TestCase
             'birth_date' => '1989-10-08',
             'category' => 'General',
             'show_fullname' => 1,
+            'accepted_disclaimer' => 1,
+            'accepted_terms' => 1,
         ];
 
         // create user
@@ -167,6 +169,8 @@ class UserDeleteTest extends TestCase
 
         $data = [
             'name' => 'Bob',
+            'accepted_disclaimer' => 1,
+            'accepted_terms' => 1,
         ];
 
         // create user
@@ -213,7 +217,7 @@ class UserDeleteTest extends TestCase
         $header2 = ['wallet' => '0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A3'];
 
         // create user1
-        $this->post("api/v1/user", ['name' => 'Ashly'], $header1)
+        $this->post("api/v1/user", ['name' => 'Ashly', 'accepted_disclaimer' => 1, 'accepted_terms' => 1], $header1)
             ->seeStatusCode(201);
 
         // delete user1
@@ -224,11 +228,11 @@ class UserDeleteTest extends TestCase
         $this->notSeeInDatabase('users', $header1);
 
         // create user2
-        $this->post("api/v1/user", ['name' => 'Ashly'], $header2)
+        $this->post("api/v1/user", ['name' => 'Ashly', 'accepted_disclaimer' => 1, 'accepted_terms' => 1], $header2)
             ->seeStatusCode(201);
 
         // validate data present in database
-        $this->seeInDatabase('users', array_merge(['name' => 'Ashly'], $header2));
+        $this->seeInDatabase('users', array_merge(['name' => 'Ashly', 'accepted_disclaimer' => 1, 'accepted_terms' => 1], $header2));
 
     }
 }

@@ -13,7 +13,7 @@ class UserCreateTest extends TestCase
      */
     public function should_not_create_user_without_wallet()
     {
-        $this->post("api/v1/user", []);
+        $this->post("api/v1/user", ['accepted_disclaimer' => 1, 'accepted_terms' => 1]);
 
         // validate status
         $this->seeStatusCode(401);
