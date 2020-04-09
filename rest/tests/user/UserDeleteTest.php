@@ -13,8 +13,23 @@ class UserDeleteTest extends TestCase
      */
     public function should_not_delete_user_without_wallet()
     {
-        $this->delete("api/v1/user", [])
-            ->seeStatusCode(401);
+        $this->delete("api/v1/user", []);
+
+        // validate status
+        $this->seeStatusCode(401);
+
+        // validate stucture of data
+        $this->seeJsonStructure(['errors']);
+
+        // validate data
+        $this->seeJson(
+            [
+                'errors' =>
+                [
+                    'wallet' => ['The wallet is missing.'],
+                ],
+            ]
+        );
     }
 
     /**
