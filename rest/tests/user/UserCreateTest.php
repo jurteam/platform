@@ -192,4 +192,22 @@ class UserCreateTest extends TestCase
         $this->notSeeInDatabase('users', $header);
     }
 
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function should_not_create_user_without_unique_name()
+    {
+        // TODO: the name should replaced as username in database
+
+        $header = ['wallet' => '0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A2'];
+
+        $this->post("api/v1/user", ['name' => 'John Nash'], $header)
+            ->seeStatusCode(201);
+
+        // check user name is unique
+        $this->post("api/v1/user", ['name' => 'John Nash'], $header)
+            ->seeStatusCode(422);
+    }
 }
