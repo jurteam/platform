@@ -19,6 +19,44 @@ class UserCreateTest extends TestCase
         $this->seeStatusCode(422);
     }
 
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function should_not_create_user_without_accepting_disclaimer_and_terms()
+    {
+        $header = ['wallet' => '0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A4'];
+
+        $this->post("api/v1/user", [], $header);
+
+        // validate status
+        $this->seeStatusCode(422);
+
+        // validate stucture of data
+        $this->seeJsonStructure(
+            [
+                'errors' =>
+                [
+                    'accepted_terms',
+                    'accepted_disclaimer',
+                ],
+            ]
+        );
+
+        // validate data
+        $this->seeJson(
+            [
+                'errors' =>
+                [
+                    'accepted_terms' => ['The accepted terms must be accepted.'],
+                    'accepted_disclaimer' => ['The accepted disclaimer must be accepted.'],
+                ],
+            ]
+        );
+
+        // validate data not present in database
+        $this->notSeeInDatabase('users', $header);
     }
 
     /**
@@ -29,9 +67,15 @@ class UserCreateTest extends TestCase
     public function should_create_user_only_with_wallet()
     {
 
-        $wallet = '0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A7';
+        $header = ['wallet' => '0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A7'];
 
-        $this->post("api/v1/user", [], ['wallet' => $wallet]);
+        $this->post("api/v1/user",
+            [
+                'accepted_terms' => 1,
+                'accepted_disclaimer' => 1,
+            ],
+            $header
+        );
 
         // validate status
         $this->seeStatusCode(201);
@@ -43,6 +87,8 @@ class UserCreateTest extends TestCase
                 [
                     'id',
                     'wallet',
+                    'accepted_terms',
+                    'accepted_disclaimer',
                     'updated_at',
                     'created_at',
                 ],
@@ -50,7 +96,7 @@ class UserCreateTest extends TestCase
         );
 
         // validate data present in database
-        $this->seeInDatabase('users', ['wallet' => $wallet]);
+        $this->seeInDatabase('users', $header);
     }
 
     /**
@@ -60,10 +106,18 @@ class UserCreateTest extends TestCase
      */
     public function should_not_create_user_with_invalid_wallet()
     {
-        $wallet = '0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A'; // invalid address (missing last charecter)
+        $header = ['wallet' => '0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A']; // invalid wallet address (missing last charecter)
 
-        $this->post("api/v1/user", [], ['wallet' => $wallet])
-            ->seeStatusCode(422);
+        $this->post("api/v1/user",
+            [
+                'accepted_terms' => 1,
+                'accepted_disclaimer' => 1,
+            ],
+            $header
+        );
+
+        // validate status
+        $this->seeStatusCode(422);
     }
 
     /**
@@ -73,12 +127,24 @@ class UserCreateTest extends TestCase
      */
     public function should_not_create_user_with_same_wallet()
     {
-        $wallet = '0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A8';
+        $header = ['wallet' => '0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A8'];
 
-        $this->post("api/v1/user", [], ['wallet' => $wallet])
+        $this->post("api/v1/user",
+            [
+                'accepted_terms' => 1,
+                'accepted_disclaimer' => 1,
+            ],
+            $header
+        )
             ->seeStatusCode(201);
 
-        $this->post("api/v1/user", [], ['wallet' => $wallet])
+        $this->post("api/v1/user",
+            [
+                'accepted_terms' => 1,
+                'accepted_disclaimer' => 1,
+            ],
+            $header
+        )
             ->seeStatusCode(422);
     }
 
@@ -205,11 +271,25 @@ class UserCreateTest extends TestCase
 
         $header = ['wallet' => '0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A2'];
 
-        $this->post("api/v1/user", ['name' => 'John Nash'], $header)
+        $this->post("api/v1/user",
+            [
+                'name' => 'John Nash',
+                'accepted_terms' => 1,
+                'accepted_disclaimer' => 1,
+            ],
+            $header
+        )
             ->seeStatusCode(201);
 
         // check user name is unique
-        $this->post("api/v1/user", ['name' => 'John Nash'], $header)
+        $this->post("api/v1/user",
+            [
+                'name' => 'John Nash',
+                'accepted_terms' => 1,
+                'accepted_disclaimer' => 1,
+            ],
+            $header
+        )
             ->seeStatusCode(422);
     }
 }
