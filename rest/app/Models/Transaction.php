@@ -32,17 +32,17 @@ class Transaction extends Model
   {
     $lowerWallet = strtolower($wallet);
 
-    // TODO: filter transactions by contract status
-    // if is a ongoing/extended/closed dispute
-    //      all users can view this tx
-    // else
-    //      only counterparty can view this tx
-
     return $query
     ->select('transactions.*')
     ->join('contracts', 'contract_id', '=', 'contracts.id')
-    ->where('part_a_wallet','=',$lowerWallet)
-    ->orWhere('part_b_wallet','=',$lowerWallet);
+    ->where('event', '=', 'VoteCast')
+    ->orWhere(function($query) use($lowerWallet)
+    {
+        $query
+        ->where('part_a_wallet','=',$lowerWallet)
+        ->orWhere('part_b_wallet','=',$lowerWallet);
+    });
+    
   }
 
   public function scopeLockedByMeOrUnlocked($query, $wallet)
