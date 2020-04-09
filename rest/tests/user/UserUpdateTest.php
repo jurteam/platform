@@ -70,6 +70,16 @@ class UserUpdateTest extends TestCase
 
         // validate status
         $this->seeStatusCode(422);
+
+        // validate error details
+        $this->seeJson(
+            [
+                'errors' =>
+                [
+                    'wallet' => ['The wallet is not valid.'],
+                ],
+            ]
+        );
     }
 
     /**
