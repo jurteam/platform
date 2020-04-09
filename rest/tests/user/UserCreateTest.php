@@ -63,4 +63,20 @@ class UserCreateTest extends TestCase
             ->seeStatusCode(422);
     }
 
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function should_not_create_user_with_same_wallet()
+    {
+        $wallet = '0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A8';
+
+        $this->post("api/v1/user", [], ['wallet' => $wallet])
+            ->seeStatusCode(201);
+
+        $this->post("api/v1/user", [], ['wallet' => $wallet])
+            ->seeStatusCode(422);
+    }
+
 }
