@@ -50,4 +50,17 @@ class UserCreateTest extends TestCase
         $this->seeInDatabase('users', ['wallet' => $wallet]);
     }
 
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function should_not_create_user_with_invalid_wallet()
+    {
+        $wallet = '0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A'; // invalid address (missing last charecter)
+
+        $this->post("api/v1/user", [], ['wallet' => $wallet])
+            ->seeStatusCode(422);
+    }
+
 }
