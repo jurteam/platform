@@ -84,4 +84,17 @@ class UserDeleteTest extends TestCase
         );
     }
 
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function should_not_delete_user_with_non_existing_wallet()
+    {
+        $wallet = '0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A5'; // non-existing wallet address
+
+        $this->delete("api/v1/user", [], ['wallet' => $wallet])
+            ->seeStatusCode(404);
+    }
+
 }
