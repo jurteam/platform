@@ -16,7 +16,20 @@ class UserCreateTest extends TestCase
         $this->post("api/v1/user", []);
 
         // validate status
-        $this->seeStatusCode(422);
+        $this->seeStatusCode(401);
+
+        // validate stucture of data
+        $this->seeJsonStructure(['errors']);
+
+        // validate data
+        $this->seeJson(
+            [
+                'errors' =>
+                [
+                    'wallet' => ['The wallet is missing.'],
+                ],
+            ]
+        );
     }
 
     /**
