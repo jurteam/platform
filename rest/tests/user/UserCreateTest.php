@@ -17,4 +17,37 @@ class UserCreateTest extends TestCase
             ->seeStatusCode(401);
     }
 
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function should_create_user_only_with_wallet()
+    {
+
+        $wallet = '0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A7';
+
+        $this->post("api/v1/user", [], ['wallet' => $wallet]);
+
+        // validate status
+        $this->seeStatusCode(201);
+
+        // validate stucture of data
+        $this->seeJsonStructure(
+            [
+                'user' =>
+                [
+                    'id',
+                    'wallet',
+                    'updated_at',
+                    'created_at',
+                ],
+            ]
+
+        );
+
+        // validate data present in database
+        $this->seeInDatabase('users', ['wallet' => $wallet]);
+    }
+
 }
