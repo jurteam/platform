@@ -59,4 +59,29 @@ class UserDeleteTest extends TestCase
         $this->notseeInDatabase('users', $header);
     }
 
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function should_not_delete_user_with_invalid_wallet()
+    {
+        $header = ['wallet' => '0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A']; // invalid wallet address (missing last charecter)
+
+        $this->put("api/v1/user", [], $header);
+
+        // validate status
+        $this->seeStatusCode(422);
+
+        // validate error details
+        $this->seeJson(
+            [
+                'errors' =>
+                [
+                    'wallet' => ['The wallet is not valid.'],
+                ],
+            ]
+        );
+    }
+
 }
