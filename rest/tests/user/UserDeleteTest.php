@@ -186,4 +186,34 @@ class UserDeleteTest extends TestCase
         $this->seeInDatabase('users', array_merge($data, $header));
     }
 
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function should_delete_user_and_create_with_same_name()
+    {
+
+        $header1 = ['wallet' => '0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A2'];
+        $header2 = ['wallet' => '0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A3'];
+
+        // create user1
+        $this->post("api/v1/user", ['name' => 'Ashly'], $header1)
+            ->seeStatusCode(201);
+
+        // delete user1
+        $this->delete("api/v1/user", [], $header1)
+            ->seeStatusCode(200);
+
+        // validate data deleted from database
+        $this->notSeeInDatabase('users', $header1);
+
+        // create user2
+        $this->post("api/v1/user", ['name' => 'Ashly'], $header2)
+            ->seeStatusCode(201);
+
+        // validate data present in database
+        $this->seeInDatabase('users', array_merge(['name' => 'Ashly'], $header2));
+
+    }
 }
