@@ -141,4 +141,49 @@ class UserDeleteTest extends TestCase
         $this->notSeeInDatabase('users', array_merge($data, $header));
     }
 
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function should_not_delete_user_using_name()
+    {
+        $header = ['wallet' => '0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A1'];
+
+        $data = [
+            'name' => 'Bob',
+        ];
+
+        // create user
+        $this->post("api/v1/user", $data, $header);
+
+        // validate status
+        $this->seeStatusCode(201);
+
+        // validate data present in database
+        $this->seeInDatabase('users', array_merge($data, $header));
+
+        // delete user using unique name
+        $this->delete("api/v1/user", [], $data);
+
+        // validate status
+        $this->seeStatusCode(200);
+
+        // validate stucture of data
+        $this->seeJsonStructure(['errors']);
+
+        // validate data
+        $this->seeJson(
+            [
+                'errors' =>
+                [
+                    'wallet' => ['The wallet is missing.'],
+                ],
+            ]
+        );
+
+        // validate data still present in database
+        $this->seeInDatabase('users', array_merge($data, $header));
+    }
+
 }
