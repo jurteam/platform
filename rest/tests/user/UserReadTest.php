@@ -159,4 +159,60 @@ class UserReadTest extends TestCase
         );
     }
 
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function should_read_user_registration_status_with_wallet()
+    {
+        $header = ['wallet' => '0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616AE'];
+
+        // check user registration status
+        $this->get("api/v1/user/checking", $header);
+
+        // validate status
+        $this->seeStatusCode(200);
+
+        // validate stucture of data
+        $this->seeJsonStructure(['status', 'user']);
+
+        // validate data
+        $this->seeJson(
+            [
+                'status' => 'false',
+                'user' => [],
+            ]
+        );
+
+        // create the user
+        $this->post("api/v1/user", ['accepted_disclaimer' => 1, 'accepted_terms' => 1], $header);
+
+        // validate status
+        $this->seeStatusCode(201);
+
+        // check user registration status
+        $this->get("api/v1/user/checking", $header);
+
+        // validate status
+        $this->seeStatusCode(200);
+
+        // validate stucture of data
+        $this->seeJsonStructure(['status', 'user']);
+
+        // validate data
+        $this->seeJson(
+            [
+                'status' => 'true',
+                'user' => [
+                    'id',
+                    'wallet',
+                    'accepted_terms',
+                    'accepted_disclaimer',
+                    'updated_at',
+                    'created_at',
+                ],
+            ]
+        );
+    }
 }
