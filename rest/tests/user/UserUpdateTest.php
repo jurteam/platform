@@ -57,4 +57,19 @@ class UserUpdateTest extends TestCase
         $this->seeInDatabase('users', array_merge($data, $header));
     }
 
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function should_not_update_user_with_invalid_wallet()
+    {
+        $header = ['wallet' => '0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A']; // invalid wallet address (missing last charecter)
+
+        $this->put("api/v1/user", [], $header);
+
+        // validate status
+        $this->seeStatusCode(422);
+    }
+
 }
