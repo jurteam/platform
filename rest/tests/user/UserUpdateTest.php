@@ -216,4 +216,27 @@ class UserUpdateTest extends TestCase
         $this->notSeeInDatabase('users', $header);
     }
 
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function should_not_update_user_without_unique_name()
+    {
+
+        $header1 = ['wallet' => '0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A2'];
+        $header2 = ['wallet' => '0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A3'];
+
+        // create user1
+        $this->post("api/v1/user", ['name' => 'Ashly'], $header1)
+            ->seeStatusCode(201);
+
+        // create user2
+        $this->post("api/v1/user", ['name' => 'Johny'], $header2)
+            ->seeStatusCode(201);
+
+        // name should be unique for update
+        $this->put("api/v1/user", ['name' => 'Ashly'], $header2)
+            ->seeStatusCode(422);
+    }
 }
