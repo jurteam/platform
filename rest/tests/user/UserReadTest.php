@@ -132,4 +132,31 @@ class UserReadTest extends TestCase
         );
     }
 
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function should_not_read_user_registration_status_without_wallet()
+    {
+        // check user registration status
+        $this->get("api/v1/user/checking", []);
+
+        // validate status
+        $this->seeStatusCode(401);
+
+        // validate stucture of data
+        $this->seeJsonStructure(['errors']);
+
+        // validate data
+        $this->seeJson(
+            [
+                'errors' =>
+                [
+                    'wallet' => ['The wallet is missing.'],
+                ],
+            ]
+        );
+    }
+
 }
