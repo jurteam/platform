@@ -13,8 +13,12 @@ class UserCreateTest extends TestCase
      */
     public function should_not_create_user_without_wallet()
     {
-        $this->post("api/v1/user", [])
-            ->seeStatusCode(401);
+        $this->post("api/v1/user", []);
+
+        // validate status
+        $this->seeStatusCode(422);
+    }
+
     }
 
     /**
@@ -43,7 +47,6 @@ class UserCreateTest extends TestCase
                     'created_at',
                 ],
             ]
-
         );
 
         // validate data present in database
@@ -125,7 +128,6 @@ class UserCreateTest extends TestCase
                     'created_at',
                 ],
             ]
-
         );
 
         // validate data present in database
@@ -156,7 +158,7 @@ class UserCreateTest extends TestCase
         $this->post("api/v1/user", $data, $header);
 
         // validate status
-        $this->seeStatusCode(401);
+        $this->seeStatusCode(422);
 
         // validate stucture of data
         $this->seeJsonStructure(
@@ -178,12 +180,12 @@ class UserCreateTest extends TestCase
             [
                 'errors' =>
                 [
-                    'email' => 'Email not valid',
-                    'gender' => 'Gender not valid',
-                    'birth_date' => 'Birth Date is an invalid date',
-                    'show_fullname' => 'Show Fullname is invalid',
-                    'accepted_terms' => 'Accepted Terms is invalid',
-                    'accepted_disclaimer' => 'Accepted Disclaimer is invalid',
+                    'email' => ['Email is not valid'],
+                    'gender' => ['Gender is not valid'],
+                    'birth_date' => ['Birth Date is an invalid date'],
+                    'show_fullname' => ['Show Fullname is not valid'],
+                    'accepted_terms' => ['The accepted terms must be accepted.', 'Accepted Terms is not valid'],
+                    'accepted_disclaimer' => ['The accepted disclaimer must be accepted.', 'Accepted Disclaimer is not valid'],
                 ],
             ]
         );
