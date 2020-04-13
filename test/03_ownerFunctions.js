@@ -1,7 +1,5 @@
 const assertFail = require("./helpers/assertFail");
-
-const OathKeeper = artifacts.require("./OathKeeper.sol");
-  
+const OathKeeper = artifacts.require("./OathKeeperMock.sol");
 const ERC20 = artifacts.require("./mock/JURTokenMock.sol");
   
 contract('Oath Keeping - Owner functions', function (accounts) {
@@ -9,6 +7,7 @@ contract('Oath Keeping - Owner functions', function (accounts) {
     var token;
     var oathKeeper;
     var jurAdmin = accounts[1];
+    var promisee1 = accounts[2];
   
     // =========================================================================
     it("1. Contract should be set properly", async () => {
@@ -35,4 +34,15 @@ contract('Oath Keeping - Owner functions', function (accounts) {
 
         assert(await oathKeeper.maximumLockPeriod.call(), 90);
     });
+
+    it("4. Promisees should be able to lock tokens with new updated values", async () => {
+        
+        //Mint some tokens for the promisees
+        await token.mint(promisee1, 100, {from: accounts[0]});
+        await token.approve(oathKeeper.address, 100, {from: promisee1});
+        await oathKeeper.takeAnOath(56, {from: promisee1});
+        const details = await oathKeeper.lockMap(promisee1, 1);
+    
+        assert.equal(details.amount.toNumber(), 100);
+      });
 });

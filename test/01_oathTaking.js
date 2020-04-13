@@ -1,7 +1,5 @@
 const assertFail = require("./helpers/assertFail");
-
 const OathKeeper = artifacts.require("./OathKeeperMock.sol");
-
 const ERC20 = artifacts.require("./mock/JURTokenMock.sol");
 
 contract('Oath Keeping - Taking an oath', function (accounts) {
@@ -33,8 +31,7 @@ contract('Oath Keeping - Taking an oath', function (accounts) {
 
     await token.approve(oathKeeper.address, 100, {from: promisee1});
 
-    const _startAt = Math.round((new Date()).getTime() / 1000);
-    await oathKeeper.takeAnOath(10, _startAt, {from: promisee1});
+    await oathKeeper.takeAnOath(10, {from: promisee1});
     const details = await oathKeeper.lockMap(promisee1, 1);
 
     assert.equal(details.amount.toNumber(), 100);
@@ -43,8 +40,7 @@ contract('Oath Keeping - Taking an oath', function (accounts) {
   it("3. Promisees should not be able to lock tokens without approving token transfer.", async () => {
 
     await assertFail(async () => {
-      const _startAt = Math.round((new Date()).getTime() / 1000);
-      await oathKeeper.takeAnOath(5, _startAt, {from: promisee1});
+      await oathKeeper.takeAnOath(5, {from: promisee1});
     });
   });
 
@@ -52,8 +48,7 @@ contract('Oath Keeping - Taking an oath', function (accounts) {
 
     await token.approve(oathKeeper.address, 100, {from: promisee1});
 
-    const _startAt = Math.round((new Date()).getTime() / 1000);
-    await oathKeeper.takeAnOath(10, _startAt, {from: promisee1});
+    await oathKeeper.takeAnOath(10, {from: promisee1});
     const details = await oathKeeper.lockMap(promisee1, 2);
 
     assert.equal(details.amount.toNumber(), 100);
@@ -63,8 +58,7 @@ contract('Oath Keeping - Taking an oath', function (accounts) {
 
     await token.approve(oathKeeper.address, 100, {from: promisee2});
 
-    const _startAt = Math.round((new Date()).getTime() / 1000);
-    await oathKeeper.takeAnOath(20, _startAt, {from: promisee2});
+    await oathKeeper.takeAnOath(20, {from: promisee2});
     const details = await oathKeeper.lockMap(promisee2, 1);
 
     assert.equal(details.amount.toNumber(), 100);
@@ -76,8 +70,7 @@ contract('Oath Keeping - Taking an oath', function (accounts) {
 
     await token.approve(oathKeeper.address, 100, {from: promisee2});
 
-    const _startAt = Math.round((new Date()).getTime() / 1000);
-    await oathKeeper.takeAnOath(20, _startAt, {from: promisee2});
+    await oathKeeper.takeAnOath(20, {from: promisee2});
     const details = await oathKeeper.oathStats(promisee2);
 
     assert.equal(details.count.toNumber(), 2);
@@ -89,13 +82,19 @@ contract('Oath Keeping - Taking an oath', function (accounts) {
 
     await token.approve(oathKeeper.address, 100, {from: promisee1});
 
-    const _startAt = Math.round((new Date()).getTime() / 1000);
-    await oathKeeper.takeAnOath(20, _startAt, {from: promisee1});
+    await oathKeeper.takeAnOath(20, {from: promisee1});
 
     assert.equal(await oathKeeper.totalLockedTokens.call(), 500);
     assert.equal(await oathKeeper.totalActiveLockedTokens.call(), 500);
     assert.equal(await oathKeeper.totalOathCount.call(), 5);
     assert.equal(await oathKeeper.totalActiveOathCount.call(), 5);
+  });
+
+  it("8. Promisees should not be able to lock tokens outside of minimum and maximum lock period.", async () => {
+
+    await assertFail(async () => {
+      await oathKeeper.takeAnOath(56, {from: promisee1});
+    });
   });
 
 });

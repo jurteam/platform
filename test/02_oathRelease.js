@@ -1,8 +1,7 @@
 const assertFail = require("./helpers/assertFail");
-
 const OathKeeper = artifacts.require("./OathKeeperMock.sol");
-
 const ERC20 = artifacts.require("./mock/JURTokenMock.sol");
+const { increaseTime } = require("./helpers/utils");
 
 contract('Oath Keeping - Releasing an oath', function (accounts) {
 
@@ -26,8 +25,7 @@ contract('Oath Keeping - Releasing an oath', function (accounts) {
     oathKeeper = await OathKeeper.new(token.address, {from: jurAdmin});
     await token.approve(oathKeeper.address, 200, {from: promisee1});
 
-    const _startAt = Math.round((new Date()).getTime() / 1000);
-    await oathKeeper.takeAnOath(11, _startAt, {from: promisee1});
+    await oathKeeper.takeAnOath(11, {from: promisee1});
     await assertFail(async () => {
         await oathKeeper.releaseOath(1, {from: promisee1});
     });
@@ -36,13 +34,12 @@ contract('Oath Keeping - Releasing an oath', function (accounts) {
   it("2. Tokens should release after lock-in period is over.", async () => {
 
     await token.approve(oathKeeper.address, 200, {from: promisee2});
-    const _startAt = Math.round((new Date()).getTime() / 1000);
-    await oathKeeper.takeAnOath(11, _startAt, {from: promisee2});
+    await oathKeeper.takeAnOath(11, {from: promisee2});
 
-    function timeout(ms) {
-        return new Promise(resolve => setTimeout(resolve, ms));
-    }
-    await timeout(11000);
+    let current = await oathKeeper.getNow();
+    let lockMap = await oathKeeper.lockMap(promisee2, 1);
+    let secondsToIncrease = lockMap.releaseAt.toNumber() - current;
+    await increaseTime(current, secondsToIncrease)
     await oathKeeper.releaseOath(1, { from: promisee2});
 
     assert.equal((await token.balanceOf(promisee2)).toNumber(), 1000);
