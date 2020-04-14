@@ -37,9 +37,9 @@ _Please note: this project supports both._
 
 This project repo is organized in 3 branches:
 
--   **master** : is a mirror of _production_ environment;
--   **beta** : is a mirror of _stage_ environment;
--   **develop** : for development purposes;
+-   **master**: is a mirror of _production_ environment;
+-   **beta**: is a mirror of _stage_ environment;
+-   **develop**: for development purposes;
 
 ### Git Workflow
 
