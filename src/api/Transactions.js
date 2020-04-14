@@ -13,12 +13,12 @@ export class Transactions {
     return axios.post(root, payload);
   }
   static lock(id) {
-    return axios.post(`${root}/${id}/lock`);
+    return axios.put(`${root}/${id}/lock`);
   }
   static unlock(id) {
-    return axios.post(`${root}/${id}/unlock`);
+    return axios.put(`${root}/${id}/unlock`);
   }
   static update(payload, id) {
-    return axios.post(`${root}/${id}`, payload);
+    return axios.put(`${root}/${id}`, payload);
   }
 }
