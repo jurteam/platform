@@ -97,6 +97,27 @@ In order to have a full overview of the components available for this project pl
 
 If all goes well Storybook is accessible at <http://localhost:9009>
 
+## Connex
+
+Connex is the standard interface to connect VeChain apps with VeChain blockchain and users.<br>
+>Is under development migration to Connex as authentication, reading and writing method to the blockchain.
+
+Connex method used into Dapp are:
+
+- **Authentication**: perform a certificate signing request with `identification` purpose.<br>
+[more info here](https://docs.vechain.org/connex/api.html#certificate-signing-service).<br>
+>Into Dapp is used into `signCertIdentification` method avaliable [here](https://github.com/jurteam/platform/blob/feature/connex/src/api/connex/Sign.js)
+
+- **Contract Method call**: to call a contract method without altering contract state.<br>
+[more info here](https://docs.vechain.org/connex/api.html#contract-method).<br>
+>Into Dapp is used in the `balanceOf` method avaliable [here](https://github.com/jurteam/platform/blob/feature/connex/src/api/connex/JURToken.js)
+
+- **Transaction signing service**: perform a transaction signing request<br>
+[more info here](https://docs.vechain.org/connex/api.html#transaction-signing-service).<br>
+>Into Dapp is used in the `createArbitration` method avaliable [here](https://github.com/jurteam/platform/blob/feature/connex/src/api/connex/ArbitrationFactory.js)
+
+
+
 ## First run flow
 
 On first run you should download and setup Laravel packages and database. Just follow this commands.
