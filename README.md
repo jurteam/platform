@@ -153,8 +153,8 @@ Once contracts is migrated and available on your local network you should Mint a
     $ cd path/to/project/root
     $ docker-compose build
     $ docker-compose up -d
-    $ docker exec -it php bash
-    $ cd ..
+    $ docker exec -ti jur-mvp_jur_1 bash
+    $ cd var/www/html/
     $ composer install
     $ php artisan key:generate
     $ php artisan migrate:refresh
