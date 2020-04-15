@@ -68,7 +68,7 @@ export function* getDispute(action) {
   
   const { id, onSuccess, onError } = action;  
   log("getDispute",70);
-  const { history } = configureStore();
+  const { history } = action;
   log("getDispute",72);
   
   yield put({ type: DISPUTE_UPDATING, payload: true });
