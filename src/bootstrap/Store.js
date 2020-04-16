@@ -2,7 +2,6 @@ import { applyMiddleware, compose, createStore } from "redux";
 import ReduxThunk from "redux-thunk";
 import { createBrowserHistory } from "history";
 
-import { composeWithDevTools } from 'remote-redux-devtools'
 // Drizzle
 import { generateContractsInitialState } from "drizzle";
 import drizzleOptions from "../config/drizzleOptions";
@@ -23,16 +22,10 @@ const history = createBrowserHistory();
 const sagaMiddleware = createSagaMiddleware();  // Redux Saga Middleware
 
 const composeEnhancers =
-  (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "stage") ?
-  connector() === 'web3' &&
+  (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "stage") 
+  &&
   window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
     ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
-    : composeWithDevTools({
-      realtime: true,
-      name: 'Jur local',
-      hostname: 'localhost',
-      port: 8000 // the port your remotedev server is running at
-    })
     : compose;
 
 /**
