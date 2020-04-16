@@ -20,6 +20,7 @@ import {
   DISPUTE_SAVING,
   DISPUTE_UPDATING,
   API_GET_CONTRACT,
+  DISPUTE_VOTE_OVERLAY,
 } from "../reducers/types";
 
 import { 
@@ -27,7 +28,9 @@ import {
   getTransactionsLastBlock, 
   getWallet,
   getContractdetailPage, 
+  getDisputedetailPage,
   getCurrentContract,
+  getCurrentDispute
  } from './Selectors'
 
 import { log, ethToHuman } from "../utils/helpers";
@@ -644,6 +647,11 @@ function* manageEvent(txw,decoded)
 
       yield put({ type: LOOKUP_WALLET_BALANCE }); // update wallet balance
 
+
+      yield put({ type: FETCH_CONTRACTS });
+      yield put({ type: DISPUTE_SAVING, payload: false });
+      yield put({ type: DISPUTE_UPDATING, payload: false });
+
       // -----------------------------------------------------
 
       break;
@@ -662,14 +670,18 @@ function* manageEvent(txw,decoded)
 function* postAction(txw)
 {
   const currContr = yield select(getCurrentContract);
+  const currDisp = yield select(getCurrentDispute);
   const ContractDetailPage = yield select(getContractdetailPage);
+  const DisputeDetailPage = yield select(getDisputedetailPage);
   const wallet = yield select(getWallet);
 
   const { event, contract: { id } } = txw
   log('postAction - txw',txw)
   log('postAction - event',event)
   log('postAction - currContr',currContr)
+  log('postAction - currDisp',currDisp)
   log('postAction - ContractDetailPage',ContractDetailPage)
+  log('postAction - DisputeDetailPage',DisputeDetailPage)
   
   switch (event) 
   {
@@ -710,6 +722,29 @@ function* postAction(txw)
               // onSuccess: pageLoaded,
               // onError: pageLoaded,
               // history
+            });
+
+            // close form ?
+          }
+
+      // -----------------------------------------------------
+
+      break;
+
+    case "VoteCast":
+
+      // -----------------------------------------------------
+
+
+          log('postAction - VoteCast')
+
+          if (DisputeDetailPage && currDisp.id === id) 
+          {
+            log('postAction - VoteCast ok')
+
+            global.store.dispatch({
+              type: DISPUTE_VOTE_OVERLAY,
+              payload: false
             });
 
             // close form ?

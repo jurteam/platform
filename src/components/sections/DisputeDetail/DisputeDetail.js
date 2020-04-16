@@ -47,6 +47,7 @@ import {
   EXPIRED_CONTRACT,
   DISPUTE_PAYOUT_PARTY,
   DISPUTE_PAYOUT_VOTER,
+  DISPUTE_VOTE_OVERLAY,
   // SUCCESS_ARBITRATION,
   // SEND_TO_COUNTERPARTY,
   // DISCLAIMER_MUST_BE_ACCEPTED,
@@ -123,7 +124,24 @@ export const DisputeDetail = ( props ) => {
     if (!showVoteOverlay) {
       changeInput("amount", 0.01)
     }
+    else
+    {
+      global.store.dispatch({
+        type: DISPUTE_VOTE_OVERLAY,
+        payload: true
+      });
+    }
   }, [showVoteOverlay]);
+
+  useEffect(() => {
+    log('useEffect - dispute.voteOverlay',dispute.voteOverlay)
+
+    if (!dispute.voteOverlay) {      
+      setShowVoteOverlay(false);
+    }
+  }, [dispute.voteOverlay]);
+
+
 
   const changeInput = (name, value) => {
     if (!formUpdated) {setFormUpdated(true);};
