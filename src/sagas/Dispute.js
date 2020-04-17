@@ -40,12 +40,14 @@ import {
 } from "../reducers/types";
 
 import { 
-  log, 
-  chainErrorHandler
+  log,
+  connector,
+  chainErrorHandler,
+  connexFromWei
 } from "../utils/helpers"; // log helper
 
 // Api layouts
-import { Contracts, Disputes, Arbitration, Withdrawal } from "../api";
+import { Contracts, Disputes, Arbitration, connexArbitrationContract, Withdrawal } from "../api";
 
 import {
   // getNewDispute,
@@ -108,43 +110,105 @@ export function* getDispute(action) {
       if (data.statusId === 39) {
         
         // yield put({ type: CHAIN_GET_CONTRACT, address });
-        
-        const arbitration = new Arbitration(address);
-        let winner = yield arbitration.getWinner().catch(chainErrorHandler);
+
+
+        // check connex or web3
+        const connectorValue = connector()
+
+        const { wallet }  = yield select(getUser);
+
+        let winner, arbitration
+        if(connectorValue === 'connex') 
+        {
+          arbitration = new connexArbitrationContract(address);
+          winner = yield arbitration.getWinner()
+        } 
+        else if (connectorValue === 'web3') 
+        {
+          arbitration = new Arbitration(address);
+          winner = yield arbitration.getWinner().catch(chainErrorHandler);
+        }
         log("getDispute - winner", winner);
         
         if (winner) {
           
           log("getDispute - arbitration", arbitration);
           // let canWithdraw = false;
-          let canWithdraw = yield arbitration.canWithdraw().catch(chainErrorHandler);
-          log("getDispute - canWithdraw", canWithdraw);
-          hasWithdrawn = canWithdraw[0];
-          sumToWithdraw =  global.drizzle.web3.utils.fromWei(canWithdraw[1].toString(), 'ether');
+          let canWithdraw,disputeEnd,VOTE_LOCKUP
 
-          // log("getDispute - type canWithdraw", typeof canWithdraw);
-          // log("getDispute - canWithdraw[0]", canWithdraw[0]);
-          // log("getDispute - canWithdraw.r", canWithdraw.result);
-          log("getDispute - hasWithdrawn", hasWithdrawn);
-          log("getDispute - sumTowithdraw", sumToWithdraw);
-          let canClaimReward = yield arbitration.canClaimReward().catch(chainErrorHandler);
-          hasToGetReward = canClaimReward[0]
-
-          reward = global.drizzle.web3.utils.fromWei(canClaimReward[1].toString(), 'ether');
-          // log("getDispute - canClaimReward", canClaimReward);
-          log("getDispute - hasToGetReward", hasToGetReward);
-          log("getDispute - reward", reward);
+          if(connectorValue === 'connex') 
+          {
+            canWithdraw = yield arbitration.canWithdraw()
 
 
-          yield arbitration.gameTheory();
-          const VOTE_LOCKUP = arbitration.VOTE_LOCKUP;
+            log("getDispute - canWithdraw", canWithdraw);
+            hasWithdrawn = canWithdraw[0];
+            sumToWithdraw =  connexFromWei(canWithdraw[1].toString(), 'ether');
 
-          voteLookup = moment.duration(Number.parseInt(VOTE_LOCKUP.toString()),'seconds').humanize()
-          if (VOTE_LOCKUP)
-            log("getDispute - VOTE_LOCKUP", VOTE_LOCKUP.toString());
-            
-          log("getDispute - voteLookup", voteLookup);
-          const disputeEnd = yield arbitration.disputeEnds().catch(chainErrorHandler);
+            log("getDispute - hasWithdrawn", hasWithdrawn);
+            log("getDispute - sumTowithdraw", sumToWithdraw);
+            let canClaimReward = yield arbitration.canClaimReward(wallet);
+
+            log("getDispute - canClaimReward", canClaimReward);
+
+            hasToGetReward = canClaimReward[0]
+            log("getDispute - hasToGetReward", hasToGetReward);
+
+            reward = connexFromWei(canClaimReward[1].toString(), 'ether');
+            log("getDispute - reward", reward);
+  
+  
+            // yield arbitration.gameTheory();
+             VOTE_LOCKUP = yield arbitration.voteLookup();
+
+             log("getDispute - VOTE_LOCKUP", VOTE_LOCKUP);
+  
+            voteLookup = moment.duration(Number.parseInt(VOTE_LOCKUP.toString()),'seconds').humanize()
+            if (VOTE_LOCKUP)
+              log("getDispute - VOTE_LOCKUP", VOTE_LOCKUP.toString());
+              
+            log("getDispute - voteLookup", voteLookup);
+            disputeEnd = yield arbitration.disputeEnds();
+
+          } 
+          else if (connectorValue === 'web3') 
+          {
+            canWithdraw = yield arbitration.canWithdraw().catch(chainErrorHandler);
+
+
+            log("getDispute - canWithdraw", canWithdraw);
+            hasWithdrawn = canWithdraw[0];
+            sumToWithdraw =  global.drizzle.web3.utils.fromWei(canWithdraw[1].toString(), 'ether');
+  
+            // log("getDispute - type canWithdraw", typeof canWithdraw);
+            // log("getDispute - canWithdraw[0]", canWithdraw[0]);
+            // log("getDispute - canWithdraw.r", canWithdraw.result);
+            log("getDispute - hasWithdrawn", hasWithdrawn);
+            log("getDispute - sumTowithdraw", sumToWithdraw);
+            let canClaimReward = yield arbitration.canClaimReward().catch(chainErrorHandler);
+            hasToGetReward = canClaimReward[0]
+  
+            reward = global.drizzle.web3.utils.fromWei(canClaimReward[1].toString(), 'ether');
+            // log("getDispute - canClaimReward", canClaimReward);
+            log("getDispute - hasToGetReward", hasToGetReward);
+            log("getDispute - reward", reward);
+  
+  
+            yield arbitration.gameTheory();
+             VOTE_LOCKUP = arbitration.VOTE_LOCKUP;
+  
+            voteLookup = moment.duration(Number.parseInt(VOTE_LOCKUP.toString()),'seconds').humanize()
+            if (VOTE_LOCKUP)
+              log("getDispute - VOTE_LOCKUP", VOTE_LOCKUP.toString());
+              
+            log("getDispute - voteLookup", voteLookup);
+            disputeEnd = yield arbitration.disputeEnds().catch(chainErrorHandler);
+          }
+
+          log("getDispute - disputeEnd", disputeEnd);
+
+          // ---------------------------------
+
           const lockupEnd = disputeEnd ? Number.parseInt(disputeEnd.toString()) + Number.parseInt(VOTE_LOCKUP) : 0
           log("getDispute - lockupEnd", lockupEnd);
           const now = new Date();
@@ -168,7 +232,7 @@ export function* getDispute(action) {
             
             const partA = data.counterparties[0] ? data.counterparties[0].wallet.toLowerCase() : '';
             const partB = data.counterparties[1] ? data.counterparties[1].wallet.toLowerCase() : '';
-            const { wallet }  = yield select(getUser);
+            
             const iPay = (data.whoPays === wallet )
             // const oracles = yield select(getOracleList);
 
@@ -184,77 +248,7 @@ export function* getDispute(action) {
               hasWithdrawn = true;
             }
       
-            // if I am a Party 
-            // if (partA === wallet) {
-            //   // i am party A
-
-            //   if (winner === '0x0') {
-            //     // reject win 
-
-            //     // control my fund into contract
-            //     if (iPay) {
-            //       myAmount = Number.parseFloat(data.value) - Number.parseFloat(data.partAPenaltyFee);
-            //     } else {
-            //       myAmount = Number.parseFloat(data.partAPenaltyFee);
-            //     }
-                
-            //   } else if (winner === partA) {
-            //     myAmount = Number.parseFloat(data.proposalPartA.proposal.proposal_part_a);
-            //   } else if (winner === partB) {
-            //     myAmount = Number.parseFloat(data.proposalPartB.proposal.proposal_part_a);  
-            //   }
-
-            //   hasToWithdraw = (myAmount > 0 && !canWithdraw);
-
-            // } else if (partB === wallet) {
-            //   // i am party B  
-            
-            //   if (winner === '0x0') {
-            //     // reject win 
-      
-            //     // control my fund into contract
-            //     if (iPay) {
-            //       myAmount = Number.parseFloat(data.value) - Number.parseFloat(data.partBPenaltyFee);
-            //     } else {
-            //       myAmount = Number.parseFloat(data.partBPenaltyFee);
-            //     }
-                
-            //   } else if (winner === partA) {
-            //     myAmount = Number.parseFloat(data.proposalPartA.proposal.proposal_part_b);
-            //   } else if (winner === partB) {
-            //     myAmount = Number.parseFloat(data.proposalPartB.proposal.proposal_part_b);  
-            //   }
-
-            //   hasToWithdraw = (myAmount > 0 && !canWithdraw);
-              
-              
-            // } 
-            
-            
-            // check all vote   
-            // oracles.forEach(oracle => {
-    
-            //   if (oracle.oracle_wallet === wallet) {
-            //     // I am a Voter
-    
-            //     if (oracle.wallet_part === winner.toLowerCase()) {
-            //       // i voted winnin party
-    
-            //       // control if has passed 24 h from closing dispute
-    
-            //       hasToGetReward = Number.parseInt(canClaimReward.toString());
-            //       if (nowSecs >= lockupEnd) {
-            //         hasToGetReward = hasToGetReward === 0 ? 1 : hasToGetReward
-            //       }
-            //       // setShowWithdrawButton(true)
-            //     }
-            //   }
-              
-            // })
-            
-          
-          // }
-          
+                    
 
         // check if vote_lookup is passed from dispute end
          hasToGetReward = Number.parseInt(hasToGetReward.toString());

@@ -309,6 +309,17 @@ export const multiplication = (a, b) => {
   return prod.toString();
 };
 
+export const division = (a, b) => {
+  let x = new Big(a);
+  const divv = x.div(b);
+
+  log("handleDisputeArbitration - division", x);
+  log("handleDisputeArbitration - division", x.toString());
+  log("handleDisputeArbitration - division", divv.toString());
+
+  return divv.toString();
+};
+
 export const toBigFixed = amount => {
   const amountArray = amount.toString().split(".");
   const decimalnumber = amountArray.length > 1 ? amountArray[1].length : 0;
@@ -368,4 +379,19 @@ export const connexToWei = (value, size) => {
   }
 
   return multiplication(value, multiplicator);
+};
+
+export const connexFromWei = (value, size) => {
+  let multiplicator;
+
+  switch (size) {
+    case "ether":
+      multiplicator = 10 ** 18;
+      break;
+    default:
+      multiplicator = 10 ** 18;
+      break;
+  }
+
+  return division(value, multiplicator);
 };

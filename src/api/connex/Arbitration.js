@@ -76,6 +76,24 @@ export default class connexArbitrationContract
 
   }
 
+  async voteLookup() 
+  {
+
+    log('voteLookup - ArbitrationFactoryABI',this.contract)
+    const voteLookupABI = this.getMethodABI("VOTE_LOCKUP");
+    log('voteLookup - voteLookupABI',voteLookupABI)
+
+    
+    const voteLookupMethod = this.thorAccount.method(voteLookupABI)
+    
+    
+    const voteLookupResult = await voteLookupMethod.call();  
+    log('voteLookup - voteLookupResult',voteLookupResult)
+      
+    return voteLookupResult.decoded[0]
+
+  }
+
   async disputeStarts() 
   {
 
@@ -111,6 +129,64 @@ export default class connexArbitrationContract
     log('disputeEnds - disputeEnds',disputeEnds)
 
     return disputeEnds.decoded[0]
+
+  }
+
+  async getWinner() 
+  {
+
+    log('getWinner - ArbitrationFactoryABI',this.contract)
+    const getWinnerABI = this.getMethodABI("getWinner");
+    log('getWinner - getWinnerABI',getWinnerABI)
+    
+    
+    const getWinnerMethod = this.thorAccount.method(getWinnerABI)
+    
+    
+    const getWinner = await getWinnerMethod.call(); 
+    
+    log('getWinner - getWinner',getWinner)
+
+    return getWinner.decoded[0]
+
+  }
+
+  async canClaimReward(account, start = 0, end = 999999 ) 
+  {
+    log('canClaimReward - ArbitrationFactoryABI',this.contract)
+    const canClaimRewardABI = this.getMethodABI("canClaimReward");
+    log('canClaimReward - canClaimRewardABI',canClaimRewardABI)
+    
+    
+    const canClaimRewardMethod = this.thorAccount.method(canClaimRewardABI)
+
+    canClaimRewardMethod.caller(account)
+    
+    
+    const canClaimReward = await canClaimRewardMethod.call(start, end);
+    
+    log('canClaimReward - canClaimReward',canClaimReward)
+
+    return canClaimReward.decoded
+
+  }
+
+  async canWithdraw() 
+  {
+
+    log('canWithdraw - ArbitrationFactoryABI',this.contract)
+    const canWithdrawABI = this.getMethodABI("canWithdraw");
+    log('canWithdraw - canWithdrawABI',canWithdrawABI)
+    
+    
+    const canWithdrawMethod = this.thorAccount.method(canWithdrawABI)
+    
+    
+    const canWithdraw = await canWithdrawMethod.call(); 
+    
+    log('canWithdraw - canWithdraw',canWithdraw)
+
+    return canWithdraw.decoded
 
   }
 
