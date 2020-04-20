@@ -38,4 +38,30 @@ class ContractCreateTest extends TestCase
         );
     }
 
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function should_not_create_contract_without_wallet()
+    {
+        $this->post("api/v1/contracts", []);
+
+        // validate status
+        $this->seeStatusCode(401);
+
+        // validate stucture of data
+        $this->seeJsonStructure(['errors']);
+
+        // validate data
+        $this->seeJson(
+            [
+                'errors' =>
+                [
+                    'wallet' => ['The wallet is missing.'],
+                ],
+            ]
+        );
+    }
+
 }
