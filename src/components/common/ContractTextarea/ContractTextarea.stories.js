@@ -2,6 +2,7 @@ import React from "react";
 
 import { storiesOf } from "@storybook/react";
 import { withInfo } from "@storybook/addon-info";
+import { log } from "../../../utils/helpers";
 
 import ContractTextarea from ".";
 
@@ -17,6 +18,6 @@ storiesOf("ContractTextarea", module)
     <ContractTextarea
       label="KPI of the contracts:"
       name="kpi"
-      onChange={(ev) => log(ev.target.value)}
+      onChange={ev => log(ev.target.value)}
     />
   ));

@@ -11,8 +11,14 @@ import { AppContext } from "../../../bootstrap/AppProvider"; // context
 
 import "./CreateContractForm.scss";
 
-export const CreateContractForm = ( props ) => {
-  const { onNext, contract, updateNewContractField, resetContract, user } = props;
+export const CreateContractForm = props => {
+  const {
+    onNext,
+    contract,
+    updateNewContractField,
+    resetContract,
+    user
+  } = props;
 
   const [formUpdated, setFormUpdated] = useState(false);
 
@@ -24,9 +30,7 @@ export const CreateContractForm = ( props ) => {
 
   const { labels } = useContext(AppContext);
 
-  const {
-    wallet
-  } = user;
+  const { wallet } = user;
 
   const {
     updating,
@@ -47,8 +51,8 @@ export const CreateContractForm = ( props ) => {
   }, []);
 
   useEffect(() => {
-    if (part_a_wallet=== '') {
-      updateNewContractField('part_a_wallet', wallet); // dispatch action
+    if (part_a_wallet === "") {
+      updateNewContractField("part_a_wallet", wallet); // dispatch action
     }
   }, [wallet]);
 
@@ -58,7 +62,7 @@ export const CreateContractForm = ( props ) => {
     updateNewContractField(name, value); // dispatch action
   };
 
-  const onInputChange = (ev) => {
+  const onInputChange = ev => {
     const target = ev.target;
     if (target) {
       const value = target.type === "checkbox" ? target.checked : target.value;
@@ -72,13 +76,13 @@ export const CreateContractForm = ( props ) => {
   const submitDisabled =
     formUpdated === false || updating === true || !isValid();
 
-  const onSubmit = (ev) => {
+  const onSubmit = ev => {
     ev.preventDefault();
     onNext();
   };
 
   // form error handling
-  const hasError = (field) =>
+  const hasError = field =>
     typeof errors[field] !== "undefined" &&
     errors[field].length > 0 &&
     formUpdated; // show error only when form is update at least one time
@@ -101,7 +105,7 @@ export const CreateContractForm = ( props ) => {
                 id={"part_a_wallet"}
                 error={hasError("part_a_wallet")}
                 value={part_a_wallet}
-                onChange={(ev) => onInputChange(ev)}
+                onChange={ev => onInputChange(ev)}
               />
             </Form.Group>
           </Form.Container>
@@ -116,7 +120,7 @@ export const CreateContractForm = ( props ) => {
                 id={"part_a_name"}
                 error={hasError("part_a_name")}
                 value={part_a_name}
-                onChange={(ev) => onInputChange(ev)}
+                onChange={ev => onInputChange(ev)}
               />
             </Form.Group>
           </Form.Container>
@@ -131,7 +135,7 @@ export const CreateContractForm = ( props ) => {
                 id={"part_a_email"}
                 error={hasError("part_a_email")}
                 value={part_a_email}
-                onChange={(ev) => onInputChange(ev)}
+                onChange={ev => onInputChange(ev)}
               />
             </Form.Group>
           </Form.Container>
@@ -151,7 +155,7 @@ export const CreateContractForm = ( props ) => {
                 id={"part_b_wallet"}
                 error={hasError("part_b_wallet")}
                 value={part_b_wallet}
-                onChange={(ev) => onInputChange(ev)}
+                onChange={ev => onInputChange(ev)}
               />
             </Form.Group>
           </Form.Container>
@@ -166,7 +170,7 @@ export const CreateContractForm = ( props ) => {
                 id={"part_b_name"}
                 error={hasError("part_b_name")}
                 value={part_b_name}
-                onChange={(ev) => onInputChange(ev)}
+                onChange={ev => onInputChange(ev)}
               />
             </Form.Group>
           </Form.Container>
@@ -181,7 +185,7 @@ export const CreateContractForm = ( props ) => {
                 id={"part_b_email"}
                 error={hasError("part_b_email")}
                 value={part_b_email}
-                onChange={(ev) => onInputChange(ev)}
+                onChange={ev => onInputChange(ev)}
               />
             </Form.Group>
           </Form.Container>

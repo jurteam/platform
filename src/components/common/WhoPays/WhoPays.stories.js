@@ -2,6 +2,7 @@ import React from "react";
 
 import { storiesOf } from "@storybook/react";
 import { withInfo } from "@storybook/addon-info";
+import { log } from "../../../utils/helpers";
 
 import WhoPays from "./";
 
@@ -37,13 +38,13 @@ storiesOf("WhoPays", module)
         }
       }}
       hasError={() => null}
-      handleSelectPayer={(value) => log(value)}
+      handleSelectPayer={value => log(value)}
     />
   ))
   .add("Error", () => (
     <WhoPays
       error={true}
-      errorMsg={'You do not have enough Jur balance'}
+      errorMsg={"You do not have enough Jur balance"}
       contract={{
         from: {
           label: "partA",
@@ -64,6 +65,6 @@ storiesOf("WhoPays", module)
           partB: 1123
         }
       }}
-      handleSelectPayer={(value) => log(value)}
+      handleSelectPayer={value => log(value)}
     />
-  ))
+  ));

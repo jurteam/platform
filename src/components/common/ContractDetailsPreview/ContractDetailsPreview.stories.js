@@ -2,6 +2,7 @@ import React from "react";
 
 import { storiesOf } from "@storybook/react";
 import { withInfo } from "@storybook/addon-info";
+import { log } from "../../../utils/helpers";
 
 import ContractDetailsPreview from "./";
 
@@ -77,11 +78,11 @@ storiesOf("ContractDetailsPreview", module)
             name: "hello.pdf"
           }
         ],
-        onContractNameChange: (ev) => log(ev.target.value),
+        onContractNameChange: ev => log(ev.target.value),
         onProgress: percentage => log(percentage),
-        onExpire: (ev) => log(ev.target.value)
+        onExpire: ev => log(ev.target.value)
       }}
-      onDelete={(ev) => log("dilghf")}
-      onView={(ev) => log("dilghf")}
+      onDelete={ev => log("onDelete")}
+      onView={ev => log("onView")}
     />
   ));
