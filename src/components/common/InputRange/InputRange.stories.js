@@ -2,6 +2,7 @@ import React from "react";
 
 import { storiesOf } from "@storybook/react";
 import { withInfo } from "@storybook/addon-info";
+import { log } from "../../../utils/helpers";
 
 import InputRange from "./";
 
@@ -18,6 +19,6 @@ storiesOf("InputRange", module)
       min="0"
       max="100"
       defaultValue={0}
-      onValueChange={(value) => log(value)}
+      onValueChange={value => log(value)}
     />
   ));

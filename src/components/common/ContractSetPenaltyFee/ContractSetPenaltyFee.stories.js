@@ -2,6 +2,7 @@ import React from "react";
 
 import { storiesOf } from "@storybook/react";
 import { withInfo } from "@storybook/addon-info";
+import { log } from "../../../utils/helpers";
 
 import ContractSetPenaltyFee from "./";
 
@@ -32,8 +33,8 @@ storiesOf("ContractSetPenaltyFee", module)
         },
         penaltyFee: null
       }}
-      setPenaltyFeeStatus={(value) => log(value)}
-      ContractSetPenaltyFee={(value) => log(value)}
+      setPenaltyFeeStatus={value => log(value)}
+      ContractSetPenaltyFee={value => log(value)}
     />
   ))
   .add("Width Penalty fee", () => (
@@ -58,7 +59,7 @@ storiesOf("ContractSetPenaltyFee", module)
           partB: 32345
         }
       }}
-      setPenaltyFeeStatus={(value) => log(value)}
-      ContractSetPenaltyFee={(value) => log(value)}
+      setPenaltyFeeStatus={value => log(value)}
+      ContractSetPenaltyFee={value => log(value)}
     />
   ));

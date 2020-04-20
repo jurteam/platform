@@ -2,6 +2,7 @@ import React from "react";
 
 import { storiesOf } from "@storybook/react";
 import { withInfo } from "@storybook/addon-info";
+import { log } from "../../../utils/helpers";
 
 import ContractSetCaseDispute from "./";
 
@@ -29,6 +30,6 @@ storiesOf("ContractSetCaseDispute", module)
           id: 2
         }
       ]}
-      handleChange={(selectedOptionId) => log(selectedOptionId)}
+      handleChange={selectedOptionId => log(selectedOptionId)}
     />
   ));

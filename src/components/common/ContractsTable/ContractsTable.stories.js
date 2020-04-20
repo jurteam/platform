@@ -3,6 +3,7 @@ import React from "react";
 import { storiesOf } from "@storybook/react";
 import { withInfo } from "@storybook/addon-info";
 
+import { log } from "../../../utils/helpers";
 import ContractsTable from ".";
 
 const headers = [
@@ -236,12 +237,12 @@ storiesOf("ContractsTable", module)
       headers={headers}
       data={noContracts}
       handleArchive={contractId => alert("Contractid archived")}
-      handleFilterChange={(value) => log(value)}
+      handleFilterChange={value => log(value)}
       handleFilterSubmit={log("filter contracts")}
       contractsPerPage={3}
       filters={filters}
       totalContracts={noContracts.length}
-      handlePageChange={(pageNumber) => log(pageNumber)}
+      handlePageChange={pageNumber => log(pageNumber)}
     />
   ))
   .add("Contract list", () => (
@@ -249,13 +250,13 @@ storiesOf("ContractsTable", module)
       headers={headers}
       data={contractsData}
       handleArchive={contractId => alert("Contractid archived")}
-      handleFilterChange={(value) => log(value)}
+      handleFilterChange={value => log(value)}
       handleFilterSubmit={() => log("filter contracts")}
       contractsPerPage={3}
       filters={filters}
       loading={false}
       user={{ wallet: "0x496730954769357609478509674309" }}
       totalContracts={contractsData.length}
-      onPageChange={(pageNumber) => log(pageNumber)}
+      onPageChange={pageNumber => log(pageNumber)}
     />
   ));

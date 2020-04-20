@@ -2,6 +2,7 @@ import React from "react";
 
 import { storiesOf } from "@storybook/react";
 import { withInfo } from "@storybook/addon-info";
+import { log } from "../../../utils/helpers";
 
 import ContractSelectCategory from "./";
 
@@ -14,5 +15,5 @@ storiesOf("ContractSelectCategory", module)
     }
   })
   .add("Default", () => (
-    <ContractSelectCategory onChange={(ev) => log(ev)} hasError={() => null} />
+    <ContractSelectCategory onChange={ev => log(ev)} hasError={() => null} />
   ));

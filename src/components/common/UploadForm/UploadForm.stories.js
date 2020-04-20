@@ -1,6 +1,7 @@
 import React from "react";
 import { storiesOf } from "@storybook/react";
 import { withInfo } from "@storybook/addon-info";
+import { log } from "../../../utils/helpers";
 
 import UploadForm from "./";
 
@@ -12,6 +13,4 @@ storiesOf("UploadForm", module)
       header: false
     }
   })
-  .add("Default", () => (
-    <UploadForm onFileAdded={files => log(files)} />
-  ));
+  .add("Default", () => <UploadForm onFileAdded={files => log(files)} />);
