@@ -214,4 +214,84 @@ class ContractCreateTest extends TestCase
         );
     }
 
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function should_create_contract_with_valid_data()
+    {
+        $header = ['wallet' => '0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616AA'];
+
+        $data = [
+            'part_a_wallet' => '0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A7',
+            'part_b_wallet' => '0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A1',
+            'part_a_name' => 'Alice',
+            'part_a_email' => 'alice_in_wonderland@gmail.com',
+            'part_b_name' => 'Bob',
+            'part_b_email' => 'bob_in_thailand@gmail.com',
+            'kpi' => 'freelance aggreement',
+            'category' => 'General',
+            'who_pays' => '0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A7',
+            'value' => 100,
+            'has_penalty_fee' => 0,
+        ];
+
+        $this->post("api/v1/contracts", $data, $header);
+
+        // validate status
+        $this->seeStatusCode(200);
+
+        // validate stucture of data
+        $this->seeJsonStructure(
+            [
+                'data' =>
+                [
+                    "id",
+                    "statusId",
+                    "statusLabel",
+                    "statusUpdatedAt",
+                    "statusFrom",
+                    "statusPart",
+                    "contractName",
+                    "duration" => [
+                        "days",
+                        "hours",
+                        "minutes",
+                    ],
+                    "expireAlertFrom",
+                    "counterparties" => [
+                        [
+                            "wallet",
+                            "name",
+                            "email",
+                            "renderName",
+                        ],
+                        [
+                            "wallet",
+                            "name",
+                            "email",
+                            "renderName",
+                        ],
+                    ],
+                    "value",
+                    "whoPays",
+                    "address",
+                    "kpi",
+                    "resolutionProof",
+                    "category",
+                    "inCaseOfDispute",
+                    "hasPenaltyFee",
+                    "partAPenaltyFee",
+                    "partBPenaltyFee",
+                    "isDispute",
+                    "isFriendlyResolution",
+                ],
+            ]
+        );
+
+        // validate data present in database
+        $this->seeInDatabase('contracts', array_merge($data, $header));
+    }
+
 }
