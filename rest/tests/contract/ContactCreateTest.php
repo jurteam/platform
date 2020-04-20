@@ -110,4 +110,77 @@ class ContractCreateTest extends TestCase
         $this->notSeeInDatabase('contracts', $header);
     }
 
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function should_create_contract_only_with_party_a_and_b_wallets()
+    {
+
+        $header = ['wallet' => '0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A7'];
+
+        $this->post("api/v1/contracts",
+            [
+                'part_a_wallet' => '0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A7',
+                'part_b_wallet' => '0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A1',
+            ],
+            $header
+        );
+
+        // validate status
+        $this->seeStatusCode(200);
+
+        // validate stucture of data
+        $this->seeJsonStructure(
+            [
+                'data' =>
+                [
+                    "id",
+                    "statusId",
+                    "statusLabel",
+                    "statusUpdatedAt",
+                    "statusFrom",
+                    "statusPart",
+                    "contractName",
+                    "duration" => [
+                        "days",
+                        "hours",
+                        "minutes",
+                    ],
+                    "expireAlertFrom",
+                    "counterparties" => [
+                        [
+                            "wallet",
+                            "name",
+                            "email",
+                            "renderName",
+                        ],
+                        [
+                            "wallet",
+                            "name",
+                            "email",
+                            "renderName",
+                        ],
+                    ],
+                    "value",
+                    "whoPays",
+                    "address",
+                    "kpi",
+                    "resolutionProof",
+                    "category",
+                    "inCaseOfDispute",
+                    "hasPenaltyFee",
+                    "partAPenaltyFee",
+                    "partBPenaltyFee",
+                    "isDispute",
+                    "isFriendlyResolution",
+                ],
+            ]
+        );
+
+        // validate data present in database
+        $this->seeInDatabase('contracts', $header);
+    }
+
 }
