@@ -183,4 +183,35 @@ class ContractCreateTest extends TestCase
         $this->seeInDatabase('contracts', $header);
     }
 
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function should_not_create_contract_with_invalid_wallet()
+    {
+        $header = ['wallet' => '0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A']; // invalid wallet address (missing last charecter)
+
+        $this->post("api/v1/contracts",
+            [
+                'accepted_terms' => 1,
+                'accepted_disclaimer' => 1,
+            ],
+            $header
+        );
+
+        // validate status
+        $this->seeStatusCode(422);
+
+        // validate error details
+        $this->seeJson(
+            [
+                'errors' =>
+                [
+                    'wallet' => ['The wallet is not valid.'],
+                ],
+            ]
+        );
+    }
+
 }
