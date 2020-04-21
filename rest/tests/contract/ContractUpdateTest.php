@@ -45,4 +45,64 @@ class ContractUpdateTest extends TestCase
         );
     }
 
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function should_not_update_contract_with_invalid_id()
+    {
+        $user = factory(App\Models\User::class)->create();
+        $contract = factory(App\Models\Contract::class)->create([
+            'user_id' => $user->id,
+            'wallet' => '0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A7',
+            'part_a_wallet' => $user->wallet,
+        ]);
+
+        // validate data present in database
+        $this->seeInDatabase('contracts', ['id' => $contract->id]);
+
+        // wrong id
+        $id = "123456"; // wrong format
+
+        $this->put("api/v1/contracts/{$id}", [], ['wallet' => '0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A7']);
+
+        // validate status
+        $this->seeStatusCode(422);
+
+        // validate stucture of data
+        $this->seeJsonStructure(['errors']);
+
+        // validate data
+        $this->seeJson(
+            [
+                'errors' =>
+                [
+                    'id' => ['The Id is in invalid format.'],
+                ],
+            ]
+        );
+
+        // wrong id
+        $id = "lX8Zw4"; // non existing id
+
+        $this->put("api/v1/contracts/{$id}", [], ['wallet' => '0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A7']);
+
+        // validate status
+        $this->seeStatusCode(422);
+
+        // validate stucture of data
+        $this->seeJsonStructure(['errors']);
+
+        // validate data
+        $this->seeJson(
+            [
+                'errors' =>
+                [
+                    'id' => ['The Id is invalid.'],
+                ],
+            ]
+        );
+    }
+
 }
