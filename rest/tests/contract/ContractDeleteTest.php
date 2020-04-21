@@ -146,4 +146,64 @@ class ContractDeleteTest extends TestCase
         $this->seeStatusCode(404);
     }
 
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function should_not_delete_contract_with_non_existing_id()
+    {
+        $user = factory(App\Models\User::class)->create();
+        $contract = factory(App\Models\Contract::class)->create([
+            'user_id' => $user->id,
+            'wallet' => '0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A7',
+            'part_a_wallet' => $user->wallet,
+        ]);
+
+        // validate data present in database
+        $this->seeInDatabase('contracts', ['id' => $contract->id]);
+
+        $id = "EX3eR4"; // non existing id
+
+        // try to delete
+        $this->delete("api/v1/contracts/{$id}", [], ['wallet' => '0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A7']);
+
+        // should not delete item
+        $this->seeStatusCode(422);
+
+        // validate data present in database
+        $this->seeInDatabase('contracts', ['id' => $contract->id]);
+
+        // validate error details
+        $this->seeJson(
+            [
+                'errors' =>
+                [
+                    'id' => ['The Id is not valid.'],
+                ],
+            ]
+        );
+
+        $id = "123456"; // non existing id with invalid format
+
+        // try to delete
+        $this->delete("api/v1/contracts/{$id}", [], ['wallet' => '0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A7']);
+
+        // should not delete item
+        $this->seeStatusCode(422);
+
+        // validate data present in database
+        $this->seeInDatabase('contracts', ['id' => $contract->id]);
+
+        // validate error details
+        $this->seeJson(
+            [
+                'errors' =>
+                [
+                    'id' => ['The Id is not in valid format.'],
+                ],
+            ]
+        );
+    }
+
 }
