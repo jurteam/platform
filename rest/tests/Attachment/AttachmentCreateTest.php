@@ -96,4 +96,47 @@ class AttachmentCreateTest extends TestCase
         ]);
     }
 
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function should_upload_a_file_with_activity_of_a_contract()
+    {
+        $wallet = '0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A6';
+
+        // create user
+        $user = factory(App\Models\User::class)->create([
+            'wallet' => $wallet,
+        ]);
+
+        // create fake image
+        Storage::fake('attachments');
+
+        $attachments[] = UploadedFile::fake()->image('attachment.jpg');
+
+        // create a contract
+        $contract = factory(App\Models\Contract::class)->create([
+            'user_id' => $user->id,
+        ]);
+
+        // get encoded id
+        $id = encodeId($contract->id);
+
+        // create an activity with attachment
+        $dispute = $this->post("api/v1/activities/{$id}", [
+            'attachments' => $attachments,
+            'code' => 35,
+        ], [
+            'wallet' => $wallet,
+        ]);
+
+        // validate status
+        $this->seeStatusCode(200);
+
+        // check attachment available in database
+        $this->seeInDatabase('media', [
+            'model_type' => \App\Models\Activity::class,
+        ]);
+    }
 }
