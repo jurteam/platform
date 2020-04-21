@@ -117,4 +117,39 @@ class DisputeReadTest extends TestCase
             ->seeStatusCode(401);
     }
 
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function should_read_single_dispute_with_wallet()
+    {
+        $header = ['wallet' => '0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616AA'];
+
+        $user = factory(App\Models\User::class)->create();
+
+        $contract = factory(App\Models\Contract::class)->create([
+            'user_id' => $user->id,
+            'wallet' => '0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A7',
+            'part_a_wallet' => $user->wallet,
+        ]);
+
+        // validate data present in database
+        $this->seeInDatabase('contracts', ['id' => $contract->id]);
+
+        // get encoded id
+        $id = encodeId($contract->id);
+
+        // create dispute
+        $this->post("api/v1/contracts/disputes/{$id}", ['code' => 35], $header);
+
+        // validate status
+        $this->seeStatusCode(200);
+
+        // get dispute
+        $this->get("api/v1/contracts/disputes/{$id}", $header);
+
+        // validate status
+        $this->seeStatusCode(200);
+    }
 }
