@@ -70,4 +70,38 @@ class DisputeReadAllTest extends TestCase
             ->seeStatusCode(401);
     }
 
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function should_read_dispute_with_wallet()
+    {
+        $header = ['wallet' => '0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616AA'];
+
+        // get disputes
+        $this->get("api/v1/contracts/disputes/all", $header);
+
+        // validate status
+        $this->seeStatusCode(200);
+
+        // validate stucture of data
+        $this->seeJsonStructure(
+            [
+                'data',
+                'meta' =>
+                [
+                    "pagination" => [
+                        "total",
+                        "count",
+                        "per_page",
+                        "current_page",
+                        "total_pages",
+                        "links",
+                    ],
+                ],
+            ]
+        );
+    }
+
 }
