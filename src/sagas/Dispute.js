@@ -138,7 +138,7 @@ export function* getDispute(action) {
 
           if(connectorValue === 'connex') 
           {
-            canWithdraw = yield arbitration.canWithdraw()
+            canWithdraw = yield arbitration.canWithdraw(wallet)
 
 
             log("getDispute - canWithdraw", canWithdraw);
