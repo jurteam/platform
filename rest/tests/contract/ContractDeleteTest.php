@@ -74,4 +74,48 @@ class ContractDeleteTest extends TestCase
         $this->notSeeInDatabase('contracts', ['id' => $contract->id]);
     }
 
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function should_not_delete_contract_with_invalid_wallet()
+    {
+        $user = factory(App\Models\User::class)->create();
+        $contract = factory(App\Models\Contract::class)->create([
+            'user_id' => $user->id,
+            'wallet' => '0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A7',
+            'part_a_wallet' => $user->wallet,
+        ]);
+
+        // validate data present in database
+        $this->seeInDatabase('contracts', ['id' => $contract->id]);
+
+        // get encoded id
+        $id = encodeId($contract->id);
+
+        // try to delete
+        $this->delete("api/v1/contracts/{$id}", [], ['wallet' => $user->wallet]);
+
+        // validate status
+        $this->seeStatusCode(422);
+
+        $header = ['wallet' => '0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A']; // invalid wallet address (missing last charecter)
+
+        $this->delete("api/v1/contracts", [], $header);
+
+        // validate status
+        $this->seeStatusCode(422);
+
+        // validate error details
+        $this->seeJson(
+            [
+                'errors' =>
+                [
+                    'wallet' => ['The wallet is not valid.'],
+                ],
+            ]
+        );
+    }
+
 }
