@@ -83,7 +83,7 @@ class UserDeleteTest extends TestCase
     {
         $header = ['wallet' => '0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A']; // invalid wallet address (missing last charecter)
 
-        $this->put("api/v1/user", [], $header);
+        $this->delete("api/v1/user", [], $header);
 
         // validate status
         $this->seeStatusCode(422);
