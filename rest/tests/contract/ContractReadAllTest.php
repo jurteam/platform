@@ -104,4 +104,56 @@ class ContractReadAllTest extends TestCase
         );
     }
 
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function should_read_contract_with_data()
+    {
+        $wallet = '0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A7';
+
+        // create contract
+        $this->post("api/v1/contracts",
+            [
+                'wallet' => $wallet,
+                'part_a_wallet' => $wallet,
+                'part_b_wallet' => '0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A1',
+            ],
+            ['wallet' => $wallet]
+        );
+
+        // validate status
+        $this->seeStatusCode(200);
+
+        // get contract
+        $this->get("api/v1/contracts", ['wallet' => $wallet]);
+
+        // validate status
+        $this->seeStatusCode(200);
+
+        // validate stucture of data
+        $this->seeJsonStructure(
+            [
+                'data' =>
+                [
+                    [
+                        "id",
+                    ],
+                ],
+                'meta' =>
+                [
+                    "pagination" => [
+                        "total",
+                        "count",
+                        "per_page",
+                        "current_page",
+                        "total_pages",
+                        "links",
+                    ],
+                ],
+            ]
+        );
+    }
+
 }
