@@ -113,4 +113,40 @@ class ContractReadTest extends TestCase
             ->seeStatusCode(401);
     }
 
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function should_read_single_contract_with_data()
+    {
+        $header = ['wallet' => '0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616AA'];
+
+        $user = factory(App\Models\User::class)->create();
+
+        $contract = factory(App\Models\Contract::class)->create([
+            'user_id' => $user->id,
+            'wallet' => '0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A7',
+            'part_a_wallet' => $user->wallet,
+        ]);
+
+        // validate data present in database
+        $this->seeInDatabase('contracts', ['id' => $contract->id]);
+
+        // get encoded id
+        $id = encodeId($contract->id);
+
+        // get contracts
+        $this->get("api/v1/contracts/{$id}", $header);
+
+        // validate status
+        $this->seeStatusCode(200);
+
+        // validate stucture of data
+        $this->seeJsonStructure(
+            [
+                'data',
+            ]
+        );
+    }
 }
