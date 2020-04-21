@@ -47,4 +47,31 @@ class DisputeCreateTest extends TestCase
         );
     }
 
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function should_create_dipute_only_with_code_and_wallet()
+    {
+
+        $header = ['wallet' => '0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A7'];
+
+        // create user
+        $user = factory(App\Models\User::class)->create($header);
+
+        // create a contract
+        $contract = factory(App\Models\Contract::class)->create([
+            'user_id' => $user->id,
+        ]);
+
+        // get encoded id
+        $id = encodeId($contract->id);
+
+        $this->post("api/v1/contracts/disputes/{$id}", ['code' => 35], $header);
+
+        // validate status
+        $this->seeStatusCode(200);
+
+    }
 }
