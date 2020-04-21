@@ -156,4 +156,18 @@ class ContractReadAllTest extends TestCase
         );
     }
 
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function should_read_contract_with_filter_by_dates()
+    {
+        $from = '2019-02-10';
+        $to = '2019-03-20';
+
+        $this->get("api/v1/contracts?from={$from}&to={$to}", [
+            'wallet' => '0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A1',
+        ])->seeStatusCode(200);
+    }
 }
