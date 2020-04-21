@@ -257,4 +257,68 @@ class ContractUpdateTest extends TestCase
         $this->seeInDatabase('contracts', array_merge($data, $header));
     }
 
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function should_not_update_contract_with_invalid_data()
+    {
+        $header = ['wallet' => '0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A1'];
+
+        $data = [
+            'part_a_wallet' => '0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc96', // invalid address
+            'part_b_wallet' => '0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A1',
+            'part_a_email' => 'alice_in_wonderland', // invalid email
+            'value' => 'nil', // not a number
+            'has_penalty_fee' => 'nil', // not boolean
+        ];
+
+        // create contract
+        $user = factory(App\Models\User::class)->create();
+
+        $contract = factory(App\Models\Contract::class)->create([
+            'user_id' => $user->id,
+            'wallet' => '0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A7',
+            'part_a_wallet' => $user->wallet,
+        ]);
+
+        // validate data present in database
+        $this->seeInDatabase('contracts', ['id' => $contract->id]);
+
+        // get encoded id
+        $id = encodeId($contract->id);
+
+        // update contract with data
+        $this->put("api/v1/contracts/{$id}", $data, $header);
+
+        // validate status
+        $this->seeStatusCode(422);
+
+        // validate stucture of data
+        $this->seeJsonStructure(
+            [
+                'errors' =>
+                [
+                    'part_a_wallet',
+                    'part_a_email',
+                    'value',
+                    'has_penalty_fee',
+                ],
+            ]
+        );
+
+        // validate data
+        $this->seeJson(
+            [
+                'errors' =>
+                [
+                    'part_a_wallet' => ['The Part A Wallet is not valid'],
+                    'part_a_email' => ['The Part A Email is not valid'],
+                    'value' => ['The Value must be a number'],
+                    'has_penalty_fee' => ['The Has Penalty Fee nust be boolean'],
+                ],
+            ]
+        );
+    }
 }
