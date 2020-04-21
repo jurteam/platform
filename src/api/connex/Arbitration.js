@@ -171,7 +171,7 @@ export default class connexArbitrationContract
 
   }
 
-  async canWithdraw() 
+  async canWithdraw(party) 
   {
 
     log('canWithdraw - ArbitrationFactoryABI',this.contract)
@@ -181,6 +181,7 @@ export default class connexArbitrationContract
     
     const canWithdrawMethod = this.thorAccount.method(canWithdrawABI)
     
+    canWithdrawMethod.caller(party)
     
     const canWithdraw = await canWithdrawMethod.call(); 
     
