@@ -206,4 +206,31 @@ class ContractDeleteTest extends TestCase
         );
     }
 
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function should_delete_all_contracts_related_to_wallet()
+    {
+        $user = factory(App\Models\User::class)->create();
+
+        $contract = factory(App\Models\Contract::class)->create([
+            'user_id' => $user->id,
+            'wallet' => '0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A7',
+            'part_a_wallet' => $user->wallet,
+        ]);
+
+        // validate data present in database
+        $this->seeInDatabase('contracts', ['id' => $contract->id]);
+
+        // try to delete
+        $this->delete("api/v1/contracts/delete-all", [], ['wallet' => '0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A7']);
+
+        // should not delete item
+        $this->seeStatusCode(200);
+
+        // validate data present in database
+        $this->notSeeInDatabase('contracts', ['id' => $contract->id]);
+    }
 }
