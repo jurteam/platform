@@ -161,4 +161,41 @@ class VoteReadAllTest extends TestCase
         $this->seeStatusCode(401);
     }
 
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function should_read_vote_without_data()
+    {
+        $wallet = '0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A7';
+
+        // create user
+        $user = factory(App\Models\User::class)->create([
+            'wallet' => $wallet,
+        ]);
+
+        // create a contract
+        $contract = factory(App\Models\Contract::class)->create([
+            'user_id' => $user->id,
+        ]);
+
+        // get encoded id
+        $id = encodeId($contract->id);
+
+        // create vote
+        $this->get("api/v1/votes/{$id}", ['wallet' => $wallet]);
+
+        // see the status
+        $this->seeStatusCode(200);
+
+        // validate stucture of data
+        $this->seeJsonStructure(
+            [
+                'data',
+                'meta',
+            ]
+        );
+    }
+
 }
