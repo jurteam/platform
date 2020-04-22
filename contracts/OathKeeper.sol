@@ -37,8 +37,8 @@ contract OathKeeper is Ownable {
     uint256 public minimumLockPeriod = 1;
     uint256 public maximumLockPeriod = 36;
 
-    event OathTaken(address _beneficiary, uint _amount, uint _lockInPeriod);
-    event IHoldYourOathFulfilled(address _beneficiary, uint _amount);
+    event OathTaken(address indexed _beneficiary, uint indexed _amount, uint indexed _lockInPeriod, uint _startAt, uint _releaseAt);
+    event IHoldYourOathFulfilled(address indexed _beneficiary, uint indexed _amount, uint indexed _oathIndex);
 
     /**
     @param _jurToken - Address of the JUR token contract which will be used for transferring the
@@ -71,14 +71,14 @@ contract OathKeeper is Ownable {
         // check if tokens can be transferred to this contract.
         require(jurToken.transferFrom(msg.sender, address(this), _amount), "Not able to transfer funds.");
 
-        emit OathTaken(msg.sender, _amount, _lockInPeriod);
+        emit OathTaken(msg.sender, _amount, _lockInPeriod, now, _releaseAt);
     }
 
     /**
     @dev releaseOath() - Release tokens as per vesting schedule, called by the owner.
     */
-    function releaseOath(uint _oathId) public {
-        LockSchedule storage _lockSchedule = lockMap[msg.sender][_oathId];
+    function releaseOath(uint _oathIndex) public {
+        LockSchedule storage _lockSchedule = lockMap[msg.sender][_oathIndex];
 
         require(now >= _lockSchedule.releaseAt, "You are still under an oath.");
         require(!_lockSchedule.isOathFulfilled, "Oath has been fulfilled.");
@@ -90,7 +90,7 @@ contract OathKeeper is Ownable {
         totalActiveOathCount = SafeMath.sub(totalActiveOathCount, 1);
 
         require(jurToken.transfer(msg.sender, _lockSchedule.amount), "Funds cannot be transferred");
-        emit IHoldYourOathFulfilled(msg.sender, _lockSchedule.amount);
+        emit IHoldYourOathFulfilled(msg.sender, _lockSchedule.amount, _oathIndex);
     }
 
     /**
