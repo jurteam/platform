@@ -29,10 +29,10 @@ contract OathKeeper is Ownable {
     /** JUR Token for distribution */
     IERC20 public jurToken;
     /** Stats on oaths in the contract overall */
-    uint256 public totalLockedTokens;
-    uint256 public totalActiveLockedTokens;
-    uint256 public totalOathCount;
-    uint256 public totalActiveOathCount;
+    // uint256 public totalLockedTokens;
+    // uint256 public totalActiveLockedTokens;
+    // uint256 public totalOathCount;
+    // uint256 public totalActiveOathCount;
 
     uint256 public minimumLockPeriod = 1;
     uint256 public maximumLockPeriod = 36;
@@ -61,10 +61,10 @@ contract OathKeeper is Ownable {
         oathStats[msg.sender].count = SafeMath.add(oathStats[msg.sender].count, 1);
         oathStats[msg.sender].activeAmountLocked = SafeMath.add(oathStats[msg.sender].activeAmountLocked, _amount);
         oathStats[msg.sender].totalAmountLocked = SafeMath.add(oathStats[msg.sender].totalAmountLocked, _amount);
-        totalLockedTokens = SafeMath.add(totalLockedTokens, _amount);
-        totalActiveLockedTokens = SafeMath.add(totalActiveLockedTokens, _amount);
-        totalOathCount = SafeMath.add(totalOathCount, 1);
-        totalActiveOathCount = SafeMath.add(totalActiveOathCount, 1);
+        // totalLockedTokens = SafeMath.add(totalLockedTokens, _amount);
+        // totalActiveLockedTokens = SafeMath.add(totalActiveLockedTokens, _amount);
+        // totalOathCount = SafeMath.add(totalOathCount, 1);
+        // totalActiveOathCount = SafeMath.add(totalActiveOathCount, 1);
 
         _releaseAt = DateTimeLib.addMonths(now, _lockInPeriod);
         lockMap[msg.sender][oathStats[msg.sender].count] = LockSchedule(_amount, now, _releaseAt, _lockInPeriod, false);
@@ -86,8 +86,8 @@ contract OathKeeper is Ownable {
         _lockSchedule.isOathFulfilled = true;
         // update overall stats
         oathStats[msg.sender].activeAmountLocked = SafeMath.sub(oathStats[msg.sender].activeAmountLocked, _lockSchedule.amount);
-        totalActiveLockedTokens = SafeMath.sub(totalActiveLockedTokens, _lockSchedule.amount);
-        totalActiveOathCount = SafeMath.sub(totalActiveOathCount, 1);
+        // totalActiveLockedTokens = SafeMath.sub(totalActiveLockedTokens, _lockSchedule.amount);
+        // totalActiveOathCount = SafeMath.sub(totalActiveOathCount, 1);
 
         require(jurToken.transfer(msg.sender, _lockSchedule.amount), "Funds cannot be transferred");
         emit IHoldYourOathFulfilled(msg.sender, _lockSchedule.amount, _oathIndex);

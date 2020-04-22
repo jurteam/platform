@@ -78,17 +78,17 @@ contract('Oath Keeping - Taking an oath', function (accounts) {
     assert.equal(details.totalAmountLocked.toNumber(), 200);
   });
 
-  it("7. Contract's overall stats should be updated after a pledge.", async () => {
+  // it("7. Contract's overall stats should be updated after a pledge.", async () => {
 
-    await token.approve(oathKeeper.address, 100, {from: promisee1});
+  //   await token.approve(oathKeeper.address, 100, {from: promisee1});
 
-    await oathKeeper.takeAnOath(20, {from: promisee1});
+  //   await oathKeeper.takeAnOath(20, {from: promisee1});
 
-    assert.equal(await oathKeeper.totalLockedTokens.call(), 500);
-    assert.equal(await oathKeeper.totalActiveLockedTokens.call(), 500);
-    assert.equal(await oathKeeper.totalOathCount.call(), 5);
-    assert.equal(await oathKeeper.totalActiveOathCount.call(), 5);
-  });
+  //   assert.equal(await oathKeeper.totalLockedTokens.call(), 500);
+  //   assert.equal(await oathKeeper.totalActiveLockedTokens.call(), 500);
+  //   assert.equal(await oathKeeper.totalOathCount.call(), 5);
+  //   assert.equal(await oathKeeper.totalActiveOathCount.call(), 5);
+  // });
 
   it("8. Promisees should not be able to lock tokens outside of minimum and maximum lock period.", async () => {
 
