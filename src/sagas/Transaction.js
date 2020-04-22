@@ -21,6 +21,7 @@ import {
   DISPUTE_UPDATING,
   API_GET_CONTRACT,
   DISPUTE_VOTE_OVERLAY,
+  API_GET_DISPUTE,
 } from "../reducers/types";
 
 import { 
@@ -33,11 +34,12 @@ import {
   getCurrentDispute
  } from './Selectors'
 
-import { log, ethToHuman } from "../utils/helpers";
+import { log, ethToHuman, connexFromWei } from "../utils/helpers";
 
 import { 
   Contracts,
-  Transactions, 
+  Transactions,
+  Withdrawal,
   connexArbitrationFactory,
   connexArbitrationContract
  } from "../api";
@@ -247,7 +249,7 @@ function* manageEvent(txw,decoded)
   log('manageEvent - event',event)
   log('manageEvent - decoded',decoded)
 
-  let party, code, arbitration, allParties, toUpdate
+  let party, code, arbitration, allParties, toUpdate, voter
 
   const wallet = yield select(getWallet);
   
@@ -657,6 +659,82 @@ function* manageEvent(txw,decoded)
       break;
 
 
+    case "PartyPayout":
+      
+      party = decoded._party
+      const dispersalAmount = decoded._dispersalAmount
+
+      log('manageEvent - party',party)
+
+      // ============== dispatch event PartyPayout ----------------------
+
+              yield put({ type: LOOKUP_WALLET_BALANCE }); // update wallet balance
+
+              // call rest api to save withdraw
+              let withdrawalData = new FormData();
+              
+              // const currContr = yield select(getCurrentDispute);
+
+              let sumToWithdraw =  connexFromWei(dispersalAmount.toString(), 'ether');
+              sumToWithdraw = Number.parseFloat(sumToWithdraw);
+              
+              withdrawalData.append("amount", sumToWithdraw);
+              withdrawalData.append("type", "withdraw");
+              
+              let response = yield call(Withdrawal.store, withdrawalData, id);
+              
+              log(`handlePayoutParty - response`, response);
+              
+              
+              
+      // -----------------------------------------------------
+
+      break;
+
+    case "VoterPayout":
+      
+      voter = decoded._voter
+      let stakedAmount = decoded._stakedAmount
+      let rewardAmount = decoded._rewardAmount
+
+      log('manageEvent - voter',voter)
+
+      log('manageEvent - VoterPayout -1 stakedAmount',stakedAmount)
+      log('manageEvent - VoterPayout -1 rewardAmount',rewardAmount)
+
+      // ============== dispatch event VoterPayout ----------------------
+
+
+        stakedAmount =  connexFromWei(stakedAmount.toString(), 'ether');
+        rewardAmount =  connexFromWei(rewardAmount.toString(), 'ether');
+
+      log('manageEvent - VoterPayout -2 stakedAmount',stakedAmount)
+      log('manageEvent - VoterPayout -2 rewardAmount',rewardAmount)
+
+        stakedAmount = Number.parseFloat(stakedAmount);
+        rewardAmount = Number.parseFloat(rewardAmount);
+
+      log('manageEvent - VoterPayout -3 stakedAmount',stakedAmount)
+      log('manageEvent - VoterPayout -3 rewardAmount',rewardAmount)
+
+        const reward = stakedAmount + rewardAmount
+
+      log('manageEvent - VoterPayout - reward',reward)
+
+        let rewardData = new FormData();
+        
+        rewardData.append("amount", reward);
+        rewardData.append("type", "payout");
+        
+        response = yield call(Withdrawal.store, rewardData, id);
+        
+        log(`handlePayoutParty - response`, response);
+
+      // -----------------------------------------------------
+
+      break;
+
+
     default:
 
       break;
@@ -729,7 +807,7 @@ function* postAction(txw)
 
       // -----------------------------------------------------
 
-      break;
+      break;   
 
     case "VoteCast":
 
@@ -750,6 +828,43 @@ function* postAction(txw)
             // close form ?
           }
 
+      // -----------------------------------------------------
+
+      break;
+
+    case "PartyPayout":
+
+      // -----------------------------------------------------
+        if (DisputeDetailPage && currDisp.id === id) 
+        {          
+              
+          log(`handlePayoutParty - LOOKUP_WALLET_BALANCE`);
+          yield put({
+            type: API_GET_DISPUTE,
+            id,
+          });
+          log(`handlePayoutParty - API_GET_DISPUTE`);
+
+        }
+      // -----------------------------------------------------
+
+      break;
+
+    case "VoterPayout":
+
+      // -----------------------------------------------------
+        if (DisputeDetailPage && currDisp.id === id) 
+        {
+          
+              
+          log(`handlePayoutParty - LOOKUP_WALLET_BALANCE`);
+          yield put({
+            type: API_GET_DISPUTE,
+            id,
+          });
+          log(`handlePayoutParty - API_GET_DISPUTE`);
+
+        }
       // -----------------------------------------------------
 
       break;
