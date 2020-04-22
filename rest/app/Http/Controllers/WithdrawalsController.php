@@ -24,7 +24,9 @@ class WithdrawalsController extends Controller
             'type' => 'required|in:withdraw,payout'
         ]);
 
-        $withdraw = Withdrawal::createWithdraw($id, $request);
+        $idc = decodeId($id);      
+
+        $withdraw = Withdrawal::createWithdraw($idc, $request);
 
         return $this->response->item($withdraw, new WithdrawalTransformer);
     }
