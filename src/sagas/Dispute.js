@@ -86,10 +86,11 @@ export function* getDispute(action) {
     
     log("getDispute - data.statusId", data.statusId);
     log("getDispute - data.id", data.id);
-    log("getDispute - history.location", history.location);
-    log("getDispute - history.locations", history.location.pathname.startsWith('/disputes/detail'));
     // if this dispute is ongoing dispute redirect it to /contracts/detail/
-    if ((data.statusId === 31 || data.statusId === 32) && history.location.pathname.startsWith('/disputes/detail')) {
+    if ((data.statusId === 31 || data.statusId === 32) && history.location.pathname.startsWith('/disputes/detail')) 
+    {
+      log("getDispute - history.location", history.location);
+      log("getDispute - history.locations", history.location.pathname.startsWith('/disputes/detail'));
       history.push('/contracts/detail/'+data.id)
     }
     
