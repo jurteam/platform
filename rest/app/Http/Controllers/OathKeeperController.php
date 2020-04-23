@@ -39,4 +39,14 @@ class OathKeeperController extends Controller
         return response()->json(['status' => 'success']);
     }
 
+    /**
+     * GET details of oath taker based on address.
+     *
+     * @param  Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function getOathTaker(Request $request)
+    {
+        return response()->json(['status' => 'success']);
+    }
 }
