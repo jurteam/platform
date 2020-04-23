@@ -28,4 +28,15 @@ class OathKeeperController extends Controller
         return response()->json(['status' => 'success']);
     }
 
+    /**
+     * GET details of all oath takers based on rank index.
+     *
+     * @param  Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function getOathTakers(Request $request)
+    {
+        return response()->json(['status' => 'success']);
+    }
+
 }
