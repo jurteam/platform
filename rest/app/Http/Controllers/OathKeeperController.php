@@ -17,4 +17,15 @@ class OathKeeperController extends Controller
         return response()->json(['status' => 'success']);
     }
 
+    /**
+     * GET analytical details of a card based on card name for a period.
+     *
+     * @param  Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function getCard(Request $request)
+    {
+        return response()->json(['status' => 'success']);
+    }
+
 }
