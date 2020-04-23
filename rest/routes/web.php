@@ -84,5 +84,18 @@ $api->version('v1', function ($api) {
             $api->put('{id}/unlock', 'App\Http\Controllers\TransactionsController@unlock');
         });
     });
+
+    $api->group(['prefix' => 'oath-keeper'], function ($api) {
+        $api->group(['prefix' => 'analytics'], function ($api) {
+            $api->get('/', 'App\Http\Controllers\OathKeeperController@getCards');
+            $api->get('/{cardname}', 'App\Http\Controllers\OathKeeperController@getCard');
+        });
+
+        $api->group(['prefix' => 'oath-takers'], function ($api) {
+            $api->get('/', 'App\Http\Controllers\OathKeeperController@getOathTakers');
+            $api->get('/{address}', 'App\Http\Controllers\OathKeeperController@getOathTaker');
+        });
+    });
+
     $api->get('faqs', 'App\Http\Controllers\FaqsController@index');
 });
