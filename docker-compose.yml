@@ -18,7 +18,7 @@ services:
       - ./rest/routes:/var/www/html/routes
       # - ./rest/storage:/var/www/html/storage
       # - ./rest/tests:/var/www/html/tests
-      # - ./rest/vendor:/var/www/html/vendor
+      - ./rest/vendor:/var/www/html/vendor
       # - ./rest:/var/www/html
     ports:
       - "80:80"
