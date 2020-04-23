@@ -19,7 +19,7 @@ contract OathKeeper is Ownable {
 
     struct Oaths {
         uint256 count;
-        uint256 activeAmountLocked;
+        // uint256 activeAmountLocked;
         uint256 totalAmountLocked;
     }
     /** Each address can have multiple funds locked under different schedules */
@@ -59,7 +59,7 @@ contract OathKeeper is Ownable {
         require(_amount > 0, "Please approve token transfer to the contract.");
         require(_lockInPeriod >= minimumLockPeriod && _lockInPeriod <= maximumLockPeriod, "Please choose a valid lock in period.");
         oathStats[msg.sender].count = SafeMath.add(oathStats[msg.sender].count, 1);
-        oathStats[msg.sender].activeAmountLocked = SafeMath.add(oathStats[msg.sender].activeAmountLocked, _amount);
+        // oathStats[msg.sender].activeAmountLocked = SafeMath.add(oathStats[msg.sender].activeAmountLocked, _amount);
         oathStats[msg.sender].totalAmountLocked = SafeMath.add(oathStats[msg.sender].totalAmountLocked, _amount);
         // totalLockedTokens = SafeMath.add(totalLockedTokens, _amount);
         // totalActiveLockedTokens = SafeMath.add(totalActiveLockedTokens, _amount);
@@ -85,7 +85,7 @@ contract OathKeeper is Ownable {
 
         _lockSchedule.isOathFulfilled = true;
         // update overall stats
-        oathStats[msg.sender].activeAmountLocked = SafeMath.sub(oathStats[msg.sender].activeAmountLocked, _lockSchedule.amount);
+        // oathStats[msg.sender].activeAmountLocked = SafeMath.sub(oathStats[msg.sender].activeAmountLocked, _lockSchedule.amount);
         // totalActiveLockedTokens = SafeMath.sub(totalActiveLockedTokens, _lockSchedule.amount);
         // totalActiveOathCount = SafeMath.sub(totalActiveOathCount, 1);
 
