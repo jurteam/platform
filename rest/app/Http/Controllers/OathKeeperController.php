@@ -2,10 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use Faker\Factory;
 use Illuminate\Http\Request;
 
 class OathKeeperController extends Controller
 {
+    // make available faker globally
+    protected $faker;
+
+    /**
+     * Instantiate a new instance.
+     */
+    public function __construct()
+    {
+        $this->faker = Factory::create();
+    }
+
     /**
      * GET analytical details of all cards for a period.
      *
