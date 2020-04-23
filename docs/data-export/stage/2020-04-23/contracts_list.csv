@@ -1,0 +1,327 @@
+"id","name","address","part_a_wallet","part_a_email","part_a_name","part_b_wallet","part_b_email","part_b_name","kpi","resolution_proof","category","value","in_case_of_dispute","balance","who_pays","has_penalty_fee","part_a_penalty_fee","part_b_penalty_fee","duration_days","duration_hours","duration_minutes","contract_status_id","user_id","wallet","is_a_dispute","is_a_friendly_resolution","created_at","updated_at","chain_updated_at","id","name","email","wallet","birth_date","gender","location","category","show_fullname","accepted_terms","accepted_disclaimer","created_at","updated_at","file_name"
+198,NULL,NULL,"0x514428b0857aae2e1cdb9fd0345c3a78d4f18e36",NULL,"Cinna’ Rolls Diner","0xd9bf2E9f604a82cB366A47De50eb45ea86E8dd8a","","Dash Bake ‘n’ Ready Furnishings",NULL,NULL,NULL,0.000000000000000000,NULL,0.000000000000000000,NULL,0,0.000000000000000000,0.000000000000000000,0,0,0,0,45,"0x514428b0857aae2e1cdb9fd0345c3a78d4f18e36",0,0,"2020-04-04 16:26:36","2020-04-04 16:26:36",NULL,45,NULL,NULL,"0x514428b0857aae2e1cdb9fd0345c3a78d4f18e36",NULL,NULL,NULL,NULL,1,0,1,"2019-11-21 11:37:40","2019-11-21 11:37:40",NULL
+199,NULL,"0x92a5920a2421a8f85a65d3cebd5f321c43b2b4b7","0x514428b0857aae2e1cdb9fd0345c3a78d4f18e36",NULL,"Cinna’ Rolls Diner ","0xd9bf2E9f604a82cB366A47De50eb45ea86E8dd8a",""," Dash Bake ‘n’ Ready Furnishings","1.2 The Freelance undertakes to provide the Services so as to meet the following conditions:
+a) The furniture is constructed with mahogany and oak wood and the kitchen cabinets and countertops
+with stainless steel.
+b) All café tables and chairs need to be rounded, polished and have a unique finish.
+c) There are fifteen tables, a maximum of four to six chairs are needed for every table.
+d) The designs of the furniture shall be according to the theme which will be provided by the customer.
+e) The drafts and illustrations of the furniture uploaded every two weeks shall be in line with the theme.
+f)
+The logo of the customers restaurant needs to be imprinted on all of the furniture which will be
+provided by the customer. The image provided by the customer can be
+seen in the attachment.
+g) As the picture illustrates, the cinnamon roll shall be brown, white and glossy, and the C shaped
+cinnamon shall curl out to spell Cinna’.
+h) The freelancer needs to upload their drafts and illustrations made so far, every two weeks. The
+customer will review the drafts and illustrations uploaded to the shared folder and the freelancer will
+make alterations according to the customers wish.
+i)
+The Freelancer represents to possess knowledge and equipment which is suitable for the correct
+performance of the Services. 
+
+1.3 The freelancer shall be rewarded by a sum upon completing the services. The sum consists of a fixed
+amount of £400,000 with an extra £500 for the imprinting of the logos and any other changes.
+1.4 The sum will be converted to JUR Tokens according to the exchange rate that applies at the time the
+contract is signed. The amount decided upon by the parties in article 1.3 of the present contract shall be
+deposited into an escrow account provided for by the Jur ecosystem which in turn will release the amount paid
+by customer into the wallet of the freelancer upon the completion of the contract. The escrow account shall
+use a wallet in order to hold the JUR Tokens.
+1.5 The freelancer has to deliver the final product within six months of signing the contract.
+2. If the time limit is not respected by the Freelancer, then the reward will be reduced by 5 percent per 24
+hours.","2.1 (a) The freelancer needs to upload the drafts and illustrations made so far, every two weeks. The
+customer will review the drafts and illustrations uploaded to the shared folder and the freelancer will make
+alterations according to the customers wish. Folder: https://drive.google.com/drive/folders/13S0ArmHtmXW4k4VSq9aLEUiwEFSaTuRW
+2.2 (b) As soon as the goods are finished, the Freelancer needs to deliver the furniture and kitchen
+equipment’s to the customer while respecting the time limit agreed by the parties (see the clause 1.5). If the
+Customer approves the final product delivery, then the tokens will be transferred into the freelancer’s wallet.
+Otherwise, the contract will undergo the dispute resolution mechanism on the Open Layer provided by Jur.","Freelancer Agreement",50.000000000000000000,"open",0.000000000000000000,"0x514428b0857aae2e1cdb9fd0345c3a78d4f18e36",0,0.000000000000000000,0.000000000000000000,20,0,0,0,45,"0x514428b0857aae2e1cdb9fd0345c3a78d4f18e36",1,0,"2020-04-04 16:28:32","2020-04-04 16:41:47",NULL,45,NULL,NULL,"0x514428b0857aae2e1cdb9fd0345c3a78d4f18e36",NULL,NULL,NULL,NULL,1,0,1,"2019-11-21 11:37:40","2019-11-21 11:37:40","5.pdf"
+200,"Wedding photos","0x4f434b445caace333a42df3e8b178aa36fd54205","0x514428b0857aae2e1cdb9fd0345c3a78d4f18e36",NULL,"Soon-to-be-married Couple","0xd9bf2e9f604a82cb366a47de50eb45ea86e8dd8a","","Photographer","
+    3. The photographer agrees to provide the services in accordance with the following conditions:
+
+        a) The photographer should be wholly responsible for covering the entire event. 
+        b) The photographer should arrive at the venue 1 hour before the commencement of the ceremony. 
+        c) The photographer should compile a photo album comprised of a minimum of 100 photographs from the event, and a maximum of 150. 
+        d) The photographer should provide digital copies of all photographs used in the photo album. The file format for the digital photos should be .jpeg. 
+        e) 50 of the photographs should be captured in monochrome and the remainder in color. 
+        f) The photographer represents to possess knowledge and equipment which is suitable for the correct performance of the Services.  
+        g) The photographer is permitted to use his creative discretion in including his favourite photographs of the event in the photo album.  
+        h) The photographer will upload a shortlist of photographs intended for the album onto a Google drive folder for the customer’s review. The photographer will make the required changes according to the customer’s wish. Otherwise, the contract will undergo the dispute resolution mechanism on the Openl Layer provided by Jur.
+        i) Once the photo album is completed, the photographer must submit the digital copy onto a google drive folder while respecting the time limit agreed by the parties (see clause 4.2). If the customer is content with the uploaded images, half of the fixed amount will be transferred as tokens into the photographer’s wallet. 
+        j) Upon receipt of the physical album, the remainder of the fixed amount will be transferred as tokens into the photographer’s wallet.
+
+
+    4. The photographer shall be remunerated a sum upon completing the services. The sum consists of a fixed amount of £250. The sum will be converted to JUR Tokens according to the exchange rate that applies at the time the contract is signed.
+        4.1. The amount decided upon by the parties in article 4 of the present contract shall be deposited into an escrow account provided for by the Jur ecosystem which in turn will release the amount paid by customer into the wallet of the photographer upon the completion of the contract. The escrow account shall use a wallet in order to hold the JUR Tokens.
+        4.2. The photographer must make available the photo album and the digital photographs available, within 10 days after the conclusion of the wedding ceremony. 
+        4.3. If the time limit is not respected by the photographer, then the reward will be reduced by 10 percent per 24 hours.
+","        1. The photographer will upload a shortlist of photographs intended for the album onto a Google drive folder for the customer’s review. The photographer will make the required changes according to the customer’s wish. Otherwise, the contract will undergo the dispute resolution mechanism on the Openl Layer provided by Jur. 
+        2. Once the photo album is completed, the photographer must submit the digital copy onto a google drive folder while respecting the time limit agreed by the parties (see clause 4.2). If the customer is content with the uploaded images, half of the fixed amount will be transferred as tokens into the photographer’s wallet. 
+        3. Upon receipt of the physical album, the remainder of the fixed amount will be transferred as tokens into the photographer’s wallet.
+","Freelancer Agreement",40.000000000000000000,"open",0.000000000000000000,"0x514428b0857aae2e1cdb9fd0345c3a78d4f18e36",0,0.000000000000000000,0.000000000000000000,20,0,0,0,45,"0x514428b0857aae2e1cdb9fd0345c3a78d4f18e36",1,0,"2020-04-04 16:44:44","2020-04-04 16:51:48",NULL,45,NULL,NULL,"0x514428b0857aae2e1cdb9fd0345c3a78d4f18e36",NULL,NULL,NULL,NULL,1,0,1,"2019-11-21 11:37:40","2019-11-21 11:37:40",NULL
+201,"Ducks and Locusts","0xa1a3ddc2b33302deacc5b81e65a5fe2e8bd39de1","0x514428b0857aae2e1cdb9fd0345c3a78d4f18e36",NULL,"Lord Brain","0xd9bf2e9f604a82cb366a47de50eb45ea86e8dd8a","","Rubber Duckies","3.1 The Parties acknowledge that the Services consist of breeding 1,000 Ducks of the species Rubber Duckies, genetically modified specifically for locust extermination, and delivering them to the address of the Customer within 180 days of the conclusion of the agreement. The Ducks may be delivered all at once or in batches of 100. Notice of delivery must be given to the Customer five (5) business days in advance.","a) The Freelancer will upload photographs of the appropriately grown and delivered Rubber Duckies directly to the JUR Platform and a
+corresponding Excel Sheet with the serial numbers of each Duck.
+b) Each duck must be tagged with a serial number and corresponding automatic identification tag, readable by DEVICE XYZ.
+c) The photographs and Excel Sheet serve as a proof of life at delivery and must show the Rubber Duckies at the place of delivery. The
+photographs shall be clear, with a minimum of 12-megapixel quality and a date and time stamp.
+d) The Freelancer must also upload a close-up photograph of the details of the Rubber Duckies, such as the conditions of wings, beaks and feet.
+e) The Freelancer must upload one photograph per duck as specified above on the Jur Beta Platform from a random sample of 20 ducks. The random sample will be chosen by the Customer from the previously uploaded Excel sheet.
+f) The photographs must be taken with a geolocation capability that reliably shows that they were taken at the premises of the Customer.
+3.3 The Customer will confirm the reception of the Services on the Jur Beta Platform.
+3.4 The Freelancer represents to possess knowledge and equipment which
+is suitable for the correct performance of the Services.
+
+All the relevant uploaded material shall be visibile, if not uploaded on the Jur beta platform,  on the shared folder https://drive.google.com/drive/folders/14lUw7NEtzeMzRPD4KrToJBHb1pvEWysb
+
+","Freelancer Agreement",20.000000000000000000,"open",0.000000000000000000,"0x514428b0857aae2e1cdb9fd0345c3a78d4f18e36",0,0.000000000000000000,0.000000000000000000,20,0,0,0,45,"0x514428b0857aae2e1cdb9fd0345c3a78d4f18e36",1,0,"2020-04-04 16:53:47","2020-04-04 17:01:48",NULL,45,NULL,NULL,"0x514428b0857aae2e1cdb9fd0345c3a78d4f18e36",NULL,NULL,NULL,NULL,1,0,1,"2019-11-21 11:37:40","2019-11-21 11:37:40",NULL
+202,"Books commerce","0x865f251c61b836e6b72c98c81f5705478e2bdf1a","0x514428b0857aae2e1cdb9fd0345c3a78d4f18e36",NULL,"Bookshop","0xd9bf2e9f604a82cb366a47de50eb45ea86e8dd8a","","Publishing House","3.2. The Buyer undertakes to have the amount of EUR 150 released from the escrow account upon acceptance of the goods (refer to Article 5 of The Contract).
+3.3. The Parties acknowledge that the Goods consist of one copy of each of the following books:
+3.3.1. Marivaux, Les Fausses Confidences (1737) Hard Copy Edition: Wentworth Press
+3.3.2. James Joyce, Dubliners (1914) Hard Copy Edition: Everyman’s Library
+3.3.3. La Bruyère, Les Caractères (1688) Hard Copy Edition: Larousse
+3.3.4. Goethe, Faust: Eine Tragödie (1801) Hard Copy Edition: Tredition Classics
+3.3.5. Miguel de Cervantes, Don Quijote de la Mancha (1605 - 1615) Hard Copy Edition: Pareja Editor Edición integra
+3.3.6. Corrado Alvaro, L’Uomo è forte (1938) Bompiani
+3.3.7. Albert Camus, L’étranger (1942)
+
+4.2. The Seller undertakes to deliver the Goods under the following conditions;
+4.2.1. The Goods shall be delivered via the DHL Express 9:00 Domestic service provided by DHL International GmbH. The Seller, when arranging for the delivery of the goods, shall indicate to the delivery service that the package should be signed in order for delivery to occur, and request from the delivery service express confirmation of delivery.
+4.2.2. The Goods shall be delivered within 10 business days of the signing of the Contract.
+4.2.3. The seller excludes the cost of delivery from the price of the goods.
+4.3. The Seller will be liable for any defect arising out of conformity only if the defect existed at the time of delivery.
+4.4. The goods will be delivered at the following address: Kornmarkt 00, 54290 Trier, Germany
+4.5. Following delivery and acceptance (Article 5 The Contract) of the goods:
+4.5.1. The Seller will provide proof of compliance with obligations set forth in article
+4.2. on the Jur Beta Platform.
+","4.5.1.1. The proof shall consist of an email confirmation from DHL International GmbH to the Seller, indicating that the package has been delivered and signed for at the Buyer’s address of delivery.
+4.5.2. A proof of delivery in the Jur Beta Platform will be included by the Buyer.
+4.5.1.1 The proof will consist of a receipt of delivery provided by DHL International GmbH to the Buyer.
+4.5.3. After Article 4.5.2. is complied with, payment kept in the escrow account will be released to the seller 
+
+all uploadable relavant material should be visibile at the shared folder https://drive.google.com/drive/folders/1mBCp3l9BueiirbzW840HcvldoUKQeMda
+
+","Service Agreement",100.000000000000000000,"open",0.000000000000000000,"0x514428b0857aae2e1cdb9fd0345c3a78d4f18e36",0,0.000000000000000000,0.000000000000000000,20,0,0,0,45,"0x514428b0857aae2e1cdb9fd0345c3a78d4f18e36",1,0,"2020-04-04 17:04:33","2020-04-04 17:12:46",NULL,45,NULL,NULL,"0x514428b0857aae2e1cdb9fd0345c3a78d4f18e36",NULL,NULL,NULL,NULL,1,0,1,"2019-11-21 11:37:40","2019-11-21 11:37:40","8.pdf"
+203,"Consultancy for purchase of car parts company","0xd6e5b97a104482fa20e4c5190b0680fe74c5333c","0x514428b0857aae2e1cdb9fd0345c3a78d4f18e36",NULL,"LHSG","0xd9bf2E9f604a82cB366A47De50eb45ea86E8dd8a","","Emma Carter","Ms. Emma Carter is a lawyer employed by car company LHSG, with the aim of consultancy
+
+
+4.1 The parties acknowledge that the Services consist of legal advice from attorney to client about the
+sale of another company, named ABC, a producer of elastomer and plastic parts for cars. 
+6.1 The attorney is to be paid 200 Jur tokens per hour of work.
+6.2 The payment will be made to the Smart Escrow on the Jur Beta Platform. The payment will be
+released to the attorney up to 10 days after the work has been completed.
+16.1 The contract is valid from the signing date.
+16.2 The contract is valid for a year with the possibility to extend it.
+18.1 The attorney will make no promises or guarantees about the outcome of the case, but she must
+perform the service with diligence to the best of her abilities","4.2 The Contract shall use the following Resolution Proof method:
+(a) By means of updating with periodic reports from the lawyer, approved with a counter-response
+signed by the client, as a sign of approval, a dedicated google drive will be used: https://drive.google.com/drive/folders/1MO4XP7WjzNnTxiSZxi34nE3cQ7jCxD-N?usp=sharing
+
+","Service Agreement",500.000000000000000000,"open",0.000000000000000000,"0x514428b0857aae2e1cdb9fd0345c3a78d4f18e36",1,0.000000000000000000,0.000000000000000000,365,0,0,0,45,"0x514428b0857aae2e1cdb9fd0345c3a78d4f18e36",0,0,"2020-04-06 15:25:37","2020-04-06 15:29:37",NULL,45,NULL,NULL,"0x514428b0857aae2e1cdb9fd0345c3a78d4f18e36",NULL,NULL,NULL,NULL,1,0,1,"2019-11-21 11:37:40","2019-11-21 11:37:40","9.pdf"
+203,"Consultancy for purchase of car parts company","0xd6e5b97a104482fa20e4c5190b0680fe74c5333c","0x514428b0857aae2e1cdb9fd0345c3a78d4f18e36",NULL,"LHSG","0xd9bf2E9f604a82cB366A47De50eb45ea86E8dd8a","","Emma Carter","Ms. Emma Carter is a lawyer employed by car company LHSG, with the aim of consultancy
+
+
+4.1 The parties acknowledge that the Services consist of legal advice from attorney to client about the
+sale of another company, named ABC, a producer of elastomer and plastic parts for cars. 
+6.1 The attorney is to be paid 200 Jur tokens per hour of work.
+6.2 The payment will be made to the Smart Escrow on the Jur Beta Platform. The payment will be
+released to the attorney up to 10 days after the work has been completed.
+16.1 The contract is valid from the signing date.
+16.2 The contract is valid for a year with the possibility to extend it.
+18.1 The attorney will make no promises or guarantees about the outcome of the case, but she must
+perform the service with diligence to the best of her abilities","4.2 The Contract shall use the following Resolution Proof method:
+(a) By means of updating with periodic reports from the lawyer, approved with a counter-response
+signed by the client, as a sign of approval, a dedicated google drive will be used: https://drive.google.com/drive/folders/1MO4XP7WjzNnTxiSZxi34nE3cQ7jCxD-N?usp=sharing
+
+","Service Agreement",500.000000000000000000,"open",0.000000000000000000,"0x514428b0857aae2e1cdb9fd0345c3a78d4f18e36",1,0.000000000000000000,0.000000000000000000,365,0,0,0,45,"0x514428b0857aae2e1cdb9fd0345c3a78d4f18e36",0,0,"2020-04-06 15:25:37","2020-04-06 15:29:37",NULL,45,NULL,NULL,"0x514428b0857aae2e1cdb9fd0345c3a78d4f18e36",NULL,NULL,NULL,NULL,1,0,1,"2019-11-21 11:37:40","2019-11-21 11:37:40","9.pdf"
+204,"Consultancy for purchase of car parts company","0x2a5ef7c94c030d1a91caa913d15dc30aa3acf81d","0x514428b0857aae2e1cdb9fd0345c3a78d4f18e36",NULL,"LHSG","0xd9bf2E9f604a82cB366A47De50eb45ea86E8dd8a","","Emma Carter","Ms. Emma Carter is a lawyer employed by car company LHSG, with the aim of consultancy 4.1 The parties acknowledge that the Services consist of legal advice from attorney to client about the sale of another company, named ABC, a producer of elastomer and plastic parts for cars. 6.1 The attorney is to be paid 200 Jur tokens per hour of work. 6.2 The payment will be made to the Smart Escrow on the Jur Beta Platform. The payment will be released to the attorney up to 10 days after the work has been completed. 16.1 The contract is valid from the signing date. 16.2 The contract is valid for a year with the possibility to extend it. 18.1 The attorney will make no promises or guarantees about the outcome of the case, but she must perform the service with diligence to the best of her abilities","4.2 The Contract shall use the following Resolution Proof method: (a) By means of updating with periodic reports from the lawyer, approved with a counter-response signed by the client, as a sign of approval, a dedicated google drive will be used: https://drive.google.com/drive/folders/1MO4XP7WjzNnTxiSZxi34nE3cQ7jCxD-N?usp=sharing","Service Agreement",500.000000000000000000,"open",0.000000000000000000,"0x514428b0857aae2e1cdb9fd0345c3a78d4f18e36",0,0.000000000000000000,0.000000000000000000,364,0,0,0,45,"0x514428b0857aae2e1cdb9fd0345c3a78d4f18e36",1,0,"2020-04-06 15:32:19","2020-04-06 15:44:30",NULL,45,NULL,NULL,"0x514428b0857aae2e1cdb9fd0345c3a78d4f18e36",NULL,NULL,NULL,NULL,1,0,1,"2019-11-21 11:37:40","2019-11-21 11:37:40","9.pdf"
+205,"Sanitary masks delivery in times of covid-19","0xcaf8d96f13dacfedc00a058f0550b4ab92d86fee","0x514428b0857aae2e1cdb9fd0345c3a78d4f18e36","","Farmacia Mateos Rodríguez","0xd9bf2E9f604a82cB366A47De50eb45ea86E8dd8a","","Johnson & Johnson GmbH","(A) Johnson & Johnson GmbH and Farmacia Mateos Rodríguez are experienced in the
+health care sector.
+(B) Johnson & Johnson GmbH is the provider of the goods, and Farmacia Mateos
+Rodríguez is the receiver, at the location of production (Neuss, Germany)
+
+
+2.1 Upon signing of this contract by the representatives of each respective party, the sale will
+come into effect (Johnson & Johnson GmbH and Farmacia Mateos Rodríguez)
+2.2 The contract has effect for seven days beginning from the time the contract was
+completed and the terms were agreed upon by both parties
+4.1 Farmacia Mateos Rodríguez is to pay Johnson & Johnson GmbH 10 EUR per mask with
+product code A2470295.
+4.2 Farmacia Mateos Rodríguez is to pay Johnson & Johnson GmbH 3 EUR per hand
+sanitizer with product code B20812020; each hand sanitizer contains 200 ml.
+4.3 Farmacia Mateos Rodríguez is to receive 200 Masks and 400 Hand Sanitizers in JUR
+cryptocurrency.
+4.4 The parties thereto agree that these are the products referenced in the contract.
+6.1 EX Works: Delivery of the goods will occur on the site of production (Neuss, Germany)
+6.2 There will not be a delivery fee for Johnson & Johnson GmbH. All fees relating to the
+delivery of the products will be covered by Farmacia Mateos Rodríguez.
+6.3 Johnson & Johnson GmbH have six working days to prepare the supplies for Farmacia
+Mateos Rodríguez from the moment the contract comes into effect.
+6.4 Delivery will take place at the Johnson & Johnson GmbH site in Kant 5, 41471 Neuss,
+Germany.
+6.5 The supplies will be given to a legal representative or agent of Farmacia Mateos
+Rodriguez to transport them to the headquarters of Farmacia Mateos Rodríguez, at Calle de
+San Francisco 9 40001 Segovia, Spain.
+11.1 Johnson & Johnson GmbH warrants that they are the rightful owner of the products,
+and so it is within their legal right to transfer ownership of the products to Farmacia Mateos
+Rodríguez.
+11.2 Johnson & Johnson GmbH warrants that its products comply with applicable safety
+warranties of the EU and that the hand sanitizer kills 99.9% of germs, including viruses.
+11.3 By accepting the masks and hand sanitizers, Farmacia Mateos Rodríguez, to their best
+knowledge, has acquired safe products that meet all the requirements that Johnson &
+Johnson GmbH warranties under section 11.2
+11.4 In case of loss or damage of products in transit, the damage fees will be covered by
+Farmacia Mateos Rodríguez.","not specified.
+
+
+
+","Other",100.000000000000000000,"open",0.000000000000000000,"0x514428b0857aae2e1cdb9fd0345c3a78d4f18e36",1,0.000000000000000000,0.000000000000000000,7,0,0,0,45,"0x514428b0857aae2e1cdb9fd0345c3a78d4f18e36",1,0,"2020-04-07 12:08:36","2020-04-07 12:15:18",NULL,45,NULL,NULL,"0x514428b0857aae2e1cdb9fd0345c3a78d4f18e36",NULL,NULL,NULL,NULL,1,0,1,"2019-11-21 11:37:40","2019-11-21 11:37:40","10.pdf"
+206,"Purchase COVID19 test Kits","0x32b747aeabdc690d0095719cb4066b460fd9f91e","0x514428b0857aae2e1cdb9fd0345c3a78d4f18e36",NULL,"Sweet Home Segovia SA","0xd9bf2E9f604a82cB366A47De50eb45ea86E8dd8a","","Gema Bedas Diaz","This sales agreement entered into validity as of the 3rd of March, 2020, by and between GEMA
+BEIDAS DIAZ, identified as the seller, and SWEET HOME SEGOVIA SA, a corporation organized
+under the laws of Spain. Jointly, addressed as “the parties”.
+The seller agrees to sell, and the buyer agrees to purchase the following items indicated under
+3.2(a) with their corresponding following quantities indicated under 3.2(b), their individual prices
+as listed in 3.2.(d) of TWO HUNDRED 50 JUR Tokens and totaling a total price of TWO
+THOUSAND FIVE HUNDRED JUR tokens as established under 3.2(f). The following items
+will collectively be referred to as “the goods”, the purpose of the items as established under
+3.2(c) is essential to the contract and constitutes the main reason as to why the Buyer enters into
+this agreement.
+
+3.2(a) item name: covid-19 test kits
+3.2(b) item id number: 75439
+3.2(c) purpose: detect the presence of a covid19 pathogen
+3.2(d) quantity: 10
+3.2(e) price per unit: 250 JUR
+
+3.3 Quality of the good
+The buyer hereby certifies that the goods to be sold will serve their purpose as established under
+3.2(c) and certifies these goods count with the approval of the World Health Organization as
+“suitable test kits”.
+(a) The seller will provide a standard certification of analysis in accordance with the
+Covid-19P Test criterias
+(b) The seller will provide all the documentation regarding the tests, packaging work order
+and deviation report
+
+3.3 Quality of the good
+The buyer hereby certifies that the goods to be sold will serve their purpose as established under
+3.2(c) and certifies these goods count with the approval of the World Health Organization as
+“suitable test kits”.
+(a) The seller will provide a standard certification of analysis in accordance with the
+Covid-19P Test criterias
+(b) The seller will provide all the documentation regarding the tests, packaging work order
+and deviation report
+3.4 Terms of Delivery
+Seller shall ship the defined Goods to the Buyer
+(a) On or before Tuesday the 17th of March, 2020
+(b) To the following address: Calle San Facundo 3, Segovia, Segovia, 40001, Spain.
+(c) Seller will pay for all shipping costs.
+(d) It shall constitute an acceptance of the delivery of the Goods once Buyer has received the Goods
+at the specified location of Calle San Facundo 3, Segovia, Segovia, 40001, Spain.
+(e) Proof of delivery
+Proof of delivery must be uploaded on the
+(i) JUR Beta platform by the seller, in order to demonstrate to the buyer that the seller has
+successfully delivered in accordance to the duties incurred on him as per the terms of this
+contract.
+(ii) In case a dispute arises this proof of delivery will be used as a proof the voters will make use
+of to make a decision regarding the dispute.
+
+6.4 Renewal of Contract
+The Buyer has 21 days to request the Seller an order to renew the contract in the case the Buyer
+requires a larger supply of the described Goods.
+(a) A request within this period awards the Buyer with priority of delivery of the Goods.
+
+
+","(e) Proof of delivery
+Proof of delivery must be uploaded on the
+(i) JUR Beta platform by the seller, in order to demonstrate to the buyer that the seller has
+successfully delivered in accordance to the duties incurred on him as per the terms of this
+contract.
+(ii) In case a dispute arises this proof of delivery will be used as a proof the voters will make use
+of to make a decision regarding the dispute.","Other",2500.000000000000000000,"open",0.000000000000000000,"0x514428b0857aae2e1cdb9fd0345c3a78d4f18e36",0,0.000000000000000000,0.000000000000000000,30,0,0,0,45,"0x514428b0857aae2e1cdb9fd0345c3a78d4f18e36",0,0,"2020-04-10 10:43:52","2020-04-10 10:46:17",NULL,45,NULL,NULL,"0x514428b0857aae2e1cdb9fd0345c3a78d4f18e36",NULL,NULL,NULL,NULL,1,0,1,"2019-11-21 11:37:40","2019-11-21 11:37:40",NULL
+207,NULL,"0x3e267c2e64d355d38a6bff3a8b0b44276b3435b4","0x514428b0857aae2e1cdb9fd0345c3a78d4f18e36",NULL,"Sweet Home Segovia SA","0xd9bf2e9f604a82cb366a47de50eb45ea86e8dd8a","","Gema Bedas Diaz","This sales agreement entered into validity as of the 3rd of March, 2020, by and between GEMA BEIDAS DIAZ, identified as the seller, and SWEET HOME SEGOVIA SA, a corporation organized under the laws of Spain. Jointly, addressed as “the parties”. The seller agrees to sell, and the buyer agrees to purchase the following items indicated under 3.2(a) with their corresponding following quantities indicated under 3.2(b), their individual prices as listed in 3.2.(d) of TWO HUNDRED 50 JUR Tokens and totaling a total price of TWO THOUSAND FIVE HUNDRED JUR tokens as established under 3.2(f). The following items will collectively be referred to as “the goods”, the purpose of the items as established under 3.2(c) is essential to the contract and constitutes the main reason as to why the Buyer enters into this agreement. 3.2(a) item name: covid-19 test kits 3.2(b) item id number: 75439 3.2(c) purpose: detect the presence of a covid19 pathogen 3.2(d) quantity: 10 3.2(e) price per unit: 250 JUR 3.3 Quality of the good The buyer hereby certifies that the goods to be sold will serve their purpose as established under 3.2(c) and certifies these goods count with the approval of the World Health Organization as “suitable test kits”. (a) The seller will provide a standard certification of analysis in accordance with the Covid-19P Test criterias (b) The seller will provide all the documentation regarding the tests, packaging work order and deviation report 3.3 Quality of the good The buyer hereby certifies that the goods to be sold will serve their purpose as established under 3.2(c) and certifies these goods count with the approval of the World Health Organization as “suitable test kits”. (a) The seller will provide a standard certification of analysis in accordance with the Covid-19P Test criterias (b) The seller will provide all the documentation regarding the tests, packaging work order and deviation report 3.4 Terms of Delivery Seller shall ship the defined Goods to the Buyer (a) On or before Tuesday the 17th of March, 2020 (b) To the following address: Calle San Facundo 3, Segovia, Segovia, 40001, Spain. (c) Seller will pay for all shipping costs. (d) It shall constitute an acceptance of the delivery of the Goods once Buyer has received the Goods at the specified location of Calle San Facundo 3, Segovia, Segovia, 40001, Spain. (e) Proof of delivery Proof of delivery must be uploaded on the (i) JUR Beta platform by the seller, in order to demonstrate to the buyer that the seller has successfully delivered in accordance to the duties incurred on him as per the terms of this contract. (ii) In case a dispute arises this proof of delivery will be used as a proof the voters will make use of to make a decision regarding the dispute. 6.4 Renewal of Contract The Buyer has 21 days to request the Seller an order to renew the contract in the case the Buyer requires a larger supply of the described Goods. (a) A request within this period awards the Buyer with priority of delivery of the Goods.","(e) Proof of delivery Proof of delivery must be uploaded on the (i) JUR Beta platform by the seller, in order to demonstrate to the buyer that the seller has successfully delivered in accordance to the duties incurred on him as per the terms of this contract. (ii) In case a dispute arises this proof of delivery will be used as a proof the voters will make use of to make a decision regarding the dispute.","Other",2500.000000000000000000,"open",0.000000000000000000,"0x514428b0857aae2e1cdb9fd0345c3a78d4f18e36",0,0.000000000000000000,0.000000000000000000,30,0,0,0,45,"0x514428b0857aae2e1cdb9fd0345c3a78d4f18e36",1,0,"2020-04-10 10:48:04","2020-04-10 10:57:26",NULL,45,NULL,NULL,"0x514428b0857aae2e1cdb9fd0345c3a78d4f18e36",NULL,NULL,NULL,NULL,1,0,1,"2019-11-21 11:37:40","2019-11-21 11:37:40","12.pdf"
+208,"C. Leaner cleans Lab for New Justice Offices","0x8e5326fa985d09df25f64ba89ee18c5cd57db29e","0x514428b0857aae2e1cdb9fd0345c3a78d4f18e36",NULL,"Lab for New Justice","0xd9bf2E9f604a82cB366A47De50eb45ea86E8dd8a","","Christopher Leaner","(A) Customer is a company active in the field of law and technology. (the “Customer Project”);
+(B) the Freelancer has extensive experience in cleaning business properties;
+(C) Customer is willing to appoint the Freelancer, which is willing to accept, as provider of the
+services described under Clause 3 of this contract (the “Services”);
+(D) the Parties intend to regulate the provision of the Services by the Freelancer to Customer
+according to the terms and conditions of this freelance contract (the “Contract”).
+
+
+3.1 The Parties acknowledge that the Services consist of cleaning the inside of the building where
+the Customer is located. This only includes dusting furniture (specifically the desks), washing
+windows, vacuum cleaning the floors, and emptying all the trash cans (into the container
+outside) throughout the property.
+3.2 The Freelance undertakes to provide the Services
+(a) The Service will take no longer than 6 hours, each weekly shift takes place on Monday
+between 09:00 AM and 06:00 PM.
+(b) No dust will be visible on the furniture, no damage will be done to the furniture while
+dusting.
+(c) The windows will have no visible marks on them left by washing soap or residue.
+(d) All trash cans will have been emptied by 06:00 PM on each Monday. When the container
+outside is full, or almost full to such an extent that Freelancer can no longer empty the
+trash cans, Freelancer will notify the Consumer before the end of the shift.
+3.3 The Freelancer represents to possess knowledge and equipment which is suitable for the correct performance of the Services.
+
+","(clause 5.2) Freelancer will provide their geo-location and pictures of the cleaned rooms in the property. 
+
+
+
+
+
+
+","Freelancer Agreement",500.000000000000000000,"open",0.000000000000000000,"0x514428b0857aae2e1cdb9fd0345c3a78d4f18e36",1,0.000000000000000000,0.000000000000000000,20,0,0,0,45,"0x514428b0857aae2e1cdb9fd0345c3a78d4f18e36",1,0,"2020-04-13 19:28:50","2020-04-13 19:37:18",NULL,45,NULL,NULL,"0x514428b0857aae2e1cdb9fd0345c3a78d4f18e36",NULL,NULL,NULL,NULL,1,0,1,"2019-11-21 11:37:40","2019-11-21 11:37:40","2.pdf"
+209,"Mr Tortellini manages social media for Borrel","0xdfb365e08ec22be4f01994b9de172c665c2eb2a5","0x514428b0857aae2e1cdb9fd0345c3a78d4f18e36",NULL,"Borrel","0xd9bf2e9f604a82cb366a47de50eb45ea86e8dd8a","","Mr. Tortellini","(A) Customer is a company active in the catering field (the “ Customer Project”);
+(B) the Freelancer has extensive experience in social media management;
+(C) Customer is willing to appoint the Freelancer, which is willing to accept, as provider of the
+services described under Clause 3 of this Contract (the “Services”) for a period of six months;
+(D) the Parties intend to regulate the provision of the Services by the Freelancer to Customer
+according to the terms and conditions of this freelance contract (the “ Contract”).
+
+
+The following content is a transposition of Clauses 3.1, 3.2. 3.1 The Parties acknowledge that the Services consist of establishing the organization’s presence on the following social media platforms: (i) Customer​ ’s website (​http://www.borrelnijmegen.com/​ ) (ii) Facebook (​https://www.facebook.com/borrelnijmegen/​ ) (iii) Instagram (​https://www.instagram.com/borrelnijmegen/​ ) 3.2 The Freelancer undertakes to provide the Services so as to meet the following conditions: (a) The Freelancer will update and maintain the information on the social media platforms of the ​Customer​ by meeting the following quotas during the period of the ​Contract​ : (i) Two news items on the ​Customer​ ’s website a week (ii) Four Facebook posts each week (iii) Two Instagram posts each week (iv) Interacting with reactions on the social media platforms at least five Interactions​ a day (b) The Freelancer shall provide the ​Customer with information about what he or she changed on the social media platforms by providing the following reports weekly: (i) Google Analytics Report for the ​Customer​ ’s Website (ii) Facebook EdgeRank Status, Likes, and Traffic (iii) Instagram EdgeRanks Status, Likes, and Traffic (c) The Freelancer will communicate with the ​Customer at the conclusion of each thirty day period (in person, by phone, or online) to discuss the progress of the ​Customer presence on Social Media Platforms, as defined under 3.1 and discuss strategy for the upcoming period (see also the definition of ​Feedback Period​) (d) The ​Customer may give ​Instructions to The Freelancer and shall voice any concerns regarding the quality of the work by the Freelancer during the sharing of information as mentioned under ​Feedback Period​regarding the activities under (3.2a) and (3.2b). The Freelancer will, within reason, alter his activities to the will of The ​Customer​ .
+
+
+
+","Shared folder containing communications between the parties regarding instructions, activities and requests for fixing the contents: https://drive.google.com/drive/u/0/folders/1FjGCPZYCxidovuNRWKd0UIVKn6HhoYuE
+
+
+
+
+
+
+","Freelancer Agreement",500.000000000000000000,"open",0.000000000000000000,"0x514428b0857aae2e1cdb9fd0345c3a78d4f18e36",0,0.000000000000000000,0.000000000000000000,30,0,0,0,45,"0x514428b0857aae2e1cdb9fd0345c3a78d4f18e36",1,0,"2020-04-13 19:43:28","2020-04-13 19:49:58",NULL,45,NULL,NULL,"0x514428b0857aae2e1cdb9fd0345c3a78d4f18e36",NULL,NULL,NULL,NULL,1,0,1,"2019-11-21 11:37:40","2019-11-21 11:37:40","3.pdf"
+210,NULL,NULL,"0x5a8771cf3ebd656376f4c5e00555a8c2b223e807","kjs1999@hotmail.co.uk",NULL,"0xd9bf2e9f604a82cb366a47de50eb45ea86e8dd8a","","","(A)	This Party (the Club) is a semi-professional football club looking to recruit new players for the 2020/2021 ABC League.
+(B)	This Party (the Player) is a football player which the Club wishes to recruit.
+
+The Club is willing to appoint the Player – who is willing to accept – as a member of its roster for the 2020/2021 ABC League. This season is comprised of 38 match-days.
+1.1	The Parties acknowledge that the Service provided by the Player is to become a member of the Club’s 23-man roster, from which a 16-man squad is selected each match-day.
+1.2	The Player undertakes to do the following:
+(a)	The Player shall make himself available for selection in the Club’s match-day squad on any day on which the Club has match during the 2020/2021 ABC League.
+(b)	The act of “making himself available” requires the Player not to have competing commitments on the match-day during a period beginning 90 minutes before kick-off and concluding 2 hours after kick-off – such as to be available for the Club’s selection.
+(c)	The Club will select its squad for each match-day 24 hours in advance of kick-off.
+(d)	The Club is not under an obligation to include the Player in any match-day squad.
+(e)	If the Club does not the select the Player for a match-day squad, the Player should attend that match’s venue in order to evidence his availability for selection.
+1.3	The Player shall be rewarded for his availability to the sum of £150 per match-day available. This sum is to be paid on a match-by-match basis. If, however, the Player is selected in a match-day squad and scores a goal for the Club in that match, the Club will pay the Player an additional sum of £50. 
+1.4	The Club – upon the signing of this Contract – is obligated to deposit into an escrow account funds sufficient to cover the cost of the Player’s availability in all 38 matches of the 2020/2021 ABC League. The Club is, also, to deposit into the account funds sufficient to cover the cost of the Player scoring a goal in each of these 38 matches. This gives the escrow account a total value of £7,600. The sum deposited in the account is to be converted to Jur Tokens according to the exchange rate when the Contract is signed. The escrow account shall use a wallet in order to hold the Jur Tokens.
+1.5	The escrow account to be used is provided for by the Jur ecosystem. This will release the sums applicable to each match-day as soon as the information relating to that match-day is provided to the ecosystem. This procedure is described below. ","1.6	The Player must evidence his availability for selection in a match-day squad by signing a register held by the Club upon arriving at the venue where that match is to be played. The Club shall input this information into Jur within 24 hours of the match’s conclusion:
+(a)	If the Club input that the Player has not signed the register, the Player is deemed not to have been available for selection. 
+(b)	If the Club input that the Player has signed the register, the £150 reward – in Jur Tokens – is released to the Player immediately. 
+(c)	If the Player disagrees with the information input by the Club, the Contract is referred to the dispute resolution mechanism on Jur’s Open Layer.
+1.7	The ABC League’s website determines whether the Player is to be paid a £50 goal bonus. Those who run the League website have – in a separate Contract – agreed with the Club to provide details of the Club’s goal-scorers within 24 hours of the match’s conclusion. This website is to be linked with the Jur ecosystem such that Jur is able to release the sum of £50 to the Player – where owed – as soon as the League website is updated. If the Player believes that the League website is incorrect, the Contract is referred to Jur’s Open Layer.","Service Agreement",2.000000000000000000,"open",0.000000000000000000,"0x5a8771cf3ebd656376f4c5e00555a8c2b223e807",1,0.000000000000000000,0.000000000000000000,5,0,0,0,94,"0x5a8771cf3ebd656376f4c5e00555a8c2b223e807",0,0,"2020-04-13 19:46:46","2020-04-13 19:52:57",NULL,94,NULL,NULL,"0x5a8771cf3ebd656376f4c5e00555a8c2b223e807",NULL,NULL,NULL,NULL,1,0,1,"2020-04-06 19:10:05","2020-04-06 19:10:05","Contract.pdf"
+210,NULL,NULL,"0x5a8771cf3ebd656376f4c5e00555a8c2b223e807","kjs1999@hotmail.co.uk",NULL,"0xd9bf2e9f604a82cb366a47de50eb45ea86e8dd8a","","","(A)	This Party (the Club) is a semi-professional football club looking to recruit new players for the 2020/2021 ABC League.
+(B)	This Party (the Player) is a football player which the Club wishes to recruit.
+
+The Club is willing to appoint the Player – who is willing to accept – as a member of its roster for the 2020/2021 ABC League. This season is comprised of 38 match-days.
+1.1	The Parties acknowledge that the Service provided by the Player is to become a member of the Club’s 23-man roster, from which a 16-man squad is selected each match-day.
+1.2	The Player undertakes to do the following:
+(a)	The Player shall make himself available for selection in the Club’s match-day squad on any day on which the Club has match during the 2020/2021 ABC League.
+(b)	The act of “making himself available” requires the Player not to have competing commitments on the match-day during a period beginning 90 minutes before kick-off and concluding 2 hours after kick-off – such as to be available for the Club’s selection.
+(c)	The Club will select its squad for each match-day 24 hours in advance of kick-off.
+(d)	The Club is not under an obligation to include the Player in any match-day squad.
+(e)	If the Club does not the select the Player for a match-day squad, the Player should attend that match’s venue in order to evidence his availability for selection.
+1.3	The Player shall be rewarded for his availability to the sum of £150 per match-day available. This sum is to be paid on a match-by-match basis. If, however, the Player is selected in a match-day squad and scores a goal for the Club in that match, the Club will pay the Player an additional sum of £50. 
+1.4	The Club – upon the signing of this Contract – is obligated to deposit into an escrow account funds sufficient to cover the cost of the Player’s availability in all 38 matches of the 2020/2021 ABC League. The Club is, also, to deposit into the account funds sufficient to cover the cost of the Player scoring a goal in each of these 38 matches. This gives the escrow account a total value of £7,600. The sum deposited in the account is to be converted to Jur Tokens according to the exchange rate when the Contract is signed. The escrow account shall use a wallet in order to hold the Jur Tokens.
+1.5	The escrow account to be used is provided for by the Jur ecosystem. This will release the sums applicable to each match-day as soon as the information relating to that match-day is provided to the ecosystem. This procedure is described below. ","1.6	The Player must evidence his availability for selection in a match-day squad by signing a register held by the Club upon arriving at the venue where that match is to be played. The Club shall input this information into Jur within 24 hours of the match’s conclusion:
+(a)	If the Club input that the Player has not signed the register, the Player is deemed not to have been available for selection. 
+(b)	If the Club input that the Player has signed the register, the £150 reward – in Jur Tokens – is released to the Player immediately. 
+(c)	If the Player disagrees with the information input by the Club, the Contract is referred to the dispute resolution mechanism on Jur’s Open Layer.
+1.7	The ABC League’s website determines whether the Player is to be paid a £50 goal bonus. Those who run the League website have – in a separate Contract – agreed with the Club to provide details of the Club’s goal-scorers within 24 hours of the match’s conclusion. This website is to be linked with the Jur ecosystem such that Jur is able to release the sum of £50 to the Player – where owed – as soon as the League website is updated. If the Player believes that the League website is incorrect, the Contract is referred to Jur’s Open Layer.","Service Agreement",2.000000000000000000,"open",0.000000000000000000,"0x5a8771cf3ebd656376f4c5e00555a8c2b223e807",1,0.000000000000000000,0.000000000000000000,5,0,0,0,94,"0x5a8771cf3ebd656376f4c5e00555a8c2b223e807",0,0,"2020-04-13 19:46:46","2020-04-13 19:52:57",NULL,94,NULL,NULL,"0x5a8771cf3ebd656376f4c5e00555a8c2b223e807",NULL,NULL,NULL,NULL,1,0,1,"2020-04-06 19:10:05","2020-04-06 19:10:05","Contract.pdf"
