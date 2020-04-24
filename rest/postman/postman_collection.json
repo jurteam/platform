@@ -66,6 +66,77 @@
 					]
 				},
 				{
+					"name": "activities",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "wallet",
+								"type": "text",
+								"value": "{{wallet}}"
+							}
+						],
+						"url": {
+							"raw": "{{protocol}}://{{baseUrl}}/{{version}}/user/activities?byDate&orderBy='desc'&perPage={{$randomInt}}",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"{{version}}",
+								"user",
+								"activities"
+							],
+							"query": [
+								{
+									"key": "byDate",
+									"value": null
+								},
+								{
+									"key": "orderBy",
+									"value": "'desc'"
+								},
+								{
+									"key": "perPage",
+									"value": "{{$randomInt}}"
+								}
+							]
+						},
+						"description": "All user infos"
+					},
+					"response": [
+						{
+							"name": "GET user",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "wallet",
+										"value": "0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A7",
+										"description": "wallet address",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{protocol}}://{{baseUrl}}/{{version}}/user",
+									"protocol": "{{protocol}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"{{version}}",
+										"user"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [],
+							"cookie": [],
+							"body": "{\n\t\"name\":\"Alice\",\n\t\"email\":\"alice@domain\",\n\t\"gender\":\"female\",\n\t\"location\":\"\",\n\t\"birth_date\":\"2019-02-17 14:33:00\",\n\t\"category\":\"\",\n\t\"show_fullname\":false,\n\t\"created_at\":\"2019-02-17 14:33:00\"\n}"
+						}
+					]
+				},
+				{
 					"name": "store",
 					"request": {
 						"method": "POST",
@@ -421,6 +492,266 @@
 					]
 				},
 				{
+					"name": "show",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "wallet",
+								"value": "0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A7",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{protocol}}://{{baseUrl}}/{{version}}/contracts/{{$randomInt}}",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"{{version}}",
+								"contracts",
+								"{{$randomInt}}"
+							]
+						},
+						"description": "Show contract infos"
+					},
+					"response": [
+						{
+							"name": "show a dispute",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "wallet",
+										"value": "0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A7",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{protocol}}://{{baseUrl}}/{{version}}/contracts/{{$randomInt}}",
+									"protocol": "{{protocol}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"{{version}}",
+										"contracts",
+										"{{$randomInt}}"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [],
+							"cookie": [],
+							"body": "{\n\tid: 1,\n\tuser_id: 1,\n\tcounterpart_id: 2,\n\tstatus: 1,\n\tcreated_at: \"2019-02-17 16:22:00\",\n\tmedia: [],\n\tvotes: [],\n\tactivities: [],\n\ttype: 'dispute'\n}"
+						},
+						{
+							"name": "show",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "wallet",
+										"value": "0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A7",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{protocol}}://{{baseUrl}}/{{version}}/contracts/{{$randomInt}}",
+									"protocol": "{{protocol}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"{{version}}",
+										"contracts",
+										"{{$randomInt}}"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [],
+							"cookie": [],
+							"body": "{\n\tid: 1,\n\tuser_id: 1,\n\tcounterpart_id: 2,\n\tstatus: 1,\n\tcreated_at: \"2019-02-17 16:22:00\",\n\tmedia: [],\n\tvotes: [],\n\tactivities: [],\n\ttype: 'contract'\n}"
+						}
+					]
+				},
+				{
+					"name": "status",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "wallet",
+								"type": "text",
+								"value": "0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A7"
+							}
+						],
+						"url": {
+							"raw": "{{protocol}}://{{baseUrl}}/{{version}}/contracts/status/{{$randomInt}}",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"{{version}}",
+								"contracts",
+								"status",
+								"{{$randomInt}}"
+							]
+						},
+						"description": "Show contract infos"
+					},
+					"response": [
+						{
+							"name": "show a dispute",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "wallet",
+										"value": "0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A7",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{protocol}}://{{baseUrl}}/{{version}}/contracts/{{$randomInt}}",
+									"protocol": "{{protocol}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"{{version}}",
+										"contracts",
+										"{{$randomInt}}"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [],
+							"cookie": [],
+							"body": "{\n\tid: 1,\n\tuser_id: 1,\n\tcounterpart_id: 2,\n\tstatus: 1,\n\tcreated_at: \"2019-02-17 16:22:00\",\n\tmedia: [],\n\tvotes: [],\n\tactivities: [],\n\ttype: 'dispute'\n}"
+						},
+						{
+							"name": "show",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "wallet",
+										"value": "0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A7",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{protocol}}://{{baseUrl}}/{{version}}/contracts/{{$randomInt}}",
+									"protocol": "{{protocol}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"{{version}}",
+										"contracts",
+										"{{$randomInt}}"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [],
+							"cookie": [],
+							"body": "{\n\tid: 1,\n\tuser_id: 1,\n\tcounterpart_id: 2,\n\tstatus: 1,\n\tcreated_at: \"2019-02-17 16:22:00\",\n\tmedia: [],\n\tvotes: [],\n\tactivities: [],\n\ttype: 'contract'\n}"
+						}
+					]
+				},
+				{
+					"name": "details",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "wallet",
+								"type": "text",
+								"value": "0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A7"
+							}
+						],
+						"url": {
+							"raw": "{{protocol}}://{{baseUrl}}/{{version}}/contracts/details/{{$randomInt}}",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"{{version}}",
+								"contracts",
+								"details",
+								"{{$randomInt}}"
+							]
+						},
+						"description": "Show contract infos"
+					},
+					"response": [
+						{
+							"name": "show a dispute",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "wallet",
+										"value": "0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A7",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{protocol}}://{{baseUrl}}/{{version}}/contracts/{{$randomInt}}",
+									"protocol": "{{protocol}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"{{version}}",
+										"contracts",
+										"{{$randomInt}}"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [],
+							"cookie": [],
+							"body": "{\n\tid: 1,\n\tuser_id: 1,\n\tcounterpart_id: 2,\n\tstatus: 1,\n\tcreated_at: \"2019-02-17 16:22:00\",\n\tmedia: [],\n\tvotes: [],\n\tactivities: [],\n\ttype: 'dispute'\n}"
+						},
+						{
+							"name": "show",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "wallet",
+										"value": "0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A7",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{protocol}}://{{baseUrl}}/{{version}}/contracts/{{$randomInt}}",
+									"protocol": "{{protocol}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"{{version}}",
+										"contracts",
+										"{{$randomInt}}"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [],
+							"cookie": [],
+							"body": "{\n\tid: 1,\n\tuser_id: 1,\n\tcounterpart_id: 2,\n\tstatus: 1,\n\tcreated_at: \"2019-02-17 16:22:00\",\n\tmedia: [],\n\tvotes: [],\n\tactivities: [],\n\ttype: 'contract'\n}"
+						}
+					]
+				},
+				{
 					"name": "store",
 					"request": {
 						"method": "POST",
@@ -527,14 +858,137 @@
 							]
 						},
 						"url": {
-							"raw": "{{protocol}}://{{baseUrl}}/{{version}}/contract",
+							"raw": "{{protocol}}://{{baseUrl}}/{{version}}/contracts",
 							"protocol": "{{protocol}}",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"{{version}}",
-								"contract"
+								"contracts"
+							]
+						},
+						"description": "Create a contract"
+					},
+					"response": []
+				},
+				{
+					"name": "friendly",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "wallet",
+								"type": "text",
+								"value": "0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A7"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "part_a_wallet",
+									"value": "",
+									"description": "the  contract owner",
+									"type": "text"
+								},
+								{
+									"key": "part_b_wallet",
+									"value": "",
+									"description": "the counterpart of contract",
+									"type": "text"
+								},
+								{
+									"key": "part_a_public_name",
+									"value": "",
+									"description": "optional field",
+									"type": "text"
+								},
+								{
+									"key": "part_a_email",
+									"value": "",
+									"description": "optional field",
+									"type": "text"
+								},
+								{
+									"key": "part_b_public_name",
+									"value": "",
+									"description": "optional field",
+									"type": "text"
+								},
+								{
+									"key": "part_b_email",
+									"value": "",
+									"description": "optional field",
+									"type": "text"
+								},
+								{
+									"key": "contract_kpi",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "contract_resolution_proof",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "category_id",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "contract_who_pays",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "contract_jur_token_value",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "has_penalty_fee",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "part_a_penalty_fee",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "part_b_penalty_fee",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "status",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{protocol}}://{{baseUrl}}/{{version}}/contracts/friendly/{{$randomInt}}",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"{{version}}",
+								"contracts",
+								"friendly",
+								"{{$randomInt}}"
 							]
 						},
 						"description": "Create a contract"
@@ -580,14 +1034,75 @@
 							]
 						},
 						"url": {
-							"raw": "{{protocol}}://{{baseUrl}}/{{version}}/contract/{{$randomInt}}",
+							"raw": "{{protocol}}://{{baseUrl}}/{{version}}/contracts/{{$randomInt}}?include=attachments",
 							"protocol": "{{protocol}}",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"{{version}}",
-								"contract",
+								"contracts",
+								"{{$randomInt}}"
+							],
+							"query": [
+								{
+									"key": "include",
+									"value": "attachments"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "status update",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "wallet",
+								"type": "text",
+								"value": "0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A7"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "status",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "category",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "contract_kpi",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "contract_resolution_proof",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{protocol}}://{{baseUrl}}/{{version}}/contracts/status/update/{{$randomInt}}",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"{{version}}",
+								"contracts",
+								"status",
+								"update",
 								"{{$randomInt}}"
 							]
 						}
@@ -610,18 +1125,341 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{protocol}}://{{baseUrl}}/{{version}}/contract",
+							"raw": "{{protocol}}://{{baseUrl}}/{{version}}/contracts/{{$randomInt}}",
 							"protocol": "{{protocol}}",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"{{version}}",
-								"contract"
+								"contracts",
+								"{{$randomInt}}"
 							]
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "destroy all",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "wallet",
+								"type": "text",
+								"value": "0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A7"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{protocol}}://{{baseUrl}}/{{version}}/contracts/delete-all",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"{{version}}",
+								"contracts",
+								"delete-all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "medias delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "wallet",
+								"value": "0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A7",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "part_a_wallet",
+									"value": "",
+									"description": "the  contract owner",
+									"type": "text"
+								},
+								{
+									"key": "part_b_wallet",
+									"value": "",
+									"description": "the counterpart of contract",
+									"type": "text"
+								},
+								{
+									"key": "part_a_public_name",
+									"value": "",
+									"description": "optional field",
+									"type": "text"
+								},
+								{
+									"key": "part_a_email",
+									"value": "",
+									"description": "optional field",
+									"type": "text"
+								},
+								{
+									"key": "part_b_public_name",
+									"value": "",
+									"description": "optional field",
+									"type": "text"
+								},
+								{
+									"key": "part_b_email",
+									"value": "",
+									"description": "optional field",
+									"type": "text"
+								},
+								{
+									"key": "contract_kpi",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "contract_resolution_proof",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "category_id",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "contract_who_pays",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "contract_jur_token_value",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "has_penalty_fee",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "part_a_penalty_fee",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "part_b_penalty_fee",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "status",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{protocol}}://{{baseUrl}}/{{version}}/contracts/medias/{{$randomInt}}",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"{{version}}",
+								"contracts",
+								"medias",
+								"{{$randomInt}}"
+							]
+						},
+						"description": "Create a contract"
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "disputes",
+			"item": [
+				{
+					"name": "index",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "wallet",
+								"value": "0x7567d83b7b8d80addcb281a71d54fc7b3364ffed",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{protocol}}://{{baseUrl}}/{{version}}/contracts/disputes/all",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"{{version}}",
+								"contracts",
+								"disputes",
+								"all"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "",
+									"description": "filter by this status",
+									"disabled": true
+								},
+								{
+									"key": "from",
+									"value": "",
+									"description": "filter contracts from this timestamp",
+									"disabled": true
+								},
+								{
+									"key": "to",
+									"value": "",
+									"description": "filter contracts until this timestamp",
+									"disabled": true
+								},
+								{
+									"key": "q",
+									"value": "",
+									"description": "filter by this query",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Contract list"
+					},
+					"response": [
+						{
+							"name": "empty contracts",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "wallet",
+										"value": "0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A7",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{protocol}}://{{baseUrl}}/{{version}}/contracts?q=&status=&from=&to=&page={{$randomInt}}",
+									"protocol": "{{protocol}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"{{version}}",
+										"contracts"
+									],
+									"query": [
+										{
+											"key": "q",
+											"value": "",
+											"description": "filter by this query"
+										},
+										{
+											"key": "status",
+											"value": "",
+											"description": "filter by this status"
+										},
+										{
+											"key": "from",
+											"value": "",
+											"description": "filter contracts from this timestamp"
+										},
+										{
+											"key": "to",
+											"value": "",
+											"description": "filter contracts until this timestamp"
+										},
+										{
+											"key": "page",
+											"value": "{{$randomInt}}"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [],
+							"cookie": [],
+							"body": "{\n    \"total\": 0,\n    \"per_page\": 15,\n    \"current_page\": 1,\n    \"last_page\": 1,\n    \"first_page_url\": \"http://jur.dev?page=1&status=&from=&to=&q=\",\n    \"last_page_url\": \"http://jur.dev?page=4&status=&from=&to=&q=\",\n    \"next_page_url\": \"http://jur.dev?page=2&status=&from=&to=&q=\",\n    \"prev_page_url\": null,\n    \"path\": \"http://jur.dev\",\n    \"from\": 0,\n    \"to\": 0,\n    \"data\": []\n}"
+						},
+						{
+							"name": "contracts",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "wallet",
+										"type": "text",
+										"value": "0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A7"
+									}
+								],
+								"url": {
+									"raw": "{{protocol}}://{{baseUrl}}/{{version}}/contracts?q=search term&page={{$randomInt}}&status=&from=&to=",
+									"protocol": "{{protocol}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"{{version}}",
+										"contracts"
+									],
+									"query": [
+										{
+											"key": "q",
+											"value": "search term",
+											"description": "filter by this query"
+										},
+										{
+											"key": "page",
+											"value": "{{$randomInt}}"
+										},
+										{
+											"key": "status",
+											"value": "",
+											"description": "filter by this status"
+										},
+										{
+											"key": "from",
+											"value": "",
+											"description": "filter contracts from this timestamp"
+										},
+										{
+											"key": "to",
+											"value": "",
+											"description": "filter contracts until this timestamp"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [],
+							"cookie": [],
+							"body": "{\n   \"total\": 50,\n   \"per_page\": 15,\n   \"current_page\": 1,\n   \"last_page\": 4,\n   \"first_page_url\": \"http://jur.dev?page=1&status=&from=&to=&q=\",\n   \"last_page_url\": \"http://jur.dev?page=4&status=&from=&to=&q=\",\n   \"next_page_url\": \"http://jur.dev?page=2&status=&from=&to=&q=\",\n   \"prev_page_url\": null,\n   \"path\": \"http://laravel.app\",\n   \"from\": 1,\n   \"to\": 15,\n   \"data\":[\n        {\n           \"id\": 1,\n           \"status\": 2\n        },\n        {\n           \"id\": 2,\n           \"status\": 1\n        }\n   ]\n}"
+						}
+					]
 				},
 				{
 					"name": "show",
@@ -635,7 +1473,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{protocol}}://{{baseUrl}}/{{version}}/contracts/{{$randomInt}}",
+							"raw": "{{protocol}}://{{baseUrl}}/{{version}}/contracts/disputes/{{$randomInt}}",
 							"protocol": "{{protocol}}",
 							"host": [
 								"{{baseUrl}}"
@@ -643,6 +1481,306 @@
 							"path": [
 								"{{version}}",
 								"contracts",
+								"disputes",
+								"{{$randomInt}}"
+							]
+						},
+						"description": "Show contract infos"
+					},
+					"response": [
+						{
+							"name": "show",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "wallet",
+										"value": "0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A7",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{protocol}}://{{baseUrl}}/{{version}}/contracts/{{$randomInt}}",
+									"protocol": "{{protocol}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"{{version}}",
+										"contracts",
+										"{{$randomInt}}"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [],
+							"cookie": [],
+							"body": "{\n\tid: 1,\n\tuser_id: 1,\n\tcounterpart_id: 2,\n\tstatus: 1,\n\tcreated_at: \"2019-02-17 16:22:00\",\n\tmedia: [],\n\tvotes: [],\n\tactivities: [],\n\ttype: 'contract'\n}"
+						},
+						{
+							"name": "show a dispute",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "wallet",
+										"value": "0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A7",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{protocol}}://{{baseUrl}}/{{version}}/contracts/{{$randomInt}}",
+									"protocol": "{{protocol}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"{{version}}",
+										"contracts",
+										"{{$randomInt}}"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [],
+							"cookie": [],
+							"body": "{\n\tid: 1,\n\tuser_id: 1,\n\tcounterpart_id: 2,\n\tstatus: 1,\n\tcreated_at: \"2019-02-17 16:22:00\",\n\tmedia: [],\n\tvotes: [],\n\tactivities: [],\n\ttype: 'dispute'\n}"
+						}
+					]
+				},
+				{
+					"name": "store",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "wallet",
+								"value": "0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A7",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "part_a_wallet",
+									"value": "",
+									"description": "the  contract owner",
+									"type": "text"
+								},
+								{
+									"key": "part_b_wallet",
+									"value": "",
+									"description": "the counterpart of contract",
+									"type": "text"
+								},
+								{
+									"key": "part_a_public_name",
+									"value": "",
+									"description": "optional field",
+									"type": "text"
+								},
+								{
+									"key": "part_a_email",
+									"value": "",
+									"description": "optional field",
+									"type": "text"
+								},
+								{
+									"key": "part_b_public_name",
+									"value": "",
+									"description": "optional field",
+									"type": "text"
+								},
+								{
+									"key": "part_b_email",
+									"value": "",
+									"description": "optional field",
+									"type": "text"
+								},
+								{
+									"key": "contract_kpi",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "contract_resolution_proof",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "category_id",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "contract_who_pays",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "contract_jur_token_value",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "has_penalty_fee",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "part_a_penalty_fee",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "part_b_penalty_fee",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "status",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{protocol}}://{{baseUrl}}/{{version}}/contracts/disputes/{{$randomInt}}",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"{{version}}",
+								"contracts",
+								"disputes",
+								"{{$randomInt}}"
+							]
+						},
+						"description": "Create a contract"
+					},
+					"response": []
+				},
+				{
+					"name": "details",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "wallet",
+								"type": "text",
+								"value": "0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A7"
+							}
+						],
+						"url": {
+							"raw": "{{protocol}}://{{baseUrl}}/{{version}}/contracts/disputes/details/{{$randomInt}}",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"{{version}}",
+								"contracts",
+								"disputes",
+								"details",
+								"{{$randomInt}}"
+							]
+						},
+						"description": "Show contract infos"
+					},
+					"response": [
+						{
+							"name": "show a dispute",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "wallet",
+										"value": "0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A7",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{protocol}}://{{baseUrl}}/{{version}}/contracts/{{$randomInt}}",
+									"protocol": "{{protocol}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"{{version}}",
+										"contracts",
+										"{{$randomInt}}"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [],
+							"cookie": [],
+							"body": "{\n\tid: 1,\n\tuser_id: 1,\n\tcounterpart_id: 2,\n\tstatus: 1,\n\tcreated_at: \"2019-02-17 16:22:00\",\n\tmedia: [],\n\tvotes: [],\n\tactivities: [],\n\ttype: 'dispute'\n}"
+						},
+						{
+							"name": "show",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "wallet",
+										"value": "0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A7",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{protocol}}://{{baseUrl}}/{{version}}/contracts/{{$randomInt}}",
+									"protocol": "{{protocol}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"{{version}}",
+										"contracts",
+										"{{$randomInt}}"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [],
+							"cookie": [],
+							"body": "{\n\tid: 1,\n\tuser_id: 1,\n\tcounterpart_id: 2,\n\tstatus: 1,\n\tcreated_at: \"2019-02-17 16:22:00\",\n\tmedia: [],\n\tvotes: [],\n\tactivities: [],\n\ttype: 'contract'\n}"
+						}
+					]
+				},
+				{
+					"name": "delete media",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "wallet",
+								"type": "text",
+								"value": "0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A7"
+							}
+						],
+						"url": {
+							"raw": "{{protocol}}://{{baseUrl}}/{{version}}/contracts/disputes/evidences/{{$randomInt}}",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"{{version}}",
+								"contracts",
+								"disputes",
+								"evidences",
 								"{{$randomInt}}"
 							]
 						},
@@ -713,90 +1851,6 @@
 			"protocolProfileBehavior": {}
 		},
 		{
-			"name": "medias",
-			"item": [
-				{
-					"name": "store",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "wallet",
-								"value": "0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A7",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "document[]",
-									"value": "",
-									"description": "file ",
-									"type": "file"
-								},
-								{
-									"key": "entity_id",
-									"value": "",
-									"description": "the id of the entity (contract, despute, ecc..)",
-									"type": "text"
-								},
-								{
-									"key": "entity_type",
-									"value": "",
-									"description": "the type of entity (basically the path of Model class, like App\\Models\\Contract or App\\Models\\Despute ecc ecc)",
-									"type": "text"
-								}
-							]
-						},
-						"url": {
-							"raw": "{{protocol}}://{{baseUrl}}/{{version}}/medias",
-							"protocol": "{{protocol}}",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"{{version}}",
-								"medias"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "destroy",
-					"request": {
-						"method": "DELETE",
-						"header": [
-							{
-								"key": "wallet",
-								"value": "0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A7",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "{{protocol}}://{{baseUrl}}/{{version}}/medias/{{$randomInt}}",
-							"protocol": "{{protocol}}",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"{{version}}",
-								"medias",
-								"{{$randomInt}}"
-							]
-						}
-					},
-					"response": []
-				}
-			],
-			"protocolProfileBehavior": {}
-		},
-		{
 			"name": "faqs",
 			"item": [
 				{
@@ -860,14 +1914,42 @@
 							}
 						],
 						"url": {
-							"raw": "{{protocol}}://{{baseUrl}}/{{version}}/votes",
+							"raw": "{{protocol}}://{{baseUrl}}/{{version}}/votes/{{$randomInt}}",
 							"protocol": "{{protocol}}",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"{{version}}",
-								"votes"
+								"votes",
+								"{{$randomInt}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "live",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "wallet",
+								"type": "text",
+								"value": "0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A7"
+							}
+						],
+						"url": {
+							"raw": "{{protocol}}://{{baseUrl}}/{{version}}/votes/live/{{$randomInt}}",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"{{version}}",
+								"votes",
+								"live",
+								"{{$randomInt}}"
 							]
 						}
 					},
@@ -915,9 +1997,71 @@
 							]
 						},
 						"url": {
-							"raw": ""
+							"raw": "{{protocol}}://{{baseUrl}}/{{version}}/votes/",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"{{version}}",
+								"votes",
+								""
+							]
 						},
 						"description": "Save vote"
+					},
+					"response": []
+				},
+				{
+					"name": "destroy",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "wallet",
+								"value": "0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A7",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{protocol}}://{{baseUrl}}/{{version}}/votes/{{$randomInt}}",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"{{version}}",
+								"votes",
+								"{{$randomInt}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "destroy medias",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "wallet",
+								"value": "0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A7",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{protocol}}://{{baseUrl}}/{{version}}/votes/medias/{{$randomInt}}",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"{{version}}",
+								"votes",
+								"medias",
+								"{{$randomInt}}"
+							]
+						}
 					},
 					"response": []
 				}
@@ -933,7 +2077,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{protocol}}://{{baseUrl}}/{{version}}/activities/{{$randomInt}}",
+							"raw": "{{protocol}}://{{baseUrl}}/{{version}}/activities/{{$randomInt}}?include=attachments",
 							"protocol": "{{protocol}}",
 							"host": [
 								"{{baseUrl}}"
@@ -942,6 +2086,12 @@
 								"{{version}}",
 								"activities",
 								"{{$randomInt}}"
+							],
+							"query": [
+								{
+									"key": "include",
+									"value": "attachments"
+								}
 							]
 						},
 						"description": "Get notifications list for a contract"
@@ -1029,7 +2179,7 @@
 							]
 						},
 						"url": {
-							"raw": "{{protocol}}://{{baseUrl}}/{{version}}/activities/{{$randomInt}}",
+							"raw": "{{protocol}}://{{baseUrl}}/{{version}}/activities/readed",
 							"protocol": "{{protocol}}",
 							"host": [
 								"{{baseUrl}}"
@@ -1037,67 +2187,50 @@
 							"path": [
 								"{{version}}",
 								"activities",
-								"{{$randomInt}}"
+								"readed"
 							]
 						}
 					},
 					"response": []
-				}
-			],
-			"protocolProfileBehavior": {}
-		},
-		{
-			"name": "categories",
-			"item": [
+				},
 				{
-					"name": "index",
+					"name": "delete medias",
 					"request": {
-						"method": "GET",
+						"method": "DELETE",
 						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "contract_id",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "message",
+									"value": "",
+									"type": "text"
+								}
+							]
+						},
 						"url": {
-							"raw": "{{protocol}}://{{baseUrl}}/{{version}}/categories",
+							"raw": "{{protocol}}://{{baseUrl}}/{{version}}/activities/medias/{{$randomInt}}",
 							"protocol": "{{protocol}}",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"{{version}}",
-								"categories"
+								"activities",
+								"medias",
+								"{{$randomInt}}"
 							]
 						},
-						"description": "Categories list"
+						"description": "Save notification based on contract action"
 					},
-					"response": [
-						{
-							"name": "index",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{protocol}}://{{baseUrl}}/{{version}}/categories",
-									"protocol": "{{protocol}}",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"{{version}}",
-										"categories"
-									]
-								}
-							},
-							"_postman_previewlanguage": "json",
-							"header": [],
-							"cookie": [],
-							"body": "{\n\t\"categories\": [\n\t\t{\n\t\t\t\"id\": 1,\n\t\t\t\"name\": \"OTC\"\n\t\t},\n\t\t{\n\t\t\t\"id\": 2,\n\t\t\t\"name\": \"Freelancer Agreement\"\n\t\t},\n\t\t{\n\t\t\t\"id\": 3,\n\t\t\t\"name\": \"Service Agreement\"\n\t\t},\n\t\t{\n\t\t\t\"id\": 4,\n\t\t\t\"name\": \"Investments\"\n\t\t},\n\t\t{\n\t\t\t\"id\": 5,\n\t\t\t\"name\": \"Web Domains\"\n\t\t},\n\t\t{\n\t\t\t\"id\": 6,\n\t\t\t\"name\": \"Other\"\n\t\t}\n\t]\n}"
-						}
-					]
+					"response": []
 				}
 			],
-			"protocolProfileBehavior": {}
-		},
-		{
-			"name": "notifications",
-			"item": [],
 			"protocolProfileBehavior": {}
 		},
 		{
@@ -1371,16 +2504,15 @@
 							]
 						},
 						"url": {
-							"raw": "http://localhost/api/v1/transactions/1",
-							"protocol": "http",
+							"raw": "{{protocol}}://{{baseUrl}}/{{version}}/transactions/{{$randomInt}}",
+							"protocol": "{{protocol}}",
 							"host": [
-								"localhost"
+								"{{baseUrl}}"
 							],
 							"path": [
-								"api",
-								"v1",
+								"{{version}}",
 								"transactions",
-								"1"
+								"{{$randomInt}}"
 							]
 						}
 					},
