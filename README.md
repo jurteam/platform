@@ -1,8 +1,8 @@
-# JUR MVP
+# Jur Platform
 
-JUR MVP will be available at <https://jur.io/mvp/>
+Jur Platform will be available at <https://jur.io/mvp/>
 
-[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier) [![Storybook](https://github.com/storybooks/press/blob/master/badges/storybook.svg)](https://github.com/storybooks/storybook)
+[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier) [![Storybook](https://cdn.jsdelivr.net/gh/storybookjs/brand@master/badge/badge-storybook.svg)](https://github.com/storybooks/storybook)
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
@@ -37,9 +37,9 @@ _Please note: this project supports both._
 
 This project repo is organized in 3 branches:
 
--   **master** : is a mirror of _production_ environment;
--   **beta** : is a mirror of _stage_ environment;
--   **develop** : for development purposes;
+-   **master**: is a mirror of _production_ environment;
+-   **beta**: is a mirror of _stage_ environment;
+-   **develop**: for development purposes;
 
 ### Git Workflow
 
@@ -97,6 +97,27 @@ In order to have a full overview of the components available for this project pl
 
 If all goes well Storybook is accessible at <http://localhost:9009>
 
+## Connex
+
+Connex is the standard interface to connect VeChain apps with VeChain blockchain and users.<br>
+>Is under development migration to Connex as authentication, reading and writing method to the blockchain.
+
+Connex method used into Dapp are:
+
+- **Authentication**: perform a certificate signing request with `identification` purpose.<br>
+[more info here](https://docs.vechain.org/connex/api.html#certificate-signing-service).<br>
+>Into Dapp is used into `signCertIdentification` method avaliable [here](https://github.com/jurteam/platform/blob/feature/connex/src/api/connex/Sign.js)
+
+- **Contract Method call**: to call a contract method without altering contract state.<br>
+[more info here](https://docs.vechain.org/connex/api.html#contract-method).<br>
+>Into Dapp is used in the `balanceOf` method avaliable [here](https://github.com/jurteam/platform/blob/feature/connex/src/api/connex/JURToken.js)
+
+- **Transaction signing service**: perform a transaction signing request<br>
+[more info here](https://docs.vechain.org/connex/api.html#transaction-signing-service).<br>
+>Into Dapp is used in the `createArbitration` method avaliable [here](https://github.com/jurteam/platform/blob/feature/connex/src/api/connex/ArbitrationFactory.js)
+
+
+
 ## First run flow
 
 On first run you should download and setup Laravel packages and database. Just follow this commands.
@@ -132,8 +153,8 @@ Once contracts is migrated and available on your local network you should Mint a
     $ cd path/to/project/root
     $ docker-compose build
     $ docker-compose up -d
-    $ docker exec -it php bash
-    $ cd ..
+    $ docker exec -ti jur-mvp_jur_1 bash
+    $ cd var/www/html/
     $ composer install
     $ php artisan key:generate
     $ php artisan migrate:refresh
