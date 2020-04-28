@@ -31,12 +31,31 @@ class OathKeeperController extends Controller
 
         // merge all cards and return to user
         return response()->json(
-            array_merge(
-                $this->generateCard('AverageAmount', $days),
-                $this->generateCard('AmountByOathKeeper', $days),
-                $this->generateCard('ActiveAmount', $days),
-                $this->generateCard('ActiveOathKeepers', $days),
-            )
+            [
+                'data' =>
+                [
+                    [
+                        'id' => 'average-amount',
+                        'type' => 'cards',
+                        'attributes' => $this->generateCard($days),
+                    ],
+                    [
+                        'id' => 'amount-by-oath-keeper',
+                        'type' => 'cards',
+                        'attributes' => $this->generateCard($days),
+                    ],
+                    [
+                        'id' => 'active-amount',
+                        'type' => 'cards',
+                        'attributes' => $this->generateCard($days),
+                    ],
+                    [
+                        'id' => 'active-oath-keeper',
+                        'type' => 'cards',
+                        'attributes' => $this->generateCard($days),
+                    ],
+                ],
+            ]
         );
     }
 
@@ -51,7 +70,15 @@ class OathKeeperController extends Controller
         // convert duration string to number of days
         $days = $this->convertDurationToDays($request->input('duration'));
 
-        return response()->json($this->generateCard($cardname, $days)[$cardname]);
+        return response()->json(
+            [
+                'data' => [
+                    'id' => $cardname,
+                    'type' => 'cards',
+                    'attributes' => $this->generateCard($days),
+                ],
+            ]
+        );
     }
 
     /**
@@ -75,7 +102,7 @@ class OathKeeperController extends Controller
         $maxAmount = $request->input('maxAmount', 999999);
 
         // generate oath taker list
-        for ($i = 0; $i < $limit; $i++) {
+        for ($i = 1; $i <= $limit; $i++) {
             array_push($oathTakers, $this->generateOathTaker($i, $minAmount, $maxAmount));
         }
 
@@ -97,10 +124,11 @@ class OathKeeperController extends Controller
                 break;
         }
 
-        return response()->json([
-            'total' => sizeof($oathTakers),
-            'oathTakers' => $oathTakers,
-        ]);
+        return response()->json(
+            [
+                'meta' => ['total' => 1000],
+                'data' => $oathTakers,
+            ]);
     }
 
     /**
@@ -109,20 +137,28 @@ class OathKeeperController extends Controller
      * @param  Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function getOathTaker(Request $request)
+    public function getOathTaker(Request $request, $address)
     {
-        return response()->json(['rank' => $this->faker->numberBetween(0, 1000)]);
+        return response()->json(
+            [
+                'data' =>
+                [
+                    'id' => $address,
+                    'type' => "oath-takers",
+                    'attributes' => ['rank' => $this->faker->numberBetween(0, 1000)],
+                ],
+            ]
+        );
     }
 
     /**
      * Generate graph details of a card based on duration.
      *
-     * @param  String $card : name of the card
      * @param  String $duration: duration in number of days
      * @return Array $GeneartedGraph: graph array
      * @return \Illuminate\Http\Response
      */
-    private function generateGraphArray($card, $days)
+    private function generateGraphArray($days)
     {
         // two dimentional graph array : [index, value]
         $graph = [];
@@ -138,18 +174,16 @@ class OathKeeperController extends Controller
     /**
      * Generate a card based on duration.
      *
-     * @param  String $card : name of the card
      * @param  String $duration: duration in number of days
      * @return Array $GeneartedCard: card details
      */
-    private function generateCard($card, $days)
+    private function generateCard($days)
     {
         return [
-            $card => [
-                'value' => $this->faker->unique()->randomNumber(8),
-                'delta' => $this->faker->numberBetween(-1000, 1000),
-                'graph' => $this->generateGraphArray($card, $days),
-            ]];
+            'value' => $this->faker->unique()->randomNumber(8),
+            'delta' => $this->faker->numberBetween(-1000, 1000),
+            'graph' => $this->generateGraphArray($days),
+        ];
     }
 
     /**
@@ -184,10 +218,15 @@ class OathKeeperController extends Controller
     private function generateOathTaker($rank, $minAmount, $maxAmount)
     {
         return [
-            'address' => '0x' . $this->faker->sha1,
-            'rank' => $rank,
-            'amount' => $this->faker->numberBetween($minAmount, $maxAmount),
-            'oathCount' => $this->faker->numberBetween(1, 10),
+            'id' => $this->faker->unique()->randomNumber(3),
+            'type' => "oath-takers",
+            'attributes' =>
+            [
+                'address' => '0x' . $this->faker->sha1,
+                'rank' => $rank,
+                'amount' => $this->faker->numberBetween($minAmount, $maxAmount),
+                'oathCount' => $this->faker->numberBetween(1, 10),
+            ],
         ];
     }
 }
