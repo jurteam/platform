@@ -95,6 +95,7 @@ class OathKeeperController extends Controller
         // get page params
         $page = $request->input('page');
 
+        // get filter
         $filter = $request->input('filter', ['minAmount' => 1, 'maxAmount' => 99999]);
 
         // set default value
