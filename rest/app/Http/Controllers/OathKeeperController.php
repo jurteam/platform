@@ -95,6 +95,8 @@ class OathKeeperController extends Controller
         // get page params
         $page = $request->input('page');
 
+        $filter = $request->input('filter', ['minAmount' => 1, 'maxAmount' => 99999]);
+
         // set default value
         $offset = (int) @$page['offset'] ?: 0;
 
@@ -102,10 +104,10 @@ class OathKeeperController extends Controller
         $limit = (int) @$page['limit'] ?: 10;
 
         // minimum oath amount
-        $minAmount = $request->input('filter[minAmount]', 1);
+        $minAmount = $filter['minAmount'] ?: 1;
 
         //maximum oath amount
-        $maxAmount = $request->input('filter[maxAmount]', 999999);
+        $maxAmount = $filter['maxAmount'] ?: 999999;
 
         // generate oath taker list
         for ($i = 1; $i <= $limit; $i++) {
