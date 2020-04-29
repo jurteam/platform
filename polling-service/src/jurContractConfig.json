@@ -1,7 +1,7 @@
 [
     {
     "assetIdentifier":"oathKeeper",
-    "address":"0x730c7a23a6258ed2bad2eef4b227f3044dc160eb",
+    "address":"0x1d34b7409114772d09784aeaa3203055c6805fe9",
     "events":["OathTaken","IHoldYourOathFulfilled"]
     }
 ]
