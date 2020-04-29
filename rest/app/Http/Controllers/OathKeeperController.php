@@ -114,27 +114,43 @@ class OathKeeperController extends Controller
             array_push($oathTakers, $this->generateOathTaker($i, $minAmount, $maxAmount));
         }
 
-        // sort by
-        $sortBy = $request->input('filter[sortBy]', 'Rank');
+        // get sort by
+        $sortBy = $request->input('sortBy', '-Rank');
 
         // sort based on value
         switch ($sortBy) {
+            case '-Rank':
+                usort($oathTakers, function ($a, $b) {
+                    return $b['attributes']['rank'] - $a['attributes']['rank'];
+                });
+                break;
             case 'Amount':
                 usort($oathTakers, function ($a, $b) {
-                    return $b['amount'] - $a['amount'];
+                    return $a['attributes']['amount'] - $b['attributes']['amount'];
+                });
+                break;
+
+            case '-Amount':
+                usort($oathTakers, function ($a, $b) {
+                    return $b['attributes']['amount'] - $a['attributes']['amount'];
                 });
                 break;
 
             case 'OathCount':
                 usort($oathTakers, function ($a, $b) {
-                    return $b['oathCount'] - $a['oathCount'];
+                    return $a['attributes']['oathCount'] - $b['attributes']['oathCount'];
+                });
+                break;
+            case '-OathCount':
+                usort($oathTakers, function ($a, $b) {
+                    return $b['attributes']['oathCount'] - $a['attributes']['oathCount'];
                 });
                 break;
         }
 
         return response()->json(
             [
-                'meta' => ['total' => 1000, 'offset' => $offset, 'limit' => $limit],
+                'meta' => ['total' => 1000, 'offset' => $offset, 'limit' => $limit, 'sortBy' => $sortBy],
                 'data' => $oathTakers
             ]);
     }
