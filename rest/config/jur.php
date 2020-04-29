@@ -82,6 +82,10 @@ return [
             'code' => 36
         ],
         [
+            'label' => 'Waiting Dispute',
+            'code' => 37
+        ],
+        [
             'label' => 'Expired Dispute',
             'code' => 38
         ],
