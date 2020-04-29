@@ -37,24 +37,24 @@ class OathKeeperController extends Controller
                     [
                         'id' => 'average-amount',
                         'type' => 'cards',
-                        'attributes' => $this->generateCard($days),
+                        'attributes' => $this->generateCard($days)
                     ],
                     [
                         'id' => 'amount-by-oath-keeper',
                         'type' => 'cards',
-                        'attributes' => $this->generateCard($days),
+                        'attributes' => $this->generateCard($days)
                     ],
                     [
                         'id' => 'active-amount',
                         'type' => 'cards',
-                        'attributes' => $this->generateCard($days),
+                        'attributes' => $this->generateCard($days)
                     ],
                     [
                         'id' => 'active-oath-keeper',
                         'type' => 'cards',
-                        'attributes' => $this->generateCard($days),
-                    ],
-                ],
+                        'attributes' => $this->generateCard($days)
+                    ]
+                ]
             ]
         );
     }
@@ -75,8 +75,8 @@ class OathKeeperController extends Controller
                 'data' => [
                     'id' => $cardname,
                     'type' => 'cards',
-                    'attributes' => $this->generateCard($days),
-                ],
+                    'attributes' => $this->generateCard($days)
+                ]
             ]
         );
     }
@@ -145,8 +145,7 @@ class OathKeeperController extends Controller
                 [
                     'id' => $address,
                     'type' => "oath-takers",
-                    'attributes' => ['rank' => $this->faker->numberBetween(0, 1000)],
-                ],
+                    'attributes' => ['rank' => $this->faker->numberBetween(0, 1000)]
             ]
         );
     }
@@ -182,7 +181,7 @@ class OathKeeperController extends Controller
         return [
             'value' => $this->faker->unique()->randomNumber(8),
             'delta' => $this->faker->numberBetween(-1000, 1000),
-            'graph' => $this->generateGraphArray($days),
+            'graph' => $this->generateGraphArray($days)
         ];
     }
 
@@ -225,8 +224,8 @@ class OathKeeperController extends Controller
                 'address' => '0x' . $this->faker->sha1,
                 'rank' => $rank,
                 'amount' => $this->faker->numberBetween($minAmount, $maxAmount),
-                'oathCount' => $this->faker->numberBetween(1, 10),
-            ],
+                'oathCount' => $this->faker->numberBetween(1, 10)
+            ]
         ];
     }
 }
