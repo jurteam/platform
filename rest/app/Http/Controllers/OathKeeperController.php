@@ -92,14 +92,20 @@ class OathKeeperController extends Controller
         // list of oath takers
         $oathTakers = [];
 
-        // number of oaths to return
-        $limit = $request->input('limit', 10);
+        // get page params
+        $page = $request->input('page');
+
+        // set default value
+        $offset = (int) @$page['offset'] ?: 0;
+
+        // set default value
+        $limit = (int) @$page['limit'] ?: 10;
 
         // minimum oath amount
-        $minAmount = $request->input('minAmount', 1);
+        $minAmount = $request->input('filter[minAmount]', 1);
 
         //maximum oath amount
-        $maxAmount = $request->input('maxAmount', 999999);
+        $maxAmount = $request->input('filter[maxAmount]', 999999);
 
         // generate oath taker list
         for ($i = 1; $i <= $limit; $i++) {
@@ -107,7 +113,7 @@ class OathKeeperController extends Controller
         }
 
         // sort by
-        $sortBy = $request->input('sortBy', 'Rank');
+        $sortBy = $request->input('filter[sortBy]', 'Rank');
 
         // sort based on value
         switch ($sortBy) {
@@ -126,8 +132,8 @@ class OathKeeperController extends Controller
 
         return response()->json(
             [
-                'meta' => ['total' => 1000],
-                'data' => $oathTakers,
+                'meta' => ['total' => 1000, 'offset' => $offset, 'limit' => $limit],
+                'data' => $oathTakers
             ]);
     }
 
@@ -146,6 +152,7 @@ class OathKeeperController extends Controller
                     'id' => $address,
                     'type' => "oath-takers",
                     'attributes' => ['rank' => $this->faker->numberBetween(0, 1000)]
+                ]
             ]
         );
     }
@@ -217,7 +224,7 @@ class OathKeeperController extends Controller
     private function generateOathTaker($rank, $minAmount, $maxAmount)
     {
         return [
-            'id' => $this->faker->unique()->randomNumber(3),
+            'id' => $this->faker->randomNumber(3),
             'type' => "oath-takers",
             'attributes' =>
             [
