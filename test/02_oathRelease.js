@@ -54,13 +54,13 @@ contract('Oath Keeping - Releasing an oath', function (accounts) {
     assert.equal(details.totalAmountLocked.toNumber(), 200);
   });
 
-  // it("4. Overall contract stats should change after release", async () => {
+  it("4. Overall contract stats should change after release", async () => {
 
-  //   assert.equal((await oathKeeper.totalLockedTokens.call()).toNumber(), 400);
-  //   assert.equal((await oathKeeper.totalActiveLockedTokens.call()).toNumber(), 200);
-  //   assert.equal((await oathKeeper.totalOathCount.call()).toNumber(), 2);
-  //   assert.equal((await oathKeeper.totalActiveOathCount.call()).toNumber(), 1);
-  // });
+    assert.equal((await oathKeeper.totalLockedTokens.call()).toNumber(), 400);
+    // assert.equal((await oathKeeper.totalActiveLockedTokens.call()).toNumber(), 200);
+    assert.equal((await oathKeeper.totalOathCount.call()).toNumber(), 2);
+    // assert.equal((await oathKeeper.totalActiveOathCount.call()).toNumber(), 1);
+  });
 
   it("5. LockSchedule details should be updated after a release.", async () => {
 
