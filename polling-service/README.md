@@ -21,8 +21,11 @@
     "events":["OathTaken","IHoldYourOathFulfilled"]
 }`
 
-`assetIdentifier` is the identifier used on the platform (polling-service, meassge broker service and jbp) to identify the contract/event. It is also the name of the queue used to publish/consume the event details. Every new assetIdentifier found in the jurContractConfig.json file, will create a fresh queue.
+`assetIdentifier` is the identifier used on the platform (polling-service, meassge broker service and jbp) to identify the contract/event. It is also the name of the queue used to publish/consume the event details. Every new `assetIdentifier` found in the `jurContractConfig.json` file, will create a fresh queue.
 
 `address` is the address of the contract
 
 `events` is the array list of event names to watch
+
+1. Add contract details in the `jurContractConfig.json` file
+2. Add the contract's abi file in the `src/abi` folder. Make sure to name the file identical to its `assetidentifier`. For example, `oathKeeper.json`
