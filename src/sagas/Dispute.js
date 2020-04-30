@@ -105,9 +105,13 @@ export function* getDispute(action) {
       // check connex or web3
       const connectorValue = connector()
 
+      log("getDispute - data", data);
+      const statusDate = moment(data.statusUpdatedAt).format('X');
       
       if (data.statusId === 37) 
       {
+        
+        log("getDispute - data", data);
         // dispute is waiting
 
         if(connectorValue === 'connex') 
@@ -138,7 +142,8 @@ export function* getDispute(action) {
    
             let toUpdate = new FormData();
             toUpdate.append("code", 36);
-            toUpdate.append("chain_updated_at", disputeEnds.toString()); 
+            toUpdate.append("chain_updated_at", statusDate.toString()); 
+            // toUpdate.append("chain_updated_at", disputeEnds.toString()); 
   
             yield call(Contracts.statusChange, toUpdate, id);
 
