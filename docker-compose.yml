@@ -11,7 +11,7 @@ services:
       # - ./rest/artisan:/var/www/html/artisan
       # - ./rest/bootstrap:/var/www/html/bootstrap
       # - ./rest/composer.json:/var/www/html/composer.json
-      # - ./rest/config:/var/www/html/config
+      - ./rest/config:/var/www/html/config
       - ./rest/database:/var/www/html/database
       # - ./rest/public:/var/www/html/public
       - ./rest/resources:/var/www/html/resources
