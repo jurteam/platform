@@ -664,9 +664,13 @@ export function* handleUpdateLiveContracts() {
         }
       })
 
-      if (!presentOrEqual) {
-        newContracts[i].new = (currContracts[i].new === 1 ? 2 : 1)
-        different = true
+      if (!presentOrEqual) 
+      {
+        if (newContracts[i] && currContracts[i]) 
+        {
+          newContracts[i].new = (currContracts[i].new === 1 ? 2 : 1)
+          different = true
+        }
       }
 
     })
