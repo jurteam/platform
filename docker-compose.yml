@@ -1,6 +1,5 @@
-version: '3'
+version: "3"
 services:
-
   jur:
     build: ./
     volumes:
@@ -35,10 +34,10 @@ services:
       API_NAME: jur
       API_PREFIX: api/v1
       API_VERSION: v1
-      API_DEBUG: 'true'
+      API_DEBUG: "true"
       JUR_FE_URL: http://localhost
       JUR_MAIL_LOGO_URL: https://jbp.fra1.cdn.digitaloceanspaces.com/mail_logo.svg
-      
+
       DB_CONNECTION: mysql
       DB_HOST: db
       DB_DATABASE: lumen
@@ -116,7 +115,7 @@ services:
   #     API_VERSION: v1
   #     API_DEBUG: 'true'
   #     JUR_FE_URL: https://test.jur.io
-      
+
   #     DB_CONNECTION: mysql
   #     DB_HOST: db
   #     DB_DATABASE: lumen
@@ -147,6 +146,20 @@ services:
       MYSQL_DATABASE: lumen
       MYSQL_USER: lumen
       MYSQL_PASSWORD: secret
+
+  rabbit:
+    image: rabbitmq:3.8
+    env_file: .env.docker-compose
+    environment:
+      # RABBITMQ_ERLANG_COOKIE: "${RABBITMQ_ERLANG_COOKIE}"
+      # RABBITMQ_DEFAULT_USER: "${RABBITMQ_DEFAULT_USER}"
+      # RABBITMQ_DEFAULT_PASS: "${RABBITMQ_DEFAULT_PASS}"
+      RABBITMQ_DEFAULT_VHOST: "/"
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    labels:
+      NAME: "rabbit"
 
   cache:
     image: memcached

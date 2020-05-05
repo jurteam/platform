@@ -1,0 +1,20 @@
+.jur-box {
+  padding: 40px 54px;
+
+  &__hero {
+    text-align: center;
+  }
+
+  &__head {
+    border-bottom: 1px #eaebec;
+  }
+
+  &__footer {
+    border-top: 1px #eaebec;
+  }
+}
+
+.jur-box-title {
+  margin-left: -54px;
+  margin-right: -54px;
+}

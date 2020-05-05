@@ -138,7 +138,7 @@ export function* getDispute(action) {
 
           if(connectorValue === 'connex') 
           {
-            canWithdraw = yield arbitration.canWithdraw()
+            canWithdraw = yield arbitration.canWithdraw(wallet)
 
 
             log("getDispute - canWithdraw", canWithdraw);
@@ -411,44 +411,73 @@ export function* handlePayoutParty(args) {
   const { id, address,
     history } = args;
 
-  const arbitration = new Arbitration(address);
 
-  const hasWithdrawn = yield arbitration.hasWithdrawn().catch(chainErrorHandler);
-  log(`handlePayoutParty - current user has hasWithdrawn?`, hasWithdrawn);
+  const user = yield select(getUser);
+  
+  const connectorValue = connector()
 
-  if (!hasWithdrawn) {
+  let arbitration
 
-    const withdrawTx = yield arbitration.payoutParty().catch(chainErrorHandler);
-    log(`handlePayoutParty - current user has withdrawTx?`, withdrawTx);
+
+  if(connectorValue === 'connex') 
+  {
     
-    if (withdrawTx) { // only if there is a valid sign tx
-      
-      yield put({ type: LOOKUP_WALLET_BALANCE }); // update wallet balance
+    arbitration = new connexArbitrationContract(address);
+    const hasWithdrawn = yield arbitration.hasWithdrawn(user.wallet);
 
-      // call rest api to save withdraw
-      let withdrawalData = new FormData();
-      
-      const currContr = yield select(getCurrentDispute);
-      
-      withdrawalData.append("amount", currContr.sumToWithdraw);
-      withdrawalData.append("type", "withdraw");
-      
-      let response = yield call(Withdrawal.store, withdrawalData, id);
-      
-      log(`handlePayoutParty - response`, response);
-      
-      
-      
-      
-      log(`handlePayoutParty - LOOKUP_WALLET_BALANCE`);
-      yield put({
-        type: API_GET_DISPUTE,
-        id,
-        history
-      });
-      log(`handlePayoutParty - API_GET_DISPUTE`);
+
+    if (!hasWithdrawn) 
+    {
+
+      const withdrawTx = yield arbitration.payoutParty(user.wallet,id);
+      log(`handlePayoutParty - current user has withdrawTx?`, withdrawTx);
 
     }
+
+  } 
+  else if (connectorValue === 'web3') 
+  {
+
+    arbitration = new Arbitration(address);
+
+    const hasWithdrawn = yield arbitration.hasWithdrawn().catch(chainErrorHandler);
+    log(`handlePayoutParty - current user has hasWithdrawn?`, hasWithdrawn);
+
+    if (!hasWithdrawn) {
+
+      const withdrawTx = yield arbitration.payoutParty().catch(chainErrorHandler);
+      log(`handlePayoutParty - current user has withdrawTx?`, withdrawTx);
+      
+      if (withdrawTx) { // only if there is a valid sign tx
+        
+        yield put({ type: LOOKUP_WALLET_BALANCE }); // update wallet balance
+
+        // call rest api to save withdraw
+        let withdrawalData = new FormData();
+        
+        const currContr = yield select(getCurrentDispute);
+        
+        withdrawalData.append("amount", currContr.sumToWithdraw);
+        withdrawalData.append("type", "withdraw");
+        
+        let response = yield call(Withdrawal.store, withdrawalData, id);
+        
+        log(`handlePayoutParty - response`, response);
+        
+        
+        
+        
+        log(`handlePayoutParty - LOOKUP_WALLET_BALANCE`);
+        yield put({
+          type: API_GET_DISPUTE,
+          id,
+          history
+        });
+        log(`handlePayoutParty - API_GET_DISPUTE`);
+
+      }
+    }
+
   }
 
 }
@@ -457,36 +486,55 @@ export function* handlePayoutVoter(args) {
 
   const { id, address, history } = args;
 
-  const arbitration = new Arbitration(address);
+  const user = yield select(getUser);
+  
+  const connectorValue = connector()
 
-  const withdrawTx = yield arbitration.payoutVoter().catch(chainErrorHandler);
-  log(`handlePayoutVoter - current user has withdrawTx?`, withdrawTx);
+  let arbitration
 
-  const withdrawVoterPayout = yield arbitration.VoterPayout().catch(chainErrorHandler);
-  log(`handlePayoutVoter - withdrawVoterPayout`, withdrawVoterPayout);
-
-  if (withdrawTx) { // only if there is a valid sign tx
-
-    yield put({ type: LOOKUP_WALLET_BALANCE }); // update wallet balance
-
-      // call rest api to save payout
-      let withdrawalData = new FormData();
-      
-      const currContr = yield select(getCurrentDispute);
-      
-      withdrawalData.append("amount", currContr.reward);
-      withdrawalData.append("type", "payout");
-      
-      let response = yield call(Withdrawal.store, withdrawalData, id);
-      
-      log(`handlePayoutParty - response`, response);
+  if(connectorValue === 'connex') 
+  {
+    
+    arbitration = new connexArbitrationContract(address);
+    const withdrawTx = yield arbitration.payoutVoter(user.wallet, id);
 
 
-    yield put({
-      type: API_GET_DISPUTE,
-      id,
-      history
-    });
+  } 
+  else if (connectorValue === 'web3') 
+  {
+
+    arbitration = new Arbitration(address);
+
+    const withdrawTx = yield arbitration.payoutVoter().catch(chainErrorHandler);
+    log(`handlePayoutVoter - current user has withdrawTx?`, withdrawTx);
+
+    const withdrawVoterPayout = yield arbitration.VoterPayout().catch(chainErrorHandler);
+    log(`handlePayoutVoter - withdrawVoterPayout`, withdrawVoterPayout);
+
+    if (withdrawTx) { // only if there is a valid sign tx
+
+      yield put({ type: LOOKUP_WALLET_BALANCE }); // update wallet balance
+
+        // call rest api to save payout
+        let withdrawalData = new FormData();
+        
+        const currContr = yield select(getCurrentDispute);
+        
+        withdrawalData.append("amount", currContr.reward);
+        withdrawalData.append("type", "payout");
+        
+        let response = yield call(Withdrawal.store, withdrawalData, id);
+        
+        log(`handlePayoutParty - response`, response);
+
+
+      yield put({
+        type: API_GET_DISPUTE,
+        id,
+        history
+      });
+
+    }
 
   }
 
