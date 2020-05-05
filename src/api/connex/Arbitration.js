@@ -19,10 +19,24 @@ export default class connexArbitrationContract
 
   async EventCatch(param,event,blockNum,txid)
   {
+
+    log('EventCatch ------')
+
     const eventABI = this.getMethodABI(event);
     const eventMethod = this.thorAccount.event(eventABI)
+    
+    let filter 
 
-    const filter = eventMethod.filter([param])
+    log('EventCatch - param',param)
+
+    if (param) 
+    {
+      filter = eventMethod.filter([param])
+    } 
+    else 
+    {
+      filter = eventMethod.filter([])
+    }
 
     filter.order('desc')
 

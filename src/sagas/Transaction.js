@@ -246,7 +246,7 @@ function* manageEvent(txw,decoded)
   log('manageEvent - event',event)
   log('manageEvent - decoded',decoded)
 
-  let party, code, arbitration, allParties, toUpdate, voter
+  let party, code, arbitration, allParties, toUpdate, voter, newDisputeEnds
 
   const wallet = yield select(getWallet);
   
@@ -638,18 +638,39 @@ function* manageEvent(txw,decoded)
     case "VoteCast":
       
       party = decoded._party
-
+      
       log('manageEvent - party',party)
-
+      
       // ============== dispatch event VoteCast ----------------------
-
-
+      
+      
       yield put({ type: LOOKUP_WALLET_BALANCE }); // update wallet balance
 
 
       yield put({ type: FETCH_CONTRACTS });
       yield put({ type: DISPUTE_SAVING, payload: false });
       yield put({ type: DISPUTE_UPDATING, payload: false });
+      
+      // -----------------------------------------------------
+      
+      break;
+      
+      
+      case "DisputeEndsAdjusted":
+        
+        newDisputeEnds = decoded[0]
+
+      log('manageEvent - DisputeEndsAdjusted - decoded',decoded)
+      log('manageEvent - DisputeEndsAdjusted - newDisputeEnds',newDisputeEnds)
+
+      // ============== dispatch event DisputeEndsAdjusted ----------------------
+
+
+          toUpdate = new FormData();
+          toUpdate.append("code", 37);
+          toUpdate.append("chain_updated_at", newDisputeEnds.toString()); // * 1000 ?
+
+          yield call(Contracts.statusChange, toUpdate, id);
 
       // -----------------------------------------------------
 
