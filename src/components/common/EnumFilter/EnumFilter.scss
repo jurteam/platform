@@ -1,0 +1,22 @@
+.jur-enum-filter {
+  cursor: pointer;
+  display: inline-block;
+  margin-right: 10px;
+
+  &:hover {
+    background-image: linear-gradient(
+      to bottom,
+      transparent 90%,
+      #0077ffaa 91%,
+      #0077ffaa
+    );
+  }
+
+  // &::after {
+  //   content: " ";
+  // }
+
+  &__selected {
+    color: #0077ff;
+  }
+}
