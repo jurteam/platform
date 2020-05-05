@@ -2,7 +2,7 @@ import React from "react";
 import { storiesOf } from "@storybook/react";
 import { withInfo } from "@storybook/addon-info";
 
-import TakeOathBox from "./TakeOathBox";
+import OathTakersAnalytics from ".";
 
 storiesOf("OathKeeper", module)
   .addDecorator(withInfo)
@@ -12,4 +12,4 @@ storiesOf("OathKeeper", module)
       header: false
     }
   })
-  .add("TakeOathBox", () => <TakeOathBox />);
+  .add("OathTakersAnalyticsBox", () => <OathTakersAnalytics />);
