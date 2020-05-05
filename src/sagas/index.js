@@ -10,9 +10,11 @@ import oracleSagas from "./Oracles";
 import mediaSagas from "./Media";
 import arbitrationSagas from "./Arbitration";
 import transactionSagas from "./Transaction";
+import oathKeeperSagas from "./OathKeeper";
 
 // Join all sagas
 const sagas = [...drizzleSagas];
+sagas.push(oathKeeperSagas);
 sagas.push(appSagas);
 sagas.push(errorsSagas);
 sagas.push(userSagas);

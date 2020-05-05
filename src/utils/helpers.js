@@ -107,6 +107,7 @@ export const toCurrencyFormat = value => {
     Number(
       decimals.padEnd(Number(process.env.REACT_APP_TOKEN_DECIMALS) + 1, "0")
     );
+
   return num.toFixed(2);
 };
 
@@ -394,4 +395,32 @@ export const connexFromWei = (value, size) => {
   }
 
   return division(value, multiplicator);
+};
+
+export function oathState(oath) {
+  const now = new Date() / 1000;
+  const startedAt = Number(oath.startAt);
+  const releasedAt = Number(oath.releaseAt);
+
+  if (startedAt > now) return oathState.YET_TO_START;
+
+  if (startedAt <= now && releasedAt > now) return oathState.ACTIVE;
+
+  if (releasedAt <= now && !oath.isOathFulfilled) return oathState.COMPLETED;
+
+  if (releasedAt <= now && oath.isOathFulfilled) return oathState.WITHDRAWN;
+
+  return oathState.UNKNOWN;
+}
+
+oathState.ACTIVE = "active";
+oathState.COMPLETED = "completed";
+oathState.YET_TO_START = "yet to start";
+oathState.WITHDRAWN = "withdrawn";
+oathState.UNKNOWN = "unknown";
+
+export const oathKeeperCards = {
+  LAST_MONTH: "Last Month",
+  SIX_MONTHS: "6 Months",
+  YEAR: "Year"
 };

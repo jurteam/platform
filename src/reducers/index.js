@@ -8,9 +8,10 @@ import contract from "./Contract";
 import dispute from "./Dispute";
 import oracle from "./Oracle";
 import transaction from "./Transaction";
+import oathKeeper from "./OathKeeper";
 
 // Export root reducer
-export default (history) =>
+export default history =>
   combineReducers({
     router: connectRouter(history),
     app,
@@ -20,5 +21,6 @@ export default (history) =>
     dispute,
     oracle,
     transaction,
+    oathKeeper,
     ...drizzleReducers
   });

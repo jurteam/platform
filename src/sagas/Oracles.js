@@ -24,65 +24,71 @@ import {
   UPDATE_DISPUTE_LIVE,
   ORACLES_LIST_UPDATING,
   UPDATE_LIVE_ORACLES,
-  ORACLES_UPDATED,
+  ORACLES_UPDATED
 } from "../reducers/types";
-import moment from 'moment';
+import moment from "moment";
 
-import { log, connector, connexChainErrorHandler, chainErrorHandler, multiplication, toBigFixed } from "../utils/helpers"; // log helper
+import {
+  log,
+  connector,
+  connexChainErrorHandler,
+  chainErrorHandler,
+  multiplication,
+  toBigFixed
+} from "../utils/helpers"; // log helper
 
 // import contractStatuses from "../assets/i18n/en/status.json";
 
 // Api layouts
-import { 
-  Oracles, 
-  Disputes, 
-  JURToken, 
-  connexJURToken, 
-  /*, Arbitration, Contracts*/ } from "../api";
+import {
+  Oracles,
+  Disputes,
+  JURToken,
+  connexJURToken
+} from /*, Arbitration, Contracts*/ "../api";
 
-import { /* getOracleOrder, */ 
-  getOracleCurrentList, 
+import {
+  /* getOracleOrder, */
+
+  getOracleCurrentList,
   getCurrentDispute,
-  getOracleListPage, 
-  getOracleListOrder, 
+  getOracleListPage,
+  getOracleListOrder,
   getOracleList,
   getUser
- } from "./Selectors"; // selector
+} from "./Selectors"; // selector
 
 // Get
 export function* fetchOracles(action) {
+  log("take an oath test oaracle fetch mock");
+
   const { id } = action;
 
   // if dispute detail is empty, get dispute detail
 
   const currentDispute = yield select(getCurrentDispute);
   if (!currentDispute.id) {
-    log('fetchOracles - currentdispute not present', currentDispute.id);
-    
+    log("fetchOracles - currentdispute not present", currentDispute.id);
+
     const response = yield call(Disputes.get, { id });
     let { data } = response.data;
     yield put({ type: SET_DISPUTE, payload: data });
-  //   yield put({
-  //     type: API_GET_DISPUTE,
-  //     id,
-  //   });
+    //   yield put({
+    //     type: API_GET_DISPUTE,
+    //     id,
+    //   });
   }
-  
+
   // const { wallet_part } = yield select(getOracleOrder);
   const page = yield select(getOracleListPage);
-
 
   const order = yield select(getOracleListOrder);
 
   let orderby = {};
-  order.forEach((ord) => {
-    let fieldname = `orderBy[${ord.field}]`
-    orderby[fieldname] = ord.type
+  order.forEach(ord => {
+    let fieldname = `orderBy[${ord.field}]`;
+    orderby[fieldname] = ord.type;
   });
-
-
-
-
 
   try {
     const response = yield call(Oracles.list, {
@@ -115,6 +121,7 @@ export function* fetchCurrentOracles(action) {
 }
 
 export function* onOraclePageChange(action) {
+  log("take an oath test oaracle page chanve mocl");
   yield put({ type: SET_ORACLE_CURRENT_PAGE, payload: action.payload });
   yield put({ type: ORACLES_LIST_UPDATING, payload: true });
   yield put({ type: FETCH_ORACLES, id: action.id });
@@ -126,8 +133,7 @@ export function* onOracleOrderChange(action) {
   yield put({ type: FETCH_ORACLES, id: action.id });
 }
 
-export function* onVote(action) 
-{
+export function* onVote(action) {
   log("onVote - run");
   yield put({ type: DISPUTE_UPDATING, payload: true });
   let {
@@ -153,17 +159,17 @@ export function* onVote(action)
     if (reject) wallet_part = "0x0000000000000000000000000000000000000000"; // set wallet_part properly for chain action
   }
   if (oracle_wallet) voteData.append("oracle_wallet", oracle_wallet);
-  voteData.append("message", message ? message : ''); // empty string
+  voteData.append("message", message ? message : ""); // empty string
 
-  voteData.append(
-    "amount",
-    toBigFixed(amount)
-  ); // always
+  voteData.append("amount", toBigFixed(amount)); // always
 
   log("onVote - amount", amount);
-  log("onVote - Number(amount).toFixed", Number(amount).toFixed(process.env.REACT_APP_TOKEN_DECIMALS));
+  log(
+    "onVote - Number(amount).toFixed",
+    Number(amount).toFixed(process.env.REACT_APP_TOKEN_DECIMALS)
+  );
   log("onVote - amountFormat----------", toBigFixed(amount));
-  
+
   for (let i = 0; i < attachments.length; i++) {
     // iteate over any file sent over appending the files to the form data.
     let file = attachments[i];
@@ -182,67 +188,73 @@ export function* onVote(action)
   const { address: contractAddress } = currentContract;
 
   // const arbitration = new Arbitration(contractAddress);
-  
+
   // fix amount decimals
-  amount = multiplication(amount,10**18);
-  
-  log('onVote - amount fixedBug', amount)
-  
+  amount = multiplication(amount, 10 ** 18);
+
+  log("onVote - amount fixedBug", amount);
+
   // fix strings
   amount = amount.toString();
-  
-  log('onVote - amount to chain', amount)
-  
-  
-  
+
+  log("onVote - amount to chain", amount);
+
   // check connex or web3
-  const connectorValue = connector()
-  
-  if(connectorValue === 'connex') 
-  {
-    
+  const connectorValue = connector();
+
+  if (connectorValue === "connex") {
     // const user = yield select(getUser);
     const connexToken = new connexJURToken();
 
-    log('onVote - approveAndCall contractAddress', contractAddress)
-    log('onVote - approveAndCall amount', amount)
-    log('onVote - approveAndCall oracle_wallet', oracle_wallet)
-    log('onVote - approveAndCall wallet_part', wallet_part)
-    log('onVote - approveAndCall contract_id', contract_id)
+    log("onVote - approveAndCall contractAddress", contractAddress);
+    log("onVote - approveAndCall amount", amount);
+    log("onVote - approveAndCall oracle_wallet", oracle_wallet);
+    log("onVote - approveAndCall wallet_part", wallet_part);
+    log("onVote - approveAndCall contract_id", contract_id);
 
-    const addressContract = contractAddress || action.contractAddress
+    const addressContract = contractAddress || action.contractAddress;
 
     const voteTx = yield connexToken
-    .approveAndCall(addressContract, amount, 'vote', [oracle_wallet, wallet_part, amount], oracle_wallet, contract_id)
-    .catch(connexChainErrorHandler);
+      .approveAndCall(
+        addressContract,
+        amount,
+        "vote",
+        [oracle_wallet, wallet_part, amount],
+        oracle_wallet,
+        contract_id
+      )
+      .catch(connexChainErrorHandler);
 
     log("onVote – voteTx", voteTx);
 
-    if (voteTx) 
-    { // only if there is a valid sign tx
+    if (voteTx) {
+      // only if there is a valid sign tx
 
       voteData.append("hash", voteTx); // chain transaction
 
       // waiting event resolution
       voteData.append("waiting", 1);
 
-      try 
-      {
+      try {
         const response = yield call(Disputes.vote, voteData);
         log("onVote - vote created", response);
 
-        const idVote = response.data.data.id
-    
+        const idVote = response.data.data.id;
+
         const filter = {
           _voter: oracle_wallet,
-          _party: wallet_part,
-        }
-        
-        global.dispatcher({type: ADD_TRANSACTION,txid: voteTx, event: 'VoteCast', param: filter, contract_id: contract_id, vote_id:idVote})
+          _party: wallet_part
+        };
 
-      } 
-      catch (error) 
-      {
+        global.dispatcher({
+          type: ADD_TRANSACTION,
+          txid: voteTx,
+          event: "VoteCast",
+          param: filter,
+          contract_id: contract_id,
+          vote_id: idVote
+        });
+      } catch (error) {
         yield put({ type: API_CATCH, error });
         yield put({ type: DISPUTE_UPDATING, payload: false });
       }
@@ -251,17 +263,16 @@ export function* onVote(action)
       yield put({ type: DISPUTE_UPDATING, payload: false });
       yield put({ type: DISPUTE_SAVING, payload: false });
     }
-    
-
-  } 
-  else if (connectorValue === 'web3') 
-  {
-
+  } else if (connectorValue === "web3") {
     const token = new JURToken();
-    
+
     const voteTx = yield token
-      .approveAndCall(contractAddress, amount, 'vote', [oracle_wallet, wallet_part, amount])
-      .catch((err) => {
+      .approveAndCall(contractAddress, amount, "vote", [
+        oracle_wallet,
+        wallet_part,
+        amount
+      ])
+      .catch(err => {
         log("onVote – err", err);
         put({ type: DISPUTE_UPDATING, payload: false });
         put({ type: DISPUTE_SAVING, payload: false });
@@ -270,7 +281,8 @@ export function* onVote(action)
 
     log("onVote – voteTx", voteTx);
 
-    if (voteTx) { // only if there is a valid sign tx
+    if (voteTx) {
+      // only if there is a valid sign tx
 
       yield put({ type: LOOKUP_WALLET_BALANCE }); // update wallet balance
 
@@ -322,33 +334,32 @@ export function* onVote(action)
   // }
 }
 
-
 export function* getOraclesLive() {
-
   const currDisp = yield select(getCurrentDispute);
   const currVotes = yield select(getOracleCurrentList);
 
   log("getOraclesLive - currDisp", currDisp);
   let createdAt = currDisp.statusUpdatedAt;
-  
+
   if (currVotes.length > 0) {
     createdAt = currVotes[0].voted_at;
   }
-  
+
   log("getOraclesLive - createdAt", createdAt);
 
-  let dateStart = moment.unix(Math.floor(createdAt/1000)).utc().format("YYYY-MM-DD HH:mm:ss");
-  
+  let dateStart = moment
+    .unix(Math.floor(createdAt / 1000))
+    .utc()
+    .format("YYYY-MM-DD HH:mm:ss");
+
   log("getOraclesLive - dateStart", dateStart);
   // log("getOraclesLive - dateStart.toString()", dateStart.toString());
-  
 
-  const response = yield call(Oracles.live, { 
-    id: currDisp.id, 
+  const response = yield call(Oracles.live, {
+    id: currDisp.id,
     live: dateStart.toString(),
-    "orderBy[created_at]": 'desc'
-   });
-
+    "orderBy[created_at]": "desc"
+  });
 
   log("getOraclesLive - response", response);
   // log("getOraclesLive - response", response.data.status );
@@ -356,30 +367,31 @@ export function* getOraclesLive() {
   let newOracles = response.data.data.data;
 
   if (newOracles.length > 0) {
-
     if (currVotes.length > 0) {
+      log("CURRENT_ORACLES_LIVE - newOracles1", newOracles);
 
-      log('CURRENT_ORACLES_LIVE - newOracles1', newOracles);
-      
-      newOracles = newOracles.filter((nVote) => {
+      newOracles = newOracles.filter(nVote => {
         let votePresent = false;
-        currVotes.forEach((vote) => {
+        currVotes.forEach(vote => {
           if (vote.id === nVote.id) {
             // return false;
             votePresent = true;
             // log('CURRENT_ORACLES_LIVE - nVote.id', nVote.id);
           }
         });
-        log('CURRENT_ORACLES_LIVE - votePresent', votePresent);
+        log("CURRENT_ORACLES_LIVE - votePresent", votePresent);
         return !votePresent;
       });
 
-      log('CURRENT_ORACLES_LIVE - newOracles2', newOracles);
+      log("CURRENT_ORACLES_LIVE - newOracles2", newOracles);
 
       if (newOracles.length > 0) {
-        yield put({ type: CURRENT_ORACLES_LIVE, payload: {
-          oracles: newOracles
-        } });
+        yield put({
+          type: CURRENT_ORACLES_LIVE,
+          payload: {
+            oracles: newOracles
+          }
+        });
 
         const newPerc = {
           percentagePartA: response.data.percentagePartA,
@@ -387,72 +399,58 @@ export function* getOraclesLive() {
           totalTokens: response.data.totalTokens,
           totalTokensPartA: response.data.totalTokensPartA,
           totalTokensPartB: response.data.totalTokensPartB,
-          totalTokensReject: response.data.totalTokensReject,
+          totalTokensReject: response.data.totalTokensReject
         };
 
         yield put({ type: UPDATE_DISPUTE_LIVE, payload: newPerc });
-      } 
-    } 
-    
+      }
+    }
   }
-  
 }
-
 
 export function* handleUpdateLiveOracles() {
   // const currVotes = yield select(getDisputesCurrentList);
   const currOracles = yield select(getOracleList);
-  
-  const currDisp = yield select(getCurrentDispute);
-    
 
-  const response = yield call(Oracles.list, {  
-    id: currDisp.id,   
+  const currDisp = yield select(getCurrentDispute);
+
+  const response = yield call(Oracles.list, {
+    id: currDisp.id,
     include: "attachments",
     page: 1,
-    show: "all",
+    show: "all"
   });
 
-
-  
   let newOracles = response.data.data;
   let newPagination = response.data.meta.pagination;
 
-
-  let different = false
+  let different = false;
 
   // compare with old results
-  newOracles.forEach((nOrcl,i) => {
+  newOracles.forEach((nOrcl, i) => {
+    let presentOrEqual = false;
 
-  let presentOrEqual = false;
-
-  currOracles.forEach((cOrcl) => {
-
-    if (cOrcl.id === nOrcl.id 
-        && cOrcl.voted_at === nOrcl.voted_at
-        ) {
+    currOracles.forEach(cOrcl => {
+      if (cOrcl.id === nOrcl.id && cOrcl.voted_at === nOrcl.voted_at) {
         presentOrEqual = true;
       }
-    })
+    });
 
     if (!presentOrEqual) {
-      newOracles[i].new = (currOracles[i].new === 1 ? 2 : 1)
-      different = true
+      newOracles[i].new = currOracles[i].new === 1 ? 2 : 1;
+      different = true;
     }
-
-  })
-
+  });
 
   if (different) {
-    log('handleUpdateLiveOracles - different')
-    yield put({ type: ORACLES_UPDATED, payload: newOracles, pagination: newPagination });
+    log("handleUpdateLiveOracles - different");
+    yield put({
+      type: ORACLES_UPDATED,
+      payload: newOracles,
+      pagination: newPagination
+    });
   }
- 
-
-
 }
-
-
 
 // spawn tasks base certain actions
 
