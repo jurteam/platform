@@ -1,4 +1,4 @@
-import { call, put, select, takeLatest, takeEvery } from "redux-saga/effects";
+import { call, put, select, takeLatest, takeEvery, take } from "redux-saga/effects";
 import moment from 'moment';
 
 import configureStore from "../bootstrap/Store";
@@ -119,23 +119,27 @@ export function* getDispute(action) {
 
 
           const arbitration = new connexArbitrationContract(address);
-          const disputeEnds = yield arbitration.disputeEnds()
+          const disputeEnds = yield arbitration.disputeEnds();
+          let areEqual = false
 
-          let chainStatusTimestamp = () => { setTimeout(() => {
+          let chainStatusTimestamp = async () => { setTimeout(() => {
               let chainStatus = global.connex.thor.status;
               let timestamp = chainStatus.head.timestamp;
               console.log("Something is happening");
               if(disputeEnds <= timestamp) {
-                return arbitration.calcDisputeEnds();
+                areEqual = true;
               } else {
                 chainStatusTimestamp();
               }
 
-            }, 5000)
+            }, 2000)
           }
 
-          const calcDisputeEnds = yield chainStatusTimestamp();
-
+          if(!areEqual) {
+            chainStatusTimestamp();
+          }
+          const calcDisputeEnds = yield arbitration.calcDisputeEnds();
+          log("calcsssss", calcDisputeEnds);
           log("getDispute - disputeEnds", disputeEnds);
           log("getDispute - calcDisputeEnds", calcDisputeEnds);
 
