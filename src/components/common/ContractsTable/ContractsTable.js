@@ -7,7 +7,7 @@ import TableHead from "../TableHead";
 import Tag from "../Tag";
 import Countdown from "../Countdown";
 import AvatarInfo from "../AvatarInfo";
-import Dropdown from "../Dropown";
+import Dropdown from "../Dropdown";
 import DropdownItem from "../DropdownItem";
 import { EllipsisVIcon } from "../Icons/EllipsisVIcon";
 import Button from "../Button";
@@ -48,8 +48,7 @@ export const ContractsTable = props => {
 
   const emptyMessage = data.length === 0 && (
     <div className="jur-table__empty">
-      {
-        searching === false ? (
+      {searching === false ? (
         <>
           <p>{labels.anyContract}</p>
           <Button variant="gradient" onClick={newContract}>
@@ -67,15 +66,14 @@ export const ContractsTable = props => {
     onPageChange(pageNumber);
   };
 
-  const handleSortChange = (field,order) => {
-
+  const handleSortChange = (field, order) => {
     // 0 - no order - no arrow
     // 1 - asc - down arrow
     // 2 - desc - up arrow
 
-    order = order === 1 ? 'asc' : order === 2 ? 'desc' : '';
+    order = order === 1 ? "asc" : order === 2 ? "desc" : "";
 
-    onSortChange(field,order);
+    onSortChange(field, order);
   };
 
   const showContract = to => {
@@ -96,13 +94,15 @@ export const ContractsTable = props => {
           {labels.noContractName
             .replace(
               "%partA%",
-              contract.counterparties[0].renderName && contract.counterparties[0].name
+              contract.counterparties[0].renderName &&
+                contract.counterparties[0].name
                 ? contract.counterparties[0].name
                 : contract.counterparties[0].wallet
             )
             .replace(
               "%partB%",
-              contract.counterparties[1].renderName && contract.counterparties[1].name
+              contract.counterparties[1].renderName &&
+                contract.counterparties[1].name
                 ? contract.counterparties[1].name
                 : contract.counterparties[1].wallet
             )}
@@ -127,7 +127,10 @@ export const ContractsTable = props => {
             {headers.map((header, idx) => (
               <TableCell
                 key={`thead-${idx}-${header.label.toString()}`}
-                {...header.sortable && { onClick: handleSortChange, fieldName: header.fieldName }}
+                {...header.sortable && {
+                  onClick: handleSortChange,
+                  fieldName: header.fieldName
+                }}
                 {...header.className && { className: header.className }}
               >
                 {header.label}
@@ -141,7 +144,9 @@ export const ContractsTable = props => {
               <TableRow
                 key={`notification-row-${idx}-${contract.id}`}
                 onClick={() => showContract(`/contracts/detail/${contract.id}`)}
-                className={contract.new?'updated-contract-'+contract.new:''}
+                className={
+                  contract.new ? "updated-contract-" + contract.new : ""
+                }
               >
                 <TableCell>
                   <Tag statusId={contract.statusId}>{contract.statusLabel}</Tag>
@@ -171,7 +176,9 @@ export const ContractsTable = props => {
                   ))}
                 </TableCell>
                 <TableCell>
-                  <Amount value={humanToEth(getContractTotalValue(contract, true))} />
+                  <Amount
+                    value={humanToEth(getContractTotalValue(contract, true))}
+                  />
                 </TableCell>
                 <TableCell>
                   {!contract.archived &&

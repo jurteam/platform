@@ -9,7 +9,7 @@ import Tag from "../Tag";
 import Countdown from "../Countdown";
 import Amount from "../Amount";
 
-import Dropdown from "../Dropown";
+import Dropdown from "../Dropdown";
 import DropdownItem from "../DropdownItem";
 import { EllipsisVIcon } from "../Icons/EllipsisVIcon";
 
@@ -46,39 +46,37 @@ const DisputesTable = props => {
 
   const [activePage, setActivePage] = useState(initialPage);
 
-  const showDispute = (to) => {
+  const showDispute = to => {
     history.push(to);
   };
 
-  const handleRedeem = (to) => {
+  const handleRedeem = to => {
     history.push(to);
   };
 
   const emptyDisputesMessage = <p>{labels.noDisputes}</p>;
 
-  const onExpire = (id) => {
+  const onExpire = id => {
     global.store.dispatch({
       type: EXPIRED_DISPUTE,
       id
     });
   };
 
-  const handlePageChange = (pageNumber) => {
+  const handlePageChange = pageNumber => {
     setActivePage(pageNumber);
     onPageChange(pageNumber);
   };
 
-  const handleSortChange = (field,order) => {
-
+  const handleSortChange = (field, order) => {
     // 0 - no order - no arrow
     // 1 - asc - down arrow
     // 2 - desc - up arrow
 
-    order = order === 1 ? 'asc' : order === 2 ? 'desc' : '';
-    
-    onSortChange(field,order);
-  };
+    order = order === 1 ? "asc" : order === 2 ? "desc" : "";
 
+    onSortChange(field, order);
+  };
 
   const emptyMyDisputesMessage = (
     <>
@@ -89,14 +87,14 @@ const DisputesTable = props => {
     </>
   );
 
-  const renderRecords = (data) => (
+  const renderRecords = data => (
     <TableBody>
-      {data.map((dispute) => (
+      {data.map(dispute => (
         <TableRow
           key={dispute.id}
           onClick={() => showDispute(`/disputes/detail/${dispute.id}`)}
-          className={dispute.new?'updated-dispute-'+dispute.new:''}
-          >
+          className={dispute.new ? "updated-dispute-" + dispute.new : ""}
+        >
           <TableCell>
             <Tag statusId={dispute.statusId}>{dispute.statusLabel}</Tag>
           </TableCell>
@@ -120,10 +118,9 @@ const DisputesTable = props => {
             <Amount value={humanToEth(getContractTotalValue(dispute, true))} />
           </TableCell>
           <TableCell className="jur-disputes__table__earning">
-            {
-              dispute.totalWithdraw > 0 && 
+            {dispute.totalWithdraw > 0 && (
               <Amount value={dispute.totalWithdraw} />
-            }
+            )}
           </TableCell>
           {dispute.archived ? (
             <TableCell>
@@ -155,10 +152,13 @@ const DisputesTable = props => {
       <Table>
         <TableHead>
           <TableRow>
-            {headers.map((header) => (
+            {headers.map(header => (
               <TableCell
                 key={header.label.toString()}
-                {...header.sortable && { onClick: handleSortChange, fieldName: header.fieldName }}
+                {...header.sortable && {
+                  onClick: handleSortChange,
+                  fieldName: header.fieldName
+                }}
                 {...header.className && { className: header.className }}
               >
                 {header.label}
@@ -177,7 +177,7 @@ const DisputesTable = props => {
           itemsCountPerPage={disputesPerPage}
           totalItemsCount={totalDisputes}
           handlePageChange={handlePageChange}
-          getPageUrl={(i) => "https://customLink/#" + i}
+          getPageUrl={i => "https://customLink/#" + i}
         />
       )}
       {emptyMessage}
