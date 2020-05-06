@@ -10,6 +10,9 @@ export default class connexOathKeeper {
   }
 
   takeAnOath = (address, amount, lockInPeriod) => {
+    if (!isOathable(amount, lockInPeriod))
+      return Promise.reject("Invalid parameters! Can't take oath");
+
     const approveClause = new connexJURToken().approveClause(
       this.contractAddress,
       amount
@@ -113,3 +116,7 @@ export default class connexOathKeeper {
     }
   };
 }
+
+export const isOathable = (amount, lockInPeriod) => {
+  return Number(amount) > 0 && Number(lockInPeriod) > 0;
+};
