@@ -95,7 +95,7 @@ export function* getDispute(action) {
     }
 
     if (address) {
-      log("getDispute - row", 63);
+      log("getDispute - row --|-->", 63);
       yield put({ type: CHAIN_GET_CONTRACT, address });
       log("getDispute - row", 65);
       yield put({ type: CHAIN_GET_DISPUTE, address });
@@ -120,32 +120,20 @@ export function* getDispute(action) {
 
           const arbitration = new connexArbitrationContract(address);
           const disputeEnds = yield arbitration.disputeEnds();
-          let areEqual = false
-
-          let chainStatusTimestamp = async () => { setTimeout(() => {
-              let chainStatus = global.connex.thor.status;
-              let timestamp = chainStatus.head.timestamp;
-              console.log("Something is happening");
-              if(disputeEnds <= timestamp) {
-                areEqual = true;
-              } else {
-                chainStatusTimestamp();
-              }
-
-            }, 2000)
-          }
-
-          if(!areEqual) {
-            chainStatusTimestamp();
-          }
-          const calcDisputeEnds = yield arbitration.calcDisputeEnds();
-          log("calcsssss", calcDisputeEnds);
           log("getDispute - disputeEnds", disputeEnds);
+
+
+          log("getDispute - resolveDate - before");
+          yield resolveDate(disputeEnds)
+          log("getDispute - resolveDate - after");
+
+          const calcDisputeEnds = yield arbitration.calcDisputeEnds();
           log("getDispute - calcDisputeEnds", calcDisputeEnds);
 
           if (disputeEnds === calcDisputeEnds)
           {
             // dispute will be closed
+            log("getDispute - closing");
 
             let toUpdate = new FormData();
             toUpdate.append("code", 39);
@@ -157,6 +145,7 @@ export function* getDispute(action) {
           else if (disputeEnds !== calcDisputeEnds)
           {
             // dispute will be extended
+            log("getDispute - extending");
 
             let toUpdate = new FormData();
             toUpdate.append("code", 36);
@@ -366,6 +355,32 @@ export function* getDispute(action) {
     if (typeof onError === "function") {onError(error);} // exec onError callback if present
   }
 }
+
+async function resolveDate(disputeEnds) 
+{
+  await new Promise(resolve => {
+    
+    let interval = setInterval(() => {
+      
+      let chainStatus = global.connex.thor.status;
+        let timestamp = chainStatus.head.timestamp;
+        log("getDispute - resolveDate - timestamp ::: ",timestamp);
+        
+        if(disputeEnds <= timestamp) {
+          log("getDispute - resolveDate - ok ");
+
+          clearInterval(interval)
+          resolve(true)
+          
+        }
+
+        log("getDispute - resolveDate - recall ");
+
+    }, 2000);
+  });
+
+}
+
 
 // Delete
 export function* deleteDispute(action) {
