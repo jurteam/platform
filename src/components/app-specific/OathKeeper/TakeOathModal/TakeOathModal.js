@@ -10,7 +10,6 @@ import TakeOathAmountInput from "../TakeOathAmountInput";
 import TakeOathLockupSlider from "../TakeOathLockupSlider";
 
 const TakeOathModal = ({ isOpen, onRequestClose }) => {
-  console.log("TakeOathModal isOpen", isOpen);
   return (
     <Modal isOpen={isOpen} onRequestClose={onRequestClose}>
       <Modal.Header title="New Oath" />

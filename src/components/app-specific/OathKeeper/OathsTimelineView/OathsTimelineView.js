@@ -16,7 +16,7 @@ const OathsTimelineView = ({ oaths }) => (
           </Table.Cell>
           <Table.Cell align="left">for {oath.lockInPeriod} months</Table.Cell>
           <Table.Cell align="left">
-            <TimeAgo value={oath.startAt} />
+            <TimeAgo date={Number(oath.startAt) * 1000} />
           </Table.Cell>
           <Table.Cell align="right">
             <StatusAction oath={oath} />

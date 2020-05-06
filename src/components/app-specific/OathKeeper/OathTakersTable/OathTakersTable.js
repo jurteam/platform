@@ -1,16 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./OathTakersTable.scss";
 
 import Table from "JurCommon/Table";
+import Amount from "JurCommon/Amount";
 import { SpinnerOnly } from "JurCommon/Spinner";
+import { OATH_KEEPER_FETCH_OATH_TAKERS } from "../../../../reducers/types";
 
 const OathTakerTableHeaderRow = ({ onSort }) => (
-  <>
+  <Table.Row>
     <Table.Cell>Rank</Table.Cell>
     <Table.Cell>Address</Table.Cell>
     <Table.Cell>Amount</Table.Cell>
     <Table.Cell>Oath Count</Table.Cell>
-  </>
+  </Table.Row>
 );
 
 const OathTakerTableRow = ({ rank, address, amount, oathCount }) => (
@@ -24,23 +26,45 @@ const OathTakerTableRow = ({ rank, address, amount, oathCount }) => (
   </Table.Row>
 );
 
-const OathTakersTable = ({ rows, isLoading, onSortChange }) => (
-  <Table>
-    <TableHead>
-      <OathTakerTableHeaderRow onSort={onSortChange} />
-    </TableHead>
-    <TableBody>
-      {isLoading ? (
-        <SpinnerOnly loading={isLoading} />
-      ) : (
-        rows.map(r => <OathTakerTableRow key={r.address} {...r} />)
-      )}
-    </TableBody>
-  </Table>
-);
+const OathTakersTable = ({
+  rows,
+  isLoading,
+  fetchOathTakers,
+  onSortChange
+}) => {
+  useEffect(() => fetchOathTakers(), []);
+
+  return (
+    <Table>
+      <Table.Head>
+        <OathTakerTableHeaderRow onSort={onSortChange} />
+      </Table.Head>
+      <Table.Body>
+        {isLoading ? (
+          <SpinnerOnly loading={isLoading} />
+        ) : (
+          rows.map(r => <OathTakerTableRow key={r.id} {...r.attributes} />)
+        )}
+      </Table.Body>
+    </Table>
+  );
+};
 
 OathTakersTable.defaultProps = {
   rows: []
 };
 
-export default OathTakersTable;
+const fetchOathTakers = () => ({ type: OATH_KEEPER_FETCH_OATH_TAKERS });
+
+const mapStateToProps = state => ({
+  rows: state.oathKeeper.oathTakers,
+  isLoading: state.oathKeeper.isFetchingOathTakers
+});
+
+const mapDispatchToProps = { fetchOathTakers };
+
+export default global.connection(
+  OathTakersTable,
+  mapStateToProps,
+  mapDispatchToProps
+);

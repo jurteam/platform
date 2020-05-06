@@ -6,13 +6,21 @@ import Delta from "JurCommon/Delta";
 import Row from "JurCommon/Row";
 import Text from "JurCommon/Text";
 import OathCardEnumFilter from "../OathCardEnumFilter";
-import { OATH_KEEPER_FILTER_ACTIVE_OATH_KEEPERS } from "../../../../reducers/types";
+import { OATH_KEEPER_FETCH_ANALYTICS } from "../../../../reducers/types";
+import { oathKeeperAnalytics } from "../../../../utils/helpers";
+import {
+  getAnalytics,
+  getGraphAnalytics,
+  getAnalyticsMeta
+} from "../../../../sagas/Selectors";
+
+const CARD_NAME = oathKeeperAnalytics.cards.ACTIVE_OATH_KEEPER;
 
 const ActiveOathKeepersCard = ({
   value,
   delta,
   graph,
-  selectedDuration,
+  duration,
   onEnumFilterChange
 }) => (
   <ChartCard>
@@ -27,24 +35,22 @@ const ActiveOathKeepersCard = ({
       <ChartCard.LineChart data={graph} />
     </Row>
     <ChartCard.Footer>
-      <OathCardEnumFilter
-        selected={selectedDuration}
-        onChange={onEnumFilterChange}
-      />
+      <OathCardEnumFilter selected={duration} onChange={onEnumFilterChange} />
     </ChartCard.Footer>
   </ChartCard>
 );
 
 const mapStateToProps = state => ({
-  value: state.oathKeeper.activeOathKeepersCard.value,
-  delta: state.oathKeeper.activeOathKeepersCard.delta,
-  graph: state.oathKeeper.activeOathKeepersCard.graph,
-  selectedDuration: state.oathKeeper.activeOathKeepersCard.selectedDuration
+  value: getAnalytics(state, CARD_NAME).value,
+  delta: getAnalytics(state, CARD_NAME).delta,
+  graph: getGraphAnalytics(state, CARD_NAME),
+  duration: getAnalyticsMeta(state, CARD_NAME).duration
 });
 
-const onEnumFilterChange = value => ({
-  type: OATH_KEEPER_FILTER_ACTIVE_OATH_KEEPERS,
-  payload: value
+const onEnumFilterChange = duration => ({
+  type: OATH_KEEPER_FETCH_ANALYTICS,
+  payload: { duration },
+  card: CARD_NAME
 });
 
 const mapDispatchToProps = { onEnumFilterChange };

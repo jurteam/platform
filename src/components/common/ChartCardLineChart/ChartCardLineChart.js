@@ -7,7 +7,7 @@ const ChartCardLineChart = ({ data }) => (
   <div className="jur-chart-card-line-chart">
     <ResponsiveLine
       data={data}
-      margin={{ top: 10, right: 0, bottom: 20, left: 0 }}
+      margin={{ top: 10, right: 0, bottom: 10, left: 0 }}
       xScale={{ type: "point" }}
       yScale={{
         type: "linear",

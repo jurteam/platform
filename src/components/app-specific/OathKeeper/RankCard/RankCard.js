@@ -5,10 +5,10 @@ import "./RankCard.scss";
 import HeaderCard from "JurCommon/HeaderCard";
 import RankBadge from "JurCommon/RankBadge";
 
-const RankCard = () => (
+const RankCard = ({ rank }) => (
   <HeaderCard title="Oath Keeper Rank">
     <HeaderCard.Hero>
-      <RankBadge rank={5} />
+      <RankBadge rank={rank} />
     </HeaderCard.Hero>
     <HeaderCard.Body>
       <NavLink to="/oath-keeper/oath-takers">Check Oathkeeping Ranking</NavLink>

@@ -6,13 +6,21 @@ import Delta from "JurCommon/Delta";
 import Row from "JurCommon/Row";
 import Amount from "JurCommon/Amount";
 import OathCardEnumFilter from "../OathCardEnumFilter";
-import { OATH_KEEPER_FILTER_AVERAGE_AMOUNT } from "../../../../reducers/types";
+import { OATH_KEEPER_FETCH_ANALYTICS } from "../../../../reducers/types";
+import { oathKeeperAnalytics } from "../../../../utils/helpers";
+import {
+  getAnalytics,
+  getGraphAnalytics,
+  getAnalyticsMeta
+} from "../../../../sagas/Selectors";
+
+const CARD_NAME = oathKeeperAnalytics.cards.AVERAGE_AMOUNT;
 
 const AverageAmountCard = ({
   value,
   delta,
   graph,
-  selectedDuration,
+  duration,
   onEnumFilterChange
 }) => (
   <ChartCard>
@@ -25,24 +33,22 @@ const AverageAmountCard = ({
       <ChartCard.LineChart data={graph} />
     </Row>
     <ChartCard.Footer>
-      <OathCardEnumFilter
-        selected={selectedDuration}
-        onChange={onEnumFilterChange}
-      />
+      <OathCardEnumFilter selected={duration} onChange={onEnumFilterChange} />
     </ChartCard.Footer>
   </ChartCard>
 );
 
 const mapStateToProps = state => ({
-  value: state.oathKeeper.averageAmountCard.value,
-  delta: state.oathKeeper.averageAmountCard.delta,
-  graph: state.oathKeeper.averageAmountCard.graph,
-  selectedDuration: state.oathKeeper.averageAmountCard.selectedDuration
+  value: getAnalytics(state, CARD_NAME).value,
+  delta: getAnalytics(state, CARD_NAME).delta,
+  graph: getGraphAnalytics(state, CARD_NAME),
+  duration: getAnalyticsMeta(state, CARD_NAME).duration
 });
 
-const onEnumFilterChange = value => ({
-  type: OATH_KEEPER_FILTER_AVERAGE_AMOUNT,
-  payload: value
+const onEnumFilterChange = duration => ({
+  type: OATH_KEEPER_FETCH_ANALYTICS,
+  payload: { duration },
+  card: CARD_NAME
 });
 
 const mapDispatchToProps = { onEnumFilterChange };

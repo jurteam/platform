@@ -61,3 +61,31 @@ export const getNewOath = state => ({
 });
 
 export const getMyOaths = state => state.oathKeeper.myOaths;
+
+export const getAnalytics = (state, card) =>
+  (state.oathKeeper.analytics[card] || {}).attributes || {};
+
+export const getAnalyticsMeta = (state, card) =>
+  state.oathKeeper.analyticsMeta[card];
+
+export const getGraphAnalytics = (state, card, chart = "line") => {
+  const analytics = getAnalytics(state, card);
+  const graphData = analytics.graph;
+  if (!graphData) return undefined;
+
+  if (chart === "pie")
+    return graphData.map(point => ({
+      id: point[0],
+      label: point[0],
+      value: point[1]
+    }));
+
+  if (chart === "line")
+    return [
+      {
+        id: card,
+        color: analytics.delta < 0 ? "red" : "green",
+        data: graphData.map(point => ({ x: point[0], y: point[1] }))
+      }
+    ];
+};

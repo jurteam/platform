@@ -7,7 +7,10 @@ import TakeOathBox from "../TakeOathBox";
 import YourOathsBox from "../YourOathsBox";
 import MyOathsFooterBox from "../MyOathsFooterBox";
 import { getWallet, getMyOaths } from "../../../../sagas/Selectors";
-import { OATH_KEEPER_FETCH_MY_OATHS } from "../../../../reducers/types";
+import {
+  OATH_KEEPER_FETCH_MY_OATHS,
+  OATH_KEEPER_FETCH_RANK
+} from "../../../../reducers/types";
 
 const MyOathsSection = ({
   address,
@@ -15,10 +18,12 @@ const MyOathsSection = ({
   balance,
   oaths,
   isFetchingMyOaths,
-  fetchMyOaths
+  fetchMyOaths,
+  fetchMyRank
 }) => {
   useEffect(() => {
     fetchMyOaths();
+    fetchMyRank();
   }, []);
 
   return (
@@ -38,16 +43,18 @@ const MyOathsSection = ({
 
 const mapStateToProps = state => ({
   address: getWallet(state).address,
-  rank: 6, // TODO: get rank from backend
-  balance: Number(getWallet(state).balance), // TODO: get oath keeper balance
+  rank: state.oathKeeper.myRank,
+  balance: state.oathKeeper.myBalance,
   isFetchingMyOaths: state.oathKeeper.isFetchingMyOaths,
   oaths: getMyOaths(state)
 });
 
 const fetchMyOaths = () => ({ type: OATH_KEEPER_FETCH_MY_OATHS });
+const fetchMyRank = () => ({ type: OATH_KEEPER_FETCH_RANK });
 
 const mapDispatchToProps = {
-  fetchMyOaths
+  fetchMyOaths,
+  fetchMyRank
 };
 
 export default global.connection(

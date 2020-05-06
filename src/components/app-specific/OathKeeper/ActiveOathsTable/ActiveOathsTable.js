@@ -20,7 +20,7 @@ const ActiveOathsTable = ({ oaths, isShown }) =>
         </Table.Head>
         <Table.Body>
           {oaths
-            .filter(oath => oathState(oath) === oathState.ACTIVE)
+            .filter(oath => oathState(oath).isActive())
             .map(oath => (
               <Table.Row key={oath.oathIndex}>
                 <Table.Cell align="left" className="jur-timeline-cell">

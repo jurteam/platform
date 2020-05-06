@@ -5,14 +5,18 @@ import ChartCard from "JurCommon/ChartCard";
 import Row from "JurCommon/Row";
 import Amount from "JurCommon/Amount";
 import OathCardEnumFilter from "../OathCardEnumFilter";
-import { OATH_KEEPER_FILTER_AMOUNT_STAKED } from "../../../../reducers/types";
+import { oathKeeperAnalytics } from "../../../../utils/helpers";
+import { OATH_KEEPER_FETCH_ANALYTICS } from "../../../../reducers/types";
 
-const AmountStakedCard = ({
-  value,
-  graph,
-  selectedDuration,
-  onEnumFilterChange
-}) => (
+import {
+  getAnalytics,
+  getGraphAnalytics,
+  getAnalyticsMeta
+} from "../../../../sagas/Selectors";
+
+const CARD_NAME = oathKeeperAnalytics.cards.AMOUNT_STAKED;
+
+const AmountStakedCard = ({ value, graph, duration, onEnumFilterChange }) => (
   <ChartCard>
     <ChartCard.Title>Amount Staked By Oath Keeper</ChartCard.Title>
     <Row>
@@ -22,23 +26,21 @@ const AmountStakedCard = ({
       <ChartCard.PieChart data={graph} />
     </Row>
     <ChartCard.Footer>
-      <OathCardEnumFilter
-        selected={selectedDuration}
-        onChange={onEnumFilterChange}
-      />
+      <OathCardEnumFilter selected={duration} onChange={onEnumFilterChange} />
     </ChartCard.Footer>
   </ChartCard>
 );
 
 const mapStateToProps = state => ({
-  value: state.oathKeeper.amountStakedCard.value,
-  graph: state.oathKeeper.amountStakedCard.graph,
-  selectedDuration: state.oathKeeper.amountStakedCard.selectedDuration
+  value: getAnalytics(state, CARD_NAME).value,
+  graph: getGraphAnalytics(state, CARD_NAME, "pie"),
+  duration: getAnalyticsMeta(state, CARD_NAME).duration
 });
 
-const onEnumFilterChange = value => ({
-  type: OATH_KEEPER_FILTER_AMOUNT_STAKED,
-  payload: value
+const onEnumFilterChange = duration => ({
+  type: OATH_KEEPER_FETCH_ANALYTICS,
+  card: CARD_NAME,
+  payload: { duration }
 });
 
 const mapDispatchToProps = { onEnumFilterChange };

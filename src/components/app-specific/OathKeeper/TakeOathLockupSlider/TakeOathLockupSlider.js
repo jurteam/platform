@@ -21,15 +21,10 @@ const TakeOathLockupSlider = ({ onChange, value }) => (
   </Col>
 );
 
+const onChange = e => ({ type: OATH_KEEPER_UPDATE_LOCK_IN_PERIOD, payload: e });
+
 const mapStateToProps = state => ({ value: state.oathKeeper.lockInPeriod });
-const mapDispatchToProps = {
-  onChange: e => {
-    return {
-      type: OATH_KEEPER_UPDATE_LOCK_IN_PERIOD,
-      payload: e
-    };
-  }
-};
+const mapDispatchToProps = { onChange };
 
 export default global.connection(
   TakeOathLockupSlider,

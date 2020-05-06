@@ -2,7 +2,7 @@ import React from "react";
 import "./OathTakerFilters.scss";
 
 import Row from "JurCommon/Row";
-import Expand from "JurCommon/Empty";
+import Expand from "JurCommon/Expand";
 import OathTakerStatusFilter from "../OathTakerStatusFilter";
 import OathTakerAmountFilter from "../OathTakerAmountFilter";
 import OathTakerDateFilter from "../OathTakerDateFilter";
