@@ -1,5 +1,5 @@
 const web3 = require('./web3')
-const contractConfig = require('./jurContracts.json')
+const contractConfig = require('./jurContractConfig.json')
 const events = require('./events.js');
 
 const watchContract = async (address, abi) => {
