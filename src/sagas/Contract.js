@@ -645,16 +645,18 @@ export function* handleUpdateLiveContracts() {
 
   log('handleUpdateLiveContracts - newContracts',newContracts)
   log('handleUpdateLiveContracts - currContracts',currContracts)
+  
 
-
-    let different = false
-
-    // compare with old results
-    newContracts.forEach((nContr,i) => {
-
-      let presentOrEqual = false;
-
-      currContracts.forEach((cContr) => {
+  let different = false
+  
+  // compare with old results
+  newContracts.forEach((nContr,i) => {
+    
+    
+    
+    let presentOrEqual = false;
+    
+    currContracts.forEach((cContr) => {
         if (cContr.id === nContr.id
           && cContr.statusUpdatedAt === nContr.statusUpdatedAt
           && cContr.statusId === nContr.statusId
@@ -666,11 +668,15 @@ export function* handleUpdateLiveContracts() {
 
       if (!presentOrEqual)
       {
-        // if (newContracts[i] && currContracts[i])
-        // {
+        
+        log('handleUpdateLiveContracts - newContracts[i]',newContracts[i])
+        log('handleUpdateLiveContracts - currContracts[i]',currContracts[i])
+
+        if (newContracts[i] && currContracts[i])
+        {
           newContracts[i].new = (currContracts[i].new === 1 ? 2 : 1)
           different = true
-        // }
+        }
       }
 
     })
