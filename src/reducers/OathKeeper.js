@@ -16,7 +16,11 @@ import {
   OATH_KEEPER_UPDATE_ANALYTICS
 } from "./types";
 
-import { oathKeeperAnalytics, oathState } from "../utils/helpers";
+import {
+  oathKeeperAnalytics,
+  oathState,
+  oathKeeperFilters
+} from "../utils/helpers";
 
 const INITIAL_STATE = {
   amount: 0,
@@ -28,31 +32,16 @@ const INITIAL_STATE = {
   isFetchingOathTakers: false,
   oathTakers: [],
   oathTakersMeta: {},
+  oathTakersFilters: {
+    status: oathKeeperFilters.statuses.SHOW_ALL,
+    startsAt: new Date()
+  },
   myRank: "na",
   myBalance: "na",
   myOaths: [],
   isFetchingAnalytics: false,
   analytics: {},
-  analyticsMeta: initializeAnalyticsMeta(),
-  averageAmountCard: {
-    selectedDuration: oathKeeperAnalytics.durations.LAST_MONTH,
-    value: 12345,
-    delta: 5.1
-  },
-  amountStakedCard: {
-    selectedDuration: oathKeeperAnalytics.durations.LAST_MONTH,
-    value: 10000
-  },
-  activeAmountCard: {
-    selectedDuration: oathKeeperAnalytics.durations.LAST_MONTH,
-    value: 12345,
-    delta: 5.1
-  },
-  activeOathKeepersCard: {
-    selectedDuration: oathKeeperAnalytics.durations.LAST_MONTH,
-    value: 143,
-    delta: -3
-  }
+  analyticsMeta: initializeAnalyticsMeta()
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -85,7 +74,11 @@ export default (state = INITIAL_STATE, action) => {
     case OATH_KEEPER_UPDATE_RANK:
       return { ...state, myRank: action.payload };
     case OATH_KEEPER_FETCH_OATH_TAKERS:
-      return { ...state, isFetchingOathTakers: true };
+      return {
+        ...state,
+        isFetchingOathTakers: true,
+        oathTakersFilters: computeFilters(state.oathTakersFilters, action)
+      };
     case OATH_KEEPER_UPDATE_OATH_TAKERS:
       return {
         ...state,
@@ -116,6 +109,16 @@ function balanceFromOaths(oaths) {
       oathState(oath).isActive() ? balance + Number(oath.amount) : balance,
     0
   );
+}
+
+function computeFilters(state, action) {
+  if (action.payload && action.payload.filter) {
+    return {
+      ...state,
+      ...action.payload.filter
+    };
+  }
+  return state;
 }
 
 function computeAnalyticsMeta(state, action) {

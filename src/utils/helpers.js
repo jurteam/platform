@@ -427,6 +427,14 @@ oathState.response = state => ({
   toString: () => state
 });
 
+export const oathKeeperFilters = {
+  statuses: {
+    SHOW_ALL: "Show All",
+    ON_GOING: "On Going",
+    COMPLETED: "Completed"
+  }
+};
+
 export const oathKeeperAnalytics = {
   durations: {
     LAST_MONTH: "Last Month",

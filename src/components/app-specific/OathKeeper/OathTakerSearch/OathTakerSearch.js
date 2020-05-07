@@ -3,5 +3,5 @@ import "./OathTakerSearch.scss";
 
 import Form from "JurCommon/Form";
 
-const OathTakerSearch = () => <Form.Search />;
+const OathTakerSearch = ({ onChange }) => <Form.Search onChange={onChange} />;
 export default OathTakerSearch;
