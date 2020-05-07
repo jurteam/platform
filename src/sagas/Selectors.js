@@ -75,8 +75,8 @@ export const getGraphAnalytics = (state, card, chart = "line") => {
 
   if (chart === "pie")
     return graphData.map(point => ({
-      id: point[0],
-      label: point[0],
+      id: String(point[0]),
+      label: String(point[0]),
       value: point[1]
     }));
 
