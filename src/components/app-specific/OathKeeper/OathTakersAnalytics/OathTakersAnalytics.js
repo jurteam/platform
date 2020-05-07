@@ -9,7 +9,9 @@ import ActiveOathKeepersCard from "../ActiveOathKeepersCard";
 import { OATH_KEEPER_FETCH_ANALYTICS } from "../../../../reducers/types";
 
 const OathTakersAnalytics = ({ fetchAnalytics }) => {
-  useEffect(() => fetchAnalytics(), []);
+  useEffect(() => {
+    fetchAnalytics();
+  }, []);
 
   return (
     <Row>
