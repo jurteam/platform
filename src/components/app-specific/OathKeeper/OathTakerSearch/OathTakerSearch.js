@@ -1,4 +1,7 @@
 import React from "react";
 import "./OathTakerSearch.scss";
-const OathTakerSearch = () => <div>oath taker search</div>;
+
+import Form from "JurCommon/Form";
+
+const OathTakerSearch = () => <Form.Search />;
 export default OathTakerSearch;

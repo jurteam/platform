@@ -17,7 +17,7 @@ const OathTakerFilters = ({
   end,
   onSearchChange
 }) => (
-  <Row>
+  <Row className="jur-safe-margin">
     <OathTakerStatusFilter onChange={onStatusChange} selected={status} />
     <Expand />
     <OathTakerAmountFilter onChange={onAmountChange} />

@@ -1,14 +1,15 @@
 import React from "react";
 import "./OathTakerStatusFilter.scss";
 
-import Dropdown from "JurCommon/Dropdown";
+import Form from "JurCommon/Form";
+
+const OPTIONS = ["Select All", "On Going", "Completed"].map(x => ({
+  value: x,
+  label: x
+}));
 
 const OathTakerStatusFilter = () => (
-  <Dropdown label="Select All">
-    <Dropdown.Item>Select All</Dropdown.Item>
-    <Dropdown.Item>On Going</Dropdown.Item>
-    <Dropdown.Item>Completed</Dropdown.Item>
-  </Dropdown>
+  <Form.Select name="status" id="status" options={OPTIONS} />
 );
 
 export default OathTakerStatusFilter;
