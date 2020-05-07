@@ -29,24 +29,7 @@ const ChartCardPieChart = ({ data }) => (
 );
 
 ChartCardPieChart.defaultProps = {
-  data: [
-    {
-      id: "0x7tytytytydisjsn",
-      value: 331
-    },
-    {
-      id: "0x262673732782",
-      value: 231
-    },
-    {
-      id: "0x87428hdvbhvseui",
-      value: 631
-    },
-    {
-      id: "0x5baerrvvus498",
-      value: 731
-    }
-  ]
+  data: []
 };
 
 export default ChartCardPieChart;
