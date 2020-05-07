@@ -26,13 +26,10 @@ const OathTakerTableRow = ({ rank, address, amount, oathCount }) => (
   </Table.Row>
 );
 
-const OathTakersTable = ({
-  rows,
-  isLoading,
-  fetchOathTakers,
-  onSortChange
-}) => {
-  useEffect(() => fetchOathTakers(), []);
+const OathTakersTable = ({ rows, fetchOathTakers, onSortChange }) => {
+  useEffect(() => {
+    fetchOathTakers();
+  }, []);
 
   return (
     <Table>
@@ -40,11 +37,9 @@ const OathTakersTable = ({
         <OathTakerTableHeaderRow onSort={onSortChange} />
       </Table.Head>
       <Table.Body>
-        {isLoading ? (
-          <SpinnerOnly loading={isLoading} />
-        ) : (
-          rows.map(r => <OathTakerTableRow key={r.id} {...r.attributes} />)
-        )}
+        {rows.map(r => (
+          <OathTakerTableRow key={r.id} {...r.attributes} />
+        ))}
       </Table.Body>
     </Table>
   );
