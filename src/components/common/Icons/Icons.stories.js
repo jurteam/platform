@@ -13,6 +13,7 @@ import { DisputesIcon } from "./DisputesIcon";
 import { EllipsisVIcon } from "./EllipsisVIcon";
 import { EyeIcon } from "./EyeIcon";
 import { InfoIcon } from "./InfoIcon";
+import { JurIcon } from "./JurIcon";
 
 storiesOf("Icons", module)
   .addDecorator(withInfo)
@@ -43,6 +44,8 @@ storiesOf("Icons", module)
       <EyeIcon />
       <br />
       <InfoIcon />
+      <br />
+      <JurIcon />
       <br />
     </>
   ));
