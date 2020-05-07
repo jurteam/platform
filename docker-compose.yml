@@ -161,5 +161,12 @@ services:
     labels:
       NAME: "rabbit"
 
+  polling:
+    image: node:14
+    volumes:
+      - ./polling-service:/var/www/html
+    working_dir: /var/www/html
+    command: node index.js
+
   cache:
     image: memcached
