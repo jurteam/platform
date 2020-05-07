@@ -1,6 +1,8 @@
 import React from "react";
 import "./Row.scss";
 
-const Row = ({ children }) => <div className="jur-row">{children}</div>;
+const Row = ({ children, className }) => (
+  <div className={`jur-row ${className}`}>{children}</div>
+);
 
 export default Row;
