@@ -1,0 +1,48 @@
+@import "../../../assets/scss/variables";
+
+.jur-amount-filter {
+  position: relative;
+  width: 140px;
+  font-size: 13px;
+  color: $prussian-blue;
+  font-family: $font-poppins;
+  cursor: pointer;
+
+  input {
+    width: 100%;
+    height: 36px;
+    border: 1px solid $input-border-color;
+    color: transparent;
+    text-shadow: 0 0 0 $label-color;
+    font-size: 13px;
+    border-radius: 2px;
+    background-color: $white;
+    outline: none;
+    padding: 2px 8px;
+    cursor: pointer;
+  }
+
+  &__placeholder {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding: 0 2px;
+    font-size: 13px;
+    color: $gull-gray;
+    pointer-events: none;
+  }
+
+  .caret-icon {
+    width: 10px;
+    margin-left: auto;
+  }
+
+  .amount-icon {
+    width: 16px;
+    margin-right: 10px;
+  }
+}
