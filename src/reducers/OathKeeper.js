@@ -13,7 +13,9 @@ import {
   OATH_KEEPER_FETCH_OATH_TAKERS,
   OATH_KEEPER_UPDATE_OATH_TAKERS,
   OATH_KEEPER_FETCH_ANALYTICS,
-  OATH_KEEPER_UPDATE_ANALYTICS
+  OATH_KEEPER_UPDATE_ANALYTICS,
+  OATH_KEEPER_WITHDREW_OATH,
+  OATH_KEEPER_WITHDRAW_OATH
 } from "./types";
 
 import {
@@ -38,6 +40,7 @@ const INITIAL_STATE = {
   myRank: "na",
   myBalance: "na",
   myOaths: [],
+  withdrawingOaths: new Set(),
   isFetchingAnalytics: false,
   analytics: {},
   analyticsMeta: initializeAnalyticsMeta()
@@ -59,6 +62,15 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, isTakingOath: true };
     case OATH_KEEPER_TOOK_OATH:
       return { ...state, isTakingOath: false };
+    case OATH_KEEPER_WITHDRAW_OATH:
+      return {
+        ...state,
+        withdrawingOaths: new Set(...state.withdrawingOaths.add(action.payload))
+      };
+    case OATH_KEEPER_WITHDREW_OATH:
+      const withdrawingOaths = new Set(...state.withdrawingOaths);
+      withdrawingOaths.delete(action.payload);
+      return { ...state, withdrawingOaths };
     case OATH_KEEPER_FETCH_MY_OATHS:
       return { ...state, isFetchingMyOaths: true };
     case OATH_KEEPER_UPDATE_MY_OATHS:

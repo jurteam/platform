@@ -4,6 +4,7 @@ import connexJURToken from "./JURToken";
 export default class connexOathKeeper {
   constructor() {
     // this.contractAddress = "0x730c7A23A6258Ed2BaD2EEF4b227f3044Dc160EB";
+    // this.contractAddress = "0x862676750f53e92e2502e54ef5c5bfefccfcef51";
     this.contractAddress =
       OathKeeperContract.networks[this.currentNetworkId()].address;
     this.contractAccount = global.connex.thor.account(this.contractAddress);
@@ -46,6 +47,27 @@ export default class connexOathKeeper {
       {
         comment: "lock up the amount",
         ...takeAnOathClause
+      }
+    ]);
+  };
+
+  releaseOath = (address, oathIndex) => {
+    const releaseOathMethod = this.contractAccount.method(
+      this.abiOf("releaseOath")
+    );
+    const releaseOathClause = releaseOathMethod.asClause(oathIndex);
+
+    const signingService = global.connex.vendor.sign("tx");
+    signingService
+      .signer(address)
+      .gas(global.connex.thor.genesis.gasLimit)
+      .link("https://connex.vecha.in/{txid}")
+      .comment("Release the unlocked oath");
+
+    return signingService.request([
+      {
+        comment: "release the oath",
+        ...releaseOathClause
       }
     ]);
   };

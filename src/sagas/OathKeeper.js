@@ -11,7 +11,9 @@ import {
   OATH_KEEPER_FETCH_OATH_TAKERS,
   OATH_KEEPER_UPDATE_OATH_TAKERS,
   OATH_KEEPER_FETCH_ANALYTICS,
-  OATH_KEEPER_UPDATE_ANALYTICS
+  OATH_KEEPER_UPDATE_ANALYTICS,
+  OATH_KEEPER_WITHDRAW_OATH,
+  OATH_KEEPER_WITHDREW_OATH
 } from "../reducers/types";
 
 function* fetchMyRank() {
@@ -31,6 +33,15 @@ function* takeAnOath() {
   yield new connexOathKeeper().takeAnOath(address, amount, lockInPeriod);
   yield put({ type: OATH_KEEPER_TOOK_OATH }); // TODO: change to took_oath
   // TODO handle error
+}
+
+function* withdrawAnOath(action) {
+  console.log("about to withdraw", action);
+  const oathIndex = action.payload;
+  const { address } = yield select(getWallet);
+
+  yield new connexOathKeeper().releaseOath(address, oathIndex);
+  yield put({ type: OATH_KEEPER_WITHDREW_OATH, payload: oathIndex });
 }
 
 function* fetchMyOaths() {
@@ -83,4 +94,5 @@ export default function* oathKeeperSagas() {
   yield takeLatest(OATH_KEEPER_FETCH_MY_OATHS, fetchMyOaths);
   yield takeLatest(OATH_KEEPER_FETCH_OATH_TAKERS, fetchOathTakers);
   yield takeLatest(OATH_KEEPER_FETCH_ANALYTICS, fetchAnalytics);
+  yield takeEvery(OATH_KEEPER_WITHDRAW_OATH, withdrawAnOath);
 }
