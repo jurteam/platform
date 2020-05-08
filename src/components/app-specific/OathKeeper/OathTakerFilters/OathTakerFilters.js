@@ -13,19 +13,13 @@ const OathTakerFilters = ({
   onStatusChange,
   onAmountChange,
   onDateChange,
-  startsAt,
-  endsAt,
   onSearchChange
 }) => (
   <Row className="jur-safe-margin">
     <OathTakerStatusFilter onChange={onStatusChange} />
     <Expand />
     <OathTakerAmountFilter onChange={onAmountChange} />
-    <OathTakerDateFilter
-      onChange={onDateChange}
-      start={startsAt}
-      end={endsAt}
-    />
+    <OathTakerDateFilter onChange={onDateChange} />
     <OathTakerSearch onChange={onSearchChange} />
   </Row>
 );

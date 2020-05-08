@@ -9,18 +9,23 @@ const OathTakerDateFilter = ({ onChange, startsAt, endsAt }) => (
     <CalendarFilter
       selectedDate={startsAt}
       name="From"
-      onChange={startsAt =>
-        onChange(getFormattedDate(startsAt), getFormattedDate(endsAt))
-      }
+      maxDate={endsAt}
+      onChange={startsAt => onChange(startsAt, endsAt)}
     />
     <Separator />
     <CalendarFilter
       selectedDate={endsAt}
       name="To"
+      minDate={startsAt}
       onChange={endsAt => onChange(startsAt, endsAt)}
       className="jur-oath-taker-date-filter-to"
     />
   </>
 );
 
-export default OathTakerDateFilter;
+const mapStateToProps = state => ({
+  startsAt: state.oathKeeper.oathTakersFilters.startsAt,
+  endsAt: state.oathKeeper.oathTakersFilters.endsAt
+});
+
+export default global.connection(OathTakerDateFilter, mapStateToProps);

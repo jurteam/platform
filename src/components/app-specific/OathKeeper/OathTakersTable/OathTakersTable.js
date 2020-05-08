@@ -37,8 +37,8 @@ const OathTakersTable = ({ rows, fetchOathTakers, onSortChange }) => {
         <OathTakerTableHeaderRow onSort={onSortChange} />
       </Table.Head>
       <Table.Body>
-        {rows.map(r => (
-          <OathTakerTableRow key={r.id} {...r.attributes} />
+        {rows.map((r, index) => (
+          <OathTakerTableRow key={`${r.id}-${index}`} {...r.attributes} />
         ))}
       </Table.Body>
     </Table>

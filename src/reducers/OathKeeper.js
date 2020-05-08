@@ -33,8 +33,7 @@ const INITIAL_STATE = {
   oathTakers: [],
   oathTakersMeta: {},
   oathTakersFilters: {
-    status: oathKeeperFilters.statuses.SHOW_ALL,
-    startsAt: new Date()
+    status: oathKeeperFilters.statuses.SHOW_ALL
   },
   myRank: "na",
   myBalance: "na",
