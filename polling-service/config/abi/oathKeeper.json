@@ -1,0 +1,318 @@
+[
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "name": "previousOwner",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "OwnershipTransferred",
+        "type": "event"
+    },
+    {
+        "constant": false,
+        "inputs": [
+            {
+                "name": "_oathIndex",
+                "type": "uint256"
+            }
+        ],
+        "name": "releaseOath",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "name": "_beneficiary",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "name": "_amount",
+                "type": "uint256"
+            },
+            {
+                "indexed": true,
+                "name": "_oathIndex",
+                "type": "uint256"
+            }
+        ],
+        "name": "IHoldYourOathFulfilled",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "name": "_beneficiary",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "name": "_amount",
+                "type": "uint256"
+            },
+            {
+                "indexed": true,
+                "name": "_lockInPeriod",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "name": "_startAt",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "name": "_releaseAt",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "name": "_oathIndex",
+                "type": "uint256"
+            }
+        ],
+        "name": "OathTaken",
+        "type": "event"
+    },
+    {
+        "constant": false,
+        "inputs": [],
+        "name": "renounceOwnership",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "constant": false,
+        "inputs": [
+            {
+                "name": "_lockInPeriod",
+                "type": "uint256"
+            }
+        ],
+        "name": "takeAnOath",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "constant": false,
+        "inputs": [
+            {
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "transferOwnership",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "constant": false,
+        "inputs": [
+            {
+                "name": "_minimumLockPeriod",
+                "type": "uint256"
+            },
+            {
+                "name": "_maximumLockPeriod",
+                "type": "uint256"
+            }
+        ],
+        "name": "updateLockPeriod",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "_jurToken",
+                "type": "address"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "constant": true,
+        "inputs": [],
+        "name": "isOwner",
+        "outputs": [
+            {
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [],
+        "name": "jurToken",
+        "outputs": [
+            {
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [
+            {
+                "name": "",
+                "type": "address"
+            },
+            {
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "name": "lockMap",
+        "outputs": [
+            {
+                "name": "amount",
+                "type": "uint256"
+            },
+            {
+                "name": "startAt",
+                "type": "uint256"
+            },
+            {
+                "name": "releaseAt",
+                "type": "uint256"
+            },
+            {
+                "name": "lockInPeriod",
+                "type": "uint256"
+            },
+            {
+                "name": "isOathFulfilled",
+                "type": "bool"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [],
+        "name": "maximumLockPeriod",
+        "outputs": [
+            {
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [],
+        "name": "minimumLockPeriod",
+        "outputs": [
+            {
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [
+            {
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "name": "oathStats",
+        "outputs": [
+            {
+                "name": "count",
+                "type": "uint256"
+            },
+            {
+                "name": "totalAmountLocked",
+                "type": "uint256"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [],
+        "name": "owner",
+        "outputs": [
+            {
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [],
+        "name": "totalLockedTokens",
+        "outputs": [
+            {
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [],
+        "name": "totalOathCount",
+        "outputs": [
+            {
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    }
+]
