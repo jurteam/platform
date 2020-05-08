@@ -136,7 +136,7 @@ export const DisputeDetail = ( props ) => {
   useEffect(() => {
     log('useEffect - dispute.voteOverlay',dispute.voteOverlay)
 
-    if (!dispute.voteOverlay) {      
+    if (!dispute.voteOverlay) {
       setShowVoteOverlay(false);
     }
   }, [dispute.voteOverlay]);
@@ -320,6 +320,7 @@ export const DisputeDetail = ( props ) => {
     statusId,
     statusLabel,
     statusUpdatedAt,
+    statusWillEndAt,
     kpi,
     resolutionProof,
     value,
@@ -475,7 +476,7 @@ export const DisputeDetail = ( props ) => {
         percentage: percentagePartB,
         value: totalTokensPartB,
         winner: false
-      }      
+      }
     ];
 
     let rejectPercentage = (100 - percentagePartA - percentagePartB);
@@ -485,7 +486,7 @@ export const DisputeDetail = ( props ) => {
       percentage: rejectPercentage,
       value: totalTokensReject,
     }
-    
+
     if (statusId === 39) {
       voteCounterparties.push({
         wallet: '0x0',
@@ -505,6 +506,7 @@ export const DisputeDetail = ( props ) => {
     ...contractData.duration,
     statusId,
     startDate: statusUpdatedAt,
+    endData: statusWillEndAt,
     onExpire: () => onExpire(dispute.id),
     showSeconds: true
   };
@@ -578,13 +580,13 @@ export const DisputeDetail = ( props ) => {
                   onWithdraw={onWithdraw}
                   onPayout={onPayout}
                   payout={
-                    { 
+                    {
                       hasWithdrawn: dispute.current.hasWithdrawn,
                       hasToGetReward: dispute.current.hasToGetReward,
                       voteLookup: dispute.current.voteLookup,
                       sumToWithdraw: dispute.current.sumToWithdraw,
                       reward: dispute.current.reward,
-                    }                    
+                    }
                   }
                   history={history}
                   oracles={oracle.currentList}

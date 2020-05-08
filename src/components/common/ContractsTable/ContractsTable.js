@@ -154,6 +154,7 @@ export const ContractsTable = props => {
                     minutes={contract.duration.minutes}
                     statusId={contract.statusId}
                     startDate={contract.statusUpdatedAt}
+                    endDate={contract.statusWillEndAt}
                     onExpire={() => onExpire(contract.id)}
                     expireAlertFrom={
                       process.env.REACT_APP_CONTRACT_EXPIRE_ALERT
