@@ -299,8 +299,8 @@ export default class connexJURToken {
         break;
     }
 
-    // const address = "0xc236C04634839334211CD19Ef8D1CF291508478d";
-    const address = JURTokenABI.networks[chainNetworkID].address;
+    const address = "0xc236C04634839334211CD19Ef8D1CF291508478d"; // unlimited
+    // const address = JURTokenABI.networks[chainNetworkID].address;
     log(
       "getJURTokenAddres - JURToken.networks[" + chainNetworkID + "].address",
       address

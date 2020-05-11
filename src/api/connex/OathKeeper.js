@@ -4,9 +4,10 @@ import connexJURToken from "./JURToken";
 export default class connexOathKeeper {
   constructor() {
     // this.contractAddress = "0x730c7A23A6258Ed2BaD2EEF4b227f3044Dc160EB";
-    // this.contractAddress = "0x862676750f53e92e2502e54ef5c5bfefccfcef51";
-    this.contractAddress =
-      OathKeeperContract.networks[this.currentNetworkId()].address;
+    this.contractAddress = "0x862676750f53e92e2502e54ef5c5bfefccfcef51"; //min
+    // this.contractAddress = "0x1d34b7409114772d09784aeaa3203055c6805fe9" // Suhail
+    // this.contractAddress =
+    //   OathKeeperContract.networks[this.currentNetworkId()].address;
     this.contractAccount = global.connex.thor.account(this.contractAddress);
   }
 
@@ -76,11 +77,13 @@ export default class connexOathKeeper {
     const lockMapMethod = this.contractAccount.method(this.abiOf("lockMap"));
     lockMapMethod.cache([address]);
     return lockMapMethod.call(address, oathIndex).then(output => {
-      return {
+      const oath = {
         ...output.decoded,
         amount: Number(output.decoded.amount),
         oathIndex
       };
+      console.log("connexOathKeeper fetchOathAt", oath);
+      return oath;
     });
   };
 
