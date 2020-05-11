@@ -95,3 +95,4 @@ yarn-error.log*
 deploy-conf.yml
 deploy-exclude.list
 public/files/prova.pdf
+*.lock
