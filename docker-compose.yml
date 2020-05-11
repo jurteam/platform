@@ -20,7 +20,7 @@ services:
       # - ./rest/vendor:/var/www/html/vendor
       # - ./rest:/var/www/html
     ports:
-      - "80:80"
+      - "8000:80"
     links:
       - db
       - cache
@@ -149,12 +149,12 @@ services:
 
   rabbit:
     image: rabbitmq:3.8
-    env_file: .env.docker-compose
+    # env_file: .env.docker-compose
     environment:
-      # RABBITMQ_ERLANG_COOKIE: "${RABBITMQ_ERLANG_COOKIE}"
-      # RABBITMQ_DEFAULT_USER: "${RABBITMQ_DEFAULT_USER}"
-      # RABBITMQ_DEFAULT_PASS: "${RABBITMQ_DEFAULT_PASS}"
-      RABBITMQ_DEFAULT_VHOST: "/"
+      RABBITMQ_ERLANG_COOKIE: esdtvcrxrtcgvhbjnbhgcfxdcgfhbjk
+      RABBITMQ_DEFAULT_USER: yellowpanda
+      RABBITMQ_DEFAULT_PASS: yellowpanda
+      RABBITMQ_DEFAULT_VHOST: /
     ports:
       - "15672:15672"
       - "5672:5672"
@@ -162,11 +162,13 @@ services:
       NAME: "rabbit"
 
   polling:
-    image: node:14
+    image: keymetrics/pm2:14-alpine
     volumes:
       - ./polling-service:/var/www/html
     working_dir: /var/www/html
-    command: node index.js
+    command: pm2-runtime start pm2.json
+    links:
+      - rabbit
 
   cache:
     image: memcached
