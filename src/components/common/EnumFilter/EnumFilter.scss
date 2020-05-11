@@ -1,7 +1,7 @@
 .jur-enum-filter {
   cursor: pointer;
   display: inline-block;
-  margin-right: 10px;
+  color: #97a3b4;
 
   &:hover {
     background-image: linear-gradient(
@@ -11,10 +11,6 @@
       #0077ffaa
     );
   }
-
-  // &::after {
-  //   content: " ";
-  // }
 
   &__selected {
     color: #0077ff;

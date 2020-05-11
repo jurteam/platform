@@ -2,20 +2,28 @@ import React from "react";
 import "./EnumFilter.scss";
 
 import Row from "JurCommon/Row";
+import Divide from "JurCommon/Divide";
 
 const EnumFilter = ({ selected, enums, onChange }) => (
   <Row>
-    {enums.map(f => (
-      <span
-        key={f}
-        onClick={() => onChange(f)}
-        className={`jur-enum-filter ${
-          selected === f ? "jur-enum-filter__selected" : ""
-        }`}
-      >
-        {f}
-      </span>
-    ))}
+    {enums
+      .map(f => (
+        <span
+          key={f}
+          onClick={() => onChange(f)}
+          className={`jur-enum-filter ${
+            selected === f ? "jur-enum-filter__selected" : ""
+          }`}
+        >
+          {f}
+        </span>
+      ))
+      .reduce((acc, item, index) => {
+        acc.push(item);
+        if (enums.length - 1 == index) return acc;
+        acc.push(<Divide vertical={true} />);
+        return acc;
+      }, [])}
   </Row>
 );
 
