@@ -101,20 +101,75 @@ export function* getDispute(action) {
       yield put({ type: CHAIN_GET_DISPUTE, address });
       log("getDispute - row", 67);
       
-      let hasWithdrawn = true;
-      let hasToGetReward = 0;
-      let sumToWithdraw = 0;
-      let reward = 0;
-      let voteLookup = '';
       
-      // if dispute is closed, get the real winner from chain
-      if (data.statusId === 39) {
-        
+      // check connex or web3
+      const connectorValue = connector()
+
+      
+      if (data.statusId === 37) 
+      {
+        // dispute is waiting
+
+        if(connectorValue === 'connex') 
+        {
+
+
+          const arbitration = new connexArbitrationContract(address);
+          const disputeEnds = yield arbitration.disputeEnds()
+          const calcDisputeEnds = yield arbitration.calcDisputeEnds()
+
+          log("getDispute - disputeEnds", disputeEnds);
+          log("getDispute - calcDisputeEnds", calcDisputeEnds);
+
+          if (disputeEnds === calcDisputeEnds) 
+          {
+            // dispute will be closed
+
+            let toUpdate = new FormData();
+            toUpdate.append("code", 39);
+            toUpdate.append("chain_updated_at", disputeEnds.toString()); 
+
+            yield call(Contracts.statusChange, toUpdate, id);
+
+          } 
+          else if (disputeEnds !== calcDisputeEnds) 
+          {
+            // dispute will be extended
+   
+            let toUpdate = new FormData();
+            toUpdate.append("code", 36);
+            toUpdate.append("chain_updated_at", disputeEnds.toString()); 
+  
+            yield call(Contracts.statusChange, toUpdate, id);
+
+            toUpdate = new FormData();
+            toUpdate.append("code", 37);
+            toUpdate.append("chain_updated_at", calcDisputeEnds.toString()); 
+  
+            yield call(Contracts.statusChange, toUpdate, id);
+
+          }
+
+        }
+
+        const response = yield call(Disputes.get, { id });
+        let { data } = response.data;
+
+        yield put({ type: SET_DISPUTE, payload: data });
+
+      }
+      else if (data.statusId === 39) 
+      {   
+        // if dispute is closed, get the real winner from chain
+
+        let hasWithdrawn = true;
+        let hasToGetReward = 0;
+        let sumToWithdraw = 0;
+        let reward = 0;
+        let voteLookup = '';
         // yield put({ type: CHAIN_GET_CONTRACT, address });
 
 
-        // check connex or web3
-        const connectorValue = connector()
 
         const { wallet }  = yield select(getUser);
 
