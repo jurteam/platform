@@ -170,6 +170,12 @@ export const dateReducer = date => {
   return [year, month, day].join("-");
 };
 
+export const i18nDateFormat = (
+  dateALike,
+  locale = "en-GB",
+  options = { year: "numeric", month: "short", day: "numeric" }
+) => new Date(dateALike).toLocaleDateString(locale, options);
+
 export const upperCaseFirst = string => {
   return string.charAt(0).toUpperCase() + string.slice(1);
 };

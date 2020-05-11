@@ -4,7 +4,7 @@ import "./ActiveOathsTable.scss";
 import Table from "JurCommon/Table";
 import Amount from "JurCommon/Amount";
 import Box from "JurCommon/Box";
-import { oathState, dateReducer } from "../../../../utils/helpers";
+import { oathState, i18nDateFormat } from "../../../../utils/helpers";
 
 const ActiveOathsTable = ({ oaths, isShown }) =>
   isShown ? (
@@ -27,11 +27,11 @@ const ActiveOathsTable = ({ oaths, isShown }) =>
                   <Amount value={oath.amount} />
                 </Table.Cell>
                 <Table.Cell align="left">
-                  {dateReducer(Number(oath.startAt) * 1000)}
+                  {i18nDateFormat(Number(oath.startAt) * 1000)}
                 </Table.Cell>
                 <Table.Cell align="left">{oath.lockInPeriod} months</Table.Cell>
                 <Table.Cell align="left">
-                  {dateReducer(Number(oath.releaseAt) * 1000)}
+                  {i18nDateFormat(Number(oath.releaseAt) * 1000)}
                 </Table.Cell>
               </Table.Row>
             ))}
