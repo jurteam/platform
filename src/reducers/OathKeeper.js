@@ -26,7 +26,7 @@ import {
 
 const INITIAL_STATE = {
   amount: 0,
-  lockInPeriod: "",
+  lockInPeriod: "1",
   acceptTnC: false,
   isModalOpen: false,
   isTakingOath: false,
