@@ -3,7 +3,9 @@
 namespace App\Console\Commands;
 
 use Anik\Amqp\ConsumableMessage;
+use App\Jobs\GenerateOathKeeperRank;
 use Illuminate\Console\Command;
+use \App\Models\Oath;
 use \Illuminate\Support\Facades\App;
 
 class ListenAMQPCommand extends Command
@@ -40,8 +42,25 @@ class ListenAMQPCommand extends Command
     public function handle()
     {
         app('amqp')->consume(function (ConsumableMessage $message) {
-            echo $message->getStream() . PHP_EOL;
-            $message->getDeliveryInfo()->acknowledge();
+
+            // Decode json string to object
+            $data = json_decode($message->getStream());
+
+            // Process decoded message
+            $oath = Oath::process($data);
+
+            if ($oath) {
+
+                // Dispatch queue to generate rank
+                dispatch(new GenerateOathKeeperRank);
+
+                // Acknowledge AMQP if message processed successfully
+                $message->getDeliveryInfo()->acknowledge();
+            }
+
+            // Log info
+            info($data->assetIdentifier . ' : "' . $data->eventIdentifier . '" processed successfully!');
+
         }, 'routing-key', [
 
             'queue' => [
