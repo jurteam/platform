@@ -15,15 +15,15 @@ class CreateOathsTable extends Migration
     {
         Schema::create('oaths', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('oath_keeper_id');
-            $table->string('wallet')->unique();
+            $table->unsignedBigInteger('oath_keeper_id')->nullable();
+            $table->string('wallet');
             $table->unsignedBigInteger('oath_index');
             $table->decimal('amount', 36, 18);
             $table->unsignedInteger('lock_in_period');
             $table->date('start_at');
             $table->date('release_at');
             $table->enum('current_state', ['active', 'complete', 'withdrawn']);
-            $table->date('withdrawn_at');
+            $table->date('withdrawn_at')->nullable();
             $table->timestamps();
 
             $table->foreign('oath_keeper_id')->references('id')->on('oath_keepers')->onDelete('cascade');;
