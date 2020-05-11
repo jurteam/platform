@@ -9,7 +9,7 @@ import { OATH_KEEPER_UPDATE_TNC } from "../../../../reducers/types";
 const TakeOathTermsCheckbox = ({ onChange, acceptTnC }) => {
   const { labels } = useContext(AppContext);
   return (
-    <Form.Label>
+    <Form.Label className="jur-take-oath-tnc">
       <Form.Input
         type="checkbox"
         name="accepted_terms"

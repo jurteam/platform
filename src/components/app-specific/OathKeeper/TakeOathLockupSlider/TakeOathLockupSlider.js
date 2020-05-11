@@ -11,12 +11,13 @@ const max = 36;
 
 const TakeOathLockupSlider = ({ onChange, value }) => (
   <Col>
-    <Form.Label>Lock Up Duration</Form.Label>
+    <Form.Label className="jur-take-oath__label">Lock Up Duration</Form.Label>
     <InputRange
       min={min}
       max={max}
       defaultValue={value <= max ? value : max}
       onValueChange={onChange}
+      valueLabel={`${value || 1} months`}
     />
   </Col>
 );

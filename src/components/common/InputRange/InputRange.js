@@ -3,9 +3,9 @@ import React, { useState, useEffect } from "react";
 
 import "./InputRange.scss";
 
-export const InputRange = ( props ) => {
-  const { min, max, defaultValue, onValueChange, step } = props;
-  const calculateSpanWidth = ( value ) => {
+export const InputRange = props => {
+  const { min, max, defaultValue, onValueChange, valueLabel, step } = props;
+  const calculateSpanWidth = value => {
     if (max === 0 || value === 0) {
       return "100%";
     } else if (value && value <= max) {
@@ -22,13 +22,13 @@ export const InputRange = ( props ) => {
 
   useEffect(() => setSpanWidth(calculateSpanWidth(value)), [max]);
 
-  const onMove = (ev) => {
+  const onMove = ev => {
     const value = ev.target.value;
     setValue(value);
     setSpanWidth(calculateSpanWidth(value));
   };
 
-  const onMouseUp = (ev) => {
+  const onMouseUp = ev => {
     const value = ev.target.value;
     onValueChange(value);
   };
@@ -45,6 +45,9 @@ export const InputRange = ( props ) => {
         onChange={onMove}
         onMouseUp={onMouseUp}
       />
+      {valueLabel && (
+        <div className="jur-range__value-display">{valueLabel}</div>
+      )}
     </div>
   );
 };

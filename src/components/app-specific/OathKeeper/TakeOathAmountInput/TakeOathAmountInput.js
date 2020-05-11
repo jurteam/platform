@@ -7,13 +7,13 @@ import { OATH_KEEPER_UPDATE_AMOUNT } from "../../../../reducers/types";
 
 const TakeOathAmountInput = ({ onChange }) => (
   <Col>
-    <Form.Label>Token Amount</Form.Label>
+    <Form.Label className="jur-take-oath__label">Token Amount</Form.Label>
     <Form.NumericInput
       initialValue={0.0}
       onChange={onChange}
       step={1}
       className="jur-oath-amount-input"
-      max={999999999999999999}
+      max={Number.MAX_SAFE_INTEGER}
     />
   </Col>
 );
