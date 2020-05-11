@@ -217,17 +217,26 @@ export function* getEventUpdateTx(args)
     }
     log('getEventUpdateTx - eventDecoded',eventDecoded)
     
-    // manage event
-    yield manageEvent(txw, eventDecoded)
-    
-    // update tx
-    yield put({type:UPDATE_TRANSACTION, id: txw.id , block: blockNumber ,time: timestamp })
-    
-    log('getEventUpdateTx - transaction updated')
-    
-    yield postAction(txw);
+    if (eventDecoded) 
+    {
 
-    log('getEventUpdateTx - post postAction')
+      // manage event
+      yield manageEvent(txw, eventDecoded)
+      
+      // update tx
+      yield put({type:UPDATE_TRANSACTION, id: txw.id , block: blockNumber ,time: timestamp })
+      
+      log('getEventUpdateTx - transaction updated')
+      
+      yield postAction(txw);
+  
+      log('getEventUpdateTx - post postAction')
+    }
+    else
+    {
+      log('getEventUpdateTx - eventDecoded is null - event will not be emitted')
+      // TODO: delete transaction
+    }
     
   } 
   catch (error) 
