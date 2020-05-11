@@ -87,14 +87,12 @@ export function* handleAddTransaction(args)
   
 }
 
-
 export function* handleUnlockTransaction(args) 
 {
   log('handleUnlockTransaction - args',args);
   const { id } = args
   yield call(Transactions.unlock, id);
 }
-
 
 export function* handleUpdateTransaction(args) 
 {
@@ -112,7 +110,6 @@ export function* handleUpdateTransaction(args)
   log('handleUpdateTransaction - args',args)
   
 }
-
 
 export function* handleCatchEvents(args) {
   
@@ -595,9 +592,9 @@ function* manageEvent(txw,decoded)
 
                 if (disputeEndsTx) {
                   log("handleDisputeArbitration - disputeEndsTx.toString()", disputeEndsTx.toString());
-                  // Status update Closed dispute
+                  // Status update 'Waiting Dispute'
                   toUpdate = new FormData();
-                  toUpdate.append("code", 39);
+                  toUpdate.append("code", 37);
                   toUpdate.append("chain_updated_at", disputeEndsTx.toString()); // * 1000 ?
 
                   yield call(Contracts.statusChange, toUpdate, id);

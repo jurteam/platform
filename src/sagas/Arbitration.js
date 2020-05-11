@@ -1551,7 +1551,7 @@ export function* handleDisputeArbitration(args) {
             log("handleDisputeArbitration - disputeEndsTx.toString()", disputeEndsTx.toString());
             // Status update Closed dispute
             toUpdate = new FormData();
-            toUpdate.append("code", 39);
+            toUpdate.append("code", 37);
             toUpdate.append("chain_updated_at", disputeEndsTx.toString()); // * 1000 ?
 
             yield call(Contracts.statusChange, toUpdate, id);
