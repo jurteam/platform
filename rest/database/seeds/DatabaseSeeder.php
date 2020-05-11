@@ -14,5 +14,6 @@ class DatabaseSeeder extends Seeder
         $this->call('UsersSeeder');
         $this->call('FaqSeeder');
         $this->call('ContractStatusSeeder');
+        $this->call('OathKeeperSeeder');
     }
 }
