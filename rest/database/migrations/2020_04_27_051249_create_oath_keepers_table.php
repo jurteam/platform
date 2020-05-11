@@ -16,11 +16,11 @@ class CreateOathKeepersTable extends Migration
         Schema::create('oath_keepers', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('wallet')->unique();
-            $table->decimal('total_amount', 36, 18);
-            $table->decimal('active_amount', 36, 18);
-            $table->unsignedInteger('total_oath_count');
-            $table->unsignedInteger('active_oath_count');
-            $table->unsignedInteger('rank')->unique();
+            $table->decimal('total_amount', 36, 18)->nullable();
+            $table->decimal('active_amount', 36, 18)->nullable();
+            $table->unsignedInteger('total_oath_count')->nullable();
+            $table->unsignedInteger('active_oath_count')->nullable();
+            $table->unsignedInteger('rank')->nullable();
             $table->timestamps();
         });
     }
