@@ -1,2 +1,49 @@
-.jur-timeline-cell {
+.jur-timeline__row {
+  border-left: 2px dotted #33adff;
+
+  &::before {
+    content: " ";
+    margin-right: 15px;
+  }
+
+  &:first-of-type {
+    &::before {
+      content: "";
+      display: inline-block;
+      height: 30px;
+      width: 2.1px;
+      background-color: white;
+      position: relative;
+      top: 0;
+      left: -2px;
+    }
+  }
+
+  &:last-of-type {
+    border-left: 2px solid transparent;
+
+    &::before {
+      content: "";
+      display: inline-block;
+      height: 30px;
+      width: 1px;
+      position: relative;
+      border-left: 2px dotted #33adff;
+      top: 0;
+      left: -2px;
+    }
+  }
+}
+
+.jur-timeline__first-cell {
+  &::before {
+    display: inline-block;
+    position: relative;
+    content: "";
+    left: -50px;
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    background-color: #0077ff;
+  }
 }

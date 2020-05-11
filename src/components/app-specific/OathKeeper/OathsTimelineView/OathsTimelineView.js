@@ -10,8 +10,8 @@ const OathsTimelineView = ({ oaths }) => (
   <Table>
     <Table.Body>
       {oaths.map(oath => (
-        <Table.Row key={oath.oathIndex}>
-          <Table.Cell align="left" className="jur-timeline-cell">
+        <Table.Row key={oath.oathIndex} className="jur-timeline__row">
+          <Table.Cell align="left" className="jur-timeline__first-cell">
             Staked <Amount value={oath.amount} />
           </Table.Cell>
           <Table.Cell align="left">for {oath.lockInPeriod} months</Table.Cell>
