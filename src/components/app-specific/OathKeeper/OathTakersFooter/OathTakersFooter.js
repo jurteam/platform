@@ -8,9 +8,12 @@ import Text from "JurCommon/Text";
 import { OATH_KEEPER_FETCH_OATH_TAKERS } from "../../../../reducers/types";
 
 const OathTakersFooter = ({ onPaginate, total, perPage, offset }) => (
-  <Row>
+  <Row className="jur-safe-margin">
     <Text>
-      {offset * perPage + 1} to {offset * perPage + perPage} of {total}
+      {offset * perPage + 1} &mdash; {offset * perPage + perPage}{" "}
+      <Text type="span" className="jur-text__mute">
+        of {total}
+      </Text>
     </Text>
     <Expand />
     <Pagination
