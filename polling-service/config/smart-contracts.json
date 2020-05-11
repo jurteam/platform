@@ -1,11 +1,8 @@
 [
-    {
-        "identifier": "oathKeeper",
-        "address": "0x1d34b7409114772d09784aeaa3203055c6805fe9",
-        "abiPath": "./abi/oathKeeper.json",
-        "events": [
-            "OathTaken",
-            "IHoldYourOathFulfilled"
-        ]
-    }
+  {
+    "identifier": "oathKeeper",
+    "address": "0x862676750f53e92e2502e54ef5c5bfefccfcef51",
+    "abiPath": "./abi/oathKeeper.json",
+    "events": ["OathTaken", "IHoldYourOathFulfilled"]
+  }
 ]
