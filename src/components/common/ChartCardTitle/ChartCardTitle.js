@@ -4,7 +4,7 @@ import { BlockTitle } from "../BlockTitle/BlockTitle";
 
 const ChartCardTitle = ({ children }) => (
   <div className="jur-chart-card-title">
-    <BlockTitle title={children} />
+    <BlockTitle title={children} reverse={true} />
   </div>
 );
 
