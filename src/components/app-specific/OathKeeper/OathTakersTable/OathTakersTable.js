@@ -3,8 +3,9 @@ import "./OathTakersTable.scss";
 
 import Table from "JurCommon/Table";
 import Amount from "JurCommon/Amount";
-import { SpinnerOnly } from "JurCommon/Spinner";
+import AvatarInfo from "JurCommon/AvatarInfo";
 import { OATH_KEEPER_FETCH_OATH_TAKERS } from "../../../../reducers/types";
+import RankBadge from "JurCommon/RankBadge";
 
 const OathTakerTableHeaderRow = ({ onSort }) => (
   <Table.Row>
@@ -17,8 +18,12 @@ const OathTakerTableHeaderRow = ({ onSort }) => (
 
 const OathTakerTableRow = ({ rank, address, amount, oathCount }) => (
   <Table.Row>
-    <Table.Cell>{rank}</Table.Cell>
-    <Table.Cell>{address}</Table.Cell>
+    <Table.Cell>
+      <RankBadge rank={rank} />
+    </Table.Cell>
+    <Table.Cell>
+      <AvatarInfo userWallet={address} size="small" />
+    </Table.Cell>
     <Table.Cell>
       <Amount value={amount} />
     </Table.Cell>
@@ -32,7 +37,7 @@ const OathTakersTable = ({ rows, fetchOathTakers, onSortChange }) => {
   }, []);
 
   return (
-    <Table>
+    <Table className="jur-safe-margin">
       <Table.Head>
         <OathTakerTableHeaderRow onSort={onSortChange} />
       </Table.Head>
