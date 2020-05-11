@@ -197,7 +197,8 @@ export default (state = INITIAL_STATE, action) => {
           statusId: action.statusId,
           statusLabel: action.statusLabel,
           statusFrom: action.statusFrom,
-          statusUpdatedAt: action.statusUpdatedAt
+          statusUpdatedAt: action.statusUpdatedAt,
+          statusWillEndAt: action.statusWillEndAt
         }
       };
 

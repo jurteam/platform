@@ -13,11 +13,14 @@ import {
    CATCH_EVENTS,
    CONNEX_INITIALIZED,
    CONNEX_SETWALLETAPI,
-   SET_WALLET_ADDRESS
+   SET_WALLET_ADDRESS,
+   HEARTBEAT
   } from "../reducers/types.js";
 
 // Api layouts
 import { connexSign } from "../api";
+
+import API from "./Api"; // Axios
 
 // Application Context
 export const AppContext = React.createContext();
@@ -34,6 +37,7 @@ class AppProvider extends Component {
     this.store = props.store;
 
     global.store = props.store;
+    global.API = API;
 
     this.state = {
       version: appReference.version,
@@ -137,6 +141,8 @@ class AppProvider extends Component {
           log("AppProvider - connexAuth - signer",result.annex.signer)
           address = result.annex.signer
 
+          global.dispatcher({type: CONNEX_SETWALLETAPI, address: address });
+
           global.dispatcher({ type: SET_WALLET_ADDRESS, payload: address });
 
           this.setState({ onNetwork: true, connex: true, connex });
@@ -168,6 +174,13 @@ class AppProvider extends Component {
         this.tickerLoop()
 
         global.dispatcher({type: CATCH_EVENTS, block: head });
+
+        if (process.env.REACT_APP_HEARTBEAT_ENABLED === "true") {
+
+          global.dispatcher({ type: HEARTBEAT });
+          log("AppProvider - tickerLoop - Heartbeat", "run");
+          
+        }
       })
     }
   }

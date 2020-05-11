@@ -23,7 +23,8 @@ export const ContractSummary = ( props ) => {
     status: {
       id: statusId,
       label: statusIdLabel,
-      updatedDate: countdownStartDate
+      updatedDate: countdownStartDate,
+      endDate: countdownEndDate
     },
     duration: {
       days: durationInDays,
@@ -94,6 +95,7 @@ export const ContractSummary = ( props ) => {
             hours={durationInHours}
             minutes={durationInMinutes}
             startDate={countdownStartDate}
+            endDate= {countdownEndDate}
             statusId={statusId}
             expireAlertFrom={expireAlertFrom}
             onProgress={onProgress}

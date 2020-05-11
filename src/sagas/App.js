@@ -166,8 +166,6 @@ export function* handleHeartBeat() {
     log("handleHeartBeat - DisputeDetailPage",currDisp);
 
     yield put({ type: API_GET_DISPUTE_STATUS_CHANGE });
-    yield put({ type: API_GET_LIVE_VOTES });
-    yield put({ type: FETCH_ACTIVITIES });
 
   } else if (ContractIsListPage) {
     // into list contracts page

@@ -315,13 +315,14 @@ export function* handleCreateArbitration(args) {
         try {
           response = yield call(Contracts.statusChange, toUpdate, contractId);
           log("handleCreateArbitration - contract status updated", response);
-          const { statusId, statusLabel, statusUpdatedAt, statusFrom } = response.data.data;
+          const { statusId, statusLabel, statusUpdatedAt, statusWillEndAt, statusFrom } = response.data.data;
           yield put({
             type: SET_CONTRACT_STATUS,
             statusId,
             statusFrom,
             statusLabel,
             statusUpdatedAt,
+            statusWillEndAt,
             contractId
           });
           yield put({ type: FETCH_CONTRACTS });
@@ -445,13 +446,14 @@ export function* handleAcceptArbitrationAmendment(args) {
   try {
     const response = yield call(Contracts.statusChange, toUpdate, id);
     log("handleAcceptArbitrationAmendment - contract status updated", response);
-    const { statusId, statusLabel, statusUpdatedAt, statusFrom } = response.data.data;
+    const { statusId, statusLabel, statusUpdatedAt, statusWillEndAt, statusFrom } = response.data.data;
     yield put({
       type: SET_CONTRACT_STATUS,
       statusId,
       statusFrom,
       statusLabel,
       statusUpdatedAt,
+      statusWillEndAt,
       id
     });
     yield put({ type: FETCH_CONTRACTS });
@@ -477,13 +479,14 @@ export function* handleAcceptArbitration({
 
   try {
     const response = yield call(Contracts.statusChange, toUpdate, id);
-    const { statusId, statusLabel, statusUpdatedAt, statusFrom } = response.data.data;
+    const { statusId, statusLabel, statusUpdatedAt,statusWillEndAt, statusFrom } = response.data.data;
     yield put({
       type: SET_CONTRACT_STATUS,
       statusId,
       statusFrom,
       statusLabel,
       statusUpdatedAt,
+      statusWillEndAt,
       id
     });
     yield put({ type: FETCH_CONTRACTS });
@@ -544,13 +547,14 @@ export function* handleRejectArbitration({ id, address: contractAddress }) {
   try {
     const response = yield call(Contracts.statusChange, toUpdate, id);
     log("handleRejectArbitration - contract status updated", response);
-    const { statusId, statusLabel, statusUpdatedAt, statusFrom } = response.data.data;
+    const { statusId, statusLabel, statusUpdatedAt,statusWillEndAt, statusFrom } = response.data.data;
     yield put({
       type: SET_CONTRACT_STATUS,
       statusId,
       statusFrom,
       statusLabel,
       statusUpdatedAt,
+      statusWillEndAt,
       id
     });
     yield put({ type: FETCH_CONTRACTS });
@@ -625,13 +629,14 @@ export function* handleSuccessArbitration(args)
         try {
           const response = yield call(Contracts.statusChange, toUpdate, id);
           log("handleSuccessArbitration - contract status updated", response);
-          const { statusId, statusLabel, statusUpdatedAt, statusFrom } = response.data.data;
+          const { statusId, statusLabel, statusUpdatedAt,statusWillEndAt, statusFrom } = response.data.data;
           yield put({
             type: SET_CONTRACT_STATUS,
             statusId,
             statusFrom,
             statusLabel,
             statusUpdatedAt,
+            statusWillEndAt,
             id
           });
           yield put({ type: FETCH_CONTRACTS });
@@ -831,13 +836,14 @@ export function* handlePayArbitration(args) {
       try {
         const response = yield call(Contracts.statusChange, toUpdate, id);
         log("handlePayArbitration - contract status updated", response);
-        const { statusId, statusLabel, statusUpdatedAt, statusFrom } = response.data.data;
+        const { statusId, statusLabel, statusUpdatedAt,statusWillEndAt, statusFrom } = response.data.data;
         yield put({
           type: SET_CONTRACT_STATUS,
           statusId,
           statusFrom,
           statusLabel,
           statusUpdatedAt,
+          statusWillEndAt,
           id
         });
         yield put({ type: FETCH_CONTRACTS });
@@ -1008,13 +1014,14 @@ export function* handleAmendDisputeArbitration(args) {
       try {
         let response = yield call(Disputes.store, toUpdate, id);
         log("handleAmendDisputeArbitration - contract status updated", response);
-        const { statusId, statusLabel, statusUpdatedAt, statusFrom } = response.data.data;
+        const { statusId, statusLabel, statusUpdatedAt,statusWillEndAt, statusFrom } = response.data.data;
         yield put({
           type: SET_CONTRACT_STATUS,
           statusId,
           statusFrom,
           statusLabel,
           statusUpdatedAt,
+          statusWillEndAt,
           id
         });
         yield put({ type: FETCH_CONTRACTS });
@@ -1136,13 +1143,14 @@ else if(connectorValue === 'web3')
       try {
         const response = yield call(Contracts.statusChange, toUpdate, id);
         log("handleWithdrawArbitration - contract status updated", response);
-        const { statusId, statusLabel, statusUpdatedAt, statusFrom } = response.data.data;
+        const { statusId, statusLabel, statusUpdatedAt,statusWillEndAt, statusFrom } = response.data.data;
         yield put({
           type: SET_CONTRACT_STATUS,
           statusId,
           statusFrom,
           statusLabel,
           statusUpdatedAt,
+          statusWillEndAt,
           id
         });
         yield put({ type: FETCH_CONTRACTS });
@@ -1512,13 +1520,14 @@ export function* handleDisputeArbitration(args) {
       try {
         let response = yield call(Disputes.store, toUpdate, id);
         log("handleDisputeArbitration - contract status updated", response);
-        const { statusId, statusLabel, statusUpdatedAt, statusFrom } = response.data.data;
+        const { statusId, statusLabel, statusUpdatedAt,statusWillEndAt, statusFrom } = response.data.data;
         yield put({
           type: SET_CONTRACT_STATUS,
           statusId,
           statusFrom,
           statusLabel,
           statusUpdatedAt,
+          statusWillEndAt,
           id
         });
         yield put({ type: FETCH_CONTRACTS });

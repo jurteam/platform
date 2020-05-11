@@ -416,6 +416,7 @@ export const DisputeDetail = ( props ) => {
       statusId,
       statusLabel,
       statusUpdatedAt,
+      statusWillEndAt,
       from: {
         label: "partA",
         debtor: !part_a.isDebtor && !part_b.isDebtor ? true : part_a.isDebtor,
@@ -444,7 +445,8 @@ export const DisputeDetail = ( props ) => {
       status: {
         id: statusId,
         label: statusLabel,
-        updatedDate: statusUpdatedAt
+        updatedDate: statusUpdatedAt,
+        endDate: statusWillEndAt
       }, // ???
       // inCaseOfDispute: "open", // default
       duration: {
@@ -506,7 +508,7 @@ export const DisputeDetail = ( props ) => {
     ...contractData.duration,
     statusId,
     startDate: statusUpdatedAt,
-    endData: statusWillEndAt,
+    endDate: statusWillEndAt,
     onExpire: () => onExpire(dispute.id),
     showSeconds: true
   };

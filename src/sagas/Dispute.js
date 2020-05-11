@@ -37,6 +37,8 @@ import {
   DISPUTE_PAYOUT_VOTER,
   LOOKUP_WALLET_BALANCE,
   UPDATE_LIVE_DISPUTES,
+  API_GET_LIVE_VOTES,
+  FETCH_ACTIVITIES,
 } from "../reducers/types";
 
 import {
@@ -699,7 +701,7 @@ export function* getDisputeStatus(action) {
     // control if status is different from actual status
     log("getDisputeStatus - response no status", response.data );
 
-    if (currContr.statusId !== response.data.data.statusId) {
+    if (currContr.statusId !== response.data.data.statusId || currContr.statusWillEndAt !== response.data.data.statusWillEndAt) {
       // fetch contract without loading
       log("getDisputeStatus - response - status diff "+ currContr.statusId, response.data.data.statusId );
 
@@ -713,11 +715,15 @@ export function* getDisputeStatus(action) {
       });
 
     }
+    else 
+    {
 
+      yield put({ type: API_GET_LIVE_VOTES });
+      yield put({ type: FETCH_ACTIVITIES });
+    }
+    
   }
 
-  // const {status,statusFrom,statusId,statusLabel,statusPart,statusUpdatedAt} = response.data.data
-  // log("getDisputeStatus - response", status, statusFrom,statusId,statusLabel,statusPart,statusUpdatedAt );
 
 
 }
