@@ -1,0 +1,31 @@
+.jur-rank-badge {
+  &__small {
+    width: 18px;
+    height: 18px;
+    text-align: center;
+
+    &-rank {
+      position: relative;
+      top: -30px;
+      color: white;
+    }
+  }
+
+  &__hero {
+    width: 48px;
+    height: 48px;
+    text-align: center;
+
+    &-logo {
+      position: relative;
+      top: -60px;
+      margin-left: 3px;
+    }
+
+    &-rank {
+      position: relative;
+      top: -70px;
+      color: white;
+    }
+  }
+}

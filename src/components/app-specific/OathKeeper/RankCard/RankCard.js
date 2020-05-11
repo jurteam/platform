@@ -8,7 +8,7 @@ import RankBadge from "JurCommon/RankBadge";
 const RankCard = ({ rank }) => (
   <HeaderCard title="Oath Keeper Rank">
     <HeaderCard.Hero>
-      <RankBadge rank={rank} />
+      <RankBadge rank={rank} type="hero" />
     </HeaderCard.Hero>
     <HeaderCard.Body>
       <NavLink to="/oath-keeper/oath-takers">Check Oathkeeping Ranking</NavLink>
