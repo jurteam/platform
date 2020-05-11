@@ -11,7 +11,7 @@ const oaths = [
     startAt: "1588582376",
     releaseAt: "1788682376",
     oathIndex: 1,
-    isFulfilled: false
+    isOathFulfilled: false
   },
   {
     amount: 890,
@@ -19,7 +19,23 @@ const oaths = [
     startAt: "1548482376",
     releaseAt: "1588582376",
     oathIndex: 2,
-    isFulfilled: false
+    isOathFulfilled: false
+  },
+  {
+    amount: 90,
+    lockInPeriod: 12,
+    startAt: "1548482376",
+    releaseAt: "1588582376",
+    oathIndex: 2,
+    isOathFulfilled: true
+  },
+  {
+    amount: 80,
+    lockInPeriod: 1,
+    startAt: "1548482376",
+    releaseAt: "1988492376",
+    oathIndex: 2,
+    isOathFulfilled: false
   }
 ];
 
