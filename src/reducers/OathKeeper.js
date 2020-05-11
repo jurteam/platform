@@ -61,7 +61,7 @@ export default (state = INITIAL_STATE, action) => {
     case OATH_KEEPER_TAKE_OATH:
       return { ...state, isTakingOath: true };
     case OATH_KEEPER_TOOK_OATH:
-      return { ...state, isTakingOath: false };
+      return { ...state, isTakingOath: false, isModalOpen: false };
     case OATH_KEEPER_WITHDRAW_OATH:
       return {
         ...state,

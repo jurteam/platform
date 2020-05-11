@@ -1,6 +1,6 @@
 import { takeEvery, takeLatest, put, select } from "redux-saga/effects";
 import { connexOathKeeper, OathKeeper } from "../api";
-import { getWallet, getNewOath } from "./Selectors";
+import { getWallet, getNewOath, getMyOaths } from "./Selectors";
 import {
   OATH_KEEPER_TAKE_OATH,
   OATH_KEEPER_TOOK_OATH,
@@ -28,11 +28,13 @@ function* fetchMyRank() {
 function* takeAnOath() {
   const { address } = yield select(getWallet);
   const { amount, lockInPeriod, acceptTnC } = yield select(getNewOath);
+  const myOaths = yield select(getMyOaths);
 
   // TODO: Check for acceptTnC and dispatch accordingly
   yield new connexOathKeeper().takeAnOath(address, amount, lockInPeriod);
-  yield put({ type: OATH_KEEPER_TOOK_OATH }); // TODO: change to took_oath
-  // TODO handle error
+  yield put({ type: OATH_KEEPER_TOOK_OATH });
+  yield new Promise(resolve => setTimeout(resolve, 12000));
+  yield put({ type: OATH_KEEPER_FETCH_MY_OATHS, payload: myOaths.length + 1 });
 }
 
 function* withdrawAnOath(action) {
@@ -42,12 +44,31 @@ function* withdrawAnOath(action) {
 
   yield new connexOathKeeper().releaseOath(address, oathIndex);
   yield put({ type: OATH_KEEPER_WITHDREW_OATH, payload: oathIndex });
+  yield put({ type: OATH_KEEPER_FETCH_MY_OATHS, payload: oathIndex });
 }
 
-function* fetchMyOaths() {
+function* fetchMyOaths(action) {
   const { address } = yield select(getWallet);
+  let myOaths = yield select(getMyOaths);
   // TODO: add cache machanizm here
-  const myOaths = yield new connexOathKeeper().fetchOathsOf(address);
+  console.log("saga OathKeeper fetchMyOaths", action);
+
+  if (action.payload !== undefined) {
+    const oath = yield new connexOathKeeper().fetchOathAt(
+      address,
+      action.payload
+    );
+
+    console.log("saga OathKeeper fetchMyOaths oath", oath);
+
+    if (myOaths.length <= action.payload)
+      myOaths = myOaths.map(o => (o.oathIndex === action.payload ? oath : o));
+    else myOaths = [oath, ...myOaths];
+  } else {
+    myOaths = yield new connexOathKeeper().fetchOathsOf(address);
+  }
+
+  console.log("saga OathKeeper fetchMyOaths myOaths", action, myOaths);
   yield put({ type: OATH_KEEPER_UPDATE_MY_OATHS, payload: myOaths });
 }
 
