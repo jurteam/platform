@@ -67,6 +67,7 @@ class Oath extends Model
 
         return [
             'value' => $sum == 0 ? 0 : $sum / $count,
+            'delta' => $faker->numberBetween(-100, 100),
             'graph' => Oath::generateGraphArray($diff->format("%a"))
         ];
     }
