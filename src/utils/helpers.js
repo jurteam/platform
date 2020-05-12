@@ -299,6 +299,8 @@ export const canVote = statusId => {
 };
 
 export const multiplication = (a, b) => {
+
+  Big.PE = 45
   let x = new Big(a);
   const prod = x.times(b);
 
