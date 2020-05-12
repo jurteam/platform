@@ -11,7 +11,7 @@ import { getOathTakersPagination } from "../../../../sagas/Selectors";
 const OathTakersFooter = ({ onPaginate, total, perPage, page }) => (
   <Row className="jur-safe-margin">
     <Text>
-      {(page - 1) * perPage + 1} &mdash; {page * perPage + perPage}{" "}
+      {(page - 1) * perPage + 1} &mdash; {(page - 1) * perPage + perPage}{" "}
       <Text type="span" className="jur-text__mute">
         of {total}
       </Text>
@@ -33,7 +33,7 @@ const mapStateToProps = state => ({
 });
 
 const onPaginate = page => {
-  return { type: OATH_KEEPER_FETCH_OATH_TAKERS, payload: page };
+  return { type: OATH_KEEPER_FETCH_OATH_TAKERS, payload: { page } };
 };
 
 const mapDispatchToProps = { onPaginate };
