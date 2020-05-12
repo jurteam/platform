@@ -332,7 +332,8 @@ export function* updateContract(action) {
   if (duration && duration.minutes) {
     toUpdate.append("duration_minutes", duration.minutes);
   }
-  toUpdate.append("has_penalty_fee", hasPenaltyFee ? 1 : 0); // always
+  log('updateContract - hasPenaltyFee',hasPenaltyFee)
+  toUpdate.append("has_penalty_fee", (hasPenaltyFee && hasPenaltyFee !== "0")  ? 1 : 0); // always
   if (hasPenaltyFee) {
     if (partAPenaltyFee) {
       toUpdate.append(
