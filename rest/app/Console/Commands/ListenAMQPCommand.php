@@ -47,7 +47,7 @@ class ListenAMQPCommand extends Command
             $data = json_decode($message->getStream());
 
             // Process decoded message
-            $oath = Oath::process($data);
+            $oath = Oath::consumeAMQP($data);
 
             if ($oath) {
 

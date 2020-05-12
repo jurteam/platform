@@ -21,6 +21,12 @@ class OathKeeper extends Model
         return $filters->apply($query);
     }
 
+    /**
+     * Calculate summary for an oathKeeper
+     *
+     * @param OathKeeper $oathKeeper: Object of an OathKeeper
+     * @return Boolean the success or failure message
+     */
     public static function calculateSummary(OathKeeper $oathKeeper)
     {
         $total_amount = 0;

@@ -18,6 +18,13 @@ class Oath extends Model
 
     public $timestamps = true;
 
+    /**
+     * Create an oath based on $data object
+     *
+     * @param Object $data: payload data send by AMQP server
+     * @param OathKeeper $oathKeeper: Object of the OathKeeper
+     * @return Boolean the success or failure message
+     */
     public static function store($data, $oathKeeper)
     {
         $oath = new Oath;
@@ -34,12 +41,16 @@ class Oath extends Model
         return $oath->save();
     }
 
-    public static function process($payload)
+    /**
+     * Consume AMQP payload to store the data and calculate summaries
+     *
+     * @param Object $payload: payload data send by AMQP server
+     * @return Boolean the success or failure message
+     */
+    public static function consumeAMQP($payload)
     {
         $oathKeeper = OathKeeper::firstOrCreate(['wallet' => $payload->data->_beneficiary]);
-
         $saved = Oath::store($payload->data, $oathKeeper);
-
         return OathKeeper::calculateSummary($oathKeeper);
     }
 
@@ -81,10 +92,9 @@ class Oath extends Model
      */
     public static function activeAmount($from, $to)
     {
-
         $data = Oath::whereNotIn('id', Oath::where('start_at', '>', $to)
                 ->orWhere('release_at', '<', $from)->pluck('id'))
-            ->sum('amount');
+            ->pluck('amount', 'id');
 
         $diff = date_diff($from, $to);
         $faker = Factory::create();
@@ -128,7 +138,7 @@ class Oath extends Model
     }
 
     /**
-     * Get active oath keeper card between two dates
+     * Get number of active oath keepers card between two dates
      *
      * @param Date $from: from date
      * @param Date $to: to date
@@ -159,7 +169,6 @@ class Oath extends Model
      *
      * @param  String $duration: duration in number of days
      * @return Array $GeneartedGraph: graph array
-     * @return \Illuminate\Http\Response
      */
     public static function generateGraphArray($days)
     {
