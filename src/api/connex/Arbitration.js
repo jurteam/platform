@@ -368,7 +368,7 @@ export default class connexArbitrationContract
       txid = tx.txid
 
       const filter = {
-        _party1: account,
+        _party: account,
       }
       
       global.dispatcher({type: ADD_TRANSACTION,txid: tx.txid, event: 'ContractAgreed', param: filter, contract_id: contractId})
