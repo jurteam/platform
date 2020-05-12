@@ -62,6 +62,9 @@ export const getNewOath = state => ({
 
 export const getMyOaths = state => state.oathKeeper.myOaths;
 
+export const getOathTakersPagination = state =>
+  state.oathKeeper.oathTakersMeta.pagination || {};
+
 export const getAnalytics = (state, card) =>
   (state.oathKeeper.analytics[card] || {}).attributes || {};
 

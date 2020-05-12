@@ -73,27 +73,15 @@ function* fetchMyOaths(action) {
 }
 
 function* fetchOathTakers(action) {
-  const params = yield select(state => ({
-    filter: state.oathKeeper.oathTakersFilters,
-    page: {}
+  let params = yield select(state => ({
+    ...state.oathKeeper.oathTakersFilters
   }));
 
-  console.log("fetchOathTakers saga action", action, params);
-
-  if (action.payload) {
-    [("filter", "page")].forEach(key => {
-      if (action.payload[key]) {
-        console.log("fetchOathTakers saga fe", key, action.payload, params);
-        params[key] = { ...params[key], ...action.payload[key] };
-      }
-    });
+  if (typeof action.payload === "object") {
+    params = { ...params, ...action.payload };
   }
 
-  console.log(
-    "fetchOathTakers saga params",
-    JSON.parse(JSON.stringify(params))
-  );
-  delete params.filter; // TODO: remove once backend is working
+  console.log("fetchOathTakers saga params", params, action);
 
   const oathTakers = yield OathKeeper.oathTakers(null, params);
   yield put({ type: OATH_KEEPER_UPDATE_OATH_TAKERS, payload: oathTakers });

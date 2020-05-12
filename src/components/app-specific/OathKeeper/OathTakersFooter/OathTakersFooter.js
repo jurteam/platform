@@ -6,18 +6,19 @@ import Row from "JurCommon/Row";
 import Expand from "JurCommon/Expand";
 import Text from "JurCommon/Text";
 import { OATH_KEEPER_FETCH_OATH_TAKERS } from "../../../../reducers/types";
+import { getOathTakersPagination } from "../../../../sagas/Selectors";
 
-const OathTakersFooter = ({ onPaginate, total, perPage, offset }) => (
+const OathTakersFooter = ({ onPaginate, total, perPage, page }) => (
   <Row className="jur-safe-margin">
     <Text>
-      {offset * perPage + 1} &mdash; {offset * perPage + perPage}{" "}
+      {(page - 1) * perPage + 1} &mdash; {page * perPage + perPage}{" "}
       <Text type="span" className="jur-text__mute">
         of {total}
       </Text>
     </Text>
     <Expand />
     <Pagination
-      activePage={offset + 1}
+      activePage={page}
       itemsCountPerPage={perPage}
       totalItemsCount={total}
       handlePageChange={onPaginate}
@@ -26,14 +27,13 @@ const OathTakersFooter = ({ onPaginate, total, perPage, offset }) => (
 );
 
 const mapStateToProps = state => ({
-  total: Number(state.oathKeeper.oathTakersMeta.total),
-  perPage: Number(state.oathKeeper.oathTakersMeta.limit),
-  offset: Number(state.oathKeeper.oathTakersMeta.offset)
+  total: Number(getOathTakersPagination(state).total),
+  perPage: Number(getOathTakersPagination(state).per_page),
+  page: Number(getOathTakersPagination(state).current_page)
 });
 
-const onPaginate = pageNumber => {
-  const offset = pageNumber - 1;
-  return { type: OATH_KEEPER_FETCH_OATH_TAKERS, payload: { page: { offset } } };
+const onPaginate = page => {
+  return { type: OATH_KEEPER_FETCH_OATH_TAKERS, payload: page };
 };
 
 const mapDispatchToProps = { onPaginate };

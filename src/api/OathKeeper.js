@@ -22,15 +22,16 @@ function addParams(url, params) {
 
   let urlParams = new URLSearchParams("");
 
-  Object.entries(params)
-    .filter(
-      ([key, value]) => typeof value === "string" || typeof value === "number"
-    )
-    .forEach(([key, value]) => urlParams.append(key, value));
-
-  // if (params.sortBy) urlParams.append("sortBy", params.sortBy);
-  if (params.page) flattenObject(urlParams, params.page, "page");
-  if (params.filter) flattenObject(urlParams, params.filter, "filter");
+  Object.entries(params).forEach(([key, value]) => {
+    if (typeof value === "string" || typeof value === "number") {
+      urlParams.append(key, value);
+    } else if (
+      typeof value === "object" &&
+      value.__proto__ === new Date().__proto__
+    ) {
+      urlParams.append(key, value);
+    }
+  });
 
   return url + "?" + urlParams.toString();
 }

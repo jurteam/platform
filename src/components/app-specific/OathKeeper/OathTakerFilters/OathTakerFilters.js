@@ -28,22 +28,22 @@ const mapStateToProps = state => ({ ...state.oathKeeper.oathTakerFilters });
 
 const onStatusChange = ({ value }) => ({
   type: OATH_KEEPER_FETCH_OATH_TAKERS,
-  payload: { filter: { status: value } }
+  payload: { status: value }
 });
 
 const onAmountChange = (minAmount, maxAmount) => ({
   type: OATH_KEEPER_FETCH_OATH_TAKERS,
-  payload: { filter: { minAmount, maxAmount } }
+  payload: { minAmount, maxAmount }
 });
 
 const onDateChange = (startsAt, endsAt) => ({
   type: OATH_KEEPER_FETCH_OATH_TAKERS,
-  payload: { filter: { startsAt, endsAt } }
+  payload: { startsAt, endsAt }
 });
 
 const onSearchChange = query => ({
   type: OATH_KEEPER_FETCH_OATH_TAKERS,
-  payload: { filter: { query } }
+  payload: { query }
 });
 
 const mapDispatchToProps = {

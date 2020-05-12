@@ -33,7 +33,13 @@ const INITIAL_STATE = {
   isFetchingMyOaths: false,
   isFetchingOathTakers: false,
   oathTakers: [],
-  oathTakersMeta: {},
+  oathTakersMeta: {
+    pagination: {
+      total: 0,
+      per_page: 10,
+      current_page: 1
+    }
+  },
   oathTakersFilters: {
     status: oathKeeperFilters.statuses.SHOW_ALL
   },
@@ -88,13 +94,16 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         isFetchingOathTakers: true,
-        oathTakersFilters: computeFilters(state.oathTakersFilters, action)
+        oathTakersFilters: {
+          ...state.oathTakersFilters,
+          ...(action.payload || {})
+        }
       };
     case OATH_KEEPER_UPDATE_OATH_TAKERS:
       return {
         ...state,
         isFetchingOathTakers: false,
-        oathTakers: action.payload.data,
+        oathTakers: action.payload.data.reverse(),
         oathTakersMeta: action.payload.meta
       };
     case OATH_KEEPER_FETCH_ANALYTICS:
