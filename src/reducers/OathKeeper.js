@@ -15,7 +15,8 @@ import {
   OATH_KEEPER_FETCH_ANALYTICS,
   OATH_KEEPER_UPDATE_ANALYTICS,
   OATH_KEEPER_WITHDREW_OATH,
-  OATH_KEEPER_WITHDRAW_OATH
+  OATH_KEEPER_WITHDRAW_OATH,
+  OATH_KEEPER_RESET_FILTERS
 } from "./types";
 
 import {
@@ -24,14 +25,7 @@ import {
   oathKeeperFilters
 } from "../utils/helpers";
 
-const INITIAL_STATE = {
-  amount: 0,
-  lockInPeriod: "1",
-  acceptTnC: false,
-  isModalOpen: false,
-  isTakingOath: false,
-  isFetchingMyOaths: false,
-  isFetchingOathTakers: false,
+const INITIAL_FILTERS_STATE = {
   oathTakers: [],
   oathTakersMeta: {
     pagination: {
@@ -42,15 +36,31 @@ const INITIAL_STATE = {
   },
   oathTakersFilters: {
     status: oathKeeperFilters.statuses.SHOW_ALL,
-    sortBy: "Rank"
-  },
+    sortBy: "Rank",
+    query: undefined,
+    startsAt: undefined,
+    endsAt: undefined,
+    minAmount: undefined,
+    maxAmount: undefined
+  }
+};
+
+const INITIAL_STATE = {
+  amount: 0,
+  lockInPeriod: "1",
+  acceptTnC: false,
+  isModalOpen: false,
+  isTakingOath: false,
+  isFetchingMyOaths: false,
+  isFetchingOathTakers: false,
   myRank: "na",
   myBalance: "na",
   myOaths: [],
   withdrawingOaths: new Set(),
   isFetchingAnalytics: false,
   analytics: {},
-  analyticsMeta: initializeAnalyticsMeta()
+  analyticsMeta: initializeAnalyticsMeta(),
+  ...INITIAL_FILTERS_STATE
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -106,6 +116,11 @@ export default (state = INITIAL_STATE, action) => {
         isFetchingOathTakers: false,
         oathTakers: action.payload.data,
         oathTakersMeta: action.payload.meta
+      };
+    case OATH_KEEPER_RESET_FILTERS:
+      return {
+        ...state,
+        ...INITIAL_FILTERS_STATE
       };
     case OATH_KEEPER_FETCH_ANALYTICS:
       return {
