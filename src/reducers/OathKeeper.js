@@ -41,7 +41,8 @@ const INITIAL_STATE = {
     }
   },
   oathTakersFilters: {
-    status: oathKeeperFilters.statuses.SHOW_ALL
+    status: oathKeeperFilters.statuses.SHOW_ALL,
+    sortBy: "Rank"
   },
   myRank: "na",
   myBalance: "na",
@@ -103,7 +104,7 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         isFetchingOathTakers: false,
-        oathTakers: action.payload.data.reverse(),
+        oathTakers: action.payload.data,
         oathTakersMeta: action.payload.meta
       };
     case OATH_KEEPER_FETCH_ANALYTICS:
