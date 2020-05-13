@@ -23,7 +23,7 @@ const AverageAmountCard = ({
   duration,
   onEnumFilterChange
 }) => (
-  <ChartCard>
+  <ChartCard className="jur-oath-keeper-analytics-card">
     <ChartCard.Title>Average Amount Staked</ChartCard.Title>
     <Row>
       <ChartCard.Metric>

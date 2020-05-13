@@ -23,7 +23,7 @@ const ActiveOathKeepersCard = ({
   duration,
   onEnumFilterChange
 }) => (
-  <ChartCard>
+  <ChartCard className="jur-oath-keeper-analytics-card">
     <ChartCard.Title>Active Oath Keepers</ChartCard.Title>
     <Row>
       <ChartCard.Metric>

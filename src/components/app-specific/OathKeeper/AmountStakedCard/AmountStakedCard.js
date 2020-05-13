@@ -4,6 +4,7 @@ import "./AmountStakedCard.scss";
 import ChartCard from "JurCommon/ChartCard";
 import Row from "JurCommon/Row";
 import Amount from "JurCommon/Amount";
+import Expand from "JurCommon/Expand";
 import OathCardEnumFilter from "../OathCardEnumFilter";
 import { oathKeeperAnalytics } from "../../../../utils/helpers";
 import { OATH_KEEPER_FETCH_ANALYTICS } from "../../../../reducers/types";
@@ -17,7 +18,7 @@ import {
 const CARD_NAME = oathKeeperAnalytics.cards.AMOUNT_STAKED;
 
 const AmountStakedCard = ({ value, graph, duration, onEnumFilterChange }) => (
-  <ChartCard>
+  <ChartCard className="jur-oath-keeper-analytics-card">
     <ChartCard.Title>Amount Staked By Oath Keeper</ChartCard.Title>
     <Row>
       <ChartCard.Metric>
@@ -25,6 +26,7 @@ const AmountStakedCard = ({ value, graph, duration, onEnumFilterChange }) => (
       </ChartCard.Metric>
       <ChartCard.PieChart data={graph} />
     </Row>
+    <Expand />
     <ChartCard.Footer>
       <OathCardEnumFilter selected={duration} onChange={onEnumFilterChange} />
     </ChartCard.Footer>

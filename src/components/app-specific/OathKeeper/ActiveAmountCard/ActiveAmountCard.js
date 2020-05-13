@@ -24,8 +24,8 @@ const ActiveAmountCard = ({
   onEnumFilterChange
 }) => {
   return (
-    <ChartCard>
-      <ChartCard.Title>Average Amount Staked</ChartCard.Title>
+    <ChartCard className="jur-oath-keeper-analytics-card">
+      <ChartCard.Title>Active Amount Staked</ChartCard.Title>
       <Row>
         <ChartCard.Metric>
           <Amount value={value} />
