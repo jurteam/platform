@@ -37,7 +37,7 @@ contract OathKeeper is Ownable {
     uint256 public minimumLockPeriod = 1;
     uint256 public maximumLockPeriod = 36;
 
-    event OathTaken(address indexed _beneficiary, uint indexed _amount, uint indexed _lockInPeriod, uint _startAt, uint _releaseAt);
+    event OathTaken(address indexed _beneficiary, uint indexed _amount, uint indexed _lockInPeriod, uint _startAt, uint _releaseAt, uint _oathIndex);
     event IHoldYourOathFulfilled(address indexed _beneficiary, uint indexed _amount, uint indexed _oathIndex);
 
     /**
@@ -71,7 +71,7 @@ contract OathKeeper is Ownable {
         // check if tokens can be transferred to this contract.
         require(jurToken.transferFrom(msg.sender, address(this), _amount), "Not able to transfer funds.");
 
-        emit OathTaken(msg.sender, _amount, _lockInPeriod, now, _releaseAt);
+        emit OathTaken(msg.sender, _amount, _lockInPeriod, now, _releaseAt, oathStats[msg.sender].count);
     }
 
     /**
