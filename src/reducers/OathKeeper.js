@@ -46,22 +46,25 @@ const INITIAL_FILTERS_STATE = {
   }
 };
 
-const INITIAL_STATE = {
+const INITIAL_NEW_OATH_STATE = {
   amount: 0,
   lockInPeriod: "1",
   acceptTnC: false,
   isModalOpen: false,
-  isTakingOath: false,
+  isTakingOath: false
+};
+
+const INITIAL_STATE = {
   isFetchingMyOaths: false,
   isFetchingOathTakers: false,
   myRank: "na",
   myBalance: "na",
   myOaths: [],
-  withdrawingOaths: new Set(),
   isFetchingAnalytics: false,
   analytics: {},
   analyticsMeta: initializeAnalyticsMeta(),
-  ...INITIAL_FILTERS_STATE
+  ...INITIAL_FILTERS_STATE,
+  ...INITIAL_NEW_OATH_STATE
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -86,16 +89,16 @@ export default (state = INITIAL_STATE, action) => {
         myOaths: [newOath, ...state.myOaths]
       };
     case OATH_KEEPER_TOOK_OATH:
-      return { ...state, isTakingOath: false, isModalOpen: false };
+      return { ...state, ...INITIAL_NEW_OATH_STATE };
     case OATH_KEEPER_WITHDRAW_OATH:
       return {
-        ...state
-        // withdrawingOaths: new Set(...state.withdrawingOaths.add(action.payload))
+        ...state,
+        myOaths: [
+          ...setOathStatus(state.myOaths, action.payload, "withdrawing")
+        ]
       };
     case OATH_KEEPER_WITHDREW_OATH:
-      const withdrawingOaths = new Set(...state.withdrawingOaths);
-      withdrawingOaths.delete(action.payload);
-      return { ...state, withdrawingOaths };
+      return { ...state };
     case OATH_KEEPER_FETCH_MY_OATHS:
       return { ...state, isFetchingMyOaths: true };
     case OATH_KEEPER_UPDATE_MY_OATHS:
@@ -146,6 +149,15 @@ export default (state = INITIAL_STATE, action) => {
       return state;
   }
 };
+
+function setOathStatus(oaths, oathIndex, status) {
+  return oaths.map(o => {
+    if (o.oathIndex === oathIndex) {
+      return { ...o, customStatus: status };
+    }
+    return o;
+  });
+}
 
 function balanceFromOaths(oaths) {
   return oaths.reduce(

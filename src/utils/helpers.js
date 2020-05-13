@@ -405,11 +405,13 @@ export const connexFromWei = (value, size) => {
 
 export function oathState(oath) {
   let state = oathState.UNKNOWN;
+  if (oath.customStatus) return oathState.response(oath.customStatus);
+
+  if (oath.fronendOnly) return oathState.response(oathState.PENDING);
+
   const now = new Date() / 1000;
   const startedAt = Number(oath.startAt);
   const releasedAt = Number(oath.releaseAt);
-
-  if (oath.fronendOnly) state = oathState.PENDING;
 
   if (startedAt > now) state = oathState.YET_TO_START;
 
