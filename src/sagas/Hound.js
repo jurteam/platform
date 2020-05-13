@@ -1,4 +1,4 @@
-import { takeEvery, takeLatest, put, select } from "redux-saga/effects";
+import { takeEvery } from "redux-saga/effects";
 import { CATCH_EVENTS, HOUND_START_SMELLING } from "../reducers/types";
 
 const MAX_TRIES = 4;
