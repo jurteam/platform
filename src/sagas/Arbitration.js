@@ -191,7 +191,7 @@ export function* handleCreateArbitration(args) {
 
     // let arbitrationAddress = null;
 
-    const contractAddress = yield factory.createArbitration(...contractPayload).catch(connexChainErrorHandler)
+    const contractAddress = yield factory.createArbitration(...contractPayload)
 
     log('handleCreateArbitration - contractAddress',contractAddress);
 
@@ -203,6 +203,13 @@ export function* handleCreateArbitration(args) {
       // log("handleCreateArbitration - arbitration address", address);
 
       arbitrationAddress = contractAddress;
+    }
+    else
+    {
+      // transaction rejected
+      yield put({ type: CONTRACT_SAVING, payload: false });
+      yield put({ type: CONTRACT_UPDATING, payload: false });
+
     }
 
 
@@ -590,7 +597,21 @@ export function* handleSuccessArbitration(args)
     if (!hasAgreed) 
     {
       // agree
-      yield arbitration.agree(wallet.address,id);
+      const resultTX = yield arbitration.agree(wallet.address,id);
+
+      if (resultTX) 
+      {
+        // success
+      }
+      else
+      {
+        // decline
+
+        if (typeof onFail === "function") onFail();
+        yield put({ type: CONTRACT_SAVING, payload: false });
+        yield put({ type: CONTRACT_UPDATING, payload: false });
+        
+      }
     }
 
 
@@ -756,16 +777,32 @@ export function* handlePayArbitration(args) {
 
     signTx = yield connexToken
       .approveAndCall(contractAddress, amount, 'sign', [wallet.address], user.wallet, id)
-      .catch(connexChainErrorHandler);
+      .catch(err=>{  
+        log('handlePayArbitration - signingService catch() err',err)
+        
+        return false
+      });
 
     log("handlePayArbitration – signTx", signTx);
 
+    if (signTx) 
+    {
+      log("handlePayArbitration - success");
+      const filter = {
+        _party: user.wallet,
+      }
+      
+      global.dispatcher({type: ADD_TRANSACTION,txid: signTx, event: 'ContractSigned', param: filter, contract_id: id})
 
-    const filter = {
-      _party: user.wallet,
+    } 
+    else
+    {
+      log("handlePayArbitration - fail");
+      yield put({ type: CONTRACT_SAVING, payload: false });
+      yield put({ type: CONTRACT_UPDATING, payload: false });
+      if (typeof onFail === "function") onFail();
     }
-    
-    global.dispatcher({type: ADD_TRANSACTION,txid: signTx, event: 'ContractSigned', param: filter, contract_id: id})
+
     
 
     // event to wait:           ContractSigned
@@ -1080,6 +1117,14 @@ if(connectorValue === 'connex')
 
     const withdrawTx = yield arbitration.withdrawDispersal(user.wallet, id);
     log(`handleWithdrawArbitration - current user has withdrawTx?`, withdrawTx);
+
+    if (!withdrawTx)
+    {
+      // declined
+      yield put({ type: CONTRACT_SAVING, payload: false });
+      yield put({ type: CONTRACT_UPDATING, payload: false });
+      if (typeof onFail === "function") onFail();
+    }
 
 
   }

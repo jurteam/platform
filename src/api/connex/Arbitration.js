@@ -375,9 +375,13 @@ export default class connexArbitrationContract
       
 
       log('agree - signingService then() txid',txid)
+
+      return true
       
     }).catch(err=>{  
       log('agree - signingService catch() err',err)
+
+      return false
     })
 
 
@@ -564,9 +568,12 @@ export default class connexArbitrationContract
       
 
       log('withdrawDispersal - signingService then() txid',txid)
+
+      return true
       
     }).catch(err=>{  
-      log('agree - signingService catch() err',err)
+      log('withdrawDispersal - signingService catch() err',err)
+      return false
     })
 
 
