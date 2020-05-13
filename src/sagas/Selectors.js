@@ -57,7 +57,7 @@ export const getUser = state => state.user;
 export const getNewOath = state => ({
   amount: state.oathKeeper.amount,
   lockInPeriod: state.oathKeeper.lockInPeriod,
-  acceptTnC: state.user.acceptTnC
+  acceptTnC: state.oathKeeper.acceptTnC
 });
 
 export const getMyOaths = state => state.oathKeeper.myOaths;
