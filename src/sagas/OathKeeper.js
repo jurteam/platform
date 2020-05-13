@@ -29,10 +29,11 @@ function* fetchMyRank() {
 function* takeAnOath() {
   const { address } = yield select(getWallet);
   const { amount, lockInPeriod, acceptTnC } = yield select(getNewOath);
+  if (!acceptTnC) return;
+
   const myOaths = yield select(getMyOaths);
   const oathIndex = myOaths.length;
 
-  // TODO: Check for acceptTnC and dispatch accordingly
   const prey = yield new connexOathKeeper().takeAnOath(
     address,
     amount,

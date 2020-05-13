@@ -81,6 +81,7 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, acceptTnC: !state.acceptTnC };
     case OATH_KEEPER_TAKE_OATH:
       const newOath = getNewOath({ oathKeeper: state });
+      if (!newOath.acceptTnC) return { ...state };
       newOath.oathIndex = state.myOaths.length + 1;
       newOath.fronendOnly = true;
       return {
