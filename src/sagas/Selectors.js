@@ -20,8 +20,10 @@ export const getContractdetailPage = (state) => (state.contract.detailPage);
 export const getContractIsListPage = (state) => (state.contract.listPage);
 export const getContractList = (state) => (state.contract.list);
 export const getContractListOrder = (state) => (state.contract.order);
-export const getContractPageSize = (state) => (state.contract.pagination.per_page);
-export const getCurrentContractActivities = (state) => (state.contract.current.activities);
+export const getContractPageSize = (state) => (state.contract.pagination
+  .per_page);
+export const getCurrentContractActivities = (state) => (state.contract.current
+  .activities);
 
 // Drizzle Contract
 export const getDrizzleStoredContracts = (state) => (state.contracts);
@@ -33,7 +35,8 @@ export const getDisputeListPage = (state) => (state.dispute.page);
 export const getDisputeList = (state) => (state.dispute.list);
 export const getDisputedetailPage = (state) => (state.dispute.detailPage);
 export const getDisputeIsListPage = (state) => (state.dispute.listPage);
-export const getDisputePageSize = (state) => (state.dispute.pagination.per_page);
+export const getDisputePageSize = (state) => (state.dispute.pagination
+.per_page);
 export const getDisputeListOrder = (state) => (state.dispute.order);
 
 // Oracle
@@ -46,7 +49,9 @@ export const getOracleIsListPage = (state) => (state.oracle.listPage);
 
 // Transactions
 export const getTransactionsList = (state) => (state.transaction.waiting);
-export const getTransactionsLastBlock = (state) => (state.transaction.lastBlockNumber);
+export const getTransactionsLockedList = (state) => (state.transaction.locked);
+export const getTransactionsLastBlock = (state) => (state.transaction
+  .lastBlockNumber);
 
 // User
 export const getUser = (state) => (state.user);
