@@ -20,10 +20,18 @@ export default class connexOathKeeper {
       amount
     );
 
-    return this.lockIn(address, lockInPeriod, approveClause).then(data => {
-      this.listen(data, amount, lockInPeriod);
-      return data;
-    });
+    return this.lockIn(address, lockInPeriod, approveClause).then(
+      signedResponse => {
+        const filters = [
+          {
+            _beneficiary: address,
+            _amount: amount,
+            _lockInPeriod: lockInPeriod
+          }
+        ];
+        return this.listen("OathTaken", signedResponse, filters);
+      }
+    );
   };
 
   lockIn = (address, lockInPeriod, approveClause) => {
@@ -65,12 +73,23 @@ export default class connexOathKeeper {
       .link("https://connex.vecha.in/{txid}")
       .comment("Release the unlocked oath");
 
-    return signingService.request([
-      {
-        comment: "release the oath",
-        ...releaseOathClause
-      }
-    ]);
+    return signingService
+      .request([
+        {
+          comment: "release the oath",
+          ...releaseOathClause
+        }
+      ])
+      .then(signedResponse => {
+        const filters = [
+          {
+            _beneficiary: address,
+            _oathIndex: oathIndex
+          }
+        ];
+
+        return this.listen("IHoldYourOathFulfilled", signedResponse, filters);
+      });
   };
 
   fetchOathAt = (address, oathIndex) => {
@@ -110,18 +129,21 @@ export default class connexOathKeeper {
     );
   };
 
-  listen = ({ signer, txid }, amount, lockInPeriod) => {
-    const oathTakenEvent = this.contractAccount.event(this.abiOf("OathTaken"));
-    const filter = oathTakenEvent
-      .filter([
-        {
-          __beneficiary: signer,
-          _amount: amount,
-          _lockInPeriod: lockInPeriod
-        }
-      ])
-      .order("desc");
-    filter.apply(0, 1).then(logs => console.log("OathTaken Event Logs", logs));
+  listen = (eventName, { signer, txid }, filters) => {
+    console.log("Created hound for", eventName, txid, filters);
+    const smell = this.contractAccount.event(this.abiOf(eventName));
+    const filter = smell.filter([...filters]);
+
+    function shouldStop(logs) {
+      console.log("Event Logs", eventName, txid, filters, "received", logs);
+      if (logs.length) {
+        console.log("Event Logs", eventName, txid, filters, "DONE");
+        return true;
+      }
+      return false;
+    }
+
+    return { filter, shouldStop };
   };
 
   abiOf = method => OathKeeperContract.abi.filter(a => a.name === method)[0];

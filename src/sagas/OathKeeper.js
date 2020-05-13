@@ -13,7 +13,8 @@ import {
   OATH_KEEPER_FETCH_ANALYTICS,
   OATH_KEEPER_UPDATE_ANALYTICS,
   OATH_KEEPER_WITHDRAW_OATH,
-  OATH_KEEPER_WITHDREW_OATH
+  OATH_KEEPER_WITHDREW_OATH,
+  HOUND_START_SMELLING
 } from "../reducers/types";
 
 function* fetchMyRank() {
@@ -31,20 +32,36 @@ function* takeAnOath() {
   const myOaths = yield select(getMyOaths);
 
   // TODO: Check for acceptTnC and dispatch accordingly
-  yield new connexOathKeeper().takeAnOath(address, amount, lockInPeriod);
+  const prey = yield new connexOathKeeper().takeAnOath(
+    address,
+    amount,
+    lockInPeriod
+  );
   yield put({ type: OATH_KEEPER_TOOK_OATH });
-  yield new Promise(resolve => setTimeout(resolve, 12000));
-  yield put({ type: OATH_KEEPER_FETCH_MY_OATHS, payload: myOaths.length + 1 });
+
+  prey.onFound = () =>
+    global.store.dispatch({
+      type: OATH_KEEPER_FETCH_MY_OATHS,
+      payload: myOaths.length + 1
+    });
+
+  yield put({ type: HOUND_START_SMELLING, payload: prey });
 }
 
 function* withdrawAnOath(action) {
-  console.log("about to withdraw", action);
   const oathIndex = action.payload;
   const { address } = yield select(getWallet);
 
-  yield new connexOathKeeper().releaseOath(address, oathIndex);
+  const prey = yield new connexOathKeeper().releaseOath(address, oathIndex);
   yield put({ type: OATH_KEEPER_WITHDREW_OATH, payload: oathIndex });
-  yield put({ type: OATH_KEEPER_FETCH_MY_OATHS, payload: oathIndex });
+
+  prey.onFound = () =>
+    global.store.dispatch({
+      type: OATH_KEEPER_FETCH_MY_OATHS,
+      payload: oathIndex
+    });
+
+  yield put({ type: HOUND_START_SMELLING, payload: prey });
 }
 
 function* fetchMyOaths(action) {
@@ -59,16 +76,13 @@ function* fetchMyOaths(action) {
       action.payload
     );
 
-    console.log("saga OathKeeper fetchMyOaths oath", oath);
-
-    if (myOaths.length <= action.payload)
+    if (myOaths.length + 1 > action.payload)
       myOaths = myOaths.map(o => (o.oathIndex === action.payload ? oath : o));
     else myOaths = [oath, ...myOaths];
   } else {
     myOaths = yield new connexOathKeeper().fetchOathsOf(address);
   }
 
-  console.log("saga OathKeeper fetchMyOaths myOaths", action, myOaths);
   yield put({ type: OATH_KEEPER_UPDATE_MY_OATHS, payload: myOaths });
 }
 
@@ -80,8 +94,6 @@ function* fetchOathTakers(action) {
   if (typeof action.payload === "object") {
     params = { ...params, ...action.payload };
   }
-
-  console.log("fetchOathTakers saga params", params, action);
 
   const oathTakers = yield OathKeeper.oathTakers(null, params);
   yield put({ type: OATH_KEEPER_UPDATE_OATH_TAKERS, payload: oathTakers });

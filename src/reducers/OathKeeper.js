@@ -81,8 +81,8 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, isTakingOath: false, isModalOpen: false };
     case OATH_KEEPER_WITHDRAW_OATH:
       return {
-        ...state,
-        withdrawingOaths: new Set(...state.withdrawingOaths.add(action.payload))
+        ...state
+        // withdrawingOaths: new Set(...state.withdrawingOaths.add(action.payload))
       };
     case OATH_KEEPER_WITHDREW_OATH:
       const withdrawingOaths = new Set(...state.withdrawingOaths);
