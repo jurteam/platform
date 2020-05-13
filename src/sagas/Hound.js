@@ -14,6 +14,7 @@ const Preys = {
   stop: prey => {
     const index = Preys.allPreys.findIndex(p => p.index === prey.index);
     const preyable = Preys.allPreys[index];
+    if (!preyable) return;
     if (typeof preyable.onFound === "function") preyable.onFound();
     if (index >= 0) Preys.allPreys.splice(index, 1);
   }
