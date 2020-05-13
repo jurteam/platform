@@ -409,6 +409,8 @@ export function oathState(oath) {
   const startedAt = Number(oath.startAt);
   const releasedAt = Number(oath.releaseAt);
 
+  if (oath.fronendOnly) state = oathState.PENDING;
+
   if (startedAt > now) state = oathState.YET_TO_START;
 
   if (startedAt <= now && releasedAt > now) state = oathState.ACTIVE;
@@ -425,7 +427,10 @@ oathState.COMPLETED = "completed";
 oathState.YET_TO_START = "yet to start";
 oathState.WITHDRAWN = "withdrawn";
 oathState.UNKNOWN = "unknown";
+oathState.PENDING = "pending";
+
 oathState.response = state => ({
+  isPending: () => state === oathState.PENDING,
   isActive: () => state === oathState.ACTIVE,
   isCompleted: () => state === oathState.COMPLETED,
   isYetToStart: () => state === oathState.YET_TO_START,

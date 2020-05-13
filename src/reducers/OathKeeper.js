@@ -24,6 +24,7 @@ import {
   oathState,
   oathKeeperFilters
 } from "../utils/helpers";
+import { getNewOath } from "../sagas/Selectors";
 
 const INITIAL_FILTERS_STATE = {
   oathTakers: [],
@@ -76,7 +77,14 @@ export default (state = INITIAL_STATE, action) => {
     case OATH_KEEPER_UPDATE_TNC:
       return { ...state, acceptTnC: !state.acceptTnC };
     case OATH_KEEPER_TAKE_OATH:
-      return { ...state, isTakingOath: true };
+      const newOath = getNewOath({ oathKeeper: state });
+      newOath.oathIndex = state.myOaths.length + 1;
+      newOath.fronendOnly = true;
+      return {
+        ...state,
+        isTakingOath: true,
+        myOaths: [newOath, ...state.myOaths]
+      };
     case OATH_KEEPER_TOOK_OATH:
       return { ...state, isTakingOath: false, isModalOpen: false };
     case OATH_KEEPER_WITHDRAW_OATH:

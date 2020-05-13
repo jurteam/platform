@@ -30,6 +30,7 @@ function* takeAnOath() {
   const { address } = yield select(getWallet);
   const { amount, lockInPeriod, acceptTnC } = yield select(getNewOath);
   const myOaths = yield select(getMyOaths);
+  const oathIndex = myOaths.length;
 
   // TODO: Check for acceptTnC and dispatch accordingly
   const prey = yield new connexOathKeeper().takeAnOath(
@@ -42,7 +43,7 @@ function* takeAnOath() {
   prey.onFound = () =>
     global.store.dispatch({
       type: OATH_KEEPER_FETCH_MY_OATHS,
-      payload: myOaths.length + 1
+      payload: oathIndex
     });
 
   yield put({ type: HOUND_START_SMELLING, payload: prey });
@@ -76,9 +77,9 @@ function* fetchMyOaths(action) {
       action.payload
     );
 
-    if (myOaths.length + 1 > action.payload)
-      myOaths = myOaths.map(o => (o.oathIndex === action.payload ? oath : o));
-    else myOaths = [oath, ...myOaths];
+    // if (myOaths.length + 1 > action.payload)
+    myOaths = myOaths.map(o => (o.oathIndex === action.payload ? oath : o));
+    // else myOaths = [oath, ...myOaths];
   } else {
     myOaths = yield new connexOathKeeper().fetchOathsOf(address);
   }

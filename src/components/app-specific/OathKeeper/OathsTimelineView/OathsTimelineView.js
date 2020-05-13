@@ -5,6 +5,7 @@ import Table from "JurCommon/Table";
 import TimeAgo from "JurCommon/TimeAgo";
 import Amount from "JurCommon/Amount";
 import StatusAction from "../StatusAction";
+import { oathState } from "../../../../utils/helpers";
 
 const OathsTimelineView = ({ oaths }) => (
   <Table>
@@ -16,7 +17,9 @@ const OathsTimelineView = ({ oaths }) => (
           </Table.Cell>
           <Table.Cell align="left">for {oath.lockInPeriod} months</Table.Cell>
           <Table.Cell align="left">
-            <TimeAgo date={Number(oath.startAt) * 1000} />
+            {!oathState(oath).isPending() && (
+              <TimeAgo date={new Date(Number(oath.startAt) * 1000)} />
+            )}
           </Table.Cell>
           <Table.Cell align="right">
             <StatusAction oath={oath} />
