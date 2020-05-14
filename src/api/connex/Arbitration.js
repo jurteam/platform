@@ -353,7 +353,7 @@ export default class connexArbitrationContract
 
     let txid = null
 
-    await signingService.request([
+    const result = await signingService.request([
       {
         ...agreeClause,
       }
@@ -384,6 +384,7 @@ export default class connexArbitrationContract
       return false
     })
 
+    return result
 
   }
 
@@ -420,7 +421,7 @@ export default class connexArbitrationContract
 
     let txid = null
 
-    await signingService.request([
+    const result = await signingService.request([
       {
         ...payoutVoterClause,
       }
@@ -442,11 +443,13 @@ export default class connexArbitrationContract
       
 
       log('payoutVoter - signingService then() txid',txid)
-      
+      return true
     }).catch(err=>{  
       log('agree - signingService catch() err',err)
+      return false
     })
 
+    return result
 
   }
 
@@ -483,7 +486,7 @@ export default class connexArbitrationContract
 
     let txid = null
 
-    await signingService.request([
+    const result = await signingService.request([
       {
         ...payoutPartyClause,
       }
@@ -505,11 +508,15 @@ export default class connexArbitrationContract
       
 
       log('payoutParty - signingService then() txid',txid)
+
+      return true
       
     }).catch(err=>{  
       log('agree - signingService catch() err',err)
+      return false
     })
 
+    return result
 
   }
 
@@ -672,7 +679,7 @@ export default class connexArbitrationContract
 
     let txid = null
 
-    await signingService.request([
+    const result = await signingService.request([
       {
         ...withdrawDispersalClause,
       }
@@ -702,6 +709,7 @@ export default class connexArbitrationContract
       return false
     })
 
+    return result
 
   }
 
@@ -738,7 +746,7 @@ export default class connexArbitrationContract
 
     let txid = null
 
-    await signingService.request([
+    const result = await signingService.request([
       {
         ...amendDisputeDispersalClause,
       }
@@ -760,11 +768,14 @@ export default class connexArbitrationContract
       
 
       log('amendDisputeDispersal - signingService then() txid',txid)
-      
+
+      return true
     }).catch(err=>{  
-      log('agree - signingService catch() err',err)
+      log('amendDisputeDispersal - signingService catch() err',err)
+      return false
     })
 
+    return result
 
   }
 

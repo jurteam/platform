@@ -951,54 +951,57 @@ export function* handleAmendDisputeArbitration(args) {
     const wallet = yield select(getWallet);
     log("handleAmendDisputeArbitration - contractAddress",contractAddress);
     const arbitration = new connexArbitrationContract(contractAddress);
-
-
+    
     dispersal[0] = connexToWei(dispersal[0].toString(), 'ether');
     dispersal[1] = connexToWei(dispersal[1].toString(), 'ether');
+    
+    const amendDisputeTx = yield arbitration.amendDisputeDispersal(dispersal,wallet.address,id);
+    log("handleAmendDisputeArbitration - amendDisputeTx",amendDisputeTx);
+
+    if (amendDisputeTx) { // only if there is a valid sign tx
 
 
-    let toUpdate = new FormData();
-    toUpdate.append("code", code);
-    toUpdate.append("message", message);
-    toUpdate.append("proposal_part_a", proposal_part_a);
-    toUpdate.append("proposal_part_b", proposal_part_b);
+      let toUpdate = new FormData();
+      toUpdate.append("code", code);
+      toUpdate.append("message", message);
+      toUpdate.append("proposal_part_a", proposal_part_a);
+      toUpdate.append("proposal_part_b", proposal_part_b);
 
-    // waiting event resolution
-    toUpdate.append("waiting", 1);
+      // waiting event resolution
+      toUpdate.append("waiting", 1);
 
-    log("handleAmendDisputeArbitration - proposalAttachments", proposalAttachments);
+      log("handleAmendDisputeArbitration - proposalAttachments", proposalAttachments);
 
-    if (proposalAttachments.files && proposalAttachments.files.length) {
-      for (let i = 0; i < proposalAttachments.files.length; i++) {
-        // iteate over any file sent over appending the files to the form data.
-        let file = proposalAttachments.files[i];
+      if (proposalAttachments.files && proposalAttachments.files.length) {
+        for (let i = 0; i < proposalAttachments.files.length; i++) {
+          // iteate over any file sent over appending the files to the form data.
+          let file = proposalAttachments.files[i];
 
-        log("handleAmendDisputeArbitration - for each file", file);
+          log("handleAmendDisputeArbitration - for each file", file);
 
-        toUpdate.append("attachments[" + i + "]", file);
+          toUpdate.append("attachments[" + i + "]", file);
+        }
+        // toSend.append("attachments[]", proposalAttachments.files);
       }
-      // toSend.append("attachments[]", proposalAttachments.files);
-    }
 
 
-    try {
-      let response = yield call(Disputes.store, toUpdate, id);
-      log("handleAmendDisputeArbitration - contract status updated", response);
+      try {
+        let response = yield call(Disputes.store, toUpdate, id);
+        log("handleAmendDisputeArbitration - contract status updated", response);
 
-    } catch (error) {
-      yield put({ type: API_CATCH, error });
+      } catch (error) {
+        yield put({ type: API_CATCH, error });
+        yield put({ type: DISPUTE_SAVING, payload: false });
+        yield put({ type: DISPUTE_UPDATING, payload: false });
+      }
+
+    } else {
+
+      yield put({ type: CONTRACT_SAVING, payload: false });
       yield put({ type: DISPUTE_SAVING, payload: false });
       yield put({ type: DISPUTE_UPDATING, payload: false });
+      if (typeof callback === "function") callback();
     }
-
-
-
-    const amendDisputeTx = yield arbitration.amendDisputeDispersal(dispersal,wallet.address,id);
-
-
-    // event ContractDisputeDispersalAmended
-
-
 
   }
   else if(connectorValue === 'web3') 
@@ -1416,65 +1419,82 @@ export function* handleDisputeArbitration(args) {
     
     const disputeTx = yield connexToken
       .approveAndCall(contractAddress, amount, 'dispute', [wallet.address, amount, dispersal], wallet.address, id)
-      .catch(chainErrorHandler);
-
-
-      let toUpdate = new FormData();
-      toUpdate.append("code", code);
-      toUpdate.append("message", message);
-      toUpdate.append("proposal_part_a", proposal_part_a);
-      toUpdate.append("proposal_part_b", proposal_part_b);
-
-      // waiting event resolution
-      toUpdate.append("waiting", 1);
-
-
-      log("handleDisputeArbitration - proposalAttachments", proposalAttachments);
-
-
-      if (proposalAttachments.files && proposalAttachments.files.length) 
-      {
-        for (let i = 0; i < proposalAttachments.files.length; i++) 
-        {
-          // iteate over any file sent over appending the files to the form data.
-          let file = proposalAttachments.files[i];
-
-          log("handleDisputeArbitration - for each file", file);
-
-          toUpdate.append("attachments[" + i + "]", file);
-        }
-        // toSend.append("attachments[]", proposalAttachments.files);
-      }
-
-      try {
-
-        let response = yield call(Disputes.store, toUpdate, id);
-        log("handleDisputeArbitration - contract status updated", response);
-
-        firstVote.append("hash", disputeTx);
-
-        // Store first vote due dispute init
-        response = yield call(Oracles.store, firstVote);
-        log("handleDisputeArbitration - set first vote", response);
+      .catch(err=>{  
+        log('handleDisputeArbitration - signingService catch() err',err)
         
-      } catch (error) {
+        return false
+      });
 
-        log("handleDisputeArbitration - error", error);
+    if (disputeTx) 
+    {
 
+        let toUpdate = new FormData();
+        toUpdate.append("code", code);
+        toUpdate.append("message", message);
+        toUpdate.append("proposal_part_a", proposal_part_a);
+        toUpdate.append("proposal_part_b", proposal_part_b);
+
+        // waiting event resolution
+        toUpdate.append("waiting", 1);
+
+
+        log("handleDisputeArbitration - proposalAttachments", proposalAttachments);
+
+
+        if (proposalAttachments.files && proposalAttachments.files.length) 
+        {
+          for (let i = 0; i < proposalAttachments.files.length; i++) 
+          {
+            // iteate over any file sent over appending the files to the form data.
+            let file = proposalAttachments.files[i];
+
+            log("handleDisputeArbitration - for each file", file);
+
+            toUpdate.append("attachments[" + i + "]", file);
+          }
+          // toSend.append("attachments[]", proposalAttachments.files);
+        }
+
+        try {
+
+          let response = yield call(Disputes.store, toUpdate, id);
+          log("handleDisputeArbitration - contract status updated", response);
+
+          firstVote.append("hash", disputeTx);
+
+          // Store first vote due dispute init
+          response = yield call(Oracles.store, firstVote);
+          log("handleDisputeArbitration - set first vote", response);
+          
+        } catch (error) {
+
+          log("handleDisputeArbitration - error", error);
+
+        }
+
+
+
+
+
+
+
+      const filter = {
+        _party: wallet.address,
       }
+      
+      global.dispatcher({type: ADD_TRANSACTION,txid: disputeTx, event: 'ContractDisputed', param: filter, contract_id: id})
 
-
-
-
-
-
-
-    const filter = {
-      _party: wallet.address,
+      if (typeof callback === "function") callback();
     }
-    
-    global.dispatcher({type: ADD_TRANSACTION,txid: disputeTx, event: 'ContractDisputed', param: filter, contract_id: id})
-
+    else
+    {
+      // decline
+      
+      yield put({ type: CONTRACT_SAVING, payload: false });
+      yield put({ type: DISPUTE_SAVING, payload: false });
+      yield put({ type: DISPUTE_UPDATING, payload: false });
+      if (typeof callback === "function") callback();
+    }
 
   }
   else if(connectorValue === 'web3') 
