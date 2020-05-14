@@ -79,9 +79,10 @@ $api->version('v1', function($api) {
         $api->group(['prefix' => 'transactions'], function($api) {
             $api->get('/', 'App\Http\Controllers\TransactionsController@getResolvableByWallet');
             $api->post('/', 'App\Http\Controllers\TransactionsController@store');
-            $api->put('{id}', 'App\Http\Controllers\TransactionsController@update');            
-            $api->put('{id}/lock', 'App\Http\Controllers\TransactionsController@lock');            
-            $api->put('{id}/unlock', 'App\Http\Controllers\TransactionsController@unlock');            
+            $api->put('{id}', 'App\Http\Controllers\TransactionsController@update');
+            $api->put('{id}/lock', 'App\Http\Controllers\TransactionsController@lock');
+            $api->put('{id}/unlock', 'App\Http\Controllers\TransactionsController@unlock');
+            $api->delete('{id}', 'App\Http\Controllers\TransactionsController@delete');
         });
     });
 
