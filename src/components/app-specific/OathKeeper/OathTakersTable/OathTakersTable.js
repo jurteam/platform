@@ -10,12 +10,12 @@ import {
   OATH_KEEPER_FETCH_OATHS_OF
 } from "../../../../reducers/types";
 import RankBadge from "JurCommon/RankBadge";
-import { i18nDateFormat } from "../../../../utils/helpers";
+import { i18nDateFormat, oathState } from "../../../../utils/helpers";
 import { TableCell } from "../../../common/TableCell/TableCell";
 
 const OathTakerTableHeaderRow = ({ onSort }) => (
   <Table.Row>
-    <Table.Cell>Rank</Table.Cell>
+    <Table.Cell align="center">Rank</Table.Cell>
     <Table.Cell>Wallet</Table.Cell>
     <Table.Cell>Amount Staked</Table.Cell>
     <Table.Cell>Oaths</Table.Cell>
@@ -32,7 +32,9 @@ const OathDetailCell = ({ oaths, property }) => (
       <Table.Body>
         {oaths.map((c, index) => (
           <Table.Row key={index}>
-            <Table.Cell>{property(c)}</Table.Cell>
+            <Table.Cell className="jur-oath-taker-subtable-cell">
+              {property(c)}
+            </Table.Cell>
           </Table.Row>
         ))}
       </Table.Body>
@@ -45,23 +47,25 @@ const OathDetailsRow = ({ address, fetchOathsOf, oaths = [] }) => {
     fetchOathsOf(address);
   }, [address]);
 
-  return oaths.length ? (
+  const activeOaths = oaths.filter(o => oathState(o).isActive());
+
+  return activeOaths.length ? (
     <>
-      <OathDetailCell oaths={oaths} property={o => o.amount} />
+      <OathDetailCell oaths={activeOaths} property={o => o.amount} />
       <OathDetailCell
-        oaths={oaths}
+        oaths={activeOaths}
         property={o => i18nDateFormat(Number(o.startAt) * 1000)}
       />
-      <OathDetailCell oaths={oaths} property={o => o.lockInPeriod} />
+      <OathDetailCell oaths={activeOaths} property={o => o.lockInPeriod} />
       <OathDetailCell
-        oaths={oaths}
+        oaths={activeOaths}
         property={o => i18nDateFormat(Number(o.releaseAt) * 1000)}
       />
     </>
   ) : (
     <>
       <Table.Cell />
-      <Table.Cell>Loading...</Table.Cell>
+      <Table.Cell>{oaths.length ? "No active oaths" : "Loading..."}</Table.Cell>
       <Table.Cell />
       <Table.Cell />
     </>
@@ -78,8 +82,15 @@ const OathTakerTableRow = ({
   onClick,
   fetchOathsOf
 }) => (
-  <Table.Row onClick={onClick}>
-    <Table.Cell>
+  <Table.Row
+    onClick={onClick}
+    className={
+      isSelected
+        ? "jur-oath-takers-row jur-oath-takers-row__selected"
+        : "jur-oath-takers-row"
+    }
+  >
+    <Table.Cell align="center">
       <RankBadge rank={rank} />
     </Table.Cell>
     <Table.Cell>
@@ -89,12 +100,19 @@ const OathTakerTableRow = ({
       <Amount value={amount} />
     </Table.Cell>
     <Table.Cell>{oathCount}</Table.Cell>
-    {isSelected && (
+    {isSelected ? (
       <OathDetailsRow
         fetchOathsOf={fetchOathsOf}
         oaths={oaths}
         address={address}
       />
+    ) : (
+      <>
+        <Table.Cell />
+        <Table.Cell />
+        <Table.Cell />
+        <Table.Cell />
+      </>
     )}
   </Table.Row>
 );
