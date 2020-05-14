@@ -15,8 +15,8 @@ export const RankBadgeIcon = () => (
         y2="7.37539"
         gradientUnits="userSpaceOnUse"
       >
-        <stop stop-color="#2574FB" />
-        <stop offset="1" stop-color="#6A11CA" />
+        <stop stopColor="#2574FB" />
+        <stop offset="1" stopColor="#6A11CA" />
       </linearGradient>
     </defs>
   </svg>
