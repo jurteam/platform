@@ -318,7 +318,7 @@ export function* getEventUpdateTx(args) {
       //   id: txw.id
       // });
 
-      deleteTransaction(txw.id);
+      yield deleteTransaction(txw.id);
     }
 
   } catch (error) {
@@ -1150,6 +1150,7 @@ function* postAction(txw) {
 }
 
 function* deleteTransaction(id) {
+  log("delete transaction id: ",id);
   try{
     const response = yield call(Transactions.delete, id);
 
