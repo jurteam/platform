@@ -141,7 +141,8 @@ export default (state = INITIAL_STATE, action) => {
     case OATH_KEEPER_RESET_FILTERS:
       return {
         ...state,
-        ...INITIAL_FILTERS_STATE
+        ...INITIAL_FILTERS_STATE,
+        selectedRow: null
       };
     case OATH_KEEPER_FETCH_ANALYTICS:
       return {
