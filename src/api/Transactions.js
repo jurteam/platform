@@ -21,4 +21,7 @@ export class Transactions {
   static update(payload, id) {
     return axios.put(`${root}/${id}`, payload);
   }
+  static delete(id) {
+    return axios.delete(`${root}/${id}`);
+  }
 }
