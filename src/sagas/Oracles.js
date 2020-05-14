@@ -214,7 +214,11 @@ export function* onVote(action)
 
     const voteTx = yield connexToken
     .approveAndCall(addressContract, amount, 'vote', [oracle_wallet, wallet_part, amount], oracle_wallet, contract_id)
-    .catch(connexChainErrorHandler);
+    .catch(err=>{  
+      log('onVote - signingService catch() err',err)
+      
+      return false
+    });
 
     log("onVote – voteTx", voteTx);
 
