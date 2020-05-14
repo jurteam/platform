@@ -313,10 +313,12 @@ export function* getEventUpdateTx(args) {
       )
 
       // TODO: delete transaction on backend
-      const retPut = yield put({
-        type: REMOVE_TRANSACTION,
-        id: txw.id
-      });
+      // const retPut = yield put({
+      //   type: REMOVE_TRANSACTION,
+      //   id: txw.id
+      // });
+
+      deleteTransaction(txw.id);
     }
 
   } catch (error) {
@@ -1145,6 +1147,21 @@ function* postAction(txw) {
   }
 
   return null
+}
+
+function* deleteTransaction(id) {
+  try{
+    const response = yield call(Transactions.delete, id);
+
+    log("delete transaction response: ", response);
+    yield put({
+      type: REMOVE_TRANSACTION,
+      id: id
+    })
+
+  }catch(error) {
+    log("Transaction remove error: ", error);
+  }
 }
 
 

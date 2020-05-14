@@ -62,7 +62,7 @@ class TransactionsController extends Controller
         $wallet = $request->header('wallet');
         $transaction = Transaction::lockedByMe($wallet)->findOrFail($id);
 
-        if ($transaction->event == 'ContractDisputed') 
+        if ($transaction->event == 'ContractDisputed')
         {
             // remove waiting from activities, contract_status_details and contract_votes
 
@@ -79,9 +79,9 @@ class TransactionsController extends Controller
             ContractVote::where('waiting', '=', 1)
             ->where('contract_id','=',$contractId)
             ->update(['waiting' => 0]);
-            
+
         }
-        elseif ($transaction->event == 'ContractDisputeDispersalAmended') 
+        elseif ($transaction->event == 'ContractDisputeDispersalAmended')
         {
             // remove waiting from activities, contract_status_details and contract_votes
 
@@ -94,9 +94,9 @@ class TransactionsController extends Controller
             ContractStatusDetail::where('waiting', '=', 1)
             ->where('contract_id','=',$contractId)
             ->update(['waiting' => 0]);
-            
+
         }
-        elseif ($transaction->event == 'VoteCast') 
+        elseif ($transaction->event == 'VoteCast')
         {
             // remove waiting from activities, contract_status_details and contract_votes
 
@@ -104,14 +104,14 @@ class TransactionsController extends Controller
 
             $voteId = $transaction->vote_id;
 
-            if ($voteId != null) 
+            if ($voteId != null)
             {
                 ContractVote::where('waiting', '=', 1)
                 ->where('id','=',$voteId)
                 ->where('contract_id','=',$contractId)
                 ->update(['waiting' => 0]);
             }
-            
+
         }
 
         $transaction->update($request->all());
@@ -132,7 +132,7 @@ class TransactionsController extends Controller
         $transaction = Transaction::findOrFail($id);
         $result = ($transaction->locked_by == $wallet);
 
-        if ($transaction->locked_by == null ) 
+        if ($transaction->locked_by == null )
         {
             $lowerWallet = strtolower($wallet);
 
@@ -156,11 +156,23 @@ class TransactionsController extends Controller
         $transaction = Transaction::findOrFail($id);
 
         $result = false;
-        if ($transaction->locked_by == $lowerWallet ) 
+        if ($transaction->locked_by == $lowerWallet )
         {
             $result = $transaction->update(['locked_by' => null]);
         }
 
         return ['response' => $result];
+    }
+
+    /**
+     * @param int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function delete($id)
+    {
+      $decodedId = decodeId($id);
+      Transaction::destroy($decodedId);
+
+      return response()->json(compact(id));
     }
 }
