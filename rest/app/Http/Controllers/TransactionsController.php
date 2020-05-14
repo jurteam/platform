@@ -170,9 +170,9 @@ class TransactionsController extends Controller
      */
     public function delete($id)
     {
-      $decodedId = decodeId($id);
-      Transaction::destroy($decodedId);
 
-      return response()->json(compact(id));
+      Transaction::destroy($id);
+
+      return response()->json(compact('id'));
     }
 }
