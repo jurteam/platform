@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import {log} from '../../../utils/helpers';
+import moment from 'moment';
 
 
 import "./Countdown.scss";
@@ -21,6 +23,7 @@ export class Countdown extends Component {
   }
 
   componentDidMount = () => {
+    log("Countdown - CDM - diff start and end date", this.getDateDiff(this.props.endDate));
     switch (this.props.statusId) {
       case -1: // rejected
         break;
@@ -44,10 +47,10 @@ export class Countdown extends Component {
       case 31: // Open dispute
         break;
       case 35: // onGoing dispute 24h
-        this.start(this.props.startDate, this.state.duration);
+        this.start(this.props.startDate, this.getDateDiff(this.props.startDate,this.props.endDate));
         break;
       case 36: // extended Dispute 30min
-        this.start(this.props.startDate, this.state.duration);
+        this.start(this.props.startDate, this.getDateDiff(this.props.startDate,this.props.endDate));
         break;
       case 38: // expired dispute
         this.setState({ expired: true });
@@ -130,6 +133,14 @@ export class Countdown extends Component {
 
   getDiff = (startDate, duration) => {
     return Date.parse(new Date(startDate)) + duration - Date.parse(new Date());
+  };
+  
+  getDateDiff = (startDate,endDate) => {
+    if(endDate === null) {
+      return this.state.duration;
+    }
+    return Date.parse(new Date(endDate)) - Date.parse(new Date(startDate));
+
   };
 
   calculateCountDown = (startDate, duration) => {

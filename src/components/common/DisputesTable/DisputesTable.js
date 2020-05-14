@@ -108,6 +108,7 @@ const DisputesTable = props => {
               minutes={dispute.duration.minutes}
               statusId={dispute.statusId}
               startDate={dispute.statusUpdatedAt}
+              endDate={dispute.statusWillEndAt}
               onExpire={() => onExpire(dispute.id)}
               expireAlertFrom={process.env.REACT_APP_VOTE_EXPIRE_ALERT}
               showSeconds

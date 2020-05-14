@@ -47,6 +47,7 @@ export const getOracleIsListPage = state => state.oracle.listPage;
 
 // Transactions
 export const getTransactionsList = state => state.transaction.waiting;
+export const getTransactionsLockedList = state => state.transaction.locked;
 export const getTransactionsLastBlock = state =>
   state.transaction.lastBlockNumber;
 

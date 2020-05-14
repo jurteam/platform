@@ -70,7 +70,8 @@ export default class connexArbitrationFactory
       // ADD_TRANSACTION
       
       txid = tx.txid
-
+      log('createArbitration - signingService then() txid',txid)
+      
       const filter = {
         _creator: account,
         _party1: parties[0],
@@ -79,11 +80,11 @@ export default class connexArbitrationFactory
       
       global.dispatcher({type: ADD_TRANSACTION,txid: tx.txid, event: 'ArbitrationCreated', param: filter, contract_id: contractId})
       
-
-      log('createArbitration - signingService then() txid',txid)
+      return true;
       
     }).catch(err=>{  
       log('createArbitration - signingService catch() err',err)
+      return false;
     })
 
 

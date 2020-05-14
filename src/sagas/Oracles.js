@@ -246,7 +246,7 @@ export function* onVote(action) {
           _party: wallet_part
         };
 
-        global.dispatcher({
+        yield put({
           type: ADD_TRANSACTION,
           txid: voteTx,
           event: "VoteCast",
@@ -254,6 +254,15 @@ export function* onVote(action) {
           contract_id: contract_id,
           vote_id: idVote
         });
+        // if status is extended dispute
+        if (currentContract.statusId === 36) {
+          yield put({
+            type: ADD_TRANSACTION,
+            txid: voteTx,
+            event: "DisputeEndsAdjusted",
+            contract_id: contract_id
+          });
+        }
       } catch (error) {
         yield put({ type: API_CATCH, error });
         yield put({ type: DISPUTE_UPDATING, payload: false });

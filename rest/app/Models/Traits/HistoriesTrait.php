@@ -108,14 +108,16 @@ trait HistoriesTrait
 
         if ($status->shouldUpdate()) {
             $futureHistory = $this->histories
-                ->filter(function($history) {
-                    if (! empty($history->chain_updated_at)) {
-                        return $history->chain_updated_at->isFuture();
-                    }
-                    return false;
-                })->filter(function($history) use($status) {
+                // ->filter(function($history) {
+                //     if (! empty($history->chain_updated_at)) {
+                //         return $history->chain_updated_at->isFuture();
+                //     }
+                //     return false;
+                // })
+                ->filter(function($history) use($status) {
                     return $history->contract_status_id == $status->id;
-                })->last();
+                })
+                ->last();
 
             if (! empty($futureHistory)) {
                 $futureHistory->update([
