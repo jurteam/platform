@@ -5,7 +5,7 @@ import Button from "JurCommon/Button";
 import { OATH_KEEPER_WITHDRAW_OATH } from "../../../../reducers/types";
 
 const WithdrawOathButton = ({ oathIndex, isWithdrawing, onWithdraw }) => (
-  <Button onClick={() => onWithdraw(oathIndex)}>
+  <Button variant="contained" onClick={() => onWithdraw(oathIndex)}>
     {isWithdrawing ? "Withdrawing" : "Withdraw"}
   </Button>
 );
