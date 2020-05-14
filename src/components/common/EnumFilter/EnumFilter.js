@@ -21,7 +21,7 @@ const EnumFilter = ({ selected, enums, onChange }) => (
       .reduce((acc, item, index) => {
         acc.push(item);
         if (enums.length - 1 == index) return acc;
-        acc.push(<Divide vertical={true} />);
+        acc.push(<Divide vertical={true} key={`divide-${index}`} />);
         return acc;
       }, [])}
   </Row>
