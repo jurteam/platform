@@ -14,6 +14,8 @@ import {
   OATH_KEEPER_UPDATE_ANALYTICS,
   OATH_KEEPER_WITHDRAW_OATH,
   OATH_KEEPER_WITHDREW_OATH,
+  OATH_KEEPER_FETCH_OATHS_OF,
+  OATH_KEEPER_UPDATE_OATHS_OF,
   HOUND_START_SMELLING
 } from "../reducers/types";
 
@@ -88,6 +90,12 @@ function* fetchMyOaths(action) {
   yield put({ type: OATH_KEEPER_UPDATE_MY_OATHS, payload: myOaths });
 }
 
+function* fetchOathsOf(action) {
+  const address = action.payload;
+  const oaths = yield new connexOathKeeper().fetchOathsOf(address);
+  yield put({ type: OATH_KEEPER_UPDATE_OATHS_OF, payload: { address, oaths } });
+}
+
 function* fetchOathTakers(action) {
   let params = yield select(state => ({
     ...state.oathKeeper.oathTakersFilters
@@ -115,6 +123,7 @@ export default function* oathKeeperSagas() {
   yield takeLatest(OATH_KEEPER_FETCH_RANK, fetchMyRank);
   yield takeEvery(OATH_KEEPER_TAKE_OATH, takeAnOath);
   yield takeLatest(OATH_KEEPER_FETCH_MY_OATHS, fetchMyOaths);
+  yield takeLatest(OATH_KEEPER_FETCH_OATHS_OF, fetchOathsOf);
   yield takeLatest(OATH_KEEPER_FETCH_OATH_TAKERS, fetchOathTakers);
   yield takeLatest(OATH_KEEPER_FETCH_ANALYTICS, fetchAnalytics);
   yield takeEvery(OATH_KEEPER_WITHDRAW_OATH, withdrawAnOath);

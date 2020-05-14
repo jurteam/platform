@@ -16,7 +16,10 @@ import {
   OATH_KEEPER_UPDATE_ANALYTICS,
   OATH_KEEPER_WITHDREW_OATH,
   OATH_KEEPER_WITHDRAW_OATH,
-  OATH_KEEPER_RESET_FILTERS
+  OATH_KEEPER_RESET_FILTERS,
+  OATH_KEEPER_SELECT_ROW,
+  OATH_KEEPER_UNSELECT_ROW,
+  OATH_KEEPER_UPDATE_OATHS_OF
 } from "./types";
 
 import {
@@ -63,6 +66,7 @@ const INITIAL_STATE = {
   isFetchingAnalytics: false,
   analytics: {},
   analyticsMeta: initializeAnalyticsMeta(),
+  selectedRow: null,
   ...INITIAL_FILTERS_STATE,
   ...INITIAL_NEW_OATH_STATE
 };
@@ -109,6 +113,11 @@ export default (state = INITIAL_STATE, action) => {
         myOaths: action.payload,
         myBalance: balanceFromOaths(action.payload)
       };
+    case OATH_KEEPER_UPDATE_OATHS_OF:
+      return {
+        ...state,
+        oathTakers: updateOathsOf(state.oathTakers, action.payload)
+      };
     case OATH_KEEPER_FETCH_RANK:
       return { ...state };
     case OATH_KEEPER_UPDATE_RANK:
@@ -146,6 +155,16 @@ export default (state = INITIAL_STATE, action) => {
         isFetchingAnalytics: false,
         analytics: computeAnalytics(state.analytics, action)
       };
+    case OATH_KEEPER_SELECT_ROW:
+      return {
+        ...state,
+        selectedRow: action.payload
+      };
+    case OATH_KEEPER_UNSELECT_ROW:
+      return {
+        ...state,
+        selectedRow: null
+      };
     default:
       return state;
   }
@@ -156,6 +175,19 @@ function setOathStatus(oaths, oathIndex, status) {
     if (o.oathIndex === oathIndex) {
       return { ...o, customStatus: status };
     }
+    return o;
+  });
+}
+
+function updateOathsOf(oathTakers, { address, oaths }) {
+  return oathTakers.map(o => {
+    if (o.attributes.address === address) {
+      return {
+        ...o,
+        oaths
+      };
+    }
+
     return o;
   });
 }
