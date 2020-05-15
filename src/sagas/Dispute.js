@@ -123,7 +123,7 @@ export function* getDispute(action) {
 
           let chainStatusTimestamp = () => { setTimeout(() => {
               let chainStatus = global.connex.thor.status;
-              let timestamp = chainStatus.timestamp;
+              let timestamp = chainStatus.head.timestamp;
               console.log("Something is happening");
               if(disputeEnds <= timestamp) {
                 return arbitration.calcDisputeEnds();
