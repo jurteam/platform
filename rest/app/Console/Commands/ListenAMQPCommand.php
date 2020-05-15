@@ -3,9 +3,8 @@
 namespace App\Console\Commands;
 
 use Anik\Amqp\ConsumableMessage;
-use App\Jobs\GenerateOathKeeperRank;
 use Illuminate\Console\Command;
-use \App\Models\Oath;
+use \App\Models\OathKeeper;
 use \Illuminate\Support\Facades\App;
 
 class ListenAMQPCommand extends Command
@@ -43,33 +42,25 @@ class ListenAMQPCommand extends Command
     {
         app('amqp')->consume(function (ConsumableMessage $message) {
 
+            $success = false;
+
             // Decode json string to object
-            $data = json_decode($message->getStream());
+            $payload = json_decode($message->getStream());
 
-            // Process decoded message
-            $oath = Oath::consumeAMQP($data);
+            switch ($payload->assetIdentifier) {
+                case 'oathKeeper':
+                    $success = OathKeeper::consumeAMQP($payload);
+                    break;
+            }
 
-            if ($oath) {
-
-                // Dispatch queue to generate rank
-                dispatch(new GenerateOathKeeperRank);
-
+            if ($success) {
                 // Acknowledge AMQP if message processed successfully
                 $message->getDeliveryInfo()->acknowledge();
             }
 
             // Log info
-            info($data->assetIdentifier . ' : "' . $data->eventIdentifier . '" processed successfully!');
+            info($payload->assetIdentifier . ' : "' . $payload->eventIdentifier . '" processed successfully!');
 
-        }, 'routing-key', [
-
-            'queue' => [
-                'name' => 'OathTaken',
-                'declare' => true,
-                'exclusive' => false
-            ]
-
-        ]);
-
+        }, 'routing-key', ['queue' => ['name' => 'blockchain-events']]);
     }
 }

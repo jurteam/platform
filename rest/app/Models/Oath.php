@@ -42,16 +42,22 @@ class Oath extends Model
     }
 
     /**
-     * Consume AMQP payload to store the data and calculate summaries
+     * Upadte an oath to mark oathWithrawn based on $payload object
      *
-     * @param Object $payload: payload data send by AMQP server
+     * @param Object $payload: payload  send by AMQP server
      * @return Boolean the success or failure message
      */
-    public static function consumeAMQP($payload)
+    public static function withrawn($payload)
     {
-        $oathKeeper = OathKeeper::firstOrCreate(['wallet' => $payload->data->_beneficiary]);
-        $saved = Oath::store($payload->data, $oathKeeper);
-        return OathKeeper::calculateSummary($oathKeeper);
+        $oath = Oath::where([
+            'wallet' => $payload->data->_beneficiary,
+            'oath_index' => $payload->data->_oathIndex
+        ])->first();
+
+        $oath->withdrawn_at = Carbon::createFromTimestamp($payload->transaction->meta->blockTimestamp);
+        $oath->current_state = 'withdrawn';
+
+        return $oath->save();
     }
 
     /**
