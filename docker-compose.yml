@@ -19,11 +19,13 @@ services:
       # - ./rest/tests:/var/www/html/tests
       - ./rest/vendor:/var/www/html/vendor
       # - ./rest:/var/www/html
+      - ./environment/supervisor:/etc/supervisor/conf.d
     ports:
       - "8000:80"
     links:
       - db
       - cache
+      - rabbit
     environment: # These env variables are not being used. See rest/.env instead
       APP_ENV: jur-mvp
       APP_URL: http://localhost
