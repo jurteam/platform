@@ -39,6 +39,7 @@ import {
   UPDATE_LIVE_DISPUTES,
   API_GET_LIVE_VOTES,
   FETCH_ACTIVITIES,
+  SET_CONTRACT_ACTIVITIES,
 } from "../reducers/types";
 
 import {
@@ -142,7 +143,7 @@ export function* getDispute(action) {
             toUpdate.append("chain_updated_at", disputeEnds.toString());
 
             yield call(Contracts.statusChange, toUpdate, id);
-            yield put({ type: FETCH_ACTIVITIES });
+            yield put({ type: SET_CONTRACT_ACTIVITIES, payload: data });
           }
           else if (disputeEnds !== calcDisputeEnds)
           {
@@ -162,10 +163,12 @@ export function* getDispute(action) {
 
             yield call(Contracts.statusChange, toUpdate, id);
 
+            yield put({ type: SET_CONTRACT_ACTIVITIES, payload: data });
+
           }
 
         }
-        yield put({ type: FETCH_ACTIVITIES });
+        // yield put({ type: FETCH_ACTIVITIES });
         const response = yield call(Disputes.get, { id });
         let { data } = response.data;
 
