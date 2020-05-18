@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use \App\Jobs\GenerateOathKeeperAnalytics;
 use \App\Jobs\GenerateOathKeeperRank;
 use \App\Jobs\UpdateOathStateToComplete;
 use \App\Models\Oath;
@@ -112,6 +113,7 @@ class OathKeeper extends Model
         // Dispatch queue to generate rank if all success
         if ($saved) {
             dispatch(new GenerateOathKeeperRank);
+            dispatch(new GenerateOathKeeperAnalytics);
         }
 
         // Return process status
