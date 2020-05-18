@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use \App\Jobs\GenerateOathKeeperRank;
+use \App\Models\GenerateOathKeeperAnalytics;
 use \App\Models\Oath;
 use \App\Models\OathKeeper;
 
@@ -49,6 +50,7 @@ class UpdateOathStateToComplete extends Job
 
             // Re-Generate Rank
             dispatch(new GenerateOathKeeperRank);
+            dispatch(new GenerateOathKeeperAnalytics);
         }
     }
 }
