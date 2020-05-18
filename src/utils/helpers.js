@@ -1,7 +1,8 @@
 import linkify from "linkifyjs/string";
 
-import Big from "big.js"
-
+import { drizzleConnect } from "drizzle-react";
+import { connect } from "react-redux";
+import Big from "big.js";
 
 // Log helper only on DEVELOPMENT environmentexport const warn = (mixed, obj) => {
 export const log = (mixed, obj, type) => {
@@ -36,7 +37,7 @@ export const error = (mixed, obj) => {
 };
 
 // EVM connection checker
-export const checkConnection = (web3) => {
+export const checkConnection = web3 => {
   if (!web3) {
     return { pathname: "/" };
   }
@@ -62,10 +63,10 @@ export const chainErrorHandler = err => {
   //     throw new Error('web3GasTooLow');
 
   // throw new Error(err);
-  log('chain error', err);
-  log('chain error.message', err.message);
-  warn('chain exeption', err.message);
-}
+  log("chain error", err);
+  log("chain error.message", err.message);
+  warn("chain exeption", err.message);
+};
 
 // Route redirect helper
 export const redirect = (...checks) => {
@@ -82,7 +83,7 @@ export const redirect = (...checks) => {
   };
 };
 
-export const humanToEth = ( value ) => {
+export const humanToEth = value => {
   const decimals = "1";
   let amount = 0;
 
@@ -98,7 +99,7 @@ export const humanToEth = ( value ) => {
   return amount;
 };
 
-export const toCurrencyFormat = ( value ) => {
+export const toCurrencyFormat = value => {
   const decimals = "1";
 
   const num =
@@ -106,10 +107,11 @@ export const toCurrencyFormat = ( value ) => {
     Number(
       decimals.padEnd(Number(process.env.REACT_APP_TOKEN_DECIMALS) + 1, "0")
     );
+
   return num.toFixed(2);
 };
 
-export const ethToHuman = ( value ) => {
+export const ethToHuman = value => {
   const decimals = "1";
   const amount =
     Number(value) /
@@ -119,12 +121,12 @@ export const ethToHuman = ( value ) => {
   return amount;
 };
 
-export const ethToStore = ( value ) => {
+export const ethToStore = value => {
   const amount = Number(value);
   return amount.toFixed(process.env.REACT_APP_TOKEN_DECIMALS);
 };
 
-export const getFormattedDate = (date) => {
+export const getFormattedDate = date => {
   if (date) {
     let year = date.getFullYear();
     let month = (1 + date.getMonth()).toString().padStart(2, "0");
@@ -134,28 +136,29 @@ export const getFormattedDate = (date) => {
       .padStart(2, "0");
 
     return `${year}-${month}-${day}`;
-  } 
+  }
   return null;
-
 };
 
-export const capitalize = (string) =>
+export const capitalize = string =>
   string.charAt(0).toUpperCase() + string.slice(1);
 
-export const urlify = (str) => {
-  const html = str ? linkify(str, {
-    target: (href, type) => {
-      if (href.startsWith(window.location.origin)) {
-        return "_self";
-      } else {
-        return "_blank";
-      }
-    }
-  }) : '';
+export const urlify = str => {
+  const html = str
+    ? linkify(str, {
+        target: (href, type) => {
+          if (href.startsWith(window.location.origin)) {
+            return "_self";
+          } else {
+            return "_blank";
+          }
+        }
+      })
+    : "";
   return html;
 };
 
-export const dateReducer = (date) => {
+export const dateReducer = date => {
   var d = new Date(date),
     month = "" + (d.getMonth() + 1),
     day = "" + d.getDate(),
@@ -167,7 +170,13 @@ export const dateReducer = (date) => {
   return [year, month, day].join("-");
 };
 
-export const upperCaseFirst = (string) => {
+export const i18nDateFormat = (
+  dateALike,
+  locale = "en-GB",
+  options = { year: "numeric", month: "short", day: "numeric" }
+) => new Date(dateALike).toLocaleDateString(locale, options);
+
+export const upperCaseFirst = string => {
   return string.charAt(0).toUpperCase() + string.slice(1);
 };
 
@@ -187,11 +196,11 @@ export const arrayColumn = (arr, n) => arr.map(x => x[n]);
  * @param {*} wallet -  if specified check is performed against the provided value for wallet
  *                      instead of whoPays
  */
-export const calculateFundingAndDispersal = (contractData) => {
+export const calculateFundingAndDispersal = contractData => {
   const { partAPenaltyFee, partBPenaltyFee, whoPays, value } = contractData;
-  const [ partA ] = contractData.counterparties;
+  const [partA] = contractData.counterparties;
 
-  log('calculateFundingAndDispersal – run', contractData);
+  log("calculateFundingAndDispersal – run", contractData);
 
   // const {
   //   web3: { utils }
@@ -215,14 +224,23 @@ export const calculateFundingAndDispersal = (contractData) => {
   }
 
   // Avoid presicion issues on BN
-  if (process.env.REACT_APP_VECHAIN_ENABLED === 'true')
-  { // Comet - VeChain Blockchain
+  if (process.env.REACT_APP_VECHAIN_ENABLED === "true") {
+    // Comet - VeChain Blockchain
 
-    let web3Utils = global.drizzle.web3.utils;
-    fundings.a = web3Utils.toWei(fundings.a.toString(), 'ether');
-    fundings.b = web3Utils.toWei(fundings.b.toString(), 'ether');
-    dispersal.a = web3Utils.toWei(dispersal.a.toString(), 'ether');
-    dispersal.b = web3Utils.toWei(dispersal.b.toString(), 'ether');
+    const connectorValue = connector();
+
+    if (connectorValue === "web3") {
+      let web3Utils = global.drizzle.web3.utils;
+      fundings.a = web3Utils.toWei(fundings.a.toString(), "ether");
+      fundings.b = web3Utils.toWei(fundings.b.toString(), "ether");
+      dispersal.a = web3Utils.toWei(dispersal.a.toString(), "ether");
+      dispersal.b = web3Utils.toWei(dispersal.b.toString(), "ether");
+    } else if (connectorValue === "connex") {
+      fundings.a = connexToWei(fundings.a.toString(), "ether");
+      fundings.b = connexToWei(fundings.b.toString(), "ether");
+      dispersal.a = connexToWei(dispersal.a.toString(), "ether");
+      dispersal.b = connexToWei(dispersal.b.toString(), "ether");
+    }
 
     // fundings.a = web3Utils.toBN(fundings.a).toString();
     // fundings.b = web3Utils.toBN(fundings.b).toString();
@@ -233,71 +251,215 @@ export const calculateFundingAndDispersal = (contractData) => {
   return {
     fundings: fundings,
     dispersal: dispersal
-  }
-}
+  };
+};
 
 // @retun float value
 export const getContractTotalValue = (contract, toHuman) => {
-
-  if (typeof toHuman === 'undefined') toHuman = false;
+  if (typeof toHuman === "undefined") toHuman = false;
 
   log("getContractTotalValue – run", contract);
-  let value = 0
+  let value = 0;
 
   // base value
-  if (typeof contract.value !== 'undefined') {
-    value = Number(contract.value)
+  if (typeof contract.value !== "undefined") {
+    value = Number(contract.value);
   } else {
-    value = Number(contract.amount)
+    value = Number(contract.amount);
   }
 
   // penalties
-  if (typeof contract.partAPenaltyFee !== 'undefined') {
-    value = value + Number(contract.partAPenaltyFee) + Number(contract.partBPenaltyFee)
-  } else if (typeof contract.penaltyFee !== 'undefined' && contract.penaltyFee !== null) {
-    value = value + Number(contract.penaltyFee.partA) + Number(contract.penaltyFee.partB)
+  if (typeof contract.partAPenaltyFee !== "undefined") {
+    value =
+      value +
+      Number(contract.partAPenaltyFee) +
+      Number(contract.partBPenaltyFee);
+  } else if (
+    typeof contract.penaltyFee !== "undefined" &&
+    contract.penaltyFee !== null
+  ) {
+    value =
+      value +
+      Number(contract.penaltyFee.partA) +
+      Number(contract.penaltyFee.partB);
   }
 
   return toHuman ? ethToHuman(value) : value;
-}
+};
 
-export const formatAmount = (amount) => {
-
+export const formatAmount = amount => {
   // TODO: WEI conversion
 
   // Avoid presicion issues on BN
-  if (process.env.REACT_APP_VECHAIN_ENABLED === 'true')
-  { // Comet - VeChain Blockchain
-    amount = amount.toString()
+  if (process.env.REACT_APP_VECHAIN_ENABLED === "true") {
+    // Comet - VeChain Blockchain
+    amount = amount.toString();
   }
 
-  return amount
-}
+  return amount;
+};
 
-export const canVote = (statusId) => {
+export const canVote = statusId => {
+  const canVote = [35, 36].indexOf(statusId) >= 0;
 
-  const canVote = [35,36].indexOf(statusId) >= 0;
+  return canVote;
+};
 
-  return canVote
-}
+export const multiplication = (a, b) => {
 
-export const multiplication = (a,b) => {
-
+  Big.PE = 45
   let x = new Big(a);
   const prod = x.times(b);
 
-  log('handleDisputeArbitration - multiplication', x)
-  log('handleDisputeArbitration - multiplication', x.toString())
-  log('handleDisputeArbitration - multiplication', prod.toString())
+  log("handleDisputeArbitration - multiplication", x);
+  log("handleDisputeArbitration - multiplication", x.toString());
+  log("handleDisputeArbitration - multiplication", prod.toString());
 
-  return prod.toString()
-}
+  return prod.toString();
+};
+
+export const division = (a, b) => {
+  let x = new Big(a);
+  const divv = x.div(b);
+
+  log("handleDisputeArbitration - division", x);
+  log("handleDisputeArbitration - division", x.toString());
+  log("handleDisputeArbitration - division", divv.toString());
+
+  return divv.toString();
+};
 
 export const toBigFixed = amount => {
+  const amountArray = amount.toString().split(".");
+  const decimalnumber = amountArray.length > 1 ? amountArray[1].length : 0;
+  const amountFormat =
+    amount.toString() +
+    "0".repeat(Number(process.env.REACT_APP_TOKEN_DECIMALS) - decimalnumber);
 
-  const amountArray = amount.toString().split('.')
-  const decimalnumber = amountArray.length>1?amountArray[1].length:0
-  const amountFormat = amount.toString() + ('0').repeat(Number(process.env.REACT_APP_TOKEN_DECIMALS)-decimalnumber)
+  return amountFormat;
+};
 
-  return amountFormat
+// ---- connex/comet switches
+
+export const connexChainErrorHandler = err => {
+  log("connex chain error", err);
+  log("connex chain error.message", err.message);
+  warn("connex chain exeption", err.message);
+};
+
+export const connector = () => {
+  // return 'web3';
+  return global.connector
+    ? global.connector
+    : window.connex
+    ? "connex"
+    : window.web3
+    ? "web3"
+    : "";
+};
+
+export const connection = (component, state = null, dispatch = null) => {
+  if (connector() === "connex") {
+    return connect(
+      state,
+      dispatch
+    )(component);
+  } else if (connector() === "web3") {
+    return drizzleConnect(component, state, dispatch);
+  }
+
+  return connector === "connex"
+    ? connect
+    : connector === "web3"
+    ? drizzleConnect
+    : null;
+};
+
+export const connexToWei = (value, size) => {
+  let multiplicator;
+
+  switch (size) {
+    case "ether":
+      multiplicator = 10 ** 18;
+      break;
+    default:
+      multiplicator = 10 ** 18;
+      break;
+  }
+
+  return multiplication(value, multiplicator);
+};
+
+export const connexFromWei = (value, size) => {
+  let multiplicator;
+
+  switch (size) {
+    case "ether":
+      multiplicator = 10 ** 18;
+      break;
+    default:
+      multiplicator = 10 ** 18;
+      break;
+  }
+
+  return division(value, multiplicator);
+};
+
+export function oathState(oath) {
+  let state = oathState.UNKNOWN;
+  if (oath.customStatus) return oathState.response(oath.customStatus);
+
+  if (oath.fronendOnly) return oathState.response(oathState.PENDING);
+
+  const now = new Date() / 1000;
+  const startedAt = Number(oath.startAt);
+  const releasedAt = Number(oath.releaseAt);
+
+  if (startedAt > now) state = oathState.YET_TO_START;
+
+  if (startedAt <= now && releasedAt > now) state = oathState.ACTIVE;
+
+  if (releasedAt <= now && !oath.isOathFulfilled) state = oathState.COMPLETED;
+
+  if (releasedAt <= now && oath.isOathFulfilled) state = oathState.WITHDRAWN;
+
+  return oathState.response(state);
+}
+
+oathState.ACTIVE = "active";
+oathState.COMPLETED = "completed";
+oathState.YET_TO_START = "yet to start";
+oathState.WITHDRAWN = "withdrawn";
+oathState.UNKNOWN = "unknown";
+oathState.PENDING = "pending";
+
+oathState.response = state => ({
+  isPending: () => state === oathState.PENDING,
+  isActive: () => state === oathState.ACTIVE,
+  isCompleted: () => state === oathState.COMPLETED,
+  isYetToStart: () => state === oathState.YET_TO_START,
+  isUnknown: () => state === oathState.UNKNOWN,
+  toString: () => state
+});
+
+export const oathKeeperFilters = {
+  statuses: {
+    SHOW_ALL: "Show All",
+    ON_GOING: "On Going",
+    COMPLETED: "Completed"
+  }
+};
+
+export const oathKeeperAnalytics = {
+  durations: {
+    LAST_MONTH: "Last Month",
+    SIX_MONTHS: "6 Months",
+    YEAR: "Year"
+  },
+  cards: {
+    ACTIVE_AMOUNT: "active-amount",
+    AMOUNT_STAKED: "amount-by-oath-keeper",
+    ACTIVE_OATH_KEEPER: "active-oath-keeper",
+    AVERAGE_AMOUNT: "average-amount"
+  }
 };

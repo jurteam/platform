@@ -1,0 +1,11 @@
+@import "../../../../assets/scss/variables";
+
+.jur-balance-card-icon {
+  display: inline-block;
+  width: 8px;
+  color: $accordion-header-active-color;
+
+  &__up {
+    transform: rotate(180deg);
+  }
+}

@@ -1,4 +1,4 @@
-import { drizzleConnect } from "drizzle-react";
+
 import { ProposalForm } from "./ProposalForm";
 
 import { updateProposal, updateProposalField } from "../../../actions/Contracts"; // actions
@@ -6,4 +6,4 @@ import { updateProposal, updateProposalField } from "../../../actions/Contracts"
 const mapDispatchToProps = { updateProposal, updateProposalField };
 const mapStateToProps = (state) => ({ user: state.user });
 
-export default drizzleConnect(ProposalForm, mapStateToProps, mapDispatchToProps);
+export default global.connection(ProposalForm, mapStateToProps, mapDispatchToProps);

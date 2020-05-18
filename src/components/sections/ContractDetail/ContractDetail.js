@@ -111,7 +111,7 @@ export const ContractDetail = ( props ) => {
       history
     } = props;
 
-    global.drizzle.store.dispatch({
+    global.store.dispatch({
       type: API_GET_CONTRACT,
       id,
       onSuccess: pageLoaded,
@@ -182,7 +182,7 @@ export const ContractDetail = ( props ) => {
 
     if (typeof message === 'undefined') message = ''; // handle nil
 
-    global.drizzle.store.dispatch({
+    global.store.dispatch({
       type: CONTRACT_ISSUE,
       issue: statusId > 21 ? "disputes" : issue,
       proposalAttachments,
@@ -237,7 +237,7 @@ export const ContractDetail = ( props ) => {
     if (typeof partAPenaltyFee !== 'undefined' && partAPenaltyFee) totalValue = totalValue + Number(partAPenaltyFee);
     if (typeof partBPenaltyFee !== 'undefined' && partBPenaltyFee) totalValue = totalValue + Number(partBPenaltyFee);
 
-    global.drizzle.store.dispatch({
+    global.store.dispatch({
       type: PAY_ARBITRATION,
       id,
       address,
@@ -254,7 +254,7 @@ export const ContractDetail = ( props ) => {
       address
     } = contract.current;
 
-    global.drizzle.store.dispatch({
+    global.store.dispatch({
       type: WITHDRAW_ARBITRATION,
       id,
       address
@@ -268,7 +268,7 @@ export const ContractDetail = ( props ) => {
       value
     } = contract.current;
 
-    global.drizzle.store.dispatch({
+    global.store.dispatch({
       type: ACCEPT_ARBITRATION,
       id,
       address,
@@ -282,7 +282,7 @@ export const ContractDetail = ( props ) => {
       address
     } = contract.current;
 
-    global.drizzle.store.dispatch({
+    global.store.dispatch({
       type: ACCEPT_ARBITRATION_AMENDMENT,
       id,
       address
@@ -295,7 +295,7 @@ export const ContractDetail = ( props ) => {
       address
     } = contract.current;
 
-    global.drizzle.store.dispatch({
+    global.store.dispatch({
       type: REJECT_ARBITRATION,
       id,
       address
@@ -308,7 +308,7 @@ export const ContractDetail = ( props ) => {
       address
     } = contract.current;
 
-    global.drizzle.store.dispatch({
+    global.store.dispatch({
       type: SUCCESS_ARBITRATION,
       id,
       address
@@ -320,7 +320,7 @@ export const ContractDetail = ( props ) => {
       id
     } = contract.current;
 
-    global.drizzle.store.dispatch({
+    global.store.dispatch({
       type: EXPIRED_CONTRACT,
       id
     });
@@ -329,7 +329,7 @@ export const ContractDetail = ( props ) => {
   const onSend = () => {
     log("onSend", "run");
 
-    global.drizzle.store.dispatch({
+    global.store.dispatch({
       type: SEND_TO_COUNTERPARTY
     });
   };
@@ -341,7 +341,7 @@ export const ContractDetail = ( props ) => {
   const onFileDelete = (file) => {
     log("file delete", file);
 
-    global.drizzle.store.dispatch({
+    global.store.dispatch({
       type: CONTRACT_MEDIA_DELETE,
       ...file
     });
@@ -363,7 +363,7 @@ export const ContractDetail = ( props ) => {
   const onSubmit = () => {
 
     if (!submitDisabled) {
-      global.drizzle.store.dispatch({
+      global.store.dispatch({
         type: PUT_CONTRACT,
         attachments,
         callback: () => setFormUpdated(false) // reset form
@@ -390,6 +390,7 @@ export const ContractDetail = ( props ) => {
     statusLabel,
     statusFrom,
     statusUpdatedAt,
+    statusWillEndAt,
     kpi,
     resolutionProof,
     value,
@@ -471,6 +472,7 @@ export const ContractDetail = ( props ) => {
       statusId,
       statusLabel,
       statusUpdatedAt,
+      statusWillEndAt,
       from: {
         label: "partA",
         debtor: !part_a.isDebtor && !part_b.isDebtor ? true : part_a.isDebtor,
@@ -499,7 +501,8 @@ export const ContractDetail = ( props ) => {
       status: {
         id: statusId,
         label: statusLabel,
-        updatedDate: statusUpdatedAt
+        updatedDate: statusUpdatedAt,
+        endDate: statusWillEndAt
       }, // ???
       // inCaseOfDispute: "open", // default
       duration: {
@@ -591,6 +594,7 @@ export const ContractDetail = ( props ) => {
               feeToPay={feeToPay}
               statusFrom={statusFrom}
               chainContract={chainContract}
+              fromChain={contract.current.fromChain}
               isValid={isValid()}
               hasError={hasError}
               lastPartInvolved={lastPartInvolved}

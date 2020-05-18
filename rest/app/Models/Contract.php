@@ -123,15 +123,19 @@ class Contract extends Model implements HasMedia
             $this->flagAsOpenDispute();
         }
 
-        $activity = $this->recordActivities(array_merge($params->all(), [
-            'status' => $status->label,
-            'status_code' => $status->code,
-            'to_wallet' => $this->getSendTo($params->header('wallet')),
-            'wallet' => $params->header('wallet'),
-            'chain_updated_at' => $chainUpdatedAt
-        ]), $user);
+        if ($params->code != 37) 
+        {
+            $activity = $this->recordActivities(array_merge($params->all(), [
+                'status' => $status->label,
+                'status_code' => $status->code,
+                'to_wallet' => $this->getSendTo($params->header('wallet')),
+                'wallet' => $params->header('wallet'),
+                'chain_updated_at' => $chainUpdatedAt
+            ]), $user);
 
-        $this->notifyParts($activity);
+            $this->notifyParts($activity);
+        }
+        
     }
 
     /**

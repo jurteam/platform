@@ -30,6 +30,7 @@ $app->configure('medialibrary');
 $app->configure('filesystems');
 $app->configure('jwt');
 $app->configure('mail');
+$app->configure('amqp');
 
 $app->withFacades();
 $app->withEloquent();
@@ -103,7 +104,7 @@ $app->register(Illuminate\Notifications\NotificationServiceProvider::class);
 $app->register(Illuminate\Mail\MailServiceProvider::class);
 $app->register(App\Providers\AuthServiceProvider::class);
 $app->register(App\Providers\EventServiceProvider::class);
-
+$app->register(Anik\Amqp\ServiceProviders\AmqpServiceProvider::class);
 
 $app->alias('mailer', Illuminate\Mail\Mailer::class);
 $app->alias('mailer', Illuminate\Contracts\Mail\Mailer::class);

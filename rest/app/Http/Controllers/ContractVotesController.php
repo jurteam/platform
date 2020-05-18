@@ -28,7 +28,9 @@ class ContractVotesController extends Controller
         $idc = decodeId($id);
         $votes = ContractVote::byContract($idc)
                         ->filters($filters)
-                        ->latest()->paginate(15);
+                        ->latest()
+                        ->exceptWaiting()
+                        ->paginate(15);
 
         return $this->response->paginator($votes, new ContractVoteTransformer);
     }
@@ -44,6 +46,7 @@ class ContractVotesController extends Controller
         $contract = Contract::findOrFail($idc);
         $votes = ContractVote::byContract($idc)
                         ->filters($filters)
+                        ->exceptWaiting()
                         ->get();
 
         $response = $this->createDataFromResponse($votes, new ContractVoteTransformer);

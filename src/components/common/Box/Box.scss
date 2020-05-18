@@ -1,0 +1,36 @@
+.jur-box {
+  padding: 40px 54px;
+
+  &__hero {
+    text-align: center;
+    border-bottom: 1px solid #eaebec;
+  }
+
+  &__header {
+    border-bottom: 1px solid #eaebec;
+  }
+
+  &__footer {
+    border-top: 1px solid #eaebec;
+    text-align: center;
+  }
+
+  &__message {
+    padding: 22px;
+    margin-bottom: -10px;
+    margin-bottom: 25px;
+    text-align: center;
+    border-top: 1px solid #eaebec;
+    border-bottom: 1px solid #eaebec;
+  }
+}
+
+.jur-box-title {
+  margin-left: -54px;
+  margin-right: -54px;
+  font-weight: 400;
+}
+
+.jur-box-title + .jur-box {
+  padding: 0;
+}

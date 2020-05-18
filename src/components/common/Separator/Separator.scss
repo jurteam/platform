@@ -1,0 +1,9 @@
+@import "../../../assets/scss/variables";
+
+.jur-separator {
+  display: inline-block;
+  flex: 0 0 8px;
+  height: 2px;
+  background-color: $gull-gray;
+  margin: auto 10px;
+}

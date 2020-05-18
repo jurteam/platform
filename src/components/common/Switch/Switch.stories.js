@@ -2,6 +2,7 @@ import React from "react";
 
 import { storiesOf } from "@storybook/react";
 import { withInfo } from "@storybook/addon-info";
+import { log } from "../../../utils/helpers";
 
 import Switch from "./";
 
@@ -13,6 +14,4 @@ storiesOf("Switch", module)
       header: false
     }
   })
-  .add("Default", () => (
-    <Switch onChange={(ev) => log(ev.target.checked)} />
-  ));
+  .add("Default", () => <Switch onChange={ev => log(ev.target.checked)} />);

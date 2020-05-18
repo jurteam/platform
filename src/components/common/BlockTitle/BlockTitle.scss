@@ -8,6 +8,15 @@
   font-weight: $poppins-semibold;
   font-size: 12px;
 
+  &__reverse {
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+  }
+
+  &__title {
+    margin-right: 7px;
+  }
+
   .jur-info-tooltip {
     margin-right: 5px;
     line-height: 1;

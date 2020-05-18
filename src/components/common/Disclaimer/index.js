@@ -1,4 +1,4 @@
-import { drizzleConnect } from "drizzle-react";
+
 import { Disclaimer } from "./Disclaimer";
 import { DisclaimerModal } from "./DisclaimerModal";
 
@@ -8,6 +8,7 @@ import {
   disclaimerDecline
 } from "../../../actions"; // actions
 
+
 const mapStateToProps = (state) => ({ user: state.user });
 const mapDispatchToProps = {
   disclaimerView,
@@ -15,10 +16,9 @@ const mapDispatchToProps = {
   disclaimerDecline
 };
 
-export const ModalDiscliamer = drizzleConnect(
+export const ModalDiscliamer = global.connection(
   DisclaimerModal,
   mapStateToProps,
   mapDispatchToProps
 );
-
-export default drizzleConnect(Disclaimer, mapStateToProps, mapDispatchToProps);
+export default global.connection(Disclaimer, mapStateToProps, mapDispatchToProps);

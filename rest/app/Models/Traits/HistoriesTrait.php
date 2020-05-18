@@ -14,6 +14,7 @@ trait HistoriesTrait
         if ($this->histories->count() > 0) {
             $history = $this->histories
                 ->filter(function($item) {
+                    if ( $item->waiting ) return false;
                     return !is_null($item->custom_status_date);
                 })
                 ->sortByDesc('custom_status_date')
@@ -107,14 +108,16 @@ trait HistoriesTrait
 
         if ($status->shouldUpdate()) {
             $futureHistory = $this->histories
-                ->filter(function($history) {
-                    if (! empty($history->chain_updated_at)) {
-                        return $history->chain_updated_at->isFuture();
-                    }
-                    return false;
-                })->filter(function($history) use($status) {
+                // ->filter(function($history) {
+                //     if (! empty($history->chain_updated_at)) {
+                //         return $history->chain_updated_at->isFuture();
+                //     }
+                //     return false;
+                // })
+                ->filter(function($history) use($status) {
                     return $history->contract_status_id == $status->id;
-                })->last();
+                })
+                ->last();
 
             if (! empty($futureHistory)) {
                 $futureHistory->update([

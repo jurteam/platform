@@ -225,7 +225,7 @@ export const Viewer = (props) => {
                   <Form.TextArea
                     placeholder={labels.insertYourExplanation}
                     name="message"
-                    error={hasError("message") || false}
+                    error={hasError("message") || "false"}
                     initialValue={currentVote.message}
                     onChange={(value) => changeInput("message", value)}
                   />

@@ -21,7 +21,8 @@ import {
   RESET_VOTE,
   UPDATE_DISPUTE_LIVE,
   DISPUTES_LIST_PAGE,
-  DISPUTES_UPDATED
+  DISPUTES_UPDATED,
+  DISPUTE_VOTE_OVERLAY
 } from "./types";
 
 import { log } from "../utils/helpers";
@@ -31,6 +32,7 @@ const INITIAL_STATE = {
   updating: false,
   updatingList: true,
   detailPage: false,
+  voteOverlay: false,
   listPage: false,
   current: {
     statusId: 0,
@@ -127,6 +129,13 @@ export default (state = INITIAL_STATE, action) => {
         detailPage: action.payload 
       };
 
+    case DISPUTE_VOTE_OVERLAY:
+      log(DISPUTE_VOTE_OVERLAY, action);
+      return { 
+        ...state, 
+        voteOverlay: action.payload 
+      };
+
     case DISPUTES_LIST_PAGE:
       log(DISPUTES_LIST_PAGE, action);
       return { 
@@ -172,7 +181,8 @@ export default (state = INITIAL_STATE, action) => {
           ...state.current,
           statusId: action.statusId,
           statusLabel: action.statusLabel,
-          statusUpdatedAt: action.statusUpdatedAt
+          statusUpdatedAt: action.statusUpdatedAt,
+          statusWillEndAt: action.statusWillEndAt
         },
         vote: INITIAL_STATE.vote
       };

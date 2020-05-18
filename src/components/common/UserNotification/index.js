@@ -1,7 +1,9 @@
-import { drizzleConnect } from "drizzle-react";
+
 import { withRouter } from "react-router-dom";
+
+// import { drizzleConnect } from "drizzle-react";
 import { UserNotification } from "./UserNotification";
 
 const mapStateToProps = (state) => ({ user: state.user });
 
-export default withRouter(drizzleConnect(UserNotification, mapStateToProps));
+export default withRouter(global.connection(UserNotification, mapStateToProps));

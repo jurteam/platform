@@ -2,6 +2,7 @@ import React from "react";
 
 import { storiesOf } from "@storybook/react";
 import { withInfo } from "@storybook/addon-info";
+import { log } from "../../../utils/helpers";
 
 import DisputesTable from ".";
 
@@ -83,7 +84,7 @@ storiesOf("DisputesTable", module)
       myDisputes
       getAllDisputes={() => log("get all disputes")}
       getMyDisputes={() => log("get my disputes")}
-      handleFilterChange={(value) => log(value)}
+      handleFilterChange={value => log(value)}
       handleFilterSubmit={() => log("submit filters")}
     />
   ))
@@ -93,7 +94,7 @@ storiesOf("DisputesTable", module)
       data={disputesData}
       getAllDisputes={() => log("get all disputes")}
       getMyDisputes={() => log("get my disputes")}
-      handleFilterChange={(value) => log(value)}
+      handleFilterChange={value => log(value)}
       handleFilterSubmit={() => log("submit filters")}
     />
   ));

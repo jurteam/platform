@@ -73,9 +73,9 @@ export const OracleDetail = ( props ) => {
 
   // cDM
   useEffect(() => {
-    global.drizzle.store.dispatch({ type: ORACLES_LIST_PAGE, payload: true });
+    global.store.dispatch({ type: ORACLES_LIST_PAGE, payload: true });
     return () => {
-      global.drizzle.store.dispatch({ type: ORACLES_LIST_PAGE, payload: false });
+      global.store.dispatch({ type: ORACLES_LIST_PAGE, payload: false });
 
     }
   }, []);
@@ -92,12 +92,12 @@ export const OracleDetail = ( props ) => {
 
 
     // yield put({ type: ORACLES_LIST_UPDATING, payload: true });
-    global.drizzle.store.dispatch({
+    global.store.dispatch({
       type: ORACLES_LIST_UPDATING,
       payload: true
     });
 
-    global.drizzle.store.dispatch({
+    global.store.dispatch({
       type: FETCH_ORACLES,
       id
     });
@@ -129,7 +129,7 @@ export const OracleDetail = ( props ) => {
       }
     } = props;
 
-    global.drizzle.store.dispatch({
+    global.store.dispatch({
       type: ORACLE_PAGE_CHANGE,
       payload: page,
       id
@@ -144,7 +144,7 @@ export const OracleDetail = ( props ) => {
       }
     } = props;
 
-    global.drizzle.store.dispatch({
+    global.store.dispatch({
       type: ORACLE_ORDER_CHANGE,
       payload: { field: field, type: order },
       id

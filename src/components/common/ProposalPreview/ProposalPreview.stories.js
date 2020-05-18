@@ -2,6 +2,7 @@ import React from "react";
 
 import { storiesOf } from "@storybook/react";
 import { withInfo } from "@storybook/addon-info";
+import { log } from "../../../utils/helpers";
 
 import ProposalPreview from "./";
 
@@ -40,6 +41,6 @@ storiesOf("ProposalPreview", module)
           { name: "file3.pdf" }
         ]
       }}
-      onView={(file) => log(file)}
+      onView={file => log(file)}
     />
   ));

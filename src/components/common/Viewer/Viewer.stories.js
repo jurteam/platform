@@ -2,6 +2,7 @@ import React from "react";
 
 import { storiesOf } from "@storybook/react";
 import { withInfo } from "@storybook/addon-info";
+import { log } from "../../../utils/helpers";
 
 import Viewer from "./";
 
@@ -43,7 +44,7 @@ storiesOf("Viewer", module)
         onExpire: () => alert("countdown finished")
       }}
       statusId={35}
-      contract={{winner:"0x0"}}
+      contract={{ winner: "0x0" }}
       counterparties={[
         {
           wallet: "0x9h8563948567364975369h34789537645",
@@ -77,7 +78,7 @@ storiesOf("Viewer", module)
         startDate: "March 9, 2019 15:27:00",
         statusId: 5,
         expireAlertFrom: 1000 * 60 * 60 * 24,
-        onProgress: (percentage) => log(percentage),
+        onProgress: percentage => log(percentage),
         onExpire: () => alert("countdown finished")
       }}
       statusId={35}
@@ -99,13 +100,13 @@ storiesOf("Viewer", module)
           winner: false
         }
       ]}
-      contract={{winner:"0x0"}}
-      currentVote={{amount:0.01}}
-      onVote={(counterparty) => alert(`Votin for ${counterparty.name}`)}
+      contract={{ winner: "0x0" }}
+      currentVote={{ amount: 0.01 }}
+      onVote={counterparty => alert(`Votin for ${counterparty.name}`)}
       onReject={() => alert("Rejected Contract")}
       onFileLoadingError={() => alert("file error")}
       hasError={() => null}
-      onVoteSubmit={(data) => log(data)}
+      onVoteSubmit={data => log(data)}
       metaMaskError={true}
     />
   ));

@@ -17,12 +17,16 @@ import Disputes from "../components/sections/Disputes";
 import DisputeDetail from "../components/sections/DisputeDetail";
 import OracleDetail from "../components/sections/OracleDetail";
 
+import OathTakers from "../components/sections/OathTakers";
+
 // Helpers
 import { redirect, checkConnection } from "../utils/helpers";
 
-export const createRoutes = (withComponents) => {
+export const createRoutes = withComponents => {
   // handle empty params
-  if (typeof withComponents === "undefined") {withComponents = true;}
+  if (typeof withComponents === "undefined") {
+    withComponents = true;
+  }
   return [
     {
       exact: true,
@@ -94,6 +98,12 @@ export const createRoutes = (withComponents) => {
       onEnter: () => redirect(checkConnection, "/disputes/detail/:id/oracles"),
       component: withComponents && OracleDetail,
       title: i18n.oraclesDetails
+    },
+    {
+      exact: true,
+      path: "/oath-keeper/oath-takers",
+      component: withComponents && OathTakers,
+      title: i18n.oathTakers
     },
     { component: withComponents && NotFound, title: i18n.notFound }
   ];

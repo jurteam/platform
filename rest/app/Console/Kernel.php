@@ -24,6 +24,7 @@ class Kernel extends ConsoleKernel
         \App\Console\Commands\NotifyUsersVotingSessionCommand::class,
         \App\Console\Commands\NotifyForDisputeVoteDeadline::class,
         \App\Console\Commands\NotifyForDisputeVoteReachedDeadline::class,
+        \App\Console\Commands\ListenAMQPCommand::class
     ];
 
     /**
@@ -51,5 +52,8 @@ class Kernel extends ConsoleKernel
 
         // Check for disputes that reached the vote deadline
         $schedule->command('jur:dispute-closed')->daily();
+
+        // Check for new AMQP messages
+        $schedule->command('jur:dispute-closed')->everyMinute();
     }
 }

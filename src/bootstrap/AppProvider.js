@@ -3,11 +3,24 @@ import React, { Component } from "react";
 import appReference from "../../package.json"; // config
 import i18n from "../assets/i18n/en/labels.json"; // i18n
 
-import { log } from "../utils/helpers";
+import { log, connector } from "../utils/helpers";
 
 // Comet
 import Comet from "../hooks/Comet";
-import { SET_LOADING, APP_EXIT } from "../reducers/types.js";
+import {
+  SET_LOADING,
+   APP_EXIT,
+   CATCH_EVENTS,
+   CONNEX_INITIALIZED,
+   CONNEX_SETWALLETAPI,
+   SET_WALLET_ADDRESS,
+   HEARTBEAT
+  } from "../reducers/types.js";
+
+// Api layouts
+import { connexSign } from "../api";
+
+import API from "./Api"; // Axios
 
 // Application Context
 export const AppContext = React.createContext();
@@ -15,11 +28,16 @@ export const AppContext = React.createContext();
 class AppProvider extends Component {
   constructor(props) {
     super(props);
-    this.auth = this.auth.bind(this);
+    // this.auth = this.auth.bind(this);
+    this.connexAuth = this.connexAuth.bind(this);
+    this.tickerLoop = this.tickerLoop.bind(this);
     this.exit = this.exit.bind(this);
     global.exit = this.exit; // available everywhere for sync purposes
 
     this.store = props.store;
+
+    global.store = props.store;
+    global.API = API;
 
     this.state = {
       version: appReference.version,
@@ -28,6 +46,8 @@ class AppProvider extends Component {
       archivableCodes: [-1, 0, 9, 29, 39],
       cometLoading: true,
       customProvider: null,
+      connex: false,
+      web3: false,
       notificationsTableHeaders: [
         {label: "", className: "jur-col--options", key: "status"},
         {label: i18n.date, sortable: true, className: "jur-col--duration", key: "date"},
@@ -68,14 +88,26 @@ class AppProvider extends Component {
       ],
       onNetwork: false,
       auth: this.auth,
+      connexAuth: this.connexAuth,
       exit: this.exit
     };
   }
 
   componentDidMount() {
-    if (typeof window.web3 === "object") {
-      this.auth();
-    } else {
+
+    const connectorValue = connector();
+    log('AppProvider - componentDidMount',connectorValue)
+
+    if(connectorValue === 'connex') {
+      log('AppProvider - componentDidMount - window.connex',window.connex)
+      this.connexAuth();
+    }
+    // else if (connectorValue === 'web3') {
+    //   log('AppProvider - componentDidMount - window.web3',window.web3)
+    //   this.auth();
+    // }
+    else {
+      log('AppProvider - componentDidMount - else window.web3',window.web3)
       this.setState({ cometLoading: false });
       this.store.dispatch({ type: SET_LOADING, payload: false });
     }
@@ -85,23 +117,97 @@ class AppProvider extends Component {
     Comet.cancel()
   }
 
-  auth() {
+  connexAuth()
+  {
+
+    let address='';
+
     this.store.dispatch({ type: SET_LOADING, payload: true });
     this.setState({ cometLoading: true });
-    Comet.auth(
-      (customProvider) => {
-        // success
-        log("AppProvider", "store should be updated");
-        this.setState({ onNetwork: true, customProvider });
-      },
-      () => {
-        // error
-        log("AppProvider", "network connection error!");
-        this.setState({ cometLoading: false });
-        this.store.dispatch({ type: SET_LOADING, payload: false });
-      }
-    );
+
+    // try to connect via connex
+    if(window.connex) {
+
+      global.dispatcher = this.store.dispatch;
+      log("AppProvider - connexAuth", "connex ok");
+      const connex = window.connex
+
+      const signApp = new connexSign();
+
+      signApp.signCertIdentification()
+      .then(result=>{
+
+          log("AppProvider - connexAuth - result",result)
+          log("AppProvider - connexAuth - signer",result.annex.signer)
+          address = result.annex.signer
+
+          global.dispatcher({type: CONNEX_SETWALLETAPI, address: address });
+
+          global.dispatcher({ type: SET_WALLET_ADDRESS, payload: address });
+
+          this.setState({ onNetwork: true, connex: true, connex });
+          global.connector = 'connex'
+
+          this.tickerLoop()
+
+          global.dispatcher({type: CONNEX_INITIALIZED, address: address });
+
+        }).catch(err => {
+          log("AppProvider - connexAuth - catch",err)
+
+          log("AppProvider", "network connection error!");
+          this.setState({ cometLoading: false });
+          global.dispatcher({ type: SET_LOADING, payload: false });
+        })
+
+    }
+
   }
+
+  tickerLoop() {
+    log('tickerLoop')
+    if(window.connex)
+    {
+      log('tickerLoop - connex')
+      const ticker = window.connex.thor.ticker()
+      ticker.next().then((head)=>{
+        this.tickerLoop()
+
+        global.dispatcher({type: CATCH_EVENTS, block: head });
+
+        if (process.env.REACT_APP_HEARTBEAT_ENABLED === "true") {
+
+          global.dispatcher({ type: HEARTBEAT });
+          log("AppProvider - tickerLoop - Heartbeat", "run");
+          
+        }
+      })
+    }
+  }
+
+  // auth() {
+  //   this.store.dispatch({ type: SET_LOADING, payload: true });
+  //   this.setState({ cometLoading: true });
+  //   Comet.auth(
+  //     (customProvider) => {
+  //       // success
+  //       log("AppProvider", "store should be updated");
+  //       log("AppProvider - customProvider", customProvider);
+
+
+  //       global.connector = 'web3'
+
+
+  //       this.setState({ onNetwork: true, web3: true, customProvider });
+  //     },
+  //     () => {
+  //       // error
+  //       log("AppProvider", "network connection error!");
+  //       this.setState({ cometLoading: false });
+  //       this.store.dispatch({ type: SET_LOADING, payload: false });
+  //     }
+  //   );
+  // }
 
   exit() {
     const exitState = { onNetwork: false, cometLoading: false };

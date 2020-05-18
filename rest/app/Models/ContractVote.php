@@ -22,7 +22,8 @@ class ContractVote extends Model implements HasMedia
         'oracle_wallet',
         'contract_id',
         'message',
-        'hash'
+        'hash',
+        'waiting'
     ];
 
     public static function boot()
@@ -37,6 +38,11 @@ class ContractVote extends Model implements HasMedia
     public function scopeFilters($query, $filters)
     {
         return $filters->apply($query);
+    }
+
+    public function scopeExceptWaiting($query)
+    {
+        return $query->where('waiting', 0);
     }
 
     public function scopeByContract($query, $contractId)

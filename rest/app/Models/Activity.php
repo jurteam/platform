@@ -25,7 +25,8 @@ class Activity extends Model implements HasMedia
         'status_code',
         'user_id',
         'contract_id',
-        'chain_updated_at'
+        'chain_updated_at',
+        'waiting'
     ];
 
     protected $casts = [
@@ -46,6 +47,11 @@ class Activity extends Model implements HasMedia
     public function scopeExceptDraft($query)
     {
         return $query->where('status_code', '<>', 0);
+    }
+
+    public function scopeExceptWaiting($query)
+    {
+        return $query->where('waiting', 0);
     }
 
     public function scopeExceptFuture($query)

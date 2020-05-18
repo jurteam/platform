@@ -47,6 +47,7 @@ import {
   EXPIRED_CONTRACT,
   DISPUTE_PAYOUT_PARTY,
   DISPUTE_PAYOUT_VOTER,
+  DISPUTE_VOTE_OVERLAY,
   // SUCCESS_ARBITRATION,
   // SEND_TO_COUNTERPARTY,
   // DISCLAIMER_MUST_BE_ACCEPTED,
@@ -109,7 +110,7 @@ export const DisputeDetail = ( props ) => {
       history
     } = props;
 
-    global.drizzle.store.dispatch({
+    global.store.dispatch({
       type: API_GET_DISPUTE,
       id,
       onSuccess: pageLoaded,
@@ -123,7 +124,24 @@ export const DisputeDetail = ( props ) => {
     if (!showVoteOverlay) {
       changeInput("amount", 0.01)
     }
+    else
+    {
+      global.store.dispatch({
+        type: DISPUTE_VOTE_OVERLAY,
+        payload: true
+      });
+    }
   }, [showVoteOverlay]);
+
+  useEffect(() => {
+    log('useEffect - dispute.voteOverlay',dispute.voteOverlay)
+
+    if (!dispute.voteOverlay) {
+      setShowVoteOverlay(false);
+    }
+  }, [dispute.voteOverlay]);
+
+
 
   const changeInput = (name, value) => {
     if (!formUpdated) {setFormUpdated(true);};
@@ -167,7 +185,7 @@ export const DisputeDetail = ( props ) => {
   const onExpire = () => {
     const { id } = dispute.current;
 
-    global.drizzle.store.dispatch({
+    global.store.dispatch({
       type: EXPIRED_CONTRACT,
       id
     });
@@ -182,7 +200,7 @@ export const DisputeDetail = ( props ) => {
       hasToWithdraw
     } = dispute.current;
 
-    global.drizzle.store.dispatch({
+    global.store.dispatch({
       type: DISPUTE_PAYOUT_PARTY,
       id,
       address,
@@ -199,7 +217,7 @@ export const DisputeDetail = ( props ) => {
       hasToWithdraw
     } = dispute.current;
 
-    global.drizzle.store.dispatch({
+    global.store.dispatch({
       type: DISPUTE_PAYOUT_VOTER,
       id,
       address,
@@ -220,7 +238,7 @@ export const DisputeDetail = ( props ) => {
   // const onSend = () => {
   //   log("onSend", "run");
 
-  //   global.drizzle.store.dispatch({
+  //   global.store.dispatch({
   //     type: NEW_ARBITRATION
   //   });
   // };
@@ -232,7 +250,7 @@ export const DisputeDetail = ( props ) => {
   // const onFileDelete = (file) => {
   //   log("file delete", file);
 
-  //   global.drizzle.store.dispatch({
+  //   global.store.dispatch({
   //     type: CONTRACT_MEDIA_DELETE,
   //     ...file
   //   });
@@ -256,9 +274,10 @@ export const DisputeDetail = ( props ) => {
 
   const onSubmit = () => {
     if (!submitDisabled) {
-      global.drizzle.store.dispatch({
+      global.store.dispatch({
         type: PUT_VOTE,
         vote: dispute.vote,
+        contractAddress: dispute.current.address,
         attachments,
         callback: () => {
           setFormUpdated(false);
@@ -301,6 +320,7 @@ export const DisputeDetail = ( props ) => {
     statusId,
     statusLabel,
     statusUpdatedAt,
+    statusWillEndAt,
     kpi,
     resolutionProof,
     value,
@@ -396,6 +416,7 @@ export const DisputeDetail = ( props ) => {
       statusId,
       statusLabel,
       statusUpdatedAt,
+      statusWillEndAt,
       from: {
         label: "partA",
         debtor: !part_a.isDebtor && !part_b.isDebtor ? true : part_a.isDebtor,
@@ -424,7 +445,8 @@ export const DisputeDetail = ( props ) => {
       status: {
         id: statusId,
         label: statusLabel,
-        updatedDate: statusUpdatedAt
+        updatedDate: statusUpdatedAt,
+        endDate: statusWillEndAt
       }, // ???
       // inCaseOfDispute: "open", // default
       duration: {
@@ -456,7 +478,7 @@ export const DisputeDetail = ( props ) => {
         percentage: percentagePartB,
         value: totalTokensPartB,
         winner: false
-      }      
+      }
     ];
 
     let rejectPercentage = (100 - percentagePartA - percentagePartB);
@@ -466,7 +488,7 @@ export const DisputeDetail = ( props ) => {
       percentage: rejectPercentage,
       value: totalTokensReject,
     }
-    
+
     if (statusId === 39) {
       voteCounterparties.push({
         wallet: '0x0',
@@ -486,6 +508,7 @@ export const DisputeDetail = ( props ) => {
     ...contractData.duration,
     statusId,
     startDate: statusUpdatedAt,
+    endDate: statusWillEndAt,
     onExpire: () => onExpire(dispute.id),
     showSeconds: true
   };
@@ -559,13 +582,13 @@ export const DisputeDetail = ( props ) => {
                   onWithdraw={onWithdraw}
                   onPayout={onPayout}
                   payout={
-                    { 
+                    {
                       hasWithdrawn: dispute.current.hasWithdrawn,
                       hasToGetReward: dispute.current.hasToGetReward,
                       voteLookup: dispute.current.voteLookup,
                       sumToWithdraw: dispute.current.sumToWithdraw,
                       reward: dispute.current.reward,
-                    }                    
+                    }
                   }
                   history={history}
                   oracles={oracle.currentList}

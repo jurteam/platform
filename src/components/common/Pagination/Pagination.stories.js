@@ -12,7 +12,7 @@ const store = new Store({
 
 storiesOf("Pagination", module)
   .addDecorator(withInfo)
-  .addDecorator(StateDecorator(store))
+  // .addDecorator(StateDecorator(store))
   .addParameters({
     info: {
       inline: true,
@@ -24,7 +24,7 @@ storiesOf("Pagination", module)
       activePage={1}
       itemsCountPerPage={10}
       totalItemsCount={100}
-      handlePageChange={(pageNumber) => {}}
+      handlePageChange={pageNumber => {}}
       getPageUrl={() => "#1"}
     />
   ));

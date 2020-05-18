@@ -15,8 +15,7 @@ import "./ContractSidebar.scss";
 import { CONTRACT_READ_NOTIFICATIONS, CONTRACT_DETAIL_PAGE } from "../../../reducers/types";
 
 // Api layouts
-// import { Arbitration } from "../../../api";
-import { log } from "../../../utils/helpers";
+import { log, connector } from "../../../utils/helpers";
 
 export const ContractSidebar = ({
   disabled,
@@ -53,6 +52,7 @@ export const ContractSidebar = ({
   contractAddress,
   statusFrom,
   chainContract,
+  fromChain,
   onChangeValue
 }) => {
   const { labels } = useContext(AppContext);
@@ -77,14 +77,14 @@ export const ContractSidebar = ({
   useEffect(() => {
 
     log('ContractSidebar - Mount');
-    global.drizzle.store.dispatch({
+    global.store.dispatch({
       type: CONTRACT_DETAIL_PAGE,
       payload: true
     });
 
     return () => {
       log('ContractSidebar - Unmount');
-      global.drizzle.store.dispatch({
+      global.store.dispatch({
         type: CONTRACT_DETAIL_PAGE,
         payload: false
       });
@@ -93,7 +93,7 @@ export const ContractSidebar = ({
   }, []);
 
   const readActivities = () => {
-    global.drizzle.store.dispatch({
+    global.store.dispatch({
       type: CONTRACT_READ_NOTIFICATIONS
     });
   };
@@ -185,29 +185,63 @@ export const ContractSidebar = ({
       );
     }
 
-    if (statusId === 9 || statusId === 10) {
-      if (typeof chainContract !== 'undefined' && chainContract) { // handle contract loading
-        let { dispersal, hasWithdrawn } = chainContract
-        log('Sidebar chainContract', chainContract)
-        dispersal = dispersal[Object.keys(dispersal)[0]]; // handle chain sync & missing info
-        hasWithdrawn = hasWithdrawn[Object.keys(hasWithdrawn)[0]]; // handle chain sync & missing info
+    if (statusId === 9 || statusId === 10) 
+    {
 
-        log('Sidebar currentHasWithdrawn', currentHasWithdrawn)
+      const connectorValue = connector();
+      log('Sidebar connectorValue', connectorValue)
 
-        if (typeof dispersal !== 'undefined' && dispersal && typeof hasWithdrawn !== 'undefined' && hasWithdrawn) {
+      if (connectorValue === 'web3' )
+      {
+        if (typeof chainContract !== 'undefined' && chainContract) 
+        { // handle contract loading
+          let { dispersal, hasWithdrawn } = chainContract
+          log('Sidebar chainContract', chainContract)
+          dispersal = dispersal[Object.keys(dispersal)[0]]; // handle chain sync & missing info
+          hasWithdrawn = hasWithdrawn[Object.keys(hasWithdrawn)[0]]; // handle chain sync & missing info
+  
+          log('Sidebar currentHasWithdrawn', currentHasWithdrawn)
+  
+          if (typeof dispersal !== 'undefined' && dispersal && typeof hasWithdrawn !== 'undefined' && hasWithdrawn) 
+          {
+  
+            log('Sidebar dispersal', dispersal)
+            log('Sidebar hasWithdrawn', hasWithdrawn)
+            // waiting actions
+            return dispersal.value !== "0" && hasWithdrawn.value === false && currentHasWithdrawn !== true && statusId === 9 ? (
+              <>
+                <Button color="gradient" variant="gradient" onClick={onWithdraw} fullWidth>
+                  {labels.withdraw}
+                </Button>
+              </>
+            ) : <span className="jur-contract-actions__text">
+            {labels.contractIsClosed}
+          </span>;
+          }
+        }
+      }
+      else if (connectorValue === 'connex' )
+      {
+        
+        if (typeof fromChain !== 'undefined' && fromChain) 
+        {
+          let { dispersal, hasWithdrawn } = fromChain
 
-          log('Sidebar dispersal', dispersal)
-          log('Sidebar hasWithdrawn', hasWithdrawn)
-          // waiting actions
-          return dispersal.value !== "0" && hasWithdrawn.value === false && currentHasWithdrawn !== true && statusId === 9 ? (
-            <>
-              <Button color="gradient" variant="gradient" onClick={onWithdraw} fullWidth>
-                {labels.withdraw}
-              </Button>
-            </>
-          ) : <span className="jur-contract-actions__text">
-          {labels.contractIsClosed}
-        </span>;
+          if (typeof dispersal !== 'undefined' && typeof hasWithdrawn !== 'undefined') {
+    
+            log('Sidebar dispersal', dispersal)
+            log('Sidebar hasWithdrawn', hasWithdrawn)
+            // waiting actions
+            return dispersal !== "0" && hasWithdrawn === false && currentHasWithdrawn !== true && statusId === 9 ? (
+              <>
+                <Button color="gradient" variant="gradient" onClick={onWithdraw} fullWidth>
+                  {labels.withdraw}
+                </Button>
+              </>
+            ) : <span className="jur-contract-actions__text">
+            {labels.contractIsClosed}
+          </span>;
+          }
         }
       }
     }

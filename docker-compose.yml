@@ -1,31 +1,32 @@
-version: '3'
+version: "3"
 services:
-
   jur:
     build: ./
     volumes:
       # - ./build:/var/www/html/public
       # - ./rest/phpunit.xml:/var/www/html/phpunit.xml
-      # - ./rest/.env:/var/www/html/.env
+      - ./rest/.env:/var/www/html/.env
       - ./rest/app:/var/www/html/app
       # - ./rest/artisan:/var/www/html/artisan
       # - ./rest/bootstrap:/var/www/html/bootstrap
       # - ./rest/composer.json:/var/www/html/composer.json
-      # - ./rest/config:/var/www/html/config
+      - ./rest/config:/var/www/html/config
       - ./rest/database:/var/www/html/database
-      # - ./rest/public:/var/www/html/public
+      - ./rest/public:/var/www/html/public
       - ./rest/resources:/var/www/html/resources
       - ./rest/routes:/var/www/html/routes
       # - ./rest/storage:/var/www/html/storage
       # - ./rest/tests:/var/www/html/tests
-      # - ./rest/vendor:/var/www/html/vendor
+      - ./rest/vendor:/var/www/html/vendor
       # - ./rest:/var/www/html
+      - ./environment/supervisor:/etc/supervisor/conf.d
     ports:
-      - "80:80"
+      - "8000:80"
     links:
       - db
       - cache
-    environment:
+      - rabbit
+    environment: # These env variables are not being used. See rest/.env instead
       APP_ENV: jur-mvp
       APP_URL: http://localhost
       APP_TIMEZONE: UTC
@@ -35,10 +36,10 @@ services:
       API_NAME: jur
       API_PREFIX: api/v1
       API_VERSION: v1
-      API_DEBUG: 'true'
+      API_DEBUG: "true"
       JUR_FE_URL: http://localhost
       JUR_MAIL_LOGO_URL: https://jbp.fra1.cdn.digitaloceanspaces.com/mail_logo.svg
-      
+
       DB_CONNECTION: mysql
       DB_HOST: db
       DB_DATABASE: lumen
@@ -116,7 +117,7 @@ services:
   #     API_VERSION: v1
   #     API_DEBUG: 'true'
   #     JUR_FE_URL: https://test.jur.io
-      
+
   #     DB_CONNECTION: mysql
   #     DB_HOST: db
   #     DB_DATABASE: lumen
@@ -147,6 +148,29 @@ services:
       MYSQL_DATABASE: lumen
       MYSQL_USER: lumen
       MYSQL_PASSWORD: secret
+
+  rabbit:
+    image: rabbitmq:3.8
+    # env_file: .env.docker-compose
+    environment:
+      RABBITMQ_ERLANG_COOKIE: esdtvcrxrtcgvhbjnbhgcfxdcgfhbjk
+      RABBITMQ_DEFAULT_USER: yellowpanda
+      RABBITMQ_DEFAULT_PASS: yellowpanda
+      RABBITMQ_DEFAULT_VHOST: /
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    labels:
+      NAME: "rabbit"
+
+  polling:
+    image: keymetrics/pm2:14-alpine
+    volumes:
+      - ./polling-service:/var/www/html
+    working_dir: /var/www/html
+    command: pm2-runtime start pm2.json
+    links:
+      - rabbit
 
   cache:
     image: memcached
