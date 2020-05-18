@@ -137,6 +137,70 @@ export default class connexJURToken
     return userBalance;
   }
 
+  async allowance(owner, spender) 
+  {
+    
+    // Caching for method allowance, for my addresses
+    // Solidity function allowance(address _owner) public view returns(uint256 balance) 
+
+
+    log('allowance - JURTokenABI',this.contract)
+    const allowanceABI = this.getMethodABI("allowance");
+    log('allowance - allowanceABI',allowanceABI)
+    
+    log('allowance - address',owner, spender)
+
+    const allowanceMethod = this.thorAccount.method(allowanceABI)
+    // Set this method to expire when my account being seen
+    allowanceMethod.cache([spender])
+    // Get balance of my account, we will get cached result on most blocks
+    // Event Transfer(_from = '0x7567d83b7b8d80addcb281a71d54fc7b3364ffed', ....) would make cache expired
+    
+    let allowance = 0;
+    
+    await allowanceMethod.call(owner, spender).then(output=>{
+      log('allowance - allowanceMethod',output)
+
+      allowance = output.decoded[0];
+      
+      log('allowance - allowance (then)',allowance)
+    })
+
+    return allowance;
+  }
+
+  async approve(spender, amount) 
+  {
+    
+    // Caching for method approve, for my addresses
+    // Solidity function approve(address _owner) public view returns(uint256 balance) 
+
+
+    log('approve - JURTokenABI',this.contract)
+    const approveABI = this.getMethodABI("approve");
+    log('approve - approveABI',approveABI)
+    
+    log('approve - address',spender)
+
+    const approveMethod = this.thorAccount.method(approveABI)
+    // Set this method to expire when my account being seen
+    approveMethod.cache([spender])
+    // Get balance of my account, we will get cached result on most blocks
+    // Event Transfer(_from = '0x7567d83b7b8d80addcb281a71d54fc7b3364ffed', ....) would make cache expired
+    
+    let approve = 0;
+    
+    await approveMethod.call(spender, amount).then(output=>{
+      log('approve - approveMethod',output)
+
+      approve = output.decoded[0];
+      
+      log('approve - approve (then)',approve)
+    })
+
+    return approve;
+  }
+
   async approveAndCall(address, amount, method, params, account, contractId) 
   {
 
@@ -161,10 +225,6 @@ export default class connexJURToken
 
     const data = methodToCallClause.data
 
-    // const data = this.web3.eth.abi.encodeFunctionCall(
-    //   this.signatures[method],
-    //   [...params]
-    //   );
     
     const approveAndCallClause = approveAndCallMethod.asClause(address, amount, data)
     
@@ -184,20 +244,7 @@ export default class connexJURToken
     log('approveAndCall - signingService',signingService)
     
     let txid = null
-    // let waitingEvent = '';
-
-    // switch (method) {
-    //   case 'sign':
-    //     waitingEvent = 'ContractSigned';
-    //     break;
     
-    //   case 'dispute':
-    //     waitingEvent = 'ContractDisputed';
-    //     break;
-    
-    //   default:
-    //     break;
-    // }
     
     let transactionRequest = await signingService.request([
       {
@@ -205,49 +252,13 @@ export default class connexJURToken
       }
     ])
 
-    // .then(async (tx)=>{
-      
-    //   log('approveAndCall - signingService then()',tx)
-      
-    //   txid = tx.txid
-    //   log('approveAndCall - signingService then() txid',txid)
-
-    //     // event to wait:           ContractSigned
-    //     // param to search event:   _party      
-
-    //   const filter = {
-    //     _party: account,
-    //   }
-      
-    //   global.dispatcher({type: ADD_TRANSACTION,txid: tx.txid, event: waitingEvent, param: filter, contract_id: contractId})
-      
-
-
-    //   // return txid
-
-    //   // let ijdfsoijsdf = await this.getAddressByTransaction(txid)
-
-    //   // log('ijdfsoijsdf',ijdfsoijsdf)
-      
-    // }).catch(err=>{  
-    //   log('approveAndCall - signingService catch() err',err)
-    // })
 
     txid = transactionRequest.txid
       log('approveAndCall - signingService then() txid',txid)
 
-        // event to wait:           ContractSigned
-        // param to search event:   _party  
-
-    // const filter = {
-    //   _party: account,
-    // }
-    
-    // global.dispatcher({type: ADD_TRANSACTION,txid: tx.txid, event: waitingEvent, param: filter, contract_id: contractId})
-    
+      
 
     return txid
-
 
   }
 

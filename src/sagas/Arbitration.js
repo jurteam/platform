@@ -508,68 +508,154 @@ export function* handleAcceptArbitration({
 export function* handleRejectArbitration({ id, address: contractAddress }) {
   log("handleRejectArbitration - run", { id, contractAddress });
 
-  // Check if Drizzle is initialized
-  const check = checkDrizzleInit();
-  if (!check) {
-    return false;
-  }
-
   if (!contractAddress) {
     return false;
   } // proceed only if exist an arbitration on chain
 
-  const token = new JURToken();
-  const arbitration = new Arbitration(contractAddress);
 
-  const hasSigned = yield arbitration.hasSigned().catch(chainErrorHandler);
-  log(`handleRejectArbitration - current user has hasSigned?`, hasSigned);
 
-  // contracts["JURToken"].methods["approve"].cacheSend();
+  // check connex or web3
+  const connectorValue = connector()
 
-  // chain rejection
-  let unsignTx = false; // not needed by default
-  if (hasSigned)
+  if(connectorValue === 'connex') 
   {
-    // Unsign
-    unsignTx = yield arbitration.unsign().catch(chainErrorHandler);
-  }
-  if (unsignTx === false) { /* do nothing */ } // TODO: instead should prompt user to force unsign
 
-  // Prevent future token sign
-  // yield put({ type: CHAIN_APPROVE_JURTOKEN, amount: 0 }); // ???
-  let unapproveTx = false
-  const hasAllowance = yield token.allowance(contractAddress).catch(chainErrorHandler);
-  log(`handleRejectArbitration - current contract has hasAllowance?`, hasAllowance);
-  if (hasAllowance && hasAllowance.toString() !== "0")
+    const wallet = yield select(getWallet);
+    const connexToken = new connexJURToken();
+    const arbitration = new connexArbitrationContract(contractAddress);
+
+    const hasSigned = yield arbitration.hasSigned(wallet.address).catch(connexChainErrorHandler);
+    log(`handleRejectArbitration - current user has hasSigned?`, hasSigned);
+
+
+
+
+    let unsignTx = false; // not needed by default
+    if (hasSigned)
+    {
+      log(`handleRejectArbitration - unsign`);
+            // Unsign
+      unsignTx = yield arbitration.unsign(wallet.address, id).catch(connexChainErrorHandler);
+
+      log(`handleRejectArbitration - unsignTx`, unsignTx);
+    }
+    if (unsignTx === false) { /* do nothing */ } // TODO: instead should prompt user to force unsign
+
+
+
+
+    // Prevent future token sign
+    // yield put({ type: CHAIN_APPROVE_JURTOKEN, amount: 0 }); // ???
+    let unapproveTx = false
+    const hasAllowance = yield connexToken.allowance(wallet.address,contractAddress).catch(connexChainErrorHandler);
+    log(`handleRejectArbitration - current contract has hasAllowance?`, hasAllowance);
+
+    if (hasAllowance && hasAllowance.toString() !== "0")
+    {
+      log(`handleRejectArbitration - Remove token allowance`);
+      // Remove token allowance
+      unapproveTx = yield connexToken.approve(contractAddress, 0).catch(chainErrorHandler);
+      log(`handleRejectArbitration - unapproveTx`,unapproveTx);
+      // on jurtoken approve() success will be emitted 'Approval' event
+    }
+    if (unapproveTx === false) { /* do nothing */ } // TODO: instead should prompt user to force unallowance
+
+
+      // Status update
+      let toUpdate = new FormData();
+      toUpdate.append("code", -1);
+  
+      try {
+        const response = yield call(Contracts.statusChange, toUpdate, id);
+        log("handleRejectArbitration - contract status updated", response);
+        const { statusId, statusLabel, statusUpdatedAt,statusWillEndAt, statusFrom } = response.data.data;
+        yield put({
+          type: SET_CONTRACT_STATUS,
+          statusId,
+          statusFrom,
+          statusLabel,
+          statusUpdatedAt,
+          statusWillEndAt,
+          id
+        });
+        yield put({ type: FETCH_CONTRACTS });
+  
+        // const { history } = action;
+        // history.push(`/contracts/detail/${id}`); // go to contract detail for furter operations
+      } catch (error) {
+        yield put({ type: API_CATCH, error });
+      }
+    
+
+
+  } 
+  else if (connectorValue === 'web3') 
   {
-    // Remove token allowance
-    unapproveTx = yield token.approve(contractAddress, 0).catch(chainErrorHandler);
-  }
-  if (unapproveTx === false) { /* do nothing */ } // TODO: instead should prompt user to force unallowance
 
-  // Status update
-  let toUpdate = new FormData();
-  toUpdate.append("code", -1);
+    // Check if Drizzle is initialized
+    const check = checkDrizzleInit();
+    if (!check) {
+      return false;
+    }
 
-  try {
-    const response = yield call(Contracts.statusChange, toUpdate, id);
-    log("handleRejectArbitration - contract status updated", response);
-    const { statusId, statusLabel, statusUpdatedAt,statusWillEndAt, statusFrom } = response.data.data;
-    yield put({
-      type: SET_CONTRACT_STATUS,
-      statusId,
-      statusFrom,
-      statusLabel,
-      statusUpdatedAt,
-      statusWillEndAt,
-      id
-    });
-    yield put({ type: FETCH_CONTRACTS });
 
-    // const { history } = action;
-    // history.push(`/contracts/detail/${id}`); // go to contract detail for furter operations
-  } catch (error) {
-    yield put({ type: API_CATCH, error });
+    const token = new JURToken();
+    const arbitration = new Arbitration(contractAddress);
+
+    const hasSigned = yield arbitration.hasSigned().catch(chainErrorHandler);
+    log(`handleRejectArbitration - current user has hasSigned?`, hasSigned);
+
+    // contracts["JURToken"].methods["approve"].cacheSend();
+
+    // chain rejection
+    let unsignTx = false; // not needed by default
+    if (hasSigned)
+    {
+      log(`handleRejectArbitration - unsign`);
+      // Unsign
+      unsignTx = yield arbitration.unsign().catch(chainErrorHandler);
+      log(`handleRejectArbitration - unsign`,unsignTx);
+    }
+    if (unsignTx === false) { /* do nothing */ } // TODO: instead should prompt user to force unsign
+
+    // Prevent future token sign
+    // yield put({ type: CHAIN_APPROVE_JURTOKEN, amount: 0 }); // ???
+    let unapproveTx = false
+    const hasAllowance = yield token.allowance(contractAddress).catch(chainErrorHandler);
+    log(`handleRejectArbitration - current contract has hasAllowance?`, hasAllowance);
+    if (hasAllowance && hasAllowance.toString() !== "0")
+    {
+      log(`handleRejectArbitration - Remove token allowance`);
+      // Remove token allowance
+      unapproveTx = yield token.approve(contractAddress, 0).catch(chainErrorHandler);
+      log(`handleRejectArbitration - unapproveTx`,unapproveTx);
+    }
+    if (unapproveTx === false) { /* do nothing */ } // TODO: instead should prompt user to force unallowance
+
+    // Status update
+    let toUpdate = new FormData();
+    toUpdate.append("code", -1);
+
+    try {
+      const response = yield call(Contracts.statusChange, toUpdate, id);
+      log("handleRejectArbitration - contract status updated", response);
+      const { statusId, statusLabel, statusUpdatedAt,statusWillEndAt, statusFrom } = response.data.data;
+      yield put({
+        type: SET_CONTRACT_STATUS,
+        statusId,
+        statusFrom,
+        statusLabel,
+        statusUpdatedAt,
+        statusWillEndAt,
+        id
+      });
+      yield put({ type: FETCH_CONTRACTS });
+
+      // const { history } = action;
+      // history.push(`/contracts/detail/${id}`); // go to contract detail for furter operations
+    } catch (error) {
+      yield put({ type: API_CATCH, error });
+    }
   }
 }
 
