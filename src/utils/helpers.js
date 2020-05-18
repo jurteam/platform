@@ -298,6 +298,18 @@ export const canVote = statusId => {
   return canVote;
 };
 
+export const sum = (a, b) => {
+
+  let x = new Big(a);
+  const sum = x.plus(b);
+
+  log("handleDisputeArbitration - sum", x);
+  log("handleDisputeArbitration - sum", x.toString());
+  log("handleDisputeArbitration - sum", sum.toString());
+
+  return sum.toString();
+};
+
 export const multiplication = (a, b) => {
 
   Big.PE = 45
