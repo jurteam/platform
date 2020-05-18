@@ -388,6 +388,74 @@ export default class connexArbitrationContract
 
   }
 
+  async unsign(account, contractId) 
+  {
+    
+    const unsignABI = this.getMethodABI("unsign");
+
+    log('unsign - unsignABI',unsignABI)    
+
+    const unsignMethod = this.thorAccount.method(unsignABI)
+
+    log('unsign - unsignMethod',unsignMethod)
+    
+
+    // --##################--- asClause
+
+    log('unsign - parameter',{account})
+
+    const unsignClause = unsignMethod.asClause()
+    
+    log('unsign - unsignClause',unsignClause) 
+    
+    const signingService = global.connex.vendor.sign('tx')
+    
+    log('unsign - signingService',signingService)
+
+
+    signingService
+    .signer(account) // Enforce signer
+    .gas(global.connex.thor.genesis.gasLimit) // Set maximum gas
+    .link('http://localhost:3000/contracts/detail/'+contractId) // User will be back to the app by the url https://connex.vecha.in/0xffff....
+    .comment('unsign contract')
+
+    let txid = null
+
+    const result = await signingService.request([
+      {
+        ...unsignClause,
+      }
+    ])
+    .then(async (tx)=>{
+
+      log('unsign - signingService then()',tx)
+
+      // call transaction saving endpoint
+      // ADD_TRANSACTION
+      
+      txid = tx.txid
+
+      const filter = {
+        _party: account,
+      }
+      
+      global.dispatcher({type: ADD_TRANSACTION,txid: tx.txid, event: 'ContractUnsigned', param: filter, contract_id: contractId})
+      
+
+      log('unsign - signingService then() txid',txid)
+
+      return true
+      
+    }).catch(err=>{  
+      log('unsign - signingService catch() err',err)
+
+      return false
+    })
+
+    return result
+
+  }
+
   async payoutVoter(account, contractId, start = 0, end = 999999) 
   {
     
