@@ -142,7 +142,7 @@ export function* getDispute(action) {
             toUpdate.append("chain_updated_at", disputeEnds.toString());
 
             yield call(Contracts.statusChange, toUpdate, id);
-
+            yield put({ type: FETCH_ACTIVITIES });
           }
           else if (disputeEnds !== calcDisputeEnds)
           {
@@ -165,7 +165,7 @@ export function* getDispute(action) {
           }
 
         }
-
+        yield put({ type: FETCH_ACTIVITIES });
         const response = yield call(Disputes.get, { id });
         let { data } = response.data;
 
@@ -358,22 +358,22 @@ export function* getDispute(action) {
   }
 }
 
-async function resolveDate(disputeEnds) 
+async function resolveDate(disputeEnds)
 {
   await new Promise(resolve => {
-    
+
     let interval = setInterval(() => {
-      
+
       let chainStatus = global.connex.thor.status;
         let timestamp = chainStatus.head.timestamp;
         log("getDispute - resolveDate - timestamp ::: ",timestamp);
-        
+
         if(disputeEnds <= timestamp) {
           log("getDispute - resolveDate - ok ");
 
           clearInterval(interval)
           resolve(true)
-          
+
         }
 
         log("getDispute - resolveDate - recall ");
@@ -715,13 +715,13 @@ export function* getDisputeStatus(action) {
       });
 
     }
-    else 
+    else
     {
 
       yield put({ type: API_GET_LIVE_VOTES });
       yield put({ type: FETCH_ACTIVITIES });
     }
-    
+
   }
 
 
