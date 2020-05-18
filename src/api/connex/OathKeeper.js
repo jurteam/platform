@@ -4,10 +4,10 @@ import connexJURToken from "./JURToken";
 export default class connexOathKeeper {
   constructor() {
     // this.contractAddress = "0x730c7A23A6258Ed2BaD2EEF4b227f3044Dc160EB";
-    this.contractAddress = "0x862676750f53e92e2502e54ef5c5bfefccfcef51"; //min
+    // this.contractAddress = "0x862676750f53e92e2502e54ef5c5bfefccfcef51"; //min
     // this.contractAddress = "0x1d34b7409114772d09784aeaa3203055c6805fe9" // Suhail
-    // this.contractAddress =
-    //   OathKeeperContract.networks[this.currentNetworkId()].address;
+    this.contractAddress =
+      OathKeeperContract.networks[this.currentNetworkId()].address;
     this.contractAccount = global.connex.thor.account(this.contractAddress);
   }
 
@@ -15,12 +15,13 @@ export default class connexOathKeeper {
     if (!isOathable(amount, lockInPeriod))
       return Promise.reject("Invalid parameters! Can't take oath");
 
+    console.log("OathKeeper connex address", this.contractAddress);
     const approveClause = new connexJURToken().approveClause(
       this.contractAddress,
       amount
     );
 
-    return this.lockIn(address, lockInPeriod, approveClause).then(
+    return this.lockIn(address, amount, lockInPeriod, approveClause).then(
       signedResponse => {
         const filters = [
           {
@@ -34,27 +35,34 @@ export default class connexOathKeeper {
     );
   };
 
-  lockIn = (address, lockInPeriod, approveClause) => {
+  lockIn = (address, amount, lockInPeriod, approveClause) => {
     const takeAnOathMethod = this.contractAccount.method(
       this.abiOf("takeAnOath")
     );
 
     const takeAnOathClause = takeAnOathMethod.asClause(lockInPeriod);
 
+    console.log(
+      "OathKeeper connex gasLimit",
+      global.connex.thor.genesis.gasLimit,
+      10000000,
+      6721975,
+      7000000
+    );
     const signingService = global.connex.vendor.sign("tx");
     signingService
       .signer(address)
       .gas(global.connex.thor.genesis.gasLimit)
       .link("https://connex.vecha.in/{txid}")
-      .comment("Take an oath with given lock up duration");
+      .comment(`Take an oath of ${amount} JUR for ${lockInPeriod} months`);
 
     return signingService.request([
       {
-        comment: "approve the amount",
+        comment: `approve ${amount} JUR`,
         ...approveClause
       },
       {
-        comment: "lock up the amount",
+        comment: `lock up for ${lockInPeriod} months`,
         ...takeAnOathClause
       }
     ]);
