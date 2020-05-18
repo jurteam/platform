@@ -4,6 +4,7 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Laravel\Lumen\Console\Kernel as ConsoleKernel;
+use \App\Jobs\GenerateOathKeeperAnalytics;
 
 class Kernel extends ConsoleKernel
 {
@@ -53,7 +54,7 @@ class Kernel extends ConsoleKernel
         // Check for disputes that reached the vote deadline
         $schedule->command('jur:dispute-closed')->daily();
 
-        // Check for new AMQP messages
-        $schedule->command('jur:dispute-closed')->everyMinute();
+        // Re-Generate Oath-Keeper Analytics
+        $schedule->job(new GenerateOathKeeperAnalytics)->daily();
     }
 }
