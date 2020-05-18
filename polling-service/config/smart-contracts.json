@@ -1,11 +1,66 @@
 [
     {
         "identifier": "oathKeeper",
-        "address": "0x1d34b7409114772d09784aeaa3203055c6805fe9",
+        "address": "0x862676750f53e92e2502e54ef5c5bfefccfcef51",
         "abiPath": "./abi/oathKeeper.json",
-        "events": [
-            "OathTaken",
-            "IHoldYourOathFulfilled"
-        ]
+        "events": [{
+            "anonymous": false,
+            "inputs": [
+                {
+                    "indexed": true,
+                    "name": "_beneficiary",
+                    "type": "address"
+                },
+                {
+                    "indexed": true,
+                    "name": "_amount",
+                    "type": "uint256"
+                },
+                {
+                    "indexed": true,
+                    "name": "_oathIndex",
+                    "type": "uint256"
+                }
+            ],
+            "name": "IHoldYourOathFulfilled",
+            "type": "event"
+        },
+        {
+            "anonymous": false,
+            "inputs": [
+                {
+                    "indexed": true,
+                    "name": "_beneficiary",
+                    "type": "address"
+                },
+                {
+                    "indexed": true,
+                    "name": "_amount",
+                    "type": "uint256"
+                },
+                {
+                    "indexed": true,
+                    "name": "_lockInPeriod",
+                    "type": "uint256"
+                },
+                {
+                    "indexed": false,
+                    "name": "_startAt",
+                    "type": "uint256"
+                },
+                {
+                    "indexed": false,
+                    "name": "_releaseAt",
+                    "type": "uint256"
+                },
+                {
+                    "indexed": false,
+                    "name": "_oathIndex",
+                    "type": "uint256"
+                }
+            ],
+            "name": "OathTaken",
+            "type": "event"
+        }]
     }
 ]

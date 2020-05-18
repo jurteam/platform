@@ -1,32 +1,29 @@
-const path = require('path');
-const smartContracts = require('../config/smart-contracts.json');
-const event = require('./event');
+const processor = require('./event.processor.js');
 
-module.exports = {
-    listen() {
-        try {
+const listen = async (error, result) => {
+        if(error) console.log('error', error);
 
-            // Listen for all the smart-contract specified in the config
-            for (let i = 0; i < smartContracts.length; i++) {
+        // Create queue if not exits
+        const asserted = await queue.assertQueue(process.env.QUEUE_NAME);
 
-                const instance = smartContracts[i];
-
-                // Get the ABI-JSON
-                let abi = require(path.resolve('config', instance.abiPath));
-
-                // Get the object of smart-contract
-                const contract = new web3.eth.Contract(abi, instance.address);
-
-                // Loop through each event specified in the config
-                for (let j = 0; j < instance.events.length; j++) {
-                    event.subscribe(instance.identifier, contract, instance.events[j]); // subscribe to the specific event
-                }
-            }
-        } catch (error) {
-            console.log(error);
-
-            // Exit process
-            process.exit(1)
+        // Exit the process if queue not asserted
+        if (!asserted) {
+            process.exit(1);
         }
-    }
+
+        let request = await processor.checkBlock(5950875);
+        if(request) {
+            // console.log("result", request)
+            // Push formated data to the queue
+            await queue.push(process.env.QUEUE_NAME, request)
+
+            // Console the info
+            // console.log(chalk.greenBright.bold('[queue] :'), chalk.blueBright.italic(eventName, chalk.greenBright.bold('successfully stored into queue!')));
+        }
+        setTimeout(listen, 10000);
+
 }
+module.exports = {
+    listen
+}
+
