@@ -18,6 +18,7 @@ trait HistoriesTrait
                     return !is_null($item->custom_status_date);
                 })
                 ->sortByDesc('custom_status_date')
+                ->sortByDesc('created_at')
                 ->first();
 
             if (!empty($history)) {
