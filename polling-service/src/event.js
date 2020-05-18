@@ -6,7 +6,7 @@ module.exports = {
     async subscribe(identifier, contract, eventName) {
 
         // Create queue if not exits
-        const asserted = await queue.assertQueue(eventName);
+        const asserted = await queue.assertQueue(process.env.QUEUE_NAME);
 
         // Exit the process if queue not asserted
         if (!asserted) {
@@ -34,7 +34,7 @@ module.exports = {
             if (result) {
 
                 // Push formated data to the queue
-                await queue.push(eventName, transformer.format(identifier, result, fields))
+                await queue.push(process.env.QUEUE_NAME, transformer.format(identifier, result, fields))
 
                 // Console the info
                 console.log(chalk.greenBright.bold('[queue] :'), chalk.blueBright.italic(eventName, chalk.greenBright.bold('successfully stored into queue!')));

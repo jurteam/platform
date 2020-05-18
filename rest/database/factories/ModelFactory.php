@@ -60,7 +60,7 @@ $factory->define(App\Models\Oath::class, function (Faker\Generator $faker) {
     $toDate = \Carbon\Carbon::createFromDate(
         $faker->numberBetween(2020, 2022),
         $faker->numberBetween(4, 10),
-        $faker->numberBetween(1, 28),
+        $faker->numberBetween(1, 28)
     );
 
     $now = \Carbon\Carbon::now();

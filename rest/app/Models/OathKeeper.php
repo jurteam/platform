@@ -2,7 +2,10 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use \App\Jobs\GenerateOathKeeperRank;
+use \App\Jobs\UpdateOathStateToComplete;
 use \App\Models\Oath;
 
 class OathKeeper extends Model
@@ -21,6 +24,12 @@ class OathKeeper extends Model
         return $filters->apply($query);
     }
 
+    /**
+     * Calculate summary for an oathKeeper
+     *
+     * @param OathKeeper $oathKeeper: Object of an OathKeeper
+     * @return Boolean the success or failure message
+     */
     public static function calculateSummary(OathKeeper $oathKeeper)
     {
         $total_amount = 0;
@@ -50,4 +59,63 @@ class OathKeeper extends Model
         $oathKeeper->total_oath_count = $total_oath_count;
         return $oathKeeper->save();
     }
+
+    /**
+     * Consume AMQP payload to store the data and calculate summaries
+     *
+     * @param Object $payload: payload data send by AMQP server
+     * @return Boolean the success or failure message
+     */
+    public static function consumeAMQP($payload)
+    {
+        $saved = false;
+
+        // Create an OathKeper if not exists
+        $oathKeeper = OathKeeper::firstOrCreate(['wallet' => $payload->data->_beneficiary]);
+
+        switch ($payload->eventIdentifier) {
+
+            // oathTaken event
+            case 'OathTaken':
+                // Save oath to database
+                $saved = Oath::store($payload->data, $oathKeeper);
+
+                if ($saved) {
+
+                    // Get the current time
+                    $completeAt = Carbon::createFromTimestamp($payload->data->_releaseAt);
+
+                    $delay = $completeAt->diffInSeconds(Carbon::now());
+
+                    dispatch(
+                        (new UpdateOathStateToComplete($payload->data->_beneficiary, $payload->data->_oathIndex))
+                            ->delay($delay)
+                    );
+                }
+
+                break;
+
+            // IHoldYourOathFulfilled event
+            case 'IHoldYourOathFulfilled':
+                // Change Oath status
+                $saved = Oath::withrawn($payload);
+                break;
+        }
+
+        // Return false if not saved
+        if (!$saved) {
+            return false;
+        }
+
+        $saved = OathKeeper::calculateSummary($oathKeeper);
+
+        // Dispatch queue to generate rank if all success
+        if ($saved) {
+            dispatch(new GenerateOathKeeperRank);
+        }
+
+        // Return process status
+        return $saved;
+    }
+
 }
