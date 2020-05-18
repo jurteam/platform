@@ -26,7 +26,7 @@ const Unlock = () => {
   }
   if (typeof window.connex === "object") {
     shouldUnlock = true;
-  }  
+  }
 
   const unlock = () => {
     if (shouldUnlock) {
@@ -35,9 +35,10 @@ const Unlock = () => {
       const connectorValue = connector()
       if(connectorValue === 'connex') {
         connexAuth();
-      } else if (connectorValue === 'web3') {
-        auth();
       }
+      // else if (connectorValue === 'web3') {
+      //   auth();
+      // }
     }
   };
 
@@ -45,11 +46,11 @@ const Unlock = () => {
     <MetaMaskWrapper>
       <UserAction>
         <UserActionHeader variant="error">
-          <span dangerouslySetInnerHTML={{__html:labels.cometSyncRequired}}/>
+          <span dangerouslySetInnerHTML={{__html:labels.syncBrowserRequired}}/>
         </UserActionHeader>
 
-        <UserActionBody dangerouslySetInnerHTML={{__html:labels.cometSyncRequiredDesc}}/>
-        <UserActionFooter>          
+        <UserActionBody dangerouslySetInnerHTML={{__html:labels.syncRequiredDesc}}/>
+        <UserActionFooter>
           {shouldUnlock && (
             <Button
               onClick={() => {
@@ -61,14 +62,14 @@ const Unlock = () => {
               {labels.unlockComet}
             </Button>
           )}
-          <Button
+          {/* <Button
             onClick={() => {
               window.open(labels.cometUrl);
             }}
             size="big"
           >
             {labels.getChromeExtension}
-          </Button>
+          </Button> */}
           <Button color="gradient"
             onClick={() => {
               window.open(labels.syncBUrl);
@@ -76,9 +77,9 @@ const Unlock = () => {
             size="big"
           >
             {labels.getSyncBrowser}
-          </Button>        
+          </Button>
         </UserActionFooter>
-      
+
       </UserAction>
     </MetaMaskWrapper>
   );

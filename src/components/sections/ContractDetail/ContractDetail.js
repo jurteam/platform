@@ -390,6 +390,7 @@ export const ContractDetail = ( props ) => {
     statusLabel,
     statusFrom,
     statusUpdatedAt,
+    statusWillEndAt,
     kpi,
     resolutionProof,
     value,
@@ -471,6 +472,7 @@ export const ContractDetail = ( props ) => {
       statusId,
       statusLabel,
       statusUpdatedAt,
+      statusWillEndAt,
       from: {
         label: "partA",
         debtor: !part_a.isDebtor && !part_b.isDebtor ? true : part_a.isDebtor,
@@ -499,7 +501,8 @@ export const ContractDetail = ( props ) => {
       status: {
         id: statusId,
         label: statusLabel,
-        updatedDate: statusUpdatedAt
+        updatedDate: statusUpdatedAt,
+        endDate: statusWillEndAt
       }, // ???
       // inCaseOfDispute: "open", // default
       duration: {

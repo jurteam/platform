@@ -74,14 +74,15 @@ export const init = (args) => {
   } else if (connectorValue === 'connex') {
 
 
-    global.dispatcher({type: CONNEX_SETWALLETAPI, address: address });
+    // global.dispatcher({type: CONNEX_SETWALLETAPI, address: address });
 
-    if (process.env.REACT_APP_HEARTBEAT_ENABLED === "true") {
-      dappHeartbeat = setInterval(() => {
-        global.dispatcher({ type: HEARTBEAT });
-        log("Dapp - Heartbeat", "run");
+    // if (process.env.REACT_APP_HEARTBEAT_ENABLED === "true") {
+
+    //   dappHeartbeat = setInterval(() => {
+    //     global.dispatcher({ type: HEARTBEAT });
+    //     log("Dapp - Heartbeat", "run");
         
-      }, process.env.REACT_APP_HEARTBEAT_DELAY);
-    }
+    //   }, process.env.REACT_APP_HEARTBEAT_DELAY);
+    // }
   }
 };

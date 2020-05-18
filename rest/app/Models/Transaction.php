@@ -36,6 +36,7 @@ class Transaction extends Model
     ->select('transactions.*')
     ->join('contracts', 'contract_id', '=', 'contracts.id')
     ->where('event', '=', 'VoteCast')
+    ->orWhere('transactions.wallet', '=', $lowerWallet)
     ->orWhere(function($query) use($lowerWallet)
     {
         $query

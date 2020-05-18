@@ -35,22 +35,22 @@ export function* setWalletAddress(args) {
   let account = '';
   const connectorValue = connector();
 
-  if (connectorValue === 'web3') 
+  if (connectorValue === 'web3')
   {
     const accounts = yield select(getAccounts);
     log("setWalletAddress - accounts", accounts);
     account = accounts[0];
-  } 
-  else if (connectorValue === 'connex') 
+  }
+  else if (connectorValue === 'connex')
   {
-    const {address} = args 
+    const {address} = args
     log("setWalletAddress - address", address);
     account = address;
-  }  
-  
+  }
+
   const { API } = global;
   log("setWalletAddress - typeof API", typeof API);
-  
+
   if (typeof API !== 'undefined')
   {
     log("setWalletAddress - API");
@@ -80,7 +80,7 @@ export function* handleLookupWalletBalance(args) {
     // it will sync automatically token balance using Drizzle fresh data
      jurTokenBalance = yield callToContract("JURToken", "balanceOf", [wallet.address]);
   }
-  else if (connectorValue === 'connex') 
+  else if (connectorValue === 'connex')
   {
 
     const connexToken = new connexJURToken();
@@ -107,7 +107,7 @@ export function* getBalance(args) {
   const { type, payload } = args;
 
   // cache call on address set
-  if (type === SET_WALLET_ADDRESS) {
+  if (type === 'SET_WALLET_ADDRESS') {
 
 
     const connectorValue = connector();
@@ -141,7 +141,7 @@ export function* getBalance(args) {
         }
       }
     }
-    else if (connectorValue === 'connex') 
+    else if (connectorValue === 'connex')
     {
 
       const connexToken = new connexJURToken();
@@ -158,8 +158,8 @@ export function* getBalance(args) {
         type: SET_BALANCE,
         amount: userBalance,
         argsHash: null
-      });        
-      
+      });
+
     }
 
   }

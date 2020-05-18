@@ -88,6 +88,10 @@ return [
         [
             'label' => 'Dispute Closed',
             'code' => 39
+        ],
+        [
+            'label' => 'Waiting Dispute',
+            'code' => 37
         ]
     ],
 

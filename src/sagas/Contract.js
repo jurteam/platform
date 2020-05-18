@@ -63,7 +63,7 @@ import {
 } from "./Selectors"; // selector
 
 // Get
-export function* getContract(action) 
+export function* getContract(action)
 {
   log('getContract - action',action);
 
@@ -91,10 +91,10 @@ export function* getContract(action)
       // get contract details from chain
       const user = yield select(getUser);
       log('getContract - user',user);
-      
+
       const arbitration = new connexArbitrationContract(data.address);
       log('getContract - arbitration',arbitration);
-      
+
       const hasWithdrawn = yield arbitration.hasWithdrawn(user.wallet);
       log('getContract - hasWithdrawn',hasWithdrawn);
       const dispersal = yield arbitration.dispersal(user.wallet);
@@ -332,7 +332,8 @@ export function* updateContract(action) {
   if (duration && duration.minutes) {
     toUpdate.append("duration_minutes", duration.minutes);
   }
-  toUpdate.append("has_penalty_fee", hasPenaltyFee ? 1 : 0); // always
+  log('updateContract - hasPenaltyFee',hasPenaltyFee)
+  toUpdate.append("has_penalty_fee", (hasPenaltyFee && hasPenaltyFee !== "0")  ? 1 : 0); // always
   if (hasPenaltyFee) {
     if (partAPenaltyFee) {
       toUpdate.append(
@@ -622,7 +623,7 @@ export function* getContractStatus() {
     }
 
   }
-  
+
   // const {status,statusFrom,statusId,statusLabel,statusPart,statusUpdatedAt} = response.data.data
   // log("getContractStatus - response", status, statusFrom,statusId,statusLabel,statusPart,statusUpdatedAt );
 
@@ -632,30 +633,32 @@ export function* getContractStatus() {
 export function* handleUpdateLiveContracts() {
   // const currVotes = yield select(getContractsCurrentList);
   const currContracts = yield select(getContractList);
-  
-  
-  
 
-  const response = yield call(Contracts.list, {    
+
+
+
+  const response = yield call(Contracts.list, {
     page: 1
   });
-  
+
   let newContracts = response.data.data;
 
- 
+
   log('handleUpdateLiveContracts - newContracts',newContracts)
   log('handleUpdateLiveContracts - currContracts',currContracts)
   
 
-    let different = false
-
-    // compare with old results
-    newContracts.forEach((nContr,i) => {
-
-      let presentOrEqual = false;
-
-      currContracts.forEach((cContr) => {
-        if (cContr.id === nContr.id 
+  let different = false
+  
+  // compare with old results
+  newContracts.forEach((nContr,i) => {
+    
+    
+    
+    let presentOrEqual = false;
+    
+    currContracts.forEach((cContr) => {
+        if (cContr.id === nContr.id
           && cContr.statusUpdatedAt === nContr.statusUpdatedAt
           && cContr.statusId === nContr.statusId
           && cContr.statusLabel === nContr.statusLabel
@@ -664,23 +667,31 @@ export function* handleUpdateLiveContracts() {
         }
       })
 
-      if (!presentOrEqual) {
-        newContracts[i].new = (currContracts[i].new === 1 ? 2 : 1)
-        different = true
+      if (!presentOrEqual)
+      {
+        
+        log('handleUpdateLiveContracts - newContracts[i]',newContracts[i])
+        log('handleUpdateLiveContracts - currContracts[i]',currContracts[i])
+
+        if (newContracts[i] && currContracts[i])
+        {
+          newContracts[i].new = (currContracts[i].new === 1 ? 2 : 1)
+          different = true
+        }
       }
 
     })
 
 
     if (different) {
-      yield put({ 
-        type: CONTRACTS_UPDATED, 
+      yield put({
+        type: CONTRACTS_UPDATED,
         payload: newContracts,
         pagination: response.data.meta.pagination
       });
     }
 
-  
+
 
 
 }

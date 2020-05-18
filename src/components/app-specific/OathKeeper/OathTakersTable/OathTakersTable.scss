@@ -1,0 +1,14 @@
+.jur-oath-taker {
+  &-subtable-cell {
+    padding-top: 0 !important;
+    border: hidden !important;
+  }
+}
+
+.jur-oath-takers-row {
+  cursor: pointer;
+
+  &__selected {
+    background-color: #e5f2ff;
+  }
+}

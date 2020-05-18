@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useEffect, useState, useContext } from "react";
 
 import BlockTitle from "../BlockTitle";
 import Switch from "../Switch";
@@ -17,8 +17,16 @@ export const ContractSetPenaltyFee = ( props ) => {
     setPenaltyFeeStatus,
     handlePenaltyFee
   } = props;
-  const { from, to } = contract;
-  const [isActive, setActive] = useState(!!contract.penaltyFee);
+  const { from, to, penaltyFee } = contract;
+
+  const hasReallyPenaltyFee = () => {
+    log('ContractSetPenaltyFee - hasReallyPenaltyFee - penaltyFee',penaltyFee);
+    log('ContractSetPenaltyFee - hasReallyPenaltyFee - return',(penaltyFee !== null && (penaltyFee.partA !== '0.000000000000000000' || penaltyFee.partB !== '0.000000000000000000')));
+    log('ContractSetPenaltyFee - hasReallyPenaltyFee - isActive',isActive);
+    return penaltyFee !== null && (penaltyFee.partA !== '0.000000000000000000' || penaltyFee.partB !== '0.000000000000000000')
+  }  
+  
+  const [isActive, setActive] = useState(hasReallyPenaltyFee());
 
   const onPriceChange = (counterparty, fee) => {
     log("setPenaltyFee", counterparty, fee);
@@ -45,7 +53,7 @@ export const ContractSetPenaltyFee = ( props ) => {
           isActive && !disabled && contract.amount > 0 ? "jur-contract-set-penalty-fee__values--active" : ""
         }`}
       >
-        {[from, to].map((counterparty, index) => (contract.penaltyFee ?
+        {[from, to].map((counterparty, index) => (contract.penaltyFee && isActive ?
           <PriceRange
             key={index}
             min={0}
