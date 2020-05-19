@@ -2,8 +2,8 @@
 
 namespace App\Jobs;
 
+use \App\Jobs\GenerateOathKeeperAnalytics;
 use \App\Jobs\GenerateOathKeeperRank;
-use \App\Models\GenerateOathKeeperAnalytics;
 use \App\Models\Oath;
 use \App\Models\OathKeeper;
 
