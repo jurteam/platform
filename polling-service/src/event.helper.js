@@ -22,7 +22,7 @@ const findEventInTransaction = async (txHash) => {
                         result.blockNumber = res.blockNumber
                         result.timestamp = res.meta.blockTimestamp
                         result.contractName = contract.identifier
-                        return result 
+                        return result
                     }
                 }
             } else return null
@@ -38,6 +38,7 @@ const decodeEventData = (abi, data, topics) => {
             return {
                 data: web3.eth.abi.decodeLog(abi.events[i].inputs, data, topics),
                 identifier: abi.events[i].name,
+                fields: abi.events[i].inputs.map(x => x.name)
             }
         }
     }
