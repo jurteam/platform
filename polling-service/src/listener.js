@@ -1,4 +1,10 @@
 const processor = require('./event.processor.js');
+const blockFilePath = '../config/currentBlock.json';
+const blockConfig = require(blockFilePath);
+const transformer = require('./transformer');
+
+
+const fs = require('fs').promises;
 
 const listen = async (error, result) => {
         if(error) console.log('error', error);
@@ -10,16 +16,18 @@ const listen = async (error, result) => {
         if (!asserted) {
             process.exit(1);
         }
-
-        let request = await processor.checkBlock(5950875);
-        if(request) {
-            // console.log("result", request)
-            // Push formated data to the queue
-            await queue.push(process.env.QUEUE_NAME, request)
-
-            // Console the info
-            // console.log(chalk.greenBright.bold('[queue] :'), chalk.blueBright.italic(eventName, chalk.greenBright.bold('successfully stored into queue!')));
+        let currentBlock = blockConfig.currentBlock
+        console.log("[polling-service-listener] Processing block", currentBlock)
+        let response = await processor.checkBlock(currentBlock);
+        if(response) {
+            for(let i = 0; i <response.length; i++) {
+                console.log(chalk.greenBright.bold("[polling-service-listener] Transaction found, writing to queue", transformer.format(response[i])))
+                // Push formated data to the queue
+                await queue.push(process.env.QUEUE_NAME, transformer.format(response[i]))
+            }
         }
+        blockConfig.currentBlock = currentBlock+1;
+        await fs.writeFile('./config/currentBlock.json', JSON.stringify(blockConfig), {encoding:'utf8',flag:'w'})
         setTimeout(listen, 10000);
 
 }
