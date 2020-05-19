@@ -40,6 +40,8 @@ abstract class Filters
                 $this->$filter($this->request->header($filter));
             } elseif ($this->hasFilter($filter)) {
                 $this->$filter($this->request->get($filter));
+            } elseif ($this->hasDefaultValue($filter)) {
+                $this->$filter($this->defaults[$filter]);
             }
         }
 
@@ -67,6 +69,18 @@ abstract class Filters
      */
     protected function hasHeaderFilter($filter)
     {
-        return $this->request->headers->has($filter) && method_exists($this, $filter) && ! empty($this->request->header($filter));
+        return $this->request->headers->has($filter) && method_exists($this, $filter) && !empty($this->request->header($filter));
+    }
+
+    /**
+     * Check if the filter has a default value.
+     *
+     * @param string $filter
+     *
+     * @return Boolean
+     */
+    protected function hasDefaultValue($filter)
+    {
+        return isset($this->defaults) && array_key_exists($filter, $this->defaults);
     }
 }
