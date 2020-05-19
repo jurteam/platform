@@ -1,66 +1,100 @@
 [
     {
         "identifier": "oathKeeper",
-        "address": "0x862676750f53e92e2502e54ef5c5bfefccfcef51",
-        "abiPath": "./abi/oathKeeper.json",
+        "address": "0x5FFC5490fab155A270a2de9C7B5fd7fa48f38031",
         "events": [{
             "anonymous": false,
             "inputs": [
-                {
-                    "indexed": true,
-                    "name": "_beneficiary",
-                    "type": "address"
-                },
-                {
-                    "indexed": true,
-                    "name": "_amount",
-                    "type": "uint256"
-                },
-                {
-                    "indexed": true,
-                    "name": "_oathIndex",
-                    "type": "uint256"
-                }
+              {
+                "indexed": true,
+                "internalType": "address",
+                "name": "_beneficiary",
+                "type": "address"
+              },
+              {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "_amount",
+                "type": "uint256"
+              },
+              {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "_oathIndex",
+                "type": "uint256"
+              }
             ],
             "name": "IHoldYourOathFulfilled",
             "type": "event"
-        },
+          },
         {
             "anonymous": false,
             "inputs": [
-                {
-                    "indexed": true,
-                    "name": "_beneficiary",
-                    "type": "address"
-                },
-                {
-                    "indexed": true,
-                    "name": "_amount",
-                    "type": "uint256"
-                },
-                {
-                    "indexed": true,
-                    "name": "_lockInPeriod",
-                    "type": "uint256"
-                },
-                {
-                    "indexed": false,
-                    "name": "_startAt",
-                    "type": "uint256"
-                },
-                {
-                    "indexed": false,
-                    "name": "_releaseAt",
-                    "type": "uint256"
-                },
-                {
-                    "indexed": false,
-                    "name": "_oathIndex",
-                    "type": "uint256"
-                }
+              {
+                "indexed": true,
+                "internalType": "address",
+                "name": "_beneficiary",
+                "type": "address"
+              },
+              {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "_amount",
+                "type": "uint256"
+              },
+              {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "_lockInPeriod",
+                "type": "uint256"
+              },
+              {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "_startAt",
+                "type": "uint256"
+              },
+              {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "_releaseAt",
+                "type": "uint256"
+              },
+              {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "_oathIndex",
+                "type": "uint256"
+              }
             ],
             "name": "OathTaken",
             "type": "event"
-        }]
+          }]
+    },
+    {
+        "identifier": "jurToken",
+        "address": "0x602b7a4309b3412d269c6cdddad962c0b94494d8",
+        "events": [{
+            "anonymous": false,
+            "inputs": [
+              {
+                "indexed": true,
+                "name": "from",
+                "type": "address"
+              },
+              {
+                "indexed": true,
+                "name": "to",
+                "type": "address"
+              },
+              {
+                "indexed": false,
+                "name": "value",
+                "type": "uint256"
+              }
+            ],
+            "name": "Transfer",
+            "type": "event"
+          }]
     }
 ]
