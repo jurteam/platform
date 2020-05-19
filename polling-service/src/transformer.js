@@ -7,14 +7,16 @@ const mapFields = (data, filelds) => {
     return objMap;
 }
 
-const format = (identifier, data, filelds) => {
+const format = (result) => {
     return {
-        assetIdentifier: identifier,
-        eventIdentifier: data.event,
-        data: mapFields(data.returnValues, filelds),
+        assetIdentifier: result.contractName,
+        eventIdentifier: result.identifier,
+        data: mapFields(result.data, result.fields),
         transaction: {
-            address: data.address,
-            meta: data.meta
+            address: result.txHash,
+            blockNumber: result.blockNumber,
+            timestamp:result.timestamp,
+            sender:result.sender
         },
     };
 }
