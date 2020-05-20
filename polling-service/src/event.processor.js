@@ -10,7 +10,7 @@ const checkBlock = async (blockNumber) => {
                 requests.push(res)
             }
         }
-        if(requests.length >0) {
+        if(requests.length > 0) {
             return requests
         }
     }

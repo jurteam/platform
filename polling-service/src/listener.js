@@ -2,15 +2,14 @@ const processor = require('./event.processor.js');
 const blockFilePath = '../config/currentBlock.json';
 const blockConfig = require(blockFilePath);
 const transformer = require('./transformer');
-
-
+const QUEUE_NAME = 'blockchain-events';
 const fs = require('fs').promises;
 
 const listen = async (error, result) => {
         if(error) console.log('error', error);
 
         // Create queue if not exits
-        const asserted = await queue.assertQueue(process.env.QUEUE_NAME);
+        const asserted = await queue.assertQueue(QUEUE_NAME);
 
         // Exit the process if queue not asserted
         if (!asserted) {
@@ -23,7 +22,7 @@ const listen = async (error, result) => {
             for(let i = 0; i <response.length; i++) {
                 console.log(chalk.greenBright.bold("[polling-service-listener] Transaction found, writing to queue", transformer.format(response[i])))
                 // Push formated data to the queue
-                await queue.push(process.env.QUEUE_NAME, transformer.format(response[i]))
+                await queue.push(QUEUE_NAME, transformer.format(response[i]))
             }
         }
         blockConfig.currentBlock = currentBlock+1;
