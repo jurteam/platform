@@ -1,5 +1,6 @@
 import OathKeeperContract from "../../build/contracts/OathKeeper.json";
 import connexJURToken from "./JURToken";
+import { toBigFixed } from "../../utils/helpers";
 
 export default class connexOathKeeper {
   constructor() {
@@ -15,24 +16,29 @@ export default class connexOathKeeper {
     if (!isOathable(amount, lockInPeriod))
       return Promise.reject("Invalid parameters! Can't take oath");
 
+    const blockchainAmount = toBigFixed(amount);
     console.log("OathKeeper connex address", this.contractAddress);
+    console.log("OathKeeper connex amount", amount, blockchainAmount);
     const approveClause = new connexJURToken().approveClause(
       this.contractAddress,
-      amount
+      blockchainAmount
     );
 
-    return this.lockIn(address, amount, lockInPeriod, approveClause).then(
-      signedResponse => {
-        const filters = [
-          {
-            _beneficiary: address,
-            _amount: amount,
-            _lockInPeriod: lockInPeriod
-          }
-        ];
-        return this.listen("OathTaken", signedResponse, filters);
-      }
-    );
+    return this.lockIn(
+      address,
+      blockchainAmount,
+      lockInPeriod,
+      approveClause
+    ).then(signedResponse => {
+      const filters = [
+        {
+          _beneficiary: address,
+          _amount: blockchainAmount,
+          _lockInPeriod: lockInPeriod
+        }
+      ];
+      return this.listen("OathTaken", signedResponse, filters);
+    });
   };
 
   lockIn = (address, amount, lockInPeriod, approveClause) => {
@@ -106,7 +112,6 @@ export default class connexOathKeeper {
     return lockMapMethod.call(address, oathIndex).then(output => {
       const oath = {
         ...output.decoded,
-        amount: Number(output.decoded.amount),
         oathIndex
       };
       console.log("connexOathKeeper fetchOathAt", oath);

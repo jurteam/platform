@@ -50,7 +50,7 @@ const INITIAL_FILTERS_STATE = {
 };
 
 const INITIAL_NEW_OATH_STATE = {
-  amount: 0,
+  amount: "0",
   lockInPeriod: "1",
   acceptTnC: false,
   isModalOpen: false,
@@ -194,11 +194,13 @@ function updateOathsOf(oathTakers, { address, oaths }) {
 }
 
 function balanceFromOaths(oaths) {
-  return oaths.reduce(
-    (balance, oath) =>
-      oathState(oath).isActive() ? balance + Number(oath.amount) : balance,
-    0
-  );
+  return oaths
+    .reduce(
+      (balance, oath) =>
+        oathState(oath).isActive() ? balance + Number(oath.amount) : balance,
+      0
+    )
+    .toString();
 }
 
 function computeFilters(state, action) {
