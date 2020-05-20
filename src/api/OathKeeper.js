@@ -6,10 +6,12 @@ export class OathKeeper {
   static oathTakers(address = "", params) {
     let base = composeBase("oath-takers", address);
 
-    if (Number(params.minAmount) > 0)
-      params.minAmount = toBigFixed(params.minAmount);
-    if (Number(params.maxAmount) > 0)
-      params.maxAmount = toBigFixed(params.maxAmount);
+    if (params) {
+      if (Number(params.minAmount) > 0)
+        params.minAmount = toBigFixed(params.minAmount);
+      if (Number(params.maxAmount) > 0)
+        params.maxAmount = toBigFixed(params.maxAmount);
+    }
 
     return axios.get(addParams(base, params)).then(r => r.data);
   }
