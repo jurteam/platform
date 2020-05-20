@@ -70,16 +70,20 @@ function* withdrawAnOath(action) {
   const oathIndex = action.payload;
   const { address } = yield select(getWallet);
 
-  const prey = yield new connexOathKeeper().releaseOath(address, oathIndex);
-  yield put({ type: OATH_KEEPER_WITHDREW_OATH, payload: oathIndex });
+  try {
+    const prey = yield new connexOathKeeper().releaseOath(address, oathIndex);
+    yield put({ type: OATH_KEEPER_WITHDREW_OATH, payload: oathIndex });
 
-  prey.onFound = () =>
-    global.store.dispatch({
-      type: OATH_KEEPER_FETCH_MY_OATHS,
-      payload: oathIndex
-    });
+    prey.onFound = () =>
+      global.store.dispatch({
+        type: OATH_KEEPER_FETCH_MY_OATHS,
+        payload: oathIndex
+      });
 
-  yield put({ type: HOUND_START_SMELLING, payload: prey });
+    yield put({ type: HOUND_START_SMELLING, payload: prey });
+  } catch (e) {
+    console.error("Failed to withdraw an oath", e);
+  }
 }
 
 function* fetchMyOaths(action) {
