@@ -51,7 +51,10 @@ const OathDetailsRow = ({ address, fetchOathsOf, oaths = [] }) => {
 
   return activeOaths.length ? (
     <>
-      <OathDetailCell oaths={activeOaths} property={o => o.amount} />
+      <OathDetailCell
+        oaths={activeOaths}
+        property={o => <Amount value={o.amount} />}
+      />
       <OathDetailCell
         oaths={activeOaths}
         property={o => i18nDateFormat(Number(o.startAt) * 1000)}
