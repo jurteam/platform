@@ -1,32 +1,36 @@
-const path = require('path');
-const smartContracts = require('../config/smart-contracts.json');
-const event = require('./event');
+const processor = require('./event.processor.js');
+const blockFilePath = '../config/currentBlock.json';
+const blockConfig = require(blockFilePath);
+const transformer = require('./transformer');
+const QUEUE_NAME = 'blockchain-events';
+const fs = require('fs').promises;
 
-module.exports = {
-    listen() {
-        try {
+const listen = async (error, result) => {
+        if(error) console.log('error', error);
 
-            // Listen for all the smart-contract specified in the config
-            for (let i = 0; i < smartContracts.length; i++) {
+        // Create queue if not exits
+        const asserted = await queue.assertQueue(QUEUE_NAME);
 
-                const instance = smartContracts[i];
-
-                // Get the ABI-JSON
-                let abi = require(path.resolve('config', instance.abiPath));
-
-                // Get the object of smart-contract
-                const contract = new web3.eth.Contract(abi, instance.address);
-
-                // Loop through each event specified in the config
-                for (let j = 0; j < instance.events.length; j++) {
-                    event.subscribe(instance.identifier, contract, instance.events[j]); // subscribe to the specific event
-                }
-            }
-        } catch (error) {
-            console.log(error);
-
-            // Exit process
-            process.exit(1)
+        // Exit the process if queue not asserted
+        if (!asserted) {
+            process.exit(1);
         }
-    }
+        let currentBlock = blockConfig.currentBlock
+        console.log("[polling-service-listener] Processing block", currentBlock)
+        let response = await processor.checkBlock(currentBlock);
+        if(response) {
+            for(let i = 0; i <response.length; i++) {
+                console.log(chalk.greenBright.bold("[polling-service-listener] Transaction found, writing to queue", transformer.format(response[i])))
+                // Push formated data to the queue
+                await queue.push(QUEUE_NAME, transformer.format(response[i]))
+            }
+        }
+        blockConfig.currentBlock = currentBlock+1;
+        await fs.writeFile('./config/currentBlock.json', JSON.stringify(blockConfig), {encoding:'utf8',flag:'w'})
+        setTimeout(listen, 10000);
+
 }
+module.exports = {
+    listen
+}
+
