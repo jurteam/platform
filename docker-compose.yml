@@ -160,6 +160,8 @@ services:
     ports:
       - "15672:15672"
       - "5672:5672"
+    expose:
+      - "5672"
     labels:
       NAME: "rabbit"
 
@@ -171,6 +173,8 @@ services:
     command: pm2-runtime start pm2.json
     links:
       - rabbit
+    extra_hosts:
+      - "hostmachine:${HOSTIP}"
 
   cache:
     image: memcached
