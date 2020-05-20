@@ -16,7 +16,8 @@ import {
   OATH_KEEPER_WITHDREW_OATH,
   OATH_KEEPER_FETCH_OATHS_OF,
   OATH_KEEPER_UPDATE_OATHS_OF,
-  HOUND_START_SMELLING
+  HOUND_START_SMELLING,
+  OATH_KEEPER_REJECT_OATH
 } from "../reducers/types";
 
 function* fetchMyRank() {
@@ -36,20 +37,33 @@ function* takeAnOath() {
   const myOaths = yield select(getMyOaths);
   const oathIndex = myOaths.length;
 
-  const prey = yield new connexOathKeeper().takeAnOath(
-    address,
-    amount,
-    lockInPeriod
-  );
-  yield put({ type: OATH_KEEPER_TOOK_OATH });
+  try {
+    const prey = yield new connexOathKeeper().takeAnOath(
+      address,
+      amount,
+      lockInPeriod
+    );
 
-  prey.onFound = () =>
-    global.store.dispatch({
-      type: OATH_KEEPER_FETCH_MY_OATHS,
-      payload: oathIndex
+    yield put({ type: OATH_KEEPER_TOOK_OATH });
+
+    prey.onFound = () =>
+      global.store.dispatch({
+        type: OATH_KEEPER_FETCH_MY_OATHS,
+        payload: oathIndex
+      });
+
+    yield put({ type: HOUND_START_SMELLING, payload: prey });
+  } catch (e) {
+    console.error("Failed to take an oath", e);
+    yield put({
+      type: OATH_KEEPER_REJECT_OATH,
+      error: e,
+      payload: {
+        message: e.message,
+        oathIndex
+      }
     });
-
-  yield put({ type: HOUND_START_SMELLING, payload: prey });
+  }
 }
 
 function* withdrawAnOath(action) {
