@@ -108,4 +108,23 @@ trait StatusesTrait
 
         return strtolower($params->header('wallet')) !== $wallet;
     }
+
+    public function getNextStatusUpdatedAt()
+    {
+        //chain_updated_at->isFuture()
+
+        $contractStatusHistory = $this->histories
+        ->filter(function($item) {
+            if ( $item->waiting ) return false;
+            return $item->contract_status_code == 37;
+        })
+        ->first();
+
+        if ($contractStatusHistory) {
+            return $contractStatusHistory->chain_updated_at->valueOf();
+        }
+        return null;
+
+    }
+
 }

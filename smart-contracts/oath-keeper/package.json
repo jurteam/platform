@@ -1,0 +1,16 @@
+{
+  "name": "oath-keeper-smart-contract",
+  "version": "1.0.0",
+  "description": "Self lock token manager",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@openzeppelin/contracts": "^2.4.0",
+    "ganache-cli": "^6.7.0",
+    "truffle": "^5.1.5"
+  }
+}

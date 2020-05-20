@@ -1,0 +1,72 @@
+.jur-timeline__table {
+  border-left: 2px dotted #33adff;
+}
+
+.jur-timeline__row {
+  &:first-of-type {
+    .jur-timeline__first-cell {
+      &::before {
+        content: "";
+        display: inline-block;
+        height: 15px;
+        width: 1px;
+        position: relative;
+        border-left: 2px solid white;
+        top: -15px;
+        left: -37px;
+      }
+    }
+
+    .jur-timeline__first-cell-btn-fix {
+      &::before {
+        left: -29px;
+      }
+    }
+  }
+
+  &:last-of-type {
+    border-left: 2px solid white;
+
+    .jur-timeline__first-cell {
+      &::before {
+        content: "";
+        display: inline-block;
+        height: 20px;
+        width: 1px;
+        position: relative;
+        border-left: 2px dotted #33adff;
+        top: -15px;
+        left: -37px;
+      }
+    }
+
+    .jur-timeline__first-cell-btn-fix {
+      &::before {
+        left: -29px;
+      }
+    }
+  }
+
+  &::before {
+    display: inline-block;
+    z-index: 99999;
+    position: relative;
+    content: "";
+    margin-top: 45%;
+    left: -9px;
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    background-color: #0077ff;
+    background-size: 11px;
+    background-repeat: no-repeat;
+    background-position: 65% 50%;
+    background-image: url(/jur-icon-white.svg);
+  }
+
+  &-btn-fix {
+    &::before {
+      margin-top: 60%;
+    }
+  }
+}

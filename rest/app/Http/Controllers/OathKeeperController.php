@@ -4,12 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Filters\OathKeeperFilters;
 use App\Http\Controllers\Traits\CustomPaginationTrait;
+use App\Models\OathAnalytics;
 use App\Transformers\OathKeeperTransformer;
 use Dingo\Api\Routing\Helpers;
 use Illuminate\Http\Request;
 use \App\Models\Oath;
 use \App\Models\OathKeeper;
-use \Carbon\Carbon;
 
 class OathKeeperController extends Controller
 {
@@ -23,20 +23,18 @@ class OathKeeperController extends Controller
      */
     public function getCards(Request $request)
     {
-        // convert duration string to number of days
-        $days = $this->convertDurationToDays($request->input('duration'));
-        $from = Carbon::now()->subDays($days);
-        $to = Carbon::now();
+        // get duration string
+        $duration = $request->input('duration', 'Last Month');
 
-        // merge all cards and return to user
+        // Get all cards and return to user
         return response()->json(
             [
                 'data' =>
                 [
-                    $this->generateCard('average-amount', $from, $to),
-                    $this->generateCard('amount-by-oath-keeper', $from, $to),
-                    $this->generateCard('active-amount', $from, $to),
-                    $this->generateCard('active-oath-keeper', $from, $to)
+                    $this->getCardByDuration('average-amount', $duration),
+                    $this->getCardByDuration('amount-by-oath-keeper', $duration),
+                    $this->getCardByDuration('active-amount', $duration),
+                    $this->getCardByDuration('active-oath-keeper', $duration)
 
                 ]
             ]
@@ -53,45 +51,10 @@ class OathKeeperController extends Controller
     public function getCard(Request $request, $cardname)
     {
         // convert duration string to number of days
-        $days = $this->convertDurationToDays($request->input('duration'));
-        $from = Carbon::now()->subDays($days);
-        $to = Carbon::now();
+        $duration = $request->input('duration', 'Last Month');
 
-        return response()->json(["data" => $this->generateCard($cardname, $from, $to)]);
-    }
-
-    /**
-     * Generate Single Card
-     *
-     * @param String $cardname: name of the card
-     * @param Date $from: from date
-     * @param Date $to: to date
-     * @return Array $GeneartedCard: card details
-     */
-    private function generateCard($cardname, $from, $to)
-    {
-        $card = [];
-
-        switch ($cardname) {
-            case 'average-amount':
-                $card = Oath::averageAmount($from, $to);
-                break;
-            case 'active-amount':
-                $card = Oath::activeAmount($from, $to);
-                break;
-            case 'amount-by-oath-keeper':
-                $card = Oath::amountByOathKeeper($from, $to);
-                break;
-            case 'active-oath-keeper':
-                $card = Oath::activeOathKeepers($from, $to);
-                break;
-        }
-
-        return [
-            'id' => $cardname,
-            'type' => 'cards',
-            'attributes' => $card
-        ];
+        // Get the card and return
+        return response()->json(["data" => $this->getCardByDuration($cardname, $duration)]);
     }
 
     /**
@@ -136,25 +99,21 @@ class OathKeeperController extends Controller
     }
 
     /**
-     * Convert duration string to number of days.
+     * Get Single Card by duration
      *
-     * @param  String  $durationString: Duration in string
-     * @return Number $duration: Duration in days
+     * @param String $cardname: name of the card
+     * @param String $duration: duration string
+     * @return Object $GeneartedCard: card details
      */
-    private function convertDurationToDays($duration)
+    private function getCardByDuration($cardname, $duration)
     {
-        $days = 30; // default is Last Month = Today + 30 days
+        return [
+            'id' => $cardname,
+            'type' => 'cards',
+            'attributes' => OathAnalytics::where(['card' => $cardname, 'duration' => $duration])
+                ->select('value', 'delta', 'graph')
+                ->first()
 
-        switch ($duration) {
-            case '6 Months':
-                $days = 180; // Today + 180 days
-                break;
-
-            case 'Year':
-                $days = 365; // Today + 365 days
-                break;
-        }
-
-        return $days;
+        ];
     }
 }

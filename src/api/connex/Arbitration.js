@@ -19,10 +19,24 @@ export default class connexArbitrationContract
 
   async EventCatch(param,event,blockNum,txid)
   {
+
+    log('EventCatch ------')
+
     const eventABI = this.getMethodABI(event);
     const eventMethod = this.thorAccount.event(eventABI)
+    
+    let filter 
 
-    const filter = eventMethod.filter([param])
+    log('EventCatch - param',param)
+
+    if (param) 
+    {
+      filter = eventMethod.filter([param])
+    } 
+    else 
+    {
+      filter = eventMethod.filter([])
+    }
 
     filter.order('desc')
 
@@ -191,6 +205,29 @@ export default class connexArbitrationContract
 
   }
 
+  async calcDisputeEnds() 
+  {
+
+    log('calcDisputeEnds - ArbitrationFactoryABI',this.contract)
+    const calcDisputeEndsABI = this.getMethodABI("calcDisputeEnds");
+    log('calcDisputeEnds - calcDisputeEndsABI',calcDisputeEndsABI)
+    
+    const calcDisputeEndsMethod = this.thorAccount.method(calcDisputeEndsABI)
+
+    let hash = '';
+    
+    await calcDisputeEndsMethod.call().then(output=>{
+      log('calcDisputeEnds - calcDisputeEndsMethod',output)
+      log('calcDisputeEnds - calcDisputeEndsMethod',output.data)
+
+      hash = output.decoded[0];
+      
+    })
+
+    return hash;
+
+  }
+
   async hasSigned(party) 
   {
 
@@ -331,13 +368,143 @@ export default class connexArbitrationContract
       txid = tx.txid
 
       const filter = {
-        _party1: account,
+        _party: account,
       }
       
       global.dispatcher({type: ADD_TRANSACTION,txid: tx.txid, event: 'ContractAgreed', param: filter, contract_id: contractId})
       
 
       log('agree - signingService then() txid',txid)
+
+      return true
+      
+    }).catch(err=>{  
+      log('agree - signingService catch() err',err)
+
+      return false
+    })
+
+
+  }
+
+  async payoutVoter(account, contractId, start = 0, end = 999999) 
+  {
+    
+    const payoutVoterABI = this.getMethodABI("payoutVoter");
+
+    log('payoutVoter - payoutVoterABI',payoutVoterABI)    
+
+    const payoutVoterMethod = this.thorAccount.method(payoutVoterABI)
+
+    log('payoutVoter - payoutVoterMethod',payoutVoterMethod)
+    
+
+    // --##################--- asClause
+
+    log('payoutVoter - parameter',{account})
+
+    const payoutVoterClause = payoutVoterMethod.asClause(start,end)
+    
+    log('payoutVoter - payoutVoterClause',payoutVoterClause) 
+    
+    const signingService = global.connex.vendor.sign('tx')
+    
+    log('payoutVoter - signingService',signingService)
+
+
+    signingService
+    .signer(account) // Enforce signer
+    .gas(global.connex.thor.genesis.gasLimit) // Set maximum gas
+    .link('http://localhost:3000/contracts/detail/'+contractId) // User will be back to the app by the url https://connex.vecha.in/0xffff....
+    .comment('payoutVoter contract')
+
+    let txid = null
+
+    await signingService.request([
+      {
+        ...payoutVoterClause,
+      }
+    ])
+    .then(async (tx)=>{
+
+      log('payoutVoter - signingService then()',tx)
+
+      // call transaction saving endpoint
+      // ADD_TRANSACTION
+      
+      txid = tx.txid
+
+      const filter = {
+        _voter: account,
+      }
+      
+      global.dispatcher({type: ADD_TRANSACTION,txid: tx.txid, event: 'VoterPayout', param: filter, contract_id: contractId})
+      
+
+      log('payoutVoter - signingService then() txid',txid)
+      
+    }).catch(err=>{  
+      log('agree - signingService catch() err',err)
+    })
+
+
+  }
+
+  async payoutParty(account, contractId) 
+  {
+    
+    const payoutPartyABI = this.getMethodABI("payoutParty");
+
+    log('payoutParty - payoutPartyABI',payoutPartyABI)    
+
+    const payoutPartyMethod = this.thorAccount.method(payoutPartyABI)
+
+    log('payoutParty - payoutPartyMethod',payoutPartyMethod)
+    
+
+    // --##################--- asClause
+
+    log('payoutParty - parameter',{account})
+
+    const payoutPartyClause = payoutPartyMethod.asClause()
+    
+    log('payoutParty - payoutPartyClause',payoutPartyClause) 
+    
+    const signingService = global.connex.vendor.sign('tx')
+    
+    log('payoutParty - signingService',signingService)
+
+
+    signingService
+    .signer(account) // Enforce signer
+    .gas(global.connex.thor.genesis.gasLimit) // Set maximum gas
+    .link('http://localhost:3000/contracts/detail/'+contractId) // User will be back to the app by the url https://connex.vecha.in/0xffff....
+    .comment('payoutParty contract')
+
+    let txid = null
+
+    await signingService.request([
+      {
+        ...payoutPartyClause,
+      }
+    ])
+    .then(async (tx)=>{
+
+      log('payoutParty - signingService then()',tx)
+
+      // call transaction saving endpoint
+      // ADD_TRANSACTION
+      
+      txid = tx.txid
+
+      const filter = {
+        _party: account,
+      }
+      
+      global.dispatcher({type: ADD_TRANSACTION,txid: tx.txid, event: 'PartyPayout', param: filter, contract_id: contractId})
+      
+
+      log('payoutParty - signingService then() txid',txid)
       
     }).catch(err=>{  
       log('agree - signingService catch() err',err)
@@ -527,9 +694,12 @@ export default class connexArbitrationContract
       
 
       log('withdrawDispersal - signingService then() txid',txid)
+
+      return true
       
     }).catch(err=>{  
-      log('agree - signingService catch() err',err)
+      log('withdrawDispersal - signingService catch() err',err)
+      return false
     })
 
 

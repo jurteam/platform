@@ -107,6 +107,7 @@ export const toCurrencyFormat = value => {
     Number(
       decimals.padEnd(Number(process.env.REACT_APP_TOKEN_DECIMALS) + 1, "0")
     );
+
   return num.toFixed(2);
 };
 
@@ -168,6 +169,12 @@ export const dateReducer = date => {
 
   return [year, month, day].join("-");
 };
+
+export const i18nDateFormat = (
+  dateALike,
+  locale = "en-GB",
+  options = { year: "numeric", month: "short", day: "numeric" }
+) => new Date(dateALike).toLocaleDateString(locale, options);
 
 export const upperCaseFirst = string => {
   return string.charAt(0).toUpperCase() + string.slice(1);
@@ -299,6 +306,8 @@ export const canVote = statusId => {
 };
 
 export const multiplication = (a, b) => {
+
+  Big.PE = 45
   let x = new Big(a);
   const prod = x.times(b);
 
@@ -394,4 +403,63 @@ export const connexFromWei = (value, size) => {
   }
 
   return division(value, multiplicator);
+};
+
+export function oathState(oath) {
+  let state = oathState.UNKNOWN;
+  if (oath.customStatus) return oathState.response(oath.customStatus);
+
+  if (oath.fronendOnly) return oathState.response(oathState.PENDING);
+
+  const now = new Date() / 1000;
+  const startedAt = Number(oath.startAt);
+  const releasedAt = Number(oath.releaseAt);
+
+  if (startedAt > now) state = oathState.YET_TO_START;
+
+  if (startedAt <= now && releasedAt > now) state = oathState.ACTIVE;
+
+  if (releasedAt <= now && !oath.isOathFulfilled) state = oathState.COMPLETED;
+
+  if (releasedAt <= now && oath.isOathFulfilled) state = oathState.WITHDRAWN;
+
+  return oathState.response(state);
+}
+
+oathState.ACTIVE = "active";
+oathState.COMPLETED = "completed";
+oathState.YET_TO_START = "yet to start";
+oathState.WITHDRAWN = "withdrawn";
+oathState.UNKNOWN = "unknown";
+oathState.PENDING = "pending";
+
+oathState.response = state => ({
+  isPending: () => state === oathState.PENDING,
+  isActive: () => state === oathState.ACTIVE,
+  isCompleted: () => state === oathState.COMPLETED,
+  isYetToStart: () => state === oathState.YET_TO_START,
+  isUnknown: () => state === oathState.UNKNOWN,
+  toString: () => state
+});
+
+export const oathKeeperFilters = {
+  statuses: {
+    SHOW_ALL: "Show All",
+    ON_GOING: "On Going",
+    COMPLETED: "Completed"
+  }
+};
+
+export const oathKeeperAnalytics = {
+  durations: {
+    LAST_MONTH: "Last Month",
+    SIX_MONTHS: "6 Months",
+    YEAR: "Year"
+  },
+  cards: {
+    ACTIVE_AMOUNT: "active-amount",
+    AMOUNT_STAKED: "amount-by-oath-keeper",
+    ACTIVE_OATH_KEEPER: "active-oath-keeper",
+    AVERAGE_AMOUNT: "average-amount"
+  }
 };

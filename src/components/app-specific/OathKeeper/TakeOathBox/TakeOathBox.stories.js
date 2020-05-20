@@ -12,4 +12,4 @@ storiesOf("OathKeeper", module)
       header: false
     }
   })
-  .add("MyOaths - TakeOathBox", () => <TakeOathBox />);
+  .add("TakeOathBox", () => <TakeOathBox />);

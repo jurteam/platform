@@ -4,7 +4,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 # 1. nginx + php install
 RUN apt update  && \
     apt install -y ufw curl zip unzip nano systemd cron supervisor php-fpm php-mysql php-mbstring php-xml php-cli php-zip php-xmlrpc php-soap php-curl php-gd php-bcmath nginx
-    # apt-get -y -t bionic-backports
+# apt-get -y -t bionic-backports
 
 # 3. virtual host setup
 RUN mkdir -p /var/www/html/app && \
@@ -15,7 +15,7 @@ RUN mkdir -p /var/www/html/app && \
     mkdir -p /var/www/html/storage/framework && \
     mkdir -p /var/www/html/bootstrap/cache
 
-    # echo "--- JUR ---" > /var/www/html/index.html && \
+# echo "--- JUR ---" > /var/www/html/index.html && \
 
 
 # 5. copy be app config files
@@ -31,6 +31,10 @@ ADD rest/storage /var/www/html/storage
 ADD rest/tests /var/www/html/tests
 # ADD rest/vendor /var/www/html/vendor
 
+# 8. install composer and launch it into root folder
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+RUN (cd /var/www/html/;composer --prefer-dist -vvv install)
+
 # 6. copy fe app config files
 ADD build /var/www/html/public
 
@@ -38,17 +42,11 @@ ADD build /var/www/html/public
 ADD rest/public/index.php /var/www/html/public/index.php
 ADD rest/public/ /var/www/html/public/
 
-# 8. install composer and launch it into root folder
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-RUN (cd /var/www/html/;composer install)
-
 # supervisor config
 ADD environment/supervisor/jur.conf /etc/supervisor/conf.d
 
 # crontab config
 ADD environment/cron/jur.conf /var/spool/cron/crontabs/root
-
-
 
 # Nginx config
 ADD environment/nginx/nginx.conf /etc/nginx/sites-available/default
@@ -67,4 +65,4 @@ ADD environment/app/.env /var/www/html/.env
 RUN chown -R www-data:www-data /var/www/html
 
 EXPOSE 80
-CMD service php7.2-fpm start && nginx -g "daemon off;"
+CMD service supervisor start && service php7.2-fpm start && nginx -g "daemon off;"

@@ -5,26 +5,28 @@ services:
     volumes:
       # - ./build:/var/www/html/public
       # - ./rest/phpunit.xml:/var/www/html/phpunit.xml
-      # - ./rest/.env:/var/www/html/.env
+      - ./rest/.env:/var/www/html/.env
       - ./rest/app:/var/www/html/app
       # - ./rest/artisan:/var/www/html/artisan
       # - ./rest/bootstrap:/var/www/html/bootstrap
       # - ./rest/composer.json:/var/www/html/composer.json
-      # - ./rest/config:/var/www/html/config
+      - ./rest/config:/var/www/html/config
       - ./rest/database:/var/www/html/database
-      # - ./rest/public:/var/www/html/public
+      - ./rest/public:/var/www/html/public
       - ./rest/resources:/var/www/html/resources
       - ./rest/routes:/var/www/html/routes
       # - ./rest/storage:/var/www/html/storage
       # - ./rest/tests:/var/www/html/tests
-      # - ./rest/vendor:/var/www/html/vendor
+      - ./rest/vendor:/var/www/html/vendor
       # - ./rest:/var/www/html
+      - ./environment/supervisor:/etc/supervisor/conf.d
     ports:
-      - "80:80"
+      - "8000:80"
     links:
       - db
       - cache
-    environment:
+      - rabbit
+    environment: # These env variables are not being used. See rest/.env instead
       APP_ENV: jur-mvp
       APP_URL: http://localhost
       APP_TIMEZONE: UTC
@@ -149,17 +151,30 @@ services:
 
   rabbit:
     image: rabbitmq:3.8
-    env_file: .env.docker-compose
+    # env_file: .env.docker-compose
     environment:
-      # RABBITMQ_ERLANG_COOKIE: "${RABBITMQ_ERLANG_COOKIE}"
-      # RABBITMQ_DEFAULT_USER: "${RABBITMQ_DEFAULT_USER}"
-      # RABBITMQ_DEFAULT_PASS: "${RABBITMQ_DEFAULT_PASS}"
-      RABBITMQ_DEFAULT_VHOST: "/"
+      RABBITMQ_ERLANG_COOKIE: esdtvcrxrtcgvhbjnbhgcfxdcgfhbjk
+      RABBITMQ_DEFAULT_USER: yellowpanda
+      RABBITMQ_DEFAULT_PASS: yellowpanda
+      RABBITMQ_DEFAULT_VHOST: /
     ports:
       - "15672:15672"
       - "5672:5672"
+    expose:
+      - "5672"
     labels:
       NAME: "rabbit"
+
+  polling:
+    image: keymetrics/pm2:14-alpine
+    volumes:
+      - ./polling-service:/var/www/html
+    working_dir: /var/www/html
+    command: pm2-runtime start pm2.json
+    links:
+      - rabbit
+    extra_hosts:
+      - "hostmachine:${HOSTIP}"
 
   cache:
     image: memcached

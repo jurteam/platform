@@ -4,6 +4,7 @@ import Profile from "./Profile";
 
 // Inner pages
 import ProfileForm from "../../common/ProfileForm";
+import MyOathsSection from "../../app-specific/OathKeeper/MyOathsSection";
 import Privacy from "./Privacy";
 import UserNotification from "../../common/UserNotification";
 import Faq from "./Faq";
@@ -25,6 +26,12 @@ class ProfileProvider extends Component {
           component: <ProfileForm />
         },
         {
+          label: i18n.myOaths,
+          to: "/profile/my-oaths",
+          exact: true,
+          component: <MyOathsSection />
+        },
+        {
           label: i18n.privacy,
           to: "/profile/privacy",
           component: <Privacy />
@@ -33,7 +40,6 @@ class ProfileProvider extends Component {
           label: i18n.notifications,
           to: "/profile/notifications",
           component: <UserNotification />
-
         },
         { label: i18n.faq, to: "/profile/faq", component: <Faq /> },
         {

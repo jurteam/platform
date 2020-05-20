@@ -78,7 +78,9 @@
   "metamaskRequiredDesc": "Comet is an extension for accessing Vechain Thor enabled distributed applications, or \"Dapps\" in your normal browser!<br />The extension injects the Vechain Thor web3 API into every website's javascript context, so that dapps can read from the blockchain.",
   "cometRequired": "Comet is Required",
   "cometSyncRequired": "<strong>Sync Browser</strong> or <strong>Comet</strong> is Required",
+  "syncBrowserRequired": "<strong>Sync Browser</strong> is Required",
   "cometSyncRequiredDesc": "<strong>Sync</strong> is the official desktop wallet firstly supports Connex. It provides seamless experience for users and developers. Which is designed to provide the superior user experiences for VeChain Apps, and serves as the dApp environment to provide unlimited potential for developers and users.<br /><br /><strong>Comet</strong> is an extension for accessing VeChain enabled distributed applications, or \"Dapps\" in your normal browser!<br />The extension injects the Thorified web3 API into every website's javascript context, so that dapps can read from the VeChain Blockchain.",
+  "syncRequiredDesc": "<strong>Sync</strong> is the official desktop wallet firstly supports Connex. It provides seamless experience for users and developers. Which is designed to provide the superior user experiences for VeChain Apps, and serves as the dApp environment to provide unlimited potential for developers and users.",
   "getChromeExtension": "Get Comet Extension",
   "getSyncBrowser": "Get Sync Browser",
   "unlockMetamask": "Unlock MetaMask",
@@ -218,5 +220,6 @@
   "rejectPayment": "Reject Payment",
   "rejectPaymentText": "Please complete the payment step in order to proceed.",
   "dotted": "•••",
-  "otherCategoryPlaceholder": "Insert your category"
+  "otherCategoryPlaceholder": "Insert your category",
+  "myOaths": "My Oaths"
 }

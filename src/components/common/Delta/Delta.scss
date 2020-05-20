@@ -1,0 +1,19 @@
+.jur-delta {
+  &::after {
+    content: "%";
+  }
+
+  &__positive {
+    color: #6dd230;
+    &::before {
+      content: "↑ +";
+    }
+  }
+
+  &__negative {
+    color: #ed0782;
+    &::before {
+      content: "↓ ";
+    }
+  }
+}
