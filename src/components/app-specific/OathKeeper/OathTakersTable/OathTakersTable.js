@@ -13,12 +13,18 @@ import RankBadge from "JurCommon/RankBadge";
 import { i18nDateFormat, oathState } from "../../../../utils/helpers";
 import { TableCell } from "../../../common/TableCell/TableCell";
 
-const OathTakerTableHeaderRow = ({ onSort }) => (
-  <Table.Row>
-    <Table.Cell align="center">Rank</Table.Cell>
+const OathTakerTableHeaderRow = ({ onSort, ...rest }) => (
+  <Table.Row {...rest}>
+    <Table.Cell align="center" onClick={onSort} fieldName="Rank">
+      Rank
+    </Table.Cell>
     <Table.Cell>Wallet</Table.Cell>
-    <Table.Cell>Amount Staked</Table.Cell>
-    <Table.Cell>Oaths</Table.Cell>
+    <Table.Cell onClick={onSort} fieldName="Amount">
+      Amount Staked
+    </Table.Cell>
+    <Table.Cell onClick={onSort} fieldName="OathCount">
+      Oaths
+    </Table.Cell>
     <Table.Cell>Amount</Table.Cell>
     <Table.Cell>Oath Date</Table.Cell>
     <Table.Cell>Duration</Table.Cell>
@@ -166,6 +172,23 @@ const fetchOathsOf = address => ({
   payload: address
 });
 
+const orderTosign = order => {
+  switch (order) {
+    case 1:
+      return "+";
+    case 2:
+      return "-";
+    default:
+      return "";
+  }
+};
+
+const onSortChange = (field, order) => {
+  const sign = orderTosign(order);
+  const sortBy = sign ? sign + field : "";
+  return { type: OATH_KEEPER_FETCH_OATH_TAKERS, payload: { sortBy } };
+};
+
 const selectRow = id => ({ type: OATH_KEEPER_SELECT_ROW, payload: id });
 
 const mapStateToProps = state => ({
@@ -174,7 +197,12 @@ const mapStateToProps = state => ({
   selected: state.oathKeeper.selectedRow
 });
 
-const mapDispatchToProps = { fetchOathTakers, selectRow, fetchOathsOf };
+const mapDispatchToProps = {
+  fetchOathTakers,
+  selectRow,
+  fetchOathsOf,
+  onSortChange
+};
 
 export default global.connection(
   OathTakersTable,
