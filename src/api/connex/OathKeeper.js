@@ -110,12 +110,10 @@ export default class connexOathKeeper {
     const lockMapMethod = this.contractAccount.method(this.abiOf("lockMap"));
     lockMapMethod.cache([address]);
     return lockMapMethod.call(address, oathIndex).then(output => {
-      const oath = {
+      return {
         ...output.decoded,
         oathIndex
       };
-      console.log("connexOathKeeper fetchOathAt", oath);
-      return oath;
     });
   };
 
