@@ -56,7 +56,7 @@
     "eject-old": "react-scripts eject",
     "eject": "react-app-rewired eject",
     "migrate-contracts": "(cd protocol;truffle migrate --reset;cd ..;cp -R protocol/build src/.)",
-    "migrate-oathkeeper": "(cd smart-contracts/oath-keeper;truffle migrate --reset --network $npm_config_network;cd ..;cp -R smart-contracts/oath-keeper/build/contracts/OathKeeper.json src/build/contracts)",
+    "migrate-oathkeeper": "(bash -c \"pushd smart-contracts/oath-keeper;truffle migrate --reset --network $npm_config_network;popd;cp -R smart-contracts/oath-keeper/build/contracts/OathKeeper.json src/build/contracts\")",
     "lint": "./node_modules/.bin/eslint --debug src",
     "storybook": "start-storybook -p 9009 -s public",
     "build-storybook": "build-storybook -s public"
