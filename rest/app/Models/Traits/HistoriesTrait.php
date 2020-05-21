@@ -84,7 +84,7 @@ trait HistoriesTrait
         if ($this->histories->count() > 0) {
             $history = $this->histories
                 ->filter(function($item) {
-                    return $item->contract_status_code === 39;
+                    return $item->contract_status_code === 37;
                 })
                 ->first();
 

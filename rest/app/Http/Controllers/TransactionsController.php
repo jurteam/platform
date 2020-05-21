@@ -110,6 +110,20 @@ class TransactionsController extends Controller
                 ->where('id','=',$voteId)
                 ->where('contract_id','=',$contractId)
                 ->update(['waiting' => 0]);
+
+                // check for majority change
+                $thisVote = ContractVote::where('waiting', '=', 0)
+                ->where('id','=',$voteId)
+                ->where('contract_id','=',$contractId)
+                ->firstOrFail();
+
+                info('---- thisVote', [$thisVote]);
+
+                if ($thisVote != null)
+                {
+                    $thisVote->checkForMajorityChange();
+                }
+
             }
 
         }
