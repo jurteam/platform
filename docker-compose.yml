@@ -166,11 +166,12 @@ services:
       NAME: "rabbit"
 
   polling:
-    image: keymetrics/pm2:14-alpine
+    image: node
+    restart: always
     volumes:
       - ./polling-service:/var/www/html
     working_dir: /var/www/html
-    command: pm2-runtime start pm2.json
+    command: node index.js
     links:
       - rabbit
 
