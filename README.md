@@ -8,25 +8,31 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 > Note: this project should be refactored using _Drizzle Truffle Box ([Further info here](https://github.com/truffle-box/drizzle-box))_
 
+## Deployments ☁️
+
+- Test https://test.jur.io/
+- Jur Academy http://68.183.13.0/
+- Production https://beta.jur.io/
+
 ## Dependencies
 
 ### Global (host) dependencies
 
--   **Truffle** as EVM framework _([more info here](https://truffleframework.com/docs/truffle/getting-started/installation))_;
--   **Ganache CLI** for ETH test network _([more info here](https://github.com/trufflesuite/ganache-cli))_;
--   **VeChain Thor** for VeChain Thor Blockchain test network _([more info here](https://github.com/vechain/thor))_;
--   **Dot Env** for environment configuration _([more info here](https://github.com/motdotla/dotenv#readme))_;
--   **Composer** as PHP package manager for Lumen/Laravel framework _([more info here](https://getcomposer.org/))_
--   **Docker** for service containers management _([more info here](https://docs.docker.com/))_
+- **Truffle** as EVM framework _([more info here](https://truffleframework.com/docs/truffle/getting-started/installation))_;
+- **Ganache CLI** for ETH test network _([more info here](https://github.com/trufflesuite/ganache-cli))_;
+- **VeChain Thor** for VeChain Thor Blockchain test network _([more info here](https://github.com/vechain/thor))_;
+- **Dot Env** for environment configuration _([more info here](https://github.com/motdotla/dotenv#readme))_;
+- **Composer** as PHP package manager for Lumen/Laravel framework _([more info here](https://getcomposer.org/))_
+- **Docker** for service containers management _([more info here](https://docs.docker.com/))_
 
 ### Direct Dependencies
 
--   **react-blockies** for users ident icons _(based on ETH Blockies [more info here](https://github.com/ethereum/blockies))_
+- **react-blockies** for users ident icons _(based on ETH Blockies [more info here](https://github.com/ethereum/blockies))_
 
 ### Developmnent (host)
 
--   **prettier** for coding style format _([more info here](https://prettier.io))_;
--   **storybook** for ui components _([more info here](https://github.com/storybooks/storybook))_;
+- **prettier** for coding style format _([more info here](https://prettier.io))_;
+- **storybook** for ui components _([more info here](https://github.com/storybooks/storybook))_;
 
 ### Editor
 
@@ -37,32 +43,45 @@ _Please note: this project supports both._
 
 This project repo is organized in 3 branches:
 
--   **master**: is a mirror of _production_ environment;
--   **beta**: is a mirror of _stage_ environment;
--   **develop**: for development purposes;
+- **master**: is a mirror of _production_ environment;
+- **beta**: is a mirror of _stage_ environment;
+- **develop**: for development purposes;
 
 ### Git Workflow
 
 Using this repository you should follow this workflow: [Atlassian Git-flow](https://it.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow), by using _**features**_, _**hotfix**_ and _**releases**_ throuth previous mentioned branches.
 
-## Architecture
+## Architecture 🏰
 
 This project is structured as following:
 
--   **Frontend** build with [React.js](https://reactjs.org) + [Drizzle](https://truffleframework.com/drizzle)
--   **REST API** built with [Laravel Lumen](https://lumen.laravel.com)
+- **Frontend** build with [React.js](https://reactjs.org) + [Drizzle](https://truffleframework.com/drizzle) + [connex](https://connex.vecha.in/#/)
+- **REST API** built with [Laravel Lumen](https://lumen.laravel.com)
+- **Runtime** managed by [Docker](https://www.docker.com/) 🐳 and [docker-compose](https://docs.docker.com/compose/)
+- **Smart Contracts** deployed by Truffle 🍰 + web3-gear ⚙️
+- **Blockchain** is [VeChainThor](https://github.com/vechain/thor) 🔨
+- **Blockchain Interfaces** are provided by ☄ [Comet](https://chrome.google.com/webstore/detail/comet/jpkkakbelpcambmhdcaoidiejaikiemn) (in Chrome browser) and ♻️ [Sync browser](https://env.vechain.org/)
 
 ## Environment setup
 
-This project uses a `.env` file in order to please [follow the instructions here](https://facebook.github.io/create-react-app/docs/adding-custom-environment-variables) and create this file based on your needs.
+This project uses `.env` files in order to please [follow the instructions here](https://facebook.github.io/create-react-app/docs/adding-custom-environment-variables) and create this file based on your needs.
 
 > **NOTE** : only constants definition prefixed by `REACT_APP_` will be available in React App.
 
 _**You can find the environment configuration template [here](.env.template).**_
 
+### List of `.env` files
+
+1. `.env` root env file used by react app.
+1. `rest/.env` backend env file used by lumen app.
+1. `polling-service/.env` nodeJS based polling service env file.
+1. `.env.docker-compose` for variables used in `docker-compose.yml` file.
+
+All the env files have equivalent _`*.example`_ files to be used as a starting point for creating your own `.env` files. Please make sure that `.env` files are not checked in the git. `.env` files may contain secrets (passwords) and hence must be protected.
+
 ## Running Test Network
 
-### Ethereum
+### Ethereum [depr]
 
 To run a test ethereum network, in a separate terminal execute:
 `ganache-cli --gasLimit 7000000`
@@ -70,6 +89,7 @@ To run a test ethereum network, in a separate terminal execute:
 ### VeChain
 
 **!!! Before run !!!**
+
 > Make sure you've already installed [VeChain Thor](https://github.com/vechain/thor#installation)
 
 > Also make sure you've deployed smart contracts on local solo network using [Web3-Gear](https://github.com/vechain/web3-gear) using options `--log 1` and `--debug 1` for logging and debugghing purposes.
@@ -77,7 +97,8 @@ To run a test ethereum network, in a separate terminal execute:
 To run a test vechain blockchain network, in a separate terminal execute:
 `$ bin/thor solo --gas-limit 7000000 --on-demand`
 
-#### Configuration
+#### Configuration [depr]
+
 Please select the network properly in `src/config/drizzleOptions.js` file where you can find a node `vechain` that can be filled with a boolean value (for mainnet) or a string of your host (in ex. http://localhost:8669 in SOLO mode)
 
 ## Rest API
@@ -100,23 +121,91 @@ If all goes well Storybook is accessible at <http://localhost:9009>
 ## Connex
 
 Connex is the standard interface to connect VeChain apps with VeChain blockchain and users.<br>
->Is under development migration to Connex as authentication, reading and writing method to the blockchain.
+
+> Is under development migration to Connex as authentication, reading and writing method to the blockchain.
 
 Connex method used into Dapp are:
 
 - **Authentication**: perform a certificate signing request with `identification` purpose.<br>
-[more info here](https://docs.vechain.org/connex/api.html#certificate-signing-service).<br>
->Into Dapp is used into `signCertIdentification` method avaliable [here](https://github.com/jurteam/platform/blob/feature/connex/src/api/connex/Sign.js)
+  [more info here](https://docs.vechain.org/connex/api.html#certificate-signing-service).<br>
+
+  > Into Dapp is used into `signCertIdentification` method avaliable [here](https://github.com/jurteam/platform/blob/feature/connex/src/api/connex/Sign.js)
 
 - **Contract Method call**: to call a contract method without altering contract state.<br>
-[more info here](https://docs.vechain.org/connex/api.html#contract-method).<br>
->Into Dapp is used in the `balanceOf` method avaliable [here](https://github.com/jurteam/platform/blob/feature/connex/src/api/connex/JURToken.js)
+  [more info here](https://docs.vechain.org/connex/api.html#contract-method).<br>
+
+  > Into Dapp is used in the `balanceOf` method avaliable [here](https://github.com/jurteam/platform/blob/feature/connex/src/api/connex/JURToken.js)
 
 - **Transaction signing service**: perform a transaction signing request<br>
-[more info here](https://docs.vechain.org/connex/api.html#transaction-signing-service).<br>
->Into Dapp is used in the `createArbitration` method avaliable [here](https://github.com/jurteam/platform/blob/feature/connex/src/api/connex/ArbitrationFactory.js)
+  [more info here](https://docs.vechain.org/connex/api.html#transaction-signing-service).<br>
+  > Into Dapp is used in the `createArbitration` method avaliable [here](https://github.com/jurteam/platform/blob/feature/connex/src/api/connex/ArbitrationFactory.js)
 
+## Docker based first run flow 🐳
 
+> 🌟 This is the prefered way of running the project.
+
+### Get all the tools we will need ⬇️
+
+- [NodeJS](https://nodejs.org/it/)
+- [Truffle (global)](https://github.com/trufflesuite/truffle)
+- [Go](https://golang.org/doc/install) + [VeChain Thor](https://github.com/vechain/thor)
+- [Docker](https://www.docker.com/) 🐳 and [docker-compose](https://docs.docker.com/compose/)
+- [Postman](https://www.postman.com/)
+- [Sync browser](https://env.vechain.org/)
+
+### Steps for the setup
+
+1. Create `.env` files in all the places mentioned in [Environment](#environments) section
+1. `docker-compose up` For the first run, it will build the Jur image and fetch all other images. Once fetching/build is done, you can stop dockers for now `docker-compose stop`.
+1. `bin/thor solo --gas-limit 10000000 --persist --on-demand` Alternatively you can connect to TESTNET using `bin/thor --network test`
+1. Add auto created users from the previous command to your Comet or Sync
+1. Run `npm install` at project root, `polling-service`, `protocol`, `smart-contracts/oath-keeper`
+1. `web3-gear`
+1. `npm run migrate-contracts` and `npm_config_network=development npm run migrate-oathkeeper`
+1. `docker-compose up -d` starts dockers in background
+1. For the first run of backend, you will need to [enter into running dockers](#/how-to-enter-into-running-dockers) and [run db migrations](#/how-to-run-db-migrations).
+1. Add user to backend using Postman collection available at `rest/postman`. Please import all the contents of the folder. Once opened in the Postman app, update environment variables. Then use `store` API call in the users to create a new user using your wallet address.
+1. Import JUR Token contract located at `src/build/contracts` into [Sync browser](https://env.vechain.org/) via [Inspector tool](https://inspector.vecha.in/#/contracts)
+1. Mint some JUR Tokens for our use. Make sure the value of balance is more than 18 digits.
+1. `npm run start`
+1. Open the dApp in Chrome or Sync 🎉
+
+### How to enter into running docker
+
+**[Preferred]** Put the following code into your shell script's `rc` file and reload the source (`source .zshrc` or open a new terminal)
+
+```sh
+function de() {
+  docker exec -i -t $1 /bin/bash -c 'export TERM=xterm; /bin/bash'
+}
+
+function o() {
+  de $(docker ps | awk '{print $NF}' | grep $@);
+}
+```
+
+Once you have aforementioned codes in the shell environment, you can get into any running docker by using it's container name/part of the name.
+
+Examples:
+
+```sh
+o jur
+o poll
+o polling
+```
+
+**[Alternative]** To manually get into a running docker:
+
+```sh
+docker exec -it container_name /bin/sh
+```
+
+### How to run db migrations
+
+1. `docker-compose up -d jur`
+1. `o jur` OR use alternative ways to enter into running docker
+1. `cd /var/www/html` Our PHP codes (lumen) are here
+1. `php artisan migrate:refresh` this will rollback enverything and then run migration OR `php artisan migrate` for incremental migration
 
 ## First run flow
 
@@ -177,8 +266,8 @@ This command will **launch** REST API service on your host.
 
 This command will **stop** REST API service on your host.
 
-
 ## Deploy
+
 After you have configured the environment on remote machine and already [give the right permissions for rsync](https://askubuntu.com/questions/719439/using-rsync-with-sudo-on-the-destination-machine#answer-719440)
 
 You should use `./bin/deploy.sh` script in order to deploy.
@@ -195,7 +284,6 @@ This operation uses `rsync` with sudo and and excludes files and folder written 
 > Teke a look also to `.template` files for this.
 
 > Please note: this operation should be automated using a CI service like CircleCI. Feel free to use this script on a runner machine.
-
 
 ## Available Scripts
 
