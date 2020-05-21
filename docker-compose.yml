@@ -173,8 +173,6 @@ services:
     command: pm2-runtime start pm2.json
     links:
       - rabbit
-    extra_hosts:
-      - "hostmachine:${HOSTIP}"
 
   cache:
     image: memcached
