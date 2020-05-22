@@ -182,11 +182,13 @@ class TransactionsController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function delete($id)
+    public function delete(Request $request, $id)
     {
+        $wallet = $request->header('wallet');
+        $transaction = Transaction::lockedByMe($wallet)->findOrFail($id);
 
-      Transaction::destroy($id);
+        $result = $transaction->delete();
 
-      return response()->json(compact('id'));
+        return ['response' => $result];
     }
 }
