@@ -212,24 +212,44 @@ export function* getDispute(action) {
 
           if(connectorValue === 'connex')
           {
+            
             canWithdraw = yield arbitration.canWithdraw(wallet)
 
+            if (canWithdraw.reverted) 
+            {
+              hasWithdrawn = yield arbitration.hasWithdrawn(wallet);
+              
+              // TODO if canwithdraw does not work (reverted === true)
 
-            log("getDispute - canWithdraw", canWithdraw);
-            hasWithdrawn = canWithdraw[0];
-            sumToWithdraw =  connexFromWei(canWithdraw[1].toString(), 'ether');
+              //          for withdraw  
+              //              sumpayout = 'disputeDispersal[winnerParty][msg.sender]'
+              //              hasWithdrawn = hasWithdrawn[msg.sender]
+              
+              //          for voter
+              //              reward has claimed? userVotes[msg.sender][winnerParty][i].claimed
 
-            log("getDispute - hasWithdrawn", hasWithdrawn);
-            log("getDispute - sumTowithdraw", sumToWithdraw);
-            let canClaimReward = yield arbitration.canClaimReward(wallet);
+            } 
+            else 
+            {
+              
 
-            log("getDispute - canClaimReward", canClaimReward);
+              log("getDispute - canWithdraw", canWithdraw);
+              hasWithdrawn = canWithdraw[0];
+              sumToWithdraw =  connexFromWei(canWithdraw[1].toString(), 'ether');
 
-            hasToGetReward = canClaimReward[0]
-            log("getDispute - hasToGetReward", hasToGetReward);
+              log("getDispute - hasWithdrawn", hasWithdrawn);
+              log("getDispute - sumTowithdraw", sumToWithdraw);
+              let canClaimReward = yield arbitration.canClaimReward(wallet);
 
-            reward = connexFromWei(canClaimReward[1].toString(), 'ether');
-            log("getDispute - reward", reward);
+              log("getDispute - canClaimReward", canClaimReward);
+
+              hasToGetReward = canClaimReward[0]
+              log("getDispute - hasToGetReward", hasToGetReward);
+
+              reward = connexFromWei(canClaimReward[1].toString(), 'ether');
+              log("getDispute - reward", reward);
+
+            }
 
 
             // yield arbitration.gameTheory();

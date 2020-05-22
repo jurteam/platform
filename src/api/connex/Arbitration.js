@@ -201,7 +201,7 @@ export default class connexArbitrationContract
     
     log('canWithdraw - canWithdraw',canWithdraw)
 
-    return canWithdraw.decoded
+    return canWithdraw
 
   }
 
