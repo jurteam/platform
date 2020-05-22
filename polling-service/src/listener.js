@@ -20,9 +20,9 @@ const listen = async (error, result) => {
         let response = await processor.checkBlock(currentBlock);
         if(response) {
             for(let i = 0; i <response.length; i++) {
-                console.log(chalk.greenBright.bold("[polling-service-listener] Transaction found, writing to queue", transformer.format(response[i])))
+                console.log(chalk.greenBright.bold("[polling-service-listener] Transaction found, writing to queue", JSON.stringify(transformer.format(response[i]))))
                 // Push formated data to the queue
-                await queue.push(QUEUE_NAME, transformer.format(response[i]))
+                // await queue.push(QUEUE_NAME, transformer.format(response[i]))
             }
         }
         blockConfig.currentBlock = currentBlock+1;

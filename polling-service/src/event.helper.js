@@ -2,7 +2,7 @@ const smartContracts = require('../config/smart-contracts.json');
 
 const getBlock = async (block) => {
     const res = await web3.eth.getBlock(block);
-    if(res.transactions.length > 0) {
+    if(res && res.transactions.length > 0) {
         return res.transactions;
     }
 }
@@ -12,7 +12,7 @@ const findEventInTransaction = async (txHash) => {
     if(res.outputs.length > 0) {
         for(let i = 0; i < res.outputs.length; i++) {
             let event = res.outputs[i].events;
-            if(event.length > 0) {
+            if(event && event.length > 0) {
                 for(let j = 0; j < event.length; j++) {
                     let contract = findContractByAddress(res.outputs[i].events[j].address)
                     if(contract != null) {
@@ -47,7 +47,7 @@ const decodeEventData = (abi, data, topics) => {
 const findContractByAddress = (address) => {
     let contract = null
     smartContracts.forEach(con => {
-      if (con.address === address) { contract = con }
+      if (web3.utils.toChecksumAddress(con.address) === web3.utils.toChecksumAddress(address)) { contract = con }
     });
     return contract
 }
