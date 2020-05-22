@@ -79,6 +79,59 @@ _**You can find the environment configuration template [here](.env.template).**_
 
 All the env files have equivalent _`*.example`_ files to be used as a starting point for creating your own `.env` files. Please make sure that `.env` files are not checked in the git. `.env` files may contain secrets (passwords) and hence must be protected.
 
+## Details of docker services 🤓
+
+### 1️⃣ Polling Service
+
+This service listen to blockchain and pulls out interesting information. It uses `web3` for communicating with the VeChain Thor blockchain. It scans every block and see if it has information about smart contracts/transactions we are interested as mentioned in configutation files. Once an interested transaction/event is found, it sends it to RabbitMQ service.
+
+Docker-compose name is `polling`.
+
+**⚙️ Config:** Polling service needs URL for thor API and URL for RabbitMQ. Both these are taken from `polling-service/.env` file.
+
+If the thor node is running outside the docker on your local machine, you have to provide machine's IP address on Linux (e.g. `http://192.168.0.32:8669`) OR special binded IP `http://host.docker.internal:8699` for macOS/Windows.
+
+In the `polling-service/config` folder, there are two files:
+
+1. `currentBlock.json` for storing the last read block's number
+1. `smart-contracts.json` for reading the info on interested events and contract addresses.
+
+You have to update `currentBlock.json` manually with the least block id of your locally deployed contracts. Among of JUR Token, Arbitration and Oath Keeper smart contracts, the least block id will be that of JUR Token smart contract.
+
+**📦 Stack:** Polling service is written using NodeJS. Lifecycle is handled by docker-compose. The service will auto restart if crashed.
+
+### RabbitMQ service
+
+This service provides queue storage for polling service and lumen's listners. It has a common queue named `blockchain-events` for all the interested events received from blockchain.
+
+Docker-compose name is `rabbit`.
+
+**⚙️ Config:** This service can run without any configuration. In that case it will use defaulr username and password of RabbitMQ. Default username is `guest` and password is also `guest`. You can (and should) override the username and password in `.env.docker-compose`. The changes you make here for the username and password, must be reflected in the polling service and rest's `.env` files so that they can access the rebbitmq service.
+
+**📦 Stack:** RabbitMQ service is using the standard docker image `rabbitmq:3.8`. It's based on Erlang and uses Erlang Cookie Common Auth for internal communication between rabbitmq daemon and rabbitmqctl.
+
+### Rest service
+
+This is the backend service provider for all of our centralized APIs and background tasks.
+
+Docker-compose name is `jur`.
+
+**⚙️ Config:** All the config needed by the rest service is provided via `rest/.env` file. You may want to mount the `rest/.env` file for the latest changes to be picked up by this service. If the file is not mounted, the docker will pick up existing file which was copied during the build process. You can see which config file is actually being used by getting into a running docker and inspecting the file at `/var/www/html/.env`. Alternative to mounting the `rest/.env` file is to rebuild the `jur` image.
+
+This service needs regular db migrations whenever a new migration files are checked in. You can run migrations by refering to [run db migrations](#/how-to-run-db-migrations).
+
+**📦 Stack:** Rest service (also called **jur docker, lumen app, backend**) is a Laravel Lumen app written in PHP 7.2. It serves the production build of frontend assets, APIs and executes the background jobs. It has supervisor for running background jobs. The nginx server takes care of request handling.
+
+### Mysql service
+
+This is the main centralized database and primarily interacted through the rest service.
+
+Docker-compose name is `db`.
+
+**⚙️ Config:** Mysql service takes credentials from the docker-compose file. {TODO: credentials should be moved to `.env.docker-compose`}
+
+**📦 Stack:** Mysql service uses the standard `mysql:5.7` docker image.
+
 ## Running Test Network
 
 ### Ethereum [depr]
