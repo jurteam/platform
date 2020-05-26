@@ -31,10 +31,9 @@ const findEventInTransaction = async (txHash) => {
 }
 
 const decodeEventData = (abi, data, topics) => {
-    let encoded = null
     for(let i = 0; i < abi.events.length; i++) {
         if(web3.eth.abi.encodeEventSignature(abi.events[i]) === topics[0]) {
-            encoded = topics[0]
+            topics.shift()
             return {
                 data: web3.eth.abi.decodeLog(abi.events[i].inputs, data, topics),
                 identifier: abi.events[i].name,
