@@ -188,7 +188,6 @@ export function* getDispute(action) {
         // yield put({ type: CHAIN_GET_CONTRACT, address });
 
 
-
         const { wallet }  = yield select(getUser);
 
         let winner, arbitration
@@ -203,7 +202,6 @@ export function* getDispute(action) {
           winner = yield arbitration.getWinner().catch(chainErrorHandler);
         }
         log("getDispute - winner", winner);
-
         if (winner) {
 
           log("getDispute - arbitration", arbitration);
@@ -212,26 +210,29 @@ export function* getDispute(action) {
 
           if(connectorValue === 'connex')
           {
-            
-            canWithdraw = yield arbitration.canWithdraw(wallet)
 
-            if (canWithdraw.reverted) 
+            canWithdraw = yield arbitration.canWithdraw(wallet)
+            if (canWithdraw.reverted)
             {
               hasWithdrawn = yield arbitration.hasWithdrawn(wallet);
-              
+              let sumpayout = yield arbitration.diputeDispersal(winner, wallet);
+              log("getDispute - sumpayout: ", sumpayout);
+              sumToWithdraw = connexFromWei(sumpayout.toString(), 'ether');
+
               // TODO if canwithdraw does not work (reverted === true)
 
-              //          for withdraw  
+              //          for withdraw
               //              sumpayout = 'disputeDispersal[winnerParty][msg.sender]'
               //              hasWithdrawn = hasWithdrawn[msg.sender]
-              
+
               //          for voter
               //              reward has claimed? userVotes[msg.sender][winnerParty][i].claimed
 
-            } 
-            else 
+
+            }
+            else
             {
-              
+
 
               log("getDispute - canWithdraw", canWithdraw);
               hasWithdrawn = canWithdraw[0];
