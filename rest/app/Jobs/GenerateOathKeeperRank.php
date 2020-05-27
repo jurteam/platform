@@ -62,7 +62,7 @@ class GenerateOathKeeperRank extends Job
 
         $rank = 0;
 
-        $oathKeepers = OathKeeper::orderBy('active_amount', 'desc')->get();
+        $oathKeepers = OathKeeper::orderBy('rank_point', 'desc')->get();
 
         foreach ($oathKeepers as $oathKeeper) {
             $oathKeeper->rank = ++$rank;
