@@ -45,7 +45,8 @@ import {
 import {
   log,
   ethToHuman,
-  connexFromWei
+  connexFromWei,
+  sum
 } from "../utils/helpers";
 
 import {
@@ -983,22 +984,16 @@ function* manageEvent(txw, decoded) {
       stakedAmount = connexFromWei(stakedAmount.toString(), 'ether');
       rewardAmount = connexFromWei(rewardAmount.toString(), 'ether');
 
+      const bigReward = sum(stakedAmount,rewardAmount)
+
       log('manageEvent - VoterPayout -2 stakedAmount', stakedAmount)
       log('manageEvent - VoterPayout -2 rewardAmount', rewardAmount)
 
-      stakedAmount = Number.parseFloat(stakedAmount);
-      rewardAmount = Number.parseFloat(rewardAmount);
-
-      log('manageEvent - VoterPayout -3 stakedAmount', stakedAmount)
-      log('manageEvent - VoterPayout -3 rewardAmount', rewardAmount)
-
-      const reward = stakedAmount + rewardAmount
-
-      log('manageEvent - VoterPayout - reward', reward)
+      log('manageEvent - VoterPayout - bigReward', bigReward)
 
       let rewardData = new FormData();
 
-      rewardData.append("amount", reward);
+      rewardData.append("amount", bigReward);
       rewardData.append("type", "payout");
 
       response = yield call(Withdrawal.store, rewardData, id);
