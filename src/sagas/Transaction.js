@@ -312,7 +312,18 @@ export function* getEventUpdateTx(args) {
       log(
         'getEventUpdateTx - eventDecoded is null - event will not be emitted'
       )
+      log("tx should be reverted: ", txw);
+      log("tx contract: ", txw.contract.address);
 
+
+      let thisTx = yield getTxByAddress(txw.txid);
+      console.log("this tx reverted: ", thisTx);
+
+      if(thisTx.reverted) {
+        log("Contract is reverted");
+        yield manageRevertedContract(txw);
+        log("Contract reverted is managed");
+      }
       // TODO: delete transaction on backend
       // const retPut = yield put({
       //   type: REMOVE_TRANSACTION,
@@ -331,6 +342,23 @@ export function* getEventUpdateTx(args) {
     });
   }
 
+
+}
+
+function* manageRevertedContract(txw) {
+  const {
+    event,
+  } = txw;
+
+
+  switch(event) {
+    case "VoteCast":
+      yield put({ type: DISPUTE_UPDATING, payload: false });
+      yield put({ type: DISPUTE_SAVING, payload: false });
+      break;
+    default:
+      return txw;
+  }
 
 }
 
