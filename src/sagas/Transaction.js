@@ -346,19 +346,28 @@ export function* getEventUpdateTx(args) {
 }
 
 function* manageRevertedContract(txw) {
+
+  log('manageRevertedContract - txw', txw)
+  
   const currDisp = yield select(getCurrentDispute);
   const DisputeDetailPage = yield select(getDisputedetailPage);
+  
+  log('manageRevertedContract - currDisp', currDisp)
+  log('manageRevertedContract - DisputeDetailPage', DisputeDetailPage)
+  
   const {
     event,
     contract: {
       id
     }
   } = txw;
-
-
+  
+  
   switch(event) {
     case "VoteCast":
-      if(DisputeDetailPage && currDisp.id === id) {
+      if(currDisp.id === id) {
+        log('manageRevertedContract - VoteCast')
+        
         yield put({ type: DISPUTE_UPDATING, payload: false });
         yield put({ type: DISPUTE_SAVING, payload: false });
         global.store.dispatch({
