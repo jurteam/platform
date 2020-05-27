@@ -317,7 +317,7 @@ export function* getEventUpdateTx(args) {
 
 
       let thisTx = yield getTxByAddress(txw.txid);
-      console.log("this tx reverted: ", thisTx);
+      log("this tx reverted: ", thisTx);
 
       if(thisTx.reverted) {
         log("Contract is reverted");
