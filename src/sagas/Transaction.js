@@ -346,15 +346,26 @@ export function* getEventUpdateTx(args) {
 }
 
 function* manageRevertedContract(txw) {
+  const currDisp = yield select(getCurrentDispute);
+  const DisputeDetailPage = yield select(getDisputedetailPage);
   const {
     event,
+    contract: {
+      id
+    }
   } = txw;
 
 
   switch(event) {
     case "VoteCast":
-      yield put({ type: DISPUTE_UPDATING, payload: false });
-      yield put({ type: DISPUTE_SAVING, payload: false });
+      if(DisputeDetailPage && currDisp.id === id) {
+        yield put({ type: DISPUTE_UPDATING, payload: false });
+        yield put({ type: DISPUTE_SAVING, payload: false });
+        global.store.dispatch({
+          type: DISPUTE_VOTE_OVERLAY,
+          payload: false
+        });
+      }
       break;
     default:
       return txw;
