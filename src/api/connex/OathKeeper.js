@@ -6,6 +6,7 @@ export default class connexOathKeeper {
   constructor() {
     // this.contractAddress = "0x730c7A23A6258Ed2BaD2EEF4b227f3044Dc160EB";
     // this.contractAddress = "0x862676750f53e92e2502e54ef5c5bfefccfcef51"; //min
+    // this.contractAddress = "0x4213232275b0228f69a06c37ef9c0186f19e999d"; // min on Shuchi
     // this.contractAddress = "0x1d34b7409114772d09784aeaa3203055c6805fe9" // Suhail
     this.contractAddress =
       OathKeeperContract.networks[this.currentNetworkId()].address;
@@ -16,7 +17,7 @@ export default class connexOathKeeper {
     if (!isOathable(amount, lockInPeriod))
       return Promise.reject("Invalid parameters! Can't take oath");
 
-    const blockchainAmount = toBigFixed(amount);
+    const blockchainAmount = toBigFixed(amount).replace(".", "");
     console.log("OathKeeper connex address", this.contractAddress);
     console.log("OathKeeper connex amount", amount, blockchainAmount);
     const approveClause = new connexJURToken().approveClause(
