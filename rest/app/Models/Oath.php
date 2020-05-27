@@ -30,7 +30,7 @@ class Oath extends Model
 
         $oath->wallet = $data->_beneficiary;
         $oath->oath_index = $data->_oathIndex;
-        $oath->amount = $data->_amount;
+        $oath->amount = ((float) ($data->_amount)) / pow(10, 18);
         $oath->lock_in_period = $data->_lockInPeriod;
         $oath->start_at = Carbon::createFromTimestamp($data->_startAt);
         $oath->release_at = Carbon::createFromTimestamp($data->_releaseAt);
