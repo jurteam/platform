@@ -3,7 +3,6 @@
 namespace App\Jobs;
 
 use \App\Jobs\GenerateOathKeeperAnalytics;
-use \App\Jobs\GenerateOathKeeperRank;
 use \App\Models\Oath;
 use \App\Models\OathKeeper;
 
@@ -48,8 +47,6 @@ class UpdateOathStateToComplete extends Job
             // Re-Calculate summary of the oath-keeper
             OathKeeper::calculateSummary($oathKeeper);
 
-            // Re-Generate Rank
-            dispatch(new GenerateOathKeeperRank);
             dispatch(new GenerateOathKeeperAnalytics);
         }
     }
