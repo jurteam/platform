@@ -49,17 +49,10 @@ export default class connexOathKeeper {
 
     const takeAnOathClause = takeAnOathMethod.asClause(lockInPeriod);
 
-    console.log(
-      "OathKeeper connex gasLimit",
-      global.connex.thor.genesis.gasLimit,
-      10000000,
-      6721975,
-      7000000
-    );
     const signingService = global.connex.vendor.sign("tx");
     signingService
       .signer(address)
-      .gas(global.connex.thor.genesis.gasLimit)
+      // .gas(global.connex.thor.genesis.gasLimit)
       .link("https://connex.vecha.in/{txid}")
       .comment(`Take an oath of ${amount} JUR for ${lockInPeriod} months`);
 
