@@ -21,7 +21,7 @@ class CreateOathKeepersTable extends Migration
             $table->unsignedInteger('total_oath_count')->nullable();
             $table->unsignedInteger('active_oath_count')->nullable();
             $table->unsignedInteger('rank')->nullable();
-            $table->decimal('rank_point', 32, 12)->nullable();
+            $table->decimal('rank_point', 36, 18)->nullable();
             $table->timestamps();
         });
     }
