@@ -89,12 +89,13 @@ class OathKeeper extends Model
                     // Get the current time
                     $completeAt = Carbon::createFromTimestamp($payload->data->_releaseAt);
 
+                    // find delay
                     $delay = $completeAt->diffInSeconds(Carbon::now());
 
-                    dispatch(
-                        (new UpdateOathStateToComplete($payload->data->_beneficiary, $payload->data->_oathIndex))
-                            ->delay($delay)
-                    );
+                    // get job & dispatch
+                    $job = (new UpdateOathStateToComplete($payload->data->_beneficiary, $payload->data->_oathIndex))->delay($delay);
+
+                    dispatch($job);
                 }
 
                 break;
