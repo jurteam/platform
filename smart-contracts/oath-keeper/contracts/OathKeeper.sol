@@ -36,6 +36,7 @@ contract OathKeeper is Ownable {
 
     uint256 public minimumLockPeriod = 1;
     uint256 public maximumLockPeriod = 36;
+    uint256 public minimumLockAmount = 10000000000000000;
 
     event OathTaken(address indexed _beneficiary, uint indexed _amount, uint indexed _lockInPeriod, uint _startAt, uint _releaseAt, uint _oathIndex);
     event IHoldYourOathFulfilled(address indexed _beneficiary, uint indexed _amount, uint indexed _oathIndex);
@@ -56,7 +57,7 @@ contract OathKeeper is Ownable {
     function takeAnOath(uint _lockInPeriod) public {
         uint _releaseAt;
         uint256 _amount = jurToken.allowance(msg.sender, address(this));
-        require(_amount > 0, "Please approve token transfer to the contract.");
+        require(_amount >= minimumLockAmount, "Please approve token transfer to the contract.");
         require(_lockInPeriod >= minimumLockPeriod && _lockInPeriod <= maximumLockPeriod, "Please choose a valid lock in period.");
         oathStats[msg.sender].count = SafeMath.add(oathStats[msg.sender].count, 1);
         // oathStats[msg.sender].activeAmountLocked = SafeMath.add(oathStats[msg.sender].activeAmountLocked, _amount);
@@ -66,7 +67,7 @@ contract OathKeeper is Ownable {
         totalOathCount = SafeMath.add(totalOathCount, 1);
         // totalActiveOathCount = SafeMath.add(totalActiveOathCount, 1);
 
-        _releaseAt = DateTimeLib.addMonths(now, _lockInPeriod);
+        _releaseAt = DateTimeLib.addMinutes(now, _lockInPeriod);
         lockMap[msg.sender][oathStats[msg.sender].count] = LockSchedule(_amount, now, _releaseAt, _lockInPeriod, false);
         // check if tokens can be transferred to this contract.
         require(jurToken.transferFrom(msg.sender, address(this), _amount), "Not able to transfer funds.");
