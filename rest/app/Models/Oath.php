@@ -63,7 +63,7 @@ class Oath extends Model
             'oath_index' => $payload->data->_oathIndex
         ])->first();
 
-        $oath->withdrawn_at = Carbon::createFromTimestamp($payload->transaction->meta->blockTimestamp);
+        $oath->withdrawn_at = Carbon::createFromTimestamp($payload->transaction->timestamp);
         $oath->current_state = 'withdrawn';
 
         return $oath->save();
