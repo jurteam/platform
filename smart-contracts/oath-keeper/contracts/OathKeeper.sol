@@ -67,7 +67,7 @@ contract OathKeeper is Ownable {
         totalOathCount = SafeMath.add(totalOathCount, 1);
         // totalActiveOathCount = SafeMath.add(totalActiveOathCount, 1);
 
-        _releaseAt = DateTimeLib.addMinutes(now, _lockInPeriod);
+        _releaseAt = DateTimeLib.addMonths(now, _lockInPeriod);
         lockMap[msg.sender][oathStats[msg.sender].count] = LockSchedule(_amount, now, _releaseAt, _lockInPeriod, false);
         // check if tokens can be transferred to this contract.
         require(jurToken.transferFrom(msg.sender, address(this), _amount), "Not able to transfer funds.");
