@@ -26,7 +26,8 @@ import {
 import {
   oathKeeperAnalytics,
   oathState,
-  oathKeeperFilters
+  oathKeeperFilters,
+  ethToHuman
 } from "../utils/helpers";
 import { getNewOath } from "../sagas/Selectors";
 
@@ -206,13 +207,13 @@ function updateOathsOf(oathTakers, { address, oaths }) {
 }
 
 function balanceFromOaths(oaths) {
-  return oaths
-    .reduce(
+  return ethToHuman(
+    oaths.reduce(
       (balance, oath) =>
         oathState(oath).isActive() ? balance + Number(oath.amount) : balance,
       0
     )
-    .toString();
+  );
 }
 
 function computeFilters(state, action) {
