@@ -1,10 +1,16 @@
 <?php
 
+use App\Jobs\GenerateOathKeeperAnalytics;
+use App\Jobs\GenerateOathKeeperRank;
 use Laravel\Lumen\Testing\DatabaseTransactions;
+use \App\Models\OathKeeper;
 
 class OathKeeperOutputStructureTest extends TestCase
 {
     use DatabaseTransactions;
+
+    protected static $oathKeepers;
+    protected static $oaths;
 
     /**
      * Create a new instance.
@@ -16,12 +22,18 @@ class OathKeeperOutputStructureTest extends TestCase
     {
         parent::setUp();
 
-        factory(App\Models\OathKeeper::class, 2)->create()->each(function ($oathKeeper) {
-            factory(App\Models\Oath::class, 2)->create([
+        self::$oathKeepers = factory(App\Models\OathKeeper::class, 2)->create()->each(function ($oathKeeper) {
+            self::$oaths[$oathKeeper->id] = factory(App\Models\Oath::class, rand(2, 10))->create([
                 'wallet' => $oathKeeper->wallet,
                 'oath_keeper_id' => $oathKeeper->id
             ]);
+            OathKeeper::calculateSummary($oathKeeper);
+            $rank = new GenerateOathKeeperRank($oathKeeper);
+            $rank->handle();
         });
+
+        $analytics = new GenerateOathKeeperAnalytics;
+        $analytics->handle();
     }
 
     /**
@@ -112,22 +124,22 @@ class OathKeeperOutputStructureTest extends TestCase
                     [
                         "id",
                         "type",
-                        "attributes"
+                        "attributes" => ['value', 'delta', 'graph']
                     ],
                     [
                         "id",
                         "type",
-                        "attributes"
+                        "attributes" => ['value', 'delta', 'graph']
                     ],
                     [
                         "id",
                         "type",
-                        "attributes"
+                        "attributes" => ['value', 'delta', 'graph']
                     ],
                     [
                         "id",
                         "type",
-                        "attributes"
+                        "attributes" => ['value', 'delta', 'graph']
                     ]
                 ]
             ]
@@ -153,7 +165,7 @@ class OathKeeperOutputStructureTest extends TestCase
                 'data' => [
                     "id",
                     "type",
-                    "attributes"
+                    "attributes" => ['value', 'delta', 'graph']
                 ]
             ]
         );
