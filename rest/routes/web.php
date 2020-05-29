@@ -59,6 +59,7 @@ $api->version('v1', function ($api) {
 
         $api->group(['prefix' => 'votes'], function ($api) {
             $api->get('{id}', 'App\Http\Controllers\ContractVotesController@index');
+            $api->get('filter/{disputeId}/{winnerId}', 'App\Http\Controllers\ContractVotesController@filterById');
             $api->get('live/{id}', 'App\Http\Controllers\ContractVotesController@liveVotes');
             $api->post('/', 'App\Http\Controllers\ContractVotesController@store');
             $api->delete('{id}', 'App\Http\Controllers\ContractVotesController@destroy');
