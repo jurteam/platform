@@ -146,6 +146,7 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         isFetchingOathTakers: false,
+        selectedRow: null,
         oathTakers: action.payload.data,
         oathTakersMeta: action.payload.meta
       };
