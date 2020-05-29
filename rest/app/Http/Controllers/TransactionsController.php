@@ -41,9 +41,6 @@ class TransactionsController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'txid' => 'unique:transactions,txid'
-        ]);
 
         $transaction = Transaction::storeTransaction($request);
 
