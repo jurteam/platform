@@ -10,6 +10,7 @@ const getBlock = async block => {
 const findEventInTransaction = async txHash => {
   let res = await web3.eth.getTransactionReceipt(txHash);
   if (res.outputs.length > 0) {
+    let eventsList = [];
     for (let i = 0; i < res.outputs.length; i++) {
       let event = res.outputs[i].events;
       if (event && event.length > 0) {
@@ -29,12 +30,14 @@ const findEventInTransaction = async txHash => {
               result.blockNumber = res.blockNumber;
               result.timestamp = res.meta.blockTimestamp;
               result.contractName = contract.identifier;
-              return result;
+              eventsList.push(result)
             }
           }
         }
       } else return null;
     }
+    // console.log("[polling-service-event-helper] Event List", eventsList)
+    return eventsList
   } else return null;
 };
 
