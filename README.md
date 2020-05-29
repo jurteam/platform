@@ -98,6 +98,14 @@ In the `polling-service/config` folder, there are two files:
 
 You have to update `currentBlock.json` manually with the least block id of your locally deployed contracts. Among JUR Token, Arbitration and Oath Keeper smart contracts, the least block id will be that of JUR Token smart contract.
 
+**Test cases:** To run test cases, please follow the instructions bellow:
+
+```bash
+cd polling-service
+npm install # in case any package is missing
+npm run test
+```
+
 **📦 Stack:** Polling service is written using NodeJS. Lifecycle is handled by docker-compose. The service will auto restart if crashed.
 
 ### RabbitMQ service
