@@ -18,7 +18,7 @@ class CreateOathAnalyticsTable extends Migration
             $table->enum('card', ['average-amount', 'active-amount', 'amount-by-oath-keeper', 'active-oath-keeper']);
             $table->enum('duration', ['Last Month', '6 Months', 'Year']);
             $table->decimal('value', 36, 18)->nullable();
-            $table->decimal('delta')->nullable();
+            $table->decimal('delta', 36, 18)->nullable();
             $table->json('graph')->nullable();
             $table->timestamps();
         });

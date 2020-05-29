@@ -1,0 +1,11 @@
+@import "../../../assets/scss/variables";
+
+.jur-message {
+  &__error {
+    color: $error;
+  }
+
+  &.jur-text {
+    margin-top: 1rem;
+  }
+}
