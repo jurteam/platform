@@ -19,9 +19,11 @@ const listen = async (error, result) => {
         console.log("[polling-service-listener] Processing block", currentBlock)
         let response = await processor.checkBlock(currentBlock);
         if(response) {
-            for(let i = 0; i <response.length; i++) {
-                console.log(chalk.greenBright.bold("[polling-service-listener] Transaction found, writing to queue", JSON.stringify(transformer.format(response[i]))))
-                await queue.push(QUEUE_NAME, transformer.format(response[i]))
+            for(let i = 0; i < response.length; i++) {
+                for(let j = 0; j < response[i].length; j++) {
+                    console.log(chalk.greenBright.bold("[polling-service-listener] Transaction found, writing to queue", JSON.stringify(transformer.format(response[i][j]))))
+                    await queue.push(QUEUE_NAME, transformer.format(response[i][j]))
+                }
             }
         }
         blockConfig.currentBlock = currentBlock+1;
