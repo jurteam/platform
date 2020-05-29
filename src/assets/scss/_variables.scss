@@ -38,13 +38,17 @@ $gray-1: #909090;
 $white-lilac: #ebedf8;
 $athens-gray: #e6eaee;
 
-$blue-new: #0077FF;
-$gray-new: #D8D8D8;
-$gray-light-new: #E8ECEF;
-$gradient1-new: #DE0977;
-$gradient2-new: #3139EC;
+$blue-new: #0077ff;
+$gray-new: #d8d8d8;
+$gray-light-new: #e8ecef;
+$gradient1-new: #de0977;
+$gradient2-new: #3139ec;
 
 $dodger-blue: $blue-new;
+
+// Generic
+$primary: $dodger-blue;
+$error: $crimson;
 
 // Forms
 $label-color: $prussian-blue;

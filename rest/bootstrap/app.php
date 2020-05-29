@@ -31,6 +31,7 @@ $app->configure('filesystems');
 $app->configure('jwt');
 $app->configure('mail');
 $app->configure('amqp');
+$app->configure('rank');
 
 $app->withFacades();
 $app->withEloquent();

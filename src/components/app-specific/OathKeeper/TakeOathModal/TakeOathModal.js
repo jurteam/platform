@@ -1,5 +1,6 @@
 import React from "react";
 import Modal from "JurCommon/Modal";
+import Message from "JurCommon/Message";
 import Text from "JurCommon/Text";
 import Row from "JurCommon/Row";
 
@@ -9,7 +10,7 @@ import TakeOathTermsCheckbox from "../TakeOathTermsCheckbox";
 import TakeOathAmountInput from "../TakeOathAmountInput";
 import TakeOathLockupSlider from "../TakeOathLockupSlider";
 
-const TakeOathModal = ({ isOpen, onRequestClose }) => {
+const TakeOathModal = ({ isOpen, onRequestClose, message }) => {
   return (
     <Modal isOpen={isOpen} onRequestClose={onRequestClose}>
       <Modal.Header title="New Oath" />
@@ -25,6 +26,9 @@ const TakeOathModal = ({ isOpen, onRequestClose }) => {
           <TakeOathLockupSlider />
         </Row>
         <TakeOathTermsCheckbox />
+        <Message timeOut={5000} type="error">
+          {message}
+        </Message>
       </Modal.Body>
       <Modal.Footer>
         <TakeOathCancelButton onClick={onRequestClose} />

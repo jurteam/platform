@@ -306,8 +306,7 @@ export const canVote = statusId => {
 };
 
 export const multiplication = (a, b) => {
-
-  Big.PE = 45
+  Big.PE = 45;
   let x = new Big(a);
   const prod = x.times(b);
 
@@ -411,6 +410,9 @@ export function oathState(oath) {
 
   if (oath.fronendOnly) return oathState.response(oathState.PENDING);
 
+  if (Number(oath.lockInPeriod) < 1)
+    return oathState.response(oathState.FAILED);
+
   const now = new Date() / 1000;
   const startedAt = Number(oath.startAt);
   const releasedAt = Number(oath.releaseAt);
@@ -428,10 +430,11 @@ export function oathState(oath) {
 
 oathState.ACTIVE = "active";
 oathState.COMPLETED = "completed";
-oathState.YET_TO_START = "yet to start";
+oathState.YET_TO_START = "active";
 oathState.WITHDRAWN = "withdrawn";
 oathState.UNKNOWN = "unknown";
 oathState.PENDING = "pending";
+oathState.FAILED = "Failed";
 
 oathState.response = state => ({
   isPending: () => state === oathState.PENDING,

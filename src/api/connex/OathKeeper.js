@@ -1,13 +1,15 @@
 import OathKeeperContract from "../../build/contracts/OathKeeper.json";
 import connexJURToken from "./JURToken";
+import { toBigFixed } from "../../utils/helpers";
 
 export default class connexOathKeeper {
   constructor() {
     // this.contractAddress = "0x730c7A23A6258Ed2BaD2EEF4b227f3044Dc160EB";
-    this.contractAddress = "0x862676750f53e92e2502e54ef5c5bfefccfcef51"; //min
+    // this.contractAddress = "0x862676750f53e92e2502e54ef5c5bfefccfcef51"; //min
+    // this.contractAddress = "0x4213232275b0228f69a06c37ef9c0186f19e999d"; // min on Shuchi
     // this.contractAddress = "0x1d34b7409114772d09784aeaa3203055c6805fe9" // Suhail
-    // this.contractAddress =
-    //   OathKeeperContract.networks[this.currentNetworkId()].address;
+    this.contractAddress =
+      OathKeeperContract.networks[this.currentNetworkId()].address;
     this.contractAccount = global.connex.thor.account(this.contractAddress);
   }
 
@@ -15,26 +17,32 @@ export default class connexOathKeeper {
     if (!isOathable(amount, lockInPeriod))
       return Promise.reject("Invalid parameters! Can't take oath");
 
+    const blockchainAmount = toBigFixed(amount).replace(".", "");
+    console.log("OathKeeper connex address", this.contractAddress);
+    console.log("OathKeeper connex amount", amount, blockchainAmount);
     const approveClause = new connexJURToken().approveClause(
       this.contractAddress,
-      amount
+      blockchainAmount
     );
 
-    return this.lockIn(address, lockInPeriod, approveClause).then(
-      signedResponse => {
-        const filters = [
-          {
-            _beneficiary: address,
-            _amount: amount,
-            _lockInPeriod: lockInPeriod
-          }
-        ];
-        return this.listen("OathTaken", signedResponse, filters);
-      }
-    );
+    return this.lockIn(
+      address,
+      blockchainAmount,
+      lockInPeriod,
+      approveClause
+    ).then(signedResponse => {
+      const filters = [
+        {
+          _beneficiary: address,
+          _amount: blockchainAmount,
+          _lockInPeriod: lockInPeriod
+        }
+      ];
+      return this.listen("OathTaken", signedResponse, filters);
+    });
   };
 
-  lockIn = (address, lockInPeriod, approveClause) => {
+  lockIn = (address, amount, lockInPeriod, approveClause) => {
     const takeAnOathMethod = this.contractAccount.method(
       this.abiOf("takeAnOath")
     );
@@ -44,17 +52,17 @@ export default class connexOathKeeper {
     const signingService = global.connex.vendor.sign("tx");
     signingService
       .signer(address)
-      .gas(global.connex.thor.genesis.gasLimit)
+      // .gas(global.connex.thor.genesis.gasLimit)
       .link("https://connex.vecha.in/{txid}")
-      .comment("Take an oath with given lock up duration");
+      .comment(`Take an oath of ${amount} JUR for ${lockInPeriod} months`);
 
     return signingService.request([
       {
-        comment: "approve the amount",
+        comment: `approve ${amount} JUR`,
         ...approveClause
       },
       {
-        comment: "lock up the amount",
+        comment: `lock up for ${lockInPeriod} months`,
         ...takeAnOathClause
       }
     ]);
@@ -96,13 +104,10 @@ export default class connexOathKeeper {
     const lockMapMethod = this.contractAccount.method(this.abiOf("lockMap"));
     lockMapMethod.cache([address]);
     return lockMapMethod.call(address, oathIndex).then(output => {
-      const oath = {
+      return {
         ...output.decoded,
-        amount: Number(output.decoded.amount),
         oathIndex
       };
-      console.log("connexOathKeeper fetchOathAt", oath);
-      return oath;
     });
   };
 

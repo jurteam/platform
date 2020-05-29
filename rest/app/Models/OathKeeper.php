@@ -83,15 +83,19 @@ class OathKeeper extends Model
 
                 if ($saved) {
 
+                    // Generate Rank
+                    dispatch(new GenerateOathKeeperRank($oathKeeper));
+
                     // Get the current time
                     $completeAt = Carbon::createFromTimestamp($payload->data->_releaseAt);
 
+                    // find delay
                     $delay = $completeAt->diffInSeconds(Carbon::now());
 
-                    dispatch(
-                        (new UpdateOathStateToComplete($payload->data->_beneficiary, $payload->data->_oathIndex))
-                            ->delay($delay)
-                    );
+                    // get job & dispatch
+                    $job = (new UpdateOathStateToComplete($payload->data->_beneficiary, $payload->data->_oathIndex))->delay($delay);
+
+                    dispatch($job);
                 }
 
                 break;
@@ -110,9 +114,8 @@ class OathKeeper extends Model
 
         $saved = OathKeeper::calculateSummary($oathKeeper);
 
-        // Dispatch queue to generate rank if all success
+        // Dispatch queue to generate analytics if all success
         if ($saved) {
-            dispatch(new GenerateOathKeeperRank);
             dispatch(new GenerateOathKeeperAnalytics);
         }
 

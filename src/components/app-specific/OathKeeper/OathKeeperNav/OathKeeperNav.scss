@@ -1,0 +1,14 @@
+.jur-oath-keeper-nav {
+  display: flex;
+  flex-direction: row;
+  color: #0077ff;
+  padding: 5px 20px;
+  min-height: 38px;
+  border-right: 2px solid #d8d8d8;
+
+  .jur-oath-keeper-nav-icon {
+    height: 24px;
+    width: 24px;
+    margin-right: 10px;
+  }
+}

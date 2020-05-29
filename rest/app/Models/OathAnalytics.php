@@ -272,12 +272,10 @@ class OathAnalytics extends Model
             ->selectRaw('COALESCE(sum(amount),0) as sum, wallet')
             ->get('sum', 'wallet')->toArray();
 
-        // Find the biggest oath taker
-        $max = 0;
-        foreach ($currentValues as $obj) {
-            if ($obj['sum'] > $max) {
-                $max = $obj['sum'];
-            }
+        // Find the total
+        $total = 0;
+        foreach ($currentValues as $value) {
+            $total = $total + $value['sum'];
         }
 
         // Create new OathAnalytics if not exist
@@ -287,7 +285,7 @@ class OathAnalytics extends Model
         ]);
 
         // Assing details to oathAnalytics object
-        $oathAnalytics->value = $max;
+        $oathAnalytics->value = $total;
         $oathAnalytics->graph = array_map(function ($x) {
             return [$x['wallet'], $x['sum']];
         }, $currentValues);

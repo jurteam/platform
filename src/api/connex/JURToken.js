@@ -127,6 +127,7 @@ export default class connexJURToken {
     // Event Transfer(_from = '0x7567d83b7b8d80addcb281a71d54fc7b3364ffed', ....) would make cache expired
 
     let userBalance = 0;
+    log("balanceOf - about to call", balanceOfMethod);
 
     await balanceOfMethod.call(address).then(output => {
       log("balanceOf - balanceOfMethod", output);
@@ -299,8 +300,8 @@ export default class connexJURToken {
         break;
     }
 
-    const address = "0xc236C04634839334211CD19Ef8D1CF291508478d"; // unlimited
-    // const address = JURTokenABI.networks[chainNetworkID].address;
+    // const address = "0xc236C04634839334211CD19Ef8D1CF291508478d"; // unlimited
+    const address = JURTokenABI.networks[chainNetworkID].address;
     log(
       "getJURTokenAddres - JURToken.networks[" + chainNetworkID + "].address",
       address
