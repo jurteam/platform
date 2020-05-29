@@ -77,7 +77,7 @@ export default class connexOathKeeper {
     const signingService = global.connex.vendor.sign("tx");
     signingService
       .signer(address)
-      .gas(global.connex.thor.genesis.gasLimit)
+      // .gas(global.connex.thor.genesis.gasLimit)
       .link("https://connex.vecha.in/{txid}")
       .comment("Release the unlocked oath");
 

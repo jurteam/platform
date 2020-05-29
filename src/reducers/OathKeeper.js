@@ -20,13 +20,15 @@ import {
   OATH_KEEPER_SELECT_ROW,
   OATH_KEEPER_UNSELECT_ROW,
   OATH_KEEPER_UPDATE_OATHS_OF,
-  OATH_KEEPER_REJECT_OATH
+  OATH_KEEPER_REJECT_OATH,
+  OATH_KEEPER_REJECT_WITHDRAW
 } from "./types";
 
 import {
   oathKeeperAnalytics,
   oathState,
-  oathKeeperFilters
+  oathKeeperFilters,
+  ethToHuman
 } from "../utils/helpers";
 import { getNewOath } from "../sagas/Selectors";
 
@@ -115,6 +117,17 @@ export default (state = INITIAL_STATE, action) => {
       };
     case OATH_KEEPER_WITHDREW_OATH:
       return { ...state };
+    case OATH_KEEPER_REJECT_WITHDRAW:
+      return {
+        ...state,
+        myOaths: [
+          ...setOathStatus(
+            state.myOaths,
+            action.payload.oathIndex,
+            oathState.COMPLETED
+          )
+        ]
+      };
     case OATH_KEEPER_FETCH_MY_OATHS:
       return { ...state, isFetchingMyOaths: true };
     case OATH_KEEPER_UPDATE_MY_OATHS:
@@ -146,6 +159,7 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         isFetchingOathTakers: false,
+        selectedRow: null,
         oathTakers: action.payload.data,
         oathTakersMeta: action.payload.meta
       };
@@ -205,13 +219,13 @@ function updateOathsOf(oathTakers, { address, oaths }) {
 }
 
 function balanceFromOaths(oaths) {
-  return oaths
-    .reduce(
+  return ethToHuman(
+    oaths.reduce(
       (balance, oath) =>
         oathState(oath).isActive() ? balance + Number(oath.amount) : balance,
       0
     )
-    .toString();
+  );
 }
 
 function computeFilters(state, action) {

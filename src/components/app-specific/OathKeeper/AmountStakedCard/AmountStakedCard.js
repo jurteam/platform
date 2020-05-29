@@ -19,7 +19,7 @@ const CARD_NAME = oathKeeperAnalytics.cards.AMOUNT_STAKED;
 
 const AmountStakedCard = ({ value, graph, duration, onEnumFilterChange }) => (
   <ChartCard className="jur-oath-keeper-analytics-card">
-    <ChartCard.Title>Amount Staked By Oath Keeper</ChartCard.Title>
+    <ChartCard.Title>Active Amount Staked By Oath Keeper</ChartCard.Title>
     <Row>
       <ChartCard.Metric>
         <Amount value={value} />
