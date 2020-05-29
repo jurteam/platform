@@ -28,7 +28,7 @@ const ActiveOathKeepersCard = ({
     <Row>
       <ChartCard.Metric>
         <Text type="span" className="jur-main-metric">
-          {parseInt(value)}
+          {parseInt(value || 0)}
         </Text>
         <Delta value={delta} />
       </ChartCard.Metric>
