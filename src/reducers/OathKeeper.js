@@ -20,7 +20,8 @@ import {
   OATH_KEEPER_SELECT_ROW,
   OATH_KEEPER_UNSELECT_ROW,
   OATH_KEEPER_UPDATE_OATHS_OF,
-  OATH_KEEPER_REJECT_OATH
+  OATH_KEEPER_REJECT_OATH,
+  OATH_KEEPER_REJECT_WITHDRAW
 } from "./types";
 
 import {
@@ -116,6 +117,17 @@ export default (state = INITIAL_STATE, action) => {
       };
     case OATH_KEEPER_WITHDREW_OATH:
       return { ...state };
+    case OATH_KEEPER_REJECT_WITHDRAW:
+      return {
+        ...state,
+        myOaths: [
+          ...setOathStatus(
+            state.myOaths,
+            action.payload.oathIndex,
+            oathState.COMPLETED
+          )
+        ]
+      };
     case OATH_KEEPER_FETCH_MY_OATHS:
       return { ...state, isFetchingMyOaths: true };
     case OATH_KEEPER_UPDATE_MY_OATHS:

@@ -17,7 +17,8 @@ import {
   OATH_KEEPER_FETCH_OATHS_OF,
   OATH_KEEPER_UPDATE_OATHS_OF,
   HOUND_START_SMELLING,
-  OATH_KEEPER_REJECT_OATH
+  OATH_KEEPER_REJECT_OATH,
+  OATH_KEEPER_REJECT_WITHDRAW
 } from "../reducers/types";
 
 function* fetchMyRank() {
@@ -83,6 +84,14 @@ function* withdrawAnOath(action) {
     yield put({ type: HOUND_START_SMELLING, payload: prey });
   } catch (e) {
     console.error("Failed to withdraw an oath", e);
+    yield put({
+      type: OATH_KEEPER_REJECT_WITHDRAW,
+      error: e,
+      payload: {
+        message: e.message,
+        oathIndex
+      }
+    });
   }
 }
 
