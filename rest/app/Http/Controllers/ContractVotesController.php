@@ -42,7 +42,7 @@ class ContractVotesController extends Controller
      */
     public function liveVotes(ContractVoteFilters $filters, $id)
     {
-        $idc = decodeId($id);  
+        $idc = decodeId($id);
         $contract = Contract::findOrFail($idc);
         $votes = ContractVote::byContract($idc)
                         ->filters($filters)
@@ -102,5 +102,16 @@ class ContractVotesController extends Controller
         return $manager->createData(
             new Collection($collection, $transformer)
         );
+    }
+
+    public function filterById(Request $request, $dispuetId, $winnerId)
+    {
+      $curr_user = $request->header('wallet');
+      $dispuetIdDecoded = decodeId($dispuetId);
+      $search_cond = ["oracle_wallet" => $curr_user, "wallet_part" => $winnerId, "contract_id" => $dispuetIdDecoded];
+      $votes = ContractVote::where($search_cond)->get();
+
+      return $votes ? true : false;
+
     }
 }
