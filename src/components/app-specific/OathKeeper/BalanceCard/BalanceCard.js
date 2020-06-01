@@ -15,14 +15,21 @@ const IconHandler = ({ isShown, fill }) => (
   </div>
 );
 
+const AmountDisplay = ({ balance }) =>
+  typeof balance === "string" ? (
+    <span className="jur-amount">--</span>
+  ) : (
+    <Amount value={balance} />
+  );
+
 const BalanceCard = ({ balance, isShown, onViewDetails }) => (
   <HeaderCard title="Oath Keeper Balance">
     <HeaderCard.Hero>
-      <Amount value={balance} />
+      <AmountDisplay balance={balance} />
     </HeaderCard.Hero>
     <HeaderCard.Body>
       <a
-        onClick={onViewDetails}
+        onClick={balance && onViewDetails}
         className={`jur-balance-card-view-details jur-balance-card-view-details__${
           balance > 0 ? "active" : "inactive"
         }`}
