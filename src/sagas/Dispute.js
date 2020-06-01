@@ -235,8 +235,8 @@ export function* getDispute(action) {
 
 
               log("getDispute - canWithdraw", canWithdraw);
-              hasWithdrawn = canWithdraw[0];
-              sumToWithdraw =  connexFromWei(canWithdraw[1].toString(), 'ether');
+              hasWithdrawn = canWithdraw.decoded[0];
+              sumToWithdraw =  connexFromWei(canWithdraw.decoded[1].toString(), 'ether');
 
               log("getDispute - hasWithdrawn", hasWithdrawn);
               log("getDispute - sumTowithdraw", sumToWithdraw);
