@@ -20,15 +20,18 @@ import {
   OATH_KEEPER_SELECT_ROW,
   OATH_KEEPER_UNSELECT_ROW,
   OATH_KEEPER_UPDATE_OATHS_OF,
-  OATH_KEEPER_REJECT_OATH
+  OATH_KEEPER_REJECT_OATH,
+  OATH_KEEPER_REJECT_WITHDRAW
 } from "./types";
 
 import {
   oathKeeperAnalytics,
   oathState,
-  oathKeeperFilters
+  oathKeeperFilters,
+  ethToHuman
 } from "../utils/helpers";
 import { getNewOath } from "../sagas/Selectors";
+import { MIN_TOKEN_AMOUNT } from "../api/connex/OathKeeper";
 
 const INITIAL_FILTERS_STATE = {
   oathTakers: [],
@@ -80,7 +83,7 @@ export default (state = INITIAL_STATE, action) => {
     case OATH_KEEPER_CLOSE:
       return { ...state, ...INITIAL_NEW_OATH_STATE };
     case OATH_KEEPER_UPDATE_AMOUNT:
-      return { ...state, amount: action.payload };
+      return { ...state, amount: safeUpdateAmount(action.payload) };
     case OATH_KEEPER_UPDATE_LOCK_IN_PERIOD:
       return { ...state, lockInPeriod: action.payload };
     case OATH_KEEPER_UPDATE_TNC:
@@ -115,6 +118,17 @@ export default (state = INITIAL_STATE, action) => {
       };
     case OATH_KEEPER_WITHDREW_OATH:
       return { ...state };
+    case OATH_KEEPER_REJECT_WITHDRAW:
+      return {
+        ...state,
+        myOaths: [
+          ...setOathStatus(
+            state.myOaths,
+            action.payload.oathIndex,
+            oathState.COMPLETED
+          )
+        ]
+      };
     case OATH_KEEPER_FETCH_MY_OATHS:
       return { ...state, isFetchingMyOaths: true };
     case OATH_KEEPER_UPDATE_MY_OATHS:
@@ -146,6 +160,7 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         isFetchingOathTakers: false,
+        selectedRow: null,
         oathTakers: action.payload.data,
         oathTakersMeta: action.payload.meta
       };
@@ -182,6 +197,10 @@ export default (state = INITIAL_STATE, action) => {
   }
 };
 
+function safeUpdateAmount(amount) {
+  return Number(amount) > MIN_TOKEN_AMOUNT ? amount : MIN_TOKEN_AMOUNT;
+}
+
 function setOathStatus(oaths, oathIndex, status) {
   return oaths.map(o => {
     if (o.oathIndex === oathIndex) {
@@ -205,13 +224,13 @@ function updateOathsOf(oathTakers, { address, oaths }) {
 }
 
 function balanceFromOaths(oaths) {
-  return oaths
-    .reduce(
+  return ethToHuman(
+    oaths.reduce(
       (balance, oath) =>
         oathState(oath).isActive() ? balance + Number(oath.amount) : balance,
       0
     )
-    .toString();
+  );
 }
 
 function computeFilters(state, action) {

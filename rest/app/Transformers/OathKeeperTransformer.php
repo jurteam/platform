@@ -22,8 +22,8 @@ class OathKeeperTransformer extends TransformerAbstract
             [
                 'address' => $OathKeeper->wallet,
                 'rank' => $OathKeeper->rank,
-                'amount' => $OathKeeper->active_amount,
-                'oathCount' => $OathKeeper->active_oath_count
+                'amount' => $OathKeeper->total_amount,
+                'oathCount' => $OathKeeper->total_oath_count
             ]
         ];
     }

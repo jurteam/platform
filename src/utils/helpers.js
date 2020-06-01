@@ -434,7 +434,7 @@ oathState.YET_TO_START = "active";
 oathState.WITHDRAWN = "withdrawn";
 oathState.UNKNOWN = "unknown";
 oathState.PENDING = "pending";
-oathState.FAILED = "Failed";
+oathState.FAILED = "failed";
 
 oathState.response = state => ({
   isPending: () => state === oathState.PENDING,
@@ -442,6 +442,7 @@ oathState.response = state => ({
   isCompleted: () => state === oathState.COMPLETED,
   isYetToStart: () => state === oathState.YET_TO_START,
   isUnknown: () => state === oathState.UNKNOWN,
+  isFailed: () => state === oathState.FAILED,
   toString: () => state
 });
 
