@@ -2,6 +2,9 @@ import OathKeeperContract from "../../build/contracts/OathKeeper.json";
 import connexJURToken from "./JURToken";
 import { toBigFixed } from "../../utils/helpers";
 
+export const MIN_TOKEN_AMOUNT = 0.01;
+export const MIN_LOCK_IN_PERIOD = 1;
+
 export default class connexOathKeeper {
   constructor() {
     // this.contractAddress = "0x730c7A23A6258Ed2BaD2EEF4b227f3044Dc160EB";
@@ -170,5 +173,8 @@ export default class connexOathKeeper {
 }
 
 export const isOathable = (amount, lockInPeriod) => {
-  return Number(amount) > 0 && Number(lockInPeriod) > 0;
+  return (
+    Number(amount) >= MIN_TOKEN_AMOUNT &&
+    Number(lockInPeriod) >= MIN_LOCK_IN_PERIOD
+  );
 };

@@ -31,6 +31,7 @@ import {
   ethToHuman
 } from "../utils/helpers";
 import { getNewOath } from "../sagas/Selectors";
+import { MIN_TOKEN_AMOUNT } from "../api/connex/OathKeeper";
 
 const INITIAL_FILTERS_STATE = {
   oathTakers: [],
@@ -82,7 +83,7 @@ export default (state = INITIAL_STATE, action) => {
     case OATH_KEEPER_CLOSE:
       return { ...state, ...INITIAL_NEW_OATH_STATE };
     case OATH_KEEPER_UPDATE_AMOUNT:
-      return { ...state, amount: action.payload };
+      return { ...state, amount: safeUpdateAmount(action.payload) };
     case OATH_KEEPER_UPDATE_LOCK_IN_PERIOD:
       return { ...state, lockInPeriod: action.payload };
     case OATH_KEEPER_UPDATE_TNC:
@@ -195,6 +196,10 @@ export default (state = INITIAL_STATE, action) => {
       return state;
   }
 };
+
+function safeUpdateAmount(amount) {
+  return Number(amount) > MIN_TOKEN_AMOUNT ? amount : MIN_TOKEN_AMOUNT;
+}
 
 function setOathStatus(oaths, oathIndex, status) {
   return oaths.map(o => {
