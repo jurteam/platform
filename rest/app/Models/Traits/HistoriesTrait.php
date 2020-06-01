@@ -18,7 +18,7 @@ trait HistoriesTrait
                     return !is_null($item->custom_status_date);
                 })
                 ->sortByDesc('custom_status_date')
-                ->sortByDesc('created_at')
+                ->sortByDesc('contract_status_code')
                 ->first();
 
             if (!empty($history)) {
