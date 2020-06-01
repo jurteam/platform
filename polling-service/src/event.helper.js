@@ -7,6 +7,13 @@ const getBlock = async block => {
   }
 };
 
+const getLatestBlock = async () => {
+  let block = await web3.eth.getBlock('latest');
+  if(block) {
+    return block.number;
+  }
+}
+
 const findEventInTransaction = async txHash => {
   let res = await web3.eth.getTransactionReceipt(txHash);
   if (res.outputs.length > 0) {
@@ -69,5 +76,6 @@ const findContractByAddress = address => {
 
 module.exports = {
   getBlock,
+  getLatestBlock,
   findEventInTransaction
 };
