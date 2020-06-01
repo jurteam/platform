@@ -20,6 +20,7 @@ import {
   OATH_KEEPER_REJECT_OATH,
   OATH_KEEPER_REJECT_WITHDRAW
 } from "../reducers/types";
+import { oathState } from "../utils/helpers";
 
 function* fetchMyRank() {
   const { address } = yield select(getWallet);
@@ -108,7 +109,9 @@ function* fetchMyOaths(action) {
     );
 
     // if (myOaths.length + 1 > action.payload)
-    myOaths = myOaths.map(o => (o.oathIndex === action.payload ? oath : o));
+    myOaths = myOaths.map(o =>
+      o.oathIndex === action.payload ? preserveOathInfo(oath, o) : o
+    );
     // else myOaths = [oath, ...myOaths];
   } else {
     myOaths = yield new connexOathKeeper().fetchOathsOf(address);
@@ -144,6 +147,15 @@ function* fetchAnalytics(action) {
     payload: analytics,
     card: action.card
   });
+}
+
+function preserveOathInfo(oath, original) {
+  if (Number(oath.lockInPeriod) < 1) {
+    oath.lockInPeriod = original.lockInPeriod;
+    oath.amount = original.amount;
+    oath.customStatus = oathState.FAILED;
+  }
+  return oath;
 }
 
 export default function* oathKeeperSagas() {
