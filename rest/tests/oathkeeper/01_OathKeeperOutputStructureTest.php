@@ -9,33 +9,6 @@ class OathKeeperOutputStructureTest extends TestCase
 {
     use DatabaseTransactions;
 
-    protected static $oathKeepers;
-    protected static $oaths;
-
-    /**
-     * Create a new instance.
-     *
-     * @return void
-     */
-
-    public function setUp(): void
-    {
-        parent::setUp();
-
-        self::$oathKeepers = factory(App\Models\OathKeeper::class, 2)->create()->each(function ($oathKeeper) {
-            self::$oaths[$oathKeeper->id] = factory(App\Models\Oath::class, rand(2, 10))->create([
-                'wallet' => $oathKeeper->wallet,
-                'oath_keeper_id' => $oathKeeper->id
-            ]);
-            OathKeeper::calculateSummary($oathKeeper);
-            $rank = new GenerateOathKeeperRank($oathKeeper);
-            $rank->handle();
-        });
-
-        $analytics = new GenerateOathKeeperAnalytics;
-        $analytics->handle();
-    }
-
     /**
      * @test
      *
