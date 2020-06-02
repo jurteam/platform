@@ -24,13 +24,15 @@ describe("Environment", () => {
     expect(envContents).toMatch(/AMQP_URL=amqp/);
   });
 
-  const currentBlockContents = fs.readFileSync("config/currentBlock.json");
-  it("checks if currentBlock.js has contents", () => {
-    expect(currentBlockContents).toBeTruthy();
+  const lastConsumedContents = fs.readFileSync(
+    "config/last-consumed-block.json"
+  );
+  it("checks if last-consumed-block.js has contents", () => {
+    expect(lastConsumedContents).toBeTruthy();
   });
 
-  it("checks if currentBlock is a number", () => {
-    const currentBlock = JSON.parse(currentBlockContents).currentBlock;
-    expect(typeof currentBlock).toBe("number");
+  it("checks if blockNumber is present", () => {
+    const blockNumber = JSON.parse(lastConsumedContents).blockNumber;
+    expect(blockNumber).toBeTruthy();
   });
 });
