@@ -11,7 +11,7 @@ return [
 
         'rabbitmq' => [
             'connection' => [
-                'host' => env('AMQP_HOST', 'localhost'),
+                'host' => env('AMQP_HOST', 'rabbit'),
                 'port' => env('AMQP_PORT', 5672),
                 'username' => env('AMQP_USERNAME', ''),
                 'password' => env('AMQP_PASSWORD', ''),
@@ -42,7 +42,7 @@ return [
             ],
 
             'queue' => [
-                'declare' => env('AMQP_QUEUE_DECLARE', false),
+                'declare' => env('AMQP_QUEUE_DECLARE', true),
                 'passive' => env('AMQP_QUEUE_PASSIVE', false),
                 'durable' => env('AMQP_QUEUE_DURABLE', true),
                 'exclusive' => env('AMQP_QUEUE_EXCLUSIVE', false),
