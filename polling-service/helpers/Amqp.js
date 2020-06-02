@@ -1,54 +1,39 @@
-const amqplib = require('amqplib');
+const amqplib = require("amqplib");
+
+const AMQP_CONNECTION_FAILURE = 456;
 
 module.exports = class AMQP {
+  constructor(url) {
+    this.url = url;
+  }
 
-    constructor(url) {
-        this.url = url;
-    }
+  connect() {
+    return amqplib
+      .connect(this.url)
+      .then(c => c.createChannel())
+      .then(channel => {
+        this.channel = channel;
+        if (process.env.NODE_ENV !== "test")
+          console.log("AMQP connected successfully");
+        return true;
+      })
+      .catch(e => {
+        console.error("AMQP connection error", e);
+        process.exit(AMQP_CONNECTION_FAILURE);
+      });
+  }
 
-    async connect() {
-        try {
+  push(queueName, data) {
+    return this.channel.sendToQueue(
+      queueName,
+      Buffer.from(JSON.stringify(data))
+    );
+  }
 
-            // Connect to AMQP server
-            let conn = await amqplib.connect(this.url);
-
-            // Create channel for communication
-            this.channel = await conn.createChannel();
-
-            // Console info
-            console.log(chalk.green.bold("AMQP connection established successfully!"));
-
-        } catch (error) {
-
-            // Console error information
-            console.error(chalk.red('[Amqp] :connection error'), error);
-
-            // exit the process
-            process.exit(1);
-        }
-    }
-
-    push(queueName, data) {
-
-        // Send data to queue
-        return this.channel.sendToQueue(queueName, Buffer.from(JSON.stringify(data)));
-
-    }
-
-    async assertQueue(queueName) {
-
-        let asserted = false;
-
-        try {
-            // Create the queue if not exist in the server
-            asserted = await this.channel.assertQueue(queueName);
-        } catch (error) {
-            // Log error info
-            console.error(chalk.red('[Amqp] : Asserting queue error'), err);
-        }
-
-        return asserted;
-
-    }
-
-}
+  assertQueue(queueName) {
+    return this.channel.assertQueue(queueName).catch(e => {
+      console.error("AMQP failed to assert queue", e);
+      return false;
+    });
+  }
+};

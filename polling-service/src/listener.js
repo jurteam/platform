@@ -31,18 +31,13 @@ async function processNext() {
 }
 
 function transactionsToQueue(response) {
-  response?.forEach(row => row.forEach(pushToQueue));
+  response?.forEach(row => row.map(transformer.format).forEach(pushToQueue));
 }
 
-function pushToQueue(data) {
-  const message = transformer.format(data);
-  console.log(
-    chalk.greenBright.bold(
-      "transaction found, writing to queue",
-      JSON.stringify(message)
-    )
-  );
-  blockchainEventsQueue.push(message);
+function pushToQueue(message) {
+  if (process.env.NODE_ENV !== "test")
+    console.log("transaction found, writing to queue", JSON.stringify(message));
+  return blockchainEventsQueue.push(message);
 }
 
 module.exports = {

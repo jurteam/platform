@@ -4,11 +4,11 @@ const ASSERT_QUEUE_FAILURE = 123;
 function assert() {
   return queue
     .assertQueue(QUEUE_NAME)
-    .catch(exitOnAsserFailure)
-    .then(res => (!res ? exitOnAsserFailure() : res));
+    .catch(exitOnAssertFailure)
+    .then(res => (!res ? exitOnAssertFailure() : res));
 }
 
-function exitOnAsserFailure(e) {
+function exitOnAssertFailure(e) {
   console.log("failed to assert queue", QUEUE_NAME);
   console.error(e);
   process.exit(ASSERT_QUEUE_FAILURE);

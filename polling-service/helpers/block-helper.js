@@ -10,16 +10,19 @@ function log(blockNumber) {
   return fs.writeFileSync(BLOCK_RECORD_PATH, content);
 }
 
-function next() {
+function nextBlockNumber() {
   const blockConfig = JSON.parse(fs.readFileSync(BLOCK_RECORD_PATH));
-  const nextBlockNumber = Number.isNaN(Number(blockConfig.blockNumber))
+  return Number.isNaN(Number(blockConfig.blockNumber))
     ? "latest"
     : blockConfig.blockNumber + 1;
+}
+
+function next() {
+  const blockNumber = nextBlockNumber();
 
   return new Promise((resolve, reject) => {
-    const read = () => eventHelper.getBlock(nextBlockNumber);
+    const read = () => eventHelper.getBlock(blockNumber);
     const handle = block => {
-      // console.log("next.handle", !!block, nextBlockNumber);
       block ? resolve(block) : setTimeout(() => read().then(handle), 5000);
     };
     read().then(handle);
@@ -28,5 +31,6 @@ function next() {
 
 module.exports = {
   log,
-  next
+  next,
+  nextBlockNumber
 };
