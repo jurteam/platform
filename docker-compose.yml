@@ -166,7 +166,7 @@ services:
       NAME: "rabbit"
 
   polling:
-    image: node
+    image: node:14.3
     restart: always
     volumes:
       - ./polling-service:/var/www/html

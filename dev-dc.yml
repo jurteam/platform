@@ -1,0 +1,28 @@
+version: "3"
+services:
+  polling-test:
+    image: node:14.3
+    environment:
+      CLOUDAMQP_URL: amqp://yellowpanda:yellowpanda@rabbit-test:5672
+      THOR_CONNECTION_URL: https://sync-testnet.vechain.org
+    volumes:
+      - ./polling-service:/var/www/html
+    working_dir: /var/www/html
+    command: npm run test
+    links:
+      - rabbit-test
+
+  rabbit-test:
+    image: rabbitmq:3.8
+    environment:
+      RABBITMQ_ERLANG_COOKIE: esdtvcrxrtcgvhbjnbhgcfxdcgfhbjk
+      RABBITMQ_DEFAULT_USER: yellowpanda
+      RABBITMQ_DEFAULT_PASS: yellowpanda
+      RABBITMQ_DEFAULT_VHOST: /
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    expose:
+      - "5672"
+    labels:
+      NAME: "rabbit-test"
