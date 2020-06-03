@@ -3,8 +3,8 @@
 use Illuminate\Database\Seeder;
 use \Carbon\Carbon;
 use \App\Models\OathKeeper;
-use App\Jobs\GenerateOathKeeperAnalytics;
-use App\Jobs\GenerateOathKeeperRank;
+use App\Jobs\OathKeeperGenerateAnalytics;
+use App\Jobs\OathKeeperGenerateRank;
 
 class OathKeeperSeeder extends Seeder
 {
@@ -52,11 +52,11 @@ class OathKeeperSeeder extends Seeder
             );
 
             OathKeeper::calculateSummary($oathKeeper);
-            $rank = new GenerateOathKeeperRank($oathKeeper);
+            $rank = new OathKeeperGenerateRank($oathKeeper);
             $rank->handle();
         });
 
-        $analytics = new GenerateOathKeeperAnalytics;
+        $analytics = new OathKeeperGenerateAnalytics;
         $analytics->handle();
     }
 

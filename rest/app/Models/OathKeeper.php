@@ -4,9 +4,9 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
-use \App\Jobs\GenerateOathKeeperAnalytics;
-use \App\Jobs\GenerateOathKeeperRank;
-use \App\Jobs\UpdateOathStateToComplete;
+use \App\Jobs\OathKeeperGenerateAnalytics;
+use \App\Jobs\OathKeeperGenerateRank;
+use \App\Jobs\OathKeeperUpdateOathStateToComplete;
 use \App\Models\Oath;
 
 class OathKeeper extends Model
@@ -84,7 +84,7 @@ class OathKeeper extends Model
                 if ($saved) {
 
                     // Generate Rank
-                    dispatch(new GenerateOathKeeperRank($oathKeeper));
+                    dispatch(new OathKeeperGenerateRank($oathKeeper));
 
                     // Get the current time
                     $completeAt = Carbon::createFromTimestamp($payload->data->_releaseAt);
@@ -93,7 +93,7 @@ class OathKeeper extends Model
                     $delay = $completeAt->diffInSeconds(Carbon::now());
 
                     // get job & dispatch
-                    $job = (new UpdateOathStateToComplete($payload->data->_beneficiary, $payload->data->_oathIndex))->delay($delay);
+                    $job = (new OathKeeperUpdateOathStateToComplete($payload->data->_beneficiary, $payload->data->_oathIndex))->delay($delay);
 
                     dispatch($job);
                 }
@@ -116,7 +116,7 @@ class OathKeeper extends Model
 
         // Dispatch queue to generate analytics if all success
         if ($saved) {
-            dispatch(new GenerateOathKeeperAnalytics);
+            dispatch(new OathKeeperGenerateAnalytics);
         }
 
         // Return process status

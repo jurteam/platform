@@ -6,7 +6,7 @@ use \App\Models\Oath;
 use \App\Models\OathKeeper;
 use \Carbon\Carbon;
 
-class GenerateOathKeeperRank extends Job
+class OathKeeperGenerateRank extends Job
 {
     private $oathKeeper;
     /**
