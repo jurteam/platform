@@ -73,6 +73,7 @@ $factory->define(App\Models\Oath::class, function (Faker\Generator $faker) {
         'oath_index' => $faker->numberBetween(1, 15),
         'start_at' => $startDate->toDateTimeString(),
         'release_at' => $toDate->toDateTimeString(),
-        'current_state' => $startDate < $now && $toDate > $now ? 'active' : 'complete'
+        'current_state' => $startDate < $now && $toDate > $now ? 'active' : 'complete',
+        'fiat_value' => rand(10, 25) / 10
     ];
 });

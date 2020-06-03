@@ -4,7 +4,7 @@ namespace App\Jobs;
 
 use \App\Models\OathAnalytics;
 
-class GenerateOathKeeperAnalytics extends Job
+class OathKeeperGenerateAnalytics extends Job
 {
     /**
      * Create a new job instance.
