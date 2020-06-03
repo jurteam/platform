@@ -1,7 +1,5 @@
 <?php
 
-use App\Jobs\GenerateOathKeeperAnalytics;
-use App\Jobs\GenerateOathKeeperRank;
 use Laravel\Lumen\Testing\DatabaseTransactions;
 use \App\Models\OathKeeper;
 
