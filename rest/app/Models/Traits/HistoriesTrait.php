@@ -142,11 +142,35 @@ trait HistoriesTrait
 
     protected function createHistory($status, $date)
     {
-        $this->histories()
-            ->save(new ContractStatusHistory([
-                'contract_status_code' => $status->code,
-                'contract_status_id' => $status->id,
-                'chain_updated_at' => $date
-            ]));
+        $waiting = 0;
+        if ($status->code == 36)
+        {
+            $waiting = 1;           
+        } 
+
+        $historyCreated = $this->histories()
+        ->save(new ContractStatusHistory([
+            'contract_status_code' => $status->code,
+            'contract_status_id' => $status->id,
+            'chain_updated_at' => $date,
+            'waiting' => $waiting
+        ]));
+
+        $idContract = $this->id;
+
+        if ($status->code == 36)
+        {
+            $historyCreatedFirst = ContractStatusHistory::where(["contract_status_code" => '36', "chain_updated_at" => $date, "contract_id" => $idContract])->first();
+
+            if ($historyCreatedFirst->id == $historyCreated->id) 
+            {
+                $historyUpdated = $historyCreatedFirst->update(array('waiting' => 0));
+                return $historyCreatedFirst;
+            }
+            else 
+            {
+                $historyCreated->delete();
+            }
+        }
     }
 }
