@@ -55,24 +55,41 @@ contract OathKeeper is Ownable {
     @param _lockInPeriod - Number of months to lock the token for.
     */
     function takeAnOath(uint _lockInPeriod) public {
+        _takeAnOath(_lockInPeriod, msg.sender);
+    }
+
+    /**
+    @dev takeAnOath - Used for taking an oath as an `allowed` function in JUR Token.
+    @param _lockInPeriod - Number of months to lock the token for.
+    @param _oathTaker - Address of th oath taker.
+    */
+    function takeAnOathJUR(uint _lockInPeriod, address _oathTaker) public {
+        _takeAnOath(_lockInPeriod, _oathTaker);
+    }
+
+    function _takeAnOath(uint _lockInPeriod, address _oathTaker) internal {
         uint _releaseAt;
+<<<<<<< HEAD
         uint256 _amount = jurToken.allowance(msg.sender, address(this));
+=======
+        uint256 _amount = jurToken.allowance(_oathTaker, address(this));
+>>>>>>> plugin/master
         require(_amount >= minimumLockAmount, "Please approve token transfer to the contract.");
         require(_lockInPeriod >= minimumLockPeriod && _lockInPeriod <= maximumLockPeriod, "Please choose a valid lock in period.");
-        oathStats[msg.sender].count = SafeMath.add(oathStats[msg.sender].count, 1);
-        // oathStats[msg.sender].activeAmountLocked = SafeMath.add(oathStats[msg.sender].activeAmountLocked, _amount);
-        oathStats[msg.sender].totalAmountLocked = SafeMath.add(oathStats[msg.sender].totalAmountLocked, _amount);
+        oathStats[_oathTaker].count = SafeMath.add(oathStats[_oathTaker].count, 1);
+        // oathStats[_oathTaker].activeAmountLocked = SafeMath.add(oathStats[_oathTaker].activeAmountLocked, _amount);
+        oathStats[_oathTaker].totalAmountLocked = SafeMath.add(oathStats[_oathTaker].totalAmountLocked, _amount);
         totalLockedTokens = SafeMath.add(totalLockedTokens, _amount);
         // totalActiveLockedTokens = SafeMath.add(totalActiveLockedTokens, _amount);
         totalOathCount = SafeMath.add(totalOathCount, 1);
         // totalActiveOathCount = SafeMath.add(totalActiveOathCount, 1);
 
         _releaseAt = DateTimeLib.addMonths(now, _lockInPeriod);
-        lockMap[msg.sender][oathStats[msg.sender].count] = LockSchedule(_amount, now, _releaseAt, _lockInPeriod, false);
+        lockMap[_oathTaker][oathStats[_oathTaker].count] = LockSchedule(_amount, now, _releaseAt, _lockInPeriod, false);
         // check if tokens can be transferred to this contract.
-        require(jurToken.transferFrom(msg.sender, address(this), _amount), "Not able to transfer funds.");
+        require(jurToken.transferFrom(_oathTaker, address(this), _amount), "Not able to transfer funds.");
 
-        emit OathTaken(msg.sender, _amount, _lockInPeriod, now, _releaseAt, oathStats[msg.sender].count);
+        emit OathTaken(_oathTaker, _amount, _lockInPeriod, now, _releaseAt, oathStats[_oathTaker].count);
     }
 
     /**
