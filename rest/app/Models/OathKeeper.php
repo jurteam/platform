@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use \App\Jobs\OathKeeperGenerateAnalytics;
 use \App\Jobs\OathKeeperGenerateRank;
 use \App\Jobs\OathKeeperUpdateOathStateToComplete;
+use \App\Jobs\OathKeeperUpdateFiatValue;
 use \App\Models\Oath;
 
 class OathKeeper extends Model
@@ -79,13 +80,13 @@ class OathKeeper extends Model
             // oathTaken event
             case 'OathTaken':
                 // Save oath to database
-                $saved = Oath::store($payload->data, $oathKeeper);
+                $oath = Oath::store($payload->data, $oathKeeper);
 
-                if ($saved) {
-
-                    // Generate Rank
-                    dispatch(new OathKeeperGenerateRank($oathKeeper));
-
+                if (isset($oath->id)) {
+                  
+                    // Get fiat value of current oath and Generate Rank
+                    dispatch( (new OathKeeperUpdateFiatValue($oath))->chain(new OathKeeperGenerateRank($oathKeeper)));
+                   
                     // Get the current time
                     $completeAt = Carbon::createFromTimestamp($payload->data->_releaseAt);
 
