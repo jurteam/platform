@@ -50,7 +50,11 @@ class GenerateOathKeeperRank extends Job
             // find the history point
             $historyPoint = config('rank.historyMultiplier') * $sumHistory;
 
-            $rankPoint = $rankPoint + ($basicPoint + $fiatPoint + $historyPoint);
+            // find the bonus point
+            $bonusPoint = (5/100) * (1- M_2_PI * atan( config('rank.bonusMultiplier') * ($currentTimeStamp-config('rank.timestampReference'))/config('rank.timestampReference')))* $basicPoint;
+            
+            // calculate rank point
+            $rankPoint = $rankPoint + $basicPoint + $fiatPoint + $historyPoint+ $bonusPoint;
 
             // add oath to past oaths
             array_push($pastOaths, $oath);
