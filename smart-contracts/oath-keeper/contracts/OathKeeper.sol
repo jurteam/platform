@@ -69,11 +69,7 @@ contract OathKeeper is Ownable {
 
     function _takeAnOath(uint _lockInPeriod, address _oathTaker) internal {
         uint _releaseAt;
-<<<<<<< HEAD
-        uint256 _amount = jurToken.allowance(msg.sender, address(this));
-=======
         uint256 _amount = jurToken.allowance(_oathTaker, address(this));
->>>>>>> plugin/master
         require(_amount >= minimumLockAmount, "Please approve token transfer to the contract.");
         require(_lockInPeriod >= minimumLockPeriod && _lockInPeriod <= maximumLockPeriod, "Please choose a valid lock in period.");
         oathStats[_oathTaker].count = SafeMath.add(oathStats[_oathTaker].count, 1);
