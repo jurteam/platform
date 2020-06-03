@@ -11,7 +11,12 @@ const RankCard = ({ rank }) => (
       <RankBadge rank={rank} type="hero" />
     </HeaderCard.Hero>
     <HeaderCard.Body>
-      <NavLink to="/oath-keeper/oath-takers">Check Oathkeeping Ranking</NavLink>
+      <NavLink
+        to="/oath-keeper/oath-takers"
+        className="jur-oath-keeper-rank-link"
+      >
+        Check Oathkeeping Ranking
+      </NavLink>
     </HeaderCard.Body>
   </HeaderCard>
 );

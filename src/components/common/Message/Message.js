@@ -13,12 +13,12 @@ const Message = ({ children, type, timeOut }) => {
   }, [children, timeOut]);
 
   return (
-    isVisible &&
-    children && (
+    (isVisible && children && (
       <Text type="div" className={`jur-message jur-message__${type}`}>
         {children}
       </Text>
-    )
+    )) ||
+    null
   );
 };
 
