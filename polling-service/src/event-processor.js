@@ -2,11 +2,10 @@ const eventHelper = require("../helpers/event-helper.js");
 
 const findEventInTransaction = async txHash => {
   let tx = await eventHelper.getTransaction(txHash);
-  return await eventHelper.processTx(tx); 
+  return eventHelper.processTx(tx);
 };
 
 const checkBlock = async transactions => {
-  // let transactions = await eventHelper.getBlock(blockNumber);
   if (transactions) {
     let requests = [];
     for (let i = 0; i < transactions.length; i++) {
