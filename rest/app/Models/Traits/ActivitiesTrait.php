@@ -37,7 +37,7 @@ trait ActivitiesTrait
             'contract_id' => $this->id
         ]);
 
-        if ($params['status_code'] == 36) 
+        if ($params['status_code'] == 36 || $params['status_code'] == 39) 
         {
             $attributes = array_merge($attributes, [
                 'waiting' => 1
@@ -46,11 +46,11 @@ trait ActivitiesTrait
         
         $activityCreated = Activity::create($attributes);
         
-        if ($params['status_code'] == 36) 
+        if ($params['status_code'] == 36 || $params['status_code'] == 39) 
         {
             $chainDate = Carbon::createFromTimestamp($params['chain_updated_at']);
 
-            $activityCreatedFirst = Activity::where(["status_code" => '36', "chain_updated_at" => $chainDate, "contract_id" => $attributes['contract_id']])->first();
+            $activityCreatedFirst = Activity::where(["status_code" => $params['status_code'], "chain_updated_at" => $chainDate, "contract_id" => $attributes['contract_id']])->first();
 
             
             if ($activityCreatedFirst->id == $activityCreated->id) 
