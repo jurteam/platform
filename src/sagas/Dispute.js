@@ -690,6 +690,7 @@ export function* handleUpdateLiveDisputes() {
   currDisputes.forEach((cContr) => {
 
     if (cContr.id === nContr.id
+        && cContr.statusWillEndAt === nContr.statusWillEndAt
         && cContr.statusUpdatedAt === nContr.statusUpdatedAt
         && cContr.statusId === nContr.statusId
         && cContr.statusLabel === nContr.statusLabel
