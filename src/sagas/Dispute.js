@@ -61,6 +61,7 @@ import {
   getDisputeListOrder,
   getDisputeFilters,
   getUser,
+  getWallet,
   getOracleList,
   getDrizzleStoredContracts,
   getDisputeList,
@@ -193,7 +194,9 @@ export function* getDispute(action) {
         // yield put({ type: CHAIN_GET_CONTRACT, address });
 
 
-        const { wallet }  = yield select(getUser);
+        const walletStore = yield select(getWallet);
+
+        const { address : wallet  }  = walletStore;
 
         let winner, arbitration
         if(connectorValue === 'connex')
@@ -216,7 +219,10 @@ export function* getDispute(action) {
           if(connectorValue === 'connex')
           {
 
+            log("getDispute - wwwwallet: ", wallet);
             canWithdraw = yield arbitration.canWithdraw(wallet)
+            log("getDispute - canWithdraw: ", canWithdraw);
+
             if (canWithdraw.reverted)
             {
               hasWithdrawn = yield arbitration.hasWithdrawn(wallet);
@@ -378,10 +384,12 @@ export function* getDispute(action) {
 
     if (typeof onSuccess === "function") {onSuccess();} // exec onSuccess callback if present
   } catch (error) {
+
+    log('getDispute Error:',error);
     // TODO: handle 404
     yield put({ type: API_CATCH, error });
 
-    if (error.response.status === 404 && error.response.config.headers.wallet !== null) {
+    if (error.response && error.response.status === 404 && error.response.config.headers.wallet !== null) {
       // const { history } = action;
       history.push(`/disputes/`); // go to disputes list
       // yield put(push('/disputes/'));

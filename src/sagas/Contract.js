@@ -1,5 +1,4 @@
 import { call, put, select, takeLatest, takeEvery } from "redux-saga/effects";
-import { getUser } from "./Selectors";
 import {
   RESET_CONTRACT,
   NEW_CONTRACT,
@@ -49,8 +48,9 @@ import contractStatuses from "../assets/i18n/en/status.json";
 // Api layouts
 import { Contracts, connexArbitrationContract } from "../api";
 
-import {
-  // getWallet,
+import { 
+  getUser, 
+  getWallet,
   getNewContract,
   getCurrentContract,
   getContractListPage,
@@ -90,14 +90,18 @@ export function* getContract(action)
     {
       // get contract details from chain
       const user = yield select(getUser);
+
+      const walletStore = yield select(getWallet);
+      const { address : userAddress  }  = walletStore;
+
       log('getContract - user',user);
 
       const arbitration = new connexArbitrationContract(data.address);
       log('getContract - arbitration',arbitration);
 
-      const hasWithdrawn = yield arbitration.hasWithdrawn(user.wallet);
+      const hasWithdrawn = yield arbitration.hasWithdrawn(userAddress);
       log('getContract - hasWithdrawn',hasWithdrawn);
-      const dispersal = yield arbitration.dispersal(user.wallet);
+      const dispersal = yield arbitration.dispersal(userAddress);
 
       log('getContract - dispersal',dispersal);
 
@@ -127,7 +131,7 @@ export function* getContract(action)
 
     yield put({ type: API_CATCH, error });
 
-    if (error.response.status === 404 && error.response.config.headers.wallet !== null) {
+    if (error.response && error.response.status === 404 && error.response.config.headers.wallet !== null) {
       const { history } = action;
       history.push(`/contracts/`); // go to contracts list
     }
