@@ -228,7 +228,7 @@ export function* getDispute(action) {
                 hasToGetReward = filteredVotes.data.id
               } else {
                 hasToGetReward = filteredVotes.data.id;
-                reward = connexFromWei(filteredVotes.data.API_GET_DISPUTE_STATUS_CHANGEamount.toString(), 'ether');
+                reward = connexFromWei(filteredVotes.data.amount.toString(), 'ether');
               }
 
               // TODO if canwithdraw does not work (reverted === true)
