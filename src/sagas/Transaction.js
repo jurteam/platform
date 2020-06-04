@@ -1028,6 +1028,9 @@ function* manageEvent(txw, decoded) {
 
       // ============== dispatch event VoterPayout ----------------------
 
+      yield put({
+        type: LOOKUP_WALLET_BALANCE
+      }); // update wallet balance
 
       stakedAmount = connexFromWei(stakedAmount.toString(), 'ether');
       rewardAmount = connexFromWei(rewardAmount.toString(), 'ether');
