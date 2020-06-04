@@ -1138,7 +1138,7 @@ function* postAction(txw) {
 
       log('postAction - VoteCast')
 
-      if (DisputeDetailPage && currDisp.id === id) {
+      if (currDisp.id === id) {
         log('postAction - VoteCast ok')
 
         global.store.dispatch({
@@ -1156,13 +1156,14 @@ function* postAction(txw) {
     case "PartyPayout":
 
       // -----------------------------------------------------
-      if (DisputeDetailPage && currDisp.id === id) {
+      if (currDisp.id === id) {
 
         log(`handlePayoutParty - LOOKUP_WALLET_BALANCE`);
         yield put({
           type: API_GET_DISPUTE,
           id,
         });
+        yield put({ type: DISPUTE_UPDATING, payload: false });
         log(`handlePayoutParty - API_GET_DISPUTE`);
 
       }
@@ -1173,7 +1174,7 @@ function* postAction(txw) {
     case "VoterPayout":
 
       // -----------------------------------------------------
-      if (DisputeDetailPage && currDisp.id === id) {
+      if (currDisp.id === id) {
 
 
         log(`handlePayoutParty - LOOKUP_WALLET_BALANCE`);
@@ -1181,6 +1182,7 @@ function* postAction(txw) {
           type: API_GET_DISPUTE,
           id,
         });
+        yield put({ type: DISPUTE_UPDATING, payload: false });
         log(`handlePayoutParty - API_GET_DISPUTE`);
 
       }

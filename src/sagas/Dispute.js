@@ -145,6 +145,11 @@ export function* getDispute(action) {
 
             yield call(Contracts.statusChange, toUpdate, id);
             yield put({ type: SET_CONTRACT_STATUS, id });
+
+            yield put({
+              type: API_GET_DISPUTE,
+              id,
+            });
           }
           else if (disputeEnds !== calcDisputeEnds)
           {
@@ -532,6 +537,8 @@ export function* onDeleteAllDisputes() {
 
 export function* handlePayoutParty(args) {
 
+  yield put({ type: DISPUTE_UPDATING, payload: true });
+
   const { id, address,
     history } = args;
 
@@ -555,6 +562,11 @@ export function* handlePayoutParty(args) {
 
       const withdrawTx = yield arbitration.payoutParty(user.wallet,id);
       log(`handlePayoutParty - current user has withdrawTx?`, withdrawTx);
+
+      if (!withdrawTx)
+      {
+        yield put({ type: DISPUTE_UPDATING, payload: false });
+      }
 
     }
 
@@ -608,6 +620,8 @@ export function* handlePayoutParty(args) {
 
 export function* handlePayoutVoter(args) {
 
+  yield put({ type: DISPUTE_UPDATING, payload: true });
+
   const { id, address, history } = args;
 
   const user = yield select(getUser);
@@ -622,6 +636,10 @@ export function* handlePayoutVoter(args) {
     arbitration = new connexArbitrationContract(address);
     const withdrawTx = yield arbitration.payoutVoter(user.wallet, id);
 
+    if (!withdrawTx)
+    {
+      yield put({ type: DISPUTE_UPDATING, payload: false });
+    }
 
   }
   else if (connectorValue === 'web3')
