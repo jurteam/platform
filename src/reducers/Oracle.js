@@ -107,8 +107,12 @@ export default (state = INITIAL_STATE, action) => {
       log('CURRENT_ORACLES_LIVE', action.payload.oracles);
     
       // // unshift new votes
-      const newCurrentVotes = state.currentList;
-      newCurrentVotes.unshift(...action.payload.oracles);
+      const newCurrentVotes = action.payload.oracles;
+      state.currentList.map(oracle => {
+        newCurrentVotes.push(oracle)
+      })
+
+      // newCurrentVotes.unshift(...action.payload.oracles);
       // log('CURRENT_ORACLES_LIVE - newCurrentVotes', newCurrentVotes);
       
       return { 
