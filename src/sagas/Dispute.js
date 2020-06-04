@@ -219,6 +219,18 @@ export function* getDispute(action) {
               log("getDispute - sumpayout: ", sumpayout);
               sumToWithdraw = connexFromWei(sumpayout.toString(), 'ether');
 
+              // Call get all votes
+              log("arbitration: ", arbitration);
+              let filteredVotes = yield getFilterVotesById(id, winner);
+              console.log("filtered: ", filteredVotes);
+
+              if(filteredVotes.data.id !== 3) {
+                hasToGetReward = filteredVotes.data.id
+              } else {
+                hasToGetReward = filteredVotes.data.id;
+                reward = connexFromWei(filteredVotes.data.API_GET_DISPUTE_STATUS_CHANGEamount.toString(), 'ether');
+              }
+
               // TODO if canwithdraw does not work (reverted === true)
 
               //          for withdraw
@@ -753,6 +765,11 @@ export function* getDisputeStatus(action) {
 
 }
 
+function* getFilterVotesById(disputeId, winner) {
+  let response = yield call(Disputes.filterVotesById , { disputeId, winner })
+
+  return response;
+}
 
 
 
