@@ -1,5 +1,6 @@
 const eventHelper = require("./event-helper");
 const transactionsMock = require("../__tests__/transactions.mock.json");
+const consumedTransactionsMock = require("../__tests__/consumed-transactions.mock.json");
 const runtime = require("../runtime");
 
 beforeAll(() => {
@@ -49,14 +50,19 @@ describe("Event Helper", () => {
   });
 
   it("processes all interested transactions", () => {
-    transactionsMock
+    const outputs = transactionsMock
       .filter((_, i) => [0, 1, 2, 6].includes(i))
-      .map(t => {
-        const r = eventHelper.processTx(t);
-        console.log(r);
-        return r;
-      })
-      .forEach(t => expect(t.length).toBeGreaterThan(1));
+      .map(eventHelper.processTx);
+
+    outputs.forEach(t => expect(t.length).toBeGreaterThan(1));
+
+    outputs.forEach((t, txIndex) =>
+      t.forEach((ev, evIndex) =>
+        expect(ev).toEqual(
+          consumedTransactionsMock.filter(Boolean)[txIndex][evIndex]
+        )
+      )
+    );
   });
 
   it("processes all non interested transactions", () => {
@@ -64,6 +70,4 @@ describe("Event Helper", () => {
       .filter((_, i) => ![0, 1, 2, 6].includes(i))
       .forEach(t => expect(eventHelper.processTx(t).length).toBe(0));
   });
-
-  // TODO: Check shape of processTx output
 });
