@@ -34,7 +34,7 @@ function decodeIfInterested(abi, data, topics) {
 
   return (
     ev && {
-      data: web3.eth.abi.decodeLog(ev.inputs, data, topics),
+      data: web3.eth.abi.decodeLog(ev.inputs, data, topics.slice(1)),
       identifier: ev.name,
       fields: ev.inputs.map(x => x.name)
     }
