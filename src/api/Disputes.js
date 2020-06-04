@@ -44,7 +44,7 @@ export class Disputes {
   }
 
   static filterVotesById({disputeId, winner}) {
-    console.log("id: ", disputeId, "winner: ", winner);
+    log("id: ", disputeId, "winner: ", winner);
     return axios.get(`${votesUrl}/filter/${disputeId}/${winner}`);
   }
 }

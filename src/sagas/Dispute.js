@@ -222,7 +222,7 @@ export function* getDispute(action) {
               // Call get all votes
               log("arbitration: ", arbitration);
               let filteredVotes = yield getFilterVotesById(id, winner);
-              console.log("filtered: ", filteredVotes);
+              log("filtered: ", filteredVotes);
 
               if(filteredVotes.data.id !== 3) {
                 hasToGetReward = filteredVotes.data.id
@@ -230,15 +230,6 @@ export function* getDispute(action) {
                 hasToGetReward = filteredVotes.data.id;
                 reward = connexFromWei(filteredVotes.data.amount.toString(), 'ether');
               }
-
-              // TODO if canwithdraw does not work (reverted === true)
-
-              //          for withdraw
-              //              sumpayout = 'disputeDispersal[winnerParty][msg.sender]'
-              //              hasWithdrawn = hasWithdrawn[msg.sender]
-
-              //          for voter
-              //              reward has claimed? userVotes[msg.sender][winnerParty][i].claimed
 
 
             }
