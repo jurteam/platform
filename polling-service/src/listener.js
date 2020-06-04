@@ -19,7 +19,7 @@ function listen() {
 async function processNext() {
   const block = await blockHelper.next();
   console.log(
-    "consiming block",
+    "consuming block",
     block.number,
     "time",
     new Date().toLocaleString()
