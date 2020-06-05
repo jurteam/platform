@@ -16,8 +16,11 @@ import {
   OATH_KEEPER_WITHDREW_OATH,
   OATH_KEEPER_FETCH_OATHS_OF,
   OATH_KEEPER_UPDATE_OATHS_OF,
-  HOUND_START_SMELLING
+  HOUND_START_SMELLING,
+  OATH_KEEPER_REJECT_OATH,
+  OATH_KEEPER_REJECT_WITHDRAW
 } from "../reducers/types";
+import { oathState } from "../utils/helpers";
 
 function* fetchMyRank() {
   const { address } = yield select(getWallet);
@@ -36,36 +39,61 @@ function* takeAnOath() {
   const myOaths = yield select(getMyOaths);
   const oathIndex = myOaths.length;
 
-  const prey = yield new connexOathKeeper().takeAnOath(
-    address,
-    amount,
-    lockInPeriod
-  );
-  yield put({ type: OATH_KEEPER_TOOK_OATH });
+  try {
+    const prey = yield new connexOathKeeper().takeAnOath(
+      address,
+      amount,
+      lockInPeriod
+    );
 
-  prey.onFound = () =>
-    global.store.dispatch({
-      type: OATH_KEEPER_FETCH_MY_OATHS,
-      payload: oathIndex
+    yield put({ type: OATH_KEEPER_TOOK_OATH });
+
+    prey.onFound = () =>
+      global.store.dispatch({
+        type: OATH_KEEPER_FETCH_MY_OATHS,
+        payload: oathIndex
+      });
+
+    yield put({ type: HOUND_START_SMELLING, payload: prey });
+  } catch (e) {
+    console.error("Failed to take an oath", e);
+    yield put({
+      type: OATH_KEEPER_REJECT_OATH,
+      error: e,
+      payload: {
+        message: e.message,
+        oathIndex
+      }
     });
-
-  yield put({ type: HOUND_START_SMELLING, payload: prey });
+  }
 }
 
 function* withdrawAnOath(action) {
   const oathIndex = action.payload;
   const { address } = yield select(getWallet);
 
-  const prey = yield new connexOathKeeper().releaseOath(address, oathIndex);
-  yield put({ type: OATH_KEEPER_WITHDREW_OATH, payload: oathIndex });
+  try {
+    const prey = yield new connexOathKeeper().releaseOath(address, oathIndex);
+    yield put({ type: OATH_KEEPER_WITHDREW_OATH, payload: oathIndex });
 
-  prey.onFound = () =>
-    global.store.dispatch({
-      type: OATH_KEEPER_FETCH_MY_OATHS,
-      payload: oathIndex
+    prey.onFound = () =>
+      global.store.dispatch({
+        type: OATH_KEEPER_FETCH_MY_OATHS,
+        payload: oathIndex
+      });
+
+    yield put({ type: HOUND_START_SMELLING, payload: prey });
+  } catch (e) {
+    console.error("Failed to withdraw an oath", e);
+    yield put({
+      type: OATH_KEEPER_REJECT_WITHDRAW,
+      error: e,
+      payload: {
+        message: e.message,
+        oathIndex
+      }
     });
-
-  yield put({ type: HOUND_START_SMELLING, payload: prey });
+  }
 }
 
 function* fetchMyOaths(action) {
@@ -81,7 +109,9 @@ function* fetchMyOaths(action) {
     );
 
     // if (myOaths.length + 1 > action.payload)
-    myOaths = myOaths.map(o => (o.oathIndex === action.payload ? oath : o));
+    myOaths = myOaths.map(o =>
+      o.oathIndex === action.payload ? preserveOathInfo(oath, o) : o
+    );
     // else myOaths = [oath, ...myOaths];
   } else {
     myOaths = yield new connexOathKeeper().fetchOathsOf(address);
@@ -117,6 +147,15 @@ function* fetchAnalytics(action) {
     payload: analytics,
     card: action.card
   });
+}
+
+function preserveOathInfo(oath, original) {
+  if (Number(oath.lockInPeriod) < 1) {
+    oath.lockInPeriod = original.lockInPeriod;
+    oath.amount = original.amount;
+    oath.customStatus = oathState.FAILED;
+  }
+  return oath;
 }
 
 export default function* oathKeeperSagas() {

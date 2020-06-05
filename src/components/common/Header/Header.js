@@ -6,8 +6,9 @@ import "./Header.scss";
 import Logo from "../Logo";
 import MainNav from "../MainNav";
 import ProfilePreview from "../ProfilePreview";
+import OathKeeperNav from "../../app-specific/OathKeeper/OathKeeperNav";
 
-export const Header = ( props ) => {
+export const Header = props => {
   const { wallet, user, app } = props;
   const renderLogo = () => {
     const { tutorial } = app;
@@ -24,6 +25,7 @@ export const Header = ( props ) => {
         <>
           {renderLogo()}
           <MainNav />
+          <OathKeeperNav />
           <ProfilePreview
             name={user.name || null}
             seed={wallet.address || ""}

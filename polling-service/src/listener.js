@@ -1,32 +1,48 @@
-const path = require('path');
-const smartContracts = require('../config/smart-contracts.json');
-const event = require('./event');
+const blockchainEventsQueue = require("../helpers/blockchain-events-queue");
+const blockHelper = require("../helpers/block-helper");
+const processor = require("./event-processor.js");
+const transformer = require("./transformer");
+
+const LISTEN_FAILURE = 234;
+
+function listen() {
+  return blockchainEventsQueue
+    .assert()
+    .then(processNext)
+    .then(listen)
+    .catch(e => {
+      console.log("failed to listen", e);
+      process.exit(LISTEN_FAILURE);
+    });
+}
+
+async function processNext() {
+  const block = await blockHelper.next();
+  console.log(
+    "consuming block",
+    block.number,
+    "time",
+    new Date().toLocaleString()
+  );
+  const response = await processor.checkBlock(block.transactions);
+
+  blockHelper.log(block.number);
+  transactionsToQueue(response);
+}
+
+function transactionsToQueue(response) {
+  response?.forEach(row => row.map(transformer.format).forEach(pushToQueue));
+}
+
+function pushToQueue(message) {
+  if (process.env.NODE_ENV !== "test")
+    console.log("transaction found, writing to queue", JSON.stringify(message));
+  return blockchainEventsQueue.push(message);
+}
 
 module.exports = {
-    listen() {
-        try {
-
-            // Listen for all the smart-contract specified in the config
-            for (let i = 0; i < smartContracts.length; i++) {
-
-                const instance = smartContracts[i];
-
-                // Get the ABI-JSON
-                let abi = require(path.resolve('config', instance.abiPath));
-
-                // Get the object of smart-contract
-                const contract = new web3.eth.Contract(abi, instance.address);
-
-                // Loop through each event specified in the config
-                for (let j = 0; j < instance.events.length; j++) {
-                    event.subscribe(instance.identifier, contract, instance.events[j]); // subscribe to the specific event
-                }
-            }
-        } catch (error) {
-            console.log(error);
-
-            // Exit process
-            process.exit(1)
-        }
-    }
-}
+  listen,
+  transactionsToQueue,
+  pushToQueue,
+  processNext
+};

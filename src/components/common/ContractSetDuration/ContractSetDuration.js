@@ -13,10 +13,18 @@ export const ContractSetDuration = ( props ) => {
   );
 
   const handleChange = (name, value) => {
-    const newValue = { ...duration, [name]: value };
+    const newValue = { ...duration, [name]: value.toString() };
     setDuration(newValue);
     onChange(newValue);
   };
+
+  const handleConversion =  (number) => {
+    if(number !== 0) {
+      return parseInt(number)
+    } else {
+      return 0
+    }
+  }
 
   const { labels } = useContext(AppContext);
 
@@ -27,7 +35,7 @@ export const ContractSetDuration = ( props ) => {
       <div className="jur-contract-set-duration__inputs">
         <Form.NumericInput
           label="days"
-          initialValue={contract.duration.days || 0}
+          initialValue={handleConversion(contract.duration.days) || 0}
           onChange={handleChange.bind(this, "days")}
           max={999}
           error={hasError("duration")}
@@ -36,7 +44,7 @@ export const ContractSetDuration = ( props ) => {
         />
         <Form.NumericInput
           label="hours"
-          initialValue={contract.duration.hours || 0}
+          initialValue={handleConversion(contract.duration.hours) || 0}
           onChange={handleChange.bind(this, "hours")}
           max={23}
           error={hasError("duration")}
@@ -45,7 +53,7 @@ export const ContractSetDuration = ( props ) => {
         />
         <Form.NumericInput
           label="minutes"
-          initialValue={contract.duration.minutes || 0}
+          initialValue={handleConversion(contract.duration.minutes) || 0}
           onChange={handleChange.bind(this, "minutes")}
           step={15}
           error={hasError("duration")}

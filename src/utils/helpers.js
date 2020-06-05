@@ -305,9 +305,20 @@ export const canVote = statusId => {
   return canVote;
 };
 
-export const multiplication = (a, b) => {
+export const sum = (a, b) => {
 
-  Big.PE = 45
+  let x = new Big(a);
+  const sum = x.plus(b);
+
+  log("handleDisputeArbitration - sum", x);
+  log("handleDisputeArbitration - sum", x.toString());
+  log("handleDisputeArbitration - sum", sum.toString());
+
+  return sum.toString();
+};
+
+export const multiplication = (a, b) => {
+  Big.PE = 45;
   let x = new Big(a);
   const prod = x.times(b);
 
@@ -411,6 +422,9 @@ export function oathState(oath) {
 
   if (oath.fronendOnly) return oathState.response(oathState.PENDING);
 
+  if (Number(oath.lockInPeriod) < 1)
+    return oathState.response(oathState.FAILED);
+
   const now = new Date() / 1000;
   const startedAt = Number(oath.startAt);
   const releasedAt = Number(oath.releaseAt);
@@ -428,10 +442,11 @@ export function oathState(oath) {
 
 oathState.ACTIVE = "active";
 oathState.COMPLETED = "completed";
-oathState.YET_TO_START = "yet to start";
+oathState.YET_TO_START = "active";
 oathState.WITHDRAWN = "withdrawn";
 oathState.UNKNOWN = "unknown";
 oathState.PENDING = "pending";
+oathState.FAILED = "failed";
 
 oathState.response = state => ({
   isPending: () => state === oathState.PENDING,
@@ -439,6 +454,7 @@ oathState.response = state => ({
   isCompleted: () => state === oathState.COMPLETED,
   isYetToStart: () => state === oathState.YET_TO_START,
   isUnknown: () => state === oathState.UNKNOWN,
+  isFailed: () => state === oathState.FAILED,
   toString: () => state
 });
 

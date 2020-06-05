@@ -17,8 +17,7 @@ export const DisputeVote = ( props ) => {
     statusId,
     onVote,
     canVote,
-    winner,
-    earnings,
+    winner,    
     onReject,
     voteReject    
   } = props;
@@ -33,15 +32,15 @@ export const DisputeVote = ( props ) => {
   const stepsN = 50;
   const durationMS = 1500;
 
-  if (statusId === 39 && earnings) {
-    resultNote = (
-      <span
-        dangerouslySetInnerHTML={{
-          __html: labels.gained.replace("%tokens%", toCurrencyFormat(earnings))
-        }}
-      />
-    );
-  }
+  // if (statusId === 39 && earnings) {
+  //   resultNote = (
+  //     <span
+  //       dangerouslySetInnerHTML={{
+  //         __html: labels.gained.replace("%tokens%", toCurrencyFormat(earnings))
+  //       }}
+  //     />
+  //   );
+  // }
 
 
   useEffect(()=>{

@@ -2,11 +2,11 @@
 
 namespace App\Jobs;
 
-use \App\Jobs\GenerateOathKeeperRank;
+use \App\Jobs\OathKeeperGenerateAnalytics;
 use \App\Models\Oath;
 use \App\Models\OathKeeper;
 
-class UpdateOathStateToComplete extends Job
+class OathKeeperUpdateOathStateToComplete extends Job
 {
 
     private $wallet;
@@ -47,8 +47,7 @@ class UpdateOathStateToComplete extends Job
             // Re-Calculate summary of the oath-keeper
             OathKeeper::calculateSummary($oathKeeper);
 
-            // Re-Generate Rank
-            dispatch(new GenerateOathKeeperRank);
+            dispatch(new OathKeeperGenerateAnalytics);
         }
     }
 }

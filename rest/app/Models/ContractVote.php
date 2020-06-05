@@ -31,7 +31,7 @@ class ContractVote extends Model implements HasMedia
         parent::boot();
 
         static::saved(function($model) {
-            $model->checkForMajorityChange();
+            // $model->checkForMajorityChange();
         });
     }
 
@@ -84,8 +84,8 @@ class ContractVote extends Model implements HasMedia
     {
         $status = $this->contract->getCurrentStatus();
         
-        if ($status->code == 35) {
-            // only if is a ongoing dispute
+        if ($status->code == 35 || $status->code == 36) {
+            // only if is a ongoing dispute or extended dispute
             
             // check for majority change
             $majorityChange = $this->contract->majorityChanged();

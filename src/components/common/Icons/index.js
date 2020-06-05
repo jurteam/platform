@@ -17,3 +17,4 @@ export * from "./MessageIcon";
 export * from "./PlusCircleIcon";
 export * from "./SearchIcon";
 export * from "./RankBadgeIcon";
+export * from "./OathKeeperNavIcon";

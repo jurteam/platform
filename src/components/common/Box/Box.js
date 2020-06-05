@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import "./Box.scss";
 
 const Box = ({ children, type, title, isLoading }) => (
@@ -12,6 +13,11 @@ Box.defaultProps = {
   type: "normal",
   title: "",
   isLoading: false
+};
+
+Box.propTypes = {
+  type: PropTypes.oneOf(["normal", "hero", "header", "footer", "message"]),
+  isLoading: PropTypes.bool
 };
 
 export default Box;

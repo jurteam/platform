@@ -4,6 +4,7 @@ import "./TakeOathAmountInput.scss";
 import Form from "JurCommon/Form";
 import Col from "JurCommon/Col";
 import { OATH_KEEPER_UPDATE_AMOUNT } from "../../../../reducers/types";
+import { MIN_TOKEN_AMOUNT } from "../../../../api/connex/OathKeeper";
 
 const TakeOathAmountInput = ({ onChange }) => (
   <Col>
@@ -14,6 +15,7 @@ const TakeOathAmountInput = ({ onChange }) => (
       step={1}
       className="jur-oath-amount-input"
       max={Number.MAX_SAFE_INTEGER}
+      min={MIN_TOKEN_AMOUNT}
     />
   </Col>
 );

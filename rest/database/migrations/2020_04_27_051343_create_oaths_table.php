@@ -19,6 +19,7 @@ class CreateOathsTable extends Migration
             $table->string('wallet');
             $table->unsignedBigInteger('oath_index');
             $table->decimal('amount', 36, 18);
+            $table->decimal('fiat_value')->nullable();
             $table->unsignedInteger('lock_in_period');
             $table->dateTime('start_at');
             $table->dateTime('release_at');
