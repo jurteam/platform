@@ -23,7 +23,7 @@ export class Countdown extends Component {
   }
 
   componentDidMount = () => {
-    log("Countdown - CDM - diff start and end date", this.getDateDiff(this.props.endDate));
+    log("Countdown - CDM - diff start and end date", this.getDateDiff(this.props.startDate, this.props.endDate));
     switch (this.props.statusId) {
       case -1: // rejected
         break;
@@ -60,6 +60,21 @@ export class Countdown extends Component {
       default:
     }
   };
+
+  componentDidUpdate(previousProps) 
+  {    
+    if (this.props.endDate !== previousProps.endDate) {
+
+      log("Countdown - CDU - diff start and end date", this.getDateDiff(this.props.startDate, this.props.endDate));
+
+      switch (this.props.statusId) {
+        case 36: // extended Dispute 
+          this.start(this.props.startDate, this.getDateDiff(this.props.startDate,this.props.endDate));
+          break;
+        default:
+      }    
+    }
+  }
 
   componentWillUnmount = () => {
     this.stop();
