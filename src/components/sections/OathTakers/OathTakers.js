@@ -1,5 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useContext } from "react";
 import "./OathTakers.scss";
+
+import { AppContext } from "../../../bootstrap/AppProvider";
 
 import PageLayout from "JurCommon/PageLayout";
 import Main from "JurCommon/Main";
@@ -9,9 +11,22 @@ import { OATH_KEEPER_RESET_FILTERS } from "../../../reducers/types";
 
 const OathTakers = ({ resetFilters }) => {
   useEffect(() => resetFilters, []);
+  const { labels } = useContext(AppContext);
+
+  const b = [
+    {
+      label: labels.myOaths,
+      to: "/profile/my-oaths",
+      exact: true
+    },
+    {
+      label: labels.oathKeepingRank,
+      to: "/oath-keeper/oath-takers"
+    }
+  ];
 
   return (
-    <PageLayout>
+    <PageLayout breadcrumbs={b}>
       <Main>
         <OathTakersAnalytics />
         <OathTakersIndex />

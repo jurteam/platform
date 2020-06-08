@@ -306,7 +306,6 @@ export const canVote = statusId => {
 };
 
 export const sum = (a, b) => {
-
   let x = new Big(a);
   const sum = x.plus(b);
 
@@ -415,6 +414,19 @@ export const connexFromWei = (value, size) => {
 
   return division(value, multiplicator);
 };
+
+export function from(page, perPage, total) {
+  if (total === 0) return 0;
+  return (page - 1) * perPage + 1;
+}
+
+export function to(page, perPage, total) {
+  if (total === 0) return 0;
+  if (total <= perPage) return total;
+  const toFullPage = (page - 1) * perPage + perPage;
+  if (toFullPage > total) return total;
+  return toFullPage;
+}
 
 export function oathState(oath) {
   let state = oathState.UNKNOWN;

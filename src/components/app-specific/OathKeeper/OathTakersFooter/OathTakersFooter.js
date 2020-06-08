@@ -5,13 +5,14 @@ import Pagination from "JurCommon/Pagination";
 import Row from "JurCommon/Row";
 import Expand from "JurCommon/Expand";
 import Text from "JurCommon/Text";
+import { from, to } from "../../../../utils/helpers";
 import { OATH_KEEPER_FETCH_OATH_TAKERS } from "../../../../reducers/types";
 import { getOathTakersPagination } from "../../../../sagas/Selectors";
 
 const OathTakersFooter = ({ onPaginate, total, perPage, page }) => (
   <Row className="jur-safe-margin">
     <Text>
-      {(page - 1) * perPage + 1} &mdash; {(page - 1) * perPage + perPage}{" "}
+      {from(page, perPage, total)} &mdash; {to(page, perPage, total)}{" "}
       <Text type="span" className="jur-text__mute">
         of {total}
       </Text>

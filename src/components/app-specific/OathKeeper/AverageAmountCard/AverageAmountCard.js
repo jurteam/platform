@@ -5,6 +5,7 @@ import ChartCard from "JurCommon/ChartCard";
 import Delta from "JurCommon/Delta";
 import Row from "JurCommon/Row";
 import Amount from "JurCommon/Amount";
+import Expand from "JurCommon/Expand";
 import OathCardEnumFilter from "../OathCardEnumFilter";
 import { OATH_KEEPER_FETCH_ANALYTICS } from "../../../../reducers/types";
 import { oathKeeperAnalytics } from "../../../../utils/helpers";
@@ -32,6 +33,7 @@ const AverageAmountCard = ({
       </ChartCard.Metric>
       <ChartCard.LineChart data={graph} />
     </Row>
+    <Expand />
     <ChartCard.Footer>
       <OathCardEnumFilter selected={duration} onChange={onEnumFilterChange} />
     </ChartCard.Footer>

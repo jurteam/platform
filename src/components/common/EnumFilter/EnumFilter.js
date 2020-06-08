@@ -5,7 +5,7 @@ import Row from "JurCommon/Row";
 import Divide from "JurCommon/Divide";
 
 const EnumFilter = ({ selected, enums, onChange }) => (
-  <Row>
+  <Row className="jur-enum-filter-row">
     {enums
       .map(f => (
         <span
