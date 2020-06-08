@@ -221,5 +221,6 @@
   "rejectPaymentText": "Please complete the payment step in order to proceed.",
   "dotted": "•••",
   "otherCategoryPlaceholder": "Insert your category",
-  "myOaths": "My Oaths"
+  "myOaths": "My Oaths",
+  "oathKeepingRank": "Oathkeeping Ranking"
 }

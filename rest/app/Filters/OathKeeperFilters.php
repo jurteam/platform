@@ -38,12 +38,12 @@ class OathKeeperFilters extends Filters
 
     public function minAmount($value)
     {
-        return $this->builder->where('active_amount', '>', $value);
+        return $this->builder->where('total_amount', '>=', $value);
     }
 
     public function maxAmount($value)
     {
-        return $this->builder->where('active_amount', '<', $value);
+        return $this->builder->where('total_amount', '<=', $value);
     }
 
     public function status($value)

@@ -4,6 +4,7 @@ import "./ActiveAmountCard.scss";
 import ChartCard from "JurCommon/ChartCard";
 import Delta from "JurCommon/Delta";
 import Row from "JurCommon/Row";
+import Expand from "JurCommon/Expand";
 import Amount from "JurCommon/Amount";
 import OathCardEnumFilter from "../OathCardEnumFilter";
 import { oathKeeperAnalytics } from "../../../../utils/helpers";
@@ -33,6 +34,7 @@ const ActiveAmountCard = ({
         </ChartCard.Metric>
         <ChartCard.LineChart data={graph} />
       </Row>
+      <Expand />
       <ChartCard.Footer>
         <OathCardEnumFilter selected={duration} onChange={onEnumFilterChange} />
       </ChartCard.Footer>
