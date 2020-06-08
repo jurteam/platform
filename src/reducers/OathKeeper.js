@@ -43,7 +43,7 @@ const INITIAL_FILTERS_STATE = {
     }
   },
   oathTakersFilters: {
-    status: oathKeeperFilters.statuses.SHOW_ALL,
+    status: oathKeeperFilters.statuses[0].value,
     sortBy: "Rank",
     query: undefined,
     startsAt: undefined,

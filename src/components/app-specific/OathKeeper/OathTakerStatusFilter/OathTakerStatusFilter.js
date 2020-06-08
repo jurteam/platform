@@ -4,18 +4,14 @@ import "./OathTakerStatusFilter.scss";
 import Form from "JurCommon/Form";
 import { oathKeeperFilters } from "../../../../utils/helpers";
 
-const options = Object.values(oathKeeperFilters.statuses).map(x => ({
-  value: x,
-  label: x
-}));
-
 const OathTakerStatusFilter = ({ onChange }) => (
   <Form.Select
+    isClearable={false}
     name="status"
     id="status"
-    options={options}
+    options={oathKeeperFilters.statuses}
     onChange={onChange}
-    defaultValue={options[0]}
+    defaultValue={oathKeeperFilters.statuses[0]}
   />
 );
 

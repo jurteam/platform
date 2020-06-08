@@ -459,11 +459,11 @@ oathState.response = state => ({
 });
 
 export const oathKeeperFilters = {
-  statuses: {
-    SHOW_ALL: "Show All",
-    ON_GOING: "On Going",
-    COMPLETED: "Completed"
-  }
+  statuses: [
+    { label: "Show all", value: "All" },
+    { label: "Ongoing", value: "Active" },
+    { label: "Completed", value: "Past" }
+  ]
 };
 
 export const oathKeeperAnalytics = {
