@@ -18,6 +18,7 @@ trait HistoriesTrait
                     return !is_null($item->custom_status_date);
                 })
                 ->sortByDesc('custom_status_date')
+                ->sortByDesc('contract_status_code')
                 ->first();
 
             if (!empty($history)) {
@@ -83,7 +84,7 @@ trait HistoriesTrait
         if ($this->histories->count() > 0) {
             $history = $this->histories
                 ->filter(function($item) {
-                    return $item->contract_status_code === 39;
+                    return $item->contract_status_code === 37;
                 })
                 ->first();
 
@@ -141,11 +142,35 @@ trait HistoriesTrait
 
     protected function createHistory($status, $date)
     {
-        $this->histories()
-            ->save(new ContractStatusHistory([
-                'contract_status_code' => $status->code,
-                'contract_status_id' => $status->id,
-                'chain_updated_at' => $date
-            ]));
+        $waiting = 0;
+        if ($status->code == 36 || $status->code == 39)
+        {
+            $waiting = 1;           
+        } 
+
+        $historyCreated = $this->histories()
+        ->save(new ContractStatusHistory([
+            'contract_status_code' => $status->code,
+            'contract_status_id' => $status->id,
+            'chain_updated_at' => $date,
+            'waiting' => $waiting
+        ]));
+
+        $idContract = $this->id;
+
+        if ($status->code == 36 || $status->code == 39)
+        {
+            $historyCreatedFirst = ContractStatusHistory::where(["contract_status_code" => $status->code, "chain_updated_at" => $date, "contract_id" => $idContract])->first();
+
+            if ($historyCreatedFirst->id == $historyCreated->id) 
+            {
+                $historyUpdated = $historyCreatedFirst->update(array('waiting' => 0));
+                return $historyCreatedFirst;
+            }
+            else 
+            {
+                $historyCreated->delete();
+            }
+        }
     }
 }

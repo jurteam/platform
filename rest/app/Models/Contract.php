@@ -133,7 +133,9 @@ class Contract extends Model implements HasMedia
                 'chain_updated_at' => $chainUpdatedAt
             ]), $user);
 
-            $this->notifyParts($activity);
+            if ($activity) {
+                $this->notifyParts($activity);
+            }
         }
         
     }

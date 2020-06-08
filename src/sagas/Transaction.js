@@ -45,7 +45,8 @@ import {
 import {
   log,
   ethToHuman,
-  connexFromWei
+  connexFromWei,
+  sum
 } from "../utils/helpers";
 
 import {
@@ -311,12 +312,25 @@ export function* getEventUpdateTx(args) {
       log(
         'getEventUpdateTx - eventDecoded is null - event will not be emitted'
       )
+      log("tx should be reverted: ", txw);
+      log("tx contract: ", txw.contract.address);
 
+
+      let thisTx = yield getTxByAddress(txw.txid);
+      log("this tx reverted: ", thisTx);
+
+      if(thisTx.reverted) {
+        log("Contract is reverted");
+        yield manageRevertedContract(txw);
+        log("Contract reverted is managed");
+      }
       // TODO: delete transaction on backend
-      const retPut = yield put({
-        type: REMOVE_TRANSACTION,
-        id: txw.id
-      });
+      // const retPut = yield put({
+      //   type: REMOVE_TRANSACTION,
+      //   id: txw.id
+      // });
+
+      yield deleteTransaction(txw.id);
     }
 
   } catch (error) {
@@ -328,6 +342,43 @@ export function* getEventUpdateTx(args) {
     });
   }
 
+
+}
+
+function* manageRevertedContract(txw) {
+
+  log('manageRevertedContract - txw', txw)
+  
+  const currDisp = yield select(getCurrentDispute);
+  const DisputeDetailPage = yield select(getDisputedetailPage);
+  
+  log('manageRevertedContract - currDisp', currDisp)
+  log('manageRevertedContract - DisputeDetailPage', DisputeDetailPage)
+  
+  const {
+    event,
+    contract: {
+      id
+    }
+  } = txw;
+  
+  
+  switch(event) {
+    case "VoteCast":
+      if(currDisp.id === id) {
+        log('manageRevertedContract - VoteCast')
+        
+        yield put({ type: DISPUTE_UPDATING, payload: false });
+        yield put({ type: DISPUTE_SAVING, payload: false });
+        global.store.dispatch({
+          type: DISPUTE_VOTE_OVERLAY,
+          payload: false
+        });
+      }
+      break;
+    default:
+      return txw;
+  }
 
 }
 
@@ -977,26 +1028,23 @@ function* manageEvent(txw, decoded) {
 
       // ============== dispatch event VoterPayout ----------------------
 
+      yield put({
+        type: LOOKUP_WALLET_BALANCE
+      }); // update wallet balance
 
       stakedAmount = connexFromWei(stakedAmount.toString(), 'ether');
       rewardAmount = connexFromWei(rewardAmount.toString(), 'ether');
 
+      const bigReward = sum(stakedAmount,rewardAmount)
+
       log('manageEvent - VoterPayout -2 stakedAmount', stakedAmount)
       log('manageEvent - VoterPayout -2 rewardAmount', rewardAmount)
 
-      stakedAmount = Number.parseFloat(stakedAmount);
-      rewardAmount = Number.parseFloat(rewardAmount);
-
-      log('manageEvent - VoterPayout -3 stakedAmount', stakedAmount)
-      log('manageEvent - VoterPayout -3 rewardAmount', rewardAmount)
-
-      const reward = stakedAmount + rewardAmount
-
-      log('manageEvent - VoterPayout - reward', reward)
+      log('manageEvent - VoterPayout - bigReward', bigReward)
 
       let rewardData = new FormData();
 
-      rewardData.append("amount", reward);
+      rewardData.append("amount", bigReward);
       rewardData.append("type", "payout");
 
       response = yield call(Withdrawal.store, rewardData, id);
@@ -1090,7 +1138,7 @@ function* postAction(txw) {
 
       log('postAction - VoteCast')
 
-      if (DisputeDetailPage && currDisp.id === id) {
+      if (currDisp.id === id) {
         log('postAction - VoteCast ok')
 
         global.store.dispatch({
@@ -1108,13 +1156,14 @@ function* postAction(txw) {
     case "PartyPayout":
 
       // -----------------------------------------------------
-      if (DisputeDetailPage && currDisp.id === id) {
+      if (currDisp.id === id) {
 
         log(`handlePayoutParty - LOOKUP_WALLET_BALANCE`);
         yield put({
           type: API_GET_DISPUTE,
           id,
         });
+        yield put({ type: DISPUTE_UPDATING, payload: false });
         log(`handlePayoutParty - API_GET_DISPUTE`);
 
       }
@@ -1125,7 +1174,7 @@ function* postAction(txw) {
     case "VoterPayout":
 
       // -----------------------------------------------------
-      if (DisputeDetailPage && currDisp.id === id) {
+      if (currDisp.id === id) {
 
 
         log(`handlePayoutParty - LOOKUP_WALLET_BALANCE`);
@@ -1133,6 +1182,7 @@ function* postAction(txw) {
           type: API_GET_DISPUTE,
           id,
         });
+        yield put({ type: DISPUTE_UPDATING, payload: false });
         log(`handlePayoutParty - API_GET_DISPUTE`);
 
       }
@@ -1145,6 +1195,22 @@ function* postAction(txw) {
   }
 
   return null
+}
+
+function* deleteTransaction(id) {
+  log("delete transaction id: ",id);
+  try{
+    const response = yield call(Transactions.delete, id);
+
+    log("delete transaction response: ", response);
+    yield put({
+      type: REMOVE_TRANSACTION,
+      id: id
+    })
+
+  }catch(error) {
+    log("Transaction remove error: ", error);
+  }
 }
 
 

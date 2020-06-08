@@ -5,6 +5,7 @@ import { CANCEL } from 'redux-saga'
 
 // endpoint root
 const root = "/contracts/disputes";
+const votesUrl = "/votes";
 
 export class Disputes {
   static list(payload) {
@@ -40,5 +41,9 @@ export class Disputes {
   }
   static deleteMedia(payload) {
     return axios.delete(`${root}/medias/${payload.id}`); // attachments delete
+  }
+
+  static filterVotesById({disputeId, winner}) {
+    return axios.get(`${votesUrl}/filter/${disputeId}/${winner}`);
   }
 }

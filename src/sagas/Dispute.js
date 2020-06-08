@@ -1,14 +1,8 @@
-import {
-  call,
-  put,
-  select,
-  takeLatest,
-  takeEvery,
-  take
-} from "redux-saga/effects";
-import moment from "moment";
+import { call, put, select, takeLatest, takeEvery, take } from "redux-saga/effects";
+import moment from 'moment';
 
 import configureStore from "../bootstrap/Store";
+
 
 import {
   // RESET_DISPUTE,
@@ -44,7 +38,9 @@ import {
   LOOKUP_WALLET_BALANCE,
   UPDATE_LIVE_DISPUTES,
   API_GET_LIVE_VOTES,
-  FETCH_ACTIVITIES
+  FETCH_ACTIVITIES,
+  SET_CONTRACT_ACTIVITIES,
+  SET_CONTRACT_STATUS,
 } from "../reducers/types";
 
 import {
@@ -55,13 +51,7 @@ import {
 } from "../utils/helpers"; // log helper
 
 // Api layouts
-import {
-  Contracts,
-  Disputes,
-  Arbitration,
-  connexArbitrationContract,
-  Withdrawal
-} from "../api";
+import { Contracts, Disputes, Arbitration, connexArbitrationContract, Withdrawal } from "../api";
 
 import {
   // getNewDispute,
@@ -71,26 +61,27 @@ import {
   getDisputeListOrder,
   getDisputeFilters,
   getUser,
+  getWallet,
   getOracleList,
   getDrizzleStoredContracts,
   getDisputeList,
   getDisputePageSize,
-  getCurrentDispute
+  getCurrentDispute,
 } from "./Selectors"; // selector
 
 // Get
 export function* getDispute(action) {
-  log("getDispute", action);
+  log("getDispute",action);
 
   const { id, onSuccess, onError } = action;
-  log("getDispute", 70);
+  log("getDispute",70);
   const { history } = action;
-  log("getDispute", 72);
+  log("getDispute",72);
 
   yield put({ type: DISPUTE_UPDATING, payload: true });
-  log("getDispute", 75);
+  log("getDispute",75);
   // yield put({ type: RESET_DISPUTE });
-  log("getDispute", 77);
+  log("getDispute",77);
 
   try {
     const response = yield call(Disputes.get, { id });
@@ -101,16 +92,11 @@ export function* getDispute(action) {
     log("getDispute - data.statusId", data.statusId);
     log("getDispute - data.id", data.id);
     // if this dispute is ongoing dispute redirect it to /contracts/detail/
-    if (
-      (data.statusId === 31 || data.statusId === 32) &&
-      history.location.pathname.startsWith("/disputes/detail")
-    ) {
+    if ((data.statusId === 31 || data.statusId === 32) && history.location.pathname.startsWith('/disputes/detail'))
+    {
       log("getDispute - history.location", history.location);
-      log(
-        "getDispute - history.locations",
-        history.location.pathname.startsWith("/disputes/detail")
-      );
-      history.push("/contracts/detail/" + data.id);
+      log("getDispute - history.locations", history.location.pathname.startsWith('/disputes/detail'));
+      history.push('/contracts/detail/'+data.id)
     }
 
     if (address) {
@@ -120,29 +106,37 @@ export function* getDispute(action) {
       yield put({ type: CHAIN_GET_DISPUTE, address });
       log("getDispute - row", 67);
 
+
       // check connex or web3
-      const connectorValue = connector();
+      const connectorValue = connector()
 
       log("getDispute - data", data);
-      const statusDate = moment(data.statusUpdatedAt).format("X");
+      const statusDate = moment(data.statusUpdatedAt).format('X');
 
-      if (data.statusId === 37) {
+      if (data.statusId === 37)
+      {
+
         log("getDispute - data", data);
         // dispute is waiting
 
-        if (connectorValue === "connex") {
+        if(connectorValue === 'connex')
+        {
+
+
           const arbitration = new connexArbitrationContract(address);
           const disputeEnds = yield arbitration.disputeEnds();
           log("getDispute - disputeEnds", disputeEnds);
 
+
           log("getDispute - resolveDate - before");
-          yield resolveDate(disputeEnds);
+          yield resolveDate(disputeEnds)
           log("getDispute - resolveDate - after");
 
           const calcDisputeEnds = yield arbitration.calcDisputeEnds();
           log("getDispute - calcDisputeEnds", calcDisputeEnds);
 
-          if (disputeEnds === calcDisputeEnds) {
+          if (disputeEnds === calcDisputeEnds)
+          {
             // dispute will be closed
             log("getDispute - closing");
 
@@ -151,7 +145,15 @@ export function* getDispute(action) {
             toUpdate.append("chain_updated_at", disputeEnds.toString());
 
             yield call(Contracts.statusChange, toUpdate, id);
-          } else if (disputeEnds !== calcDisputeEnds) {
+            yield put({ type: SET_CONTRACT_STATUS, id });
+
+            yield put({
+              type: API_GET_DISPUTE,
+              id,
+            });
+          }
+          else if (disputeEnds !== calcDisputeEnds)
+          {
             // dispute will be extended
             log("getDispute - extending");
 
@@ -167,228 +169,261 @@ export function* getDispute(action) {
             toUpdate.append("chain_updated_at", calcDisputeEnds.toString());
 
             yield call(Contracts.statusChange, toUpdate, id);
-          }
-        }
 
+            yield put({ type: SET_CONTRACT_STATUS, id });
+
+          }
+
+        }
+        // yield put({ type: FETCH_ACTIVITIES });
         const response = yield call(Disputes.get, { id });
         let { data } = response.data;
 
         yield put({ type: SET_DISPUTE, payload: data });
-      } else if (data.statusId === 39) {
+
+      }
+      else if (data.statusId === 39)
+      {
         // if dispute is closed, get the real winner from chain
 
         let hasWithdrawn = true;
         let hasToGetReward = 0;
         let sumToWithdraw = 0;
         let reward = 0;
-        let voteLookup = "";
+        let voteLookup = '';
         // yield put({ type: CHAIN_GET_CONTRACT, address });
 
-        const { wallet } = yield select(getUser);
 
-        let winner, arbitration;
-        if (connectorValue === "connex") {
+        const walletStore = yield select(getWallet);
+
+        const { address : wallet  }  = walletStore;
+
+        let winner, arbitration
+        if(connectorValue === 'connex')
+        {
           arbitration = new connexArbitrationContract(address);
-          winner = yield arbitration.getWinner();
-        } else if (connectorValue === "web3") {
+          winner = yield arbitration.getWinner()
+        }
+        else if (connectorValue === 'web3')
+        {
           arbitration = new Arbitration(address);
           winner = yield arbitration.getWinner().catch(chainErrorHandler);
         }
         log("getDispute - winner", winner);
-
         if (winner) {
+
           log("getDispute - arbitration", arbitration);
           // let canWithdraw = false;
-          let canWithdraw, disputeEnd, VOTE_LOCKUP;
+          let canWithdraw,disputeEnd,VOTE_LOCKUP
 
-          if (connectorValue === "connex") {
-            canWithdraw = yield arbitration.canWithdraw(wallet);
+          if(connectorValue === 'connex')
+          {
 
-            log("getDispute - canWithdraw", canWithdraw);
-            hasWithdrawn = canWithdraw[0];
-            sumToWithdraw = connexFromWei(canWithdraw[1].toString(), "ether");
+            log("getDispute - wwwwallet: ", wallet);
+            canWithdraw = yield arbitration.canWithdraw(wallet)
+            log("getDispute - canWithdraw: ", canWithdraw);
 
-            log("getDispute - hasWithdrawn", hasWithdrawn);
-            log("getDispute - sumTowithdraw", sumToWithdraw);
-            let canClaimReward = yield arbitration.canClaimReward(wallet);
+            if (canWithdraw.reverted)
+            {
+              hasWithdrawn = yield arbitration.hasWithdrawn(wallet);
+              let sumpayout = yield arbitration.diputeDispersal(winner, wallet);
+              log("getDispute - sumpayout: ", sumpayout);
+              sumToWithdraw = connexFromWei(sumpayout.toString(), 'ether');
 
-            log("getDispute - canClaimReward", canClaimReward);
+              // Call get all votes
+              log("arbitration: ", arbitration);
+              let filteredVotes = yield getFilterVotesById(id, winner);
+              log("filtered: ", filteredVotes);
 
-            hasToGetReward = canClaimReward[0];
-            log("getDispute - hasToGetReward", hasToGetReward);
+              if(filteredVotes.data.id !== 3) {
+                hasToGetReward = filteredVotes.data.id
+              } else {
+                hasToGetReward = filteredVotes.data.id;
+                reward = connexFromWei(filteredVotes.data.amount.toString(), 'ether');
+              }
 
-            reward = connexFromWei(canClaimReward[1].toString(), "ether");
-            log("getDispute - reward", reward);
+
+            }
+            else
+            {
+
+
+              log("getDispute - canWithdraw", canWithdraw);
+              hasWithdrawn = canWithdraw.decoded[0];
+              sumToWithdraw =  connexFromWei(canWithdraw.decoded[1].toString(), 'ether');
+
+              log("getDispute - hasWithdrawn", hasWithdrawn);
+              log("getDispute - sumTowithdraw", sumToWithdraw);
+              let canClaimReward = yield arbitration.canClaimReward(wallet);
+
+              log("getDispute - canClaimReward", canClaimReward);
+
+              hasToGetReward = canClaimReward[0]
+              log("getDispute - hasToGetReward", hasToGetReward);
+
+              reward = connexFromWei(canClaimReward[1].toString(), 'ether');
+              log("getDispute - reward", reward);
+
+            }
+
 
             // yield arbitration.gameTheory();
-            VOTE_LOCKUP = yield arbitration.voteLookup();
+             VOTE_LOCKUP = yield arbitration.voteLookup();
 
-            log("getDispute - VOTE_LOCKUP", VOTE_LOCKUP);
+             log("getDispute - VOTE_LOCKUP", VOTE_LOCKUP);
 
-            voteLookup = moment
-              .duration(Number.parseInt(VOTE_LOCKUP.toString()), "seconds")
-              .humanize();
+            voteLookup = moment.duration(Number.parseInt(VOTE_LOCKUP.toString()),'seconds').humanize()
             if (VOTE_LOCKUP)
               log("getDispute - VOTE_LOCKUP", VOTE_LOCKUP.toString());
 
             log("getDispute - voteLookup", voteLookup);
             disputeEnd = yield arbitration.disputeEnds();
-          } else if (connectorValue === "web3") {
-            canWithdraw = yield arbitration
-              .canWithdraw()
-              .catch(chainErrorHandler);
+
+          }
+          else if (connectorValue === 'web3')
+          {
+            canWithdraw = yield arbitration.canWithdraw().catch(chainErrorHandler);
+
 
             log("getDispute - canWithdraw", canWithdraw);
             hasWithdrawn = canWithdraw[0];
-            sumToWithdraw = global.drizzle.web3.utils.fromWei(
-              canWithdraw[1].toString(),
-              "ether"
-            );
+            sumToWithdraw =  global.drizzle.web3.utils.fromWei(canWithdraw[1].toString(), 'ether');
 
             // log("getDispute - type canWithdraw", typeof canWithdraw);
             // log("getDispute - canWithdraw[0]", canWithdraw[0]);
             // log("getDispute - canWithdraw.r", canWithdraw.result);
             log("getDispute - hasWithdrawn", hasWithdrawn);
             log("getDispute - sumTowithdraw", sumToWithdraw);
-            let canClaimReward = yield arbitration
-              .canClaimReward()
-              .catch(chainErrorHandler);
-            hasToGetReward = canClaimReward[0];
+            let canClaimReward = yield arbitration.canClaimReward().catch(chainErrorHandler);
+            hasToGetReward = canClaimReward[0]
 
-            reward = global.drizzle.web3.utils.fromWei(
-              canClaimReward[1].toString(),
-              "ether"
-            );
+            reward = global.drizzle.web3.utils.fromWei(canClaimReward[1].toString(), 'ether');
             // log("getDispute - canClaimReward", canClaimReward);
             log("getDispute - hasToGetReward", hasToGetReward);
             log("getDispute - reward", reward);
 
-            yield arbitration.gameTheory();
-            VOTE_LOCKUP = arbitration.VOTE_LOCKUP;
 
-            voteLookup = moment
-              .duration(Number.parseInt(VOTE_LOCKUP.toString()), "seconds")
-              .humanize();
+            yield arbitration.gameTheory();
+             VOTE_LOCKUP = arbitration.VOTE_LOCKUP;
+
+            voteLookup = moment.duration(Number.parseInt(VOTE_LOCKUP.toString()),'seconds').humanize()
             if (VOTE_LOCKUP)
               log("getDispute - VOTE_LOCKUP", VOTE_LOCKUP.toString());
 
             log("getDispute - voteLookup", voteLookup);
-            disputeEnd = yield arbitration
-              .disputeEnds()
-              .catch(chainErrorHandler);
+            disputeEnd = yield arbitration.disputeEnds().catch(chainErrorHandler);
           }
 
           log("getDispute - disputeEnd", disputeEnd);
 
           // ---------------------------------
 
-          const lockupEnd = disputeEnd
-            ? Number.parseInt(disputeEnd.toString()) +
-              Number.parseInt(VOTE_LOCKUP)
-            : 0;
+          const lockupEnd = disputeEnd ? Number.parseInt(disputeEnd.toString()) + Number.parseInt(VOTE_LOCKUP) : 0
           log("getDispute - lockupEnd", lockupEnd);
           const now = new Date();
-          const nowSecs = Math.floor(now.getTime() / 1000);
+          const nowSecs = Math.floor(now.getTime()/1000)
           log("getDispute - nowSecs", nowSecs);
 
-          winner =
-            winner === "0x0000000000000000000000000000000000000000"
-              ? "0x0"
-              : winner
-              ? winner.toLowerCase()
-              : "";
+          winner = winner === '0x0000000000000000000000000000000000000000' ? '0x0' : winner ? winner.toLowerCase() : ''
           data.winner = winner;
+
 
           // if (false) {
 
-          // let allParties = yield arbitration.allParties().catch(chainErrorHandler);
+            // let allParties = yield arbitration.allParties().catch(chainErrorHandler);
 
-          // log("getDispute - allParties", allParties);
-          log("getDispute - data", data);
+            // log("getDispute - allParties", allParties);
+            log("getDispute - data", data);
 
-          // --- check if current user can do Payout
 
-          const partA = data.counterparties[0]
-            ? data.counterparties[0].wallet.toLowerCase()
-            : "";
-          const partB = data.counterparties[1]
-            ? data.counterparties[1].wallet.toLowerCase()
-            : "";
 
-          const iPay = data.whoPays === wallet;
-          // const oracles = yield select(getOracleList);
+            // --- check if current user can do Payout
 
-          log("getDispute", {
-            partA: partA,
-            partB: partB,
-            wallet: wallet,
-            iPay: iPay
-          });
+            const partA = data.counterparties[0] ? data.counterparties[0].wallet.toLowerCase() : '';
+            const partB = data.counterparties[1] ? data.counterparties[1].wallet.toLowerCase() : '';
 
-          // check if i am not a part of the contract
-          if (partA !== wallet && partB !== wallet) {
-            hasWithdrawn = true;
-          }
+            const iPay = (data.whoPays === wallet )
+            // const oracles = yield select(getOracleList);
 
-          // check if vote_lookup is passed from dispute end
-          hasToGetReward = Number.parseInt(hasToGetReward.toString());
-          if (nowSecs >= lockupEnd) {
-            hasToGetReward = hasToGetReward === 1 ? 2 : hasToGetReward;
-          }
+            log('getDispute',{
+              partA:partA,
+              partB:partB,
+              wallet: wallet,
+              iPay:iPay,
+            })
 
-          data.hasWithdrawn = hasWithdrawn;
-          data.hasToGetReward = hasToGetReward;
-          data.voteLookup = lockupEnd;
-          data.sumToWithdraw = Number.parseFloat(sumToWithdraw);
-          data.reward = Number.parseFloat(reward);
+            // check if i am not a part of the contract
+            if (partA !== wallet && partB !== wallet ) {
+              hasWithdrawn = true;
+            }
 
-          yield put({ type: SET_DISPUTE, payload: data });
+
+
+        // check if vote_lookup is passed from dispute end
+         hasToGetReward = Number.parseInt(hasToGetReward.toString());
+         if (nowSecs >= lockupEnd) {
+           hasToGetReward = hasToGetReward === 1 ? 2 : hasToGetReward;
+         }
+
+
+         data.hasWithdrawn = hasWithdrawn;
+         data.hasToGetReward = hasToGetReward;
+         data.voteLookup = lockupEnd;
+         data.sumToWithdraw = Number.parseFloat(sumToWithdraw);
+         data.reward = Number.parseFloat(reward);
+
+         yield put({ type: SET_DISPUTE, payload: data });
+
         }
+
       } else {
+
         yield put({ type: SET_DISPUTE, payload: data });
       }
     }
 
-    if (typeof onSuccess === "function") {
-      onSuccess();
-    } // exec onSuccess callback if present
+    if (typeof onSuccess === "function") {onSuccess();} // exec onSuccess callback if present
   } catch (error) {
+
+    log('getDispute Error:',error);
     // TODO: handle 404
     yield put({ type: API_CATCH, error });
 
-    if (
-      error.response.status === 404 &&
-      error.response.config.headers.wallet !== null
-    ) {
+    if (error.response && error.response.status === 404 && error.response.config.headers.wallet !== null) {
       // const { history } = action;
       history.push(`/disputes/`); // go to disputes list
       // yield put(push('/disputes/'));
     }
 
-    if (typeof onError === "function") {
-      onError(error);
-    } // exec onError callback if present
+    if (typeof onError === "function") {onError(error);} // exec onError callback if present
   }
 }
 
-async function resolveDate(disputeEnds) {
+async function resolveDate(disputeEnds)
+{
   await new Promise(resolve => {
+
     let interval = setInterval(() => {
+
       let chainStatus = global.connex.thor.status;
-      let timestamp = chainStatus.head.timestamp;
-      log("getDispute - resolveDate - timestamp ::: ", timestamp);
+        let timestamp = chainStatus.head.timestamp;
+        log("getDispute - resolveDate - timestamp ::: ",timestamp);
 
-      if (disputeEnds <= timestamp) {
-        log("getDispute - resolveDate - ok ");
+        if(disputeEnds <= timestamp) {
+          log("getDispute - resolveDate - ok ");
 
-        clearInterval(interval);
-        resolve(true);
-      }
+          clearInterval(interval)
+          resolve(true)
 
-      log("getDispute - resolveDate - recall ");
+        }
+
+        log("getDispute - resolveDate - recall ");
+
     }, 2000);
   });
+
 }
+
 
 // Delete
 export function* deleteDispute(action) {
@@ -419,10 +454,12 @@ export function* fetchDisputes() {
   const order = yield select(getDisputeListOrder);
 
   let orderby = {};
-  order.forEach(ord => {
-    let fieldname = `orderBy[${ord.field}]`;
-    orderby[fieldname] = ord.type;
+  order.forEach((ord) => {
+    let fieldname = `orderBy[${ord.field}]`
+    orderby[fieldname] = ord.type
   });
+
+
 
   log("Disputes - filters", {
     status: status && typeof status.value !== "undefined" ? status.value : null,
@@ -503,41 +540,59 @@ export function* onDeleteAllDisputes() {
   } catch (error) {
     yield put({ type: API_CATCH, error });
   }
+
 }
 
 export function* handlePayoutParty(args) {
-  const { id, address, history } = args;
+
+  yield put({ type: DISPUTE_UPDATING, payload: true });
+
+  const { id, address,
+    history } = args;
+
 
   const user = yield select(getUser);
 
-  const connectorValue = connector();
+  const connectorValue = connector()
 
-  let arbitration;
+  let arbitration
 
-  if (connectorValue === "connex") {
+
+  if(connectorValue === 'connex')
+  {
+
     arbitration = new connexArbitrationContract(address);
     const hasWithdrawn = yield arbitration.hasWithdrawn(user.wallet);
 
-    if (!hasWithdrawn) {
-      const withdrawTx = yield arbitration.payoutParty(user.wallet, id);
+
+    if (!hasWithdrawn)
+    {
+
+      const withdrawTx = yield arbitration.payoutParty(user.wallet,id);
       log(`handlePayoutParty - current user has withdrawTx?`, withdrawTx);
+
+      if (!withdrawTx)
+      {
+        yield put({ type: DISPUTE_UPDATING, payload: false });
+      }
+
     }
-  } else if (connectorValue === "web3") {
+
+  }
+  else if (connectorValue === 'web3')
+  {
+
     arbitration = new Arbitration(address);
 
-    const hasWithdrawn = yield arbitration
-      .hasWithdrawn()
-      .catch(chainErrorHandler);
+    const hasWithdrawn = yield arbitration.hasWithdrawn().catch(chainErrorHandler);
     log(`handlePayoutParty - current user has hasWithdrawn?`, hasWithdrawn);
 
     if (!hasWithdrawn) {
-      const withdrawTx = yield arbitration
-        .payoutParty()
-        .catch(chainErrorHandler);
+
+      const withdrawTx = yield arbitration.payoutParty().catch(chainErrorHandler);
       log(`handlePayoutParty - current user has withdrawTx?`, withdrawTx);
 
-      if (withdrawTx) {
-        // only if there is a valid sign tx
+      if (withdrawTx) { // only if there is a valid sign tx
 
         yield put({ type: LOOKUP_WALLET_BALANCE }); // update wallet balance
 
@@ -553,6 +608,9 @@ export function* handlePayoutParty(args) {
 
         log(`handlePayoutParty - response`, response);
 
+
+
+
         log(`handlePayoutParty - LOOKUP_WALLET_BALANCE`);
         yield put({
           type: API_GET_DISPUTE,
@@ -560,139 +618,178 @@ export function* handlePayoutParty(args) {
           history
         });
         log(`handlePayoutParty - API_GET_DISPUTE`);
+
       }
     }
+
   }
+
 }
 
 export function* handlePayoutVoter(args) {
+
+  yield put({ type: DISPUTE_UPDATING, payload: true });
+
   const { id, address, history } = args;
 
   const user = yield select(getUser);
 
-  const connectorValue = connector();
+  const connectorValue = connector()
 
-  let arbitration;
+  let arbitration
 
-  if (connectorValue === "connex") {
+  if(connectorValue === 'connex')
+  {
+
     arbitration = new connexArbitrationContract(address);
     const withdrawTx = yield arbitration.payoutVoter(user.wallet, id);
-  } else if (connectorValue === "web3") {
+
+    if (!withdrawTx)
+    {
+      yield put({ type: DISPUTE_UPDATING, payload: false });
+    }
+
+  }
+  else if (connectorValue === 'web3')
+  {
+
     arbitration = new Arbitration(address);
 
     const withdrawTx = yield arbitration.payoutVoter().catch(chainErrorHandler);
     log(`handlePayoutVoter - current user has withdrawTx?`, withdrawTx);
 
-    const withdrawVoterPayout = yield arbitration
-      .VoterPayout()
-      .catch(chainErrorHandler);
+    const withdrawVoterPayout = yield arbitration.VoterPayout().catch(chainErrorHandler);
     log(`handlePayoutVoter - withdrawVoterPayout`, withdrawVoterPayout);
 
-    if (withdrawTx) {
-      // only if there is a valid sign tx
+    if (withdrawTx) { // only if there is a valid sign tx
 
       yield put({ type: LOOKUP_WALLET_BALANCE }); // update wallet balance
 
-      // call rest api to save payout
-      let withdrawalData = new FormData();
+        // call rest api to save payout
+        let withdrawalData = new FormData();
 
-      const currContr = yield select(getCurrentDispute);
+        const currContr = yield select(getCurrentDispute);
 
-      withdrawalData.append("amount", currContr.reward);
-      withdrawalData.append("type", "payout");
+        withdrawalData.append("amount", currContr.reward);
+        withdrawalData.append("type", "payout");
 
-      let response = yield call(Withdrawal.store, withdrawalData, id);
+        let response = yield call(Withdrawal.store, withdrawalData, id);
 
-      log(`handlePayoutParty - response`, response);
+        log(`handlePayoutParty - response`, response);
+
 
       yield put({
         type: API_GET_DISPUTE,
         id,
         history
       });
+
     }
+
   }
+
 }
 
 export function* handleUpdateLiveDisputes() {
   // const currVotes = yield select(getDisputesCurrentList);
   const currDisputes = yield select(getDisputeList);
 
+
+
   const response = yield call(Disputes.list, {
     page: 1,
-    show: "all"
+    show: "all",
   });
+
+
 
   let newDisputes = response.data.data;
 
-  let different = false;
+
+  let different = false
 
   // compare with old results
-  newDisputes.forEach((nContr, i) => {
-    let presentOrEqual = false;
+  newDisputes.forEach((nContr,i) => {
 
-    currDisputes.forEach(cContr => {
-      if (
-        cContr.id === nContr.id &&
-        cContr.statusUpdatedAt === nContr.statusUpdatedAt &&
-        cContr.statusId === nContr.statusId &&
-        cContr.statusLabel === nContr.statusLabel
-      ) {
+  let presentOrEqual = false;
+
+  currDisputes.forEach((cContr) => {
+
+    if (cContr.id === nContr.id
+        && cContr.statusWillEndAt === nContr.statusWillEndAt
+        && cContr.statusUpdatedAt === nContr.statusUpdatedAt
+        && cContr.statusId === nContr.statusId
+        && cContr.statusLabel === nContr.statusLabel
+        ) {
         presentOrEqual = true;
       }
-    });
+    })
 
     if (!presentOrEqual) {
-      newDisputes[i].new = currDisputes[i].new === 1 ? 2 : 1;
-      different = true;
+      newDisputes[i].new = (currDisputes[i].new === 1 ? 2 : 1)
+      different = true
     }
-  });
+
+  })
+
 
   if (different) {
-    yield put({
-      type: DISPUTES_UPDATED,
+    yield put({ type: DISPUTES_UPDATED,
       payload: newDisputes,
       pagination: response.data.meta.pagination
     });
   }
+
 }
 
 export function* getDisputeStatus(action) {
+
   // log("getDisputeStatus - action", action );
   const currContr = yield select(getCurrentDispute);
 
   const response = yield call(Contracts.getStatusChange, { id: currContr.id });
 
-  log("getDisputeStatus - response", response.data.status);
+
+  log("getDisputeStatus - response", response.data.status );
 
   if (typeof response.data.status === "undefined") {
     // control if status is different from actual status
-    log("getDisputeStatus - response no status", response.data);
+    log("getDisputeStatus - response no status", response.data );
 
-    if (
-      currContr.statusId !== response.data.data.statusId ||
-      currContr.statusWillEndAt !== response.data.data.statusWillEndAt
-    ) {
+    if (currContr.statusId !== response.data.data.statusId || currContr.statusWillEndAt !== response.data.data.statusWillEndAt) {
       // fetch contract without loading
-      log(
-        "getDisputeStatus - response - status diff " + currContr.statusId,
-        response.data.data.statusId
-      );
+      log("getDisputeStatus - response - status diff "+ currContr.statusId, response.data.data.statusId );
 
       global.store.dispatch({
         type: API_GET_DISPUTE,
-        id: currContr.id
+        id: currContr.id,
         // silent: true,
         // onSuccess: pageLoaded,
         // onError: pageLoaded,
         // history
       });
-    } else {
-      yield put({ type: API_GET_LIVE_VOTES });
-      yield put({ type: FETCH_ACTIVITIES });
+
     }
+    else
+    {
+
+      yield put({ type: API_GET_LIVE_VOTES });
+      // yield put({ type: FETCH_ACTIVITIES });
+    }
+
   }
+
+
+
 }
+
+function* getFilterVotesById(disputeId, winner) {
+  let response = yield call(Disputes.filterVotesById , { disputeId, winner })
+
+  return response;
+}
+
+
 
 // spawn tasks base certain actions
 export default function* disputeSagas() {

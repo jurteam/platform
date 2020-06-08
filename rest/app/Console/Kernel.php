@@ -4,7 +4,7 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Laravel\Lumen\Console\Kernel as ConsoleKernel;
-use \App\Jobs\GenerateOathKeeperAnalytics;
+use \App\Jobs\OathKeeperGenerateAnalytics;
 
 class Kernel extends ConsoleKernel
 {
@@ -55,6 +55,6 @@ class Kernel extends ConsoleKernel
         $schedule->command('jur:dispute-closed')->daily();
 
         // Re-Generate Oath-Keeper Analytics
-        $schedule->job(new GenerateOathKeeperAnalytics)->daily();
+        $schedule->job(new OathKeeperGenerateAnalytics)->daily();
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Log;
 use Illuminate\Database\Eloquent\Model;
 use \App\Models\OathKeeper;
 
@@ -28,15 +29,6 @@ class Oath extends Model
     {
         $oath = new Oath;
 
-        // Get fiat value of JUR/VET
-        $JurVet = json_decode(file_get_contents('https://api.oceanex.pro/v1/tickers/jurvet'), true);
-        $ticker = $JurVet['data']['ticker'];
-
-        // Find Average of fiat value
-        $lowFiatValue = $ticker['low'];
-        $highFiatValue = $ticker['high'];
-        $averageFiatValue = ($lowFiatValue + $highFiatValue) / 2;
-
         $oath->wallet = $data->_beneficiary;
         $oath->oath_index = $data->_oathIndex;
         $oath->amount = ((float) ($data->_amount)) / pow(10, 18);
@@ -45,9 +37,10 @@ class Oath extends Model
         $oath->release_at = Carbon::createFromTimestamp($data->_releaseAt);
         $oath->current_state = 'active';
         $oath->oath_keeper_id = $oathKeeper->id;
-        $oath->fiat_value = $averageFiatValue;
 
-        return $oath->save();
+        $oath->save();
+
+        return $oath;
     }
 
     /**
@@ -62,6 +55,11 @@ class Oath extends Model
             'wallet' => $payload->data->_beneficiary,
             'oath_index' => $payload->data->_oathIndex
         ])->first();
+
+        if(!$oath) {
+            Log::notice("Received an oath's withdraw which is not in the database. _beneficiary:" . $payload->data->_beneficiary. " _oathIndex:".$payload->data->_oathIndex);
+            return false;
+        }
 
         $oath->withdrawn_at = Carbon::createFromTimestamp($payload->transaction->timestamp);
         $oath->current_state = 'withdrawn';

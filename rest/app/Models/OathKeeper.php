@@ -4,9 +4,10 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
-use \App\Jobs\GenerateOathKeeperAnalytics;
-use \App\Jobs\GenerateOathKeeperRank;
-use \App\Jobs\UpdateOathStateToComplete;
+use \App\Jobs\OathKeeperGenerateAnalytics;
+use \App\Jobs\OathKeeperGenerateRank;
+use \App\Jobs\OathKeeperUpdateOathStateToComplete;
+use \App\Jobs\OathKeeperUpdateFiatValue;
 use \App\Models\Oath;
 
 class OathKeeper extends Model
@@ -79,13 +80,13 @@ class OathKeeper extends Model
             // oathTaken event
             case 'OathTaken':
                 // Save oath to database
-                $saved = Oath::store($payload->data, $oathKeeper);
+                $oath = Oath::store($payload->data, $oathKeeper);
 
-                if ($saved) {
-
-                    // Generate Rank
-                    dispatch(new GenerateOathKeeperRank($oathKeeper));
-
+                if (isset($oath->id)) {
+                  
+                    // Get fiat value of current oath and Generate Rank
+                    dispatch( (new OathKeeperUpdateFiatValue($oath))->chain([new OathKeeperGenerateRank($oathKeeper)]));
+                   
                     // Get the current time
                     $completeAt = Carbon::createFromTimestamp($payload->data->_releaseAt);
 
@@ -93,9 +94,12 @@ class OathKeeper extends Model
                     $delay = $completeAt->diffInSeconds(Carbon::now());
 
                     // get job & dispatch
-                    $job = (new UpdateOathStateToComplete($payload->data->_beneficiary, $payload->data->_oathIndex))->delay($delay);
+                    $job = (new OathKeeperUpdateOathStateToComplete($payload->data->_beneficiary, $payload->data->_oathIndex))->delay($delay);
 
                     dispatch($job);
+
+                    // Set status to true
+                    $saved =true;
                 }
 
                 break;
@@ -116,7 +120,7 @@ class OathKeeper extends Model
 
         // Dispatch queue to generate analytics if all success
         if ($saved) {
-            dispatch(new GenerateOathKeeperAnalytics);
+            dispatch(new OathKeeperGenerateAnalytics);
         }
 
         // Return process status
