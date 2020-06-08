@@ -6,6 +6,7 @@ import { oathKeeperFilters } from "../../../../utils/helpers";
 
 const OathTakerStatusFilter = ({ onChange }) => (
   <Form.Select
+    isClearable={false}
     name="status"
     id="status"
     options={oathKeeperFilters.statuses}
