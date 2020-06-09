@@ -6,7 +6,7 @@ import { JurIcon } from "JurCommon/Icons";
 
 const AmountFilter = ({ value, onChange, name, className }) => (
   <div className={`jur-amount-filter ${className}`}>
-    <Form.NumericInput value={value === 0 ? null : value} onChange={onChange} />
+    <Form.NumericInput value={value ? value : ""} onChange={onChange} />
     {!value && (
       <div className="jur-amount-filter__placeholder">
         <JurIcon className="icon-half" />
