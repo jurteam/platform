@@ -35,7 +35,7 @@ function addParams(url, params) {
       typeof value === "object" &&
       value.__proto__ === new Date().__proto__
     ) {
-      urlParams.append(key, value);
+      urlParams.append(key, value.toUTCString());
     }
   });
 
