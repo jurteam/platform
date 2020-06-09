@@ -239,7 +239,7 @@ export function* getDispute(action) {
                 hasToGetReward = filteredVotes.data.id
               } else {
                 hasToGetReward = filteredVotes.data.id;
-                reward = connexFromWei(filteredVotes.data.amount.toString(), 'ether');
+                reward = filteredVotes.data.amount;
               }
 
 
