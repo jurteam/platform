@@ -3,6 +3,7 @@
 namespace App\Filters;
 
 use \App\Models\Oath;
+use Carbon\Carbon;
 
 class OathKeeperFilters extends Filters
 {
@@ -72,13 +73,13 @@ class OathKeeperFilters extends Filters
 
     public function startsAt($value)
     {
-        $this->startsAt = $value;
+        $this->startsAt = Carbon::parse($value)->startOfDay();
         $this->processDateFilter();
     }
 
     public function endsAt($value)
     {
-        $this->endsAt = $value;
+        $this->endsAt = Carbon::parse($value)->endOfDay();
         $this->processDateFilter();
     }
 
