@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { CaretDownIcon } from "../Icons/CaretDownIcon";
 import { CaretUpIcon } from "../Icons/CaretUpIcon";
 
-export const TableCell = ( props ) => {
+export const TableCell = props => {
   const {
     className,
     parentComponent,
@@ -10,6 +10,7 @@ export const TableCell = ( props ) => {
     onClick,
     fieldName,
     noCarret,
+    colSpan,
     align
   } = props;
   const [order, setOrder] = useState(0);
@@ -19,14 +20,14 @@ export const TableCell = ( props ) => {
   // 2 - desc - up arrow
 
   const handleClick = ev => {
-
-      let neworder = order > 1 ? 0 : order + 1
-      setOrder(neworder);
-      onClick.bind(this,fieldName, neworder)();
+    let neworder = order > 1 ? 0 : order + 1;
+    setOrder(neworder);
+    onClick.bind(this, fieldName, neworder)();
   };
   const Component = parentComponent === "thead" ? "th" : "td";
   return (
     <Component
+      colSpan={colSpan}
       align={align}
       className={`jur-table__cell ${
         Component === "th" ? "jur-table__head" : ""
@@ -40,7 +41,13 @@ export const TableCell = ( props ) => {
       ) : (
         children
       )}
-      {onClick && typeof noCarret === "undefined" ? order === 2 ? <CaretUpIcon /> : order === 1 ? <CaretDownIcon /> : null : null}
+      {onClick && typeof noCarret === "undefined" ? (
+        order === 2 ? (
+          <CaretUpIcon />
+        ) : order === 1 ? (
+          <CaretDownIcon />
+        ) : null
+      ) : null}
     </Component>
   );
 };
