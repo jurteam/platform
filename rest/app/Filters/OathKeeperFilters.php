@@ -143,10 +143,6 @@ class OathKeeperFilters extends Filters
     public function query($value)
     {
         return $this->builder
-            ->where('wallet', 'LIKE', "%{$value}%")
-            ->orWhere('oath_keepers.total_amount', $value)
-            ->orWhere('oath_keepers.active_amount', $value)
-            ->orWhere('oath_keepers.rank', $value);
-
+            ->where('wallet', 'LIKE', "%{$value}%");
     }
 }
