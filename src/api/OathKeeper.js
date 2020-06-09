@@ -32,6 +32,7 @@ function addParams(url, params) {
     if (typeof value === "string" || typeof value === "number") {
       urlParams.append(key, value);
     } else if (
+      value &&
       typeof value === "object" &&
       value.__proto__ === new Date().__proto__
     ) {

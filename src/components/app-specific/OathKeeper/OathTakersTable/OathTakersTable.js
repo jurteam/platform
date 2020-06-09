@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import "./OathTakersTable.scss";
 
 import Table from "JurCommon/Table";
+import Box from "JurCommon/Box";
 import Amount from "JurCommon/Amount";
 import AvatarInfo from "JurCommon/AvatarInfo";
 import {
@@ -144,18 +145,26 @@ const OathTakersTable = ({
         <OathTakerTableHeaderRow onSort={onSortChange} />
       </Table.Head>
       <Table.Body>
-        {rows.map((r, index) => (
-          <OathTakerTableRow
-            fetchOathsOf={fetchOathsOf}
-            key={`${r.id}-${index}`}
-            isSelected={selected === r.id}
-            onClick={() =>
-              console.log("OathTakersTable onClick", r.id, selectRow(r.id))
-            }
-            oaths={r.oaths}
-            {...r.attributes}
-          />
-        ))}
+        {rows.length === 0 ? (
+          <Table.Row>
+            <Table.Cell colSpan={8}>
+              <Box type="message">No oath takers to show</Box>
+            </Table.Cell>
+          </Table.Row>
+        ) : (
+          rows.map((r, index) => (
+            <OathTakerTableRow
+              fetchOathsOf={fetchOathsOf}
+              key={`${r.id}-${index}`}
+              isSelected={selected === r.id}
+              onClick={() =>
+                console.log("OathTakersTable onClick", r.id, selectRow(r.id))
+              }
+              oaths={r.oaths}
+              {...r.attributes}
+            />
+          ))
+        )}
       </Table.Body>
     </Table>
   );
