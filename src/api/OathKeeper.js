@@ -54,6 +54,7 @@ function toUTCwithTime(value) {
   const now = new Date();
   value.setHours(now.getHours());
   value.setMinutes(now.getMinutes());
+  value.setSeconds(now.getSeconds());
   return value.toUTCString();
 }
 
