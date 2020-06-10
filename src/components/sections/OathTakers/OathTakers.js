@@ -16,7 +16,7 @@ const OathTakers = ({ resetFilters }) => {
   const b = [
     {
       label: labels.myOaths,
-      to: "/profile/my-oaths",
+      to: "/oath-keeper/my-oaths",
       exact: true
     },
     {

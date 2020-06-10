@@ -36,11 +36,27 @@ function addParams(url, params) {
       typeof value === "object" &&
       value.__proto__ === new Date().__proto__
     ) {
-      urlParams.append(key, value);
+      urlParams.append(key, toUTCwithTime(value));
     }
   });
 
   return url + "?" + urlParams.toString();
+}
+
+function isDate(value) {
+  return (
+    value &&
+    typeof value === "object" &&
+    value.__proto__ === new Date().__proto__
+  );
+}
+
+function toUTCwithTime(value) {
+  const now = new Date();
+  value.setHours(now.getHours());
+  value.setMinutes(now.getMinutes());
+  value.setSeconds(now.getSeconds());
+  return value.toUTCString();
 }
 
 function flattenObject(urlParams, object, objectName) {

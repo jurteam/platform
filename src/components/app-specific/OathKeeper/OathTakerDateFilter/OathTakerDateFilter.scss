@@ -1,3 +1,8 @@
-.jur-oath-taker-date-filter-to {
-  margin-right: 24px;
+.jur-oath-taker-date-filter {
+  &__to {
+    margin-right: 24px;
+  }
+  .jur-calendar-filter__placeholder {
+    margin-top: -2px;
+  }
 }

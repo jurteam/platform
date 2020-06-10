@@ -105,6 +105,12 @@ export const createRoutes = withComponents => {
       component: withComponents && OathTakers,
       title: i18n.oathTakers
     },
+    {
+      exact: true,
+      path: "/oath-keeper/my-oaths",
+      component: withComponents && Profile,
+      title: i18n.oathTakers
+    },
     { component: withComponents && NotFound, title: i18n.notFound }
   ];
 };

@@ -1,6 +1,11 @@
 import { takeEvery, takeLatest, put, select } from "redux-saga/effects";
 import { connexOathKeeper, OathKeeper } from "../api";
-import { getWallet, getNewOath, getMyOaths } from "./Selectors";
+import {
+  getWallet,
+  getNewOath,
+  getMyOaths,
+  getWalletBalance
+} from "./Selectors";
 import {
   OATH_KEEPER_TAKE_OATH,
   OATH_KEEPER_TOOK_OATH,
@@ -18,7 +23,8 @@ import {
   OATH_KEEPER_UPDATE_OATHS_OF,
   HOUND_START_SMELLING,
   OATH_KEEPER_REJECT_OATH,
-  OATH_KEEPER_REJECT_WITHDRAW
+  OATH_KEEPER_REJECT_WITHDRAW,
+  LOOKUP_WALLET_BALANCE
 } from "../reducers/types";
 import { oathState } from "../utils/helpers";
 
@@ -33,6 +39,7 @@ function* fetchMyRank() {
 
 function* takeAnOath() {
   const { address } = yield select(getWallet);
+  const balance = yield select(getWalletBalance);
   const { amount, lockInPeriod, acceptTnC } = yield select(getNewOath);
   if (!acceptTnC) return;
 
@@ -43,16 +50,19 @@ function* takeAnOath() {
     const prey = yield new connexOathKeeper().takeAnOath(
       address,
       amount,
-      lockInPeriod
+      lockInPeriod,
+      { balance }
     );
 
     yield put({ type: OATH_KEEPER_TOOK_OATH });
 
-    prey.onFound = () =>
+    prey.onFound = () => {
       global.store.dispatch({
         type: OATH_KEEPER_FETCH_MY_OATHS,
         payload: oathIndex
       });
+      global.store.dispatch({ type: LOOKUP_WALLET_BALANCE });
+    };
 
     yield put({ type: HOUND_START_SMELLING, payload: prey });
   } catch (e) {
@@ -76,11 +86,13 @@ function* withdrawAnOath(action) {
     const prey = yield new connexOathKeeper().releaseOath(address, oathIndex);
     yield put({ type: OATH_KEEPER_WITHDREW_OATH, payload: oathIndex });
 
-    prey.onFound = () =>
+    prey.onFound = () => {
       global.store.dispatch({
         type: OATH_KEEPER_FETCH_MY_OATHS,
         payload: oathIndex
       });
+      global.store.dispatch({ type: LOOKUP_WALLET_BALANCE });
+    };
 
     yield put({ type: HOUND_START_SMELLING, payload: prey });
   } catch (e) {
@@ -100,7 +112,6 @@ function* fetchMyOaths(action) {
   const { address } = yield select(getWallet);
   let myOaths = yield select(getMyOaths);
   // TODO: add cache machanizm here
-  console.log("saga OathKeeper fetchMyOaths", action);
 
   if (action.payload !== undefined) {
     const oath = yield new connexOathKeeper().fetchOathAt(

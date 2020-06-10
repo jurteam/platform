@@ -27,7 +27,7 @@ class ProfileProvider extends Component {
         },
         {
           label: i18n.myOaths,
-          to: "/profile/my-oaths",
+          to: "/oath-keeper/my-oaths",
           exact: true,
           component: <MyOathsSection />
         },

@@ -16,8 +16,8 @@ export default class connexOathKeeper {
     this.contractAccount = global.connex.thor.account(this.contractAddress);
   }
 
-  takeAnOath = (address, amount, lockInPeriod) => {
-    if (!isOathable(amount, lockInPeriod))
+  takeAnOath = (address, amount, lockInPeriod, { balance }) => {
+    if (!isOathable(amount, lockInPeriod, balance))
       return Promise.reject("Invalid parameters! Can't take oath");
 
     const blockchainAmount = toBigFixed(amount).replace(".", "");
@@ -172,9 +172,12 @@ export default class connexOathKeeper {
   };
 }
 
-export const isOathable = (amount, lockInPeriod) => {
+export const isOathable = (amount, lockInPeriod, balance) => {
+  const numericAmount = Number(amount);
+
   return (
-    Number(amount) >= MIN_TOKEN_AMOUNT &&
+    numericAmount >= MIN_TOKEN_AMOUNT &&
+    numericAmount <= balance &&
     Number(lockInPeriod) >= MIN_LOCK_IN_PERIOD
   );
 };

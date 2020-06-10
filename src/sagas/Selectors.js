@@ -1,3 +1,5 @@
+import { ethToHuman } from "../utils/helpers";
+
 // Network
 export const getNetwork = state => state.web3;
 
@@ -9,6 +11,8 @@ export const getJURToken = state => state.contracts.JURToken;
 // Wallet
 export const getAccounts = state => state.accounts;
 export const getWallet = state => state.wallet;
+export const getWalletBalance = state =>
+  ethToHuman((state.wallet || {}).balance || 0);
 
 // Contract
 export const getContractFilters = state => state.contract.filters;

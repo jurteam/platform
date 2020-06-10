@@ -6,8 +6,8 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use \App\Jobs\OathKeeperGenerateAnalytics;
 use \App\Jobs\OathKeeperGenerateRank;
-use \App\Jobs\OathKeeperUpdateOathStateToComplete;
 use \App\Jobs\OathKeeperUpdateFiatValue;
+use \App\Jobs\OathKeeperUpdateOathStateToComplete;
 use \App\Models\Oath;
 
 class OathKeeper extends Model
@@ -72,21 +72,31 @@ class OathKeeper extends Model
     {
         $saved = false;
 
-        // Create an OathKeper if not exists
-        $oathKeeper = OathKeeper::firstOrCreate(['wallet' => $payload->data->_beneficiary]);
+        $oathKeeper;
 
         switch ($payload->eventIdentifier) {
 
             // oathTaken event
             case 'OathTaken':
+
+                // Create an OathKeper if not exists
+                $oathKeeper = OathKeeper::firstOrCreate(['wallet' => $payload->data->_beneficiary]);
+
+                // Set rank to last if new oath-keeper
+                if (!isset($oathKeeper->rank)) {
+                    $rank = OathKeeper::max('rank');
+                    $oathKeeper->rank = isset($rank) ? $rank + 1 : 0;
+                    $oathKeeper->save();
+                }
+
                 // Save oath to database
                 $oath = Oath::store($payload->data, $oathKeeper);
 
                 if (isset($oath->id)) {
-                  
+
                     // Get fiat value of current oath and Generate Rank
-                    dispatch( (new OathKeeperUpdateFiatValue($oath))->chain([new OathKeeperGenerateRank($oathKeeper)]));
-                   
+                    dispatch((new OathKeeperUpdateFiatValue($oath))->chain([new OathKeeperGenerateRank($oathKeeper)]));
+
                     // Get the current time
                     $completeAt = Carbon::createFromTimestamp($payload->data->_releaseAt);
 
@@ -99,32 +109,46 @@ class OathKeeper extends Model
                     dispatch($job);
 
                     // Set status to true
-                    $saved =true;
+                    $saved = true;
                 }
 
                 break;
 
             // IHoldYourOathFulfilled event
             case 'IHoldYourOathFulfilled':
-                // Change Oath status
-                $saved = Oath::withrawn($payload);
+
+                // Find oath-keeper based on wallet address and oath-index
+                $oathKeeper = OathKeeper::where('wallet', $payload->data->_beneficiary)
+                    ->first();
+
+                // Check the oath-keeper exists
+                if ($oathKeeper) {
+                    $saved = Oath::withrawn($payload); // Changes Oath status
+                }
+
                 break;
         }
 
-        // Return false if not saved
-        if (!$saved) {
-            return false;
-        }
-
-        $saved = OathKeeper::calculateSummary($oathKeeper);
-
-        // Dispatch queue to generate analytics if all success
-        if ($saved) {
-            dispatch(new OathKeeperGenerateAnalytics);
+        // Check the oath-keeper exists for processing
+        if (isset($oathKeeper)) {
+            OathKeeper::processSummaries($oathKeeper); // Calculate summaries & analytics
         }
 
         // Return process status
         return $saved;
     }
 
+    /**
+     * Calculate oath-keeper summary and dispatch job for analytics
+     *
+     * @param Object $oathKeeper: oathkeeper object
+     */
+    private static function processSummaries($oathKeeper)
+    {
+        // Calculate oath-keeper summary
+        OathKeeper::calculateSummary($oathKeeper);
+
+        // Dispatch queue to generate analytics
+        dispatch(new OathKeeperGenerateAnalytics);
+    }
 }

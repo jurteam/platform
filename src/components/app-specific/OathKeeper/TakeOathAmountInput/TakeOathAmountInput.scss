@@ -1,3 +1,5 @@
+@import "../../../../assets/scss/variables";
+
 .jur-take-oath__label {
   font-size: 12;
   font-weight: bold;
@@ -6,4 +8,7 @@
 
 .jur-oath-amount-input {
   min-width: 270px;
+  &:focus {
+    color: $input-numeric-active-text-color;
+  }
 }

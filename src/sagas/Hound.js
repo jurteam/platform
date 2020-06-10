@@ -21,25 +21,25 @@ const Preys = {
 };
 
 function* smellIt(action) {
-  console.log("hound saga smelling", action);
+  // console.log("hound saga smelling", action);
   Preys.forEach(prey =>
     prey.filter
       .order(prey._tries === 3 ? "desc" : "asc")
       .apply(0, 1)
       .then(logs => {
         if (prey.shouldStop(logs)) {
-          console.log("hound saga found prey", prey, "logs", logs);
+          // console.log("hound saga found prey", prey, "logs", logs);
           Preys.stop(prey);
         } else {
           prey._tries += 1;
           if (prey._tries > (prey.maxTries || MAX_TRIES)) Preys.stop(prey);
-          console.log(
-            "hound saga found nothing in this smell",
-            action,
-            prey,
-            "logs",
-            logs
-          );
+          // console.log(
+          //   "hound saga found nothing in this smell",
+          //   action,
+          //   prey,
+          //   "logs",
+          //   logs
+          // );
         }
       })
   );
@@ -63,7 +63,7 @@ function* startSmelling(action) {
     throw Error("hound needs connex filter. Provided:", preyable.filter);
 
   yield Preys.start(action.payload);
-  console.log("hound saga now tracking", Preys.allPreys);
+  // console.log("hound saga now tracking", Preys.allPreys);
 }
 
 export default function* houndSaga() {
