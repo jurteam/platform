@@ -27,6 +27,13 @@ class Oath extends Model
      */
     public static function store($data, $oathKeeper)
     {
+        $exists = Oath::where('wallet', $data->_beneficiary)->where('oath_index', $data->_oathIndex)->first();
+
+        if (isset($exists)) {
+            Log::warning('The oath of wallet `' . $data->_beneficiary . '` with index `' . $data->_oathIndex . '` already exists in the database.');
+            return false;
+        }
+
         $oath = new Oath;
 
         $oath->wallet = $data->_beneficiary;
