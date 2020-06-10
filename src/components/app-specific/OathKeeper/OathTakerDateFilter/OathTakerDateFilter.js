@@ -2,7 +2,6 @@ import React from "react";
 import "./OathTakerDateFilter.scss";
 import CalendarFilter from "JurCommon/CalendarFilter";
 import Separator from "JurCommon/Separator";
-import { getFormattedDate } from "../../../../utils/helpers";
 
 const OathTakerDateFilter = ({ onChange, startsAt, endsAt }) => (
   <>
@@ -11,6 +10,7 @@ const OathTakerDateFilter = ({ onChange, startsAt, endsAt }) => (
       name="From"
       maxDate={endsAt}
       onChange={startsAt => onChange(startsAt, endsAt)}
+      className="jur-oath-taker-date-filter"
     />
     <Separator />
     <CalendarFilter
@@ -18,7 +18,7 @@ const OathTakerDateFilter = ({ onChange, startsAt, endsAt }) => (
       name="To"
       minDate={startsAt}
       onChange={endsAt => onChange(startsAt, endsAt)}
-      className="jur-oath-taker-date-filter-to"
+      className="jur-oath-taker-date-filter jur-oath-taker-date-filter__to"
     />
   </>
 );
