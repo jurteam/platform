@@ -1,6 +1,11 @@
 import { takeEvery, takeLatest, put, select } from "redux-saga/effects";
 import { connexOathKeeper, OathKeeper } from "../api";
-import { getWallet, getNewOath, getMyOaths } from "./Selectors";
+import {
+  getWallet,
+  getNewOath,
+  getMyOaths,
+  getWalletBalance
+} from "./Selectors";
 import {
   OATH_KEEPER_TAKE_OATH,
   OATH_KEEPER_TOOK_OATH,
@@ -34,6 +39,7 @@ function* fetchMyRank() {
 
 function* takeAnOath() {
   const { address } = yield select(getWallet);
+  const balance = yield select(getWalletBalance);
   const { amount, lockInPeriod, acceptTnC } = yield select(getNewOath);
   if (!acceptTnC) return;
 
@@ -44,7 +50,8 @@ function* takeAnOath() {
     const prey = yield new connexOathKeeper().takeAnOath(
       address,
       amount,
-      lockInPeriod
+      lockInPeriod,
+      { balance }
     );
 
     yield put({ type: OATH_KEEPER_TOOK_OATH });
