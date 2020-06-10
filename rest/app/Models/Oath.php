@@ -3,8 +3,8 @@
 namespace App\Models;
 
 use Carbon\Carbon;
-use Log;
 use Illuminate\Database\Eloquent\Model;
+use Log;
 use \App\Models\OathKeeper;
 
 class Oath extends Model
@@ -63,8 +63,8 @@ class Oath extends Model
             'oath_index' => $payload->data->_oathIndex
         ])->first();
 
-        if(!$oath) {
-            Log::notice("Received an oath's withdraw which is not in the database. _beneficiary:" . $payload->data->_beneficiary. " _oathIndex:".$payload->data->_oathIndex);
+        if (!$oath) {
+            Log::notice("Received an oath's withdraw which is not in the database. _beneficiary:" . $payload->data->_beneficiary . " _oathIndex:" . $payload->data->_oathIndex);
             return false;
         }
 
