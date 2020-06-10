@@ -2,16 +2,11 @@
 
 namespace App\Filters;
 
+use Carbon\Carbon;
 use \App\Models\Oath;
 
 class OathKeeperFilters extends Filters
 {
-    private $startsAt;
-
-    private $endsAt;
-
-    private $status;
-
     protected $filters = [
         'minAmount',
         'maxAmount',
@@ -50,81 +45,53 @@ class OathKeeperFilters extends Filters
     {
         $query = $this->builder;
 
-        if ($value == 'Active') {
-            $query->whereIn('id',
-                Oath::where('current_state', 'active')
-                    ->pluck('oath_keeper_id')
-            );
-        } elseif ($value == 'Past') {
-            $query->whereIn('id',
-                Oath::where('current_state', 'complete')
-                    ->orWhere('current_state', 'withdrawn')
-                    ->pluck('oath_keeper_id')
-            );
-        }
+        $startsAt = Carbon::parse($this->request->get('startsAt', Carbon::createFromTimestamp(0)))->startOfDay()->format('Y-m-d H:i:s');
+        $endsAt = Carbon::parse($this->request->get('endsAt', Carbon::now()))->endOfDay()->format('Y-m-d H:i:s');
 
-        $this->status = $value;
+        switch ($value) {
 
-        $this->processDateFilter();
-
-        return $query;
-    }
-
-    public function startsAt($value)
-    {
-        $this->startsAt = $value;
-        $this->processDateFilter();
-    }
-
-    public function endsAt($value)
-    {
-        $this->endsAt = $value;
-        $this->processDateFilter();
-    }
-
-    private function processDateFilter()
-    {
-
-        if (!(isset($this->startsAt) && isset($this->endsAt) && isset($this->status))) {
-            return;
-        }
-
-        $query = $this->builder;
-
-        switch ($this->status) {
-
-            // Get all Oaths unlocked in the selected duration
-            case 'Past':
-
-                $query->whereIn('id',
-                    Oath::where('release_at', '<', $this->endsAt)
-                        ->where('release_at', '>', $this->startsAt)
-                        ->pluck('oath_keeper_id')
-                );
-                break;
-
-            // Get all active oaths in the selected duration
-            case 'Active':
+            case 'All': // Get all Oaths between selected duration
 
                 $query->whereNotIn('id',
-                    Oath::where('start_at', '>', $this->endsAt)
-                        ->orWhere('release_at', '<', $this->startsAt)
+                    Oath::where('start_at', '>', $endsAt) // This will remove all oaths that started after the duration
+                        ->orWhere('release_at', '<', $startsAt) // This will remove all oaths that ended before the duration
+                        ->orWhere(function ($q) use ($startsAt, $endsAt) { // This will remove all oaths that doesn't started nor released in the duration
+                            $q->where('start_at', '<', $startsAt)
+                                ->where('release_at', '>', $endsAt);
+                        })
                         ->pluck('oath_keeper_id')
                 );
+
                 break;
 
-            default:
+            case 'Active': // Get all oaths that is active in the selected duration
 
-                $query->whereIn('id',
-                    Oath::where('release_at', '<', $this->endsAt)
-                        ->where('release_at', '>', $this->startsAt)
-                        ->pluck('oath_keeper_id')
-                )
-                    ->orWhereNotIn('id',
-                        Oath::where('start_at', '>', $this->endsAt)
-                            ->orWhere('release_at', '<', $this->startsAt)
+                if ($startsAt == Carbon::createFromTimestamp(0)->startOfDay()->format('Y-m-d H:i:s')) {
+                    $query->whereIn('id',
+                        Oath::where('current_state', 'active')
                             ->pluck('oath_keeper_id')
                     );
+                } else {
+                    $query->whereNotIn('id',
+                        Oath::where('start_at', '>', $endsAt)
+                            ->orWhere('release_at', '<', $startsAt)
+                            ->pluck('oath_keeper_id')
+                    );
+                }
+
+                break;
+
+            case 'Past': // Get all Oaths released in the selected duration
+
+                $query->whereIn('id',
+                    Oath::where(function ($q) {
+                        $q->where('current_state', 'complete')->orWhere('current_state', 'withdrawn');
+                    })
+                        ->where('release_at', '>=', $startsAt)
+                        ->where('release_at', '<=', $endsAt)
+                        ->pluck('oath_keeper_id')
+                );
+
                 break;
         }
 
@@ -133,11 +100,9 @@ class OathKeeperFilters extends Filters
 
     public function sortBy($key)
     {
-
         $result = isset($this->sortBy[$key]) ? $this->sortBy[$key] : ['rank', 'asc'];
 
         return $this->builder->orderBy($result[0], $result[1]);
-
     }
 
     public function query($value)
