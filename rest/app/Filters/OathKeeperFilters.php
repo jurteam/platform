@@ -48,9 +48,6 @@ class OathKeeperFilters extends Filters
         $startsAt = Carbon::parse($this->request->get('startsAt', Carbon::createFromTimestamp(0)))->startOfDay()->format('Y-m-d H:i:s');
         $endsAt = Carbon::parse($this->request->get('endsAt', Carbon::now()))->endOfDay()->format('Y-m-d H:i:s');
 
-        info('start=' . $startsAt);
-        info('end=' . $endsAt);
-
         switch ($value) {
 
             case 'All': // Get all Oaths between selected duration
