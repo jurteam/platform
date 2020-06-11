@@ -26,7 +26,9 @@ const OathsTimelineView = ({ oaths }) => {
               align="left"
               className={`jur-timeline__first-cell ${cellFixClass}`}
             >
-              Staked <Amount value={oath.amount} />
+              <span class="jur-timeline__first-cell-content">
+                Staked <Amount value={oath.amount} />
+              </span>
             </Table.Cell>
             <Table.Cell align="left">for {oath.lockInPeriod} months</Table.Cell>
             <Table.Cell align="left">

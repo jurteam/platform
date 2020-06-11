@@ -3,23 +3,41 @@
 }
 
 .jur-timeline__row {
+  td:nth-of-type(1) {
+    width: 262px;
+  }
+  td:nth-of-type(2) {
+    width: 140px;
+  }
+  td:nth-of-type(3) {
+    width: 100px;
+  }
+  td:nth-of-type(4) {
+    width: 270px;
+  }
+
   &:first-of-type {
     .jur-timeline__first-cell {
+      &-content {
+        margin-left: -2px;
+        display: inline-block;
+      }
+
       &::before {
         content: "";
         display: inline-block;
         height: 15px;
         width: 1px;
         position: relative;
-        border-left: 2px solid white;
+        border-left: 4px solid white;
         top: -15px;
-        left: -37px;
+        left: -40px;
       }
     }
 
     .jur-timeline__first-cell-btn-fix {
       &::before {
-        left: -29px;
+        left: -40px;
       }
     }
   }
@@ -36,13 +54,13 @@
         position: relative;
         border-left: 2px dotted #33adff;
         top: -15px;
-        left: -37px;
+        left: -40px;
       }
     }
 
     .jur-timeline__first-cell-btn-fix {
       &::before {
-        left: -29px;
+        left: -40px;
       }
     }
   }
@@ -64,9 +82,17 @@
     background-image: url(/jur-icon-white.svg);
   }
 
+  &:only-child {
+    .jur-timeline__first-cell {
+      &::before {
+        display: none;
+      }
+    }
+  }
+
   &-btn-fix {
     &::before {
-      margin-top: 60%;
+      margin-top: 43%;
     }
   }
 }
