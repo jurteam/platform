@@ -61,6 +61,7 @@ import {
   getDisputeListOrder,
   getDisputeFilters,
   getUser,
+  getWallet,
   getOracleList,
   getDrizzleStoredContracts,
   getDisputeList,
@@ -145,6 +146,11 @@ export function* getDispute(action) {
 
             yield call(Contracts.statusChange, toUpdate, id);
             yield put({ type: SET_CONTRACT_STATUS, id });
+
+            yield put({
+              type: API_GET_DISPUTE,
+              id,
+            });
           }
           else if (disputeEnds !== calcDisputeEnds)
           {
@@ -188,7 +194,9 @@ export function* getDispute(action) {
         // yield put({ type: CHAIN_GET_CONTRACT, address });
 
 
-        const { wallet }  = yield select(getUser);
+        const walletStore = yield select(getWallet);
+
+        const { address : wallet  }  = walletStore;
 
         let winner, arbitration
         if(connectorValue === 'connex')
@@ -211,7 +219,10 @@ export function* getDispute(action) {
           if(connectorValue === 'connex')
           {
 
+            log("getDispute - wwwwallet: ", wallet);
             canWithdraw = yield arbitration.canWithdraw(wallet)
+            log("getDispute - canWithdraw: ", canWithdraw);
+
             if (canWithdraw.reverted)
             {
               hasWithdrawn = yield arbitration.hasWithdrawn(wallet);
@@ -222,23 +233,14 @@ export function* getDispute(action) {
               // Call get all votes
               log("arbitration: ", arbitration);
               let filteredVotes = yield getFilterVotesById(id, winner);
-              console.log("filtered: ", filteredVotes);
+              log("filtered: ", filteredVotes);
 
               if(filteredVotes.data.id !== 3) {
                 hasToGetReward = filteredVotes.data.id
               } else {
                 hasToGetReward = filteredVotes.data.id;
-                reward = connexFromWei(filteredVotes.data.amount.toString(), 'ether');
+                reward = filteredVotes.data.amount;
               }
-
-              // TODO if canwithdraw does not work (reverted === true)
-
-              //          for withdraw
-              //              sumpayout = 'disputeDispersal[winnerParty][msg.sender]'
-              //              hasWithdrawn = hasWithdrawn[msg.sender]
-
-              //          for voter
-              //              reward has claimed? userVotes[msg.sender][winnerParty][i].claimed
 
 
             }
@@ -382,10 +384,12 @@ export function* getDispute(action) {
 
     if (typeof onSuccess === "function") {onSuccess();} // exec onSuccess callback if present
   } catch (error) {
+
+    log('getDispute Error:',error);
     // TODO: handle 404
     yield put({ type: API_CATCH, error });
 
-    if (error.response.status === 404 && error.response.config.headers.wallet !== null) {
+    if (error.response && error.response.status === 404 && error.response.config.headers.wallet !== null) {
       // const { history } = action;
       history.push(`/disputes/`); // go to disputes list
       // yield put(push('/disputes/'));
@@ -541,6 +545,8 @@ export function* onDeleteAllDisputes() {
 
 export function* handlePayoutParty(args) {
 
+  yield put({ type: DISPUTE_UPDATING, payload: true });
+
   const { id, address,
     history } = args;
 
@@ -564,6 +570,11 @@ export function* handlePayoutParty(args) {
 
       const withdrawTx = yield arbitration.payoutParty(user.wallet,id);
       log(`handlePayoutParty - current user has withdrawTx?`, withdrawTx);
+
+      if (!withdrawTx)
+      {
+        yield put({ type: DISPUTE_UPDATING, payload: false });
+      }
 
     }
 
@@ -617,6 +628,8 @@ export function* handlePayoutParty(args) {
 
 export function* handlePayoutVoter(args) {
 
+  yield put({ type: DISPUTE_UPDATING, payload: true });
+
   const { id, address, history } = args;
 
   const user = yield select(getUser);
@@ -631,6 +644,10 @@ export function* handlePayoutVoter(args) {
     arbitration = new connexArbitrationContract(address);
     const withdrawTx = yield arbitration.payoutVoter(user.wallet, id);
 
+    if (!withdrawTx)
+    {
+      yield put({ type: DISPUTE_UPDATING, payload: false });
+    }
 
   }
   else if (connectorValue === 'web3')
@@ -699,6 +716,7 @@ export function* handleUpdateLiveDisputes() {
   currDisputes.forEach((cContr) => {
 
     if (cContr.id === nContr.id
+        && cContr.statusWillEndAt === nContr.statusWillEndAt
         && cContr.statusUpdatedAt === nContr.statusUpdatedAt
         && cContr.statusId === nContr.statusId
         && cContr.statusLabel === nContr.statusLabel

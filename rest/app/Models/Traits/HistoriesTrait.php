@@ -143,7 +143,7 @@ trait HistoriesTrait
     protected function createHistory($status, $date)
     {
         $waiting = 0;
-        if ($status->code == 36)
+        if ($status->code == 36 || $status->code == 39)
         {
             $waiting = 1;           
         } 
@@ -158,9 +158,9 @@ trait HistoriesTrait
 
         $idContract = $this->id;
 
-        if ($status->code == 36)
+        if ($status->code == 36 || $status->code == 39)
         {
-            $historyCreatedFirst = ContractStatusHistory::where(["contract_status_code" => '36', "chain_updated_at" => $date, "contract_id" => $idContract])->first();
+            $historyCreatedFirst = ContractStatusHistory::where(["contract_status_code" => $status->code, "chain_updated_at" => $date, "contract_id" => $idContract])->first();
 
             if ($historyCreatedFirst->id == $historyCreated->id) 
             {
