@@ -5,7 +5,8 @@ const listener = require("./src/listener");
 const start = async () => {
   runtime.configure();
   await queue.connect();
-  listener.listen();
+
+  return listener.listen();
 };
 
 start();

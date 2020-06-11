@@ -2,6 +2,7 @@ const fs = require("fs");
 const eventHelper = require("./event-helper");
 
 const BLOCK_RECORD_PATH = "./config/last-consumed-block.json";
+const FAILED_TO_GET_BLOCK = 32;
 
 function log(blockNumber) {
   const timestamp = new Date().getTime();
@@ -25,7 +26,13 @@ function next() {
     const handle = block => {
       block ? resolve(block) : setTimeout(() => read().then(handle), 5000);
     };
-    read().then(handle);
+    read()
+      .then(handle)
+      .catch(e => {
+        console.error("failed to get block", blockNumber);
+        console.error(e);
+        process.exit(FAILED_TO_GET_BLOCK);
+      });
   });
 }
 
