@@ -35,6 +35,11 @@
     font-size: 13px;
     color: $gull-gray;
     pointer-events: none;
+    padding-left: 8px;
+
+    &-label {
+      margin-left: 8px;
+    }
   }
 
   .caret-icon {
