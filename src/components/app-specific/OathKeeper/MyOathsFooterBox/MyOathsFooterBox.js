@@ -9,7 +9,12 @@ const MyOathsFooterBox = () => (
     title="Do you want to learn more about the Oath Keeper role?"
     type="footer"
   >
-    <Text>Check out our article at jur.io</Text>
+    <Text>
+      Check out our article at{" "}
+      <a href="https://medium.com/jur-io" target="_blank">
+        jur.io
+      </a>
+    </Text>
   </Box>
 );
 
