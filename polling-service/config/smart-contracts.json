@@ -1,7 +1,7 @@
 [
     {
        "identifier":"oathKeeper",
-       "address":"0x4213232275B0228f69a06c37Ef9c0186f19E999D",
+       "address":"0xD689Db4A731cbb216E81C2F6096c583e329A9B48",
        "events":[
          {
             "anonymous": false,
