@@ -43,6 +43,12 @@ class Status extends Model
             case 'StateChanged':
                 $saved = Status::updateState($payload->data);
                 break;
+
+            // StatusTypeChanged event
+            case 'StatusTypeChanged':
+                $saved = Status::updateStatusType($payload->data);
+                break;
+
         }
 
         // Return process status
@@ -93,6 +99,26 @@ class Status extends Model
         }
 
         $status->is_active = $data->newState;
+
+        return $status->save();
+    }
+
+    /**
+     * Update type of a Status
+     *
+     * @param Object $data: payload data send by AMQP server
+     * @return Boolean the success or failure message
+     */
+    public static function updateStatusType($data)
+    {
+        $status = Status::where(['wallet' => $data->statusHolder])->first();
+
+        if (!isset($status)) {
+            Log::warning('The Status of holder with wallet `' . $data->statusHolder . '` not exists in the database.');
+            return false;
+        }
+
+        $status->status_type = $data->statusType;
 
         return $status->save();
     }
