@@ -14,7 +14,7 @@ class StatusController extends Controller
     use Helpers, CustomPaginationTrait;
 
     /**
-     * GET analytical details of all cards for a period.
+     * GET all Statuses.
      *
      * @param  Request  $request: Request object
      * @return \Illuminate\Http\Response
@@ -30,7 +30,7 @@ class StatusController extends Controller
     }
 
     /**
-     * GET analytical details of all cards for a period.
+     * GET details of single holder.
      *
      * @param  String  $wallet: wallet address
      * @return \Illuminate\Http\Response
