@@ -125,8 +125,33 @@
     },
     {
       "identifier":"status",
-      "address":"0x8f0A8A5bF7f7C369aBC7D35449104BcDCA63f6aC",
+      "address":"0x7d6A130aCE2271E23cE6d5527647eCb81fA72AEA",
       "events":[
+        {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "statusHolder",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "bool",
+              "name": "newState",
+              "type": "bool"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "timestamp",
+              "type": "uint256"
+            }
+          ],
+          "name": "StateChanged",
+          "type": "event"
+        },
         {
           "anonymous": false,
           "inputs": [
@@ -163,9 +188,9 @@
             },
             {
               "indexed": false,
-              "internalType": "bool",
-              "name": "newState",
-              "type": "bool"
+              "internalType": "string",
+              "name": "statusType",
+              "type": "string"
             },
             {
               "indexed": false,
@@ -174,7 +199,7 @@
               "type": "uint256"
             }
           ],
-          "name": "StateChanged",
+          "name": "StatusTypeChanged",
           "type": "event"
         }
       ]
