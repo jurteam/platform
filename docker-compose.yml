@@ -1,7 +1,6 @@
 version: "3"
 services:
   jur:
-    # build: ./
     image: jur_platform:08JUN2020
     working_dir: /var/www/html
     volumes:
@@ -11,20 +10,6 @@ services:
       - ./environment/supervisor:/etc/supervisor/conf.d
       - ./environment/cron/jur.conf:/var/spool/cron/crontabs/root
       - ./environment/php/php.ini:/etc/php/7.2/fpm/php.ini
-      # - ./rest/phpunit.xml:/var/www/html/phpunit.xml
-      # - ./rest/.env:/var/www/html/.env
-      # - ./rest/app:/var/www/html/app
-      # - ./rest/artisan:/var/www/html/artisan
-      # - ./rest/bootstrap:/var/www/html/bootstrap
-      # - ./rest/composer.json:/var/www/html/composer.json
-      # - ./rest/config:/var/www/html/config
-      # - ./rest/database:/var/www/html/database
-      # - ./rest/public:/var/www/html/public
-      # - ./rest/resources:/var/www/html/resources
-      # - ./rest/routes:/var/www/html/routes
-      # - ./rest/storage:/var/www/html/storage
-      # - ./rest/tests:/var/www/html/tests
-      # - ./rest/vendor:/var/www/html/vendor
     ports:
       - "8000:80"
     links:
