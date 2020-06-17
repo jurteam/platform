@@ -38,7 +38,7 @@ class StatusController extends Controller
     public function getHolder($wallet)
     {
         $user = User::where('wallet', $wallet)->first();
-        $data = Status::where('wallet', $wallet)->first();
+        $status = Status::where('wallet', $wallet)->first();
 
         return response()->json(
             [
@@ -48,14 +48,14 @@ class StatusController extends Controller
                     'type' => "holders",
                     'attributes' => [
                         'address' => $wallet,
-                        'statusType' => isset($data) ? $data->status_type : null,
-                        'activationTime' => isset($data) ? $data->activated_at : null,
+                        'statusType' => isset($status) ? $status->status_type : null,
+                        'activationTime' => isset($status) ? $status->activated_at : null,
                         'linkedIn' => isset($user) ? $user->linkedin : null,
                         'country' => isset($user) ? $user->country : null
                     ]
                 ],
                 'meta' => [
-                    'isHolder' => isset($data) ? (bool) $data->is_active : false
+                    'isHolder' => isset($status) ? (bool) $status->is_active : false
                 ]
             ]
         );
