@@ -31,7 +31,7 @@ services:
       - db
       - cache
       - rabbit
-  
+
   db:
     image: mysql:5.7
     env_file: .env.docker-compose
