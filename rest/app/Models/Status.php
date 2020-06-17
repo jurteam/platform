@@ -41,7 +41,7 @@ class Status extends Model
 
             // StateChanged event
             case 'StateChanged':
-                $saved = Status::changeState($payload->data);
+                $saved = Status::updateState($payload->data);
                 break;
         }
 
@@ -78,12 +78,12 @@ class Status extends Model
     }
 
     /**
-     * Change state of a Status
+     * Update state of a Status
      *
      * @param Object $data: payload data send by AMQP server
      * @return Boolean the success or failure message
      */
-    public static function changeState($data)
+    public static function updateState($data)
     {
         $status = Status::where(['wallet' => $data->statusHolder])->first();
 
