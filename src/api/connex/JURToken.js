@@ -4,7 +4,7 @@ import JURTokenABI from "../../build/contracts/JURToken.json";
 
 import { log } from "../../utils/helpers";
 
-import { 
+import {
   ADD_TRANSACTION,
   TRANSACTION_ADDED,
   UPDATE_TRANSACTION,
@@ -12,9 +12,9 @@ import {
   TRANSACTIONS_FETCHED,
 } from "../../reducers/types";
 
-export default class connexJURToken 
+export default class connexJURToken
 {
-  constructor() 
+  constructor()
   {
     this.contract = JURTokenABI;
     this.thorAccount = global.connex.thor.account(this.getJURTokenAddres())
@@ -105,17 +105,17 @@ export default class connexJURToken
   /**
    * @notice Returns JUR token balance of given address
    */
-  async balanceOf(address) 
+  async balanceOf(address)
   {
-    
+
     // Caching for method balanceOf, for my addresses
-    // Solidity function balanceOf(address _owner) public view returns(uint256 balance) 
+    // Solidity function balanceOf(address _owner) public view returns(uint256 balance)
 
 
     log('balanceOf - JURTokenABI',this.contract)
     const balanceOfABI = this.getMethodABI("balanceOf");
     log('balanceOf - balanceOfABI',balanceOfABI)
-    
+
     log('balanceOf - address',address)
 
     const balanceOfMethod = this.thorAccount.method(balanceOfABI)
@@ -123,31 +123,31 @@ export default class connexJURToken
     balanceOfMethod.cache([address])
     // Get balance of my account, we will get cached result on most blocks
     // Event Transfer(_from = '0x7567d83b7b8d80addcb281a71d54fc7b3364ffed', ....) would make cache expired
-    
+
     let userBalance = 0;
-    
+
     await balanceOfMethod.call(address).then(output=>{
       log('balanceOf - balanceOfMethod',output)
 
       userBalance = output.decoded[0];
-      
+
       log('balanceOf - userBalance (then)',userBalance)
     })
 
     return userBalance;
   }
 
-  async allowance(owner, spender) 
+  async allowance(owner, spender)
   {
-    
+
     // Caching for method allowance, for my addresses
-    // Solidity function allowance(address _owner) public view returns(uint256 balance) 
+    // Solidity function allowance(address _owner) public view returns(uint256 balance)
 
 
     log('allowance - JURTokenABI',this.contract)
     const allowanceABI = this.getMethodABI("allowance");
     log('allowance - allowanceABI',allowanceABI)
-    
+
     log('allowance - address',owner, spender)
 
     const allowanceMethod = this.thorAccount.method(allowanceABI)
@@ -155,31 +155,31 @@ export default class connexJURToken
     allowanceMethod.cache([spender])
     // Get balance of my account, we will get cached result on most blocks
     // Event Transfer(_from = '0x7567d83b7b8d80addcb281a71d54fc7b3364ffed', ....) would make cache expired
-    
+
     let allowance = 0;
-    
+
     await allowanceMethod.call(owner, spender).then(output=>{
       log('allowance - allowanceMethod',output)
 
       allowance = output.decoded[0];
-      
+
       log('allowance - allowance (then)',allowance)
     })
 
     return allowance;
   }
 
-  async approve(spender, amount) 
+  async approve(spender, amount)
   {
-    
+
     // Caching for method approve, for my addresses
-    // Solidity function approve(address _owner) public view returns(uint256 balance) 
+    // Solidity function approve(address _owner) public view returns(uint256 balance)
 
 
     log('approve - JURTokenABI',this.contract)
     const approveABI = this.getMethodABI("approve");
     log('approve - approveABI',approveABI)
-    
+
     log('approve - address',spender)
 
     const approveMethod = this.thorAccount.method(approveABI)
@@ -187,29 +187,29 @@ export default class connexJURToken
     approveMethod.cache([spender])
     // Get balance of my account, we will get cached result on most blocks
     // Event Transfer(_from = '0x7567d83b7b8d80addcb281a71d54fc7b3364ffed', ....) would make cache expired
-    
+
     let approve = 0;
-    
+
     await approveMethod.call(spender, amount).then(output=>{
       log('approve - approveMethod',output)
 
       approve = output.decoded[0];
-      
+
       log('approve - approve (then)',approve)
     })
 
     return approve;
   }
 
-  async approveAndCall(address, amount, method, params, account, contractId) 
+  async approveAndCall(address, amount, method, params, account, contractId)
   {
 
     const approveAndCallABI = this.getMethodABI("approveAndCall");
 
     log('approveAndCall - approveAndCallABI',approveAndCallABI)
-    
+
     const approveAndCallMethod = this.thorAccount.method(approveAndCallABI)
-    
+
     log('approveAndCall - approveAndCallMethod',approveAndCallMethod)
 
     // ----------- Method to call
@@ -225,27 +225,27 @@ export default class connexJURToken
 
     const data = methodToCallClause.data
 
-    
+
     const approveAndCallClause = approveAndCallMethod.asClause(address, amount, data)
-    
+
     log('approveAndCall - approveAndCallClause',approveAndCallClause)
-    
+
     const signingService = global.connex.vendor.sign('tx')
-    
+
     log('approveAndCall - signingService',signingService)
-    
+
     signingService
     .signer(account) // Enforce signer
-    .gas(global.connex.thor.genesis.gasLimit) // Set maximum gas
+    // .gas(global.connex.thor.genesis.gasLimit) // Set maximum gas
     .link('http://localhost:3000/contracts/detail/'+contractId) // User will be back to the app by the url https://connex.vecha.in/0xffff....
     .comment('sign contract')
-    
-    
+
+
     log('approveAndCall - signingService',signingService)
-    
+
     let txid = null
-    
-    
+
+
     let transactionRequest = await signingService.request([
       {
         ...approveAndCallClause,
@@ -256,7 +256,7 @@ export default class connexJURToken
     txid = transactionRequest.txid
       log('approveAndCall - signingService then() txid',txid)
 
-      
+
 
     return txid
 
@@ -291,19 +291,19 @@ export default class connexJURToken
   }
 
 
-  getMethodABI(method) 
+  getMethodABI(method)
   {
 
     let methABI = null
-    this.contract.abi.forEach(meth => {    
-  
+    this.contract.abi.forEach(meth => {
+
       if (meth.name === method) {
-        methABI = meth; 
+        methABI = meth;
       }
     });
-  
+
     return methABI;
-  
-  }  
+
+  }
 
 }
