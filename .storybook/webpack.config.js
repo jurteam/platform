@@ -8,7 +8,8 @@ module.exports = async ({ config }) =>
     },
     resolve: {
       alias: {
-        JurCommon: path.resolve(__dirname, "../src/components/common/")
+        JurCommon: path.resolve(__dirname, "../src/components/common/"),
+        JurUtils: path.resolve(__dirname, "../src/utils/")
       }
     }
   });
