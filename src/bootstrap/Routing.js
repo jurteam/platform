@@ -111,6 +111,12 @@ export const createRoutes = withComponents => {
       component: withComponents && Profile,
       title: i18n.oathTakers
     },
+    {
+      exact: true,
+      path: "/status/my-status",
+      component: withComponents && Profile,
+      title: i18n.oathTakers
+    },
     { component: withComponents && NotFound, title: i18n.notFound }
   ];
 };
