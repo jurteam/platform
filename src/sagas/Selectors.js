@@ -104,5 +104,8 @@ export const getShareText = state => state.status.shareText;
 export const getShareIsSharing = state => state.status.isSharing;
 export const getStatusSharebles = state => ({
   shareNetwork: state.status.shareNetwork,
-  shareText: state.status.shareText
+  shareText: state.status.shareText,
+  address: getWallet(state).address
 });
+export const getMyStatus = state => state.status.myStatus;
+export const getStatusIsFetching = state => state.status.isFetching;

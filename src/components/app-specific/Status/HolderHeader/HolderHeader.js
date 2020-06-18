@@ -8,10 +8,10 @@ import Divide from "JurCommon/Divide";
 import { LinkedInIcon } from "JurCommon/Icons";
 import { i18nDateFormat } from "../../../../utils/helpers";
 
-const HolderHeader = ({ country, statusType, createdAt, linkedIn }) => (
+const HolderHeader = ({ country, statusType, activationTime, linkedIn }) => (
   <>
     <Text transform="shout">{statusType}</Text>
-    <Text size="small">Status since {i18nDateFormat(createdAt)}</Text>
+    <Text size="small">Status since {i18nDateFormat(activationTime)}</Text>
     <Row align="center">
       <Flag of={country} />
       <Divide vertical={true} />

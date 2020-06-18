@@ -1,18 +1,26 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./MyStatusSection.scss";
 
 import Section from "JurCommon/Section";
 import HeaderBox from "../HeaderBox";
-import { getWallet } from "../../../../sagas/Selectors";
+import { STATUS_FETCH_MINE } from "../../../../reducers/types";
 
-const MyStatusSection = ({ address }) => (
-  <Section>
-    <HeaderBox address={address} />
-  </Section>
-);
+const MyStatusSection = ({ fetchMyStatus }) => {
+  useEffect(() => {
+    fetchMyStatus();
+  }, []);
 
-const mapStateToProps = state => ({
-  address: getWallet(state).address
+  return (
+    <Section>
+      <HeaderBox />
+    </Section>
+  );
+};
+
+const fetchMyStatus = () => ({
+  type: STATUS_FETCH_MINE
 });
 
-export default global.connection(MyStatusSection, mapStateToProps);
+const mapDispatchToProps = { fetchMyStatus };
+
+export default global.connection(MyStatusSection, null, mapDispatchToProps);

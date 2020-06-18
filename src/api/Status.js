@@ -1,3 +1,5 @@
+import axios from "../bootstrap/Api";
+
 export const shareOnTwitter = (
   text,
   url = window.location.toString(),
@@ -29,3 +31,6 @@ export const shareOn = (network, text, url, title, hashtags) => {
     linkedIn: shareOnLinkedIn
   }[network](text, url, hashtags || title);
 };
+
+export const holders = address =>
+  axios.get("/status/holders/" + address).then(r => r.data);

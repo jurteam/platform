@@ -1,5 +1,10 @@
 import React from "react";
 import "./HeaderBox.scss";
+import {
+  getWallet,
+  getMyStatus,
+  getStatusIsFetching
+} from "../../../../sagas/Selectors";
 
 import Cover from "JurCommon/Cover";
 import Box from "JurCommon/Box";
@@ -11,23 +16,29 @@ import NonHolderHeader from "../NonHolderHeader";
 import ShareStatusButton from "../ShareStatusButton";
 import Frame from "JurCommon/Frame";
 
-const HeaderBox = ({ address, country, statusType, createdAt }) => (
+const HeaderBox = ({
+  isFetching,
+  address,
+  country,
+  statusType,
+  activationTime
+}) => (
   <Box type="hero">
     <Cover className={coverClass(statusType)}>
       <Frame className="jur-cover__top-out">
         <Avatar seed={address} size="xxlarge" variant="rounded" />
       </Frame>
       <Text size="xsmall">{address}</Text>
-      {statusType ? (
+      {!isFetching && statusType ? (
         <HolderHeader
           country={country}
           statusType={statusType}
-          createdAt={createdAt}
+          activationTime={activationTime}
         />
       ) : (
         <NonHolderHeader />
       )}
-      {statusType ? (
+      {!isFetching && statusType ? (
         <ShareStatusButton className="jur-cover__bottom-out" />
       ) : (
         <ArticleButton className="jur-cover__bottom-out" />
@@ -35,8 +46,6 @@ const HeaderBox = ({ address, country, statusType, createdAt }) => (
     </Cover>
   </Box>
 );
-
-export default HeaderBox;
 
 function coverClass(statusType) {
   switch (statusType) {
@@ -50,3 +59,20 @@ function coverClass(statusType) {
       return "";
   }
 }
+
+const mapStateToProps = state => {
+  const isFetching = getStatusIsFetching(state);
+  if (isFetching) return { isFetching };
+
+  const myStatus = getMyStatus(state);
+
+  return {
+    isFetching: isFetching,
+    address: getWallet(state).address,
+    country: myStatus.attributes.country,
+    statusType: myStatus.attributes.statusType,
+    activationTime: new Date(myStatus.attributes.activationTime)
+  };
+};
+
+export default global.connection(HeaderBox, mapStateToProps);

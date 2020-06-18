@@ -9,3 +9,6 @@ export const SOCIAL_NETWORK_OPTIONS = [
     value: "linkedIn"
   }
 ];
+
+export const statusUrlOf = address =>
+  window.location.origin + "/status/holders/" + address;
