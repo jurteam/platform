@@ -1,0 +1,24 @@
+@import "../../../assets/scss/variables";
+
+.jur-cover {
+  border-radius: 4px 4px 0 0;
+  background-color: $secondary;
+
+  &__top-out {
+    margin-top: -40px;
+  }
+
+  &__bottom-out {
+    margin-bottom: -20px;
+  }
+
+  &__justinian {
+    color: white;
+    background: linear-gradient(11deg, #38b8f2 0%, #843cf6 100%);
+  }
+
+  &__solomon {
+    color: white;
+    background: linear-gradient(190.73deg, #3139ec 0%, #ff0061 100%);
+  }
+}

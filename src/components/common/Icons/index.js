@@ -18,3 +18,8 @@ export * from "./PlusCircleIcon";
 export * from "./SearchIcon";
 export * from "./RankBadgeIcon";
 export * from "./OathKeeperNavIcon";
+export * from "./LinkedInIcon";
+export * from "./TwitterIcon";
+export * from "./FacebookIcon";
+export * from "./JustinianIcon";
+export * from "./SolomonIcon";
