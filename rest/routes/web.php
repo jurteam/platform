@@ -99,5 +99,12 @@ $api->version('v1', function ($api) {
         });
     });
 
+    $api->group(['prefix' => 'status'], function ($api) {
+        $api->group(['prefix' => 'holders'], function ($api) {
+            $api->get('/', 'App\Http\Controllers\StatusController@getHolders');
+            $api->get('/{wallet}', 'App\Http\Controllers\StatusController@getHolder');
+        });
+    });
+
     $api->get('faqs', 'App\Http\Controllers\FaqsController@index');
 });
