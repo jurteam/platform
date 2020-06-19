@@ -5,13 +5,13 @@ import Profile from "./Profile";
 // Inner pages
 import ProfileForm from "../../common/ProfileForm";
 import MyOathsSection from "../../app-specific/OathKeeper/MyOathsSection";
-import MyStatusSection from "../../app-specific/Status/MyStatusSection";
 import Privacy from "./Privacy";
 import UserNotification from "../../common/UserNotification";
 import Faq from "./Faq";
 import Terms from "./Terms";
 
 import i18n from "../../../assets/i18n/en/labels.json"; // i18n
+import MyStatusSection from "../Status/MyStatusSection";
 
 // Section Context
 export const ProfileContext = React.createContext();

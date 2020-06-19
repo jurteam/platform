@@ -17,15 +17,15 @@ const HoldersTable = ({ holders }) => (
     </Table.Head>
     <Table.Body>
       {holders.map(h => (
-        <Table.Row key={h.address}>
+        <Table.Row key={h.id}>
           <Table.Cell>
-            <AvatarInfo userWallet={h.address} size="small" />
+            <AvatarInfo userWallet={h.attributes.address} size="small" />
           </Table.Cell>
           <Table.Cell>
-            <StatusBadge statusType={h.statusType} />
+            <StatusBadge statusType={h.attributes.statusType} />
           </Table.Cell>
           <Table.Cell>
-            <ViewStatusButton address={h.address} />
+            <ViewStatusButton address={h.attributes.address} />
           </Table.Cell>
         </Table.Row>
       ))}

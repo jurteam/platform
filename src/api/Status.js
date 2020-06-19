@@ -32,5 +32,5 @@ export const shareOn = (network, text, url, title, hashtags) => {
   }[network](text, url, hashtags || title);
 };
 
-export const holders = address =>
+export const holders = (address = "") =>
   axios.get("/status/holders/" + address).then(r => r.data);

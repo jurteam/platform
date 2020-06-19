@@ -18,6 +18,7 @@ import DisputeDetail from "../components/sections/DisputeDetail";
 import OracleDetail from "../components/sections/OracleDetail";
 
 import OathTakers from "../components/sections/OathTakers";
+import StatusHolders from "../components/sections/Status/StatusHolders";
 
 // Helpers
 import { redirect, checkConnection } from "../utils/helpers";
@@ -115,6 +116,12 @@ export const createRoutes = withComponents => {
       exact: true,
       path: "/status/my-status",
       component: withComponents && Profile,
+      title: i18n.oathTakers
+    },
+    {
+      exact: true,
+      path: "/status/holders",
+      component: withComponents && StatusHolders,
       title: i18n.oathTakers
     },
     { component: withComponents && NotFound, title: i18n.notFound }

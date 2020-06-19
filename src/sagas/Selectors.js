@@ -109,3 +109,6 @@ export const getStatusSharebles = state => ({
 });
 export const getMyStatus = state => state.status.myStatus;
 export const getStatusIsFetching = state => state.status.isFetching;
+export const getStautsHolders = state => state.status.holders;
+export const getHoldersPagination = state =>
+  state.status.holdersMeta.pagination;

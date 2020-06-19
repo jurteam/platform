@@ -10,6 +10,8 @@ import {
 import { SOCIAL_NETWORK_OPTIONS } from "../utils/StatusHelpers";
 
 const INITIAL_STATE = {
+  holders: [],
+  holdersMeta: { pagination: {} },
   isFetching: true,
   shareText:
     "I am a Status Holder in the Jur ecosystem to support the development of a truly decentralized ecosystem for a new legal framework",
@@ -37,7 +39,7 @@ export default (state = INITIAL_STATE, action) => {
     case STATUS_FETCH_HOLDERS:
       return { ...state, isFetchingHolders: true };
     case STATUS_UPDATE_HOLDERS:
-      return { ...state, isFetchingHolders: false, holders: action.payload };
+      return { ...state, isFetchingHolders: false, ...action.payload };
     default:
       return state;
   }

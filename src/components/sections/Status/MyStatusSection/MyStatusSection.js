@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import "./MyStatusSection.scss";
 
 import Section from "JurCommon/Section";
-import HeaderBox from "../HeaderBox";
+import HeaderBox from "../../../app-specific/Status/HeaderBox";
 import { STATUS_FETCH_MINE } from "../../../../reducers/types";
 
 const MyStatusSection = ({ fetchMyStatus }) => {

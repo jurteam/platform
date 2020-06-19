@@ -3,7 +3,7 @@ import React from "react";
 import { storiesOf } from "@storybook/react";
 import { withInfo } from "@storybook/addon-info";
 
-import HoldersHeaderBox from "./";
+import HoldersHeader from ".";
 
 storiesOf("Status", module)
   .addDecorator(withInfo)
@@ -13,4 +13,4 @@ storiesOf("Status", module)
       header: false
     }
   })
-  .add("HoldersHeaderBox", () => <HoldersHeaderBox />);
+  .add("HoldersHeader", () => <HoldersHeader />);

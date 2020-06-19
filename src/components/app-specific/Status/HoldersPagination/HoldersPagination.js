@@ -6,6 +6,8 @@ import Row from "JurCommon/Row";
 import Expand from "JurCommon/Expand";
 import Text from "JurCommon/Text";
 import { from, to } from "../../../../utils/helpers";
+import { STATUS_FETCH_HOLDERS } from "../../../../reducers/types";
+import { getHoldersPagination } from "../../../../sagas/Selectors";
 
 const HoldersPagination = ({ onPaginate, total, perPage, page }) => (
   <Row className="jur-safe-margin">
@@ -25,4 +27,20 @@ const HoldersPagination = ({ onPaginate, total, perPage, page }) => (
   </Row>
 );
 
-export default HoldersPagination;
+const mapStateToProps = state => ({
+  total: Number(getHoldersPagination(state).total),
+  perPage: Number(getHoldersPagination(state).per_page),
+  page: Number(getHoldersPagination(state).current_page)
+});
+
+const onPaginate = page => {
+  return { type: STATUS_FETCH_HOLDERS, payload: { page } };
+};
+
+const mapDispatchToProps = { onPaginate };
+
+export default global.connection(
+  HoldersPagination,
+  mapStateToProps,
+  mapDispatchToProps
+);
