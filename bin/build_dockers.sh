@@ -1,0 +1,1 @@
+docker build -t jur_platform:08JUN2020 -f Dockerfile .
