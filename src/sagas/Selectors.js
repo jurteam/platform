@@ -97,3 +97,18 @@ export const getGraphAnalytics = (state, card, chart = "line") => {
       }
     ];
 };
+
+// Status
+export const getShareNetwork = state => state.status.shareNetwork;
+export const getShareText = state => state.status.shareText;
+export const getShareIsSharing = state => state.status.isSharing;
+export const getStatusSharebles = state => ({
+  shareNetwork: state.status.shareNetwork,
+  shareText: state.status.shareText,
+  address: getWallet(state).address
+});
+export const getMyStatus = state => state.status.myStatus;
+export const getStatusIsFetching = state => state.status.isFetching;
+export const getStautsHolders = state => state.status.holders;
+export const getHoldersPagination = state =>
+  state.status.holdersMeta.pagination;

@@ -96,3 +96,4 @@ deploy-conf.yml
 deploy-exclude.list
 public/files/prova.pdf
 *.lock
+persistent-runtime/

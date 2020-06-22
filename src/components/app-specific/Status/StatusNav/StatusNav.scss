@@ -1,0 +1,28 @@
+@import "../../../../assets/scss/variables";
+
+.jur-status-nav {
+  display: flex;
+  flex-direction: row;
+  color: #0077ff;
+  padding: 5px 20px;
+  min-height: 38px;
+  border-right: 2px solid #d8d8d8;
+  font-family: $font-poppins;
+  font-size: 14px;
+
+  .jur-status-nav-icon {
+    height: 30px;
+    width: 26px;
+    margin: auto;
+    margin-right: 10px;
+  }
+
+  &__label {
+    line-height: 38px;
+    min-width: 90px;
+  }
+
+  &__active {
+    font-weight: bold;
+  }
+}
