@@ -30,6 +30,8 @@ services:
       NAME: "rabbit"
 
   polling:
+    image: busybox
+    command: tail -f /dev/null
     links:
       - polling_rtr
       - polling_per
