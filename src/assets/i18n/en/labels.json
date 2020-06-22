@@ -222,5 +222,7 @@
   "dotted": "•••",
   "otherCategoryPlaceholder": "Insert your category",
   "myOaths": "My Oaths",
-  "oathKeepingRank": "Oathkeeping Ranking"
+  "oathKeepingRank": "Oathkeeping Ranking",
+  "myStatus": "My Status",
+  "jurStatus": "Jur Status"
 }

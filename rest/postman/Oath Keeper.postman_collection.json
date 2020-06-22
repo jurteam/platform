@@ -1,0 +1,110 @@
+{
+	"info": {
+		"_postman_id": "2cf0e61f-314c-4ea7-9d3e-eb05c0a966ff",
+		"name": "Oath Keeper",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "analytics",
+			"item": [
+				{
+					"name": "index",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{protocol}}://{{baseUrl}}/{{version}}/{{oathkeeper}}/analytics?duration=Last Month",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"{{version}}",
+								"{{oathkeeper}}",
+								"analytics"
+							],
+							"query": [
+								{
+									"key": "duration",
+									"value": "Last Month"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "show",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{protocol}}://{{baseUrl}}/{{version}}/{{oathkeeper}}/analytics/average-amount",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"{{version}}",
+								"{{oathkeeper}}",
+								"analytics",
+								"average-amount"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "oath-takers",
+			"item": [
+				{
+					"name": "index",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{protocol}}://{{baseUrl}}/{{version}}/{{oathkeeper}}/oath-takers",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"{{version}}",
+								"{{oathkeeper}}",
+								"oath-takers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "show",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{protocol}}://{{baseUrl}}/{{version}}/{{oathkeeper}}/oath-takers/0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A7",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"{{version}}",
+								"{{oathkeeper}}",
+								"oath-takers",
+								"0xdab6AbeF495D2eeE6E4C40174c3b52D3Bc9616A7"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}

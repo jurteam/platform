@@ -1,9 +1,43 @@
+@import "../../../assets/scss/variables";
+
 .jur-text {
   &__normal {
     // font-size: 13px;
   }
 
   &__mute {
-    color: grey;
+    color: $secondary;
+  }
+
+  &__xsmall {
+    font-size: 8px;
+  }
+
+  &__small {
+    font-size: 10px;
+  }
+
+  &__large {
+    font-size: 20px;
+  }
+
+  &__transform {
+    // Highly customized classes
+    &-up {
+      text-transform: uppercase;
+    }
+
+    &-shout {
+      font-family: $font-montserrat;
+      font-style: normal;
+      font-weight: 900;
+      font-size: 16px;
+      line-height: 14px;
+
+      /* identical to box height, or 87% */
+      text-align: center;
+      letter-spacing: 0.285714px;
+      text-transform: uppercase;
+    }
   }
 }

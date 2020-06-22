@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use Anik\Amqp\ConsumableMessage;
 use Illuminate\Console\Command;
 use \App\Models\OathKeeper;
+use \App\Models\Status;
 use \Illuminate\Support\Facades\App;
 
 class ListenAMQPCommand extends Command
@@ -50,6 +51,10 @@ class ListenAMQPCommand extends Command
             switch ($payload->assetIdentifier) {
                 case 'oathKeeper':
                     $success = OathKeeper::consumeAMQP($payload);
+                    break;
+
+                case 'status':
+                    $success = Status::consumeAMQP($payload);
                     break;
             }
 

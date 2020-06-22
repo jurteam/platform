@@ -9,6 +9,7 @@ import dispute from "./Dispute";
 import oracle from "./Oracle";
 import transaction from "./Transaction";
 import oathKeeper from "./OathKeeper";
+import status from "./Status";
 
 // Export root reducer
 export default history =>
@@ -22,5 +23,6 @@ export default history =>
     oracle,
     transaction,
     oathKeeper,
+    status,
     ...drizzleReducers
   });

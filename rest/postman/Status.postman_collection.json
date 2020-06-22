@@ -1,0 +1,51 @@
+{
+	"info": {
+		"_postman_id": "0d1171c2-9999-40ea-bbba-8decbb8d24ce",
+		"name": "Status",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "index",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{protocol}}://{{baseUrl}}/{{version}}/{{status}}/holders",
+					"protocol": "{{protocol}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"{{version}}",
+						"{{status}}",
+						"holders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "show",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{protocol}}://{{baseUrl}}/{{version}}/{{status}}/holders/0x49f30D9Ea7491e0b393d5b072C33C5f17800D95b",
+					"protocol": "{{protocol}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"{{version}}",
+						"{{status}}",
+						"holders",
+						"0x49f30D9Ea7491e0b393d5b072C33C5f17800D95b"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

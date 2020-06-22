@@ -7,6 +7,7 @@ import Logo from "../Logo";
 import MainNav from "../MainNav";
 import ProfilePreview from "../ProfilePreview";
 import OathKeeperNav from "../../app-specific/OathKeeper/OathKeeperNav";
+import StatusNav from "../../app-specific/Status/StatusNav";
 
 export const Header = props => {
   const { wallet, user, app } = props;
@@ -25,6 +26,7 @@ export const Header = props => {
         <>
           {renderLogo()}
           <MainNav />
+          <StatusNav />
           <OathKeeperNav />
           <ProfilePreview
             name={user.name || null}
