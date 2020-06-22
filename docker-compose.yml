@@ -43,7 +43,7 @@ services:
     restart: always
     env_file: .env.polling-service
     volumes:
-      - ./polling-service:/var/www/html
+      - ./polling-service/node-services:/var/www/html
     working_dir: /var/www/html
     command: node index.js
     links:
@@ -53,7 +53,7 @@ services:
     image: node:14.3
     env_file: .env.polling-service
     volumes:
-      - ./polling-service:/var/www/html
+      - ./polling-service/node-services:/var/www/html
     working_dir: /var/www/html
     command: node per.js
 
