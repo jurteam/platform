@@ -87,6 +87,7 @@ rest/storage/app/public*
 .env.production.local
 .env.docker-compose
 .env.polling-service
+polling-service/package-lock.json
 
 npm-debug.log*
 yarn-debug.log*
