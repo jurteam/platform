@@ -30,15 +30,47 @@ services:
       NAME: "rabbit"
 
   polling:
+    links:
+      - polling_rtr
+      - polling_per
+      - polling_db
+      - polling_producer
+
+  polling_rtr:
     image: node:14.3
     restart: always
-    env_file: .env.docker-compose
+    env_file: .env.polling-service
     volumes:
       - ./polling-service:/var/www/html
     working_dir: /var/www/html
     command: node index.js
     links:
       - rabbit
+
+  polling_per:
+    image: node:14.3
+    env_file: .env.polling-service
+    volumes:
+      - ./polling-service:/var/www/html
+    working_dir: /var/www/html
+    command: node per.js
+
+  polling_db:
+    image: mysql:5.7
+    env_file: .env.polling-service
+    volumes:
+      - ./persistent-runtime/polling-mysql:/var/lib/mysql
+
+  polling_producer:
+    image: polling_producer:22JUN2020
+    working_dir: /var/www/html
+    volumes:
+      - ./polling-service/producer:/var/www/html
+      - ./environment/nginx/nginx.conf:/etc/nginx/sites-available/default
+      - ./environment/php/php.ini:/etc/php/7.2/fpm/php.ini
+      - ./environment/cron/jur.conf:/var/spool/cron/crontabs/root
+    ports:
+      - "8100:80"
 
   cache:
     image: memcached
