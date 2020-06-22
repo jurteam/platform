@@ -1,0 +1,8 @@
+src/
+node_modules/
+protocol/
+polling-service/
+smart-contracts/
+persistent-runtime/
+.storybook/
+bin/
