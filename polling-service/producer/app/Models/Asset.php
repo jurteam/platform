@@ -12,8 +12,7 @@ class Asset extends Model
     protected $fillable = [
         'asset_name',
         'contract_address',
-        'event_name',
-        'event_abi',
+        'abi',
         'default_from_block'
     ];
 
