@@ -15,14 +15,18 @@ class CreateTransactionsTable extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('asset_id');
+            $table->string('asset_name');
+            $table->string('event_name');
+            $table->string('contract_address');
+            $table->unsignedBigInteger('block_number');
             $table->string('transaction_hash');
             $table->string('sender');
             $table->dateTime('timestamp');
             $table->json('data');
             $table->timestamps();
 
-            $table->foreign('asset_id')->references('id')->on('assets')->onDelete('cascade');
+            $table->index(['asset_name', 'event_name', 'contract_address']);
+            $table->index(['transaction_hash']);
         });
     }
 
