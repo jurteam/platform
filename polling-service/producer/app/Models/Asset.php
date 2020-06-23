@@ -16,5 +16,9 @@ class Asset extends Model
         'default_from_block'
     ];
 
+    protected $casts = [
+        'abi' => 'array'
+    ];
+
     public $timestamps = true;
 }
