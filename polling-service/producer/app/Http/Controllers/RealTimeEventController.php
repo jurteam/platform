@@ -6,7 +6,6 @@ use App\Models\Asset;
 use App\Transformers\AssetTransformer;
 use Dingo\Api\Http\Response;
 use Dingo\Api\Routing\Helpers;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 
 class RealTimeEventController extends Controller
@@ -18,7 +17,7 @@ class RealTimeEventController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
         $assets = Asset::all();
 
