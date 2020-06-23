@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Asset;
+use App\Models\Transaction;
 use App\Transformers\AssetTransformer;
 use Dingo\Api\Http\Response;
 use Dingo\Api\Routing\Helpers;
-use Illuminate\Support\Facades\App;
+use Illuminate\Http\Request;
 
 class RealTimeEventController extends Controller
 {
@@ -33,5 +34,28 @@ class RealTimeEventController extends Controller
                 return $transformer->transform($asset);
             })
         ];
+    }
+
+    /**
+     * Store real-time event data
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        $block = $request->json()->all();
+        $transactions = Transaction::whereIn('transaction_hash', array_map(function ($data) {
+            return $data['transaction']['address'];
+        }, $block['data']))->pluck('transaction_hash')->toArray();
+
+        var_dump($transactions);
+
+        foreach ($block['data'] as $transaction) {
+            if (!in_array($transaction['transaction']['address'], $transactions)) {
+                Transaction::store($transaction);
+            }
+        }
+
+        return ['nextBlockNumber' => $block['blockNumber'] + 1];
     }
 }
