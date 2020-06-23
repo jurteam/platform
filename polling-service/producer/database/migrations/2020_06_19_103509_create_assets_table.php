@@ -17,8 +17,7 @@ class CreateAssetsTable extends Migration
             $table->bigIncrements('id');
             $table->string('asset_name');
             $table->string('contract_address');
-            $table->string('event_name');
-            $table->json('event_abi');
+            $table->json('abi');
             $table->unsignedBigInteger('default_from_block');
             $table->timestamps();
         });
