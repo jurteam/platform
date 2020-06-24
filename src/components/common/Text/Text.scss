@@ -37,6 +37,10 @@
       text-transform: uppercase;
     }
 
+    &-header {
+      color: $header-color;
+    }
+
     &-shout {
       font-family: $font-montserrat;
       font-style: normal;

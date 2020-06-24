@@ -5,7 +5,9 @@ import Text from "JurCommon/Text";
 
 const HoldersHeader = () => (
   <>
-    <Text size="large">Status Holders</Text>
+    <Text size="large" transform="header">
+      Status Holders
+    </Text>
     <Text>
       This is the list of active Jur Statuses licenses that are co-creating the
       Jur legal automation framework
