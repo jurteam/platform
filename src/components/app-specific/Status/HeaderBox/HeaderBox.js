@@ -19,7 +19,8 @@ import Frame from "JurCommon/Frame";
 const HeaderBox = ({
   isFetching,
   address,
-  country,
+  location,
+  linkedIn,
   statusType,
   activationTime
 }) => (
@@ -36,7 +37,8 @@ const HeaderBox = ({
       <Text size="xsmall">{address}</Text>
       {!isFetching && statusType ? (
         <HolderHeader
-          country={country}
+          country={location}
+          linkedIn={linkedIn}
           statusType={statusType}
           activationTime={activationTime}
         />
@@ -89,7 +91,8 @@ const mapStateToProps = state => {
   return {
     isFetching: isFetching,
     address: getWallet(state).address,
-    country: myStatus.attributes.country,
+    location: myStatus.attributes.location,
+    linkedIn: myStatus.attributes.linkedIn,
     statusType: myStatus.attributes.statusType,
     activationTime: new Date(myStatus.attributes.activationTime)
   };
