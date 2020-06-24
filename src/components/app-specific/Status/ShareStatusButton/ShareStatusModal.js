@@ -14,7 +14,9 @@ const ShareModal = ({ address, isOpen, onRequestClose }) => {
     <Modal isOpen={isOpen} onRequestClose={onRequestClose}>
       <Modal.Header title="Share your Status Badge" />
       <Modal.Body>
-        <Text>Select a network</Text>
+        <Text weight="bold" size="small">
+          Select a network
+        </Text>
         <SocialNetworkInput />
         <ShareStatusTextInput defaultValue={initialText} />
       </Modal.Body>

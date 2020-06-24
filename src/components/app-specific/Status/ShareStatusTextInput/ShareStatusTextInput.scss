@@ -1,0 +1,15 @@
+@import "../../../../assets/scss/variables";
+
+.jur-share-status-text-input {
+  min-width: 330px;
+  font-size: 13px;
+  color: $input-active-text-color;
+  border: $input-textarea-border-color 1px solid;
+  border-radius: 4px;
+  padding: 8px 10px 15px 10px;
+
+  &:focus,
+  &:focus-within {
+    color: $input-active-text-color;
+  }
+}

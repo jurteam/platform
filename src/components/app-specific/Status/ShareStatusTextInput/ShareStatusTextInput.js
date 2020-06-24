@@ -6,7 +6,12 @@ import { STATUS_CHANGE_SHARE_TEXT } from "../../../../reducers/types";
 import { getShareText } from "../../../../sagas/Selectors";
 
 const ShareStatusTextInput = ({ onChange, value }) => (
-  <Form.TextArea rows={4} value={value} onChange={onChange} />
+  <Form.TextArea
+    className="jur-share-status-text-input"
+    rows={4}
+    value={value}
+    onChange={onChange}
+  />
 );
 
 const onChange = v => ({ type: STATUS_CHANGE_SHARE_TEXT, payload: v });
