@@ -23,7 +23,7 @@ import genders from "../../../assets/i18n/en/genders.json"; // genders
 import categories from "../../../assets/i18n/en/userCategories.json"; // TODO: i18n
 import { FormContainer } from "../Form/FormContainer";
 
-export const ProfileForm = ( props ) => {
+export const ProfileForm = props => {
   const { className, user, updateUserField, updateUser } = props;
   const [formUpdated, setFormUpdated] = useState(false);
 
@@ -42,6 +42,7 @@ export const ProfileForm = ( props ) => {
   const {
     wallet,
     name,
+    linkedin,
     gender,
     email,
     updating,
@@ -62,7 +63,7 @@ export const ProfileForm = ( props ) => {
     updateUserField(name, value); // dispatch action
   };
 
-  const onInputChange = (ev) => {
+  const onInputChange = ev => {
     const { target } = ev;
     if (target) {
       // only if there is a target
@@ -80,7 +81,7 @@ export const ProfileForm = ( props ) => {
   };
 
   const onChangeSelect = (name, input) => {
-    if (name === "category" && input.value === 5) {
+    if (name === "category" && input && input.value === 5) {
       changeInput("category", null);
       setOtherCategoryInputVisibility(true);
     } else {
@@ -99,7 +100,7 @@ export const ProfileForm = ( props ) => {
   const submitDisabled =
     formUpdated === false || updating === true || !isValid();
 
-  const onSubmit = (ev) => {
+  const onSubmit = ev => {
     ev.preventDefault();
     if (!submitDisabled) {
       updateUser();
@@ -107,13 +108,13 @@ export const ProfileForm = ( props ) => {
     }
   };
 
-  let locationsOptions = locations.map((loc) => ({
+  let locationsOptions = locations.map(loc => ({
     value: loc.alpha2Code,
     label: loc.name
   }));
 
   // form error handling
-  const hasError = (field) =>
+  const hasError = field =>
     typeof errors[field] !== "undefined" && errors[field].length > 0;
 
   return (
@@ -160,9 +161,9 @@ export const ProfileForm = ( props ) => {
             name="gender"
             id="gender"
             error={hasError("gender")}
-            value={genders.filter((option) => option.value === gender)}
+            value={genders.filter(option => option.value === gender)}
             options={genders}
-            onChange={(input) => onChangeSelect("gender", input)}
+            onChange={input => onChangeSelect("gender", input)}
           />
         </Form.Group>
       </Form.Container>
@@ -189,9 +190,9 @@ export const ProfileForm = ( props ) => {
             name="localtion"
             id="location"
             error={hasError("location")}
-            value={locationsOptions.filter((option) => option.value === location)}
+            value={locationsOptions.filter(option => option.value === location)}
             options={locationsOptions}
-            onChange={(input) => onChangeSelect("location", input)}
+            onChange={input => onChangeSelect("location", input)}
           />
         </Form.Group>
       </Form.Container>
@@ -206,7 +207,7 @@ export const ProfileForm = ( props ) => {
             error={hasError("birth_date")}
             placeholder={labels.dateOfBirthPlaceholder}
             selectedDate={birth_date ? new Date(birth_date) : null}
-            onChange={(date) => changeInput("birth_date", date)}
+            onChange={date => changeInput("birth_date", date)}
             maxDate={new Date()}
           />
         </Form.Group>
@@ -237,11 +238,27 @@ export const ProfileForm = ( props ) => {
               name="category"
               id="category"
               error={hasError("category")}
-              value={categories.filter((option) => option.value === category)}
+              value={categories.filter(option => option.value === category)}
               options={categories}
-              onChange={(input) => onChangeSelect("category", input)}
+              onChange={input => onChangeSelect("category", input)}
             />
           )}
+        </Form.Group>
+      </Form.Container>
+      <Form.Container>
+        <Form.Group>
+          <Form.Label htmlFor="linkedin" optional>
+            {labels.linkedInUrl}
+          </Form.Label>
+          <Form.Input
+            type="url"
+            name="linkedin"
+            id="linkedin"
+            error={hasError("linkedin")}
+            placeholder={labels.linkedInUrlPlaceholder}
+            value={linkedin}
+            onChange={onInputChange}
+          />
         </Form.Group>
       </Form.Container>
       <FormContainer className="jur-form__footer">

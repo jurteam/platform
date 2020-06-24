@@ -224,5 +224,7 @@
   "myOaths": "My Oaths",
   "oathKeepingRank": "Oathkeeping Ranking",
   "myStatus": "My Status",
-  "jurStatus": "Jur Status"
+  "jurStatus": "Jur Status",
+  "linkedInUrl": "LinkedIn Profile",
+  "linkedInUrlPlaceholder": ""
 }
