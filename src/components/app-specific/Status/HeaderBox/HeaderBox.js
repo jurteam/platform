@@ -25,8 +25,13 @@ const HeaderBox = ({
 }) => (
   <Box type="hero">
     <Cover className={coverClass(statusType)}>
-      <Frame className="jur-cover__top-out">
-        <Avatar seed={address} size="xxlarge" variant="rounded" />
+      <Frame className={frameClass(statusType)}>
+        <Avatar
+          seed={address}
+          size="xxlarge"
+          variant="rounded"
+          className="jur-frame__pop"
+        />
       </Frame>
       <Text size="xsmall">{address}</Text>
       {!isFetching && statusType ? (
@@ -58,6 +63,21 @@ function coverClass(statusType) {
     default:
       return "";
   }
+}
+
+function frameClass(statusType) {
+  let className = "jur-cover__top-out ";
+
+  switch (statusType) {
+    case "Justinian":
+    case "justinian":
+      return className + "jur-frame__justinian";
+    case "Solomon":
+    case "solomon":
+      return className + "jur-frame__solomon";
+  }
+
+  return className;
 }
 
 const mapStateToProps = state => {
