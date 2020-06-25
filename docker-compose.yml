@@ -45,7 +45,7 @@ services:
     volumes:
       - ./polling-service:/var/www/html
     working_dir: /var/www/html
-    command: node index.js
+    command: node --unhandled-rejections=strict index.js
     links:
       - rabbit
 
