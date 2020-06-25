@@ -22,29 +22,4 @@ class Asset extends Model
 
     public $timestamps = true;
 
-    /**
-     * Find next block number to fetch from blockchain
-     *
-     * @param Number $instanceId: instance Id
-     * @return Number next block number
-     */
-    public static function findNextBlock($instanceId)
-    {
-        $lastBlock = TransactionStates::where('instance_id', $instanceId)->pluck('last_read_block')->first();
-
-        if (!isset($lastBlock)) {
-
-            $assets = Asset::all();
-
-            $lastBlock = sizeof($assets) > 0 ? $assets[0]->default_from_block : 0;
-
-            foreach ($assets as $asset) {
-                if ($lastBlock > $asset->default_from_block) {
-                    $lastBlock = $asset->default_from_block;
-                }
-            }
-        }
-
-        return $lastBlock;
-    }
 }

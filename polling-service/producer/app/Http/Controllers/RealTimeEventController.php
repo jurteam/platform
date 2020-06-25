@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Asset;
 use App\Models\Transaction;
+use App\Models\TransactionState;
 use App\Transformers\AssetTransformer;
 use Dingo\Api\Http\Response;
 use Dingo\Api\Routing\Helpers;
@@ -12,6 +13,8 @@ use Illuminate\Http\Request;
 class RealTimeEventController extends Controller
 {
     use Helpers;
+
+    private $instanceId = 0;
 
     /**
      * GET configurations for polling service
@@ -29,7 +32,7 @@ class RealTimeEventController extends Controller
         $transformer = new AssetTransformer;
 
         return [
-            'nextBlockNumber' => Asset::findNextBlock(0),
+            'nextBlockNumber' => TransactionState::findLastReadBlock($this->instanceId),
             'contracts' => $assets->map(function ($asset) use ($transformer) {
                 return $transformer->transform($asset);
             })
@@ -44,6 +47,7 @@ class RealTimeEventController extends Controller
     public function store(Request $request)
     {
         $block = $request->json()->all();
+
         $transactions = Transaction::whereIn('transaction_hash', array_map(function ($data) {
             return $data['transaction']['address'];
         }, $block['data']))->pluck('transaction_hash')->toArray();
@@ -54,6 +58,6 @@ class RealTimeEventController extends Controller
             }
         }
 
-        return ['nextBlockNumber' => $block['blockNumber'] + 1];
+        return ['nextBlockNumber' => TransactionState::changeLastReadBlock($this->instanceId, $block['blockNumber'])];
     }
 }
