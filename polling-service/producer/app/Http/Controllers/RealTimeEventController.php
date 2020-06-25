@@ -48,8 +48,6 @@ class RealTimeEventController extends Controller
             return $data['transaction']['address'];
         }, $block['data']))->pluck('transaction_hash')->toArray();
 
-        var_dump($transactions);
-
         foreach ($block['data'] as $transaction) {
             if (!in_array($transaction['transaction']['address'], $transactions)) {
                 Transaction::store($transaction);
