@@ -41,7 +41,7 @@ class TransactionState extends Model
 
             $state = new TransactionState;
             $state->instance_id = $instanceId;
-            $state->service_name = $instanceId == 0 ? 'RTR' : 'PER';
+            $state->service_name = $instanceId == config('polling.RealTimeInstanceId') ? 'RTR' : 'PER';
             $state->last_read_block = $lastBlock;
             $state->save();
         }

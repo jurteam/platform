@@ -64,6 +64,7 @@ $app->configure('database');
 $app->configure('api');
 $app->configure('filesystems');
 $app->configure('mail');
+$app->configure('polling');
 
 /*
 |--------------------------------------------------------------------------

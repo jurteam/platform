@@ -14,7 +14,15 @@ class RealTimeEventController extends Controller
 {
     use Helpers;
 
-    private $instanceId = 0;
+    private $instanceId;
+
+    /**
+     * Instantiate a new RealTimeEventController instance.
+     */
+    public function __construct()
+    {
+        $this->instanceId = config('polling.RealTimeInstanceId');
+    }
 
     /**
      * GET configurations for polling service
