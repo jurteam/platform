@@ -1,0 +1,63 @@
+{
+	"info": {
+		"_postman_id": "bb6069e6-304b-49de-84a6-863c24630a44",
+		"name": "Polling Service (Producer)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GET real-time",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{protocol}}://localhost:8100/api/{{version}}/polling-service/real-time",
+					"protocol": "{{protocol}}",
+					"host": [
+						"localhost"
+					],
+					"port": "8100",
+					"path": [
+						"api",
+						"{{version}}",
+						"polling-service",
+						"real-time"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST real-time",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"blockNumber\": 1000,\r\n  \"data\": [\r\n    {\r\n      \"assetName\": \"OathKeeper\",\r\n      \"eventName\": \"OathTaken\",\r\n      \"contractAddress\": \"0xD689Db4A731cbb216E81C2F6096c583e329A9B48\",\r\n      \"transaction\": {\r\n        \"address\": \"0xaed8fa7326b647add3ae85497222f7c82cb07f90c98247e24590d4232ade854c\",\r\n        \"blockNumber\": 1000,\r\n        \"timestamp\": 1592922345 ,\r\n        \"sender\": \"0x2D9241a6c709c8Ba3a35C1aD17667641FFE27067\",\r\n        \"contractAddress\": \"0xD689Db4A731cbb216E81C2F6096c583e329A9B48\"\r\n      },\r\n      \"data\": {\r\n            \"_beneficiary\":\"0x32a0d45b3b59b7201f90F2Fe7D8867418e7aF74b\",\r\n            \"_amount\":\"3\",\r\n            \"_lockInPeriod\":\"5\",\r\n            \"_startAt\":\"1590574340\",\r\n            \"_releaseAt\":\"1590574640\",\r\n            \"_oathIndex\":\"10\"\r\n        }\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{protocol}}://localhost:8100/api/{{version}}/polling-service/real-time",
+					"protocol": "{{protocol}}",
+					"host": [
+						"localhost"
+					],
+					"port": "8100",
+					"path": [
+						"api",
+						"{{version}}",
+						"polling-service",
+						"real-time"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
