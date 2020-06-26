@@ -52,6 +52,7 @@ class RealTimeEventController extends Controller
     /**
      * Store real-time event data
      *
+     * @param Request $request: request object
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
