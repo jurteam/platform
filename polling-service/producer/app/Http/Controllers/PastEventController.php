@@ -48,6 +48,27 @@ class PastEventController extends Controller
     }
 
     /**
+     * GET past event data based on transaction hash
+     *
+     * @param String $transactionHash: transaction hash
+     * @return \Illuminate\Http\Response
+     */
+    public function getTransaction($transactionHash)
+    {
+        // get request body
+        $body = $this->getRequestConfig();
+
+        // url to get past transaction events of PER service
+        $url = $this->host . '/tx/' . $transactionHash;
+
+        // send a POST request with configuration and get event's data
+        $response = Http::post($url, $body)->throw()->json();
+
+        // store & return transactions
+        return $this->validateAndStore($response['data']);
+    }
+
+    /**
      * find configurations for past event polling service
      *
      * @return Object : configuration of contracts
