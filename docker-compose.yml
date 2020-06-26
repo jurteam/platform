@@ -45,7 +45,7 @@ services:
     volumes:
       - ./polling-service/node-services:/var/www/html
     working_dir: /var/www/html
-    command: node start-rtr.js
+    command: node --unhandled-rejections=strict start-rtr.js
     links:
       - polling_producer
 
@@ -55,7 +55,7 @@ services:
     volumes:
       - ./polling-service/node-services:/var/www/html
     working_dir: /var/www/html
-    command: node per.js
+    command: node --unhandled-rejections=strict start-per.js
 
   polling_db:
     image: mysql:5.7
