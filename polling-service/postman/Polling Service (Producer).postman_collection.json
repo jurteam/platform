@@ -105,6 +105,43 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "GET Past-Events with From & To Block",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{protocol}}://localhost:8100/api/{{version}}/polling-service/past-events/blocks?from=1000&to=1000&direction=asc",
+					"protocol": "{{protocol}}",
+					"host": [
+						"localhost"
+					],
+					"port": "8100",
+					"path": [
+						"api",
+						"{{version}}",
+						"polling-service",
+						"past-events",
+						"blocks"
+					],
+					"query": [
+						{
+							"key": "from",
+							"value": "1000"
+						},
+						{
+							"key": "to",
+							"value": "1000"
+						},
+						{
+							"key": "direction",
+							"value": "asc"
+						}
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"protocolProfileBehavior": {}
