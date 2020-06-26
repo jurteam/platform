@@ -45,8 +45,7 @@ services:
     volumes:
       - ./polling-service/node-services:/var/www/html
     working_dir: /var/www/html
-    command: tail -f /dev/null
-    # command: node start-rtr.js
+    command: node start-rtr.js
     links:
       - polling_producer
 
