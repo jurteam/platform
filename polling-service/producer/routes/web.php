@@ -8,5 +8,9 @@ $api->version('v1', function ($api) {
             $api->get('/', 'App\Http\Controllers\RealTimeEventController@index');
             $api->post('/', 'App\Http\Controllers\RealTimeEventController@store');
         });
+
+        $api->group(['prefix' => 'past-events'], function ($api) {
+            $api->get('/block/{blockNo}', 'App\Http\Controllers\PastEventController@getBlock');
+        });
     });
 });
