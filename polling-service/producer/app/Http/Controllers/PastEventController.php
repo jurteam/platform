@@ -6,6 +6,7 @@ use App\Models\Asset;
 use App\Models\Transaction;
 use App\Transformers\AssetTransformer;
 use Dingo\Api\Routing\Helpers;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
 class PastEventController extends Controller
@@ -66,6 +67,55 @@ class PastEventController extends Controller
 
         // store & return transactions
         return $this->validateAndStore($response['data']);
+    }
+
+    /**
+     * GET mutiple blocks of past event data
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getBlocks(Request $request)
+    {
+        // get from Block
+        $from = $request->input('from', null);
+
+        // get to Block
+        $to = $request->input('to', null);
+
+        // get direction
+        $direction = $request->input('direction', 'asc');
+
+        // throw error if there are missing params
+        if ($from == null || $to == null) {
+            abort(422, 'Please specify `from` and `to` blocks!');
+        }
+
+        // throw error if $from is greater than $to
+        if ($from > $to) {
+            abort(422, '`from` cannot be greater than `to`!');
+        }
+
+        // get request body
+        $body = $this->getRequestConfig();
+
+        // array for temporary storage
+        $transactions = [];
+
+        for ($i = $from; $i <= $to; $i++) {
+            // url to get past transaction events of PER service
+            $url = $this->host . '/block/' . $i;
+
+            // send a POST request with configuration and get event's data
+            $response = Http::post($url, $body)->throw()->json();
+
+            // push to array for later-processing
+            foreach ($response['data'] as $data) {
+                array_push($transactions, $data);
+            }
+        }
+
+        // store & return transactions
+        return $this->validateAndStore($transactions);
     }
 
     /**
