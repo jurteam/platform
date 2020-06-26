@@ -57,6 +57,54 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "GET Past-Events With Block Number",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{protocol}}://localhost:8100/api/{{version}}/polling-service/past-events/block/6289150",
+					"protocol": "{{protocol}}",
+					"host": [
+						"localhost"
+					],
+					"port": "8100",
+					"path": [
+						"api",
+						"{{version}}",
+						"polling-service",
+						"past-events",
+						"block",
+						"6289150"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Past-Events With Transaction Hash",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{protocol}}://localhost:8100/api/{{version}}/polling-service/past-events/tx/0x46c74661ffc48a5f7b97a9f58f3086fc1a337249bd81e0a06417bf6ff3cae5ed",
+					"protocol": "{{protocol}}",
+					"host": [
+						"localhost"
+					],
+					"port": "8100",
+					"path": [
+						"api",
+						"{{version}}",
+						"polling-service",
+						"past-events",
+						"tx",
+						"0x46c74661ffc48a5f7b97a9f58f3086fc1a337249bd81e0a06417bf6ff3cae5ed"
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"protocolProfileBehavior": {}
