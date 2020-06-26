@@ -3,7 +3,7 @@ const hasContract = shape => Boolean(shape.contract);
 const hasDecodedEvent = shape => Boolean(shape.decodedEvent);
 
 function decodeIfInterested(abi, data, topics) {
-  const ev = abi.events.find(ev => {
+  const ev = abi.find(ev => {
     const evSign = web3.eth.abi.encodeEventSignature(ev);
     return topics.some(t => t === evSign);
   });
@@ -18,20 +18,34 @@ function decodeIfInterested(abi, data, topics) {
 }
 
 function decodeEvent({ contract, data, topics }) {
-  console.log("decoding event for", contract, data);
   return {
-    contractIdentifier: contract.identifier,
-    decodedEvent: decodeIfInterested(contract, data, topics)
+    assetName: contract.assetName,
+    contractAddress: contract.address,
+    decodedEvent: decodeIfInterested(contract.abi, data, topics)
   };
 }
 
-function makeResult(result, tx, contractIdentifier) {
-  result.txHash = tx.transactionHash;
-  result.sender = tx.meta.txOrigin;
-  result.blockNumber = tx.blockNumber;
-  result.timestamp = tx.meta.blockTimestamp;
-  result.contractName = contractIdentifier;
-  return result;
+function pick(object, keys) {
+  return keys.reduce((acc, key) => {
+    acc[key] = object[key];
+    return acc;
+  }, {});
+}
+
+function makeResult(result, tx, assetName, contractAddress) {
+  return {
+    contractAddress,
+    assetName: assetName,
+    eventName: result.identifier,
+    data: pick(result.data, result.fields),
+    transaction: {
+      address: tx.transactionHash,
+      blockNumber: tx.blockNumber,
+      timestamp: tx.meta.blockTimestamp,
+      sender: tx.meta.txOrigin,
+      contractAddress
+    }
+  };
 }
 
 export default {

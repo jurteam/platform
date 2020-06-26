@@ -19,9 +19,7 @@ export default class Parser {
   }
 
   contractByAddress(address) {
-    return this.contracts.find(
-      c => checksum(c.contractAddress) === checksum(address)
-    );
+    return this.contracts.find(c => checksum(c.address) === checksum(address));
   }
 
   addContract(ev) {
@@ -34,13 +32,14 @@ export default class Parser {
 
   parseTx(tx) {
     return tx.outputs.reduce((acc, row) => {
-      console.log("Parser output", row);
       const decodedEvents = row.events
         .map(ev => this.addContract(ev))
         .filter(hasContract)
         .map(decodeEvent)
         .filter(hasDecodedEvent)
-        .map(ev => makeResult(ev.decodedEvent, tx, ev.contractIdentifier));
+        .map(ev =>
+          makeResult(ev.decodedEvent, tx, ev.assetName, ev.contractAddress)
+        );
       return acc.concat(decodedEvents);
     }, []);
   }
