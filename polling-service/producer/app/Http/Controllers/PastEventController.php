@@ -173,6 +173,6 @@ class PastEventController extends Controller
         }
 
         // return all transactions
-        return $transactions;
+        return ['transactions' => $transactions];
     }
 }
