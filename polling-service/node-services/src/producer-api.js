@@ -7,7 +7,11 @@ const api = axios.create({
 });
 
 const getConfig = () => api.get("/real-time").then(r => r.data);
-const postEvent = data => api.post("/real-time", data).then(r => r.data);
+const postEvent = data => {
+  if (data?.data?.length)
+    console.log("posting to producer", JSON.stringify(data));
+  return api.post("/real-time", data).then(r => r.data);
+};
 
 export default {
   getConfig,

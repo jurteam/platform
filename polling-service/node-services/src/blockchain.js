@@ -1,5 +1,5 @@
 function block(number) {
-  console.log("going to read block", number);
+  console.log("going to read block", number, "at", new Date());
   return new Promise((resolve, reject) => {
     const read = () => web3.eth.getBlock(number);
     const handle = block => {
