@@ -45,9 +45,9 @@ services:
     volumes:
       - ./polling-service/node-services:/var/www/html
     working_dir: /var/www/html
-    command: node index.js
+    command: node start-rtr.js
     links:
-      - rabbit
+      - polling_producer
 
   polling_per:
     image: node:14.3
@@ -73,6 +73,8 @@ services:
       - ./environment/cron/jur.conf:/var/spool/cron/crontabs/root
     ports:
       - "8100:80"
+    links:
+      - polling_db
 
   cache:
     image: memcached
