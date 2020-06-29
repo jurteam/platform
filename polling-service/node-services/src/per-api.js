@@ -37,6 +37,7 @@ const createServer = () => {
       })
       .then(data => response.code(200).send(data))
       .catch(e => {
+        console.error(e);
         response.code(400).send(e);
       });
   });
