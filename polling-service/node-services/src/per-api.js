@@ -1,7 +1,7 @@
 import fastify from "fastify";
 import blockchain from "./blockchain.js";
 import Parser from "./parser.js";
-const server = fastify({ logger: true });
+const server = fastify();
 const PORT = process.env.PER_PORT || 3000;
 import schema from "./schema/schema.js";
 
@@ -21,6 +21,7 @@ const createServer = () => {
         })
         .then(data => response.code(200).send(data))
         .catch(e => {
+          console.error(e);
           response.code(400).send(e);
         });
     }
@@ -45,9 +46,14 @@ const createServer = () => {
   server.listen(PORT, err => {
     if (err) {
       console.error("[per-failure-server]", new Date());
-      server.log.error(err);
+      console.error(err);
       process.exit(32);
     }
+    console.info(
+      `server listening on ${server.server.address().address}/${
+        server.server.address().port
+      }`
+    );
   });
 };
 
