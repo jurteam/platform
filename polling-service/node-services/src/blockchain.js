@@ -28,7 +28,7 @@ function receipt(txHash) {
   return web3.eth.getTransactionReceipt(txHash).catch(e => {
     console.error("failed to get transaction", txHash);
     console.error(e);
-    return reject(e);
+    return Promise.reject(e);
   });
 }
 
