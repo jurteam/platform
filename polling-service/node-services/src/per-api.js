@@ -4,6 +4,7 @@ import Parser from "./parser.js";
 const server = fastify();
 const PORT = process.env.PER_PORT || 3000;
 import schema from "./schema/schema.js";
+const PER_SERVER_FAILED = 26;
 
 const createServer = () => {
   server.post(
@@ -47,7 +48,7 @@ const createServer = () => {
     if (err) {
       console.error("[per-failure-server]", new Date());
       console.error(err);
-      process.exit(32);
+      process.exit(PER_SERVER_FAILED);
     }
     console.info(
       `server listening on ${server.server.address().address}/${

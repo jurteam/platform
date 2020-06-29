@@ -2,7 +2,7 @@ import fastify from "fastify";
 import runtime from "./src/runtime.js";
 import server from "./src/per-api.js";
 
-const PER_FAILED = 32;
+const PER_FAILED = 1;
 
 const serve = async () => {
   try {
