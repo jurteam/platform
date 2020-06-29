@@ -21,11 +21,15 @@ function transactions(block) {
     return Promise.all(block.transactions.map(receipt)).then(receipts =>
       receipts.filter(hasOutputs)
     );
-  return [];
+  return Promise.resolve([]);
 }
 
 function receipt(txHash) {
-  return web3.eth.getTransactionReceipt(txHash);
+  return web3.eth.getTransactionReceipt(txHash).catch(e => {
+    console.error("failed to get transaction", txHash);
+    console.error(e);
+    return Promise.reject(e);
+  });
 }
 
 function hasOutputs(tx) {
@@ -34,5 +38,6 @@ function hasOutputs(tx) {
 
 export default {
   block,
-  transactions
+  transactions,
+  receipt
 };
