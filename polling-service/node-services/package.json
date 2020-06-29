@@ -20,5 +20,10 @@
     "jest": "^26.0.1",
     "thorify": "^1.5.2",
     "web3": "^1.2.6"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.10.3",
+    "@babel/preset-env": "^7.10.3",
+    "babel-jest": "^26.1.0"
   }
 }
