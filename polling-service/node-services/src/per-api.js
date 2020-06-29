@@ -27,7 +27,6 @@ const createServer = () => {
   );
 
   server.post("/tx/:transactionHash", schema.txSchema, (request, response) => {
-    console.log(schema.txSchema);
     const { contracts } = request.body;
     const parser = new Parser(contracts);
     blockchain

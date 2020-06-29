@@ -9,9 +9,12 @@ const transactionHashSchema = {
 };
 
 const blockNumberSchema = {
+  type: "object",
   required: ["blockNumber"],
-  blockNumber: {
-    type: "integer"
+  properties: {
+    blockNumber: {
+      type: "integer"
+    }
   }
 };
 
