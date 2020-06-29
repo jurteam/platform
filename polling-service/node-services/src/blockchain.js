@@ -25,15 +25,10 @@ function transactions(block) {
 }
 
 function receipt(txHash) {
-  return new Promise((resolve, reject) => {
-    web3.eth
-      .getTransactionReceipt(txHash)
-      .then(tx => (tx ? resolve(tx) : reject(e)))
-      .catch(e => {
-        console.error("failed to get transaction", txHash);
-        console.error(e);
-        return reject(e);
-      });
+  return web3.eth.getTransactionReceipt(txHash).catch(e => {
+    console.error("failed to get transaction", txHash);
+    console.error(e);
+    return reject(e);
   });
 }
 
