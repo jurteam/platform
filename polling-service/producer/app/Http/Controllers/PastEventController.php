@@ -39,7 +39,8 @@ class PastEventController extends Controller
         $body = $this->getRequestConfig();
 
         // url to get past block events of PER service
-        $url = $this->host . '/block/' . $blockNo;
+        $url = $this->host . '/blocks/' . $blockNo;
+
 
         // send a POST request with configuration and get event's data
         $response = Http::post($url, $body)->throw()->json();
@@ -103,7 +104,7 @@ class PastEventController extends Controller
 
         for ($i = $from; $i <= $to; $i++) {
             // url to get past transaction events of PER service
-            $url = $this->host . '/block/' . $i;
+            $url = $this->host . '/blocks/' . $i;
 
             // send a POST request with configuration and get event's data
             $response = Http::post($url, $body)->throw()->json();

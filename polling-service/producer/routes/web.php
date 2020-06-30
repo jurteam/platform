@@ -10,7 +10,7 @@ $api->version('v1', function ($api) {
         });
 
         $api->group(['prefix' => 'past-events'], function ($api) {
-            $api->get('/block/{blockNo}', 'App\Http\Controllers\PastEventController@getBlock');
+            $api->get('/blocks/{blockNo}', 'App\Http\Controllers\PastEventController@getBlock');
             $api->get('/tx/{transactionHash}', 'App\Http\Controllers\PastEventController@getTransaction');
             $api->get('/blocks', 'App\Http\Controllers\PastEventController@getBlocks');
         });
