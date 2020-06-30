@@ -83,9 +83,6 @@ class PastEventController extends Controller
         // get to Block
         $to = $request->input('to', null);
 
-        // get direction
-        $direction = $request->input('direction', 'asc');
-
         // throw error if there are missing params
         if ($from == null || $to == null) {
             abort(422, 'Please specify `from` and `to` blocks!');
