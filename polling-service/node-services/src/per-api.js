@@ -51,7 +51,7 @@ const createServer = () => {
       process.exit(PER_SERVER_FAILED);
     }
     console.info(
-      `server listening on ${server.server.address().address}/${
+      `server listening on ${server.server.address().address}:${
         server.server.address().port
       }`
     );
