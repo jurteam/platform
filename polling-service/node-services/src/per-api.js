@@ -44,7 +44,7 @@ const createServer = () => {
       });
   });
 
-  server.listen(PORT, err => {
+  server.listen( PORT, '0.0.0.0', err => {
     if (err) {
       console.error("[per-failure-server]", new Date());
       console.error(err);
