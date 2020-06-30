@@ -44,14 +44,14 @@ const createServer = () => {
       });
   });
 
-  server.listen(PORT, err => {
+  server.listen( PORT, '0.0.0.0', err => {
     if (err) {
       console.error("[per-failure-server]", new Date());
       console.error(err);
       process.exit(PER_SERVER_FAILED);
     }
     console.info(
-      `server listening on ${server.server.address().address}/${
+      `server listening on ${server.server.address().address}:${
         server.server.address().port
       }`
     );
