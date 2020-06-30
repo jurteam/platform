@@ -53,5 +53,6 @@ export default {
   checksum,
   hasContract,
   hasDecodedEvent,
-  makeResult
+  makeResult,
+  pick
 };

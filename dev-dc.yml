@@ -1,16 +1,14 @@
 version: "3"
 services:
-  polling-test:
+  polling_rtr-test:
     image: node:14.3
     environment:
       CLOUDAMQP_URL: amqp://yellowpanda:yellowpanda@rabbit-test:5672
       THOR_CONNECTION_URL: https://sync-testnet.vechain.org
     volumes:
-      - ./polling-service:/var/www/html
+      - ./polling-service/node-services:/var/www/html
     working_dir: /var/www/html
     command: npm run test -- --watchAll
-    links:
-      - rabbit-test
 
   rabbit-test:
     image: rabbitmq:3.8

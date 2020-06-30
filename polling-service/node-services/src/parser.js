@@ -13,7 +13,7 @@ export default class Parser {
     this.contracts = contracts;
     if (!this.contracts || this.contracts.length < 1) {
       console.warn(
-        "No contracts to parse. That is we don't have interest in any asset"
+        "No contracts to parse. That is, we don't have interest in any asset"
       );
     }
   }
