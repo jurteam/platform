@@ -20,13 +20,12 @@ class TransactionState extends Model
     /**
      * Find last read block number
      *
-     * @param Number $instanceId: instance Id
      * @return Number last read block number
      */
-    public static function findLastReadBlock($instanceId)
+    public static function findLastReadBlock()
     {
         // find last read block from TransactionState
-        $lastBlock = TransactionState::where('instance_id', $instanceId)->pluck('last_read_block')->first();
+        $lastBlock = TransactionState::pluck('last_read_block')->first();
 
         // if TransactionState is not contain the specific instance
         if (!isset($lastBlock)) {
@@ -44,8 +43,6 @@ class TransactionState extends Model
 
             // create new TransactionState
             $state = new TransactionState;
-            $state->instance_id = $instanceId;
-            $state->service_name = $instanceId == config('polling.RealTimeInstanceId') ? 'RTR' : 'PER';
             $state->last_read_block = $lastBlock;
             $state->save();
         }
@@ -57,14 +54,13 @@ class TransactionState extends Model
     /**
      * Change last read block of a transactionState
      *
-     * @param Number $instanceId: instance Id
      * @param Number $blockNo: block number
      * @return Number next block number
      */
-    public static function changeLastReadBlock($instanceId, $blockNo)
+    public static function changeLastReadBlock($blockNo)
     {
-        // find the TransactionState by $instanceId
-        $state = TransactionState::where('instance_id', $instanceId)->first();
+        // find the TransactionState
+        $state = TransactionState::first();
 
         // change last read block if  TransactionState exists
         if (isset($state)) {

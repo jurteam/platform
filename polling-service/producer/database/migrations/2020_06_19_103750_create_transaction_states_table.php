@@ -15,8 +15,6 @@ class CreateTransactionStatesTable extends Migration
     {
         Schema::create('transaction_states', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('instance_id');
-            $table->enum('service_name',['RTR', 'PER']);
             $table->unsignedBigInteger('last_read_block');
             $table->timestamps();
 

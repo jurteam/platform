@@ -14,16 +14,6 @@ class RealTimeEventController extends Controller
 {
     use Helpers;
 
-    private $instanceId;
-
-    /**
-     * Instantiate a new RealTimeEventController instance.
-     */
-    public function __construct()
-    {
-        $this->instanceId = config('polling.RealTimeInstanceId'); // get instance id from config
-    }
-
     /**
      * GET configurations for polling service
      *
@@ -42,7 +32,7 @@ class RealTimeEventController extends Controller
 
         // return next block number and contracts
         return [
-            'nextBlockNumber' => TransactionState::findLastReadBlock($this->instanceId),
+            'nextBlockNumber' => TransactionState::findLastReadBlock(),
             'contracts' => $assets->map(function ($asset) use ($transformer) {
                 return $transformer->transform($asset);
             })
@@ -72,6 +62,6 @@ class RealTimeEventController extends Controller
         }
 
         // return next block number
-        return ['nextBlockNumber' => TransactionState::changeLastReadBlock($this->instanceId, $block['blockNumber'])];
+        return ['nextBlockNumber' => TransactionState::changeLastReadBlock($block['blockNumber'])];
     }
 }
