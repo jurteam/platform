@@ -290,13 +290,14 @@ function* manageEvent(txw,decoded)
                 try {
                   response = yield call(Contracts.statusChange, toUpdate, id);
                   log("handleCreateArbitration - contract status updated", response);
-                  const { statusId, statusLabel, statusUpdatedAt, statusFrom } = response.data.data;
+                  const { statusId, statusLabel, statusUpdatedAt, statusWillEndAt, statusFrom } = response.data.data;
                   yield put({
                     type: SET_CONTRACT_STATUS,
                     statusId,
                     statusFrom,
                     statusLabel,
                     statusUpdatedAt,
+                    statusWillEndAt, 
                     id
                   });
                   yield put({ type: FETCH_CONTRACTS });
@@ -400,13 +401,14 @@ function* manageEvent(txw,decoded)
               try {
                 const response = yield call(Contracts.statusChange, toUpdate, id);
                 log("manageEvent (ContractSigned) - contract status updated", response);
-                const { statusId, statusLabel, statusUpdatedAt, statusFrom } = response.data.data;
+                const { statusId, statusLabel, statusUpdatedAt, statusWillEndAt, statusFrom } = response.data.data;
                 yield put({
                   type: SET_CONTRACT_STATUS,
                   statusId,
                   statusFrom,
                   statusLabel,
                   statusUpdatedAt,
+                  statusWillEndAt, 
                   id
                 });
                 yield put({ type: FETCH_CONTRACTS });
@@ -458,13 +460,14 @@ function* manageEvent(txw,decoded)
             try {
               const response = yield call(Contracts.statusChange, toUpdate, id);
               log("handleSuccessArbitration - contract status updated", response);
-              const { statusId, statusLabel, statusUpdatedAt, statusFrom } = response.data.data;
+              const { statusId, statusLabel, statusUpdatedAt, statusWillEndAt, statusFrom } = response.data.data;
               yield put({
                 type: SET_CONTRACT_STATUS,
                 statusId,
                 statusFrom,
                 statusLabel,
                 statusUpdatedAt,
+                statusWillEndAt, 
                 id
               });
               yield put({ type: FETCH_CONTRACTS });
@@ -537,13 +540,14 @@ function* manageEvent(txw,decoded)
             try {
               const response = yield call(Contracts.statusChange, toUpdate, id);
               log("handleWithdrawArbitration - contract status updated", response);
-              const { statusId, statusLabel, statusUpdatedAt, statusFrom } = response.data.data;
+              const { statusId, statusLabel, statusUpdatedAt, statusWillEndAt, statusFrom } = response.data.data;
               yield put({
                 type: SET_CONTRACT_STATUS,
                 statusId,
                 statusFrom,
                 statusLabel,
                 statusUpdatedAt,
+                statusWillEndAt, 
                 id
               });
               yield put({ type: FETCH_CONTRACTS });
