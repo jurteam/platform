@@ -22,7 +22,7 @@ class CreateStatusesTable extends Migration
             $table->enum('status_type', ['Solomon', 'Justinian']);
             $table->timestamps();
 
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');;
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
