@@ -36,7 +36,7 @@ class RewardActivity extends Model
         $saved = $rewardActivity->save();
 
         // find all UserContracts from databse based on whitelistContractIds
-        $userContracts = UserContract::whereIn('sc_user_type_id', $payload->whitelistContractIds)->select('id', 'sc_user_type_id')->get()->toArray();
+        $userContracts = UserContract::whereIn('sc_user_contract_id', $payload->whitelistContractIds)->select('id', 'sc_user_contract_id')->get()->toArray();
 
         // RewardActivityRole records to be saved
         $rewardActivityRoles = [];
@@ -45,7 +45,7 @@ class RewardActivity extends Model
 
             // find userContract
             $userContract = array_filter($userContracts, function ($item) use ($id) {
-                return $item->sc_user_type_id == $id;
+                return $item->sc_user_contract_id == $id;
             });
 
             // Formulate RewardActivityRole record that will be saved
