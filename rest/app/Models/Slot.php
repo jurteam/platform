@@ -19,7 +19,7 @@ class Slot extends Model
         $rewardActivity = RewardActivity::where('sc_activity_id', $payload->activityId)->firstOrFail();
 
         // Update RewardActivity
-        $slot = Slot::firstOrCreate(['sc_slot_id' => $payload->slotId, 'reward_activity_id' => $rewardActivity->id])->firstOrFail();
+        $slot = Slot::firstOrCreate(['sc_slot_id' => $payload->slotId, 'reward_activity_id' => $rewardActivity->id]);
         $slot->assigned_wallet = $payload->slotCount;
         $slot->due_date = Carbon::createFromTimestamp($payload->dueDate);
         $slot->status = 'Assigned';
