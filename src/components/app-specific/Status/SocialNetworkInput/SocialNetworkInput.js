@@ -3,12 +3,12 @@ import "./SocialNetworkInput.scss";
 
 import { FacebookIcon, TwitterIcon, LinkedInIcon } from "JurCommon/Icons";
 import RadioInputRow from "JurCommon/RadioInputRow";
-import { SOCIAL_NETWORK_OPTIONS } from "JurUtils/StatusHelpers";
+import { SOCIAL_NETWORK_OPTIONS } from "JurUtils/AdvocateHelpers";
 import { getShareNetwork } from "../../../../sagas/Selectors";
-import { STATUS_CHANGE_SHARE_NETWORK } from "../../../../reducers/types";
+import { ADVOCATE_CHANGE_SHARE_NETWORK } from "../../../../reducers/types";
 
 const onChange = option => ({
-  type: STATUS_CHANGE_SHARE_NETWORK,
+  type: ADVOCATE_CHANGE_SHARE_NETWORK,
   payload: { value: option.value }
 });
 

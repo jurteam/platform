@@ -11,13 +11,13 @@ import mediaSagas from "./Media";
 import arbitrationSagas from "./Arbitration";
 import transactionSagas from "./Transaction";
 import oathKeeperSagas from "./OathKeeper";
-import statusSagas from "./Status";
+import advocateSagas from "./Advocate";
 import houndSagas from "./Hound";
 
 // Join all sagas
 const sagas = [...drizzleSagas];
 sagas.push(oathKeeperSagas);
-sagas.push(statusSagas);
+sagas.push(advocateSagas);
 sagas.push(houndSagas);
 sagas.push(appSagas);
 sagas.push(errorsSagas);

@@ -11,7 +11,7 @@ import Faq from "./Faq";
 import Terms from "./Terms";
 
 import i18n from "../../../assets/i18n/en/labels.json"; // i18n
-import MyStatusSection from "../Status/MyStatusSection";
+import AdvocateSection from "../Status/AdvocateSection";
 
 // Section Context
 export const ProfileContext = React.createContext();
@@ -36,7 +36,7 @@ class ProfileProvider extends Component {
           label: i18n.myStatus,
           to: "/status/my-status",
           exact: true,
-          component: <MyStatusSection />
+          component: <AdvocateSection />
         },
         {
           label: i18n.privacy,

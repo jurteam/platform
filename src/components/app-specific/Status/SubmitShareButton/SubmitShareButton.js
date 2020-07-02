@@ -2,7 +2,7 @@ import React from "react";
 import "./SubmitShareButton.scss";
 
 import Button from "JurCommon/Button";
-import { STATUS_SHARE } from "../../../../reducers/types";
+import { ADVOCATE_SHARE } from "../../../../reducers/types";
 import { getShareIsSharing } from "../../../../sagas/Selectors";
 
 const SubmitShareButton = ({ onClick, isDisabled }) => (
@@ -11,7 +11,7 @@ const SubmitShareButton = ({ onClick, isDisabled }) => (
   </Button>
 );
 
-const onClick = () => ({ type: STATUS_SHARE });
+const onClick = () => ({ type: ADVOCATE_SHARE });
 
 const mapDispatchToProps = { onClick };
 const mapStateToProps = state => ({ value: getShareIsSharing(state) });

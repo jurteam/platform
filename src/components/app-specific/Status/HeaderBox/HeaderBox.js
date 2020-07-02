@@ -2,17 +2,17 @@ import React from "react";
 import "./HeaderBox.scss";
 import {
   getWallet,
-  getMyStatus,
-  getStatusIsFetching
+  getAdvocate,
+  getAdvocateIsFetching
 } from "../../../../sagas/Selectors";
 
 import Cover from "JurCommon/Cover";
 import Box from "JurCommon/Box";
 import Avatar from "JurCommon/Avatar";
 import Text from "JurCommon/Text";
-import HolderHeader from "../HolderHeader";
+import AdvocateHeader from "../AdvocateHeader";
 import ArticleButton from "../ArticleButton";
-import NonHolderHeader from "../NonHolderHeader";
+import NonAdvocateHeader from "../NonAdvocateHeader";
 import ShareStatusButton from "../ShareStatusButton";
 import Frame from "JurCommon/Frame";
 
@@ -30,13 +30,13 @@ const HeaderBox = ({
       </Frame>
       <Text size="xsmall">{address}</Text>
       {!isFetching && statusType ? (
-        <HolderHeader
+        <AdvocateHeader
           country={country}
           statusType={statusType}
           activationTime={activationTime}
         />
       ) : (
-        <NonHolderHeader />
+        <NonAdvocateHeader />
       )}
       {!isFetching && statusType ? (
         <ShareStatusButton className="jur-cover__bottom-out" />
@@ -61,17 +61,17 @@ function coverClass(statusType) {
 }
 
 const mapStateToProps = state => {
-  const isFetching = getStatusIsFetching(state);
+  const isFetching = getAdvocateIsFetching(state);
   if (isFetching) return { isFetching };
 
-  const myStatus = getMyStatus(state);
+  const advocate = getAdvocate(state);
 
   return {
     isFetching: isFetching,
     address: getWallet(state).address,
-    country: myStatus.attributes.country,
-    statusType: myStatus.attributes.statusType,
-    activationTime: new Date(myStatus.attributes.activationTime)
+    country: advocate.attributes.country,
+    statusType: advocate.attributes.statusType,
+    activationTime: new Date(advocate.attributes.activationTime)
   };
 };
 

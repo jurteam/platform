@@ -1,0 +1,44 @@
+import React, { useEffect, useContext } from "react";
+// import "./Advocates.scss";
+
+import { AppContext } from "../../../bootstrap/AppProvider";
+
+import PageLayout from "JurCommon/PageLayout";
+import Main from "JurCommon/Main";
+import AdvocatesHeader from "../../app-specific/Status/AdvocatesHeader";
+import AdvocatesIndex from "../../app-specific/Status/AdvocatesIndex";
+import AdvocatesFooterBox from "../../app-specific/Status/AdvocatesFooterBox";
+import { ADVOCATE_RESET_SORTS } from "../../../reducers/types";
+
+const Advocates = ({ resetSorts }) => {
+  useEffect(() => resetSorts, []);
+  const { labels } = useContext(AppContext);
+
+  const b = [
+    {
+      label: labels.myStatus,
+      to: "/status/my-status",
+      exact: true
+    },
+    {
+      label: labels.jurStatus,
+      to: "/status/holders"
+    }
+  ];
+
+  return (
+    <PageLayout breadcrumbs={b}>
+      <Main className="jur-safe-margin">
+        <AdvocatesHeader />
+        <AdvocatesIndex />
+        <AdvocatesFooterBox />
+      </Main>
+    </PageLayout>
+  );
+};
+
+const resetSorts = () => ({ type: ADVOCATE_RESET_SORTS });
+
+const mapDispatchToProps = { resetSorts };
+
+export default global.connection(Advocates, null, mapDispatchToProps);
