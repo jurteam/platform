@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateAdvocatesTable extends Migration
 {
@@ -15,7 +15,15 @@ class CreateAdvocatesTable extends Migration
     {
         Schema::create('advocates', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->unsignedInteger('sc_adovocate_id');
+            $table->string('wallet');
+            $table->dateTime('activation_time');
+            $table->boolean('is_active');
+            $table->string('type');
             $table->timestamps();
+
+            $table->index(['wallet']);
+            $table->index(['type']);
         });
     }
 
