@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import "./AdvocateSection.scss";
 
 import Section from "JurCommon/Section";
-import HeaderBox from "../../../app-specific/Status/HeaderBox";
+import HeaderBox from "../../../app-specific/Advocate/HeaderBox";
 import { ADVOCATE_FETCH_MINE } from "../../../../reducers/types";
 
 const AdvocateSection = ({ fetchMyAdvocasy }) => {

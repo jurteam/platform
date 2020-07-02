@@ -7,7 +7,7 @@ import Logo from "../Logo";
 import MainNav from "../MainNav";
 import ProfilePreview from "../ProfilePreview";
 import OathKeeperNav from "../../app-specific/OathKeeper/OathKeeperNav";
-import AdvocateNav from "../../app-specific/Status/AdvocateNav";
+import AdvocateNav from "../../app-specific/Advocate/AdvocateNav";
 
 export const Header = props => {
   const { wallet, user, app } = props;

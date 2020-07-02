@@ -5,9 +5,9 @@ import { AppContext } from "../../../bootstrap/AppProvider";
 
 import PageLayout from "JurCommon/PageLayout";
 import Main from "JurCommon/Main";
-import AdvocatesHeader from "../../app-specific/Status/AdvocatesHeader";
-import AdvocatesIndex from "../../app-specific/Status/AdvocatesIndex";
-import AdvocatesFooterBox from "../../app-specific/Status/AdvocatesFooterBox";
+import AdvocatesHeader from "../../app-specific/Advocate/AdvocatesHeader";
+import AdvocatesIndex from "../../app-specific/Advocate/AdvocatesIndex";
+import AdvocatesFooterBox from "../../app-specific/Advocate/AdvocatesFooterBox";
 import { ADVOCATE_RESET_SORTS } from "../../../reducers/types";
 
 const Advocates = ({ resetSorts }) => {
