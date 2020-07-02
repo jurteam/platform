@@ -33,4 +33,4 @@ export const shareOn = (network, text, url, title, hashtags) => {
 };
 
 export const advocates = (address = "") =>
-  axios.get("/advocates/" + address).then(r => r.data);
+  axios.get("/status/holders/" + address).then(r => r.data);

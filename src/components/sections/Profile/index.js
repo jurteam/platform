@@ -33,8 +33,8 @@ class ProfileProvider extends Component {
           component: <MyOathsSection />
         },
         {
-          label: i18n.myStatus,
-          to: "/status/my-status",
+          label: i18n.advocate,
+          to: "/advocates/my-advocasy",
           exact: true,
           component: <AdvocateSection />
         },

@@ -16,13 +16,13 @@ const Advocates = ({ resetSorts }) => {
 
   const b = [
     {
-      label: labels.myStatus,
-      to: "/status/my-status",
+      label: labels.advocate,
+      to: "/advocates/my-advocasy",
       exact: true
     },
     {
-      label: labels.jurStatus,
-      to: "/status/holders"
+      label: labels.advocates,
+      to: "/advocates/"
     }
   ];
 

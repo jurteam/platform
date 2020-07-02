@@ -109,6 +109,6 @@ export const getSocialSharebles = state => ({
 });
 export const getAdvocate = state => state.advocate.advocate;
 export const getAdvocateIsFetching = state => state.advocate.isFetching;
-export const getAdvocates = state => state.advocate.holders;
+export const getAdvocates = state => state.advocate.advocates;
 export const getAdvocatesPagination = state =>
-  state.advocate.holdersMeta.pagination;
+  state.advocate.advocatesMeta.pagination;

@@ -5,7 +5,7 @@ import { AdvocateNavIcon } from "JurCommon/Icons";
 
 const AdvocateNav = () => (
   <NavLink
-    to="/status/holders"
+    to="/advocates/"
     activeClassName="jur-status-nav__active"
     className="jur-status-nav jur-nav-right"
   >
