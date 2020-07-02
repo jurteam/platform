@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateActivityAvailabilitiesTable extends Migration
+class CreateRewardActivityRolesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateActivityAvailabilitiesTable extends Migration
      */
     public function up()
     {
-        Schema::create('activity_availabilities', function (Blueprint $table) {
+        Schema::create('reward_activity_roles', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('reward_activity_id');
             $table->unsignedBigInteger('user_contract_id');
@@ -31,6 +31,6 @@ class CreateActivityAvailabilitiesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('activity_availabilities');
+        Schema::dropIfExists('reward_activity_roles');
     }
 }
