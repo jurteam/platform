@@ -15,12 +15,11 @@ class CreateConsumersTable extends Migration
     {
         Schema::create('consumers', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('asset_id');
             $table->string('consumer_name');
+            $table->string('asset_name');
+            $table->string('event_name');
             $table->string('url');
             $table->timestamps();
-
-            $table->foreign('asset_id')->references('id')->on('assets')->onDelete('cascade');
         });
     }
 
