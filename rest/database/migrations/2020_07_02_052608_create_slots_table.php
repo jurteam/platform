@@ -15,13 +15,13 @@ class CreateSlotsTable extends Migration
     {
         Schema::create('slots', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedInteger('activity_id');
+            $table->unsignedBigInteger('reward_activity_id');
             $table->unsignedInteger('sc_slot_id');
             $table->string('assigned_wallet');
             $table->enum('status', ['Unassigned', 'Assigned', 'Completed', 'Cancelled', 'Rewarded', 'OverDue']);
             $table->timestamps();
 
-            $table->foreign('activity_id')->references('id')->on('activities')->onDelete('cascade');
+            $table->foreign('reward_activity_id')->references('id')->on('reward_activities')->onDelete('cascade');
         });
     }
 

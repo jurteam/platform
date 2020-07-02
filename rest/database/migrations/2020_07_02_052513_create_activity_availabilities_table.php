@@ -15,11 +15,11 @@ class CreateActivityAvailabilitiesTable extends Migration
     {
         Schema::create('activity_availabilities', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedInteger('activity_id');
-            $table->unsignedInteger('user_contract_id');
+            $table->unsignedBigInteger('reward_activity_id');
+            $table->unsignedBigInteger('user_contract_id');
             $table->timestamps();
 
-            $table->foreign('activity_id')->references('id')->on('activities')->onDelete('cascade');
+            $table->foreign('reward_activity_id')->references('id')->on('reward_activities')->onDelete('cascade');
             $table->foreign('user_contract_id')->references('id')->on('user_contracts')->onDelete('cascade');
         });
     }

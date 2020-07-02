@@ -15,7 +15,7 @@ class CreateRewardsTable extends Migration
     {
         Schema::create('rewards', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedInteger('slot _id');
+            $table->unsignedBigInteger('slot _id');
             $table->string('rewardee_wallet');
             $table->decimal('reward_amount', 36, 18);
             $table->dateTime('rewarded_on');
