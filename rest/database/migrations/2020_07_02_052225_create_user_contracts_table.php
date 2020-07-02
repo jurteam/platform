@@ -15,7 +15,7 @@ class CreateUserContractsTable extends Migration
     {
         Schema::create('user_contracts', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedInteger('sc_user_type_id');
+            $table->unsignedInteger('sc_user_contract_id');
             $table->string('contract_address');
             $table->string('name');
             $table->boolean('is_active');
