@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateSlotsTable extends Migration
 {
@@ -15,7 +15,13 @@ class CreateSlotsTable extends Migration
     {
         Schema::create('slots', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->unsignedInteger('activity_id');
+            $table->unsignedInteger('sc_slot_id');
+            $table->string('assigned_wallet');
+            $table->enum('status', ['Unassigned', 'Assigned', 'Completed', 'Cancelled', 'Rewarded', 'OverDue']);
             $table->timestamps();
+
+            $table->foreign('activity_id')->references('id')->on('activities')->onDelete('cascade');
         });
     }
 
