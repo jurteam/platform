@@ -61,4 +61,17 @@ class RewardActivity extends Model
         return $saved;
     }
 
+    /**
+     * Update number_of_slots when `ActivityUpdated` event triggered
+     *
+     * @param Object $payload: payload  send by Smart-Contract event
+     * @return Boolean the success or failure message
+     */
+    public static function ActivityUpdated($payload)
+    {
+        // Update RewardActivity
+        $rewardActivity = RewardActivity::where('sc_activity_id', $payload->id)->firstOrFail();
+        $rewardActivity->number_of_slots = $payload->slotCount;
+        return $rewardActivity->save();
+    }
 }
