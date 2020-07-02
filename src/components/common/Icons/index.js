@@ -18,7 +18,7 @@ export * from "./PlusCircleIcon";
 export * from "./SearchIcon";
 export * from "./RankBadgeIcon";
 export * from "./OathKeeperNavIcon";
-export * from "./StatusNavIcon";
+export * from "./AdvocateNavIcon";
 export * from "./LinkedInIcon";
 export * from "./TwitterIcon";
 export * from "./FacebookIcon";
