@@ -12,7 +12,7 @@ class UserContract extends Model
      * @param Object $payload: payload  send by Smart-Contract event
      * @return Boolean the success or failure message
      */
-    public static function UserContractUpdated($payload)
+    public static function userContractUpdated($payload)
     {
         $userContract = UserContract::firstOrCreate(['sc_user_contract_id' => $payload->id]);
         $userContract->sc_user_contract_id = $payload->id;

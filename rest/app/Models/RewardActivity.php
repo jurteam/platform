@@ -15,7 +15,7 @@ class RewardActivity extends Model
      * @param Object $payload: payload  send by Smart-Contract event
      * @return Boolean the success or failure message
      */
-    public static function ActivityCreated($payload)
+    public static function activityCreated($payload)
     {
         // Check record exisits
         $exists = RewardActivity::where('sc_activity_id', $payload->id)->first();
@@ -67,7 +67,7 @@ class RewardActivity extends Model
      * @param Object $payload: payload  send by Smart-Contract event
      * @return Boolean the success or failure message
      */
-    public static function ActivityUpdated($payload)
+    public static function activityUpdated($payload)
     {
         // Update RewardActivity
         $rewardActivity = RewardActivity::where('sc_activity_id', $payload->id)->firstOrFail();
