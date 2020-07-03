@@ -3,15 +3,15 @@
 return [
     /*
     |---------------------------------------------------------------------------
-    | Real Time Instance Id
+    | Maximum Retry
     |---------------------------------------------------------------------------
     |
-    | This value is the id of the real-time polling service.  This value is used
-    | when the app needs to get information related to real-time polling service.
+    | This value is the number of retry between Producer -> Consumer.  This value
+    | is used when the transaction fails while publishing.
     |
      */
 
-    'RealTimeInstanceId' => 0,
+    'MaxRetry' => 10,
 
     /*
     |---------------------------------------------------------------------------
