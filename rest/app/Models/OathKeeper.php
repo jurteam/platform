@@ -63,18 +63,18 @@ class OathKeeper extends Model
     }
 
     /**
-     * Consume AMQP payload to store the data and calculate summaries
+     * Consume polling Service to store the data and calculate summaries
      *
-     * @param Object $payload: payload data send by AMQP server
+     * @param Object $payload: payload data send by Polling Server (Producer)
      * @return Boolean the success or failure message
      */
-    public static function consumeAMQP($payload)
+    public static function consumePollingService($payload)
     {
         $saved = false;
 
         $oathKeeper;
 
-        switch ($payload->eventIdentifier) {
+        switch ($payload->event_name) {
 
             // oathTaken event
             case 'OathTaken':

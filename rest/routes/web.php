@@ -3,6 +3,11 @@
 $api = app('Dingo\Api\Routing\Router');
 
 $api->version('v1', function ($api) {
+
+    $api->group(['prefix' => 'polling'], function ($api) {
+        $api->post('oath-keeper', 'App\Http\Controllers\ConsumerPollingServiceController@oathKeeper');
+    });
+
     $api->group(['middleware' => 'wallet.auth'], function ($api) {
         $api->group(['prefix' => 'user'], function ($api) {
             $api->get('/checking', 'App\Http\Controllers\UserController@checkForRegistered');
