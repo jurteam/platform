@@ -61,6 +61,15 @@ function* fetchAdvocates() {
     },
     advocates: [
       {
+        id: "0xdF1517295e5Ea4A2f6eCA4E74F339be0207Fe031",
+        type: "advocates",
+        attributes: {
+          address: "0xdF1517295e5Ea4A2f6eCA4E74F339be0207Fe031",
+          statusType: "Normal",
+          totalEarned: 16
+        }
+      },
+      {
         id: "0xE3DF6d92821d0911b59F2c4F0FaF09A7F7cB54dD",
         type: "advocates",
         attributes: {

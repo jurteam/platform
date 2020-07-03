@@ -124,7 +124,7 @@ export const createRoutes = withComponents => {
       exact: true,
       path: "/advocates",
       component: withComponents && Advocates,
-      title: i18n.advocates
+      title: i18n.list
     },
     {
       exact: true,

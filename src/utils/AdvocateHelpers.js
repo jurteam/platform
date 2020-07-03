@@ -20,4 +20,4 @@ export const isMyProfile = (myAddress = "", location = window.location) => {
 };
 
 export const getAddressFromUrl = (location = window.location) =>
-  location.pathname.split("/").reverse[0];
+  location.pathname.split("/").reverse()[0];

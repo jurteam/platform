@@ -21,7 +21,7 @@ const Advocates = ({ resetSorts }) => {
       exact: true
     },
     {
-      label: labels.advocates,
+      label: labels.list,
       to: "/advocates/"
     }
   ];

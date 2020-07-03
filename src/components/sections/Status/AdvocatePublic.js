@@ -15,12 +15,16 @@ const Advocates = () => {
   const b = [
     {
       label: labels.advocate,
-      to: "/advocates/" + address,
+      to: "/advocates/my-advocasy",
       exact: true
     },
     {
-      label: labels.advocates,
+      label: labels.list,
       to: "/advocates/"
+    },
+    {
+      label: "Details " + address,
+      to: "/advocates/" + address
     }
   ];
 
