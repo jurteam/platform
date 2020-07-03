@@ -18,3 +18,6 @@ export const isMyProfile = (myAddress = "", location = window.location) => {
   if (path.endsWith("my-advocasy")) return true;
   return myAddress.length && path.endsWith(myAddress.toLocaleLowerCase());
 };
+
+export const getAddressFromUrl = (location = window.location) =>
+  location.pathname.split("/").reverse[0];

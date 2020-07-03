@@ -23,6 +23,7 @@ import Advocates from "../components/sections/Status/Advocates";
 // Helpers
 import { redirect, checkConnection } from "../utils/helpers";
 import AdvocateSection from "../components/sections/Status/AdvocateSection";
+import AdvocatePublic from "../components/sections/Status/AdvocatePublic";
 
 export const createRoutes = withComponents => {
   // handle empty params
@@ -128,7 +129,7 @@ export const createRoutes = withComponents => {
     {
       exact: true,
       path: "/advocates/:address",
-      component: withComponents && AdvocateSection,
+      component: withComponents && AdvocatePublic,
       title: i18n.advocate
     },
     { component: withComponents && NotFound, title: i18n.notFound }
