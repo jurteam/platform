@@ -20,6 +20,7 @@ export * from "./RankBadgeIcon";
 export * from "./OathKeeperNavIcon";
 export * from "./AdvocateNavIcon";
 export * from "./LinkedInIcon";
+export * from "./GlobeIcon";
 export * from "./TwitterIcon";
 export * from "./FacebookIcon";
 export * from "./JustinianIcon";

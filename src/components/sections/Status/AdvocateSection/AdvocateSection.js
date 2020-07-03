@@ -31,7 +31,7 @@ const AdvocateSection = ({
 
   return (
     <Section>
-      <HeaderBox address={address} />
+      <HeaderBox address={address} isAdvocate={isAdvocate} />
       {isAdvocate ? (
         <BalancesBox
           rewardsBalance={advocasy.rewardsBalance}

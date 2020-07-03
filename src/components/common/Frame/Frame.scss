@@ -35,6 +35,13 @@
     }
   }
 
+  &__advocate {
+    &:before {
+      @include gradient-holder($border);
+      background-image: $advocate-gradient;
+    }
+  }
+
   &__pop {
     z-index: 12;
     border: solid 2px white;

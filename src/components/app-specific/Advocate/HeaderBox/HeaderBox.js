@@ -17,16 +17,18 @@ import ShareStatusButton from "../ShareStatusButton";
 import Frame from "JurCommon/Frame";
 
 const HeaderBox = ({
+  isAdvocate,
   isFetching,
   address,
   location,
   linkedIn,
+  url,
   statusType,
   activationTime
 }) => (
   <Box type="hero">
-    <Cover className={coverClass(statusType)}>
-      <Frame className={frameClass(statusType)}>
+    <Cover className={coverClass(statusType, isAdvocate)}>
+      <Frame className={frameClass(statusType, isAdvocate)}>
         <Avatar
           seed={address}
           size="xxlarge"
@@ -39,6 +41,7 @@ const HeaderBox = ({
         <AdvocateHeader
           country={location}
           linkedIn={linkedIn}
+          url={url}
           statusType={statusType}
           activationTime={activationTime}
         />
@@ -54,7 +57,9 @@ const HeaderBox = ({
   </Box>
 );
 
-function coverClass(statusType) {
+function coverClass(statusType, isAdvocate) {
+  if (isAdvocate) return "jur-cover__advocate";
+
   switch (statusType) {
     case "Justinian":
     case "justinian":
@@ -67,8 +72,9 @@ function coverClass(statusType) {
   }
 }
 
-function frameClass(statusType) {
+function frameClass(statusType, isAdvocate) {
   let className = "jur-cover__top-out ";
+  if (isAdvocate) return className + "jur-frame__advocate";
 
   switch (statusType) {
     case "Justinian":
@@ -94,7 +100,8 @@ const mapStateToProps = state => {
     activationTime: new Date(advocate.activationTime),
     address: getWallet(state).address,
     location: advocate.location,
-    linkedIn: advocate.linkedIn
+    linkedIn: advocate.linkedIn,
+    url: advocate.url
   };
 };
 

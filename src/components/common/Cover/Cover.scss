@@ -24,6 +24,11 @@
     background-image: $solomon-background-svg, $solomon-gradient;
   }
 
+  &__advocate {
+    color: white;
+    background-image: $advocate-gradient;
+  }
+
   &__hidden {
     display: none;
   }

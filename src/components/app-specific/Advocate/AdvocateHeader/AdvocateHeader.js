@@ -5,25 +5,27 @@ import Text from "JurCommon/Text";
 import Row from "JurCommon/Row";
 import Flag from "JurCommon/Flag";
 import Divide from "JurCommon/Divide";
-import { LinkedInIcon } from "JurCommon/Icons";
+import { LinkedInIcon, GlobeIcon } from "JurCommon/Icons";
 import { i18nDateFormat } from "JurUtils/helpers";
 
-const AdvocateHeader = ({ country, activationTime, linkedIn }) => (
+const AdvocateHeader = ({ country, activationTime, linkedIn, url }) => (
   <>
     <Text transform="shout">Advocate</Text>
     <Text size="small">Advocate since {i18nDateFormat(activationTime)}</Text>
     <Row align="center">
       <Flag of={country} />
-      <Divide vertical={true} />
+      <Divide vertical={true} className="color__white" />
       <a
         target="_blank"
         href={linkedIn}
         className="jur-holder-header__linkedIn"
       >
-        <LinkedInIcon className="icon-1x" />
+        <LinkedInIcon className="icon-12" />
       </a>
-      <Divide vertical={true} />
-      🌐
+      <Divide vertical={true} className="color__white" />
+      <a target="_blank" href={url} className="jur-holder-header__linkedIn">
+        <GlobeIcon className="icon-12" />
+      </a>
     </Row>
   </>
 );
