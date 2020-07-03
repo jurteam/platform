@@ -3,6 +3,7 @@ import "./StatusBadge.scss";
 
 import JustinianBadge from "./JustinianBadge";
 import SolomonBadge from "./SolomonBadge";
+import AdvocateBadge from "./AdvocateBadge";
 
 const StatusBadge = ({ statusType }) => {
   switch (statusType) {
@@ -12,6 +13,9 @@ const StatusBadge = ({ statusType }) => {
     case "Solomon":
     case "solomon":
       return <SolomonBadge />;
+    case "Normal":
+    case "normal":
+      return <AdvocateBadge />;
     default:
       return null;
   }
