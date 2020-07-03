@@ -22,6 +22,7 @@ import Advocates from "../components/sections/Status/Advocates";
 
 // Helpers
 import { redirect, checkConnection } from "../utils/helpers";
+import AdvocateSection from "../components/sections/Status/AdvocateSection";
 
 export const createRoutes = withComponents => {
   // handle empty params
@@ -116,13 +117,19 @@ export const createRoutes = withComponents => {
       exact: true,
       path: "/advocates/my-advocasy",
       component: withComponents && Profile,
-      title: i18n.oathTakers
+      title: i18n.advocate
     },
     {
       exact: true,
-      path: "/advocates/",
+      path: "/advocates",
       component: withComponents && Advocates,
-      title: i18n.oathTakers
+      title: i18n.advocates
+    },
+    {
+      exact: true,
+      path: "/advocates/:address",
+      component: withComponents && AdvocateSection,
+      title: i18n.advocate
     },
     { component: withComponents && NotFound, title: i18n.notFound }
   ];

@@ -4,7 +4,7 @@ import Button from "JurCommon/Button";
 import { NavLink } from "react-router-dom";
 
 const ViewStatusButton = ({ address }) => (
-  <NavLink to={`/status/holders/${address}`}>
+  <NavLink to={`/advocates/${address}`}>
     <Button>View Profile</Button>
   </NavLink>
 );

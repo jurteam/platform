@@ -23,5 +23,16 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
+
+    &-advocate {
+      font-weight: 600;
+      background: -webkit-linear-gradient(
+        169.14deg,
+        #e35c67 -27.76%,
+        #381ce2 116.22%
+      );
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
   }
 }

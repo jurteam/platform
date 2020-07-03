@@ -44,9 +44,32 @@ function* fetchMyAdvocasy() {
 
 function* fetchAdvocates() {
   const { data, meta } = yield advocates();
+  // const payload = {
+  //   advocates: data,
+  //   advocatesMeta: meta
+  // };
   const payload = {
-    holders: data,
-    holdersMeta: meta
+    advocatesMeta: {
+      pagination: {
+        // Everything is optional in `pagination` except `total`
+        total: 100,
+        count: 100,
+        per_page: 10, // DEFAULT: 5
+        current_page: 1,
+        total_pages: 10
+      }
+    },
+    advocates: [
+      {
+        id: "0xE3DF6d92821d0911b59F2c4F0FaF09A7F7cB54dD",
+        type: "advocates",
+        attributes: {
+          address: "0xE3DF6d92821d0911b59F2c4F0FaF09A7F7cB54dD",
+          statusType: "Normal",
+          totalEarned: 123
+        }
+      }
+    ]
   };
   yield put({ type: ADVOCATE_UPDATE_ALL, payload });
 }

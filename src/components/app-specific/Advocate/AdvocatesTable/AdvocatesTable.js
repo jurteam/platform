@@ -2,9 +2,10 @@ import React from "react";
 import "./AdvocatesTable.scss";
 
 import Table from "JurCommon/Table";
+import Amount from "JurCommon/Amount";
 import AvatarInfo from "JurCommon/AvatarInfo";
 import StatusBadge from "../StatusBadge";
-import ViewStatusButton from "../ViewStatusButton";
+import ViewAdvocateButton from "../ViewAdvocateButton";
 
 const AdvocatesTable = ({ advocates }) => (
   <Table>
@@ -12,6 +13,7 @@ const AdvocatesTable = ({ advocates }) => (
       <Table.Row>
         <Table.Cell>Wallet</Table.Cell>
         <Table.Cell>Status</Table.Cell>
+        <Table.Cell>Total Earned</Table.Cell>
         <Table.Cell>Action</Table.Cell>
       </Table.Row>
     </Table.Head>
@@ -25,7 +27,10 @@ const AdvocatesTable = ({ advocates }) => (
             <StatusBadge statusType={h.attributes.statusType} />
           </Table.Cell>
           <Table.Cell>
-            <ViewStatusButton address={h.attributes.address} />
+            <Amount value={h.attributes.totalEarned} />
+          </Table.Cell>
+          <Table.Cell>
+            <ViewAdvocateButton address={h.attributes.address} />
           </Table.Cell>
         </Table.Row>
       ))}
