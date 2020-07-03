@@ -68,10 +68,9 @@ const mapStateToProps = state => {
 
   return {
     isFetching: isFetching,
-    address: getWallet(state).address,
-    country: advocate.attributes.country,
-    statusType: advocate.attributes.statusType,
-    activationTime: new Date(advocate.attributes.activationTime)
+    country: advocate.country,
+    statusType: advocate.statusType,
+    activationTime: new Date(advocate.activationTime)
   };
 };
 

@@ -10,6 +10,12 @@ import {
 import { SOCIAL_NETWORK_OPTIONS } from "../utils/AdvocateHelpers";
 
 const INITIAL_STATE = {
+  advocate: {
+    rewardsBalance: "na",
+    totalEarned: "na",
+    totalAvailable: "na"
+  },
+  advocateMeta: { isAdvocate: true },
   advocates: [],
   advocatesMeta: { pagination: {} },
   isFetching: true,
@@ -33,7 +39,7 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         isFetching: false,
-        advocate: action.payload.data,
+        advocate: action.payload.data.attributes,
         advocateMeta: action.payload.meta
       };
     case ADVOCATE_FETCH_ALL:

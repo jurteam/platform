@@ -108,6 +108,9 @@ export const getSocialSharebles = state => ({
   address: getWallet(state).address
 });
 export const getAdvocate = state => state.advocate.advocate;
+export const getAdvocateMeta = state => state.advocate.advocateMeta;
+export const getIsAdvocateAvailableShown = state =>
+  state.advocate.isAvailableShown;
 export const getAdvocateIsFetching = state => state.advocate.isFetching;
 export const getAdvocates = state => state.advocate.advocates;
 export const getAdvocatesPagination = state =>

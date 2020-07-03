@@ -17,7 +17,28 @@ function* shareStatus() {
 
 function* fetchMyAdvocasy() {
   const { address } = yield select(getWallet);
-  const payload = yield advocates(address);
+  // const payload = yield advocates(address);
+  const payload = {
+    meta: {
+      isAdvocate: true
+    },
+    data: {
+      id: address,
+      type: "advocates", // OR "users" in case not advocate
+      attributes: {
+        address: address,
+        statusType: "Normal",
+        activationTime: new Date().getTime(), // OR skip/null in case not holder
+        country: "IN", // OPTIONAL
+        linkedIn: "http://linkedin.com", // OPTIONAL,
+        url: "http://about.me", // OPTIONAL,
+        bio: "I'm a mock data. Not coming from server",
+        rewardsBalance: 123,
+        totalEarned: 243,
+        totalAvailable: 1092 // PRIVATE
+      }
+    }
+  };
   yield put({ type: ADVOCATE_UPDATE_MINE, payload });
 }
 
