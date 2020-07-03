@@ -1,5 +1,51 @@
+@import "../../../assets/scss/variables";
+
+@mixin gradient-holder($border) {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 10;
+  margin: -$border; /* !importanté */
+  border-radius: 14px; /* !importanté */
+}
+
 .jur-frame {
-  border: 6px solid white;
-  border-radius: 14px;
+  $border: 6px;
+  border-radius: 10px;
   display: inline-flex;
+  position: relative;
+  z-index: 11;
+  background-clip: padding-box; /* !importanté */
+  border: solid 2px white; /* !importanté */
+
+  &__justinian {
+    &:before {
+      @include gradient-holder($border);
+      background-image: $justinian-gradient;
+    }
+  }
+
+  &__solomon {
+    &:before {
+      @include gradient-holder($border);
+      background-image: $solomon-gradient;
+    }
+  }
+
+  &__advocate {
+    &:before {
+      @include gradient-holder($border);
+      background-image: $advocate-gradient;
+    }
+  }
+
+  &__pop {
+    z-index: 12;
+    border: solid 2px white;
+    box-sizing: content-box;
+    border-radius: 8px;
+  }
 }

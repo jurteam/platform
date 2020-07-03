@@ -9,6 +9,21 @@ class Transaction extends Model
 {
     public $timestamps = true;
 
+    /**
+     * @var array
+     */
+    protected $fillable = [
+        'asset_name',
+        'event_name',
+        'contract_address',
+        'transaction_hash',
+        'sender',
+        'timestamp',
+        'event_name',
+        'block_number',
+        'data'
+    ];
+
     protected $casts = [
         'data' => 'array'
     ];
@@ -16,22 +31,20 @@ class Transaction extends Model
     /**
      * Store a transaction
      *
-     * @param Transaction $transaction: object of a transaction
-     * @return Boolean success or failure status
+     * @param Object $transaction: object of a transaction
+     * @return Transaction Transaction object
      */
     public static function store($data)
     {
-        $transaction = new Transaction;
-
-        $transaction->asset_name = $data['assetName'];
-        $transaction->event_name = $data['eventName'];
-        $transaction->contract_address = $data['contractAddress'];
-        $transaction->transaction_hash = $data['transaction']['address'];
-        $transaction->sender = $data['transaction']['sender'];
-        $transaction->timestamp = Carbon::createFromTimestamp($data['transaction']['timestamp']);
-        $transaction->block_number = $data['transaction']['blockNumber'];
-        $transaction->data = $data['data'];
-
-        return $transaction->save();
+        return Transaction::create([
+            'asset_name' => $data['assetName'],
+            'event_name' => $data['eventName'],
+            'contract_address' => $data['contractAddress'],
+            'transaction_hash' => $data['transaction']['address'],
+            'sender' => $data['transaction']['sender'],
+            'timestamp' => Carbon::createFromTimestamp($data['transaction']['timestamp']),
+            'block_number' => $data['transaction']['blockNumber'],
+            'data' => $data['data']
+        ]);
     }
 }

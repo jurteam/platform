@@ -51,7 +51,7 @@ class StatusController extends Controller
                         'statusType' => isset($status) ? $status->status_type : null,
                         'activationTime' => isset($status) ? $status->activated_at : null,
                         'linkedIn' => isset($user) ? $user->linkedin : null,
-                        'country' => isset($user) ? $user->country : null
+                        'location' => isset($user) ? $user->location : null
                     ]
                 ],
                 'meta' => [

@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\PublishTransaction;
 use App\Models\Asset;
+use App\Models\Consumer;
 use App\Models\Transaction;
 use App\Models\TransactionState;
 use App\Transformers\AssetTransformer;
@@ -57,7 +59,18 @@ class RealTimeEventController extends Controller
 
         foreach ($block['data'] as $transaction) {
             if (!in_array($transaction['transaction']['address'], $transactions)) {
-                Transaction::store($transaction); // create new transaction if not exists
+
+                // create new transaction if not exists
+                $saved = Transaction::store($transaction);
+
+                // get all consumers of intrest
+                $consumers = Consumer::where('contract_address', $transaction['contractAddress'])
+                    ->where('asset_name', $transaction['assetName'])
+                    ->where('event_name', $transaction['eventName'])->get();
+
+                foreach ($consumers as $consumer) {
+                    dispatch(new PublishTransaction($consumer, $saved));
+                }
             }
         }
 

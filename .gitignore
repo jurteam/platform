@@ -87,7 +87,6 @@ rest/storage/app/public*
 .env.production.local
 .env.docker-compose
 .env.polling-service
-polling-service/package-lock.json
 
 npm-debug.log*
 yarn-debug.log*
@@ -97,5 +96,4 @@ yarn-error.log*
 deploy-conf.yml
 deploy-exclude.list
 public/files/prova.pdf
-*.lock
 persistent-runtime/

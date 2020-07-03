@@ -2,6 +2,8 @@
 
 .jur-cover {
   border-radius: 4px 4px 0 0;
+  background-position: center, center;
+  background-repeat: no-repeat;
   background-color: $secondary;
 
   &__top-out {
@@ -14,11 +16,20 @@
 
   &__justinian {
     color: white;
-    background: linear-gradient(11deg, #38b8f2 0%, #843cf6 100%);
+    background-image: $justinian-background-svg, $justinian-gradient;
   }
 
   &__solomon {
     color: white;
-    background: linear-gradient(190.73deg, #3139ec 0%, #ff0061 100%);
+    background-image: $solomon-background-svg, $solomon-gradient;
+  }
+
+  &__advocate {
+    color: white;
+    background-image: $advocate-gradient;
+  }
+
+  &__hidden {
+    display: none;
   }
 }

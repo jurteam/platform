@@ -98,17 +98,20 @@ export const getGraphAnalytics = (state, card, chart = "line") => {
     ];
 };
 
-// Status
-export const getShareNetwork = state => state.status.shareNetwork;
-export const getShareText = state => state.status.shareText;
-export const getShareIsSharing = state => state.status.isSharing;
-export const getStatusSharebles = state => ({
-  shareNetwork: state.status.shareNetwork,
-  shareText: state.status.shareText,
+// Advocates
+export const getShareNetwork = state => state.advocate.shareNetwork;
+export const getShareText = state => state.advocate.shareText;
+export const getShareIsSharing = state => state.advocate.isSharing;
+export const getSocialSharebles = state => ({
+  shareNetwork: state.advocate.shareNetwork,
+  shareText: state.advocate.shareText,
   address: getWallet(state).address
 });
-export const getMyStatus = state => state.status.myStatus;
-export const getStatusIsFetching = state => state.status.isFetching;
-export const getStautsHolders = state => state.status.holders;
-export const getHoldersPagination = state =>
-  state.status.holdersMeta.pagination;
+export const getAdvocate = state => state.advocate.advocate;
+export const getAdvocateMeta = state => state.advocate.advocateMeta;
+export const getIsAdvocateAvailableShown = state =>
+  state.advocate.isAvailableShown;
+export const getAdvocateIsFetching = state => state.advocate.isFetching;
+export const getAdvocates = state => state.advocate.advocates;
+export const getAdvocatesPagination = state =>
+  state.advocate.advocatesMeta.pagination;
