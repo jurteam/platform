@@ -6,8 +6,8 @@ import { ADVOCATE_SHARE } from "../../../../reducers/types";
 import { getShareIsSharing } from "../../../../sagas/Selectors";
 
 const SubmitShareButton = ({ onClick, isDisabled }) => (
-  <Button onClick={onClick} disabled={isDisabled} variant="gradient">
-    Share Stauts
+  <Button onClick={onClick} disabled={isDisabled} size="big" variant="gradient">
+    Share Now
   </Button>
 );
 

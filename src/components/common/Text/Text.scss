@@ -9,22 +9,37 @@
     color: $secondary;
   }
 
-  &__xsmall {
+  &__xxsmall {
     font-size: 8px;
   }
 
-  &__small {
+  &__xsmall {
     font-size: 10px;
+  }
+
+  &__small {
+    font-size: 12px;
   }
 
   &__large {
     font-size: 20px;
   }
 
+  &__weight {
+    &-bold {
+      font-weight: bold;
+    }
+  }
+
   &__transform {
     // Highly customized classes
     &-up {
       text-transform: uppercase;
+    }
+
+    &-header {
+      color: $header-color;
+      font-size: 20px;
     }
 
     &-shout {

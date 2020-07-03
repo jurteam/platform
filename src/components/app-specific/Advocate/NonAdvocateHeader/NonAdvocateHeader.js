@@ -6,7 +6,7 @@ import Text from "JurCommon/Text";
 const NonAdvocateHeader = () => (
   <>
     <Text transform="shout">Hold On!</Text>
-    <Text size="small" transform="up">
+    <Text size="xsmall" transform="up">
       Your wallet is not listed as a valid Advocate of the Jur ecosystem
     </Text>
     <Text size="large">

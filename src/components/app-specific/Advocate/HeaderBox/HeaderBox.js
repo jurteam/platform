@@ -19,19 +19,26 @@ import Frame from "JurCommon/Frame";
 const HeaderBox = ({
   isFetching,
   address,
-  country,
+  location,
+  linkedIn,
   statusType,
   activationTime
 }) => (
   <Box type="hero">
     <Cover className={coverClass(statusType)}>
-      <Frame className="jur-cover__top-out">
-        <Avatar seed={address} size="xxlarge" variant="rounded" />
+      <Frame className={frameClass(statusType)}>
+        <Avatar
+          seed={address}
+          size="xxlarge"
+          variant="rounded"
+          className="jur-frame__pop"
+        />
       </Frame>
       <Text size="xsmall">{address}</Text>
       {!isFetching && statusType ? (
         <AdvocateHeader
-          country={country}
+          country={location}
+          linkedIn={linkedIn}
           statusType={statusType}
           activationTime={activationTime}
         />
@@ -60,6 +67,21 @@ function coverClass(statusType) {
   }
 }
 
+function frameClass(statusType) {
+  let className = "jur-cover__top-out ";
+
+  switch (statusType) {
+    case "Justinian":
+    case "justinian":
+      return className + "jur-frame__justinian";
+    case "Solomon":
+    case "solomon":
+      return className + "jur-frame__solomon";
+  }
+
+  return className;
+}
+
 const mapStateToProps = state => {
   const isFetching = getAdvocateIsFetching(state);
   if (isFetching) return { isFetching };
@@ -68,9 +90,11 @@ const mapStateToProps = state => {
 
   return {
     isFetching: isFetching,
-    country: advocate.country,
     statusType: advocate.statusType,
-    activationTime: new Date(advocate.activationTime)
+    activationTime: new Date(advocate.activationTime),
+    address: getWallet(state).address,
+    location: advocate.location,
+    linkedIn: advocate.linkedIn
   };
 };
 

@@ -26,6 +26,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'birth_date',
         'gender',
         'location',
+        'linkedin',
         'category',
         'show_fullname',
         'accepted_terms',

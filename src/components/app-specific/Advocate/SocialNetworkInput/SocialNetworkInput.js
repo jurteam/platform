@@ -12,7 +12,7 @@ const onChange = option => ({
   payload: { value: option.value }
 });
 
-const valueToLabel = (value, fill = "black") =>
+const valueToLabel = (value, fill = "#dcdcdc") =>
   ({
     facebook: <FacebookIcon fill={fill} className="icon-24 icon-clickable" />,
     twitter: <TwitterIcon fill={fill} className="icon-24 icon-clickable" />,

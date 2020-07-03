@@ -226,5 +226,7 @@
   "myStatus": "My Status",
   "advocate": "Advocate",
   "advocates": "Advocates",
-  "jurStatus": "Jur Status"
+  "jurStatus": "Jur Status",
+  "linkedInUrl": "LinkedIn Profile",
+  "linkedInUrlPlaceholder": ""
 }
