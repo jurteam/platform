@@ -50,7 +50,7 @@ class ListenAMQPCommand extends Command
 
             switch ($payload->assetIdentifier) {
                 case 'oathKeeper':
-                    $success = OathKeeper::consumeAMQP($payload);
+                    $success = OathKeeper::consumePollingService($payload);
                     break;
 
                 case 'status':
