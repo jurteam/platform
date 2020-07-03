@@ -16,6 +16,7 @@ class CreateConsumersTable extends Migration
         Schema::create('consumers', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('consumer_name');
+            $table->string('contract_address');
             $table->string('asset_name');
             $table->string('event_name');
             $table->string('url');

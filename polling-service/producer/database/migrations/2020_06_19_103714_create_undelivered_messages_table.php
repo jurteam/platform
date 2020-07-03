@@ -15,13 +15,13 @@ class CreateUndeliveredMessagesTable extends Migration
     {
         Schema::create('undelivered_messages', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('consumer_id');
-            $table->unsignedBigInteger('transaction_id');
-            $table->integer('error_code');
-            $table->string('error_message');
-            $table->integer('retries');
-            $table->dateTime('next_try_at');
-            $table->enum('status', ['active', 'failed']);
+            $table->unsignedBigInteger('consumer_id')->nullable();
+            $table->unsignedBigInteger('transaction_id')->nullable();
+            $table->integer('error_code')->nullable();
+            $table->string('error_message')->nullable();
+            $table->integer('retries')->nullable();
+            $table->dateTime('next_try_at')->nullable();
+            $table->enum('status', ['active', 'failed'])->nullable();
             $table->timestamps();
 
             $table->foreign('consumer_id')->references('id')->on('consumers')->onDelete('cascade');
