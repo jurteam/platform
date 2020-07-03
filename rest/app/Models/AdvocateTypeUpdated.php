@@ -8,7 +8,7 @@ class AdvocateTypeUpdated extends Model {
   public function advocateTypeUpdated($payload) {
     $advocateTypeUpdated = AdvocateTypeUpdated::firstOrCreate(['sc_advocate_id' => $payload->id]);
     $advocateTypeUpdated->wallet = $payload->wallet;
-    $advocateTypeUpdated->newType = $payload->newType;
+    $advocateTypeUpdated->type = $payload->type;
 
     return $advocateTypeUpdated->save();
   }

@@ -9,7 +9,7 @@ class AdvocateStateUpdated extends Model {
     $advocateStateUpdated = AdvocateStateUpdated::firstOrCreate(['sc_advocate_id' => $payload->id]);
 
     $advocateStateUpdated->wallet = $payload->wallet;
-    $advocateStateUpdated->newState = $payload->newState;
+    $advocateStateUpdated->is_active = $payload->is_active;
 
     return $advocateStateUpdated->save();
   }

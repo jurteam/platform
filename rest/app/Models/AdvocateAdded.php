@@ -9,8 +9,8 @@ class AdvocateAdded extends Model {
     $advocateAdded = AdvocateAdded::firstOrCreate(['sc_advocate_id' => $payload->id]);
 
     $advocateAdded->wallet = $payload->wallet;
-    $advocateAdded->activationTime = $payload->activationTime;
-    $advocateAdded->advocateType = $payload->advocateType;
+    $advocateAdded->activation_time = $payload->activationTime;
+    $advocateAdded->type = $payload->type;
 
     return $advocateAdded->save();
   }
