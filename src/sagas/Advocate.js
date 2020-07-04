@@ -9,7 +9,9 @@ import {
   ADVOCATE_UPDATE_ALL,
   ADVOCATE_FETCH_ALL,
   ADVOCATE_FETCH_AVAILABLE,
-  ADVOCATE_UPDATE_AVAILABLE
+  ADVOCATE_UPDATE_AVAILABLE,
+  ADVOCATE_FETCH_YOUR_ACTIVITIES,
+  ADVOCATE_UPDATE_YOUR_ACTIVITIES
 } from "../reducers/types";
 
 const PaginationJson = {
@@ -135,9 +137,49 @@ function* fetchAvailable() {
   yield put({ type: ADVOCATE_UPDATE_AVAILABLE, payload });
 }
 
+function* fetchYourActivities() {
+  const { address } = yield select(getWallet);
+  // const res = yield available(address);
+  const res = {
+    meta: {
+      pagination: PaginationJson
+    },
+    data: [
+      {
+        id: 12,
+        type: "activities",
+        attributes: {
+          name: "Mock Your Activity",
+          rewardAmount: 676,
+          dueDate: new Date().getTime(),
+          state: "Cancelled"
+        }
+      },
+      {
+        id: 13,
+        type: "activities",
+        attributes: {
+          name: "Mock Your Activity 2",
+          rewardAmount: 13,
+          dueDate: new Date().getTime(),
+          state: "Completed"
+        }
+      }
+    ]
+  };
+
+  const payload = {
+    yourActivities: res.data,
+    yourActivitiesMeta: res.meta
+  };
+
+  yield put({ type: ADVOCATE_UPDATE_YOUR_ACTIVITIES, payload });
+}
+
 export default function* Status() {
   yield takeLatest(ADVOCATE_SHARE, shareStatus);
   yield takeLatest(ADVOCATE_FETCH_MINE, fetchMyAdvocasy);
   yield takeLatest(ADVOCATE_FETCH_ALL, fetchAdvocates);
   yield takeLatest(ADVOCATE_FETCH_AVAILABLE, fetchAvailable);
+  yield takeLatest(ADVOCATE_FETCH_YOUR_ACTIVITIES, fetchYourActivities);
 }

@@ -6,7 +6,8 @@ import {
   ADVOCATE_UPDATE_MINE,
   ADVOCATE_FETCH_ALL,
   ADVOCATE_UPDATE_ALL,
-  ADVOCATE_UPDATE_AVAILABLE
+  ADVOCATE_UPDATE_AVAILABLE,
+  ADVOCATE_UPDATE_YOUR_ACTIVITIES
 } from "./types";
 import { SOCIAL_NETWORK_OPTIONS } from "../utils/AdvocateHelpers";
 
@@ -21,6 +22,8 @@ const INITIAL_STATE = {
   advocatesMeta: { pagination: {} },
   available: [],
   availableMeta: { pagination: {} },
+  yourActivities: [],
+  yourActivitiesMeta: { pagination: {} },
   isFetching: true,
   shareText:
     "I am an Advocate in the Jur ecosystem to support the development of a truly decentralized ecosystem for a new legal framework",
@@ -45,6 +48,8 @@ export default (state = INITIAL_STATE, action) => {
     case ADVOCATE_UPDATE_ALL:
       return { ...state, isFetchingadvocates: false, ...action.payload };
     case ADVOCATE_UPDATE_AVAILABLE:
+      return { ...state, ...action.payload };
+    case ADVOCATE_UPDATE_YOUR_ACTIVITIES:
       return { ...state, ...action.payload };
     default:
       return state;

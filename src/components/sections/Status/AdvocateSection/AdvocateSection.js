@@ -2,21 +2,22 @@ import React, { useEffect } from "react";
 import "./AdvocateSection.scss";
 
 import Section from "JurCommon/Section";
-import HeaderBox from "../../../app-specific/Advocate/HeaderBox";
 import {
   ADVOCATE_FETCH_MINE,
   ADVOCATE_TOGGLE_AVAILABLE
 } from "../../../../reducers/types";
-import BalancesBox from "../../../app-specific/Advocate/BalancesBox";
 import {
   getAdvocate,
   getAdvocateMeta,
   getIsAdvocateAvailableShown,
   getWallet
 } from "../../../../sagas/Selectors";
-import { isMyProfile } from "../../../../utils/AdvocateHelpers";
-import AvailableBox from "../../../app-specific/Advocate/AvailableBox/AvailableBox";
 
+import HeaderBox from "../../../app-specific/Advocate/HeaderBox";
+import BalancesBox from "../../../app-specific/Advocate/BalancesBox";
+import { isMyProfile } from "../../../../utils/AdvocateHelpers";
+import AvailableBox from "../../../app-specific/Advocate/AvailableBox";
+import YourActivitiesBox from "../../../app-specific/Advocate/YourActivitiesBox";
 const AdvocateSection = ({
   fetchMyAdvocasy,
   advocasy,
@@ -44,6 +45,7 @@ const AdvocateSection = ({
             isPublic={isPublic}
           />
           <AvailableBox />
+          <YourActivitiesBox />
         </>
       ) : null}
     </Section>
