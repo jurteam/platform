@@ -2,19 +2,18 @@
 
 namespace App\Jobs;
 
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
 use \App\Models\Consumer;
 use \App\Models\Transaction;
 use \App\Models\UndeliveredMessage;
-use \Carbon\Carbon;
+use \App\Transformers\TransactionTransformer;
 
 class PublishTransaction extends Job
 {
     private $consumer;
 
     private $transaction;
-
-    private $response;
 
     /**
      * Create a new job instance.
@@ -40,10 +39,10 @@ class PublishTransaction extends Job
         try {
 
             // send a POST request with transaction data
-            $this->response = Http::post($this->consumer->url, [$this->transaction])->throw();
+            $response = Http::post($this->consumer->url, (new TransactionTransformer)->transform($this->transaction))->throw();
 
-        } catch (\Throwable $th) {
-            $this->handleError($th);
+        } catch (\Throwable $ex) {
+            $this->handleError($ex);
         }
     }
 

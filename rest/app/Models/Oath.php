@@ -68,7 +68,7 @@ class Oath extends Model
             return false;
         }
 
-        $oath->withdrawn_at = Carbon::createFromTimestamp($payload->transaction->timestamp);
+        $oath->withdrawn_at = Carbon::createFromTimestamp($payload->timestamp);
         $oath->current_state = 'withdrawn';
 
         return $oath->save();
