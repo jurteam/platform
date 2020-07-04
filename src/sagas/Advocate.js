@@ -1,5 +1,5 @@
 import { takeLatest, put, select } from "redux-saga/effects";
-import { shareOn, advocates } from "../api/Advocate";
+import { shareOn, advocates, available } from "../api/Advocate";
 import { statusUrlOf } from "JurUtils/AdvocateHelpers";
 import { getSocialSharebles, getWallet } from "./Selectors";
 import {
@@ -7,8 +7,19 @@ import {
   ADVOCATE_FETCH_MINE,
   ADVOCATE_UPDATE_MINE,
   ADVOCATE_UPDATE_ALL,
-  ADVOCATE_FETCH_ALL
+  ADVOCATE_FETCH_ALL,
+  ADVOCATE_FETCH_AVAILABLE,
+  ADVOCATE_UPDATE_AVAILABLE
 } from "../reducers/types";
+
+const PaginationJson = {
+  // Everything is optional in `pagination` except `total`
+  total: 100,
+  count: 100,
+  per_page: 10, // DEFAULT: 5
+  current_page: 1,
+  total_pages: 10
+};
 
 function* shareStatus() {
   const { shareNetwork, shareText, address } = yield select(getSocialSharebles);
@@ -17,8 +28,9 @@ function* shareStatus() {
 
 function* fetchMyAdvocasy() {
   const { address } = yield select(getWallet);
-  // const payload = yield advocates(address);
-  const payload = {
+  // const res = yield advocates(address);
+
+  const res = {
     meta: {
       isAdvocate: true
     },
@@ -39,27 +51,22 @@ function* fetchMyAdvocasy() {
       }
     }
   };
+
+  const payload = {
+    advocate: res.data.attributes,
+    advocateMeta: res.meta
+  };
+
   yield put({ type: ADVOCATE_UPDATE_MINE, payload });
 }
 
 function* fetchAdvocates() {
-  const { data, meta } = yield advocates();
-  // const payload = {
-  //   advocates: data,
-  //   advocatesMeta: meta
-  // };
-  const payload = {
-    advocatesMeta: {
-      pagination: {
-        // Everything is optional in `pagination` except `total`
-        total: 100,
-        count: 100,
-        per_page: 10, // DEFAULT: 5
-        current_page: 1,
-        total_pages: 10
-      }
+  // const res = yield advocates();
+  const res = {
+    meta: {
+      pagination: PaginationJson
     },
-    advocates: [
+    data: [
       {
         id: "0xdF1517295e5Ea4A2f6eCA4E74F339be0207Fe031",
         type: "advocates",
@@ -80,11 +87,57 @@ function* fetchAdvocates() {
       }
     ]
   };
+
+  const payload = {
+    advocates: res.data,
+    advocatesMeta: res.meta
+  };
+
   yield put({ type: ADVOCATE_UPDATE_ALL, payload });
+}
+
+function* fetchAvailable() {
+  const { address } = yield select(getWallet);
+  // const res = yield available(address);
+  const res = {
+    meta: {
+      pagination: PaginationJson
+    },
+    data: [
+      {
+        id: 12,
+        type: "activities",
+        attributes: {
+          name: "Mock Activity",
+          rewardAmount: 123,
+          slotAssigned: 2,
+          slotTotal: 5
+        }
+      },
+      {
+        id: 13,
+        type: "activities",
+        attributes: {
+          name: "Mock Activity 2",
+          rewardAmount: 13,
+          slotAssigned: 1,
+          slotTotal: 5
+        }
+      }
+    ]
+  };
+
+  const payload = {
+    available: res.data,
+    availableMeta: res.meta
+  };
+
+  yield put({ type: ADVOCATE_UPDATE_AVAILABLE, payload });
 }
 
 export default function* Status() {
   yield takeLatest(ADVOCATE_SHARE, shareStatus);
   yield takeLatest(ADVOCATE_FETCH_MINE, fetchMyAdvocasy);
   yield takeLatest(ADVOCATE_FETCH_ALL, fetchAdvocates);
+  yield takeLatest(ADVOCATE_FETCH_AVAILABLE, fetchAvailable);
 }
