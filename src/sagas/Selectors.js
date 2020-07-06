@@ -115,3 +115,12 @@ export const getAdvocateIsFetching = state => state.advocate.isFetching;
 export const getAdvocates = state => state.advocate.advocates;
 export const getAdvocatesPagination = state =>
   state.advocate.advocatesMeta.pagination;
+export const getAdvocateAvailablePagination = state =>
+  state.advocate.availableMeta.pagination;
+export const getAdvocateAvailable = state => state.advocate.available;
+export const getAdvocateYourActivitiesPagination = state =>
+  state.advocate.yourActivitiesMeta.pagination;
+export const getAdvocateYourActivities = state => state.advocate.yourActivities;
+export const getAdvocateRewardsPagination = state =>
+  state.advocate.rewardsMeta.pagination;
+export const getAdvocateRewards = state => state.advocate.rewards;
