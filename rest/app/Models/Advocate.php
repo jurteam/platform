@@ -30,7 +30,7 @@ class Advocate extends Model
         // Save new advocate
         $advocate = new Advocate;
         $advocate->wallet = $data->wallet;
-        $advocate->activation_time = Carbon::createFromTimestamp($data->activation_time);
+        $advocate->activation_time = Carbon::createFromTimestamp($data->activationTime);
         $advocate->is_active = true;
         $advocate->type = $data->advocateType;
 
