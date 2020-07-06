@@ -33,6 +33,9 @@ class Reward extends Model
             return false;
         }
 
+        $existingSlot->status = 'Rewarded';
+        $existingSlot->save();
+
         // create new Reward
         $reward = new Reward;
         $reward->slot_id = $existingSlot->id;
