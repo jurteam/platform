@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Traits\CustomPaginationTrait;
 use App\Transformers\AdvocateTransformer;
+use App\Transformers\SlotOnGoingTransformer;
 use App\Transformers\SlotTransformer;
 use Dingo\Api\Routing\Helpers;
 use Illuminate\Http\Request;
@@ -94,6 +95,28 @@ class AdvocateController extends Controller
         return $this->response->paginator(
             $this->customPagination($slots, $request),
             new SlotTransformer
+        );
+    }
+
+    /**
+     * GET all ongoing activities for a wallet
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function ongoingActivities(Request $request, $wallet)
+    {
+        // get type of request
+        $isPrivate = $wallet === $request->header('wallet');
+
+        if (!$isPrivate) {
+            abort(404);
+        }
+
+        $slots = Slot::where('assigned_wallet', $wallet)->where('status', 'Assigned')->orWhere('status', 'OverDue')->get();
+
+        return $this->response->paginator(
+            $this->customPagination($slots, $request),
+            new SlotOnGoingTransformer
         );
     }
 }
