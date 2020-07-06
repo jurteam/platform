@@ -33,4 +33,20 @@ class Advocate extends Model
         return $advocate->save();
     }
 
+    /**
+     * Update state of an advocate when `AdvocateStateUpdated` event triggered
+     *
+     * @param Object $payload: payload  send by Smart-Contract event
+     * @return Boolean the success or failure message
+     */
+    public static function advocateStateUpdated($payload)
+    {
+        // Check record exisits
+        $advocate = Advocate::where('wallet', $payload->wallet)->firstOrFail();
+        $advocate->wallet = $payload->wallet;
+        $advocate->is_active = $payload->newState;
+
+        return $advocate->save();
+    }
+
 }
