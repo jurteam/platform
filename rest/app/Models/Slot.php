@@ -8,6 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class Slot extends Model
 {
     /**
+     * @var array
+     */
+    protected $fillable = [
+        'sc_slot_id',
+        'reward_activity_id'
+    ];
+
+    /**
      * Create Slot when `SlotAssigned` event triggered
      *
      * @param Object $payload: payload  send by Smart-Contract event
@@ -23,7 +31,7 @@ class Slot extends Model
 
         // Update RewardActivity
         $slot = Slot::firstOrCreate(['sc_slot_id' => $data->slotId, 'reward_activity_id' => $rewardActivity->id]);
-        $slot->assigned_wallet = $data->slotCount;
+        $slot->assigned_wallet = $data->assignedTo;
         $slot->reward_amount = $rewardActivity->reward_amount;
         $slot->due_date = Carbon::createFromTimestamp($data->dueDate);
         $slot->status = 'Assigned';
