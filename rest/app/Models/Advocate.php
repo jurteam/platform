@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Advocate extends Model
@@ -26,7 +27,7 @@ class Advocate extends Model
         // Save new advocate
         $advocate = new Advocate;
         $advocate->wallet = $payload->wallet;
-        $advocate->activation_time = $payload->activation_time;
+        $advocate->activation_time = Carbon::createFromTimestamp($payload->activation_time);
         $advocate->is_active = true;
         $advocate->type = $payload->advocateType;
 
