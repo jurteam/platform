@@ -35,7 +35,7 @@ class Reward extends Model
 
         // create new Reward
         $reward = new Reward;
-        $reward->slot_id = $existingSlot->slot_id;
+        $reward->slot_id = $existingSlot->id;
         $reward->rewardee_wallet = $existingSlot->assigned_wallet;
         $reward->reward_amount = $existingRewardActivity->reward_amount;
         $reward->rewarded_on = Carbon::createFromTimestamp($payload->timestamp);
