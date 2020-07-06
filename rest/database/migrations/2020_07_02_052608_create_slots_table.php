@@ -17,9 +17,10 @@ class CreateSlotsTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('reward_activity_id');
             $table->unsignedInteger('sc_slot_id');
-            $table->string('assigned_wallet');
-            $table->decimal('reward_amount', 36, 18);
-            $table->enum('status', ['Unassigned', 'Assigned', 'Completed', 'Cancelled', 'Rewarded', 'OverDue']);
+            $table->string('assigned_wallet')->nullable();
+            $table->decimal('reward_amount', 36, 18)->nullable();
+            $table->enum('status', ['Unassigned', 'Assigned', 'Completed', 'Cancelled', 'Rewarded', 'OverDue'])->nullable();
+            $table->dateTime('due_date')->nullable();
             $table->timestamps();
 
             $table->foreign('reward_activity_id')->references('id')->on('reward_activities')->onDelete('cascade');
