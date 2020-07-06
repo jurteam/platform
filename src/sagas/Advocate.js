@@ -1,5 +1,11 @@
 import { takeLatest, put, select } from "redux-saga/effects";
-import { shareOn, advocates, available } from "../api/Advocate";
+import {
+  shareOn,
+  advocates,
+  available,
+  yourActivities,
+  rewards
+} from "../api/Advocate";
 import { statusUrlOf } from "JurUtils/AdvocateHelpers";
 import { getSocialSharebles, getWallet } from "./Selectors";
 import {
@@ -141,7 +147,7 @@ function* fetchAvailable() {
 
 function* fetchYourActivities() {
   const { address } = yield select(getWallet);
-  // const res = yield available(address);
+  // const res = yield yourActivities(address);
   const res = {
     meta: {
       pagination: PaginationJson
@@ -180,7 +186,7 @@ function* fetchYourActivities() {
 
 function* fetchRewards() {
   const { address } = yield select(getWallet);
-  // const res = yield available(address);
+  // const res = yield rewards(address);
   const res = {
     meta: {
       pagination: PaginationJson
