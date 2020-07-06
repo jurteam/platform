@@ -119,4 +119,21 @@ class AdvocateController extends Controller
             new SlotOnGoingTransformer
         );
     }
+
+    /**
+     * PUT update bio of an advocate
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function update(Request $request, $wallet)
+    {
+
+        $advocate = Advocate::where('wallet', $wallet)->firstOrFail();
+
+        $advocate->bio = $request->input('bio');
+
+        $advocate->save();
+
+        return '';
+    }
 }
