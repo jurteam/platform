@@ -23,5 +23,6 @@ export * from "./LinkedInIcon";
 export * from "./GlobeIcon";
 export * from "./TwitterIcon";
 export * from "./FacebookIcon";
+export * from "./CopyIcon";
 export * from "./JustinianIcon";
 export * from "./SolomonIcon";

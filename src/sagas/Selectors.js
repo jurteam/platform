@@ -126,3 +126,4 @@ export const getAdvocateRewardsPagination = state =>
 export const getAdvocateRewards = state => state.advocate.rewards;
 export const getAdvocateWithdraws = state => state.advocate.withdraws;
 export const getAdvocateSlotMarks = state => state.advocate.slotMarks;
+export const getAdvocateMessage = state => state.advocate.message;

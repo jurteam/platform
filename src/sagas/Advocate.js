@@ -12,7 +12,8 @@ import {
   getSocialSharebles,
   getWallet,
   getAdvocateRewardsPagination,
-  getAdvocateYourActivitiesPagination
+  getAdvocateYourActivitiesPagination,
+  getShareText
 } from "./Selectors";
 import {
   ADVOCATE_SHARE,
@@ -33,8 +34,11 @@ import {
   HOUND_START_SMELLING,
   ADVOCATE_COMPLETE_SLOT,
   ADVOCATE_RESET_SLOT,
-  ADVOCATE_MARK_SLOT
+  ADVOCATE_MARK_SLOT,
+  ADVOCATE_COPY,
+  ADVOCATE_MESSAGE
 } from "../reducers/types";
+import { copyToClipboard } from "../utils/AdvocateHelpers";
 
 const PaginationJson = {
   // Everything is optional in `pagination` except `total`
@@ -321,6 +325,12 @@ function* markComplete(action) {
   }
 }
 
+function* copy() {
+  const text = yield select(getShareText);
+  copyToClipboard(text);
+  yield put({ type: ADVOCATE_MESSAGE, payload: "Copied!" });
+}
+
 export default function* Status() {
   yield takeLatest(ADVOCATE_SHARE, shareStatus);
   yield takeLatest(ADVOCATE_FETCH_MINE, fetchMyAdvocasy);
@@ -330,4 +340,5 @@ export default function* Status() {
   yield takeLatest(ADVOCATE_FETCH_REWARDS, fetchRewards);
   yield takeLatest(ADVOCATE_WITHDRAW, withdraw);
   yield takeLatest(ADVOCATE_MARK_SLOT, markComplete);
+  yield takeLatest(ADVOCATE_COPY, copy);
 }

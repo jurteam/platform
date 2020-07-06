@@ -7,8 +7,22 @@ export const SOCIAL_NETWORK_OPTIONS = [
   },
   {
     value: "linkedIn"
+  },
+  {
+    value: "copy"
   }
 ];
+
+export const copyToClipboard = text => {
+  console.log("copyToClipboard");
+
+  const el = document.createElement("textarea");
+  el.value = text;
+  document.body.appendChild(el);
+  el.select();
+  document.execCommand("copy");
+  document.body.removeChild(el);
+};
 
 export const addDays = (date, days) => {
   date.setDate(date.getDate() + days);

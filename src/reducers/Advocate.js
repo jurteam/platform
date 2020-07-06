@@ -15,7 +15,8 @@ import {
   ADVOCATE_MARK_SLOT,
   ADVOCATE_COMPLETE_SLOT,
   ADVOCATE_RESET_SLOT,
-  ADVOCATE_TOGGLE_AVAILABLE
+  ADVOCATE_TOGGLE_AVAILABLE,
+  ADVOCATE_MESSAGE
 } from "./types";
 import { SOCIAL_NETWORK_OPTIONS, keyScId } from "../utils/AdvocateHelpers";
 
@@ -54,6 +55,8 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, shareText: action.payload };
     case ADVOCATE_SHARE:
       return { ...state, isSharing: true };
+    case ADVOCATE_MESSAGE:
+      return { ...state, message: action.payload };
     case ADVOCATE_FETCH_MINE:
       return { ...state, isFetching: true };
     case ADVOCATE_UPDATE_MINE:
