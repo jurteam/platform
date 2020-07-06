@@ -119,5 +119,9 @@ $api->version('v1', function ($api) {
         $api->put('/{wallet}', 'App\Http\Controllers\AdvocateController@update');
     });
 
+    $api->group(['prefix' => 'rewards'], function ($api) {
+        $api->get('/{wallet}', 'App\Http\Controllers\RewardController@show');
+    });
+
     $api->get('faqs', 'App\Http\Controllers\FaqsController@index');
 });
