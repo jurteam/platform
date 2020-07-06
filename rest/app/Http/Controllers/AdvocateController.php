@@ -7,6 +7,9 @@ use App\Transformers\AdvocateTransformer;
 use Dingo\Api\Routing\Helpers;
 use Illuminate\Http\Request;
 use \App\Models\Advocate;
+use \App\Models\Reward;
+use \App\Models\Slot;
+use \App\Models\User;
 
 class AdvocateController extends Controller
 {
@@ -25,5 +28,49 @@ class AdvocateController extends Controller
             $this->customPagination($advocates, $request),
             new AdvocateTransformer
         );
+    }
+
+    /**
+     * GET single advocate using wallet address
+     *
+     * @param String $wallet
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function show(Request $request, $wallet)
+    {
+        // get an advocate using wallet
+        $advocate = Advocate::where('wallet', $wallet)->first();
+
+        // get a user using wallet; fail if not found
+        $user = User::where('wallet', $wallet)->firstOrFail();
+
+        // get total rewarded amount for the wallet
+        $rewardAmount = Reward::where('rewardee_wallet', $wallet)->sum('reward_amount');
+
+        // get total assigned amount for the wallet
+        $totalRewardAmount = Slot::where('assigned_wallet', $wallet)->sum('reward_amount');
+
+        // get type of request
+        $isPrivate = $wallet === $request->header('wallet');
+
+        return [
+            'meta' => ['isAdvocate' => isset($advocate)],
+            'data' => [
+                'id' => $wallet,
+                'type' => isset($advocate) ? 'advocates' : 'users',
+                'attributes' => [
+                    'address' => $wallet,
+                    'statusType' => isset($advocate) ? $advocate->type : null,
+                    'activationTime' => isset($advocate) ? Carbon::instance($advocate->activation_time)->timestamp : null,
+                    'country' => $user->location,
+                    'linkedIn' => $user->linkedin,
+                    'url' => $user->url,
+                    'bio' => isset($advocate) ? $advocate->bio : null,
+                    'rewardsBalance' => $totalRewardAmount - $rewardAmount,
+                    'totalEarned' => $rewardAmount,
+                    'totalAvailable' => $isPrivate ? $totalRewardAmount : null
+                ]
+            ]
+        ];
     }
 }
