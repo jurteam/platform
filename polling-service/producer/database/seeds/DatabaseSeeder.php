@@ -11,14 +11,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        if (env('APP_ENV') === 'production')
-        {
-            $this->call('AssetSeeder');
+        $env = 'Production';
+
+        if (env('APP_ENV') === 'local') {
+            $env = 'Local';
         }
 
-        if (env('APP_ENV') === 'local')
-        {
-            $this->call('AssetSeeder');
-        }
+        $this->call($env . 'AssetSeeder');
+        $this->call($env . 'ConsumerSeeder');
     }
 }
