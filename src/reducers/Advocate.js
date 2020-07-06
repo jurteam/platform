@@ -14,11 +14,13 @@ import {
   ADVOCATE_RESET_WITHDRAW,
   ADVOCATE_MARK_SLOT,
   ADVOCATE_COMPLETE_SLOT,
-  ADVOCATE_RESET_SLOT
+  ADVOCATE_RESET_SLOT,
+  ADVOCATE_TOGGLE_AVAILABLE
 } from "./types";
 import { SOCIAL_NETWORK_OPTIONS, keyScId } from "../utils/AdvocateHelpers";
 
 const INITIAL_STATE = {
+  isAvailableShown: true,
   advocate: {
     rewardsBalance: "na",
     totalEarned: "na",
@@ -44,6 +46,8 @@ const INITIAL_STATE = {
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
+    case ADVOCATE_TOGGLE_AVAILABLE:
+      return { ...state, isAvailableShown: !state.isAvailableShown };
     case ADVOCATE_CHANGE_SHARE_NETWORK:
       return { ...state, shareNetwork: action.payload };
     case ADVOCATE_CHANGE_SHARE_TEXT:

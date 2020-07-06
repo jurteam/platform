@@ -47,7 +47,7 @@ const AdvocateSection = ({
           />
           {isPublic ? null : (
             <>
-              <AvailableBox />
+              {isShown ? <AvailableBox /> : null}
               <YourActivitiesBox />
             </>
           )}
