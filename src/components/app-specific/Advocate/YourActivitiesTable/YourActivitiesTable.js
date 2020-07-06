@@ -30,7 +30,7 @@ const YourActivitiesTable = ({ rows, fetchYourActivities }) => {
             </Table.Cell>
             <Table.Cell>{i18nDateFormat(r.attributes.dueDate)}</Table.Cell>
             <Table.Cell>
-              <YourActivitiesAction activity={r} />
+              <YourActivitiesAction activity={r.attributes} />
             </Table.Cell>
           </Table.Row>
         ))}

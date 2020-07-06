@@ -54,11 +54,11 @@ function* startSmelling(action) {
       "hound needs connex filter and shouldStop function as payload. Provided:",
       preyable
     );
-  if (typeof preyable.shouldStop !== "function")
-    throw Error(
-      "hound needs shouldStop function. Provided:",
-      preyable.shouldStop
-    );
+
+  if (typeof preyable.shouldStop !== "function") {
+    preyable.shouldStop = logs => logs.length;
+  }
+
   if (typeof preyable.filter !== "object")
     throw Error("hound needs connex filter. Provided:", preyable.filter);
 

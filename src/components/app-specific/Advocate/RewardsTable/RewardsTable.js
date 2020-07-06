@@ -35,7 +35,7 @@ const RewardsTable = ({ rows, fetchRewards }) => {
             </Table.Cell>
             <Table.Cell>{i18nDateFormat(r.attributes.dueDate)}</Table.Cell>
             <Table.Cell>
-              <RewardAction activity={r} />
+              <RewardAction activity={r.attributes} />
             </Table.Cell>
           </Table.Row>
         ))}

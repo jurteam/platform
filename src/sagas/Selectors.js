@@ -124,3 +124,5 @@ export const getAdvocateYourActivities = state => state.advocate.yourActivities;
 export const getAdvocateRewardsPagination = state =>
   state.advocate.rewardsMeta.pagination;
 export const getAdvocateRewards = state => state.advocate.rewards;
+export const getAdvocateWithdraws = state => state.advocate.withdraws;
+export const getAdvocateSlotMarks = state => state.advocate.slotMarks;
