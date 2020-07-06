@@ -114,6 +114,7 @@ $api->version('v1', function ($api) {
     $api->group(['prefix' => 'advocates'], function ($api) {
         $api->get('/', 'App\Http\Controllers\AdvocateController@index');
         $api->get('/{wallet}', 'App\Http\Controllers\AdvocateController@show');
+        $api->get('/{wallet}/activities/available', 'App\Http\Controllers\AdvocateController@availableActivities');
     });
 
     $api->get('faqs', 'App\Http\Controllers\FaqsController@index');

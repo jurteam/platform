@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Traits\CustomPaginationTrait;
 use App\Transformers\AdvocateTransformer;
+use App\Transformers\SlotTransformer;
 use Dingo\Api\Routing\Helpers;
 use Illuminate\Http\Request;
 use \App\Models\Advocate;
@@ -72,5 +73,27 @@ class AdvocateController extends Controller
                 ]
             ]
         ];
+    }
+
+    /**
+     * GET all available activities for a wallet
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function availableActivities(Request $request, $wallet)
+    {
+        // get type of request
+        $isPrivate = $wallet === $request->header('wallet');
+
+        if (!$isPrivate) {
+            abort(404);
+        }
+
+        $slots = Slot::where('assigned_wallet', $wallet)->get();
+
+        return $this->response->paginator(
+            $this->customPagination($slots, $request),
+            new SlotTransformer
+        );
     }
 }
