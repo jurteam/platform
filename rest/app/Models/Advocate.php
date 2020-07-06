@@ -69,8 +69,7 @@ class Advocate extends Model
 
         // Check record exisits
         $advocate = Advocate::where('wallet', $data->wallet)->firstOrFail();
-        $advocate->wallet = $data->wallet;
-        $advocate->type = $data->newType;
+        $advocate->type = $data->advocateType;
 
         return $advocate->save();
     }
