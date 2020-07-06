@@ -11,7 +11,9 @@ import {
   ADVOCATE_FETCH_AVAILABLE,
   ADVOCATE_UPDATE_AVAILABLE,
   ADVOCATE_FETCH_YOUR_ACTIVITIES,
-  ADVOCATE_UPDATE_YOUR_ACTIVITIES
+  ADVOCATE_UPDATE_YOUR_ACTIVITIES,
+  ADVOCATE_FETCH_REWARDS,
+  ADVOCATE_UPDATE_REWARDS
 } from "../reducers/types";
 
 const PaginationJson = {
@@ -176,10 +178,50 @@ function* fetchYourActivities() {
   yield put({ type: ADVOCATE_UPDATE_YOUR_ACTIVITIES, payload });
 }
 
+function* fetchRewards() {
+  const { address } = yield select(getWallet);
+  // const res = yield available(address);
+  const res = {
+    meta: {
+      pagination: PaginationJson
+    },
+    data: [
+      {
+        id: 12,
+        type: "rewards",
+        attributes: {
+          name: "Mock Your Activity",
+          rewardAmount: 6,
+          dueDate: new Date().getTime(),
+          rewardedOn: new Date().getTime()
+        }
+      },
+      {
+        id: 13,
+        type: "rewards",
+        attributes: {
+          name: "Mock Your Activity 2",
+          rewardAmount: 1003,
+          dueDate: new Date().getTime(),
+          rewardedOn: new Date().getTime()
+        }
+      }
+    ]
+  };
+
+  const payload = {
+    rewards: res.data,
+    rewardsMeta: res.meta
+  };
+
+  yield put({ type: ADVOCATE_UPDATE_REWARDS, payload });
+}
+
 export default function* Status() {
   yield takeLatest(ADVOCATE_SHARE, shareStatus);
   yield takeLatest(ADVOCATE_FETCH_MINE, fetchMyAdvocasy);
   yield takeLatest(ADVOCATE_FETCH_ALL, fetchAdvocates);
   yield takeLatest(ADVOCATE_FETCH_AVAILABLE, fetchAvailable);
   yield takeLatest(ADVOCATE_FETCH_YOUR_ACTIVITIES, fetchYourActivities);
+  yield takeLatest(ADVOCATE_FETCH_REWARDS, fetchRewards);
 }

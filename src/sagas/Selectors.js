@@ -121,3 +121,6 @@ export const getAdvocateAvailable = state => state.advocate.available;
 export const getAdvocateYourActivitiesPagination = state =>
   state.advocate.yourActivitiesMeta.pagination;
 export const getAdvocateYourActivities = state => state.advocate.yourActivities;
+export const getAdvocateRewardsPagination = state =>
+  state.advocate.rewardsMeta.pagination;
+export const getAdvocateRewards = state => state.advocate.rewards;

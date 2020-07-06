@@ -18,6 +18,7 @@ import BalancesBox from "../../../app-specific/Advocate/BalancesBox";
 import { isMyProfile } from "../../../../utils/AdvocateHelpers";
 import AvailableBox from "../../../app-specific/Advocate/AvailableBox";
 import YourActivitiesBox from "../../../app-specific/Advocate/YourActivitiesBox";
+import RewardsBox from "../../../app-specific/Advocate/RewardsBox";
 const AdvocateSection = ({
   fetchMyAdvocasy,
   advocasy,
@@ -46,6 +47,7 @@ const AdvocateSection = ({
           />
           <AvailableBox />
           <YourActivitiesBox />
+          <RewardsBox />
         </>
       ) : null}
     </Section>
