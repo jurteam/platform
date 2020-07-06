@@ -22,6 +22,8 @@ class CreateRewardsTable extends Migration
             $table->timestamps();
 
             $table->foreign('slot _id')->references('id')->on('slots')->onDelete('cascade');
+
+            $table->index('rewardee_wallet');
         });
     }
 
