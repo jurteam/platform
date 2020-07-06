@@ -75,8 +75,14 @@ class RewardActivity extends Model
         $data = $payload->data;
 
         // Update RewardActivity
-        $rewardActivity = RewardActivity::where('sc_activity_id', $data->id)->firstOrFail();
-        $rewardActivity->number_of_slots = $data->slotCount;
+        $rewardActivity = RewardActivity::where('sc_activity_id', $data->activityId)->firstOrFail();
+
+        if ($data->slotCount > 0) {
+            $rewardActivity->number_of_slots = $data->slotCount;
+        } else {
+            $rewardActivity->is_active = $data->newState;
+        }
+
         return $rewardActivity->save();
     }
 }
