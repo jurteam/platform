@@ -15,7 +15,6 @@ class CreateAdvocatesTable extends Migration
     {
         Schema::create('advocates', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedInteger('sc_adovocate_id');
             $table->string('wallet');
             $table->dateTime('activation_time');
             $table->boolean('is_active');
