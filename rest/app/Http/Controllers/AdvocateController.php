@@ -6,6 +6,7 @@ use App\Http\Controllers\Traits\CustomPaginationTrait;
 use App\Transformers\AdvocateTransformer;
 use App\Transformers\SlotOnGoingTransformer;
 use App\Transformers\SlotTransformer;
+use Carbon\Carbon;
 use Dingo\Api\Routing\Helpers;
 use Illuminate\Http\Request;
 use \App\Models\Advocate;
