@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use \App\Models\OathKeeper;
 
-class ConsumerPollingServiceController extends Controller
+class ConsumePollingServiceController extends Controller
 {
     /**
      * consume polling service for OathKeeper
