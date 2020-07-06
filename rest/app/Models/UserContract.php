@@ -14,11 +14,14 @@ class UserContract extends Model
      */
     public static function userContractUpdated($payload)
     {
-        $userContract = UserContract::firstOrCreate(['sc_user_contract_id' => $payload->id]);
-        $userContract->sc_user_contract_id = $payload->id;
-        $userContract->contract_address = $payload->address;
-        $userContract->name = $payload->name;
-        $userContract->is_active = $payload->state;
+        // get data object
+        $data = $payload->data;
+
+        $userContract = UserContract::firstOrCreate(['sc_user_contract_id' => $data->id]);
+        $userContract->sc_user_contract_id = $data->id;
+        $userContract->contract_address = $data->address;
+        $userContract->name = $data->name;
+        $userContract->is_active = $data->state;
 
         return $userContract->save();
     }

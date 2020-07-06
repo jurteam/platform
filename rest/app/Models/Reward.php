@@ -15,18 +15,21 @@ class Reward extends Model
      */
     public static function slotRewarded($payload)
     {
+        // get data object
+        $data = $payload->data;
+
         // Check RewardActivity record exisits
-        $existingRewardActivity = RewardActivity::where('sc_activity_id', $payload->activityId)->firstOrFail();
+        $existingRewardActivity = RewardActivity::where('sc_activity_id', $data->activityId)->firstOrFail();
 
         // Check Slot exisits
-        $existingSlot = Slot::where('reward_activity_id', $existingRewardActivity->id)->where('sc_slot_id', $payload->slotId)->firstOrFail();
+        $existingSlot = Slot::where('reward_activity_id', $existingRewardActivity->id)->where('sc_slot_id', $data->slotId)->firstOrFail();
 
         // Check Reward exisits
         $existingReward = Reward::where('slot _id', $existingSlot->id)->first();
 
         // ignore creation if already exists
         if (isset($existingReward)) {
-            Log::warning('The Reward with activity Id `' . $payload->activityId . '` and slot Id `' . $payload->slotId . '` already exists in the database.');
+            Log::warning('The Reward with activity Id `' . $data->activityId . '` and slot Id `' . $data->slotId . '` already exists in the database.');
             return false;
         }
 

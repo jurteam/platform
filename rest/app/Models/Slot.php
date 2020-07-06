@@ -15,16 +15,19 @@ class Slot extends Model
      */
     public static function slotAssigned($payload)
     {
+        // get data object
+        $data = $payload->data;
+
         // find reward_activity
-        $rewardActivity = RewardActivity::where('sc_activity_id', $payload->activityId)->firstOrFail();
+        $rewardActivity = RewardActivity::where('sc_activity_id', $data->activityId)->firstOrFail();
 
         // Update RewardActivity
-        $slot = Slot::firstOrCreate(['sc_slot_id' => $payload->slotId, 'reward_activity_id' => $rewardActivity->id]);
-        $slot->assigned_wallet = $payload->slotCount;
+        $slot = Slot::firstOrCreate(['sc_slot_id' => $data->slotId, 'reward_activity_id' => $rewardActivity->id]);
+        $slot->assigned_wallet = $data->slotCount;
         $slot->reward_amount = $rewardActivity->reward_amount;
-        $slot->due_date = Carbon::createFromTimestamp($payload->dueDate);
+        $slot->due_date = Carbon::createFromTimestamp($data->dueDate);
         $slot->status = 'Assigned';
-        $slot->created_at = Carbon::createFromTimestamp($payload->createdAt);
+        $slot->created_at = Carbon::createFromTimestamp($data->createdAt);
 
         return $slot->save();
     }
@@ -37,12 +40,15 @@ class Slot extends Model
      */
     public static function slotUpdated($payload)
     {
+        // get data object
+        $data = $payload->data;
+
         // find reward_activity
-        $rewardActivity = RewardActivity::where('sc_activity_id', $payload->activityId)->firstOrFail();
+        $rewardActivity = RewardActivity::where('sc_activity_id', $data->activityId)->firstOrFail();
 
         // Update RewardActivity
-        $slot = Slot::firstOrCreate(['sc_slot_id' => $payload->slotId, 'reward_activity_id' => $rewardActivity->id]);
-        $slot->status = $payload->newState;
+        $slot = Slot::firstOrCreate(['sc_slot_id' => $data->slotId, 'reward_activity_id' => $rewardActivity->id]);
+        $slot->status = $data->newState;
 
         return $slot->save();
     }

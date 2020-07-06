@@ -15,21 +15,24 @@ class Advocate extends Model
      */
     public static function advocateAdded($payload)
     {
+        // get data object
+        $data = $payload->data;
+
         // Check record exisits
-        $exists = Advocate::where('wallet', $payload->wallet)->first();
+        $exists = Advocate::where('wallet', $data->wallet)->first();
 
         // ignore creation if already exists
         if (isset($exists)) {
-            Log::warning('The Advocate with wallet `' . $payload->wallet . '` already exists in the database.');
+            Log::warning('The Advocate with wallet `' . $data->wallet . '` already exists in the database.');
             return false;
         }
 
         // Save new advocate
         $advocate = new Advocate;
-        $advocate->wallet = $payload->wallet;
-        $advocate->activation_time = Carbon::createFromTimestamp($payload->activation_time);
+        $advocate->wallet = $data->wallet;
+        $advocate->activation_time = Carbon::createFromTimestamp($data->activation_time);
         $advocate->is_active = true;
-        $advocate->type = $payload->advocateType;
+        $advocate->type = $data->advocateType;
 
         return $advocate->save();
     }
@@ -42,10 +45,13 @@ class Advocate extends Model
      */
     public static function advocateStateUpdated($payload)
     {
+        // get data object
+        $data = $payload->data;
+
         // Check record exisits
-        $advocate = Advocate::where('wallet', $payload->wallet)->firstOrFail();
-        $advocate->wallet = $payload->wallet;
-        $advocate->is_active = $payload->newState;
+        $advocate = Advocate::where('wallet', $data->wallet)->firstOrFail();
+        $advocate->wallet = $data->wallet;
+        $advocate->is_active = $data->newState;
 
         return $advocate->save();
     }
@@ -58,10 +64,13 @@ class Advocate extends Model
      */
     public static function advocateTypeUpdated($payload)
     {
+        // get data object
+        $data = $payload->data;
+
         // Check record exisits
-        $advocate = Advocate::where('wallet', $payload->wallet)->firstOrFail();
-        $advocate->wallet = $payload->wallet;
-        $advocate->type = $payload->newType;
+        $advocate = Advocate::where('wallet', $data->wallet)->firstOrFail();
+        $advocate->wallet = $data->wallet;
+        $advocate->type = $data->newType;
 
         return $advocate->save();
     }
