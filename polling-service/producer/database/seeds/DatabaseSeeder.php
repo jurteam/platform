@@ -11,6 +11,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // $this->call('UsersTableSeeder');
+        if (env('APP_ENV') === 'production')
+        {
+            $this->call('AssetSeeder');
+        }
+
+        if (env('APP_ENV') === 'local')
+        {
+            $this->call('AssetSeeder');
+        }
     }
 }
