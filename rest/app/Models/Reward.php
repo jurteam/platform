@@ -25,7 +25,7 @@ class Reward extends Model
         $existingSlot = Slot::where('reward_activity_id', $existingRewardActivity->id)->where('sc_slot_id', $data->slotId)->firstOrFail();
 
         // Check Reward exisits
-        $existingReward = Reward::where('slot _id', $existingSlot->id)->first();
+        $existingReward = Reward::where('slot_id', $existingSlot->id)->first();
 
         // ignore creation if already exists
         if (isset($existingReward)) {

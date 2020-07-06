@@ -15,13 +15,13 @@ class CreateRewardsTable extends Migration
     {
         Schema::create('rewards', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('slot _id');
+            $table->unsignedBigInteger('slot_id');
             $table->string('rewardee_wallet');
             $table->decimal('reward_amount', 36, 18);
             $table->dateTime('rewarded_on');
             $table->timestamps();
 
-            $table->foreign('slot _id')->references('id')->on('slots')->onDelete('cascade');
+            $table->foreign('slot_id')->references('id')->on('slots')->onDelete('cascade');
 
             $table->index('rewardee_wallet');
         });
