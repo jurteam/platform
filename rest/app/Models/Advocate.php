@@ -49,4 +49,19 @@ class Advocate extends Model
         return $advocate->save();
     }
 
+    /**
+     * Update type of an advocate when `AdvocateTypeUpdated` event triggered
+     *
+     * @param Object $payload: payload  send by Smart-Contract event
+     * @return Boolean the success or failure message
+     */
+    public static function advocateTypeUpdated($payload)
+    {
+        // Check record exisits
+        $advocate = Advocate::where('wallet', $payload->wallet)->firstOrFail();
+        $advocate->wallet = $payload->wallet;
+        $advocate->type = $payload->newType;
+
+        return $advocate->save();
+    }
 }
