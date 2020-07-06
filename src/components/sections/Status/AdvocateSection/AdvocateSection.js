@@ -2,20 +2,23 @@ import React, { useEffect } from "react";
 import "./AdvocateSection.scss";
 
 import Section from "JurCommon/Section";
-import HeaderBox from "../../../app-specific/Advocate/HeaderBox";
 import {
   ADVOCATE_FETCH_MINE,
   ADVOCATE_TOGGLE_AVAILABLE
 } from "../../../../reducers/types";
-import BalancesBox from "../../../app-specific/Advocate/BalancesBox";
 import {
   getAdvocate,
   getAdvocateMeta,
   getIsAdvocateAvailableShown,
   getWallet
 } from "../../../../sagas/Selectors";
-import { isMyProfile } from "../../../../utils/AdvocateHelpers";
 
+import HeaderBox from "../../../app-specific/Advocate/HeaderBox";
+import BalancesBox from "../../../app-specific/Advocate/BalancesBox";
+import { isMyProfile } from "../../../../utils/AdvocateHelpers";
+import AvailableBox from "../../../app-specific/Advocate/AvailableBox";
+import YourActivitiesBox from "../../../app-specific/Advocate/YourActivitiesBox";
+import RewardsBox from "../../../app-specific/Advocate/RewardsBox";
 const AdvocateSection = ({
   fetchMyAdvocasy,
   advocasy,
@@ -33,14 +36,19 @@ const AdvocateSection = ({
     <Section>
       <HeaderBox address={address} isAdvocate={isAdvocate} />
       {isAdvocate ? (
-        <BalancesBox
-          rewardsBalance={advocasy.rewardsBalance}
-          totalEarned={advocasy.totalEarned}
-          totalAvailable={advocasy.totalAvailable}
-          isShown={isShown}
-          toggleDetails={toggleDetails}
-          isPublic={isPublic}
-        />
+        <>
+          <BalancesBox
+            rewardsBalance={advocasy.rewardsBalance}
+            totalEarned={advocasy.totalEarned}
+            totalAvailable={advocasy.totalAvailable}
+            isShown={isShown}
+            toggleDetails={toggleDetails}
+            isPublic={isPublic}
+          />
+          <AvailableBox />
+          <YourActivitiesBox />
+          <RewardsBox />
+        </>
       ) : null}
     </Section>
   );
