@@ -45,8 +45,12 @@ const AdvocateSection = ({
             toggleDetails={toggleDetails}
             isPublic={isPublic}
           />
-          <AvailableBox />
-          <YourActivitiesBox />
+          {isPublic ? null : (
+            <>
+              <AvailableBox />
+              <YourActivitiesBox />
+            </>
+          )}
           <RewardsBox />
         </>
       ) : null}

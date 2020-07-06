@@ -1,17 +1,29 @@
 import React from "react";
 import "./RewardsAction.scss";
 import { i18nDateFormat } from "../../../../utils/helpers";
-import { canWithdraw } from "JurUtils/AdvocateHelpers";
+import { canWithdraw, isMyProfile } from "JurUtils/AdvocateHelpers";
 import WithdrawButton from "./WithdrawButton";
+import { getWallet } from "../../../../sagas/Selectors";
 
-const RewardsAction = ({ activity }) =>
-  canWithdraw(activity) ? (
+const RewardsAction = ({ activity, isPublic }) =>
+  !isPublic && canWithdraw(activity) ? (
     <WithdrawButton
       activityScId={activity.activityScId}
       slotScId={activity.slotScId}
     />
   ) : (
-    <span>{i18nDateFormat(activity.rewardedOn)}</span>
+    <span>
+      {activity.rewardedOn
+        ? i18nDateFormat(activity.rewardedOn)
+        : "Not Credited Yet"}
+    </span>
   );
 
-export default RewardsAction;
+const mapStateToProps = state => {
+  const { address } = getWallet(state);
+  return {
+    isPublic: !isMyProfile(address)
+  };
+};
+
+export default global.connection(RewardsAction, mapStateToProps);
