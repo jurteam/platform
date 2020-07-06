@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Models\RewardActivityRole;
-use App\Models\UserContract;
 use Illuminate\Database\Eloquent\Model;
 use Log;
 
@@ -21,40 +20,40 @@ class RewardActivity extends Model
         $data = $payload->data;
 
         // Check record exisits
-        $exists = RewardActivity::where('sc_activity_id', $data->id)->first();
+        $exists = RewardActivity::where('sc_activity_id', $data->activityId)->first();
 
         // ignore creation if already exists
         if (isset($exists)) {
-            Log::warning('The RewardActivity with id `' . $data->id . '` already exists in the database.');
+            Log::warning('The RewardActivity with id `' . $data->activityId . '` already exists in the database.');
             return false;
         }
 
         // Save RewardActivity
         $rewardActivity = new RewardActivity;
-        $rewardActivity->sc_activity_id = $data->id;
+        $rewardActivity->sc_activity_id = $data->activityId;
         $rewardActivity->name = $data->name;
         $rewardActivity->reward_amount = $data->rewardAmount;
         $rewardActivity->number_of_slots = $data->slotCount;
         $rewardActivity->is_active = true;
         $saved = $rewardActivity->save();
 
-        // find all UserContracts from databse based on whitelistContractAddresses
-        $userContracts = UserContract::whereIn('contract_address', $data->whitelistContractAddresses)->select('id', 'contract_address')->get()->toArray();
+        // find all Role Contract from databse based on whitelistContractAddresses
+        $roleContracts = RoleContract::whereIn('contract_address', (Array) $data->whitelistContractAddresses)->select('id', 'contract_address')->get()->toArray();
 
         // RewardActivityRole records to be saved
         $rewardActivityRoles = [];
 
-        foreach ($data->whitelistContractIds as $address) {
+        foreach ($data->whitelistContractAddresses as $address) {
 
-            // find userContract
-            $userContract = array_filter($userContracts, function ($item) use ($address) {
-                return $item->contract_address == $address;
+            // find Role Contract
+            $roleContract = array_filter($roleContracts, function ($item) use ($address) {
+                return $item['contract_address'] == $address;
             });
 
             // Formulate RewardActivityRole record that will be saved
             $rewardActivityRoles[] = [
-                'reward_activity_id' => $userContract->id,
-                'user_contract_id' => $rewardActivity->id
+                'reward_activity_id' => $rewardActivity->id,
+                'role_contract_id' => isset($roleContract[0]) ? $roleContract[0]['id'] : null
             ];
         }
 

@@ -16,11 +16,11 @@ class CreateRewardActivityRolesTable extends Migration
         Schema::create('reward_activity_roles', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('reward_activity_id');
-            $table->unsignedBigInteger('user_contract_id');
+            $table->unsignedBigInteger('role_contract_id');
             $table->timestamps();
 
             $table->foreign('reward_activity_id')->references('id')->on('reward_activities')->onDelete('cascade');
-            $table->foreign('user_contract_id')->references('id')->on('user_contracts')->onDelete('cascade');
+            $table->foreign('role_contract_id')->references('id')->on('role_contracts')->onDelete('cascade');
         });
     }
 
