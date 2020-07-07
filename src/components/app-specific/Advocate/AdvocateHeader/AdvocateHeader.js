@@ -13,7 +13,7 @@ const AdvocateHeader = ({ country, activationTime, linkedIn, url }) => (
     <Text transform="shout">Advocate</Text>
     <Text size="small">Advocate since {i18nDateFormat(activationTime)}</Text>
     <Row align="center">
-      <Flag of={country} />
+      <Flag of={country} className="jur-holder-header__flag" />
       <Divide vertical={true} className="color__white" />
       <a
         target="_blank"

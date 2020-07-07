@@ -20,7 +20,7 @@ const HeaderBox = ({
   isAdvocate,
   isFetching,
   address,
-  location,
+  country,
   linkedIn,
   url,
   statusType,
@@ -39,7 +39,7 @@ const HeaderBox = ({
       <Text size="xsmall">{address}</Text>
       {!isFetching && statusType ? (
         <AdvocateHeader
-          country={location}
+          country={country}
           linkedIn={linkedIn}
           url={url}
           statusType={statusType}
@@ -99,7 +99,7 @@ const mapStateToProps = state => {
     statusType: advocate.statusType,
     activationTime: new Date(advocate.activationTime),
     address: getWallet(state).address,
-    location: advocate.location,
+    country: advocate.country,
     linkedIn: advocate.linkedIn,
     url: advocate.url
   };
