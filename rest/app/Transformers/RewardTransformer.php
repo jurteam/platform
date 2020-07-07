@@ -2,6 +2,7 @@
 
 namespace App\Transformers;
 
+use App\Models\Reward;
 use App\Models\RewardActivity;
 use App\Models\Slot;
 use Carbon\Carbon;
@@ -22,14 +23,16 @@ class RewardTransformer extends TransformerAbstract
         $rewardActivity = RewardActivity::where('id', $slot->reward_activity_id)->firstOrFail();
 
         return [
-            'id' => $advocate->wallet,
+            'id' => $reward->rewardee_wallet,
             'type' => "advocates",
             'attributes' =>
             [
                 'name' => $rewardActivity->name,
                 'rewardAmount' => $rewardActivity->reward_amount,
                 'dueDate' => Carbon::createFromDate($slot->due_date)->timestamp,
-                'rewardedOn' => Carbon::createFromDate($reward->rewarded_on)->timestamp
+                'rewardedOn' => Carbon::createFromDate($reward->rewarded_on)->timestamp,
+                'activityScId' => $rewardActivity->sc_activity_id,
+                'slotScId' => $slot->sc_slot_id
             ]
         ];
     }
