@@ -64,7 +64,7 @@ class AdvocateController extends Controller
                 'attributes' => [
                     'address' => $wallet,
                     'statusType' => isset($advocate) ? $advocate->type : null,
-                    'activationTime' => isset($advocate) ? Carbon::instance($advocate->activation_time)->timestamp : null,
+                    'activationTime' => isset($advocate) ? Carbon::createFromDate($advocate->activation_time)->timestamp : null,
                     'country' => $user->location,
                     'linkedIn' => $user->linkedin,
                     'url' => $user->url,

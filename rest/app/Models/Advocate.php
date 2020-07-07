@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Log;
 
 class Advocate extends Model
 {
@@ -26,6 +27,9 @@ class Advocate extends Model
             Log::warning('The Advocate with wallet `' . $data->wallet . '` already exists in the database.');
             return false;
         }
+
+        // create the user if not exists
+        $user = User::firstOrCreate(['wallet' => $data->wallet]);
 
         // Save new advocate
         $advocate = new Advocate;

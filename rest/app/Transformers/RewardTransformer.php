@@ -28,8 +28,8 @@ class RewardTransformer extends TransformerAbstract
             [
                 'name' => $rewardActivity->name,
                 'rewardAmount' => $rewardActivity->reward_amount,
-                'dueDate' => Carbon::instance($slot->due_date)->timestamp,
-                'rewardedOn' => Carbon::instance($reward->rewarded_on)->timestamp
+                'dueDate' => Carbon::createFromDate($slot->due_date)->timestamp,
+                'rewardedOn' => Carbon::createFromDate($reward->rewarded_on)->timestamp
             ]
         ];
     }
