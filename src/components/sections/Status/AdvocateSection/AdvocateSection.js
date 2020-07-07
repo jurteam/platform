@@ -12,7 +12,7 @@ import {
   getIsAdvocateAvailableShown,
   getWallet
 } from "../../../../sagas/Selectors";
-
+import Disclaimer, { ModalDiscliamer } from "JurCommon/Disclaimer";
 import HeaderBox from "../../../app-specific/Advocate/HeaderBox";
 import BalancesBox from "../../../app-specific/Advocate/BalancesBox";
 import { isMyProfile } from "../../../../utils/AdvocateHelpers";
@@ -54,6 +54,8 @@ const AdvocateSection = ({
           <RewardsBox />
         </>
       ) : null}
+      <ModalDiscliamer />
+      <Disclaimer />
     </Section>
   );
 };

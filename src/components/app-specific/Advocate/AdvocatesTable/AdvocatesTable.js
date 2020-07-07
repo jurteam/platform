@@ -12,7 +12,7 @@ const AdvocatesTable = ({ advocates }) => (
     <Table.Head>
       <Table.Row>
         <Table.Cell>Wallet</Table.Cell>
-        <Table.Cell>Status</Table.Cell>
+        <Table.Cell>Type</Table.Cell>
         <Table.Cell>Total Earned</Table.Cell>
         <Table.Cell>Action</Table.Cell>
       </Table.Row>
@@ -24,7 +24,7 @@ const AdvocatesTable = ({ advocates }) => (
             <AvatarInfo userWallet={h.attributes.address} size="small" />
           </Table.Cell>
           <Table.Cell>
-            <StatusBadge statusType={h.attributes.statusType} />
+            <StatusBadge statusType="Normal" />
           </Table.Cell>
           <Table.Cell>
             <Amount value={h.attributes.totalEarned} />
