@@ -28,6 +28,9 @@ class Advocate extends Model
             return false;
         }
 
+        // create the user if not exists
+        $user = User::firstOrCreate(['wallet' => $data->wallet]);
+
         // Save new advocate
         $advocate = new Advocate;
         $advocate->wallet = $data->wallet;
