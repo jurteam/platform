@@ -1,17 +1,17 @@
 export const SOCIAL_NETWORK_OPTIONS = [
-  {
-    value: "facebook"
-  },
-  {
-    value: "twitter"
-  },
-  {
-    value: "linkedIn"
-  },
-  {
-    value: "copy"
-  }
+  { value: "facebook" },
+  { value: "twitter" },
+  { value: "linkedIn" },
+  { value: "copy" }
 ];
+
+export const colorSlots = (filled, total) => {
+  if (!total) return "";
+  const ratio = Number(filled) / Number(total);
+  if (ratio < 0.5) return "jur-slot__sparse";
+  if (ratio < 0.8) return "jur-slot__moderate";
+  return "jur-slot__scarce";
+};
 
 export const copyToClipboard = text => {
   console.log("copyToClipboard");

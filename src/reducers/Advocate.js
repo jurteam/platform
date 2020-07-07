@@ -27,7 +27,7 @@ const INITIAL_STATE = {
     totalEarned: "na",
     totalAvailable: "na"
   },
-  advocateMeta: { isAdvocate: true },
+  advocateMeta: { isAdvocate: false },
   advocates: [],
   advocatesMeta: { pagination: {} },
   available: [],

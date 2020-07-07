@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import "./AvailableTable.scss";
 import Table from "JurCommon/Table";
 import Amount from "JurCommon/Amount";
+import { colorSlots } from "JurUtils/AdvocateHelpers";
 import { getAdvocateAvailable } from "../../../../sagas/Selectors";
 import { ADVOCATE_FETCH_AVAILABLE } from "../../../../reducers/types";
 
@@ -25,7 +26,12 @@ const AvailableTable = ({ rows, fetchAvailable }) => {
             <Table.Cell>
               <Amount value={r.attributes.rewardAmount} />
             </Table.Cell>
-            <Table.Cell>
+            <Table.Cell
+              className={colorSlots(
+                r.attributes.slotAssigned,
+                r.attributes.slotTotal
+              )}
+            >
               {r.attributes.slotAssigned} of {r.attributes.slotTotal}
             </Table.Cell>
           </Table.Row>

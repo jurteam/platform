@@ -56,9 +56,9 @@ function* shareStatus() {
 
 function* fetchMyAdvocasy() {
   const { address } = yield select(getWallet);
-  // const res = yield advocates(address);
+  const res = yield advocates(address);
 
-  const res = {
+  const resMock = {
     meta: {
       isAdvocate: true
     },
@@ -89,8 +89,8 @@ function* fetchMyAdvocasy() {
 }
 
 function* fetchAdvocates() {
-  // const res = yield advocates();
-  const res = {
+  const res = yield advocates();
+  const resMock = {
     meta: {
       pagination: PaginationJson
     },
@@ -126,8 +126,8 @@ function* fetchAdvocates() {
 
 function* fetchAvailable() {
   const { address } = yield select(getWallet);
-  // const res = yield available(address);
-  const res = {
+  const res = yield available(address);
+  const resMock = {
     meta: {
       pagination: PaginationJson
     },
@@ -165,9 +165,9 @@ function* fetchAvailable() {
 
 function* fetchYourActivities() {
   const { address } = yield select(getWallet);
-  // const res = yield yourActivities(address);
+  const res = yield yourActivities(address);
   const dueDate = new Date(1493028618000);
-  const res = {
+  const resMock = {
     meta: {
       pagination: PaginationJson
     },
@@ -207,8 +207,8 @@ function* fetchYourActivities() {
 
 function* fetchRewards() {
   const { address } = yield select(getWallet);
-  // const res = yield rewards(address);
-  const res = {
+  const res = yield rewards(address);
+  const resMock = {
     meta: {
       pagination: PaginationJson
     },
