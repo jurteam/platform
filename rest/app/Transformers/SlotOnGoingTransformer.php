@@ -26,7 +26,9 @@ class SlotOnGoingTransformer extends TransformerAbstract
                 'name' => $rewardActivity->name,
                 'rewardAmount' => $rewardActivity->reward_amount,
                 'dueDate' => $slot->due_date,
-                'state' => $slot->status
+                'state' => $slot->status,
+                'activityScId' => $rewardActivity->sc_activity_id,
+                'slotScId' => $slot->sc_slot_id
             ]
         ];
     }
