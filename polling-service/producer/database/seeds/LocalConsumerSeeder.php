@@ -17,11 +17,7 @@ class LocalConsumerSeeder extends Seeder
                 'asset_name' => 'jurAdvocate',
                 'event_name' => 'AdvocateAdded',
                 'consumer_name' => 'Advocate',
-<<<<<<< HEAD
                 'url' => 'http://jur/api/v1/polling/advocate'
-=======
-                'url' => 'http://172.18.0.8/api/v1/polling/advocate'
->>>>>>> 83247e79ff1c17cb3690400a270bd5b590031cd2
             ]);
 
             DB::table('consumers')->insert([
@@ -29,11 +25,7 @@ class LocalConsumerSeeder extends Seeder
                 'asset_name' => 'jurAdvocate',
                 'event_name' => 'AdvocateStateUpdated',
                 'consumer_name' => 'Advocate',
-<<<<<<< HEAD
                 'url' => 'http://jur/api/v1/polling/advocate'
-=======
-                'url' => 'http://172.18.0.8/api/v1/polling/advocate'
->>>>>>> 83247e79ff1c17cb3690400a270bd5b590031cd2
             ]);
 
             DB::table('consumers')->insert([
@@ -41,11 +33,7 @@ class LocalConsumerSeeder extends Seeder
                 'asset_name' => 'jurAdvocate',
                 'event_name' => 'AdvocateTypeUpdated',
                 'consumer_name' => 'Advocate',
-<<<<<<< HEAD
                 'url' => 'http://jur/api/v1/polling/advocate'
-=======
-                'url' => 'http://172.18.0.8/api/v1/polling/advocate'
->>>>>>> 83247e79ff1c17cb3690400a270bd5b590031cd2
             ]);
 
             DB::table('consumers')->insert([
@@ -53,11 +41,7 @@ class LocalConsumerSeeder extends Seeder
                 'asset_name' => 'jurRewards',
                 'event_name' => 'RoleContractUpdated',
                 'consumer_name' => 'Reward',
-<<<<<<< HEAD
                 'url' => 'http://jur/api/v1/polling/reward'
-=======
-                'url' => 'http://172.18.0.8/api/v1/polling/reward'
->>>>>>> 83247e79ff1c17cb3690400a270bd5b590031cd2
             ]);
 
             DB::table('consumers')->insert([
@@ -65,11 +49,7 @@ class LocalConsumerSeeder extends Seeder
                 'asset_name' => 'jurRewards',
                 'event_name' => 'ActivityCreated',
                 'consumer_name' => 'Reward',
-<<<<<<< HEAD
                 'url' => 'http://jur/api/v1/polling/reward'
-=======
-                'url' => 'http://172.18.0.8/api/v1/polling/reward'
->>>>>>> 83247e79ff1c17cb3690400a270bd5b590031cd2
             ]);
 
             DB::table('consumers')->insert([
@@ -77,11 +57,7 @@ class LocalConsumerSeeder extends Seeder
                 'asset_name' => 'jurRewards',
                 'event_name' => 'SlotAssigned',
                 'consumer_name' => 'Reward',
-<<<<<<< HEAD
                 'url' => 'http://jur/api/v1/polling/reward'
-=======
-                'url' => 'http://172.18.0.8/api/v1/polling/reward'
->>>>>>> 83247e79ff1c17cb3690400a270bd5b590031cd2
             ]);
 
             DB::table('consumers')->insert([
@@ -89,11 +65,7 @@ class LocalConsumerSeeder extends Seeder
                 'asset_name' => 'jurRewards',
                 'event_name' => 'ActivityUpdated',
                 'consumer_name' => 'Reward',
-<<<<<<< HEAD
                 'url' => 'http://jur/api/v1/polling/reward'
-=======
-                'url' => 'http://172.18.0.8/api/v1/polling/reward'
->>>>>>> 83247e79ff1c17cb3690400a270bd5b590031cd2
             ]);
 
             DB::table('consumers')->insert([
@@ -101,11 +73,7 @@ class LocalConsumerSeeder extends Seeder
                 'asset_name' => 'jurRewards',
                 'event_name' => 'SlotUpdated',
                 'consumer_name' => 'Reward',
-<<<<<<< HEAD
                 'url' => 'http://jur/api/v1/polling/reward'
-=======
-                'url' => 'http://172.18.0.8/api/v1/polling/reward'
->>>>>>> 83247e79ff1c17cb3690400a270bd5b590031cd2
             ]);
 
             DB::table('consumers')->insert([
@@ -113,11 +81,7 @@ class LocalConsumerSeeder extends Seeder
                 'asset_name' => 'jurRewards',
                 'event_name' => 'SlotRewarded',
                 'consumer_name' => 'Reward',
-<<<<<<< HEAD
                 'url' => 'http://jur/api/v1/polling/reward'
-=======
-                'url' => 'http://172.18.0.8/api/v1/polling/reward'
->>>>>>> 83247e79ff1c17cb3690400a270bd5b590031cd2
             ]);
         }
     }
