@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Traits\CustomPaginationTrait;
 use App\Transformers\AdvocateTransformer;
+use App\Transformers\RewardActivityAvailableTransformer;
 use App\Transformers\SlotOnGoingTransformer;
-use App\Transformers\SlotTransformer;
 use Carbon\Carbon;
 use Dingo\Api\Routing\Helpers;
 use Illuminate\Http\Request;
 use \App\Models\Advocate;
 use \App\Models\Reward;
+use \App\Models\RewardActivity;
 use \App\Models\Slot;
 use \App\Models\User;
 
@@ -70,9 +71,9 @@ class AdvocateController extends Controller
                     'linkedIn' => $user->linkedin,
                     'url' => $user->url,
                     'bio' => isset($advocate) ? $advocate->bio : null,
-                    'rewardsBalance' => $totalRewardAmount - $rewardAmount,
-                    'totalEarned' => $rewardAmount,
-                    'totalAvailable' => $isPrivate ? $totalRewardAmount : null
+                    'rewardsBalance' => ((float) $totalRewardAmount) - ((float) $rewardAmount),
+                    'totalEarned' => (float) $rewardAmount,
+                    'totalAvailable' => $isPrivate ? (float) $totalRewardAmount : null
                 ]
             ]
         ];
@@ -92,11 +93,11 @@ class AdvocateController extends Controller
             abort(404);
         }
 
-        $slots = Slot::where('assigned_wallet', $wallet)->get();
+        $rewardActivities = RewardActivity::get();
 
         return $this->response->paginator(
-            $this->customPagination($slots, $request),
-            new SlotTransformer
+            $this->customPagination($rewardActivities, $request),
+            new RewardActivityAvailableTransformer
         );
     }
 
@@ -114,7 +115,10 @@ class AdvocateController extends Controller
             abort(404);
         }
 
-        $slots = Slot::where('assigned_wallet', $wallet)->where('status', 'Assigned')->orWhere('status', 'OverDue')->get();
+        $slots = Slot::where('assigned_wallet', $wallet)->where('status', 'Assigned')
+            ->orWhere('status', 'OverDue')
+            ->orWhere('status', 'Completed')
+            ->get();
 
         return $this->response->paginator(
             $this->customPagination($slots, $request),
