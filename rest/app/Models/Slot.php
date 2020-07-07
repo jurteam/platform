@@ -58,6 +58,10 @@ class Slot extends Model
         $slot = Slot::firstOrCreate(['sc_slot_id' => $data->slotId, 'reward_activity_id' => $rewardActivity->id]);
         $slot->status = $data->newState;
 
+        if ($data->newState == 'Unassigned') {
+            $slot->assigned_wallet = null;
+        }
+
         return $slot->save();
     }
 }
