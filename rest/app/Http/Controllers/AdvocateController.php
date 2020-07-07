@@ -7,6 +7,7 @@ use App\Transformers\AdvocateTransformer;
 use App\Transformers\RewardActivityAvailableTransformer;
 use App\Transformers\SlotOnGoingTransformer;
 use Carbon\Carbon;
+use DB;
 use Dingo\Api\Routing\Helpers;
 use Illuminate\Http\Request;
 use \App\Models\Advocate;
@@ -48,11 +49,23 @@ class AdvocateController extends Controller
         // get a user using wallet; fail if not found
         $user = User::where('wallet', $wallet)->firstOrFail();
 
-        // get total rewarded amount for the wallet
-        $rewardAmount = Reward::where('rewardee_wallet', $wallet)->sum('reward_amount');
+        // rewards balance is the list of slots assigned to the wallet (apart from the Rewarded ones)
+        $rewardsBalance = Slot::where('assigned_wallet', $wallet)
+            ->where('status', '!=', 'Rewarded')
+            ->where('status', '!=', 'Cancelled')
+            ->where('status', '!=', 'Unassigned')
+            ->sum('reward_amount');
 
-        // get total assigned amount for the wallet
-        $totalRewardAmount = Slot::where('assigned_wallet', $wallet)->sum('reward_amount');
+        // aggregates all the rewards assigned to the wallet
+        $totalEarned = Reward::where('rewardee_wallet', $wallet)->sum('reward_amount');
+
+        // sum amount of all slots
+        $totalAmount = RewardActivity::where('is_active', true)->sum(DB::raw('number_of_slots * reward_amount'));
+
+        // sum amount of Alloted slots
+        $totalAlloted = Slot::where('status', '!=', 'Cancelled')
+            ->where('status', '!=', 'Unassigned')
+            ->sum('reward_amount');
 
         // get type of request
         $isPrivate = $wallet === $request->header('wallet');
@@ -71,9 +84,9 @@ class AdvocateController extends Controller
                     'linkedIn' => $user->linkedin,
                     'url' => $user->url,
                     'bio' => isset($advocate) ? $advocate->bio : null,
-                    'rewardsBalance' => ((float) $totalRewardAmount) - ((float) $rewardAmount),
-                    'totalEarned' => (float) $rewardAmount,
-                    'totalAvailable' => $isPrivate ? (float) $totalRewardAmount : null
+                    'rewardsBalance' => (float) $rewardsBalance,
+                    'totalEarned' => (float) $totalEarned,
+                    'totalAvailable' => $isPrivate ? ((float) $totalAmount) - ((float) $totalAlloted) : null
                 ]
             ]
         ];
