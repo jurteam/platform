@@ -70,9 +70,9 @@ class AdvocateController extends Controller
                     'linkedIn' => $user->linkedin,
                     'url' => $user->url,
                     'bio' => isset($advocate) ? $advocate->bio : null,
-                    'rewardsBalance' => $totalRewardAmount - $rewardAmount,
-                    'totalEarned' => $rewardAmount,
-                    'totalAvailable' => $isPrivate ? $totalRewardAmount : null
+                    'rewardsBalance' => ((float) $totalRewardAmount) - ((float) $rewardAmount),
+                    'totalEarned' => (float) $rewardAmount,
+                    'totalAvailable' => $isPrivate ? (float) $totalRewardAmount : null
                 ]
             ]
         ];
