@@ -6,26 +6,26 @@ use App\Models\RewardActivity;
 use App\Models\Slot;
 use League\Fractal\TransformerAbstract;
 
-class SlotTransformer extends TransformerAbstract
+class RewardActivityAvailableTransformer extends TransformerAbstract
 {
     /**
      * Turn this item object into a generic array
      *
-     * @param  \App\Models\Slot $slot
+     * @param  \App\Models\RewardActivity $rewardActivity
      * @return array
      */
-    public function transform(Slot $slot)
+    public function transform(RewardActivity $rewardActivity)
     {
-        $rewardActivity = RewardActivity::where('id', $slot->reward_activity_id)->firstOrFail();
+        $slotCount = Slot::where('reward_activity_id', $rewardActivity->id)->count();
 
         return [
-            'id' => $slot->id,
+            'id' => $rewardActivity->id,
             'type' => "activities",
             'attributes' =>
             [
                 'name' => $rewardActivity->name,
                 'rewardAmount' => $rewardActivity->reward_amount,
-                'slotAssigned' => $slot->sc_slot_id,
+                'slotAssigned' => $slotCount,
                 'slotTotal' => $rewardActivity->number_of_slots
             ]
         ];
