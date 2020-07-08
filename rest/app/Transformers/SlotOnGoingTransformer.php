@@ -4,6 +4,7 @@ namespace App\Transformers;
 
 use App\Models\RewardActivity;
 use App\Models\Slot;
+use Carbon\Carbon;
 use League\Fractal\TransformerAbstract;
 
 class SlotOnGoingTransformer extends TransformerAbstract
@@ -25,7 +26,7 @@ class SlotOnGoingTransformer extends TransformerAbstract
             [
                 'name' => $rewardActivity->name,
                 'rewardAmount' => $rewardActivity->reward_amount,
-                'dueDate' => $slot->due_date,
+                'dueDate' => Carbon::createFromDate($slot->due_date)->timestamp,
                 'state' => $slot->status,
                 'activityScId' => $rewardActivity->sc_activity_id,
                 'slotScId' => $slot->sc_slot_id
