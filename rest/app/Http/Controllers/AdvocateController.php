@@ -128,10 +128,11 @@ class AdvocateController extends Controller
             abort(404);
         }
 
-        $slots = Slot::where('assigned_wallet', $wallet)->where('status', 'Assigned')
-            ->orWhere('status', 'OverDue')
-            ->orWhere('status', 'Completed')
-            ->get();
+        $slots = Slot::where('assigned_wallet', $wallet)->where(function ($query) {
+            $query->where('status', 'Assigned')
+                ->orWhere('status', 'OverDue')
+                ->orWhere('status', 'Completed');
+        })->get();
 
         return $this->response->paginator(
             $this->customPagination($slots, $request),
