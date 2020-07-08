@@ -24,7 +24,7 @@ class AdvocateTransformer extends TransformerAbstract
             'attributes' =>
             [
                 'address' => $advocate->wallet,
-                'statusType' => $advocate->status_type,
+                'statusType' => $advocate->type,
                 'totalEarned' => $amount
             ]
         ];
