@@ -25,7 +25,7 @@ class RewardActivityAvailableTransformer extends TransformerAbstract
             [
                 'name' => $rewardActivity->name,
                 'rewardAmount' => $rewardActivity->reward_amount,
-                'slotAssigned' => $slotCount,
+                'slotAssigned' => $rewardActivity->number_of_slots - $slotCount,
                 'slotTotal' => $rewardActivity->number_of_slots
             ]
         ];
