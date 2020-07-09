@@ -10,7 +10,7 @@ import SubmitShareButton from "../SubmitShareButton";
 import { getAdvocateMessage } from "../../../../sagas/Selectors";
 import { isMyProfile } from "../../../../utils/AdvocateHelpers";
 
-const ShareModal = ({ address, title, isOpen, onRequestClose, message }) => {
+const ShareModal = ({ address, isOpen, onRequestClose, message }) => {
   const initialText = `I am an Advocate in the Jur ecosystem to support the development of a truly decentralized ecosystem for a new legal framework https://status.jur.io/${address} `;
 
   return (
