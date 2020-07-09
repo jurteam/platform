@@ -1,3 +1,6 @@
+const REWARD_DELAY_IN_SECONDS =
+  process.env.REACT_APP_REWARD_DELAY_IN_SECONDS || 604800; // 604800 seconds = 7 days
+
 export const SOCIAL_NETWORK_OPTIONS = [
   { value: "facebook" },
   { value: "twitter" },
@@ -24,8 +27,8 @@ export const copyToClipboard = text => {
   document.body.removeChild(el);
 };
 
-export const addDays = (date, days) => {
-  date.setDate(date.getDate() + days);
+export const addSeconds = (date, seconds = REWARD_DELAY_IN_SECONDS) => {
+  date.setSeconds(date.getSeconds() + seconds);
   return date;
 };
 
@@ -44,8 +47,8 @@ export const getAddressFromUrl = (location = window.location) =>
 export const canWithdraw = ({ dueDate, rewardedOn }) => {
   if (rewardedOn) return false;
 
-  const sevenDays = addDays(new Date(), 7);
-  if (new Date(dueDate) < sevenDays) return true;
+  const allowedSince = addSeconds(new Date());
+  if (new Date(dueDate) < allowedSince) return true;
   return false;
 };
 
@@ -58,8 +61,8 @@ export const keyRead = (states, activityScId, slotScId) => {
 
 export const canMarkComplete = ({ dueDate, state }) => {
   if ("assigned" === state.toLowerCase()) {
-    const sevenDays = addDays(new Date(), 7);
-    if (new Date(dueDate) < sevenDays) return true;
+    const allowedSince = addSeconds(new Date());
+    if (new Date(dueDate) < allowedSince) return true;
   }
 
   return false;
