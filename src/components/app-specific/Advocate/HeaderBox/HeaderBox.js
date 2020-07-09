@@ -26,7 +26,7 @@ const HeaderBox = ({
   statusType,
   activationTime
 }) => (
-  <Box type="hero">
+  <Box types="hero spread">
     <Cover className={coverClass(statusType, isAdvocate)}>
       <Frame className={frameClass(statusType, isAdvocate)}>
         <Avatar
