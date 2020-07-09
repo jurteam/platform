@@ -3,8 +3,9 @@ import "./AdvocateSection.scss";
 
 import Section from "JurCommon/Section";
 import {
-  ADVOCATE_FETCH_MINE,
-  ADVOCATE_TOGGLE_AVAILABLE
+  ADVOCATE_FETCH_PROFILE,
+  ADVOCATE_TOGGLE_AVAILABLE,
+  ADVOCATE_RESET_PROFILE
 } from "../../../../reducers/types";
 import {
   getAdvocate,
@@ -12,6 +13,7 @@ import {
   getIsAdvocateAvailableShown,
   getWallet
 } from "../../../../sagas/Selectors";
+import Text from "JurCommon/Text";
 import Disclaimer, { ModalDiscliamer } from "JurCommon/Disclaimer";
 import HeaderBox from "../../../app-specific/Advocate/HeaderBox";
 import BalancesBox from "../../../app-specific/Advocate/BalancesBox";
@@ -19,21 +21,25 @@ import { isMyProfile } from "../../../../utils/AdvocateHelpers";
 import AvailableBox from "../../../app-specific/Advocate/AvailableBox";
 import YourActivitiesBox from "../../../app-specific/Advocate/YourActivitiesBox";
 import RewardsBox from "../../../app-specific/Advocate/RewardsBox";
+import AdvocatesIndex from "../../../app-specific/Advocate/AdvocatesIndex";
+import AdvocatesFooterBox from "../../../app-specific/Advocate/AdvocatesFooterBox";
 const AdvocateSection = ({
-  fetchMyAdvocasy,
+  fetchAdvocate,
   advocasy,
   isShown,
   address,
   myAddress,
   isPublic,
   toggleDetails,
-  isAdvocate
+  isAdvocate,
+  resetAdvocate
 }) => {
-  useEffect(() => {
-    fetchMyAdvocasy();
-  }, []);
-
   const effectiveAddress = address || myAddress;
+
+  useEffect(() => {
+    fetchAdvocate(effectiveAddress);
+    return resetAdvocate;
+  }, []);
 
   return (
     <Section>
@@ -56,7 +62,15 @@ const AdvocateSection = ({
           )}
           <RewardsBox address={effectiveAddress} />
         </>
-      ) : null}
+      ) : (
+        <>
+          <Text size="large" transform="header">
+            List of Advocates
+          </Text>
+          <AdvocatesIndex />
+          <AdvocatesFooterBox />
+        </>
+      )}
       <ModalDiscliamer />
       <Disclaimer />
     </Section>
@@ -74,15 +88,18 @@ const mapStateToProps = state => {
   };
 };
 
-const fetchMyAdvocasy = () => ({
-  type: ADVOCATE_FETCH_MINE
+const fetchAdvocate = address => ({
+  type: ADVOCATE_FETCH_PROFILE,
+  payload: { address }
 });
+
+const resetAdvocate = () => ({ type: ADVOCATE_RESET_PROFILE });
 
 const toggleDetails = () => ({
   type: ADVOCATE_TOGGLE_AVAILABLE
 });
 
-const mapDispatchToProps = { fetchMyAdvocasy, toggleDetails };
+const mapDispatchToProps = { fetchAdvocate, toggleDetails, resetAdvocate };
 
 export default global.connection(
   AdvocateSection,

@@ -2,8 +2,8 @@ import {
   ADVOCATE_CHANGE_SHARE_NETWORK,
   ADVOCATE_SHARE,
   ADVOCATE_CHANGE_SHARE_TEXT,
-  ADVOCATE_FETCH_MINE,
-  ADVOCATE_UPDATE_MINE,
+  ADVOCATE_UPDATE_PROFILE,
+  ADVOCATE_RESET_PROFILE,
   ADVOCATE_FETCH_ALL,
   ADVOCATE_UPDATE_ALL,
   ADVOCATE_UPDATE_AVAILABLE,
@@ -16,26 +16,31 @@ import {
   ADVOCATE_COMPLETE_SLOT,
   ADVOCATE_RESET_SLOT,
   ADVOCATE_TOGGLE_AVAILABLE,
-  ADVOCATE_MESSAGE
+  ADVOCATE_MESSAGE,
+  ADVOCATE_FETCH_PROFILE
 } from "./types";
 import { SOCIAL_NETWORK_OPTIONS, keyScId } from "../utils/AdvocateHelpers";
 
-const INITIAL_STATE = {
-  isAvailableShown: true,
+const INITIAL_ADVOCATE_STATE = {
   advocate: {
     rewardsBalance: "na",
     totalEarned: "na",
     totalAvailable: "na"
   },
   advocateMeta: { isAdvocate: false },
+  rewards: [],
+  rewardsMeta: { pagination: {} }
+};
+
+const INITIAL_STATE = {
+  ...INITIAL_ADVOCATE_STATE,
+  isAvailableShown: true,
   advocates: [],
   advocatesMeta: { pagination: {} },
   available: [],
   availableMeta: { pagination: {} },
   yourActivities: [],
   yourActivitiesMeta: { pagination: {} },
-  rewards: [],
-  rewardsMeta: { pagination: {} },
   withdraws: {},
   slotMarks: {},
   isFetching: true,
@@ -57,10 +62,12 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, isSharing: true };
     case ADVOCATE_MESSAGE:
       return { ...state, message: action.payload };
-    case ADVOCATE_FETCH_MINE:
+    case ADVOCATE_FETCH_PROFILE:
       return { ...state, isFetching: true };
-    case ADVOCATE_UPDATE_MINE:
+    case ADVOCATE_UPDATE_PROFILE:
       return { ...state, isFetching: false, ...action.payload };
+    case ADVOCATE_RESET_PROFILE:
+      return { ...state, ...INITIAL_ADVOCATE_STATE };
     case ADVOCATE_FETCH_ALL:
       return { ...state, isFetchingadvocates: true };
     case ADVOCATE_UPDATE_ALL:

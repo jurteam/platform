@@ -17,8 +17,8 @@ import {
 } from "./Selectors";
 import {
   ADVOCATE_SHARE,
-  ADVOCATE_FETCH_MINE,
-  ADVOCATE_UPDATE_MINE,
+  ADVOCATE_FETCH_PROFILE,
+  ADVOCATE_UPDATE_PROFILE,
   ADVOCATE_UPDATE_ALL,
   ADVOCATE_FETCH_ALL,
   LOOKUP_WALLET_BALANCE,
@@ -45,8 +45,14 @@ function* shareStatus() {
   yield shareOn(shareNetwork.value, shareText, statusUrlOf(address));
 }
 
-function* fetchMyAdvocasy() {
-  const { address } = yield select(getWallet);
+function* fetchAdvocate(action) {
+  let address = action.payload && action.payload.address;
+
+  if (!address) {
+    alert("From Wallet " + address);
+    const wallet = yield select(getWallet);
+    address = wallet.address;
+  }
   const res = yield advocates(address);
 
   const payload = {
@@ -54,7 +60,7 @@ function* fetchMyAdvocasy() {
     advocateMeta: res.meta
   };
 
-  yield put({ type: ADVOCATE_UPDATE_MINE, payload });
+  yield put({ type: ADVOCATE_UPDATE_PROFILE, payload });
 }
 
 function* fetchAdvocates() {
@@ -198,7 +204,7 @@ function* copy() {
 
 export default function* Status() {
   yield takeLatest(ADVOCATE_SHARE, shareStatus);
-  yield takeLatest(ADVOCATE_FETCH_MINE, fetchMyAdvocasy);
+  yield takeLatest(ADVOCATE_FETCH_PROFILE, fetchAdvocate);
   yield takeLatest(ADVOCATE_FETCH_ALL, fetchAdvocates);
   yield takeLatest(ADVOCATE_FETCH_AVAILABLE, fetchAvailable);
   yield takeLatest(ADVOCATE_FETCH_YOUR_ACTIVITIES, fetchYourActivities);
