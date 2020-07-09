@@ -4,10 +4,10 @@ import Box from "JurCommon/Box";
 import RewardsTable from "../RewardsTable";
 import RewardsPagination from "../RewardsPagination";
 
-const RewardsBox = () => (
+const RewardsBox = ({ address }) => (
   <Box title="Your Rewards">
-    <RewardsTable />
-    <RewardsPagination />
+    <RewardsTable address={address} />
+    <RewardsPagination address={address} />
   </Box>
 );
 

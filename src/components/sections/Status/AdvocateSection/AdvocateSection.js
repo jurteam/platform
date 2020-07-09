@@ -24,6 +24,7 @@ const AdvocateSection = ({
   advocasy,
   isShown,
   address,
+  myAddress,
   isPublic,
   toggleDetails,
   isAdvocate
@@ -32,9 +33,11 @@ const AdvocateSection = ({
     fetchMyAdvocasy();
   }, []);
 
+  const effectiveAddress = address || myAddress;
+
   return (
     <Section>
-      <HeaderBox address={address} isAdvocate={isAdvocate} />
+      <HeaderBox address={effectiveAddress} isAdvocate={isAdvocate} />
       {isAdvocate ? (
         <>
           <BalancesBox
@@ -51,7 +54,7 @@ const AdvocateSection = ({
               <YourActivitiesBox />
             </>
           )}
-          <RewardsBox />
+          <RewardsBox address={effectiveAddress} />
         </>
       ) : null}
       <ModalDiscliamer />
@@ -61,12 +64,12 @@ const AdvocateSection = ({
 };
 
 const mapStateToProps = state => {
-  const address = getWallet(state).address;
+  const myAddress = getWallet(state).address;
   return {
     advocasy: getAdvocate(state),
     isShown: getIsAdvocateAvailableShown(state),
-    address,
-    isPublic: !isMyProfile(address),
+    myAddress,
+    isPublic: !isMyProfile(myAddress),
     isAdvocate: getAdvocateMeta(state).isAdvocate
   };
 };

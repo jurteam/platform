@@ -8,9 +8,9 @@ import { getAdvocateRewards } from "../../../../sagas/Selectors";
 import { ADVOCATE_FETCH_REWARDS } from "../../../../reducers/types";
 import { i18nDateFormat } from "../../../../utils/helpers";
 
-const RewardsTable = ({ rows, fetchRewards }) => {
+const RewardsTable = ({ rows, address, fetchRewards }) => {
   useEffect(() => {
-    fetchRewards();
+    fetchRewards(address);
   }, []);
   return (
     <Table>
@@ -52,7 +52,10 @@ const mapStateToProps = state => ({
   rows: getAdvocateRewards(state)
 });
 
-const fetchRewards = () => ({ type: ADVOCATE_FETCH_REWARDS });
+const fetchRewards = address => ({
+  type: ADVOCATE_FETCH_REWARDS,
+  payload: { address }
+});
 const mapDispatchToProps = { fetchRewards };
 
 export default global.connection(
