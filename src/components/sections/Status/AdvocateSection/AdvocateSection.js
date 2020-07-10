@@ -60,7 +60,11 @@ const AdvocateSection = ({
               <YourActivitiesBox />
             </>
           )}
-          <RewardsBox address={effectiveAddress} />
+          <RewardsBox
+            isPublic={isPublic}
+            name={advocasy.name}
+            address={effectiveAddress}
+          />
         </>
       ) : (
         <>
