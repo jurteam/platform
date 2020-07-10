@@ -65,7 +65,11 @@ export default (state = INITIAL_STATE, action) => {
     case ADVOCATE_FETCH_PROFILE:
       return { ...state, isFetching: true };
     case ADVOCATE_UPDATE_PROFILE:
-      return { ...state, isFetching: false, ...action.payload };
+      return {
+        ...state,
+        isFetching: false,
+        ...action.payload
+      };
     case ADVOCATE_RESET_PROFILE:
       return { ...state, ...INITIAL_ADVOCATE_STATE };
     case ADVOCATE_FETCH_ALL:

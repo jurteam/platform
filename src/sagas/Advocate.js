@@ -46,21 +46,33 @@ function* shareStatus() {
 }
 
 function* fetchAdvocate(action) {
+  const wallet = yield select(getWallet);
   let address = action.payload && action.payload.address;
 
   if (!address) {
-    alert("From Wallet " + address);
-    const wallet = yield select(getWallet);
     address = wallet.address;
   }
+
   const res = yield advocates(address);
 
   const payload = {
     advocate: res.data.attributes,
-    advocateMeta: res.meta
+    advocateMeta: res.meta,
+    shareText: computeShareText(address, wallet, res)
   };
 
   yield put({ type: ADVOCATE_UPDATE_PROFILE, payload });
+}
+
+function computeShareText(address, wallet, res) {
+  const prefix =
+    address === wallet.address
+      ? "I am"
+      : (res.data.attributes.name || address) + " is";
+  return (
+    prefix +
+    " an Advocate in the Jur ecosystem to support the development of a truly decentralized ecosystem for a new legal framework"
+  );
 }
 
 function* fetchAdvocates() {
