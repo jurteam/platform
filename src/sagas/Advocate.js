@@ -75,8 +75,8 @@ function computeShareText(address, wallet, res) {
   );
 }
 
-function* fetchAdvocates() {
-  const res = yield advocates();
+function* fetchAdvocates(action) {
+  const res = yield advocates(null, action.payload);
 
   const payload = {
     advocates: res.data,

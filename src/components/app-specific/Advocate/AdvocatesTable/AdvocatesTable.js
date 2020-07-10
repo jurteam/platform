@@ -6,14 +6,18 @@ import Amount from "JurCommon/Amount";
 import AvatarInfo from "JurCommon/AvatarInfo";
 import StatusBadge from "../StatusBadge";
 import ViewAdvocateButton from "../ViewAdvocateButton";
+import { ADVOCATE_FETCH_ALL } from "../../../../reducers/types";
+import { orderTosign } from "JurUtils/helpers";
 
-const AdvocatesTable = ({ advocates }) => (
+const AdvocatesTable = ({ advocates, onSort }) => (
   <Table>
     <Table.Head>
       <Table.Row>
         <Table.Cell>Wallet</Table.Cell>
         <Table.Cell>Type</Table.Cell>
-        <Table.Cell>Total Earned</Table.Cell>
+        <Table.Cell onClick={onSort} fieldName="TotalEarned">
+          Total Earned
+        </Table.Cell>
         <Table.Cell>Action</Table.Cell>
       </Table.Row>
     </Table.Head>
@@ -38,8 +42,16 @@ const AdvocatesTable = ({ advocates }) => (
   </Table>
 );
 
+const onSort = (field, order) => {
+  const sign = orderTosign(order);
+  const sortBy = sign ? sign + field : "";
+  return { type: ADVOCATE_FETCH_ALL, payload: { sortBy } };
+};
+
 AdvocatesTable.defaultProps = {
   advocates: []
 };
 
-export default AdvocatesTable;
+const mapDispatchToProps = { onSort };
+
+export default global.connection(AdvocatesTable, null, mapDispatchToProps);
