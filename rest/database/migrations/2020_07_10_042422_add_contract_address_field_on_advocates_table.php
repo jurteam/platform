@@ -25,6 +25,8 @@ class AddContractAddressFieldOnAdvocatesTable extends Migration
      */
     public function down()
     {
-        $table->dropColumn('contract_address');
+        Schema::table('advocates', function (Blueprint $table) {
+            $table->dropColumn('contract_address');
+        });
     }
 }
