@@ -431,13 +431,13 @@ export function to(page, perPage, total) {
   return toFullPage;
 }
 
-export const orderTosign = order => {
+export const orderTosign = (order, field) => {
   // Ref JSON:API conventions
   switch (order) {
     case 1:
-      return ""; // POSITIVE (breaking conventions as this is easy to handle in lumen)
+      return field; // POSITIVE (breaking conventions as this is easy to handle in lumen)
     case 2:
-      return "-";
+      return "-" + field;
     default:
       return "";
   }
