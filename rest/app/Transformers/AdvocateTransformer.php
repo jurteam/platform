@@ -3,7 +3,6 @@
 namespace App\Transformers;
 
 use App\Models\Advocate;
-use App\Models\Reward;
 use League\Fractal\TransformerAbstract;
 
 class AdvocateTransformer extends TransformerAbstract
@@ -16,8 +15,6 @@ class AdvocateTransformer extends TransformerAbstract
      */
     public function transform(Advocate $advocate)
     {
-        $amount = Reward::where('rewardee_wallet', $advocate->wallet)->sum('reward_amount');
-
         return [
             'id' => $advocate->wallet,
             'type' => "advocates",
@@ -25,7 +22,7 @@ class AdvocateTransformer extends TransformerAbstract
             [
                 'address' => $advocate->wallet,
                 'statusType' => $advocate->type,
-                'totalEarned' => $amount
+                'totalEarned' => $advocate->total_earned
             ]
         ];
     }
