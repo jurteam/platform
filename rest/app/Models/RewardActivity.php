@@ -8,6 +8,15 @@ use Log;
 
 class RewardActivity extends Model
 {
+
+    /**
+     * @return role_contracts : many to many relation
+     */
+    public function roleContracts()
+    {
+        return $this->belongsToMany('App\Models\RoleContract', 'reward_activity_roles');
+    }
+
     /**
      * Store reward-activity when `ActivityCreated` event triggered
      *

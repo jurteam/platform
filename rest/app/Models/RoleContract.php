@@ -15,6 +15,14 @@ class RoleContract extends Model
     ];
 
     /**
+     * @return role_contracts : many to many relation
+     */
+    public function rewardActivities()
+    {
+        return $this->belongsToMany('App\Models\RewardActivity', 'reward_activities');
+    }
+
+    /**
      * Store/Update user-contract when `roleContractUpdated` event triggered
      *
      * @param Object $payload: payload  send by Smart-Contract event
