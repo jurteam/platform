@@ -15,6 +15,11 @@ class Advocate extends Model
         'wallet'
     ];
 
+    public function scopeFilters($query, $filters)
+    {
+        return $filters->apply($query);
+    }
+
     /**
      * Store an advocate when `AdvocateAdded` event triggered
      *

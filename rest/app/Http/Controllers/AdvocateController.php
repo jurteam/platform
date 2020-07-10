@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Filters\AdvocateFilters;
 use App\Http\Controllers\Traits\CustomPaginationTrait;
 use App\Transformers\AdvocateTransformer;
 use App\Transformers\RewardActivityAvailableTransformer;
@@ -23,11 +24,14 @@ class AdvocateController extends Controller
     /**
      * GET all advocates
      *
+     * @param AdvocateFilters $filters
+     * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index(Request $request)
+    public function index(AdvocateFilters $filters, Request $request)
     {
-        $advocates = Advocate::get();
+        $advocates = Advocate::filters($filters)
+            ->get();
 
         return $this->response->paginator(
             $this->customPagination($advocates, $request),

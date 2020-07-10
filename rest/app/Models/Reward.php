@@ -43,6 +43,14 @@ class Reward extends Model
         $reward->reward_amount = $existingRewardActivity->reward_amount;
         $reward->rewarded_on = Carbon::createFromTimestamp($payload->timestamp);
 
-        return $reward->save();
+        $reward->save();
+
+        $advocate = Advocate::where('wallet', $existingSlot->assigned_wallet)->first();
+
+        if (isset($advocate)) {
+            $advocate->total_earned = Reward::where('rewardee_wallet', $existingSlot->assigned_wallet)->sum('reward_amount');
+        }
+
+        return $advocate->save();
     }
 }
