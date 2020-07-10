@@ -60,6 +60,10 @@ class Slot extends Model
         // find reward_activity
         $rewardActivity = RewardActivity::where('sc_activity_id', $data->activityId)->firstOrFail();
 
+        // find slot is already cancelled
+        $alreadyCancelled = Slot::where('status', 'Cancelled')->where('sc_slot_id', $data->slotId)
+            ->where('reward_activity_id', $rewardActivity->id)->count();
+
         // Update RewardActivity
         $slot = Slot::firstOrCreate(['sc_slot_id' => $data->slotId, 'reward_activity_id' => $rewardActivity->id]);
         $slot->status = $data->newState;
@@ -69,8 +73,9 @@ class Slot extends Model
         }
 
         if ($data->newState == 'Cancelled') {
-            // reduce number of slots
-            $rewardActivity->number_of_slots = $rewardActivity->number_of_slots > 0 ? $rewardActivity->number_of_slots - 1 : 0;
+            if ($alreadyCancelled == 0) {
+                $rewardActivity->number_of_slots = $rewardActivity->number_of_slots - 1; // reduce number of slots
+            }
         }
 
         $slot->save();
