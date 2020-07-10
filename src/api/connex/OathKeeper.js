@@ -143,9 +143,9 @@ export default class connexOathKeeper {
     const filter = smell.filter([...filters]);
 
     function shouldStop(logs) {
-      console.log("Event Logs", eventName, txid, filters, "received", logs);
+      // console.log("Event Logs", eventName, txid, filters, "received", logs);
       if (logs.length) {
-        console.log("Event Logs", eventName, txid, filters, "DONE");
+        // console.log("Event Logs", eventName, txid, filters, "DONE");
         return true;
       }
       return false;

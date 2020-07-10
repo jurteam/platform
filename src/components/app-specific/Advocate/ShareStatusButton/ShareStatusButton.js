@@ -17,7 +17,7 @@ const ShareStatusButton = ({ address, className }) => {
         size="big"
         className={className}
       >
-        Share Your Status Badge
+        Share Advocate Badge
       </Button>
       <ShareStatusModal
         isOpen={isOpen}

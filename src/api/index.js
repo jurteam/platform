@@ -20,3 +20,4 @@ export {
 } from "./connex/ArbitrationFactory";
 export { default as connexArbitrationContract } from "./connex/Arbitration";
 export { default as connexOathKeeper } from "./connex/OathKeeper";
+export { default as RewardConnex } from "./connex/Reward";

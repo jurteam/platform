@@ -5,7 +5,7 @@ import Amount from "JurCommon/Amount";
 import YourActivitiesAction from "../YourActivitiesAction";
 import { getAdvocateYourActivities } from "../../../../sagas/Selectors";
 import { ADVOCATE_FETCH_YOUR_ACTIVITIES } from "../../../../reducers/types";
-import { i18nDateFormat } from "../../../../utils/helpers";
+import { i18nDateFormatSec } from "../../../../utils/helpers";
 
 const YourActivitiesTable = ({ rows, fetchYourActivities }) => {
   useEffect(() => {
@@ -28,9 +28,9 @@ const YourActivitiesTable = ({ rows, fetchYourActivities }) => {
             <Table.Cell>
               <Amount value={r.attributes.rewardAmount} />
             </Table.Cell>
-            <Table.Cell>{i18nDateFormat(r.attributes.dueDate)}</Table.Cell>
+            <Table.Cell>{i18nDateFormatSec(r.attributes.dueDate)}</Table.Cell>
             <Table.Cell>
-              <YourActivitiesAction activity={r} />
+              <YourActivitiesAction activity={r.attributes} />
             </Table.Cell>
           </Table.Row>
         ))}

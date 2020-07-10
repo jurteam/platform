@@ -3,6 +3,22 @@
 .jur-box {
   padding: 40px 54px;
 
+  &__spread {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  &__spread-out {
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: -54px;
+    margin-right: -54px;
+  }
+
+  &__center {
+    text-align: center;
+  }
+
   &__hero {
     text-align: center;
     border-bottom: 1px solid #eaebec;
@@ -10,6 +26,12 @@
 
   &__header {
     border-bottom: 1px solid #eaebec;
+  }
+
+  &__subheader {
+    border-bottom: 1px solid #eaebec;
+    border-top: 1px solid #eaebec;
+    padding-top: 20px;
   }
 
   &__footer {

@@ -6,14 +6,14 @@ import Row from "JurCommon/Row";
 import Flag from "JurCommon/Flag";
 import Divide from "JurCommon/Divide";
 import { LinkedInIcon, GlobeIcon } from "JurCommon/Icons";
-import { i18nDateFormat } from "JurUtils/helpers";
+import { i18nDateFormatSec } from "JurUtils/helpers";
 
 const AdvocateHeader = ({ country, activationTime, linkedIn, url }) => (
   <>
     <Text transform="shout">Advocate</Text>
-    <Text size="small">Advocate since {i18nDateFormat(activationTime)}</Text>
+    <Text size="small">Advocate since {i18nDateFormatSec(activationTime)}</Text>
     <Row align="center">
-      <Flag of={country} />
+      <Flag of={country} className="jur-holder-header__flag" />
       <Divide vertical={true} className="color__white" />
       <a
         target="_blank"

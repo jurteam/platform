@@ -2,12 +2,16 @@ import React from "react";
 import PropTypes from "prop-types";
 import "./Box.scss";
 
-const Box = ({ children, type, title, isLoading }) => (
-  <section className={`jur-box jur-box__${type}`}>
+const Box = ({ children, type, types, title, isLoading }) => (
+  <section className={boxClass(types || type)}>
     <h2 className="jur-box-title">{title}</h2>
     {isLoading ? "Loading..." : children}
   </section>
 );
+
+function boxClass(types) {
+  return "jur-box " + [""].concat(types.split(" ")).join(" jur-box__");
+}
 
 Box.defaultProps = {
   type: "normal",

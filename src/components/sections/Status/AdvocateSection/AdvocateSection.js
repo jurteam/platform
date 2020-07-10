@@ -3,8 +3,9 @@ import "./AdvocateSection.scss";
 
 import Section from "JurCommon/Section";
 import {
-  ADVOCATE_FETCH_MINE,
-  ADVOCATE_TOGGLE_AVAILABLE
+  ADVOCATE_FETCH_PROFILE,
+  ADVOCATE_TOGGLE_AVAILABLE,
+  ADVOCATE_RESET_PROFILE
 } from "../../../../reducers/types";
 import {
   getAdvocate,
@@ -12,29 +13,37 @@ import {
   getIsAdvocateAvailableShown,
   getWallet
 } from "../../../../sagas/Selectors";
-
+import Text from "JurCommon/Text";
+import Disclaimer, { ModalDiscliamer } from "JurCommon/Disclaimer";
 import HeaderBox from "../../../app-specific/Advocate/HeaderBox";
 import BalancesBox from "../../../app-specific/Advocate/BalancesBox";
 import { isMyProfile } from "../../../../utils/AdvocateHelpers";
 import AvailableBox from "../../../app-specific/Advocate/AvailableBox";
 import YourActivitiesBox from "../../../app-specific/Advocate/YourActivitiesBox";
 import RewardsBox from "../../../app-specific/Advocate/RewardsBox";
+import AdvocatesIndex from "../../../app-specific/Advocate/AdvocatesIndex";
+import AdvocatesFooterBox from "../../../app-specific/Advocate/AdvocatesFooterBox";
 const AdvocateSection = ({
-  fetchMyAdvocasy,
+  fetchAdvocate,
   advocasy,
   isShown,
   address,
+  myAddress,
   isPublic,
   toggleDetails,
-  isAdvocate
+  isAdvocate,
+  resetAdvocate
 }) => {
+  const effectiveAddress = address || myAddress;
+
   useEffect(() => {
-    fetchMyAdvocasy();
+    fetchAdvocate(effectiveAddress);
+    return resetAdvocate;
   }, []);
 
   return (
     <Section>
-      <HeaderBox address={address} isAdvocate={isAdvocate} />
+      <HeaderBox address={effectiveAddress} isAdvocate={isAdvocate} />
       {isAdvocate ? (
         <>
           <BalancesBox
@@ -45,35 +54,56 @@ const AdvocateSection = ({
             toggleDetails={toggleDetails}
             isPublic={isPublic}
           />
-          <AvailableBox />
-          <YourActivitiesBox />
-          <RewardsBox />
+          {isPublic ? null : (
+            <>
+              {isShown ? <AvailableBox /> : null}
+              <YourActivitiesBox />
+            </>
+          )}
+          <RewardsBox
+            isPublic={isPublic}
+            name={advocasy.name}
+            address={effectiveAddress}
+          />
         </>
-      ) : null}
+      ) : (
+        <>
+          <Text size="large" transform="header">
+            List of Advocates
+          </Text>
+          <AdvocatesIndex />
+          <AdvocatesFooterBox />
+        </>
+      )}
+      <ModalDiscliamer />
+      <Disclaimer />
     </Section>
   );
 };
 
 const mapStateToProps = state => {
-  const address = getWallet(state).address;
+  const myAddress = getWallet(state).address;
   return {
     advocasy: getAdvocate(state),
     isShown: getIsAdvocateAvailableShown(state),
-    address,
-    isPublic: !isMyProfile(address),
+    myAddress,
+    isPublic: !isMyProfile(myAddress),
     isAdvocate: getAdvocateMeta(state).isAdvocate
   };
 };
 
-const fetchMyAdvocasy = () => ({
-  type: ADVOCATE_FETCH_MINE
+const fetchAdvocate = address => ({
+  type: ADVOCATE_FETCH_PROFILE,
+  payload: { address }
 });
+
+const resetAdvocate = () => ({ type: ADVOCATE_RESET_PROFILE });
 
 const toggleDetails = () => ({
   type: ADVOCATE_TOGGLE_AVAILABLE
 });
 
-const mapDispatchToProps = { fetchMyAdvocasy, toggleDetails };
+const mapDispatchToProps = { fetchAdvocate, toggleDetails, resetAdvocate };
 
 export default global.connection(
   AdvocateSection,

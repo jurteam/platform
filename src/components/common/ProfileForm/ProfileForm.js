@@ -43,6 +43,7 @@ export const ProfileForm = props => {
     wallet,
     name,
     linkedin,
+    url,
     gender,
     email,
     updating,
@@ -257,6 +258,20 @@ export const ProfileForm = props => {
             error={hasError("linkedin")}
             placeholder={labels.linkedInUrlPlaceholder}
             value={linkedin}
+            onChange={onInputChange}
+          />
+        </Form.Group>
+        <Form.Group>
+          <Form.Label htmlFor="url" optional>
+            {labels.url}
+          </Form.Label>
+          <Form.Input
+            type="url"
+            name="url"
+            id="url"
+            error={hasError("url")}
+            placeholder={labels.urlPlaceholder}
+            value={url}
             onChange={onInputChange}
           />
         </Form.Group>
