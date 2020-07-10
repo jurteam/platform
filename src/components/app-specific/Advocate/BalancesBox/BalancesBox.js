@@ -15,7 +15,7 @@ const BalancesBox = ({
   isPublic,
   toggleDetails
 }) => (
-  <Box>
+  <Box type="subheader">
     <Row>
       <RewardsCard balance={rewardsBalance} />
       <EarnedCard balance={totalEarned} />
