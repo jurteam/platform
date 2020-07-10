@@ -106,8 +106,31 @@ class AdvocateController extends Controller
             abort(404);
         }
 
-        $rewardActivities = RewardActivity::get();
+        // get all activities that doesn't have any roles (no role means available to all)
+        $rewardActivitiesForAllUsers = RewardActivity::whereNotIn('id', DB::table('reward_activity_roles')
+                ->distinct('reward_activity_id')
+                ->pluck('reward_activity_id'))
+            ->where('is_active', true);
 
+        // get an advocate using wallet address
+        $advocate = Advocate::where('wallet', $wallet)->first();
+
+        // get all activities based on roles & merge no-role activities
+        $rewardActivities = RewardActivity::with('roleContracts')
+            ->where('is_active', true)
+            ->whereHas('roleContracts', function ($query) use ($advocate) {
+                if (isset($advocate)) {
+                    $query->where('contract_address', $advocate->contract_address)
+                        ->where('is_active', true);
+                } else {
+                    $query->where('contract_address', '0'); // ignoring the query
+                }
+            })
+            ->union($rewardActivitiesForAllUsers)
+            ->orderBy('updated_at', 'desc')
+            ->get();
+
+        // return response
         return $this->response->paginator(
             $this->customPagination($rewardActivities, $request),
             new RewardActivityAvailableTransformer
@@ -128,12 +151,18 @@ class AdvocateController extends Controller
             abort(404);
         }
 
-        $slots = Slot::where('assigned_wallet', $wallet)->where(function ($query) {
-            $query->where('status', 'Assigned')
-                ->orWhere('status', 'OverDue')
-                ->orWhere('status', 'Completed');
-        })->get();
+        // get un assigned slots related to $wallet
+        $unassignedSlots = Slot::with('unAssignedSlots')
+            ->whereHas('unAssignedSlots', function ($query) use ($wallet) {
+                $query->where('un_assigned_wallet', $wallet);
+            });
 
+        // get current activities for the $wallet
+        $slots = Slot::where('assigned_wallet', $wallet)
+            ->union($unassignedSlots)
+            ->get();
+
+        // return result
         return $this->response->paginator(
             $this->customPagination($slots, $request),
             new SlotOnGoingTransformer
