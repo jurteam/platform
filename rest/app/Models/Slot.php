@@ -29,15 +29,21 @@ class Slot extends Model
         // find reward_activity
         $rewardActivity = RewardActivity::where('sc_activity_id', $data->activityId)->firstOrFail();
 
-        // Update RewardActivity
+        // create/update slot for reward activity
         $slot = Slot::firstOrCreate(['sc_slot_id' => $data->slotId, 'reward_activity_id' => $rewardActivity->id]);
         $slot->assigned_wallet = $data->assignedTo;
         $slot->reward_amount = $rewardActivity->reward_amount;
         $slot->due_date = Carbon::createFromTimestamp($data->dueDate);
         $slot->status = 'Assigned';
         $slot->created_at = Carbon::createFromTimestamp($data->createdAt);
+        $slot->save();
 
-        return $slot->save();
+        // update assigned slot count
+        $rewardActivity->assigned_slots = Slot::whereNotIn('status', ['Unassigned', 'Cancelled'])
+            ->where('reward_activity_id', $rewardActivity->id)->count();
+
+        // return status
+        return $rewardActivity->save();
     }
 
     /**
@@ -62,6 +68,17 @@ class Slot extends Model
             $slot->assigned_wallet = null;
         }
 
-        return $slot->save();
+        if ($data->newState == 'Cancelled') {
+            // reduce number of slots
+            $rewardActivity->number_of_slots = $rewardActivity->number_of_slots > 0 ? $rewardActivity->number_of_slots - 1 : 0;
+        }
+
+        $slot->save();
+
+        // update assigned slot count
+        $rewardActivity->assigned_slots = Slot::whereNotIn('status', ['Unassigned', 'Cancelled'])
+            ->where('reward_activity_id', $rewardActivity->id)->count();
+
+        return $rewardActivity->save();
     }
 }

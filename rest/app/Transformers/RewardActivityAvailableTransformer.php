@@ -3,7 +3,6 @@
 namespace App\Transformers;
 
 use App\Models\RewardActivity;
-use App\Models\Slot;
 use League\Fractal\TransformerAbstract;
 
 class RewardActivityAvailableTransformer extends TransformerAbstract
@@ -16,8 +15,6 @@ class RewardActivityAvailableTransformer extends TransformerAbstract
      */
     public function transform(RewardActivity $rewardActivity)
     {
-        $slotCount = Slot::where('reward_activity_id', $rewardActivity->id)->count();
-
         return [
             'id' => $rewardActivity->id,
             'type' => "activities",
@@ -25,7 +22,7 @@ class RewardActivityAvailableTransformer extends TransformerAbstract
             [
                 'name' => $rewardActivity->name,
                 'rewardAmount' => $rewardActivity->reward_amount,
-                'slotAssigned' => $slotCount,
+                'slotAssigned' => $rewardActivity->assigned_slots,
                 'slotTotal' => $rewardActivity->number_of_slots
             ]
         ];
