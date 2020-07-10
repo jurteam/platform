@@ -432,9 +432,10 @@ export function to(page, perPage, total) {
 }
 
 export const orderTosign = order => {
+  // Ref JSON:API conventions
   switch (order) {
     case 1:
-      return "+";
+      return ""; // POSITIVE (breaking conventions as this is easy to handle in lumen)
     case 2:
       return "-";
     default:
