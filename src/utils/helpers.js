@@ -176,6 +176,9 @@ export const i18nDateFormat = (
   options = { year: "numeric", month: "short", day: "numeric" }
 ) => new Date(dateALike).toLocaleDateString(locale, options);
 
+export const i18nDateFormatSec = (dateALike, ...params) =>
+  i18nDateFormat(Number(dateALike) * 1000, ...params);
+
 export const upperCaseFirst = string => {
   return string.charAt(0).toUpperCase() + string.slice(1);
 };

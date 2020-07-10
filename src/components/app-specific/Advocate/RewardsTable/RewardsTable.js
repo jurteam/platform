@@ -6,7 +6,7 @@ import RewardAction from "../RewardsAction";
 import { JurIcon } from "JurCommon/Icons";
 import { getAdvocateRewards } from "../../../../sagas/Selectors";
 import { ADVOCATE_FETCH_REWARDS } from "../../../../reducers/types";
-import { i18nDateFormat } from "../../../../utils/helpers";
+import { i18nDateFormatSec } from "../../../../utils/helpers";
 
 const RewardsTable = ({ rows, address, fetchRewards }) => {
   useEffect(() => {
@@ -33,7 +33,7 @@ const RewardsTable = ({ rows, address, fetchRewards }) => {
             <Table.Cell>
               <Amount value={r.attributes.rewardAmount} />
             </Table.Cell>
-            <Table.Cell>{i18nDateFormat(r.attributes.dueDate)}</Table.Cell>
+            <Table.Cell>{i18nDateFormatSec(r.attributes.dueDate)}</Table.Cell>
             <Table.Cell>
               <RewardAction activity={r.attributes} />
             </Table.Cell>
