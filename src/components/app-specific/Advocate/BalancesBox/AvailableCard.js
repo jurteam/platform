@@ -16,7 +16,7 @@ const IconHandler = ({ isShown, fill }) => (
 );
 
 const AvailableCard = ({ balance, isShown, onViewDetails }) => (
-  <HeaderCard title="Rewards Balance">
+  <HeaderCard title="Activities Available">
     <HeaderCard.Hero>
       <AmountDisplay balance={balance} />
     </HeaderCard.Hero>
