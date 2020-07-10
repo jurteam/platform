@@ -35,7 +35,7 @@ export const shareOn = (network, text, url, title, hashtags) => {
 
 export const advocates = (address = "", params) =>
   axios
-    .get(addParams(["/advocates/", address].filter(Boolean).join(), params))
+    .get(addParams(["/advocates/", address].filter(Boolean).join(""), params))
     .then(r => r.data);
 
 export const available = address =>
