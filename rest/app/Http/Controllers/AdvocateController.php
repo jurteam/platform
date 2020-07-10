@@ -151,12 +151,18 @@ class AdvocateController extends Controller
             abort(404);
         }
 
-        $slots = Slot::where('assigned_wallet', $wallet)->where(function ($query) {
-            $query->where('status', 'Assigned')
-                ->orWhere('status', 'OverDue')
-                ->orWhere('status', 'Completed');
-        })->get();
+        // get un assigned slots related to $wallet
+        $unassignedSlots = Slot::with('unAssignedSlots')
+            ->whereHas('unAssignedSlots', function ($query) use ($wallet) {
+                $query->where('un_assigned_wallet', $wallet);
+            });
 
+        // get current activities for the $wallet
+        $slots = Slot::where('assigned_wallet', $wallet)
+            ->union($unassignedSlots)
+            ->get();
+
+        // return result
         return $this->response->paginator(
             $this->customPagination($slots, $request),
             new SlotOnGoingTransformer

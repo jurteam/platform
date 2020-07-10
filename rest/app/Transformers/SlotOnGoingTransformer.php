@@ -17,18 +17,18 @@ class SlotOnGoingTransformer extends TransformerAbstract
      */
     public function transform(Slot $slot)
     {
-        $rewardActivity = RewardActivity::where('id', $slot->reward_activity_id)->firstOrFail();
+        $isUnassignedSlot = (bool) $slot->unAssignedSlots->count();
 
         return [
             'id' => $slot->id,
             'type' => "activities",
             'attributes' =>
             [
-                'name' => $rewardActivity->name,
-                'rewardAmount' => $rewardActivity->reward_amount,
+                'name' => $slot->rewardActivity->name,
+                'rewardAmount' => $slot->rewardActivity->reward_amount,
                 'dueDate' => Carbon::createFromDate($slot->due_date)->timestamp,
-                'state' => $slot->status,
-                'activityScId' => $rewardActivity->sc_activity_id,
+                'state' => $isUnassignedSlot ? 'Unassigned' : $slot->status,
+                'activityScId' => $slot->rewardActivity->sc_activity_id,
                 'slotScId' => $slot->sc_slot_id
             ]
         ];

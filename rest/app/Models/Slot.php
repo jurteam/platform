@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\RewardActivity;
+use App\Models\RewardUnAssignedSlot;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
@@ -14,6 +16,22 @@ class Slot extends Model
         'sc_slot_id',
         'reward_activity_id'
     ];
+
+    /**
+     * @return un_assigned_slots : one to many relation
+     */
+    public function unAssignedSlots()
+    {
+        return $this->hasMany(RewardUnAssignedSlot::class);
+    }
+
+    /**
+     * @return RewardActivity
+     */
+    public function rewardActivity()
+    {
+        return $this->belongsTo(RewardActivity::class);
+    }
 
     /**
      * Create Slot when `SlotAssigned` event triggered
@@ -42,6 +60,10 @@ class Slot extends Model
         $rewardActivity->assigned_slots = Slot::whereNotIn('status', ['Unassigned', 'Cancelled'])
             ->where('reward_activity_id', $rewardActivity->id)->count();
 
+        // remove if same slot marked as un-assigned for the user
+        RewardUnAssignedSlot::where('slot_id', $slot->id)
+            ->where('un_assigned_wallet', $slot->assigned_wallet)->delete();
+
         // return status
         return $rewardActivity->save();
     }
@@ -69,6 +91,13 @@ class Slot extends Model
         $slot->status = $data->newState;
 
         if ($data->newState == 'Unassigned') {
+            // create new entry in RewardUnAssignedSlot
+            $RewardUnAssignedSlot = new RewardUnAssignedSlot;
+            $RewardUnAssignedSlot->slot_id = $slot->id;
+            $RewardUnAssignedSlot->un_assigned_wallet = $slot->assigned_wallet;
+            $RewardUnAssignedSlot->save();
+
+            // remove assigned_wallet from slot
             $slot->assigned_wallet = null;
         }
 
