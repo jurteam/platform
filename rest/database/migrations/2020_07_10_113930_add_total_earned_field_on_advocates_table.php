@@ -25,7 +25,7 @@ class AddTotalEarnedFieldOnAdvocatesTable extends Migration
      */
     public function down()
     {
-        Schema::table('rewards', function (Blueprint $table) {
+        Schema::table('advocates', function (Blueprint $table) {
             $table->dropColumn('total_earned');
         });
     }
