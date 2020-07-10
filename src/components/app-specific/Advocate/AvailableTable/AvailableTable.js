@@ -5,6 +5,7 @@ import Amount from "JurCommon/Amount";
 import { colorSlots } from "JurUtils/AdvocateHelpers";
 import { getAdvocateAvailable } from "../../../../sagas/Selectors";
 import { ADVOCATE_FETCH_AVAILABLE } from "../../../../reducers/types";
+import EmptyMessage from "./EmptyMessage";
 
 const AvailableTable = ({ rows, fetchAvailable }) => {
   useEffect(() => {
@@ -20,6 +21,7 @@ const AvailableTable = ({ rows, fetchAvailable }) => {
         </Table.Row>
       </Table.Head>
       <Table.Body>
+        <EmptyMessage isShown={!rows.length} />
         {rows.map(r => (
           <Table.Row key={r.id}>
             <Table.Cell>{r.attributes.name}</Table.Cell>

@@ -7,6 +7,7 @@ import { JurIcon } from "JurCommon/Icons";
 import { getAdvocateRewards } from "../../../../sagas/Selectors";
 import { ADVOCATE_FETCH_REWARDS } from "../../../../reducers/types";
 import { i18nDateFormatSec } from "../../../../utils/helpers";
+import EmptyMessage from "./EmptyMessage";
 
 const RewardsTable = ({ rows, address, fetchRewards }) => {
   useEffect(() => {
@@ -24,6 +25,7 @@ const RewardsTable = ({ rows, address, fetchRewards }) => {
         </Table.Row>
       </Table.Head>
       <Table.Body>
+        <EmptyMessage isShown={!rows.length} />
         {rows.map(r => (
           <Table.Row key={r.id}>
             <Table.Cell>
