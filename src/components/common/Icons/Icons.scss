@@ -23,9 +23,4 @@
 
 .icon-clickable {
   cursor: pointer;
-  border-bottom: 1px solid transparent;
-
-  &:hover {
-    border-bottom-color: $primary;
-  }
 }
