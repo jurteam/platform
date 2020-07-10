@@ -85,7 +85,7 @@ export const getGraphAnalytics = (state, card, chart = "line") => {
     return graphData.map(point => ({
       id: String(point[0]),
       label: String(point[0]),
-      value: point[1]
+      value: Number(point[1]).toFixed(2)
     }));
 
   if (chart === "line")
