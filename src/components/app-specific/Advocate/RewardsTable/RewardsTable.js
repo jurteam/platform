@@ -6,11 +6,12 @@ import RewardAction from "../RewardsAction";
 import { JurIcon } from "JurCommon/Icons";
 import { getAdvocateRewards } from "../../../../sagas/Selectors";
 import { ADVOCATE_FETCH_REWARDS } from "../../../../reducers/types";
-import { i18nDateFormat } from "../../../../utils/helpers";
+import { i18nDateFormatSec } from "../../../../utils/helpers";
+import EmptyMessage from "./EmptyMessage";
 
-const RewardsTable = ({ rows, fetchRewards }) => {
+const RewardsTable = ({ rows, address, fetchRewards }) => {
   useEffect(() => {
-    fetchRewards();
+    fetchRewards(address);
   }, []);
   return (
     <Table>
@@ -24,6 +25,7 @@ const RewardsTable = ({ rows, fetchRewards }) => {
         </Table.Row>
       </Table.Head>
       <Table.Body>
+        <EmptyMessage isShown={!rows.length} />
         {rows.map(r => (
           <Table.Row key={r.id}>
             <Table.Cell>
@@ -33,9 +35,9 @@ const RewardsTable = ({ rows, fetchRewards }) => {
             <Table.Cell>
               <Amount value={r.attributes.rewardAmount} />
             </Table.Cell>
-            <Table.Cell>{i18nDateFormat(r.attributes.dueDate)}</Table.Cell>
+            <Table.Cell>{i18nDateFormatSec(r.attributes.dueDate)}</Table.Cell>
             <Table.Cell>
-              <RewardAction activity={r} />
+              <RewardAction activity={r.attributes} />
             </Table.Cell>
           </Table.Row>
         ))}
@@ -52,7 +54,10 @@ const mapStateToProps = state => ({
   rows: getAdvocateRewards(state)
 });
 
-const fetchRewards = () => ({ type: ADVOCATE_FETCH_REWARDS });
+const fetchRewards = address => ({
+  type: ADVOCATE_FETCH_REWARDS,
+  payload: { address }
+});
 const mapDispatchToProps = { fetchRewards };
 
 export default global.connection(

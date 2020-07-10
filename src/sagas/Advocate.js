@@ -7,96 +7,76 @@ import {
   rewards
 } from "../api/Advocate";
 import { statusUrlOf } from "JurUtils/AdvocateHelpers";
-import { getSocialSharebles, getWallet } from "./Selectors";
+import { RewardConnex } from "../api";
+import {
+  getSocialSharebles,
+  getWallet,
+  getAdvocateRewardsPagination,
+  getAdvocateYourActivitiesPagination,
+  getShareText
+} from "./Selectors";
 import {
   ADVOCATE_SHARE,
-  ADVOCATE_FETCH_MINE,
-  ADVOCATE_UPDATE_MINE,
+  ADVOCATE_FETCH_PROFILE,
+  ADVOCATE_UPDATE_PROFILE,
   ADVOCATE_UPDATE_ALL,
   ADVOCATE_FETCH_ALL,
+  LOOKUP_WALLET_BALANCE,
   ADVOCATE_FETCH_AVAILABLE,
   ADVOCATE_UPDATE_AVAILABLE,
   ADVOCATE_FETCH_YOUR_ACTIVITIES,
   ADVOCATE_UPDATE_YOUR_ACTIVITIES,
   ADVOCATE_FETCH_REWARDS,
-  ADVOCATE_UPDATE_REWARDS
+  ADVOCATE_UPDATE_REWARDS,
+  ADVOCATE_WITHDRAW,
+  ADVOCATE_RESET_WITHDRAW,
+  ADVOCATE_REWARD,
+  HOUND_START_SMELLING,
+  ADVOCATE_COMPLETE_SLOT,
+  ADVOCATE_RESET_SLOT,
+  ADVOCATE_MARK_SLOT,
+  ADVOCATE_COPY,
+  ADVOCATE_MESSAGE
 } from "../reducers/types";
-
-const PaginationJson = {
-  // Everything is optional in `pagination` except `total`
-  total: 100,
-  count: 100,
-  per_page: 10, // DEFAULT: 5
-  current_page: 1,
-  total_pages: 10
-};
+import { copyToClipboard } from "../utils/AdvocateHelpers";
 
 function* shareStatus() {
   const { shareNetwork, shareText, address } = yield select(getSocialSharebles);
   yield shareOn(shareNetwork.value, shareText, statusUrlOf(address));
 }
 
-function* fetchMyAdvocasy() {
-  const { address } = yield select(getWallet);
-  // const res = yield advocates(address);
+function* fetchAdvocate(action) {
+  const wallet = yield select(getWallet);
+  let address = action.payload && action.payload.address;
 
-  const res = {
-    meta: {
-      isAdvocate: true
-    },
-    data: {
-      id: address,
-      type: "advocates", // OR "users" in case not advocate
-      attributes: {
-        address: address,
-        statusType: "Normal",
-        activationTime: new Date().getTime(), // OR skip/null in case not holder
-        country: "IN", // OPTIONAL
-        linkedIn: "http://linkedin.com", // OPTIONAL,
-        url: "http://about.me", // OPTIONAL,
-        bio: "I'm a mock data. Not coming from server",
-        rewardsBalance: 123,
-        totalEarned: 243,
-        totalAvailable: 1092 // PRIVATE
-      }
-    }
-  };
+  if (!address) {
+    address = wallet.address;
+  }
+
+  const res = yield advocates(address);
 
   const payload = {
     advocate: res.data.attributes,
-    advocateMeta: res.meta
+    advocateMeta: res.meta,
+    shareText: computeShareText(address, wallet, res)
   };
 
-  yield put({ type: ADVOCATE_UPDATE_MINE, payload });
+  yield put({ type: ADVOCATE_UPDATE_PROFILE, payload });
 }
 
-function* fetchAdvocates() {
-  // const res = yield advocates();
-  const res = {
-    meta: {
-      pagination: PaginationJson
-    },
-    data: [
-      {
-        id: "0xdF1517295e5Ea4A2f6eCA4E74F339be0207Fe031",
-        type: "advocates",
-        attributes: {
-          address: "0xdF1517295e5Ea4A2f6eCA4E74F339be0207Fe031",
-          statusType: "Normal",
-          totalEarned: 16
-        }
-      },
-      {
-        id: "0xE3DF6d92821d0911b59F2c4F0FaF09A7F7cB54dD",
-        type: "advocates",
-        attributes: {
-          address: "0xE3DF6d92821d0911b59F2c4F0FaF09A7F7cB54dD",
-          statusType: "Normal",
-          totalEarned: 123
-        }
-      }
-    ]
-  };
+function computeShareText(address, wallet, res) {
+  const prefix =
+    address === wallet.address
+      ? "I am"
+      : (res.data.attributes.name || address) + " is";
+  return (
+    prefix +
+    " an Advocate in the Jur ecosystem to support the development of a truly decentralized ecosystem for a new legal framework"
+  );
+}
+
+function* fetchAdvocates(action) {
+  const res = yield advocates(null, action.payload);
 
   const payload = {
     advocates: res.data,
@@ -108,34 +88,7 @@ function* fetchAdvocates() {
 
 function* fetchAvailable() {
   const { address } = yield select(getWallet);
-  // const res = yield available(address);
-  const res = {
-    meta: {
-      pagination: PaginationJson
-    },
-    data: [
-      {
-        id: 12,
-        type: "activities",
-        attributes: {
-          name: "Mock Activity",
-          rewardAmount: 123,
-          slotAssigned: 2,
-          slotTotal: 5
-        }
-      },
-      {
-        id: 13,
-        type: "activities",
-        attributes: {
-          name: "Mock Activity 2",
-          rewardAmount: 13,
-          slotAssigned: 1,
-          slotTotal: 5
-        }
-      }
-    ]
-  };
+  const res = yield available(address);
 
   const payload = {
     available: res.data,
@@ -147,34 +100,7 @@ function* fetchAvailable() {
 
 function* fetchYourActivities() {
   const { address } = yield select(getWallet);
-  // const res = yield yourActivities(address);
-  const res = {
-    meta: {
-      pagination: PaginationJson
-    },
-    data: [
-      {
-        id: 12,
-        type: "activities",
-        attributes: {
-          name: "Mock Your Activity",
-          rewardAmount: 676,
-          dueDate: new Date().getTime(),
-          state: "Cancelled"
-        }
-      },
-      {
-        id: 13,
-        type: "activities",
-        attributes: {
-          name: "Mock Your Activity 2",
-          rewardAmount: 13,
-          dueDate: new Date().getTime(),
-          state: "Completed"
-        }
-      }
-    ]
-  };
+  const res = yield yourActivities(address);
 
   const payload = {
     yourActivities: res.data,
@@ -184,36 +110,15 @@ function* fetchYourActivities() {
   yield put({ type: ADVOCATE_UPDATE_YOUR_ACTIVITIES, payload });
 }
 
-function* fetchRewards() {
-  const { address } = yield select(getWallet);
-  // const res = yield rewards(address);
-  const res = {
-    meta: {
-      pagination: PaginationJson
-    },
-    data: [
-      {
-        id: 12,
-        type: "rewards",
-        attributes: {
-          name: "Mock Your Activity",
-          rewardAmount: 6,
-          dueDate: new Date().getTime(),
-          rewardedOn: new Date().getTime()
-        }
-      },
-      {
-        id: 13,
-        type: "rewards",
-        attributes: {
-          name: "Mock Your Activity 2",
-          rewardAmount: 1003,
-          dueDate: new Date().getTime(),
-          rewardedOn: new Date().getTime()
-        }
-      }
-    ]
-  };
+function* fetchRewards(action) {
+  let address = action.payload && action.payload.address;
+
+  if (!address) {
+    const wallet = yield select(getWallet);
+    address = wallet.address;
+  }
+
+  const res = yield rewards(address);
 
   const payload = {
     rewards: res.data,
@@ -223,11 +128,100 @@ function* fetchRewards() {
   yield put({ type: ADVOCATE_UPDATE_REWARDS, payload });
 }
 
+function* withdraw(action) {
+  const { address } = yield select(getWallet);
+  const pagination = yield select(getAdvocateRewardsPagination);
+  const { activityScId, slotScId } = action.payload;
+
+  try {
+    const prey = yield new RewardConnex().withdrawReward(
+      address,
+      activityScId,
+      slotScId
+    );
+
+    prey.onFound = () => {
+      global.store.dispatch({
+        type: ADVOCATE_REWARD,
+        payload: action.payload
+      });
+
+      global.store.dispatch({
+        type: ADVOCATE_FETCH_REWARDS,
+        payload: { page: pagination.current_page || 1 }
+      });
+
+      global.store.dispatch({ type: LOOKUP_WALLET_BALANCE });
+    };
+
+    yield put({ type: HOUND_START_SMELLING, payload: prey });
+  } catch (e) {
+    console.error("Failed to withdraw a reward", action.payload, e);
+    yield put({
+      type: ADVOCATE_RESET_WITHDRAW,
+      error: e,
+      payload: {
+        ...action.payload,
+        message: e.message
+      }
+    });
+  }
+}
+
+function* markComplete(action) {
+  const { address } = yield select(getWallet);
+  const pagination = yield select(getAdvocateYourActivitiesPagination);
+  const { activityScId, slotScId } = action.payload;
+
+  try {
+    const prey = yield new RewardConnex().markSlotComplete(
+      address,
+      activityScId,
+      slotScId
+    );
+
+    prey.onFound = () => {
+      global.store.dispatch({
+        type: ADVOCATE_COMPLETE_SLOT,
+        payload: action.payload
+      });
+
+      global.store.dispatch({
+        type: ADVOCATE_FETCH_YOUR_ACTIVITIES,
+        payload: { page: pagination.current_page || 1 }
+      });
+
+      global.store.dispatch({ type: LOOKUP_WALLET_BALANCE });
+    };
+
+    yield put({ type: HOUND_START_SMELLING, payload: prey });
+  } catch (e) {
+    console.error("Failed to mark a slot complete", action.payload, e);
+    yield put({
+      type: ADVOCATE_RESET_SLOT,
+      error: e,
+      payload: {
+        ...action.payload,
+        message: e.message
+      }
+    });
+  }
+}
+
+function* copy() {
+  const text = yield select(getShareText);
+  copyToClipboard(text);
+  yield put({ type: ADVOCATE_MESSAGE, payload: "Copied!" });
+}
+
 export default function* Status() {
   yield takeLatest(ADVOCATE_SHARE, shareStatus);
-  yield takeLatest(ADVOCATE_FETCH_MINE, fetchMyAdvocasy);
+  yield takeLatest(ADVOCATE_FETCH_PROFILE, fetchAdvocate);
   yield takeLatest(ADVOCATE_FETCH_ALL, fetchAdvocates);
   yield takeLatest(ADVOCATE_FETCH_AVAILABLE, fetchAvailable);
   yield takeLatest(ADVOCATE_FETCH_YOUR_ACTIVITIES, fetchYourActivities);
   yield takeLatest(ADVOCATE_FETCH_REWARDS, fetchRewards);
+  yield takeLatest(ADVOCATE_WITHDRAW, withdraw);
+  yield takeLatest(ADVOCATE_MARK_SLOT, markComplete);
+  yield takeLatest(ADVOCATE_COPY, copy);
 }

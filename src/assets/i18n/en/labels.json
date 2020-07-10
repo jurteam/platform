@@ -228,6 +228,8 @@
   "advocates": "Advocates",
   "list": "List",
   "jurStatus": "Jur Status",
+  "url": "URL",
+  "urlPlaceholder": "",
   "linkedInUrl": "LinkedIn Profile",
   "linkedInUrlPlaceholder": ""
 }

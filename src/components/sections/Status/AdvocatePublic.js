@@ -31,7 +31,7 @@ const Advocates = () => {
   return (
     <PageLayout breadcrumbs={b}>
       <Main className="jur-safe-margin">
-        <AdvocateSection />
+        <AdvocateSection address={address} />
       </Main>
     </PageLayout>
   );

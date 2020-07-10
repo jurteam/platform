@@ -5,7 +5,7 @@ import { NavLink } from "react-router-dom";
 
 const OathKeeperNav = () => (
   <NavLink
-    to="/oath-keeper/my-oaths"
+    to="/oath-keeper/oath-takers"
     activeClassName="jur-oath-keeper-nav__active"
     className="jur-oath-keeper-nav"
   >

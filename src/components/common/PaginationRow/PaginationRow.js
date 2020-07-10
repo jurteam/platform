@@ -7,8 +7,9 @@ import Expand from "JurCommon/Expand";
 import Text from "JurCommon/Text";
 import { from, to } from "../../../utils/helpers";
 
-const PaginationRow = ({ onPaginate, meta }) => {
+const PaginationRow = ({ onPaginate, meta, hideOnEmpty = true }) => {
   const { total, per_page, current_page } = meta;
+  if (!total && hideOnEmpty) return null;
   return (
     <Row className="jur-safe-margin">
       <Text>

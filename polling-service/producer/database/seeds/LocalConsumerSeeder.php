@@ -17,7 +17,7 @@ class LocalConsumerSeeder extends Seeder
                 'asset_name' => 'jurAdvocate',
                 'event_name' => 'AdvocateAdded',
                 'consumer_name' => 'Advocate',
-                'url' => 'http://172.18.0.8/api/v1/polling/advocate'
+                'url' => 'http://jur/api/v1/polling/advocate'
             ]);
 
             DB::table('consumers')->insert([
@@ -25,7 +25,7 @@ class LocalConsumerSeeder extends Seeder
                 'asset_name' => 'jurAdvocate',
                 'event_name' => 'AdvocateStateUpdated',
                 'consumer_name' => 'Advocate',
-                'url' => 'http://172.18.0.8/api/v1/polling/advocate'
+                'url' => 'http://jur/api/v1/polling/advocate'
             ]);
 
             DB::table('consumers')->insert([
@@ -33,7 +33,7 @@ class LocalConsumerSeeder extends Seeder
                 'asset_name' => 'jurAdvocate',
                 'event_name' => 'AdvocateTypeUpdated',
                 'consumer_name' => 'Advocate',
-                'url' => 'http://172.18.0.8/api/v1/polling/advocate'
+                'url' => 'http://jur/api/v1/polling/advocate'
             ]);
 
             DB::table('consumers')->insert([
@@ -41,7 +41,7 @@ class LocalConsumerSeeder extends Seeder
                 'asset_name' => 'jurRewards',
                 'event_name' => 'RoleContractUpdated',
                 'consumer_name' => 'Reward',
-                'url' => 'http://172.18.0.8/api/v1/polling/reward'
+                'url' => 'http://jur/api/v1/polling/reward'
             ]);
 
             DB::table('consumers')->insert([
@@ -49,7 +49,7 @@ class LocalConsumerSeeder extends Seeder
                 'asset_name' => 'jurRewards',
                 'event_name' => 'ActivityCreated',
                 'consumer_name' => 'Reward',
-                'url' => 'http://172.18.0.8/api/v1/polling/reward'
+                'url' => 'http://jur/api/v1/polling/reward'
             ]);
 
             DB::table('consumers')->insert([
@@ -57,7 +57,7 @@ class LocalConsumerSeeder extends Seeder
                 'asset_name' => 'jurRewards',
                 'event_name' => 'SlotAssigned',
                 'consumer_name' => 'Reward',
-                'url' => 'http://172.18.0.8/api/v1/polling/reward'
+                'url' => 'http://jur/api/v1/polling/reward'
             ]);
 
             DB::table('consumers')->insert([
@@ -65,7 +65,7 @@ class LocalConsumerSeeder extends Seeder
                 'asset_name' => 'jurRewards',
                 'event_name' => 'ActivityUpdated',
                 'consumer_name' => 'Reward',
-                'url' => 'http://172.18.0.8/api/v1/polling/reward'
+                'url' => 'http://jur/api/v1/polling/reward'
             ]);
 
             DB::table('consumers')->insert([
@@ -73,7 +73,7 @@ class LocalConsumerSeeder extends Seeder
                 'asset_name' => 'jurRewards',
                 'event_name' => 'SlotUpdated',
                 'consumer_name' => 'Reward',
-                'url' => 'http://172.18.0.8/api/v1/polling/reward'
+                'url' => 'http://jur/api/v1/polling/reward'
             ]);
 
             DB::table('consumers')->insert([
@@ -81,7 +81,7 @@ class LocalConsumerSeeder extends Seeder
                 'asset_name' => 'jurRewards',
                 'event_name' => 'SlotRewarded',
                 'consumer_name' => 'Reward',
-                'url' => 'http://172.18.0.8/api/v1/polling/reward'
+                'url' => 'http://jur/api/v1/polling/reward'
             ]);
         }
     }

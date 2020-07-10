@@ -85,7 +85,7 @@ export const getGraphAnalytics = (state, card, chart = "line") => {
     return graphData.map(point => ({
       id: String(point[0]),
       label: String(point[0]),
-      value: point[1]
+      value: Number(point[1]).toFixed(2)
     }));
 
   if (chart === "line")
@@ -124,3 +124,6 @@ export const getAdvocateYourActivities = state => state.advocate.yourActivities;
 export const getAdvocateRewardsPagination = state =>
   state.advocate.rewardsMeta.pagination;
 export const getAdvocateRewards = state => state.advocate.rewards;
+export const getAdvocateWithdraws = state => state.advocate.withdraws;
+export const getAdvocateSlotMarks = state => state.advocate.slotMarks;
+export const getAdvocateMessage = state => state.advocate.message;

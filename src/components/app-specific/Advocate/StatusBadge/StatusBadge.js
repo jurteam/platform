@@ -13,6 +13,8 @@ const StatusBadge = ({ statusType }) => {
     case "Solomon":
     case "solomon":
       return <SolomonBadge />;
+    case "Advocate":
+    case "advocate":
     case "Normal":
     case "normal":
       return <AdvocateBadge />;

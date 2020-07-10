@@ -1,4 +1,5 @@
 import axios from "../bootstrap/Api";
+import { addParams } from "../utils/helpers";
 
 export const shareOnTwitter = (
   text,
@@ -32,8 +33,10 @@ export const shareOn = (network, text, url, title, hashtags) => {
   }[network](text, url, hashtags || title);
 };
 
-export const advocates = (address = "") =>
-  axios.get("/advocates/" + address).then(r => r.data);
+export const advocates = (address = "", params) =>
+  axios
+    .get(addParams(["/advocates/", address].filter(Boolean).join(""), params))
+    .then(r => r.data);
 
 export const available = address =>
   axios.get(`/advocates/${address}/activities/available`).then(r => r.data);

@@ -20,13 +20,13 @@ const HeaderBox = ({
   isAdvocate,
   isFetching,
   address,
-  location,
+  country,
   linkedIn,
   url,
   statusType,
   activationTime
 }) => (
-  <Box type="hero">
+  <Box types="center spread-out">
     <Cover className={coverClass(statusType, isAdvocate)}>
       <Frame className={frameClass(statusType, isAdvocate)}>
         <Avatar
@@ -39,7 +39,7 @@ const HeaderBox = ({
       <Text size="xsmall">{address}</Text>
       {!isFetching && statusType ? (
         <AdvocateHeader
-          country={location}
+          country={country}
           linkedIn={linkedIn}
           url={url}
           statusType={statusType}
@@ -98,8 +98,7 @@ const mapStateToProps = state => {
     isFetching: isFetching,
     statusType: advocate.statusType,
     activationTime: new Date(advocate.activationTime),
-    address: getWallet(state).address,
-    location: advocate.location,
+    country: advocate.country,
     linkedIn: advocate.linkedIn,
     url: advocate.url
   };
