@@ -6,6 +6,14 @@ const validationSchema = [
   {
     name: "accepted_terms",
     checks: ["required"]
+  },
+  {
+    name: "url",
+    checks: ["isWebsiteUrl"]
+  },
+  {
+    name: "linkedin",
+    checks: ["isLinkedInUrl"]
   }
 ];
 
