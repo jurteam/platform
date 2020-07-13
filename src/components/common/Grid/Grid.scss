@@ -1,0 +1,17 @@
+.jur-grid {
+  display: grid;
+
+  &__cell {
+    &-align {
+      &-end {
+        align-self: end;
+      }
+    }
+
+    &-justify {
+      &-end {
+        justify-self: end;
+      }
+    }
+  }
+}
