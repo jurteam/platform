@@ -51,7 +51,7 @@ const HeaderBox = ({
       {!isFetching && (statusType || isAdvocate) ? (
         <ShareStatusButton className="jur-cover__bottom-out" />
       ) : (
-        <ArticleButton className="jur-cover__bottom-out" />
+        <ArticleButton className="jur-cover__bottom-out jur-cover__button" />
       )}
     </Cover>
   </Box>
