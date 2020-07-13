@@ -42,6 +42,9 @@
         &.active {
           color: $breadcrumb-active-color;
         }
+        &:hover {
+          color: $primary-hover;
+        }
       }
     }
   }
