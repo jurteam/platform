@@ -43,8 +43,7 @@ const AdvocatesTable = ({ advocates, onSort }) => (
 );
 
 const onSort = (field, order) => {
-  const sign = orderTosign(order);
-  const sortBy = sign ? sign + field : "";
+  const sortBy = orderTosign(order, field);
   return { type: ADVOCATE_FETCH_ALL, payload: { sortBy } };
 };
 
