@@ -37,9 +37,13 @@ class PublishTransaction extends Job
     public function handle()
     {
         try {
-
             // send a POST request with transaction data
             $response = Http::post($this->consumer->url, (new TransactionTransformer)->transform($this->transaction))->throw();
+            if ($response->ok()) {
+                UndeliveredMessage::where('consumer_id', $this->consumer->id)
+                    ->where('transaction_id', $this->transaction->id)
+                    ->delete();
+            }
 
         } catch (\Throwable $ex) {
             $this->handleError($ex);
@@ -53,6 +57,8 @@ class PublishTransaction extends Job
      */
     private function handleError($ex)
     {
+        $maxRetry = config('polling.MaxRetry');
+
         $msg = UndeliveredMessage::firstOrCreate(['transaction_id' => $this->transaction->id]);
 
         $msg->transaction_id = $this->transaction->id;
@@ -61,7 +67,7 @@ class PublishTransaction extends Job
         $msg->error_message = $ex->getMessage();
         $msg->retries = isset($msg->retries) ? $msg->retries + 1 : 0;
         $msg->next_try_at = Carbon::now()->addMinutes($this->getFib($msg->retries));
-        $msg->status = $msg->retries > config('polling.MaxRetry') ? 'active' : 'failed';
+        $msg->status = $msg->retries < $maxRetry ? 'active' : 'failed';
         $msg->save();
     }
 
