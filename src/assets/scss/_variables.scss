@@ -48,7 +48,8 @@ $dodger-blue: $blue-new;
 
 // Generic
 $primary: $dodger-blue;
-$secondary: $athens-gray;
+$primary-hover: lighten($primary, 10%);
+$secondary: $gull-gray;
 $error: $crimson;
 $header-color: $prussian-blue;
 
