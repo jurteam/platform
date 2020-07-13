@@ -37,7 +37,7 @@ class LocalConsumerSeeder extends Seeder
             ]);
 
             DB::table('consumers')->insert([
-                'contract_address' => '0xe7c2b0d046c56b62D5631aC52FbD5D7cEf319c32',
+                'contract_address' => '0x8D505E33f4CEC7fC6AB6C6424A0Ce1BbfB920C4a',
                 'asset_name' => 'jurRewards',
                 'event_name' => 'RoleContractUpdated',
                 'consumer_name' => 'Reward',
@@ -45,7 +45,7 @@ class LocalConsumerSeeder extends Seeder
             ]);
 
             DB::table('consumers')->insert([
-                'contract_address' => '0xe7c2b0d046c56b62D5631aC52FbD5D7cEf319c32',
+                'contract_address' => '0x8D505E33f4CEC7fC6AB6C6424A0Ce1BbfB920C4a',
                 'asset_name' => 'jurRewards',
                 'event_name' => 'ActivityCreated',
                 'consumer_name' => 'Reward',
@@ -53,7 +53,7 @@ class LocalConsumerSeeder extends Seeder
             ]);
 
             DB::table('consumers')->insert([
-                'contract_address' => '0xe7c2b0d046c56b62D5631aC52FbD5D7cEf319c32',
+                'contract_address' => '0x8D505E33f4CEC7fC6AB6C6424A0Ce1BbfB920C4a',
                 'asset_name' => 'jurRewards',
                 'event_name' => 'SlotAssigned',
                 'consumer_name' => 'Reward',
@@ -61,7 +61,7 @@ class LocalConsumerSeeder extends Seeder
             ]);
 
             DB::table('consumers')->insert([
-                'contract_address' => '0xe7c2b0d046c56b62D5631aC52FbD5D7cEf319c32',
+                'contract_address' => '0x8D505E33f4CEC7fC6AB6C6424A0Ce1BbfB920C4a',
                 'asset_name' => 'jurRewards',
                 'event_name' => 'ActivityUpdated',
                 'consumer_name' => 'Reward',
@@ -69,7 +69,7 @@ class LocalConsumerSeeder extends Seeder
             ]);
 
             DB::table('consumers')->insert([
-                'contract_address' => '0xe7c2b0d046c56b62D5631aC52FbD5D7cEf319c32',
+                'contract_address' => '0x8D505E33f4CEC7fC6AB6C6424A0Ce1BbfB920C4a',
                 'asset_name' => 'jurRewards',
                 'event_name' => 'SlotUpdated',
                 'consumer_name' => 'Reward',
@@ -77,7 +77,7 @@ class LocalConsumerSeeder extends Seeder
             ]);
 
             DB::table('consumers')->insert([
-                'contract_address' => '0xe7c2b0d046c56b62D5631aC52FbD5D7cEf319c32',
+                'contract_address' => '0x8D505E33f4CEC7fC6AB6C6424A0Ce1BbfB920C4a',
                 'asset_name' => 'jurRewards',
                 'event_name' => 'SlotRewarded',
                 'consumer_name' => 'Reward',
