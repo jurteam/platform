@@ -2,13 +2,12 @@ import React from "react";
 import "./AdvocatesHeader.scss";
 
 import Text from "JurCommon/Text";
-import Row from "JurCommon/Row";
-import Col from "JurCommon/Col";
+import Grid from "JurCommon/Grid";
 import AdvocatesSearchInput from "../AdvocatesSearchInput";
 
 const AdvocatesHeader = () => (
-  <Row>
-    <Col>
+  <Grid template="auto / auto 212px">
+    <Grid.Cell>
       <Text size="large" transform="header">
         Advocates
       </Text>
@@ -16,10 +15,10 @@ const AdvocatesHeader = () => (
         This is the list of active Jur Advocates licenses that are co-creating
         the Jur legal automation framework
       </Text>
-    </Col>
-    <Col>
+    </Grid.Cell>
+    <Grid.Cell vertical="end">
       <AdvocatesSearchInput />
-    </Col>
-  </Row>
+    </Grid.Cell>
+  </Grid>
 );
 export default AdvocatesHeader;
