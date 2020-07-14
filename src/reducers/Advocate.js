@@ -91,6 +91,14 @@ export default (state = INITIAL_STATE, action) => {
         }
       };
     case ADVOCATE_REWARD:
+      return {
+        ...state,
+        rewards: setSlotState("Rewarded", action.payload, state.rewards),
+        withdraws: {
+          ...state.withdraws,
+          [makeKey(action.payload)]: false
+        }
+      };
     case ADVOCATE_RESET_WITHDRAW:
       return {
         ...state,
@@ -108,6 +116,18 @@ export default (state = INITIAL_STATE, action) => {
         }
       };
     case ADVOCATE_COMPLETE_SLOT:
+      return {
+        ...state,
+        yourActivities: setSlotState(
+          "Completed",
+          action.payload,
+          state.yourActivities
+        ),
+        slotMarks: {
+          ...state.slotMarks,
+          [makeKey(action.payload)]: false
+        }
+      };
     case ADVOCATE_RESET_SLOT:
       return {
         ...state,
@@ -123,4 +143,16 @@ export default (state = INITIAL_STATE, action) => {
 
 function makeKey({ activityScId, slotScId }) {
   return keyScId(activityScId, slotScId);
+}
+
+function setSlotState(state, { activityScId, slotScId }, slots) {
+  return slots.map(a => {
+    if (
+      a.attributes.activityScId === activityScId &&
+      a.attributes.slotScId === slotScId
+    ) {
+      return { ...a, state };
+    }
+    return a;
+  });
 }
