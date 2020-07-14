@@ -51,7 +51,7 @@ export default class connexArbitrationFactory
 
     signingService
     .signer(account) // Enforce signer
-    // .gas(global.connex.thor.genesis.gasLimit) // Set maximum gas
+    .gas(global.connex.thor.genesis.gasLimit) // Set maximum gas
     .link('http://localhost:3000/contracts/detail/'+contractId) // User will be back to the app by the url https://connex.vecha.in/0xffff....
     .comment('create contract')
 
