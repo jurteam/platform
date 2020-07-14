@@ -21,7 +21,7 @@ class Oath extends Model
     /**
      * Create an oath based on $data object
      *
-     * @param Object $data: payload data send by AMQP server
+     * @param Object $data: payload data send by Polling server
      * @param OathKeeper $oathKeeper: Object of the OathKeeper
      * @return Boolean the success or failure message
      */
@@ -53,7 +53,7 @@ class Oath extends Model
     /**
      * Upadte an oath to mark oathWithrawn based on $payload object
      *
-     * @param Object $payload: payload  send by AMQP server
+     * @param Object $payload: payload  send by Polling server
      * @return Boolean the success or failure message
      */
     public static function withrawn($payload)
