@@ -24,14 +24,16 @@ export class ContractsFilters extends Component {
     });
     log('ContractsFilters handlechange',{type:type,value:value})
 
-    
+
   };
 
   handleReset = () => {
     if (typeof this.props.onReset === "function") this.props.onReset();
   };
 
+
   render() {
+    console.log("form date: ", this.state.fromDate);
     return (
       <div
         className={`jur-contracts-filter ${
@@ -46,13 +48,13 @@ export class ContractsFilters extends Component {
         />
         <CalendarFilter
           name="from"
-          selectedDate={this.state.fromDate}
+          selectedDate={Date.parse(this.state.fromDate)}
           onChange={(value) => this.handleChange("fromDate", getFormattedDate(value))}
         />
         <span className="separator" />
         <CalendarFilter
           name="to"
-          selectedDate={this.state.toDate}
+          selectedDate={Date.parse(this.state.toDate)}
           onChange={(value) => this.handleChange("toDate", getFormattedDate(value))}
         />
         <Form.Search

@@ -30,8 +30,10 @@ class NotifyPartecipantsForMajorityChange extends Job
     public function handle()
     {
         foreach ($this->partecipants as $partecipant) {
-            Mail::to($partecipant->email)
-                ->queue(new VoteMajorityChanged($partecipant, $this->contract));
+            if ($partecipant->email) {
+                Mail::to($partecipant->email)
+                    ->queue(new VoteMajorityChanged($partecipant, $this->contract));
+            }
         }
     }
 }

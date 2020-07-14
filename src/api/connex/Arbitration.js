@@ -8,6 +8,8 @@ import {
   ADD_TRANSACTION,
 } from "../../reducers/types";
 
+const maxGas = 5000;
+
 export default class connexArbitrationContract
 {
   constructor(address)
@@ -366,7 +368,7 @@ export default class connexArbitrationContract
 
     signingService
     .signer(account) // Enforce signer
-    .gas(global.connex.thor.genesis.gasLimit) // Set maximum gas
+    .gas(maxGas) // Set maximum gas
     .link('http://localhost:3000/contracts/detail/'+contractId) // User will be back to the app by the url https://connex.vecha.in/0xffff....
     .comment('agree contract')
 
@@ -434,7 +436,7 @@ export default class connexArbitrationContract
 
     signingService
     .signer(account) // Enforce signer
-    .gas(global.connex.thor.genesis.gasLimit) // Set maximum gas
+    .gas(maxGas) // Set maximum gas
     .link('http://localhost:3000/contracts/detail/'+contractId) // User will be back to the app by the url https://connex.vecha.in/0xffff....
     .comment('unsign contract')
 
@@ -502,7 +504,7 @@ export default class connexArbitrationContract
 
     signingService
     .signer(account) // Enforce signer
-    .gas(global.connex.thor.genesis.gasLimit) // Set maximum gas
+    .gas(maxGas) // Set maximum gas
     .link('http://localhost:3000/contracts/detail/'+contractId) // User will be back to the app by the url https://connex.vecha.in/0xffff....
     .comment('payoutVoter contract')
 
@@ -567,7 +569,7 @@ export default class connexArbitrationContract
 
     signingService
     .signer(account) // Enforce signer
-    .gas(global.connex.thor.genesis.gasLimit) // Set maximum gas
+    .gas(maxGas) // Set maximum gas
     .link('http://localhost:3000/contracts/detail/'+contractId) // User will be back to the app by the url https://connex.vecha.in/0xffff....
     .comment('payoutParty contract')
 
@@ -634,7 +636,7 @@ export default class connexArbitrationContract
 
     signingService
     .signer(account) // Enforce signer
-    .gas(global.connex.thor.genesis.gasLimit) // Set maximum gas
+    .gas(maxGas) // Set maximum gas
     .link('http://localhost:3000/contracts/detail/'+contractId) // User will be back to the app by the url https://connex.vecha.in/0xffff....
     .comment('withdrawDispersal contract')
 
@@ -701,7 +703,7 @@ export default class connexArbitrationContract
 
     signingService
     .signer(account) // Enforce signer
-    .gas(global.connex.thor.genesis.gasLimit) // Set maximum gas
+    .gas(maxGas) // Set maximum gas
     .link('http://localhost:3000/contracts/detail/'+contractId) // User will be back to the app by the url https://connex.vecha.in/0xffff....
     .comment('amendDisputeDispersal contract')
 

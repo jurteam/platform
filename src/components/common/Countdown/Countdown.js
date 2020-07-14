@@ -69,6 +69,7 @@ export class Countdown extends Component {
 
       switch (this.props.statusId) {
         case 36: // extended Dispute 
+          this.stop();
           this.start(this.props.startDate, this.getDateDiff(this.props.startDate,this.props.endDate));
           break;
         default:

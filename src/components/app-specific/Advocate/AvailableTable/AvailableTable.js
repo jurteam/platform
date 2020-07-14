@@ -16,8 +16,8 @@ const AvailableTable = ({ rows, fetchAvailable }) => {
       <Table.Head>
         <Table.Row>
           <Table.Cell>Activity</Table.Cell>
-          <Table.Cell>Reward</Table.Cell>
-          <Table.Cell>Slots</Table.Cell>
+          <Table.Cell size="small">Reward</Table.Cell>
+          <Table.Cell size="small">Slots</Table.Cell>
         </Table.Row>
       </Table.Head>
       <Table.Body>

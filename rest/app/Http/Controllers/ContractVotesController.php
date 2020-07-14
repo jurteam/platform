@@ -135,7 +135,7 @@ class ContractVotesController extends Controller
 
       if(!$withdrawal->isEmpty()) {
         $response["id"] = 3;
-        $response["amount"] = $withdrawal;
+        $response["amount"] = $withdrawal->first()->amount;
       }
 
       return response()->json($response);

@@ -3,12 +3,17 @@ import "./YourActivitiesBox.scss";
 import Box from "JurCommon/Box";
 import YourActivitiesTable from "../YourActivitiesTable";
 import YourActivitiesPagination from "../YourActivitiesPagination";
+import { getAdvocateHasYourActivities } from "../../../../sagas/Selectors";
 
-const YourActivitiesBox = () => (
-  <Box title="Your Activities">
+const YourActivitiesBox = ({ hasActivities }) => (
+  <Box title="Your Activities" hide={hasActivities}>
     <YourActivitiesTable />
     <YourActivitiesPagination />
   </Box>
 );
 
-export default YourActivitiesBox;
+const mapStateToProps = state => ({
+  hasActivities: getAdvocateHasYourActivities(state)
+});
+
+export default global.connection(YourActivitiesBox, mapStateToProps);
