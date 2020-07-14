@@ -3133,10 +3133,82 @@
   },
   "networks": {
     "1": {
-      "events": {},
+      "events": {
+        "0x10e90922e9ef80d8cdfa2621c8fd50a670b92c91da43f6f7d953a721d0faddd2": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "_creator",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "_arbitration",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "name": "_party1",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "name": "_party2",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "_dispersal",
+              "type": "uint256[]"
+            },
+            {
+              "indexed": false,
+              "name": "_funding",
+              "type": "uint256[]"
+            },
+            {
+              "indexed": false,
+              "name": "_agreementHash",
+              "type": "bytes32"
+            }
+          ],
+          "name": "ArbitrationCreated",
+          "type": "event"
+        },
+        "0xf8df31144d9c2f0f6b59d69b8b98abd5459d07f2742c4df920b25aae33c64820": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "previousOwner",
+              "type": "address"
+            }
+          ],
+          "name": "OwnershipRenounced",
+          "type": "event"
+        },
+        "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "previousOwner",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "name": "OwnershipTransferred",
+          "type": "event"
+        }
+      },
       "links": {},
-      "address": "0x26906e446a96D8D85634E7A3c7D92C0105EB1c36",
-      "transactionHash": "0x8897e82c24872c88c7bf32e6c9519ced2cbc3d7bec26ca994a4740c58033c087"
+      "address": "0x74938eA672114674d69DBf24C2FD4a9D5fBA9Db8",
+      "transactionHash": "0xf6aa74ed692bacb3195de317706786453cb4d58d16db1dbd3797428630a29c10"
     },
     "3": {
       "events": {
