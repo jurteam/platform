@@ -19,9 +19,9 @@ const RewardsTable = ({ rows, address, fetchRewards }) => {
         <Table.Row>
           <Table.Cell />
           <Table.Cell>Activity</Table.Cell>
-          <Table.Cell>Reward</Table.Cell>
-          <Table.Cell>Date</Table.Cell>
-          <Table.Cell>Credited On</Table.Cell>
+          <Table.Cell size="small">Reward</Table.Cell>
+          <Table.Cell size="small">Date</Table.Cell>
+          <Table.Cell size="small">Credited On</Table.Cell>
         </Table.Row>
       </Table.Head>
       <Table.Body>
