@@ -481,9 +481,10 @@ export const DisputeDetail = ( props ) => {
       }
     ];
 
-    let rejectPercentage = (100 - percentagePartA - percentagePartB);
-    rejectPercentage =rejectPercentage > 0 ? rejectPercentage : 0;
-
+    log('DisputeDetail - rej perc',(100 - percentagePartA - percentagePartB))
+    let rejectPercentage = Math.max((100 - percentagePartA - percentagePartB),0);
+    log('DisputeDetail - rejectPercentage',rejectPercentage)
+    
     voteReject = {
       percentage: rejectPercentage,
       value: totalTokensReject,
@@ -495,7 +496,7 @@ export const DisputeDetail = ( props ) => {
         name: 'Reject',
         email: null,
         renderName: true,
-        percentage: (100-percentagePartB-percentagePartA),
+        percentage: rejectPercentage,
         value: totalTokensReject,
         winner: false
       })

@@ -176,6 +176,9 @@ export const i18nDateFormat = (
   options = { year: "numeric", month: "short", day: "numeric" }
 ) => new Date(dateALike).toLocaleDateString(locale, options);
 
+export const i18nDateFormatSec = (dateALike, ...params) =>
+  i18nDateFormat(Number(dateALike) * 1000, ...params);
+
 export const upperCaseFirst = string => {
   return string.charAt(0).toUpperCase() + string.slice(1);
 };
@@ -428,6 +431,18 @@ export function to(page, perPage, total) {
   return toFullPage;
 }
 
+export const orderTosign = (order, field) => {
+  // Ref JSON:API conventions
+  switch (order) {
+    case 1:
+      return field; // POSITIVE (breaking conventions as this is easy to handle in lumen)
+    case 2:
+      return "-" + field;
+    default:
+      return "";
+  }
+};
+
 export function oathState(oath) {
   let state = oathState.UNKNOWN;
   if (oath.customStatus) return oathState.response(oath.customStatus);
@@ -491,3 +506,31 @@ export const oathKeeperAnalytics = {
     AVERAGE_AMOUNT: "average-amount"
   }
 };
+
+export function addParams(url, params) {
+  if (!params) return url;
+
+  let urlParams = new URLSearchParams("");
+
+  Object.entries(params).forEach(([key, value]) => {
+    if (typeof value === "string" || typeof value === "number") {
+      urlParams.append(key, value);
+    } else if (
+      value &&
+      typeof value === "object" &&
+      value.__proto__ === new Date().__proto__
+    ) {
+      urlParams.append(key, toUTCwithTime(value));
+    }
+  });
+
+  return url + "?" + urlParams.toString();
+}
+
+export function toUTCwithTime(value) {
+  const now = new Date();
+  value.setHours(now.getHours());
+  value.setMinutes(now.getMinutes());
+  value.setSeconds(now.getSeconds());
+  return value.toUTCString();
+}

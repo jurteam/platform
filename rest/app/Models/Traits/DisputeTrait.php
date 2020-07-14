@@ -219,6 +219,7 @@ trait DisputeTrait
         $lowerWallet = strtolower($this->{$partFields});
         $detail = $this->details()
                     ->whereRaw('LOWER(contract_part) = ?', [$lowerWallet])
+                    ->where('waiting', 0)
                     ->latest()
                     ->first();
 

@@ -36,7 +36,11 @@ export function* handleDisclaimerOptin(args) {
     yield put({ type: USER_OBLIVION }); // user oblivion on disclaimer decline
   } else {
     yield put({ type: DISCLAIMER_VISIBILITY, viewed: true });
-    if (typeof args.shouldSendActions === 'undefined' || args.shouldSendActions === true) yield put({ type: DISCLAIMER_ACCEPTED }); // dispatch this only if needed
+    if (
+      typeof args.shouldSendActions === "undefined" ||
+      args.shouldSendActions === true
+    )
+      yield put({ type: DISCLAIMER_ACCEPTED }); // dispatch this only if needed
   }
 }
 
@@ -57,7 +61,11 @@ export function* checkUserExist(action) {
     const response = yield call(User.get);
     if (response) {
       log("checkUserExist - user exist", response);
-      yield put({ type: DISCLAIMER_OPTIN, shouldSendActions: false, optin: response.data.user.accepted_disclaimer });
+      yield put({
+        type: DISCLAIMER_OPTIN,
+        shouldSendActions: false,
+        optin: response.data.user.accepted_disclaimer
+      });
       yield put({ type: USER_UPDATE, ...response.data });
     }
   } catch (error) {
@@ -90,8 +98,8 @@ export function* registerUser(action) {
     log("registerUser - user created", response);
     yield put({ type: USER_UPDATE, ...response.data });
   } catch (error) {
-      yield put({ type: API_CATCH, error });
-      yield put({ type: USER_UPDATING, payload: false });
+    yield put({ type: API_CATCH, error });
+    yield put({ type: USER_UPDATING, payload: false });
   }
 }
 
@@ -99,11 +107,22 @@ export function* handleUserDataUpdate(action) {
   log("handleUserDataUpdate", "run");
   log("handleUserDataUpdate - action", action);
 
-  const { disclaimer, created_at, updated_at, id, wallet, updating, accepted_disclaimer, ...userData } = yield select(getUser);
+  const {
+    disclaimer,
+    created_at,
+    updated_at,
+    id,
+    wallet,
+    updating,
+    accepted_disclaimer,
+    accepted_terms,
+    ...userData
+  } = yield select(getUser);
   const updatedData = {
     ...userData,
+    accepted_terms: accepted_terms ? 1 : 0,
     birth_date: dateReducer(userData.birth_date)
-  }
+  };
 
   log("handleUserDataUpdate - updatedData", updatedData);
 
@@ -111,14 +130,13 @@ export function* handleUserDataUpdate(action) {
     const response = yield call(User.update, updatedData);
     log("handleUserDataUpdate - user updated", response);
   } catch (error) {
-      yield put({ type: API_CATCH, error });
+    yield put({ type: API_CATCH, error });
   }
 
   yield put({ type: USER_UPDATING, payload: false });
 }
 
 export function* fetchActivities(action) {
-
   log("fetchActivities - action", action);
 
   try {
@@ -127,7 +145,7 @@ export function* fetchActivities(action) {
     log("fetchActivities - response", response);
     yield put({ type: SET_USER_ACTIVITIES, activities });
   } catch (error) {
-      yield put({ type: API_CATCH, error });
+    yield put({ type: API_CATCH, error });
   }
 }
 

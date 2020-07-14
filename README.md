@@ -73,9 +73,10 @@ _**You can find the environment configuration template [here](.env.template).**_
 ### List of `.env` files
 
 1. `.env` root env file used by react app.
-1. `rest/.env` backend env file used by lumen app.
-1. `polling-service/.env` nodeJS based polling service env file.
-1. `.env.docker-compose` for variables used in `docker-compose.yml` file.
+2. `.env.polling-service` polling services env used by polling docker.
+5. `.env.docker-compose` for variables used in `docker-compose.yml` file.
+2. `rest/.env` backend env file used by lumen jbp-consumer app.
+3. `polling-service/producer/.env` backend env file used by the lumen polling-producer app.
 
 All the env files have equivalent _`*.example`_ files to be used as a starting point for creating your own `.env` files. Please make sure that `.env` files are not checked in the git. `.env` files may contain secrets (passwords) and hence must be protected.
 
@@ -83,56 +84,48 @@ All the env files have equivalent _`*.example`_ files to be used as a starting p
 
 ### 1️⃣ Polling Service
 
-This service listens to blockchain and pulls out relevant information. It uses `web3` for communicating with the VeChain Thor blockchain. It scans every block and sees if it has information about smart contracts/transactions we are interested in as mentioned in configuration files. Once a relevant transaction/event is found, it sends it to RabbitMQ service.
+This service listens to blockchain and pulls out relevant information. It uses `web3` for communicating with the VeChain Thor blockchain. It scans every block and sees if it has information about smart contracts/transactions we are interested in as mentioned in configuration files. Once a relevant transaction/event is found, it stores it in the database and also notifies the jbp-consumer.
 
-Docker-compose name is `polling`.
+Docker-compose name is `polling`. It in turn is responsible for starting the other polling related dockers `polling_rtr`, `polling_per`, `polling_producer` and `polling_db`
+`polling_producer` service needs regular db migrations whenever a new migration file is checked in. You can run migrations by referring to [run db migrations](#/how-to-run-db-migrations).
 
-**⚙️ Config:** Polling service needs URL for thor API and URL for RabbitMQ. Both of these are taken from the `polling-service/.env` file.
+**⚙️ Config:** Polling service needs URL for thor API and URL for polling producer. Both of these are taken from the `.env.polling-service` file.
 
 If the thor node is running outside the docker on your local machine, you have to provide machine's IP address on Linux (e.g. `http://192.168.0.32:8669`) OR special binded IP `http://host.docker.internal:8699` for macOS/Windows.
 
-In the `polling-service/config` folder, there are two files:
-
-1. `currentBlock.json` for storing the last read block's number
-1. `smart-contracts.json` for reading the info on interested events and contract addresses.
-
-You have to update `currentBlock.json` manually with the least block id of your locally deployed contracts. Among JUR Token, Arbitration and Oath Keeper smart contracts, the least block id will be that of JUR Token smart contract.
-
-**Test cases:** To run test cases, please follow the instructions bellow:
+<!-- TODO: Update the test case flow -->
+<!-- **Test cases:** To run test cases, please follow the instructions bellow:
 
 ```bash
 cd polling-service
 npm install # in case any package is missing
 npm run test
-```
+``` -->
 
-**📦 Stack:** Polling service is written using NodeJS. Lifecycle is handled by docker-compose. The service will auto restart if crashed.
+**📦 Stack:** Polling service contains two parts. Stateless nodeJs services `RTR` and `PER` which listens to blockchain events and `polling-producer` which is responsible for exposing this data to jbp-lumen app. Lifecycle is handled by docker-compose. The service will auto restart if crashed. 
+1. `polling_rtr`  is a NodeJs service which reads real time events from the blockchain and sends it to the producer.
+2. `polling_per` is a NodeJs service which reads past events requested the producer.
+3. `polling-producer` is a Laravel Lumen app written in PHP 7.2. It publishes Jur product specific data (from the above services) to the consumers.
+4. `polling_db` is one of the two main centralized database. It stores data read from blockchain for all Jur products in a generic format.
+NOTE: polling-producer is required to seed data initially.
 
-### RabbitMQ service
 
-This service provides queue storage between the polling service and lumen's listeners. It has a common queue named `blockchain-events` for all the relevant events received from blockchain.
-
-Docker-compose name is `rabbit`.
-
-**⚙️ Config:** This service can run without any configuration. In that case it will use the default username and password of RabbitMQ. Default username is `guest` and password is also `guest`. You can (and should) override the username and password in `.env.docker-compose`. The changes you make here for the username and password, must be reflected in the polling service and rest's `.env` files so that they can access the rabbitmq service.
-
-**📦 Stack:** RabbitMQ service is using the standard docker image `rabbitmq:3.8`. It's based on Erlang and uses Erlang Cookie Common Auth for internal communication between rabbitmq daemon and rabbitmqctl.
-
-### Rest service
+### Rest service (JBP Lumen App)
 
 This is the backend service provider for all of our centralized APIs and background tasks.
 
 Docker-compose name is `jur`.
 
-**⚙️ Config:** All the config needed by the rest service is provided via `rest/.env` file. You may want to mount the `rest/.env` file for the latest changes to be picked up by this service. If the file is not mounted, the docker will pick up the existing file which was copied during the build process. You can see which config file is actually being used by getting into a running docker and inspecting the file at `/var/www/html/.env`. Alternative to mounting the `rest/.env` file is to rebuild the `jur` image.
+<!-- TODO: Check if the statement below is still valid -->
+<!-- **⚙️ Config:** All the config needed by the rest service is provided via `rest/.env` file. You may want to mount the `rest/.env` file for the latest changes to be picked up by this service. If the file is not mounted, the docker will pick up the existing file which was copied during the build process. You can see which config file is actually being used by getting into a running docker and inspecting the file at `/var/www/html/.env`. Alternative to mounting the `rest/.env` file is to rebuild the `jur` image. -->
 
 This service needs regular db migrations whenever a new migration file is checked in. You can run migrations by referring to [run db migrations](#/how-to-run-db-migrations).
 
-**📦 Stack:** Rest service (also called **jur docker, lumen app, backend**) is a Laravel Lumen app written in PHP 7.2. It serves the production build of frontend assets, APIs and executes the background jobs. It has a supervisor for running background jobs. The nginx server takes care of request handling.
+**📦 Stack:** Rest service (also called **jur docker, JBP lumen app, backend**) is a Laravel Lumen app written in PHP 7.2. It serves the production build of frontend assets, APIs and executes the background jobs. It has a supervisor for running background jobs. The nginx server takes care of request handling.
 
 ### Mysql service
 
-This is the main centralized database and primarily interacted through the rest service.
+This is one of the two main centralized database and primarily interacted through the rest service.
 
 Docker-compose name is `db`.
 
@@ -222,10 +215,12 @@ Connex method used into DApp are:
 1. Add auto created users from the previous command to your Comet or Sync
 1. Run `npm install` at project root, `polling-service`, `protocol`, `smart-contracts/oath-keeper`
 1. `web3-gear`
-1. `npm run migrate-contracts` and `npm_config_network=development npm run migrate-oathkeeper`
+1. `npm run migrate-contracts`
+1. `npm_config_network=development npm run migrate-oathkeeper`
+1. `npm_config_network=development npm run migrate-advocates`
+1. `npm_config_network=development npm run migrate-rewards`
 1. `docker-compose up -d` starts dockers in background
 1. For the first run of backend, you will need to [enter into running dockers](#/how-to-enter-into-running-dockers) and [run db migrations](#/how-to-run-db-migrations).
-1. Add a user in the backend using the Postman collection available at `rest/postman`. Please import all the contents of the folder. Once opened in the Postman app, update environment variables. Then use the `store` API call in the users to create a new user using your wallet address.
 1. Import JUR Token contract located at `src/build/contracts` into [Sync browser](https://env.vechain.org/) via [Inspector tool](https://inspector.vecha.in/#/contracts)
 1. Mint some JUR Tokens for our use. Make sure the value of balance is more than 18 digits.
 1. `npm run start`
@@ -264,7 +259,7 @@ docker exec -it container_name /bin/sh
 ### How to run db migrations
 
 1. `docker-compose up -d jur`
-1. `o jur` OR use alternative ways to enter into running docker
+1. `o jur` for the JBP-Lumen and `o polling_producer` for Polling producer (OR use alternative ways to enter into running docker)
 1. `cd /var/www/html` Our PHP codes (lumen) are here
 1. `php artisan migrate:refresh` this will rollback everything and then run migration OR `php artisan migrate` for incremental migration
 
@@ -300,7 +295,11 @@ Once the contracts are migrated and are available on your local network you shou
 
 ### 4. Docker Environment for API
 
+For first time run
     $ cd path/to/project/root
+    $bin/build_dockers.sh
+    $bin/provision_dockers.sh
+    $mkdir persistent-runtime
     $ docker-compose build
     $ docker-compose up -d
     $ docker exec -ti jur-mvp_jur_1 bash
@@ -311,6 +310,8 @@ Once the contracts are migrated and are available on your local network you shou
     $ php artisan db:seed
 
 If all goes well, all API endpoints are accessible at <http://localhost/api/v[api-version]>.
+
+> On OS X, replace the owner/user group `www-data:www-data` in `bin/provision_dockers.sh` to `[mac-user-name]:_www`
 
 ### 5. DApp run
 

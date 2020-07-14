@@ -11,6 +11,7 @@ import Faq from "./Faq";
 import Terms from "./Terms";
 
 import i18n from "../../../assets/i18n/en/labels.json"; // i18n
+import AdvocateSection from "../Status/AdvocateSection";
 
 // Section Context
 export const ProfileContext = React.createContext();
@@ -30,6 +31,12 @@ class ProfileProvider extends Component {
           to: "/oath-keeper/my-oaths",
           exact: true,
           component: <MyOathsSection />
+        },
+        {
+          label: i18n.advocate,
+          to: "/advocates/my-advocasy",
+          exact: true,
+          component: <AdvocateSection />
         },
         {
           label: i18n.privacy,

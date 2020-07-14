@@ -5,18 +5,18 @@ import React, { useState, useEffect } from "react";
 import { log } from "./helpers"; // log helper
 
 const FormValidation = {
-  required: (field) =>
+  required: field =>
     typeof field !== "undefined" && field !== "" && field !== null
       ? true
       : false,
-  requiredStrict: (field) =>
+  requiredStrict: field =>
     typeof field !== "undefined" && field ? true : false,
-  requiredNum: (field) =>
+  requiredNum: field =>
     typeof field !== "undefined" && field && parseFloat(field) > 0
       ? true
       : false,
-  isTrue: (field) => (typeof field !== "undefined" ? field === true : true), // always true when null in case this field is optional
-  isFalse: (field) => (typeof field !== "undefined" ? field === false : true), // always true when null in case this field is optional
+  isTrue: field => (typeof field !== "undefined" ? field === true : true), // always true when null in case this field is optional
+  isFalse: field => (typeof field !== "undefined" ? field === false : true), // always true when null in case this field is optional
   isEmail: email => {
     // eslint-disable-next-line no-useless-escape
     const regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -41,6 +41,45 @@ const FormValidation = {
     return field
       ? String(field).toLowerCase() !== String(target).toLowerCase()
       : true; // always true when null in case this field is optional
+  },
+  isUrl: field => {
+    if (!field) return true;
+    try {
+      new URL(field);
+    } catch (_) {
+      return false;
+    }
+
+    return true;
+  },
+  isWebsiteUrl: field => {
+    if (!field) return true;
+
+    if (FormValidation.isUrl(field)) {
+      const a = document.createElement("a");
+      a.href = field;
+      return (
+        ["http:", "https:"].includes(a.protocol) &&
+        Boolean(a.host) &&
+        a.host.includes(".")
+      );
+    }
+
+    return false;
+  },
+  isLinkedInUrl: field => {
+    if (!field) return true;
+    if (FormValidation.isWebsiteUrl(field)) {
+      const a = document.createElement("a");
+      a.href = field;
+      return (
+        a.host.includes("linkedin.com") &&
+        a.pathname.startsWith("/in/") &&
+        a.pathname.replace("/in/", "").length
+      );
+    }
+
+    return false;
   },
   duration: (days, hours, minutes) => {
     return days || hours || minutes ? true : false;

@@ -1,0 +1,39 @@
+@import "../../../../assets/scss/variables";
+
+.jur-status-badge {
+  &__text {
+    font-family: $font-montserrat;
+    font-weight: 900;
+    text-transform: uppercase;
+    vertical-align: top;
+    margin-left: 5px;
+    background: -webkit-linear-gradient(#eee, #333);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    &-justinian {
+      // These three properties must be used together for the outcome
+      background: -webkit-linear-gradient(57.43deg, #38b8f2 0%, #843cf6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    &-solomon {
+      background: -webkit-linear-gradient(224.22deg, #3139ec 0%, #ff0061 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    &-advocate {
+      margin-left: unset;
+      font-weight: 600;
+      background: -webkit-linear-gradient(
+        169.14deg,
+        #e35c67 -27.76%,
+        #381ce2 116.22%
+      );
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+  }
+}

@@ -3,6 +3,13 @@
 $api = app('Dingo\Api\Routing\Router');
 
 $api->version('v1', function ($api) {
+
+    $api->group(['prefix' => 'polling'], function ($api) {
+        $api->post('oath-keeper', 'App\Http\Controllers\ConsumePollingServiceController@oathKeeper');
+        $api->post('advocate', 'App\Http\Controllers\ConsumePollingServiceController@advocate');
+        $api->post('reward', 'App\Http\Controllers\ConsumePollingServiceController@reward');
+    });
+
     $api->group(['middleware' => 'wallet.auth'], function ($api) {
         $api->group(['prefix' => 'user'], function ($api) {
             $api->get('/checking', 'App\Http\Controllers\UserController@checkForRegistered');
@@ -97,6 +104,25 @@ $api->version('v1', function ($api) {
             $api->get('/', 'App\Http\Controllers\OathKeeperController@getOathTakers');
             $api->get('/{address}', 'App\Http\Controllers\OathKeeperController@getOathTaker');
         });
+    });
+
+    $api->group(['prefix' => 'status'], function ($api) {
+        $api->group(['prefix' => 'holders'], function ($api) {
+            $api->get('/', 'App\Http\Controllers\StatusController@getHolders');
+            $api->get('/{wallet}', 'App\Http\Controllers\StatusController@getHolder');
+        });
+    });
+
+    $api->group(['prefix' => 'advocates'], function ($api) {
+        $api->get('/', 'App\Http\Controllers\AdvocateController@index');
+        $api->get('/{wallet}', 'App\Http\Controllers\AdvocateController@show');
+        $api->get('/{wallet}/activities/available', 'App\Http\Controllers\AdvocateController@availableActivities');
+        $api->get('/{wallet}/activities/ongoing', 'App\Http\Controllers\AdvocateController@ongoingActivities');
+        $api->put('/{wallet}', 'App\Http\Controllers\AdvocateController@update');
+    });
+
+    $api->group(['prefix' => 'rewards'], function ($api) {
+        $api->get('/{wallet}', 'App\Http\Controllers\RewardController@show');
     });
 
     $api->get('faqs', 'App\Http\Controllers\FaqsController@index');

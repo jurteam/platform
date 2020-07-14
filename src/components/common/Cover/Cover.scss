@@ -1,0 +1,39 @@
+@import "../../../assets/scss/variables";
+
+.jur-cover {
+  border-radius: 4px 4px 0 0;
+  background-position: center, center;
+  background-repeat: no-repeat;
+  background-color: $non-holder-background-color;
+
+  &__top-out {
+    margin-top: -40px;
+  }
+
+  &__bottom-out {
+    margin-bottom: -20px;
+  }
+
+  &__justinian {
+    color: white;
+    background-image: $justinian-background-svg, $justinian-gradient;
+  }
+
+  &__solomon {
+    color: white;
+    background-image: $solomon-background-svg, $solomon-gradient;
+  }
+
+  &__advocate {
+    color: white;
+    background-image: $advocate-gradient;
+  }
+
+  &__hidden {
+    display: none;
+  }
+
+  &__button {
+    min-width: 400px;
+  }
+}

@@ -9,7 +9,8 @@ module.exports = function override(config, env) {
     },
     resolve: {
       alias: {
-        JurCommon: path.resolve(__dirname, "src/components/common/")
+        JurCommon: path.resolve(__dirname, "src/components/common/"),
+        JurUtils: path.resolve(__dirname, "src/utils/")
       }
     }
   });

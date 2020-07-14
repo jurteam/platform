@@ -3,6 +3,15 @@
   flex-direction: row;
   width: 100%;
   flex-wrap: wrap;
+
+  &__align {
+    &-center {
+      justify-content: center;
+    }
+    &-space-between {
+      justify-content: space-between;
+    }
+  }
 }
 
 .jur-safe-margin {

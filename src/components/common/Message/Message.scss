@@ -8,4 +8,13 @@
   &.jur-text {
     margin-top: 1rem;
   }
+
+  &__toast.jur-text {
+    margin-top: 0;
+    margin-bottom: 0;
+    padding: 4px;
+    background-color: yellow;
+    display: block;
+    font-size: x-small;
+  }
 }
