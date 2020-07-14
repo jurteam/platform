@@ -15,19 +15,12 @@ services:
     links:
       - db
       - cache
-      - rabbit
 
   db:
     image: mysql:5.7
     env_file: .env.docker-compose
     volumes:
       - ./persistent-runtime/mysql:/var/lib/mysql
-
-  rabbit:
-    image: rabbitmq:3.8
-    env_file: .env.docker-compose
-    labels:
-      NAME: "rabbit"
 
   polling:
     image: busybox
