@@ -20,7 +20,7 @@ class LocalAssetSeeder extends Seeder
             ]);
             DB::table('assets')->insert([
                 'asset_name' => 'jurStatus',
-                'contract_address' => '0x3e47260caa2eb7df1cd6bc125d4bce01e1738629',
+                'contract_address' => '0x26e82BEe7d1369c2969f7Fb9C33fB10926708850',
                 'abi' => '[{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"statusHolder","type":"address"},{"indexed":false,"internalType":"uint256","name":"activationTime","type":"uint256"},{"indexed":false,"internalType":"string","name":"statusType","type":"string"}],"name":"StatusAdded","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"statusHolder","type":"address"},{"indexed":false,"internalType":"bool","name":"newState","type":"bool"},{"indexed":false,"internalType":"uint256","name":"timestamp","type":"uint256"}],"name":"StateChanged","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"statusHolder","type":"address"},{"indexed":false,"internalType":"string","name":"statusType","type":"string"},{"indexed":false,"internalType":"uint256","name":"timestamp","type":"uint256"}],"name":"StatusTypeChanged","type":"event"}]',
                 'default_from_block' => '6358470'
             ]);
@@ -48,6 +48,7 @@ class LocalAssetSeeder extends Seeder
                 'abi' => '[{"anonymous":false,"inputs":[{"indexed":true,"name":"_creator","type":"address"},{"indexed":false,"name":"_arbitration","type":"address"},{"indexed":true,"name":"_party1","type":"address"},{"indexed":true,"name":"_party2","type":"address"},{"indexed":false,"name":"_dispersal","type":"uint256[]"},{"indexed":false,"name":"_funding","type":"uint256[]"},{"indexed":false,"name":"_agreementHash","type":"bytes32"}],"name":"ArbitrationCreated","type":"event"}]',
                 'default_from_block' => ' 5923931'
             ]);
+
         }
     }
 }

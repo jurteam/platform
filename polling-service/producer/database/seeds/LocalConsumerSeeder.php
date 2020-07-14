@@ -83,6 +83,30 @@ class LocalConsumerSeeder extends Seeder
                 'consumer_name' => 'Reward',
                 'url' => 'http://jur/api/v1/polling/reward'
             ]);
+
+            DB::table('consumers')->insert([
+                'contract_address' => '0x26e82BEe7d1369c2969f7Fb9C33fB10926708850',
+                'asset_name' => 'jurStatus',
+                'event_name' => 'StatusAdded',
+                'consumer_name' => 'Status',
+                'url' => 'http://jur/api/v1/polling/status'
+            ]);
+
+            DB::table('consumers')->insert([
+                'contract_address' => '0x26e82BEe7d1369c2969f7Fb9C33fB10926708850',
+                'asset_name' => 'jurStatus',
+                'event_name' => 'StateChanged',
+                'consumer_name' => 'Status',
+                'url' => 'http://jur/api/v1/polling/status'
+            ]);
+
+            DB::table('consumers')->insert([
+                'contract_address' => '0x26e82BEe7d1369c2969f7Fb9C33fB10926708850',
+                'asset_name' => 'jurStatus',
+                'event_name' => 'StatusTypeChanged',
+                'consumer_name' => 'Status',
+                'url' => 'http://jur/api/v1/polling/status'
+            ]);
         }
     }
 }
