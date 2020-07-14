@@ -8,8 +8,8 @@ services:
       - ./build:/var/www/html/public
       - ./environment/nginx/nginx.conf:/etc/nginx/sites-available/default
       - ./environment/php/php.ini:/etc/php/7.2/fpm/php.ini
-      - ./environment/producer/cron:/var/spool/cron/crontabs/root
-      - ./environment/producer/supervisor:/etc/supervisor/conf.d
+      - ./environment/jbp/cron:/var/spool/cron/crontabs/root
+      - ./environment/jbp/supervisor:/etc/supervisor/conf.d
     ports:
       - "8000:80"
     links:
