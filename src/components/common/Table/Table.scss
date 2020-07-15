@@ -9,6 +9,10 @@
     font-size: 13px;
     border-collapse: collapse;
 
+    &__action-button {
+      margin-top: -5px;
+    }
+
     &__head {
       font-weight: 400;
       border-bottom: 2px solid $table-border;

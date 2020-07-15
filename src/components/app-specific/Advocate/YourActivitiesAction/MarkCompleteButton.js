@@ -14,6 +14,7 @@ const MarkCompleteButton = ({
   const inProgress = keyRead(slotMarks, activityScId, slotScId);
   return (
     <Button
+      className="jur-table__action-button"
       variant="contained"
       disabled={inProgress}
       onClick={() => onWithdraw(activityScId, slotScId)}
