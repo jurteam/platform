@@ -7,9 +7,9 @@ services:
       - ./rest:/var/www/html
       - ./build:/var/www/html/public
       - ./environment/nginx/nginx.conf:/etc/nginx/sites-available/default
-      - ./environment/supervisor/jbp:/etc/supervisor/conf.d
-      - ./environment/cron/jur.conf:/var/spool/cron/crontabs/root
       - ./environment/php/php.ini:/etc/php/7.2/fpm/php.ini
+      - ./environment/jbp/cron:/var/spool/cron/crontabs/root
+      - ./environment/jbp/supervisor:/etc/supervisor/conf.d
     ports:
       - "8000:80"
     links:
@@ -63,8 +63,8 @@ services:
       - ./polling-service/producer:/var/www/html
       - ./environment/nginx/nginx.conf:/etc/nginx/sites-available/default
       - ./environment/php/php.ini:/etc/php/7.2/fpm/php.ini
-      - ./environment/cron/jur.conf:/var/spool/cron/crontabs/root
-      - ./environment/supervisor/producer:/etc/supervisor/conf.d
+      - ./environment/producer/cron:/var/spool/cron/crontabs
+      - ./environment/producer/supervisor:/etc/supervisor/conf.d
     ports:
       - "8100:80"
     links:

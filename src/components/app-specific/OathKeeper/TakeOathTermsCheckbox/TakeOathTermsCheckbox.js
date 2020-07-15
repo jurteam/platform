@@ -1,5 +1,4 @@
 import React, { useContext } from "react";
-import { NavLink } from "react-router-dom";
 
 import { AppContext } from "../../../../bootstrap/AppProvider";
 import "./TakeOathTermsCheckbox.scss";
@@ -19,9 +18,9 @@ const TakeOathTermsCheckbox = ({ onChange, acceptTnC }) => {
         onChange={onChange}
       />{" "}
       I {labels.accept.toLowerCase()}{" "}
-      <NavLink to="/profile/terms">
+      <a href={window.location.origin + "/profile/terms"} target="_blank">
         {labels.termAndConditions.toLowerCase()}
-      </NavLink>{" "}
+      </a>{" "}
       of the Oath Keeping
     </Form.Label>
   );

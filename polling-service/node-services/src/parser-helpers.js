@@ -34,17 +34,14 @@ function pick(object, keys) {
 
 function makeResult(result, tx, assetName, contractAddress) {
   return {
-    contractAddress,
-    assetName: assetName,
-    eventName: result.identifier,
+    contract_address: contractAddress,
+    asset_name: assetName,
+    event_name: result.identifier,
     data: pick(result.data, result.fields),
-    transaction: {
-      address: tx.transactionHash,
-      blockNumber: tx.blockNumber,
-      timestamp: tx.meta.blockTimestamp,
-      sender: tx.meta.txOrigin,
-      contractAddress
-    }
+    transaction_hash: tx.transactionHash,
+    block_number: tx.blockNumber,
+    timestamp: tx.meta.blockTimestamp,
+    sender: tx.meta.txOrigin,
   };
 }
 

@@ -37,7 +37,7 @@ const HeaderBox = ({
         />
       </Frame>
       <Text size="xsmall">{address}</Text>
-      {!isFetching && statusType ? (
+      {!isFetching && (statusType || isAdvocate) ? (
         <AdvocateHeader
           country={country}
           linkedIn={linkedIn}
@@ -48,10 +48,10 @@ const HeaderBox = ({
       ) : (
         <NonAdvocateHeader />
       )}
-      {!isFetching && statusType ? (
+      {!isFetching && (statusType || isAdvocate) ? (
         <ShareStatusButton className="jur-cover__bottom-out" />
       ) : (
-        <ArticleButton className="jur-cover__bottom-out" />
+        <ArticleButton className="jur-cover__bottom-out jur-cover__button" />
       )}
     </Cover>
   </Box>

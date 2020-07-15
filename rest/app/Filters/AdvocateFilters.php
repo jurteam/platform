@@ -5,7 +5,8 @@ namespace App\Filters;
 class AdvocateFilters extends Filters
 {
     protected $filters = [
-        'sortBy'
+        'sortBy',
+        'query'
     ];
 
     protected $sortBy = [
@@ -22,5 +23,10 @@ class AdvocateFilters extends Filters
         $result = isset($this->sortBy[$key]) ? $this->sortBy[$key] : ['total_earned', 'asc'];
 
         return $this->builder->orderBy($result[0], $result[1]);
+    }
+
+    public function query($value)
+    {
+        return $this->builder->where('wallet', 'LIKE', "%{$value}%");
     }
 }

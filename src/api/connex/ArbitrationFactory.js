@@ -3,7 +3,7 @@
 import ArbitrationFactoryABI from "../../build/contracts/ArbitrationFactory.json";
 import { log } from "../../utils/helpers";
 
-import { 
+import {
   ADD_TRANSACTION,
 } from "../../reducers/types";
 
@@ -12,7 +12,7 @@ import {
 
 export default class connexArbitrationFactory
 {
-  constructor() 
+  constructor()
   {
     this.contract = ArbitrationFactoryABI;
     this.thorAccount = global.connex.thor.account(this.getArbitrationFactoryAddres())
@@ -21,31 +21,31 @@ export default class connexArbitrationFactory
   /**
    * @notice Returns JUR token balance of given address
    */
-  async createArbitration(parties, dispersal, funding, agreementHash, account, contractId) 
+  async createArbitration(parties, dispersal, funding, agreementHash, account, contractId)
   {
-    
+
     const createArbitrationABI = this.getMethodABI("createArbitration");
 
     log('createArbitration - createArbitrationABI',createArbitrationABI)
-    
+
 
     const createArbitrationMethod = this.thorAccount.method(createArbitrationABI)
 
 
     log('createArbitration - createArbitrationMethod',createArbitrationMethod)
-    
+
 
     // --##################--- asClause
 
     log('createArbitration - parameter',{parties, dispersal, funding, agreementHash})
 
     const createArbitrationClause = createArbitrationMethod.asClause(parties, dispersal, funding, agreementHash)
-    
+
     log('createArbitration - createArbitrationClause',createArbitrationClause)
- 
-    
+
+
     const signingService = global.connex.vendor.sign('tx')
-    
+
     log('createArbitration - signingService',signingService)
 
 
@@ -68,21 +68,21 @@ export default class connexArbitrationFactory
 
       // call transaction saving endpoint
       // ADD_TRANSACTION
-      
+
       txid = tx.txid
       log('createArbitration - signingService then() txid',txid)
-      
+
       const filter = {
         _creator: account,
         _party1: parties[0],
         _party2: parties[1],
       }
-      
+
       global.dispatcher({type: ADD_TRANSACTION,txid: tx.txid, event: 'ArbitrationCreated', param: filter, contract_id: contractId})
-      
+
       return true;
-      
-    }).catch(err=>{  
+
+    }).catch(err=>{
       log('createArbitration - signingService catch() err',err)
       return false;
     })
@@ -91,7 +91,7 @@ export default class connexArbitrationFactory
 
   }
 
-  async ArbitrationCreated(creator,txid) 
+  async ArbitrationCreated(creator,txid)
   {
 
     const transferEventABI = this.getMethodABI("ArbitrationCreated");
@@ -101,24 +101,24 @@ export default class connexArbitrationFactory
     const filter = transferEvent.filter([{
       _creator: creator
     }])
-    
-    filter.order('desc') 
-    
+
+    filter.order('desc')
+
     const events = await filter.apply(0, 1)
 
     log('ArbitrationCreated - events',events)
     log('ArbitrationCreated - events.length',events.length)
     log('ArbitrationCreated - events[0]',events[0])
 
-    if (events) 
+    if (events)
     {
       const lastEvent = events[0]
       log('ArbitrationCreated - lastEvent',lastEvent)
-      if (lastEvent) 
+      if (lastEvent)
       {
         log('ArbitrationCreated - txid',txid)
         log('ArbitrationCreated - lastEvent.meta.txid',lastEvent.meta.txID)
-        if (lastEvent.meta.txID === txid) 
+        if (lastEvent.meta.txID === txid)
         {
           log('ArbitrationCreated - lastEvent.decoded[1]',lastEvent.decoded[1])
           log('ArbitrationCreated - lastEvent.decoded._arbitration',lastEvent.decoded._arbitration)
@@ -145,17 +145,17 @@ export default class connexArbitrationFactory
       to: blockNum
     })
 
-    const events = await filter.apply(0, 1) 
+    const events = await filter.apply(0, 1)
 
-    if (events) 
+    if (events)
     {
       const lastEvent = events[0]
-      if (lastEvent) 
+      if (lastEvent)
       {
         log('EventCatch - lastEvent',lastEvent)
         log('EventCatch - txid',txid)
         log('EventCatch - lastEvent.meta.txid',lastEvent.meta.txID)
-        if (lastEvent.meta.txID === txid) 
+        if (lastEvent.meta.txID === txid)
         {
           return lastEvent.decoded
           // return lastEvent.decoded[1]
@@ -166,13 +166,13 @@ export default class connexArbitrationFactory
 
   }
 
-  async generateHash(string) 
+  async generateHash(string)
   {
 
     log('generateHash - ArbitrationFactoryABI',this.contract)
     const generateHashABI = this.getMethodABI("generateHash");
     log('generateHash - generateHashABI',generateHashABI)
-    
+
     // log('generateHash - address',address)
 
     const generateHashMethod = this.thorAccount.method(generateHashABI)
@@ -181,17 +181,17 @@ export default class connexArbitrationFactory
     // generateHashMethod.cache([])
     // Get balance of my account, we will get cached result on most blocks
     // Event Transfer(_from = '0x7567d83b7b8d80addcb281a71d54fc7b3364ffed', ....) would make cache expired
-    
+
 
     let hash = '';
-    
+
     await generateHashMethod.call(string).then(output=>{
       log('generateHash - generateHashMethod',output)
       log('generateHash - generateHashMethod',output.data)
 
       // userBalance = output.decoded[0];
       hash = output.decoded[0];
-      
+
       // log('generateHash - userBalance (then)',userBalance)
     })
 
@@ -199,7 +199,7 @@ export default class connexArbitrationFactory
 
   }
 
-  async getAddressByTransaction(txid)  
+  async getAddressByTransaction(txid)
   {
 
     let contractAddress
@@ -220,12 +220,12 @@ export default class connexArbitrationFactory
    await tx.getReceipt()
       .then(txr=>{
         log('getAddressByTransaction - tx getReceipt()',txr)
-        
+
         if (txr !== null) {
           const { outputs } = txr;
           const { events } = outputs[0];
           const { address } = events[0];
-          
+
           log('getAddressByTransaction - tx getReceipt() - address',address)
           contractAddress = address
         }
@@ -269,19 +269,19 @@ export default class connexArbitrationFactory
   }
 
 
-  getMethodABI(method) 
+  getMethodABI(method)
   {
 
     let methABI = null
-    this.contract.abi.forEach(meth => {    
-  
+    this.contract.abi.forEach(meth => {
+
       if (meth.name === method) {
-        methABI = meth; 
+        methABI = meth;
       }
     });
-  
+
     return methABI;
-  
-  }  
+
+  }
 
 }

@@ -118,6 +118,8 @@ export const getAdvocatesPagination = state =>
 export const getAdvocateAvailablePagination = state =>
   state.advocate.availableMeta.pagination;
 export const getAdvocateAvailable = state => state.advocate.available;
+export const getAdvocateHasYourActivities = state =>
+  state.advocate.yourActivities.length === 0;
 export const getAdvocateYourActivitiesPagination = state =>
   state.advocate.yourActivitiesMeta.pagination;
 export const getAdvocateYourActivities = state => state.advocate.yourActivities;

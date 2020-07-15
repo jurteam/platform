@@ -1,59 +1,50 @@
 [
   [
     {
-      "contractAddress": "0x4213232275b0228f69a06c37ef9c0186f19e999d",
-      "assetName": "oathKeeper",
-      "eventName": "IHoldYourOathFulfilled",
+      "contract_address": "0x4213232275b0228f69a06c37ef9c0186f19e999d",
+      "asset_name": "oathKeeper",
+      "event_name": "IHoldYourOathFulfilled",
       "data": {
         "_beneficiary": "0xAA3103378e18103Ad9aa8B27C7E45fA52217A7fd",
         "_amount": "2300000000000000000",
         "_oathIndex": "10"
       },
-      "transaction": {
-        "address": "0xf46810aca3574bbdec554f7b10cc65f9e027e2588b234eba7a53ce79da96f45c",
-        "blockNumber": 6073477,
-        "timestamp": 1590764320,
-        "sender": "0xaa3103378e18103ad9aa8b27c7e45fa52217a7fd",
-        "contractAddress": "0x4213232275b0228f69a06c37ef9c0186f19e999d"
-      }
+      "transaction_hash": "0xf46810aca3574bbdec554f7b10cc65f9e027e2588b234eba7a53ce79da96f45c",
+      "block_number": 6073477,
+      "timestamp": 1590764320,
+      "sender": "0xaa3103378e18103ad9aa8b27c7e45fa52217a7fd"
     }
   ],
   [
     {
-      "contractAddress": "0x4213232275b0228f69a06c37ef9c0186f19e999d",
-      "assetName": "oathKeeper",
-      "eventName": "IHoldYourOathFulfilled",
+      "contract_address": "0x4213232275b0228f69a06c37ef9c0186f19e999d",
+      "asset_name": "oathKeeper",
+      "event_name": "IHoldYourOathFulfilled",
       "data": {
         "_beneficiary": "0xAA3103378e18103Ad9aa8B27C7E45fA52217A7fd",
         "_amount": "1000000000000000000",
         "_oathIndex": "8"
       },
-      "transaction": {
-        "address": "0x86825b6b2eebe5e9649429c1b6304a2dfb727e8c4d40dbd65c31562d68eb4ccd",
-        "blockNumber": 6073478,
-        "timestamp": 1590764330,
-        "sender": "0xaa3103378e18103ad9aa8b27c7e45fa52217a7fd",
-        "contractAddress": "0x4213232275b0228f69a06c37ef9c0186f19e999d"
-      }
+      "transaction_hash": "0x86825b6b2eebe5e9649429c1b6304a2dfb727e8c4d40dbd65c31562d68eb4ccd",
+      "block_number": 6073478,
+      "timestamp": 1590764330,
+      "sender": "0xaa3103378e18103ad9aa8b27c7e45fa52217a7fd"
     }
   ],
   [
     {
-      "contractAddress": "0x4213232275b0228f69a06c37ef9c0186f19e999d",
-      "assetName": "oathKeeper",
-      "eventName": "IHoldYourOathFulfilled",
+      "contract_address": "0x4213232275b0228f69a06c37ef9c0186f19e999d",
+      "asset_name": "oathKeeper",
+      "event_name": "IHoldYourOathFulfilled",
       "data": {
         "_beneficiary": "0xAA3103378e18103Ad9aa8B27C7E45fA52217A7fd",
         "_amount": "1000000000000000000",
         "_oathIndex": "9"
       },
-      "transaction": {
-        "address": "0xa7c01bb8aad3d8d1df9c8fed07973facd5851507366257f6983564ec4a7e3147",
-        "blockNumber": 6073478,
-        "timestamp": 1590764330,
-        "sender": "0xaa3103378e18103ad9aa8b27c7e45fa52217a7fd",
-        "contractAddress": "0x4213232275b0228f69a06c37ef9c0186f19e999d"
-      }
+      "transaction_hash": "0xa7c01bb8aad3d8d1df9c8fed07973facd5851507366257f6983564ec4a7e3147",
+      "block_number": 6073478,
+      "timestamp": 1590764330,
+      "sender": "0xaa3103378e18103ad9aa8b27c7e45fa52217a7fd"
     }
   ],
   [],
@@ -61,9 +52,9 @@
   [],
   [
     {
-      "contractAddress": "0x4213232275b0228f69a06c37ef9c0186f19e999d",
-      "assetName": "oathKeeper",
-      "eventName": "OathTaken",
+      "contract_address": "0x4213232275b0228f69a06c37ef9c0186f19e999d",
+      "asset_name": "oathKeeper",
+      "event_name": "OathTaken",
       "data": {
         "_beneficiary": "0xAA3103378e18103Ad9aa8B27C7E45fA52217A7fd",
         "_amount": "20000000000000000000",
@@ -72,13 +63,10 @@
         "_releaseAt": "1590765620",
         "_oathIndex": "20"
       },
-      "transaction": {
-        "address": "0x76b178d40e3a6de0400387ffa77caf1c43f7c9aae2a6f8a3699e49b4395a279a",
-        "blockNumber": 6073499,
-        "timestamp": 1590764540,
-        "sender": "0xaa3103378e18103ad9aa8b27c7e45fa52217a7fd",
-        "contractAddress": "0x4213232275b0228f69a06c37ef9c0186f19e999d"
-      }
+      "transaction_hash": "0x76b178d40e3a6de0400387ffa77caf1c43f7c9aae2a6f8a3699e49b4395a279a",
+      "block_number": 6073499,
+      "timestamp": 1590764540,
+      "sender": "0xaa3103378e18103ad9aa8b27c7e45fa52217a7fd"
     }
   ],
   []

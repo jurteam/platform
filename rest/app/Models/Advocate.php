@@ -46,7 +46,7 @@ class Advocate extends Model
         // Save advocate
         $advocate = Advocate::firstOrCreate(['wallet' => $data->wallet]);
         $advocate->wallet = $data->wallet;
-        $advocate->contract_address = $data->contract_address;
+        $advocate->contract_address = $payload->contract_address;
         $advocate->activation_time = Carbon::createFromTimestamp($data->activationTime);
         $advocate->is_active = true;
         $advocate->type = $data->advocateType;

@@ -525,7 +525,7 @@ export const ContractDetail = ( props ) => {
       {!contract.updating && counterparties ? (
         <>
           <Main>
-            <ActionsBar />
+            {/* <ActionsBar /> */}
             <ContractSummary
               data={{
                 ...contractData,

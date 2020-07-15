@@ -19,4 +19,20 @@ class UndeliveredMessage extends Model
         'next_try_at',
         'status'
     ];
+
+    /**
+     * @return transaction : one to one relation
+     */
+    public function transaction()
+    {
+        return $this->belongsTo('App\Models\Transaction');
+    }
+
+    /**
+     * @return consumer : one to one relation
+     */
+    public function consumer()
+    {
+        return $this->belongsTo('App\Models\Consumer');
+    }
 }

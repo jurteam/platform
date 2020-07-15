@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { CaretDownIcon } from "../Icons/CaretDownIcon";
 import { CaretUpIcon } from "../Icons/CaretUpIcon";
+import "./TableCell.scss";
 
 export const TableCell = props => {
   const {
@@ -11,7 +12,8 @@ export const TableCell = props => {
     fieldName,
     noCarret,
     colSpan,
-    align
+    align,
+    size = ""
   } = props;
   const [order, setOrder] = useState(0);
 
@@ -29,7 +31,7 @@ export const TableCell = props => {
     <Component
       colSpan={colSpan}
       align={align}
-      className={`jur-table__cell ${
+      className={`jur-table__cell jur-table__cell-size-${size} ${
         Component === "th" ? "jur-table__head" : ""
       }  ${className || ""} ${
         Component === "th" && onClick ? "jur-table__cell--sortable" : ""
