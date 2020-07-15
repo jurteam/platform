@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "type": "activities",
+    "attributes": {
+      "name": "Share Post To Twitter",
+      "rewardAmount": "1.000000000000000000",
+      "dueDate": 1594801036,
+      "state": "Completed",
+      "activityScId": 1,
+      "slotScId": 0
+    }
+  },
+  {
+    "id": 10,
+    "type": "activities",
+    "attributes": {
+      "name": "Catch all the pokemons",
+      "rewardAmount": "0.000000000000000000",
+      "dueDate": 1594291904,
+      "state": "Completed",
+      "activityScId": 15,
+      "slotScId": 0
+    }
+  },
+  {
+    "id": 15,
+    "type": "activities",
+    "attributes": {
+      "name": "Find the parallel universe where Hitler cured cancer",
+      "rewardAmount": "0.000000000000000000",
+      "dueDate": 1594806179,
+      "state": "Completed",
+      "activityScId": 2,
+      "slotScId": 0
+    }
+  }
+]
