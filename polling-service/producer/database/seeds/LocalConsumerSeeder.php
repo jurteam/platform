@@ -107,6 +107,22 @@ class LocalConsumerSeeder extends Seeder
                 'consumer_name' => 'Status',
                 'url' => 'http://jur/api/v1/polling/status'
             ]);
+
+            DB::table('consumers')->insert([
+                'contract_address' => '0xD689Db4A731cbb216E81C2F6096c583e329A9B48',
+                'asset_name' => 'oathKeeper',
+                'event_name' => 'OathTaken',
+                'consumer_name' => 'OathKeeper',
+                'url' => 'http://jur/api/v1/polling/oath-keeper'
+            ]);
+
+            DB::table('consumers')->insert([
+                'contract_address' => '0xD689Db4A731cbb216E81C2F6096c583e329A9B48',
+                'asset_name' => 'oathKeeper',
+                'event_name' => 'IHoldYourOathFulfilled',
+                'consumer_name' => 'OathKeeper',
+                'url' => 'http://jur/api/v1/polling/oath-keeper'
+            ]);
         }
     }
 }
