@@ -41,7 +41,6 @@ class PastEventController extends Controller
         // url to get past block events of PER service
         $url = $this->host . '/blocks/' . $blockNo;
 
-
         // send a POST request with configuration and get event's data
         $response = Http::post($url, $body)->throw()->json();
 
@@ -151,7 +150,7 @@ class PastEventController extends Controller
     {
         // find all transactions based on transaction id
         $existing = Transaction::whereIn('transaction_hash', array_map(function ($item) {
-            return $item['transaction']['address'];
+            return $item['transaction_hash'];
         }, $transactions))->select('contract_address', 'transaction_hash', 'event_name')->get()->toArray();
 
         // store each transactions if not exists in the database
@@ -159,9 +158,9 @@ class PastEventController extends Controller
 
             // check an item present in existing data based on  transaction_hash,contract_address and event_name
             $found = array_filter($existing, function ($data) use ($item) {
-                return $data['transaction_hash'] == $item['transaction']['address'] &&
-                    $data['contract_address'] == $item['contractAddress'] &&
-                    $data['event_name'] == $item['eventName'];
+                return $data['transaction_hash'] == $item['transaction_hash'] &&
+                    $data['contract_address'] == $item['contract_address'] &&
+                    $data['event_name'] == $item['event_name'];
             });
 
             // create new transaction if not exists
