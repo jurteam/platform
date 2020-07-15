@@ -4,12 +4,10 @@
   cursor: pointer;
   display: inline-block;
   color: $secondary;
-  border-bottom: 1px transparent solid;
   transition: all ease-in-out 400ms;
 
   &:hover {
     color: $primary-hover;
-    border-bottom-color: $primary-hover;
   }
 
   &__selected {
