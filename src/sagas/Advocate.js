@@ -146,11 +146,6 @@ function* withdraw(action) {
         payload: action.payload
       });
 
-      global.store.dispatch({
-        type: ADVOCATE_FETCH_REWARDS,
-        payload: { page: pagination.current_page || 1 }
-      });
-
       global.store.dispatch({ type: LOOKUP_WALLET_BALANCE });
     };
 
@@ -184,11 +179,6 @@ function* markComplete(action) {
       global.store.dispatch({
         type: ADVOCATE_COMPLETE_SLOT,
         payload: action.payload
-      });
-
-      global.store.dispatch({
-        type: ADVOCATE_FETCH_YOUR_ACTIVITIES,
-        payload: { page: pagination.current_page || 1 }
       });
 
       global.store.dispatch({ type: LOOKUP_WALLET_BALANCE });

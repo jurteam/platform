@@ -67,3 +67,19 @@ export const canMarkComplete = ({ dueDate, state }) => {
 
   return false;
 };
+
+export function makeKey({ activityScId, slotScId }) {
+  return keyScId(activityScId, slotScId);
+}
+
+export function setSlotState(state, { activityScId, slotScId }, slots) {
+  return slots.map(a => {
+    if (
+      a.attributes.activityScId === activityScId &&
+      a.attributes.slotScId === slotScId
+    ) {
+      return { ...a, attributes: { ...a.attributes, state } };
+    }
+    return a;
+  });
+}
