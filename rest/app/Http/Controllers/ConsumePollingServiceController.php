@@ -22,10 +22,20 @@ class ConsumePollingServiceController extends Controller
         // get body of array and convert it to object
         $payload = array_to_object($request->all());
 
-        // process payload
-        $success = OathKeeper::consumePollingService($payload);
+        // intial status for success
+        $success = false;
 
-        // return process status
+        switch ($payload->event_name) {
+            case 'OathTaken':
+                $success = OathKeeper::oathTaken($payload);
+                break;
+
+            case 'IHoldYourOathFulfilled':
+                $success = OathKeeper::iHoldYourOathFulfilled($payload);
+                break;
+        }
+
+        // return consume status
         return ['status' => $success];
     }
 
