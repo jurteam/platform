@@ -64,5 +64,8 @@ RUN (cd /var/www/html/;composer --prefer-dist -vvv install)
 # Restore permissions
 # RUN chown -R www-data:www-data /var/www/html
 
+# crontab config for cron job
+RUN (crontab -l -u root; echo "* * * * * cd /var/www/html/ && php artisan schedule:run >> /dev/null 2>&1") | crontab
+
 EXPOSE 80
-CMD service supervisor start && service php7.2-fpm start && nginx -g "daemon off;"
+CMD cron && service supervisor start && service php7.2-fpm start && nginx -g "daemon off;"
