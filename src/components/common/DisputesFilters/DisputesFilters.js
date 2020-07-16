@@ -9,7 +9,7 @@ import "./DisputesFilters.scss";
 import { getFormattedDate, log } from "../../../utils/helpers"; // helpers
 import { AppContext } from "../../../bootstrap/AppProvider"; // context
 
-export const DisputesFilters = ( props ) => {
+export const DisputesFilters = props => {
   const [state, setState] = useState({
     status: props.status,
     category: props.category,
@@ -22,11 +22,10 @@ export const DisputesFilters = ( props ) => {
   const { myDispute, onChange, onSubmit /*, onReset */ } = props;
 
   const handleChange = (type, value) => {
-
-    value = type === 'searchText' && value === '' ? null : value
+    value = type === "searchText" && value === "" ? null : value;
     // onChange(type, value);
 
-    setState((state) => {
+    setState(state => {
       const newState = { ...state, [type]: value };
       if (typeof onChange === "function") onChange(type, value);
       //onChange(newState);
@@ -71,27 +70,27 @@ export const DisputesFilters = ( props ) => {
       <Form.Select
         placeholder={labels.filterByStatus}
         value={state.status}
-        onChange={(value) => handleChange("status", value)}
+        onChange={value => handleChange("status", value)}
         options={statusList.slice(-4)}
       />
       <Form.Select
         placeholder={labels.filterByCategory}
         value={state.category}
-        onChange={(value) => handleChange("category", value)}
+        onChange={value => handleChange("category", value)}
         options={categories.slice(0, -1)} // no other
       />
       <CalendarFilter
         name="from"
-        selectedDate={state.fromDate}
-        onChange={(value) => handleChange("fromDate", getFormattedDate(value))}
+        selectedDate={Date.parse(state.fromDate)}
+        onChange={value => handleChange("fromDate", getFormattedDate(value))}
       />
       <span className="separator canDisable" />
       <CalendarFilter
         name="to"
-        selectedDate={state.toDate}
-        onChange={(value) => handleChange("toDate", getFormattedDate(value))}
+        selectedDate={Date.parse(state.toDate)}
+        onChange={value => handleChange("toDate", getFormattedDate(value))}
       />
-      <Form.Search onChange={(value) => handleChange("searchText", value)} />
+      <Form.Search onChange={value => handleChange("searchText", value)} />
       {/* <Button
         color="info"
         variant="contained"
