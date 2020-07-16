@@ -27,6 +27,100 @@ class OathKeeper extends Model
     }
 
     /**
+     * Store an oath when `OathTaken` event triggered
+     *
+     * @param Object $payload: payload  send by Smart-Contract event
+     * @return Boolean the success or failure message
+     */
+    public static function oathTaken($payload)
+    {
+        $saved = false;
+
+        // get data object
+        $data = $payload->data;
+
+        // Create an OathKeper if not exists
+        $oathKeeper = OathKeeper::firstOrCreate(['wallet' => $data->_beneficiary]);
+
+        // Set rank to last if new oath-keeper
+        if (!isset($oathKeeper->rank)) {
+            $rank = OathKeeper::max('rank');
+            $oathKeeper->rank = isset($rank) ? $rank + 1 : 0;
+            $oathKeeper->save();
+        }
+
+        // Save oath to database
+        $oath = Oath::store($data, $oathKeeper);
+
+        if (isset($oath->id)) {
+
+            // Get fiat value of current oath and Generate Rank
+            dispatch((new OathKeeperUpdateFiatValue($oath))->chain([new OathKeeperGenerateRank($oathKeeper)]));
+
+            // Get the current time
+            $completeAt = Carbon::createFromTimestamp($data->_releaseAt);
+
+            // find delay
+            $delay = $completeAt->diffInSeconds(Carbon::now());
+
+            // get job & dispatch
+            $job = (new OathKeeperUpdateOathStateToComplete($data->_beneficiary, $data->_oathIndex))->delay($delay);
+
+            dispatch($job);
+
+            // Set status to true
+            $saved = true;
+        }
+
+        // Check the oath-keeper exists for processing
+        if (isset($oathKeeper)) {
+            // Calculate oath-keeper summary
+            OathKeeper::calculateSummary($oathKeeper);
+
+            // Dispatch queue to generate analytics
+            dispatch(new OathKeeperGenerateAnalytics);
+        }
+
+        // Return process status
+        return $saved;
+    }
+
+    /**
+     * Withdraw an oath when `IHoldYourOathFulfilled` event triggered
+     *
+     * @param Object $payload: payload  send by Smart-Contract event
+     * @return Boolean the success or failure message
+     */
+    public static function iHoldYourOathFulfilled($payload)
+    {
+        $saved = false;
+
+        // get data object
+        $data = $payload->data;
+
+        // Find oath-keeper based on wallet address and oath-index
+        $oathKeeper = OathKeeper::where('wallet', $data->_beneficiary)
+            ->first();
+
+        // Check the oath-keeper exists
+        if ($oathKeeper) {
+            $saved = Oath::withrawn($payload); // Changes Oath status
+        }
+
+        // Check the oath-keeper exists for processing
+        if (isset($oathKeeper)) {
+            // Calculate oath-keeper summary
+            OathKeeper::calculateSummary($oathKeeper);
+
+            // Dispatch queue to generate analytics
+            dispatch(new OathKeeperGenerateAnalytics);
+        }
+
+        // Return process status
+        return $saved;
+    }
+
+    /**
      * Calculate summary for an oathKeeper
      *
      * @param OathKeeper $oathKeeper: Object of an OathKeeper
@@ -60,95 +154,5 @@ class OathKeeper extends Model
         $oathKeeper->active_oath_count = $active_oath_count;
         $oathKeeper->total_oath_count = $total_oath_count;
         return $oathKeeper->save();
-    }
-
-    /**
-     * Consume polling Service to store the data and calculate summaries
-     *
-     * @param Object $payload: payload data send by Polling Server (Producer)
-     * @return Boolean the success or failure message
-     */
-    public static function consumePollingService($payload)
-    {
-        $saved = false;
-
-        $oathKeeper;
-
-        switch ($payload->event_name) {
-
-            // oathTaken event
-            case 'OathTaken':
-
-                // Create an OathKeper if not exists
-                $oathKeeper = OathKeeper::firstOrCreate(['wallet' => $payload->data->_beneficiary]);
-
-                // Set rank to last if new oath-keeper
-                if (!isset($oathKeeper->rank)) {
-                    $rank = OathKeeper::max('rank');
-                    $oathKeeper->rank = isset($rank) ? $rank + 1 : 0;
-                    $oathKeeper->save();
-                }
-
-                // Save oath to database
-                $oath = Oath::store($payload->data, $oathKeeper);
-
-                if (isset($oath->id)) {
-
-                    // Get fiat value of current oath and Generate Rank
-                    dispatch((new OathKeeperUpdateFiatValue($oath))->chain([new OathKeeperGenerateRank($oathKeeper)]));
-
-                    // Get the current time
-                    $completeAt = Carbon::createFromTimestamp($payload->data->_releaseAt);
-
-                    // find delay
-                    $delay = $completeAt->diffInSeconds(Carbon::now());
-
-                    // get job & dispatch
-                    $job = (new OathKeeperUpdateOathStateToComplete($payload->data->_beneficiary, $payload->data->_oathIndex))->delay($delay);
-
-                    dispatch($job);
-
-                    // Set status to true
-                    $saved = true;
-                }
-
-                break;
-
-            // IHoldYourOathFulfilled event
-            case 'IHoldYourOathFulfilled':
-
-                // Find oath-keeper based on wallet address and oath-index
-                $oathKeeper = OathKeeper::where('wallet', $payload->data->_beneficiary)
-                    ->first();
-
-                // Check the oath-keeper exists
-                if ($oathKeeper) {
-                    $saved = Oath::withrawn($payload); // Changes Oath status
-                }
-
-                break;
-        }
-
-        // Check the oath-keeper exists for processing
-        if (isset($oathKeeper)) {
-            OathKeeper::processSummaries($oathKeeper); // Calculate summaries & analytics
-        }
-
-        // Return process status
-        return $saved;
-    }
-
-    /**
-     * Calculate oath-keeper summary and dispatch job for analytics
-     *
-     * @param Object $oathKeeper: oathkeeper object
-     */
-    private static function processSummaries($oathKeeper)
-    {
-        // Calculate oath-keeper summary
-        OathKeeper::calculateSummary($oathKeeper);
-
-        // Dispatch queue to generate analytics
-        dispatch(new OathKeeperGenerateAnalytics);
     }
 }

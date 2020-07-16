@@ -9,6 +9,7 @@ const WithdrawButton = ({ activityScId, slotScId, withdraws, onWithdraw }) => {
   const inProgress = keyRead(withdraws, activityScId, slotScId);
   return (
     <Button
+      className="jur-table__action-button"
       variant="contained"
       disabled={inProgress}
       onClick={() => onWithdraw(activityScId, slotScId)}

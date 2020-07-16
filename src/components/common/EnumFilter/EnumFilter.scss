@@ -1,16 +1,12 @@
 @import "../../../assets/scss/variables";
+@import "../../../assets/scss/animationMixin";
 
 .jur-enum-filter {
+  @include primary-hover();
+
   cursor: pointer;
   display: inline-block;
   color: $secondary;
-  border-bottom: 1px transparent solid;
-  transition: all ease-in-out 400ms;
-
-  &:hover {
-    color: $primary-hover;
-    border-bottom-color: $primary-hover;
-  }
 
   &__selected {
     color: $primary;

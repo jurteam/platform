@@ -7,7 +7,7 @@ import RewardsPagination from "../RewardsPagination";
 
 const RewardsBox = ({ address, name, isPublic }) => (
   <Box title={rewardsTitle(address, name, isPublic)}>
-    <RewardsTable address={address} />
+    <RewardsTable address={address} isPublic={isPublic} />
     <RewardsPagination address={address} />
   </Box>
 );

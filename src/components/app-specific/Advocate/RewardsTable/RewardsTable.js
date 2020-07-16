@@ -9,7 +9,7 @@ import { ADVOCATE_FETCH_REWARDS } from "../../../../reducers/types";
 import { i18nDateFormatSec } from "../../../../utils/helpers";
 import EmptyMessage from "./EmptyMessage";
 
-const RewardsTable = ({ rows, address, fetchRewards }) => {
+const RewardsTable = ({ rows, address, fetchRewards, isPublic }) => {
   useEffect(() => {
     fetchRewards(address);
   }, []);
@@ -17,7 +17,7 @@ const RewardsTable = ({ rows, address, fetchRewards }) => {
     <Table>
       <Table.Head>
         <Table.Row>
-          <Table.Cell />
+          <Table.Cell align="center" size="xsmall" />
           <Table.Cell>Activity</Table.Cell>
           <Table.Cell size="small">Reward</Table.Cell>
           <Table.Cell size="small">Date</Table.Cell>
@@ -25,7 +25,7 @@ const RewardsTable = ({ rows, address, fetchRewards }) => {
         </Table.Row>
       </Table.Head>
       <Table.Body>
-        <EmptyMessage isShown={!rows.length} />
+        <EmptyMessage isShown={!rows.length} isPublic={isPublic} />
         {rows.map(r => (
           <Table.Row key={r.id}>
             <Table.Cell>

@@ -13,7 +13,7 @@ class LocalConsumerSeeder extends Seeder
     {
         {
             DB::table('consumers')->insert([
-                'contract_address' => '0x79481d8933832e63be499beaddcd49ac9a809fef',
+                'contract_address' => '0x65F2BCA97cAf8429cBB34e6146197FA12cDDE417',
                 'asset_name' => 'jurAdvocate',
                 'event_name' => 'AdvocateAdded',
                 'consumer_name' => 'Advocate',
@@ -21,7 +21,7 @@ class LocalConsumerSeeder extends Seeder
             ]);
 
             DB::table('consumers')->insert([
-                'contract_address' => '0x79481d8933832e63be499beaddcd49ac9a809fef',
+                'contract_address' => '0x65F2BCA97cAf8429cBB34e6146197FA12cDDE417',
                 'asset_name' => 'jurAdvocate',
                 'event_name' => 'AdvocateStateUpdated',
                 'consumer_name' => 'Advocate',
@@ -29,7 +29,7 @@ class LocalConsumerSeeder extends Seeder
             ]);
 
             DB::table('consumers')->insert([
-                'contract_address' => '0x79481d8933832e63be499beaddcd49ac9a809fef',
+                'contract_address' => '0x65F2BCA97cAf8429cBB34e6146197FA12cDDE417',
                 'asset_name' => 'jurAdvocate',
                 'event_name' => 'AdvocateTypeUpdated',
                 'consumer_name' => 'Advocate',
@@ -82,6 +82,46 @@ class LocalConsumerSeeder extends Seeder
                 'event_name' => 'SlotRewarded',
                 'consumer_name' => 'Reward',
                 'url' => 'http://jur/api/v1/polling/reward'
+            ]);
+
+            DB::table('consumers')->insert([
+                'contract_address' => '0x26e82BEe7d1369c2969f7Fb9C33fB10926708850',
+                'asset_name' => 'jurStatus',
+                'event_name' => 'StatusAdded',
+                'consumer_name' => 'Status',
+                'url' => 'http://jur/api/v1/polling/status'
+            ]);
+
+            DB::table('consumers')->insert([
+                'contract_address' => '0x26e82BEe7d1369c2969f7Fb9C33fB10926708850',
+                'asset_name' => 'jurStatus',
+                'event_name' => 'StateChanged',
+                'consumer_name' => 'Status',
+                'url' => 'http://jur/api/v1/polling/status'
+            ]);
+
+            DB::table('consumers')->insert([
+                'contract_address' => '0x26e82BEe7d1369c2969f7Fb9C33fB10926708850',
+                'asset_name' => 'jurStatus',
+                'event_name' => 'StatusTypeChanged',
+                'consumer_name' => 'Status',
+                'url' => 'http://jur/api/v1/polling/status'
+            ]);
+
+            DB::table('consumers')->insert([
+                'contract_address' => '0xD689Db4A731cbb216E81C2F6096c583e329A9B48',
+                'asset_name' => 'oathKeeper',
+                'event_name' => 'OathTaken',
+                'consumer_name' => 'OathKeeper',
+                'url' => 'http://jur/api/v1/polling/oath-keeper'
+            ]);
+
+            DB::table('consumers')->insert([
+                'contract_address' => '0xD689Db4A731cbb216E81C2F6096c583e329A9B48',
+                'asset_name' => 'oathKeeper',
+                'event_name' => 'IHoldYourOathFulfilled',
+                'consumer_name' => 'OathKeeper',
+                'url' => 'http://jur/api/v1/polling/oath-keeper'
             ]);
         }
     }

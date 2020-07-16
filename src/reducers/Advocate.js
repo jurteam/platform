@@ -19,7 +19,11 @@ import {
   ADVOCATE_MESSAGE,
   ADVOCATE_FETCH_PROFILE
 } from "./types";
-import { SOCIAL_NETWORK_OPTIONS, keyScId } from "../utils/AdvocateHelpers";
+import {
+  SOCIAL_NETWORK_OPTIONS,
+  makeKey,
+  setSlotState
+} from "../utils/AdvocateHelpers";
 
 const INITIAL_ADVOCATE_STATE = {
   advocate: {
@@ -140,19 +144,3 @@ export default (state = INITIAL_STATE, action) => {
       return state;
   }
 };
-
-function makeKey({ activityScId, slotScId }) {
-  return keyScId(activityScId, slotScId);
-}
-
-function setSlotState(state, { activityScId, slotScId }, slots) {
-  return slots.map(a => {
-    if (
-      a.attributes.activityScId === activityScId &&
-      a.attributes.slotScId === slotScId
-    ) {
-      return { ...a, state };
-    }
-    return a;
-  });
-}

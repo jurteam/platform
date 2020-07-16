@@ -1,15 +1,14 @@
 version: "3"
 services:
   jur:
-    image: jur_platform:08JUN2020
+    image: jur_platform:15JUN2020
     working_dir: /var/www/html
     volumes:
       - ./rest:/var/www/html
       - ./build:/var/www/html/public
       - ./environment/nginx/nginx.conf:/etc/nginx/sites-available/default
       - ./environment/php/php.ini:/etc/php/7.2/fpm/php.ini
-      - ./environment/jbp/cron:/var/spool/cron/crontabs/root
-      - ./environment/jbp/supervisor:/etc/supervisor/conf.d
+      - ./environment/supervisor/jbp:/etc/supervisor/conf.d
     ports:
       - "8000:80"
     links:
@@ -19,8 +18,10 @@ services:
   db:
     image: mysql:5.7
     env_file: .env.docker-compose
-    volumes:
-      - ./persistent-runtime/mysql:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    #volumes:
+    #  - ./persistent-runtime/mysql:/var/lib/mysql
 
   polling:
     image: busybox
@@ -53,18 +54,19 @@ services:
   polling_db:
     image: mysql:5.7
     env_file: .env.polling-service
-    volumes:
-      - ./persistent-runtime/polling-mysql:/var/lib/mysql
+    ports:
+      - "3308:3306"
+    #volumes:
+    #  - ./persistent-runtime/polling-mysql:/var/lib/mysql
 
   polling_producer:
-    image: polling_producer:22JUN2020
+    image: polling_producer:15JUL2020
     working_dir: /var/www/html
     volumes:
       - ./polling-service/producer:/var/www/html
       - ./environment/nginx/nginx.conf:/etc/nginx/sites-available/default
       - ./environment/php/php.ini:/etc/php/7.2/fpm/php.ini
-      - ./environment/producer/cron:/var/spool/cron/crontabs
-      - ./environment/producer/supervisor:/etc/supervisor/conf.d
+      - ./environment/supervisor/producer:/etc/supervisor/conf.d
     ports:
       - "8100:80"
     links:

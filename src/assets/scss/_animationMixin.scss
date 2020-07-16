@@ -1,0 +1,9 @@
+@import "./variables";
+
+@mixin primary-hover {
+  transition: all ease-in-out 400ms;
+
+  &:hover {
+    color: $primary-hover;
+  }
+}

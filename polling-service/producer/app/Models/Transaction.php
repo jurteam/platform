@@ -37,13 +37,13 @@ class Transaction extends Model
     public static function store($data)
     {
         return Transaction::create([
-            'asset_name' => $data['assetName'],
-            'event_name' => $data['eventName'],
-            'contract_address' => $data['contractAddress'],
-            'transaction_hash' => $data['transaction']['address'],
-            'sender' => $data['transaction']['sender'],
-            'timestamp' => Carbon::createFromTimestamp($data['transaction']['timestamp']),
-            'block_number' => $data['transaction']['blockNumber'],
+            'asset_name' => $data['asset_name'],
+            'event_name' => $data['event_name'],
+            'contract_address' => $data['contract_address'],
+            'transaction_hash' => $data['transaction_hash'],
+            'sender' => $data['sender'],
+            'timestamp' => Carbon::createFromTimestamp($data['timestamp']),
+            'block_number' => $data['block_number'],
             'data' => $data['data']
         ]);
     }

@@ -10,7 +10,7 @@ export default async function rtr(runtime, producer, blockchain, Parser) {
       .block(blockNumber)
       .then(blockchain.transactions)
       .then(receipts => parser.parse(receipts))
-      .then(data => producer.postEvent({ blockNumber, data }))
+      .then(data => producer.postEvent({ block_number:blockNumber, data }))
       .then(res => consumeChain(res.nextBlockNumber));
   }
 }

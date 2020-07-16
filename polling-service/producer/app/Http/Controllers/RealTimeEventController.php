@@ -54,19 +54,19 @@ class RealTimeEventController extends Controller
 
         // find all transactions based on transaction id of processed block
         $transactions = Transaction::whereIn('transaction_hash', array_map(function ($data) {
-            return $data['transaction']['address'];
+            return $data['transaction_hash'];
         }, $block['data']))->pluck('transaction_hash')->toArray();
 
         foreach ($block['data'] as $transaction) {
-            if (!in_array($transaction['transaction']['address'], $transactions)) {
+            if (!in_array($transaction['transaction_hash'], $transactions)) {
 
                 // create new transaction if not exists
                 $saved = Transaction::store($transaction);
 
                 // get all consumers of intrest
-                $consumers = Consumer::where('contract_address', $transaction['contractAddress'])
-                    ->where('asset_name', $transaction['assetName'])
-                    ->where('event_name', $transaction['eventName'])->get();
+                $consumers = Consumer::where('contract_address', $transaction['contract_address'])
+                    ->where('asset_name', $transaction['asset_name'])
+                    ->where('event_name', $transaction['event_name'])->get();
 
                 foreach ($consumers as $consumer) {
                     dispatch(new PublishTransaction($consumer, $saved));
@@ -75,6 +75,6 @@ class RealTimeEventController extends Controller
         }
 
         // return next block number
-        return ['nextBlockNumber' => TransactionState::changeLastReadBlock($block['blockNumber'])];
+        return ['nextBlockNumber' => TransactionState::changeLastReadBlock($block['block_number'])];
     }
 }

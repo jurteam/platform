@@ -163,6 +163,7 @@ class AdvocateController extends Controller
 
         // get current activities for the $wallet
         $slots = Slot::where('assigned_wallet', $wallet)
+            ->where('status', '!=', 'Rewarded')
             ->union($unassignedSlots)
             ->get();
 
