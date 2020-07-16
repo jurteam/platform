@@ -13,7 +13,7 @@ class LocalConsumerSeeder extends Seeder
     {
         {
             DB::table('consumers')->insert([
-                'contract_address' => '0x79481d8933832e63be499beaddcd49ac9a809fef',
+                'contract_address' => '0x65F2BCA97cAf8429cBB34e6146197FA12cDDE417',
                 'asset_name' => 'jurAdvocate',
                 'event_name' => 'AdvocateAdded',
                 'consumer_name' => 'Advocate',
@@ -21,7 +21,7 @@ class LocalConsumerSeeder extends Seeder
             ]);
 
             DB::table('consumers')->insert([
-                'contract_address' => '0x79481d8933832e63be499beaddcd49ac9a809fef',
+                'contract_address' => '0x65F2BCA97cAf8429cBB34e6146197FA12cDDE417',
                 'asset_name' => 'jurAdvocate',
                 'event_name' => 'AdvocateStateUpdated',
                 'consumer_name' => 'Advocate',
@@ -29,7 +29,7 @@ class LocalConsumerSeeder extends Seeder
             ]);
 
             DB::table('consumers')->insert([
-                'contract_address' => '0x79481d8933832e63be499beaddcd49ac9a809fef',
+                'contract_address' => '0x65F2BCA97cAf8429cBB34e6146197FA12cDDE417',
                 'asset_name' => 'jurAdvocate',
                 'event_name' => 'AdvocateTypeUpdated',
                 'consumer_name' => 'Advocate',
