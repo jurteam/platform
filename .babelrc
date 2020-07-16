@@ -1,0 +1,13 @@
+{
+  "plugins": [
+    [
+      "module-resolver",
+      {
+        "alias": {
+          "JurCommon": "./src/components/common/",
+          "JurUtils": "./src/utils/"
+        }
+      }
+    ]
+  ]
+}
