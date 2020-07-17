@@ -23,6 +23,7 @@ import YourActivitiesBox from "../../../app-specific/Advocate/YourActivitiesBox"
 import RewardsBox from "../../../app-specific/Advocate/RewardsBox";
 import AdvocatesIndex from "../../../app-specific/Advocate/AdvocatesIndex";
 import AdvocatesFooterBox from "../../../app-specific/Advocate/AdvocatesFooterBox";
+import AdvocateBio from "../../../app-specific/Advocate/AdvocateBio/AdvocateBio";
 const AdvocateSection = ({
   fetchAdvocate,
   advocasy,
@@ -32,6 +33,7 @@ const AdvocateSection = ({
   isPublic,
   toggleDetails,
   isAdvocate,
+  bio,
   resetAdvocate
 }) => {
   const effectiveAddress = address || myAddress;
@@ -39,13 +41,14 @@ const AdvocateSection = ({
   useEffect(() => {
     fetchAdvocate(effectiveAddress);
     return resetAdvocate;
-  }, []);
-
+  }, [effectiveAddress, fetchAdvocate, resetAdvocate]);
+  console.log("advocasy", advocasy);
   return (
     <Section>
       <HeaderBox address={effectiveAddress} isAdvocate={isAdvocate} />
       {isAdvocate ? (
         <>
+          <AdvocateBio advocasy={advocasy} address={effectiveAddress} />
           <BalancesBox
             rewardsBalance={advocasy.rewardsBalance}
             totalEarned={advocasy.totalEarned}

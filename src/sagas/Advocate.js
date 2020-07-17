@@ -1,10 +1,11 @@
-import { takeLatest, put, select } from "redux-saga/effects";
+import { takeLatest, put, select, call } from "redux-saga/effects";
 import {
   shareOn,
   advocates,
   available,
   yourActivities,
-  rewards
+  rewards,
+  updateBio
 } from "../api/Advocate";
 import { statusUrlOf } from "JurUtils/AdvocateHelpers";
 import { RewardConnex } from "../api";
@@ -36,7 +37,9 @@ import {
   ADVOCATE_RESET_SLOT,
   ADVOCATE_MARK_SLOT,
   ADVOCATE_COPY,
-  ADVOCATE_MESSAGE
+  ADVOCATE_MESSAGE,
+  ADVOCATE_UPDATE_BIO,
+  API_CATCH,
 } from "../reducers/types";
 import { copyToClipboard } from "../utils/AdvocateHelpers";
 
@@ -204,6 +207,21 @@ function* copy() {
   yield put({ type: ADVOCATE_MESSAGE, payload: "Copied!" });
 }
 
+function* updateBioSaga(action) {
+  try{
+    console.log("action", action);
+    const response = yield call(updateBio, action.payload.bio, action.payload.address);
+    console.log("saga response: ", response);
+    yield put({
+      type: ADVOCATE_UPDATE_BIO,
+      payload: response
+    })
+  }catch(error) {
+    yield put({type: API_CATCH, error});
+  }
+
+}
+
 export default function* Status() {
   yield takeLatest(ADVOCATE_SHARE, shareStatus);
   yield takeLatest(ADVOCATE_FETCH_PROFILE, fetchAdvocate);
@@ -214,4 +232,5 @@ export default function* Status() {
   yield takeLatest(ADVOCATE_WITHDRAW, withdraw);
   yield takeLatest(ADVOCATE_MARK_SLOT, markComplete);
   yield takeLatest(ADVOCATE_COPY, copy);
+  yield takeLatest(ADVOCATE_UPDATE_BIO, updateBioSaga);
 }
