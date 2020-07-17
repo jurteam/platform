@@ -6,7 +6,8 @@ import Timer from "JurCommon/Timer";
 import {
   canMarkComplete,
   isCompleted,
-  formatWaiting
+  formatWaiting,
+  withdrawTimeOf
 } from "JurUtils/AdvocateHelpers";
 
 const YourActivitiesAction = ({ activity }) => {
@@ -20,7 +21,7 @@ const YourActivitiesAction = ({ activity }) => {
 
   if (isCompleted(activity))
     return (
-      <Timer startTime={Date.parse(activity.dueDate)} render={formatWaiting} />
+      <Timer time={withdrawTimeOf(activity.dueDate)} render={formatWaiting} />
     );
 
   return <span>{activity.state}</span>;

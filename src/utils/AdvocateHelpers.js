@@ -47,7 +47,7 @@ export const getAddressFromUrl = (location = window.location) =>
 export const canWithdraw = ({ dueDate, rewardedOn }) => {
   if (rewardedOn) return false;
 
-  const allowedSince = addSeconds(new Date(Number(dueDate) * 1000));
+  const allowedSince = new Date(Number(dueDate) * 1000);
   if (new Date() < allowedSince) return true;
   return false;
 };
@@ -89,5 +89,10 @@ export function isCompleted({ state }) {
 }
 
 export function formatWaiting(time) {
-  return `Withdraw in ${time}`;
+  if (time.unit === "past") return `Refresh to enable withdraw`;
+  return `Withdraw in ${time.value} ${time.unit}`;
+}
+
+export function withdrawTimeOf(dueDate) {
+  return addSeconds(new Date(Number(dueDate) * 1000));
 }
