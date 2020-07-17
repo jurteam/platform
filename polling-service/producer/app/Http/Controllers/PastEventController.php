@@ -41,7 +41,7 @@ class PastEventController extends Controller
 
         // when no need of blockchain polling
         if (!$fetchFromBlockchain) {
-            $transactions = Transaction::where('block_number', $blockNo)->get()->toArray();
+            $transactions = Transaction::where('block_number', $blockNo)->orderBy('block_number')->get()->toArray();
             return ['transactions' => $transactions];
         }
 
@@ -71,7 +71,7 @@ class PastEventController extends Controller
 
         // when no need of blockchain polling
         if (!$fetchFromBlockchain) {
-            $transactions = Transaction::where('asset_name', $assetName)->get()->toArray();
+            $transactions = Transaction::where('asset_name', $assetName)->orderBy('block_number')->get()->toArray();
             return ['transactions' => $transactions];
         }
 
@@ -103,7 +103,7 @@ class PastEventController extends Controller
 
         // when no need of blockchain polling
         if (!$fetchFromBlockchain) {
-            $transactions = Transaction::where('contract_address', $contractAddress)->get()->toArray();
+            $transactions = Transaction::where('contract_address', $contractAddress)->orderBy('block_number')->get()->toArray();
             return ['transactions' => $transactions];
         }
 
@@ -135,7 +135,7 @@ class PastEventController extends Controller
 
         // when no need of blockchain polling
         if (!$fetchFromBlockchain) {
-            $transactions = Transaction::where('transaction_hash', $transactionHash)->get()->toArray();
+            $transactions = Transaction::where('transaction_hash', $transactionHash)->orderBy('block_number')->get()->toArray();
             return ['transactions' => $transactions];
         }
 
@@ -176,7 +176,7 @@ class PastEventController extends Controller
         // when no need of blockchain polling
         if (!$fetchFromBlockchain) {
             $transactions = Transaction::where('block_number', '>=', $from)
-                ->where('block_number', '<=', $to)->get()->toArray();
+                ->where('block_number', '<=', $to)->orderBy('block_number')->get()->toArray();
             return ['transactions' => $transactions];
         }
 
