@@ -83,3 +83,11 @@ export function setSlotState(state, { activityScId, slotScId }, slots) {
     return a;
   });
 }
+
+export function isCompleted({ state }) {
+  return state === "Completed";
+}
+
+export function formatWaiting(time) {
+  return `Withdraw in ${time}`;
+}
