@@ -43,6 +43,7 @@ class RewardActivity extends Model
         $rewardActivity->name = $data->name;
         $rewardActivity->reward_amount = ((float) ($data->rewardAmount)) / pow(10, 18);
         $rewardActivity->number_of_slots = $data->slotCount;
+        $rewardActivity->assigned_slots = 0;
         $rewardActivity->is_active = true;
         $saved = $rewardActivity->save();
 

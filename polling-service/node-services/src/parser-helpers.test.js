@@ -68,17 +68,14 @@ describe("Parser helpers", () => {
     const contactAddress = "some-contract-test-address";
 
     const output = {
-      eventName: "MyTestEvent",
-      contractAddress: "some-contract-test-address",
-      assetName: "MyTestAsset",
+      event_name: "MyTestEvent",
+      contract_address: "some-contract-test-address",
+      asset_name: "MyTestAsset",
       data: {},
-      transaction: {
-        address: "test-transaction-hash",
-        blockNumber: 1234,
-        timestamp: 12340,
-        sender: "some-wallet-address",
-        contractAddress: "some-contract-test-address"
-      }
+      transaction_hash: "test-transaction-hash",
+      block_number: 1234,
+      timestamp: 12340,
+      sender: "some-wallet-address"
     };
 
     expect(makeResult(event, tx, assetName, contactAddress)).toEqual(output);

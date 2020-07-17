@@ -26,7 +26,7 @@ class LocalAssetSeeder extends Seeder
             ]);
             DB::table('assets')->insert([
                 'asset_name' => 'jurAdvocate',
-                'contract_address' => '0x79481d8933832e63BE499beADdcd49ac9a809FEF',
+                'contract_address' => '0x65F2BCA97cAf8429cBB34e6146197FA12cDDE417',
                 'abi' => '[{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"wallet","type":"address"},{"indexed":false,"internalType":"uint256","name":"activationTime","type":"uint256"},{"indexed":false,"internalType":"string","name":"advocateType","type":"string"}],"name":"AdvocateAdded","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"wallet","type":"address"},{"indexed":false,"internalType":"bool","name":"newState","type":"bool"}],"name":"AdvocateStateUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"wallet","type":"address"},{"indexed":false,"internalType":"string","name":"advocateType","type":"string"}],"name":"AdvocateTypeUpdated","type":"event"}]',
                 'default_from_block' => '6358421'
             ]);
