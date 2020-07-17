@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Asset;
 use App\Models\Transaction;
+use App\Models\TransactionState;
 use App\Transformers\AssetTransformer;
 use Dingo\Api\Routing\Helpers;
 use Illuminate\Http\Request;
@@ -33,8 +34,17 @@ class PastEventController extends Controller
      * @param Number $blockNo: block number
      * @return \Illuminate\Http\Response
      */
-    public function getBlock($blockNo)
+    public function getBlock(Request $request, $blockNo)
     {
+        // get polling type
+        $fetchFromBlockchain = $request->input('blockchain', false);
+
+        // when no need of blockchain polling
+        if (!$fetchFromBlockchain) {
+            $transactions = Transaction::where('block_number', $blockNo)->get()->toArray();
+            return ['transactions' => $transactions];
+        }
+
         // get request body
         $body = $this->getRequestConfig();
 
@@ -49,13 +59,86 @@ class PastEventController extends Controller
     }
 
     /**
+     * GET past event data based on asset name
+     *
+     * @param Number $assetName: asset name
+     * @return \Illuminate\Http\Response
+     */
+    public function getAsset(Request $request, $assetName)
+    {
+        // get polling type
+        $fetchFromBlockchain = $request->input('blockchain', false);
+
+        // when no need of blockchain polling
+        if (!$fetchFromBlockchain) {
+            $transactions = Transaction::where('asset_name', $assetName)->get()->toArray();
+            return ['transactions' => $transactions];
+        }
+
+        // get request body
+        $config = $this->getRequestConfig(['asset_name', $assetName]);
+
+        $from = TransactionState::findInitialBlock($assetName);
+
+        $to = TransactionState::first()->last_read_block;
+
+        if (!isset($to)) {
+            abort(422, 'Please set last_read_block in TransactionState');
+        }
+
+        // loop through all blocks related to $assetName
+        return $this->loopBlocks($from, $to, $config);
+    }
+
+    /**
+     * GET past event data based on contract address
+     *
+     * @param Number $contractAddress: contract address
+     * @return \Illuminate\Http\Response
+     */
+    public function getContract(Request $request, $contractAddress)
+    {
+        // get polling type
+        $fetchFromBlockchain = $request->input('blockchain', false);
+
+        // when no need of blockchain polling
+        if (!$fetchFromBlockchain) {
+            $transactions = Transaction::where('contract_address', $contractAddress)->get()->toArray();
+            return ['transactions' => $transactions];
+        }
+
+        // get request body
+        $config = $this->getRequestConfig(['contract_address', $contractAddress]);
+
+        $from = Asset::where('contract_address', $contractAddress)->first()->default_block_number;
+
+        $to = TransactionState::first()->last_read_block;
+
+        if (!isset($to)) {
+            abort(422, 'Please set last_read_block in TransactionState');
+        }
+
+        // loop through all blocks related to $assetName
+        return $this->loopBlocks($from, $to, $config);
+    }
+
+    /**
      * GET past event data based on transaction hash
      *
      * @param String $transactionHash: transaction hash
      * @return \Illuminate\Http\Response
      */
-    public function getTransaction($transactionHash)
+    public function getTransaction(Request $request, $transactionHash)
     {
+        // get polling type
+        $fetchFromBlockchain = $request->input('blockchain', false);
+
+        // when no need of blockchain polling
+        if (!$fetchFromBlockchain) {
+            $transactions = Transaction::where('transaction_hash', $transactionHash)->get()->toArray();
+            return ['transactions' => $transactions];
+        }
+
         // get request body
         $body = $this->getRequestConfig();
 
@@ -77,24 +160,39 @@ class PastEventController extends Controller
     public function getBlocks(Request $request)
     {
         // get from Block
-        $from = $request->input('from', null);
+        $from = $request->input('from', TransactionState::findInitialBlock());
 
         // get to Block
-        $to = $request->input('to', null);
-
-        // throw error if there are missing params
-        if ($from == null || $to == null) {
-            abort(422, 'Please specify `from` and `to` blocks!');
-        }
+        $to = $request->input('to', TransactionState::findLastReadBlock());
 
         // throw error if $from is greater than $to
         if ($from > $to) {
             abort(422, '`from` cannot be greater than `to`!');
         }
 
-        // get request body
-        $body = $this->getRequestConfig();
+        // get polling type
+        $fetchFromBlockchain = $request->input('blockchain', false);
 
+        // when no need of blockchain polling
+        if (!$fetchFromBlockchain) {
+            $transactions = Transaction::where('block_number', '>=', $from)
+                ->where('block_number', '<=', $to)->get()->toArray();
+            return ['transactions' => $transactions];
+        }
+
+        // get request body
+        $config = $this->getRequestConfig();
+
+        return $this->loopBlocks($from, $to, $config);
+    }
+
+    /**
+     * get all blocks based on block numbers
+     *
+     * @return Object : configuration of contracts
+     */
+    private function loopBlocks($from, $to, $config)
+    {
         // array for temporary storage
         $transactions = [];
 
@@ -103,7 +201,7 @@ class PastEventController extends Controller
             $url = $this->host . '/blocks/' . $i;
 
             // send a POST request with configuration and get event's data
-            $response = Http::post($url, $body)->throw()->json();
+            $response = Http::post($url, $config)->throw()->json();
 
             // push to array for later-processing
             foreach ($response['data'] as $data) {
@@ -113,6 +211,7 @@ class PastEventController extends Controller
 
         // store & return transactions
         return $this->validateAndStore($transactions);
+
     }
 
     /**
@@ -120,12 +219,17 @@ class PastEventController extends Controller
      *
      * @return Object : configuration of contracts
      */
-    private function getRequestConfig()
+    private function getRequestConfig($filter = null)
     {
-        // get all assets
-        $assets = Asset::all();
+        $assets = null;
 
-        if (sizeof($assets) == 0) {
+        if ($filter == null) {
+            $assets = Asset::all(); // get all assets
+        } else {
+            $assets = Asset::where($filter[0], $filter[1])->get(); // get filtered assets
+        }
+
+        if ($assets == null) {
             abort(404, 'No configuration found for PER!'); // throw error if there are no configuration
         }
 
