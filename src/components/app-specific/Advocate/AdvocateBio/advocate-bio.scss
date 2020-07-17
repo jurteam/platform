@@ -1,6 +1,4 @@
-$red: #ed1c24;
-$blue: #0077ff;
-$grey: #eaebec;
+@import "../../../../assets/scss/variables";
 
 .jur-box {
   .jur-bio-box {
@@ -8,7 +6,7 @@ $grey: #eaebec;
       text-align: left;
 
       .jur-bio-edit {
-        color: $blue;
+        color: $blue-new;
         margin-left: 0.5rem;
         cursor: pointer;
       }
@@ -25,16 +23,16 @@ $grey: #eaebec;
       border-radius: 8px;
       padding: 1rem 1rem;
       outline: none;
-      border: 1px solid darken($grey, 15);
+      border: 1px solid darken($black-haze, 15);
       margin-bottom: 1rem;
 
       &:focus {
-        border-color: $blue;
+        border-color: $blue-new;
       }
     }
 
     textarea.error {
-      border-color: $red;
+      border-color: $crimson;
     }
 
     .jur-bio-actions {
@@ -43,7 +41,7 @@ $grey: #eaebec;
       align-items: center;
 
       .error-info {
-        color: $red;
+        color: $crimson;
         font-size: 10px;
       }
 

@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import Button from 'JurCommon/Button';
+import Box from 'JurCommon/Box';
 
 import './advocate-bio.scss';
 import { ADVOCATE_UPDATE_BIO } from '../../../../reducers/types';
-import { updateBio } from '../../../../actions/Advocate';
+
+const MAX_CONTENT_LENGTH = 1000;
 
 
 const AdvocateBio = ({ advocasy, address, updateBioAction }) => {
   const [editBox, setEditBox] = useState(false);
   const [error, setError] = useState();
-  const [currentBio, setCurrentBio] = useState(0);
+  const [currentBio, setCurrentBio] = useState();
   const [updatedBio, setUpdatedBio] = useState();
   const [currentLength, setCurrentLength] = useState();
 
@@ -55,7 +57,7 @@ const AdvocateBio = ({ advocasy, address, updateBioAction }) => {
   }
 
   return (
-    <div className="jur-box jur-box__center jur-box__spread-out">
+    <Box types="spread-out center">
       <div className="jur-bio-box">
         {
           editBox ?
@@ -68,7 +70,7 @@ const AdvocateBio = ({ advocasy, address, updateBioAction }) => {
                 {
                   error ?
                   <span className="error-info">
-                    {currentLength} out of 1000 characters. <strong>Please shorten the bio.</strong>
+                    {currentLength} out of {MAX_CONTENT_LENGTH} characters. <strong>Please shorten the bio.</strong>
                   </span>
                   : null
                 }
@@ -97,7 +99,7 @@ const AdvocateBio = ({ advocasy, address, updateBioAction }) => {
           </p>
         }
       </div>
-    </div>
+    </Box>
   );
 }
 
@@ -105,4 +107,4 @@ const updateBioAction = (address, bio) => ({ type: ADVOCATE_UPDATE_BIO, payload:
 
 const mapDispatchToProps = { updateBioAction }
 
-export default global.connection(AdvocateBio, null, { updateBioAction });
+export default global.connection(AdvocateBio, null, mapDispatchToProps);

@@ -142,7 +142,7 @@ export default (state = INITIAL_STATE, action) => {
         }
       };
     case ADVOCATE_UPDATE_BIO:
-      return { ...state, advocate: { bio: action.payload } }
+      return { ...state, advocate: { ...state.advocate, bio: action.payload } }
     default:
       return state;
   }
