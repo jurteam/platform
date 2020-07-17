@@ -42,13 +42,13 @@ const AdvocateSection = ({
     fetchAdvocate(effectiveAddress);
     return resetAdvocate;
   }, [effectiveAddress, fetchAdvocate, resetAdvocate]);
-
+  console.log("advocasy", advocasy);
   return (
     <Section>
       <HeaderBox address={effectiveAddress} isAdvocate={isAdvocate} />
       {isAdvocate ? (
         <>
-          <AdvocateBio bio={bio} address={effectiveAddress} />
+          <AdvocateBio advocasy={advocasy} address={effectiveAddress} />
           <BalancesBox
             rewardsBalance={advocasy.rewardsBalance}
             totalEarned={advocasy.totalEarned}

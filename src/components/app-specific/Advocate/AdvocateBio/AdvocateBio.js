@@ -6,25 +6,28 @@ import { ADVOCATE_UPDATE_BIO } from '../../../../reducers/types';
 import { updateBio } from '../../../../actions/Advocate';
 
 
-const AdvocateBio = ({ bio, address }) => {
-  const [edit, setEdit] = useState(true);
+const AdvocateBio = ({ advocasy, address, updateBioAction }) => {
+  const [editBox, setEditBox] = useState(false);
   const [error, setError] = useState();
   const [currentBio, setCurrentBio] = useState(0);
   const [updatedBio, setUpdatedBio] = useState();
   const [currentLength, setCurrentLength] = useState();
 
+  console.log("adressssssssssssss: ", advocasy.bio);
+
+
   useEffect(() => {
-    setCurrentBio(bio);
-    setUpdatedBio(bio);
-  }, [bio]);
+    setCurrentBio(advocasy.bio);
+    setUpdatedBio(advocasy.bio);
+  }, [advocasy.bio]);
 
   const handleEdit = () => {
-    setEdit(!edit);
+    setEditBox(!editBox);
   }
 
   const handleCancel = () => {
-    setUpdatedBio(bio);
-    setEdit(false);
+    setUpdatedBio(currentBio);
+    setEditBox(false);
   }
 
   const handleBioChange = (e) => {
@@ -41,12 +44,13 @@ const AdvocateBio = ({ bio, address }) => {
   }
 
   const handleUpdate = () => {
-    console.log("updatedBio: ", updatedBio);
     if(updatedBio !== undefined) {
-      global.store.dispatch({
-        type: ADVOCATE_UPDATE_BIO,
-        payload: {address, updatedBio}
-      })
+      updateBioAction(address, updatedBio);
+      setEditBox(false);
+      // global.store.dispatch({
+      //   type: ADVOCATE_UPDATE_BIO,
+      //   payload: {address, updatedBio}
+      // })
     }
   }
 
@@ -54,10 +58,10 @@ const AdvocateBio = ({ bio, address }) => {
     <div className="jur-box jur-box__center jur-box__spread-out">
       <div className="jur-bio-box">
         {
-          edit ?
+          editBox ?
           <>
             <textarea onChange={handleBioChange} className={error ? 'error' : ''}>
-              {updatedBio}
+              {currentBio}
             </textarea>
             <div className="jur-bio-actions">
               <div>
@@ -79,12 +83,15 @@ const AdvocateBio = ({ bio, address }) => {
           :
           <p className="jur-bio-text">
             {
-              updatedBio ?
+              currentBio ?
               <>
-                {updatedBio}
+                {currentBio}
               <span className="jur-bio-edit" onClick={handleEdit}>Edit</span>
               </>
-              : null
+              : 
+              <div className="jur-bio-add">
+                <Button variant="dispute" onClick={handleEdit}>Add bio</Button>
+              </div>
             }
 
           </p>
@@ -94,5 +101,8 @@ const AdvocateBio = ({ bio, address }) => {
   );
 }
 
+const updateBioAction = (address, bio) => ({ type: ADVOCATE_UPDATE_BIO, payload: { address, bio } })
 
-export default AdvocateBio;
+const mapDispatchToProps = { updateBioAction }
+
+export default global.connection(AdvocateBio, null, { updateBioAction });

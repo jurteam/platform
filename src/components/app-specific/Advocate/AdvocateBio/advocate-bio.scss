@@ -12,6 +12,12 @@ $grey: #eaebec;
         margin-left: 0.5rem;
         cursor: pointer;
       }
+
+      .jur-bio-add {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
     }
     textarea {
       width: 100%;
