@@ -27,6 +27,7 @@ export const ContractTextarea = ( props ) => {
         className={rest.disabled ? "jur-contract-textarea__disabled" : ""}
         value={initialValue}
         onChange={(ev) => onChange(ev)}
+        maxLength={65500}
         {...rest}
       />
     </div>

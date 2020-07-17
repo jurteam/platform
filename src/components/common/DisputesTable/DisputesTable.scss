@@ -19,6 +19,14 @@
 
     .jur-table__row {
       cursor: pointer;
+      
+      &.updated-dispute-1 {
+        animation: 3s ease-out 0s 1 shineOnAppear-1;
+      }
+      &.updated-dispute-2 {
+        animation: 3s ease-out 0s 1 shineOnAppear-2;
+      }
+
     }
 
     .jur-table__empty {

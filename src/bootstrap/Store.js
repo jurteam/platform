@@ -13,7 +13,7 @@ import createSagaMiddleware from "redux-saga";
 import rootSaga from "../sagas";
 
 // Helpers
-import { log } from "../utils/helpers"; // log helpers
+import { log, connector } from "../utils/helpers"; // log helpers
 
 log("Drizzle - Initial state", generateContractsInitialState(drizzleOptions));
 
@@ -22,7 +22,8 @@ const history = createBrowserHistory();
 const sagaMiddleware = createSagaMiddleware();  // Redux Saga Middleware
 
 const composeEnhancers =
-  (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "stage") &&
+  (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "stage") 
+  &&
   window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
     ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
     : compose;
@@ -81,6 +82,8 @@ export default function configureStore(
     initialState,
     composeEnhancers(applyMiddleware(...middleware))
   );
+
+  global.store = store;
 
   sagaMiddleware.run(rootSaga); // run sagas
 

@@ -25,7 +25,8 @@ class Activity extends Model implements HasMedia
         'status_code',
         'user_id',
         'contract_id',
-        'chain_updated_at'
+        'chain_updated_at',
+        'waiting'
     ];
 
     protected $casts = [
@@ -46,6 +47,11 @@ class Activity extends Model implements HasMedia
     public function scopeExceptDraft($query)
     {
         return $query->where('status_code', '<>', 0);
+    }
+
+    public function scopeExceptWaiting($query)
+    {
+        return $query->where('waiting', 0);
     }
 
     public function scopeExceptFuture($query)
@@ -178,4 +184,100 @@ class Activity extends Model implements HasMedia
         }
         return false;
     }
+
+    public function getCreator()
+    {
+        $contract = $this->contract;
+
+        return [
+            'address' => $contract->part_a_email ?: $this->getUserEmail($contract->part_a_wallet),
+            'name' => $contract->part_a_name ?: $contract->part_a_wallet
+        ];
+    }
+
+    public function getRecipient()
+    {
+        $contract = $this->contract;
+
+        return [
+            'address' => $contract->part_b_email ?: $this->getUserEmail($contract->part_b_wallet),
+            'name' => $contract->part_b_name ?: $contract->part_b_wallet
+        ];
+    }
+
+    protected function getUserEmail($wallet)
+    {
+        if ($wallet) {
+            $user = User::byWallet($wallet)->first();
+
+            if ($user) {
+                return $user->email;
+            }
+        }
+        return null;
+    }
+
+
+    public function getProposer()
+    {
+        info ('Activity - getProposer');
+
+        $contract = $this->contract;
+        $proposer = $this->wallet;
+        $proposerAddress = '';
+        $proposerName = '';
+
+        if ($proposer == $contract->part_a_wallet) {
+            // is part A
+            $proposerAddress = $contract->part_a_email ?: $this->getUserEmail($contract->part_a_wallet);
+            $proposerName = $contract->part_a_name ?: $contract->part_a_wallet;
+
+        } else {
+            // is part B
+            $proposerAddress = $contract->part_b_email ?: $this->getUserEmail($contract->part_b_wallet);
+            $proposerName = $contract->part_b_name ?: $contract->part_b_wallet;
+        }
+
+        return [
+            'address' => $proposerAddress,
+            'name' => $proposerName
+        ];
+    }
+
+    public function getReceiver()
+    {
+        info ('Activity - getReceiver');
+
+        $contract = $this->contract;
+        $receiver = $this->to_wallet;
+        $receiverAddress = '';
+        $receiverName = '';
+        $amountToPay = 0;
+        if ($contract->who_pays == $receiver) 
+        {
+            $amountToPay += $contract->value;
+        }
+
+        if ($receiver == $contract->part_a_wallet) {
+            // is part A
+            $receiverAddress = $contract->part_a_email ?: $this->getUserEmail($contract->part_a_wallet);
+            $receiverName = $contract->part_a_name ?: $contract->part_a_wallet;
+
+            $amountToPay += $contract->part_a_penalty_fee;
+            
+        } else {
+            // is part B
+            $receiverAddress = $contract->part_b_email ?: $this->getUserEmail($contract->part_b_wallet);
+            $receiverName = $contract->part_b_name ?: $contract->part_b_wallet;
+
+            $amountToPay += $contract->part_b_penalty_fee;
+        }
+
+        return [
+            'address' => $receiverAddress,
+            'name' => $receiverName,
+            'amountToPay' => $amountToPay.' JUR'
+        ];
+    }
+
 }

@@ -1,5 +1,5 @@
 import React from "react";
-import { drizzleConnect } from "drizzle-react";
+
 import { Header } from "./Header";
 import Logo from "../Logo";
 
@@ -9,7 +9,7 @@ const mapStateToProps = (state) => ({
   app: state.app
 });
 
-export default drizzleConnect(Header, mapStateToProps);
+export default global.connection(Header, mapStateToProps);
 
 export const FakeHeader = () => (
   <Header>

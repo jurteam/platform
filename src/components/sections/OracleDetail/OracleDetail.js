@@ -39,9 +39,11 @@ import {
   // CONTRACT_MEDIA_DELETE,
   // SEND_TO_COUNTERPARTY,
   // DISCLAIMER_MUST_BE_ACCEPTED,
+  ORACLES_LIST_UPDATING,
   FETCH_ORACLES,
   ORACLE_PAGE_CHANGE,
-  ORACLE_ORDER_CHANGE
+  ORACLE_ORDER_CHANGE,
+  ORACLES_LIST_PAGE,
 } from "../../../reducers/types";
 
 export const OracleDetail = ( props ) => {
@@ -68,6 +70,17 @@ export const OracleDetail = ( props ) => {
 
   const [userWallet /*, setUserWallet */] = useState(wallet.address);
 
+
+  // cDM
+  useEffect(() => {
+    global.store.dispatch({ type: ORACLES_LIST_PAGE, payload: true });
+    return () => {
+      global.store.dispatch({ type: ORACLES_LIST_PAGE, payload: false });
+
+    }
+  }, []);
+
+
   // cDM
   useEffect(() => {
 
@@ -77,7 +90,14 @@ export const OracleDetail = ( props ) => {
       }
     } = props;
 
-    global.drizzle.store.dispatch({
+
+    // yield put({ type: ORACLES_LIST_UPDATING, payload: true });
+    global.store.dispatch({
+      type: ORACLES_LIST_UPDATING,
+      payload: true
+    });
+
+    global.store.dispatch({
       type: FETCH_ORACLES,
       id
     });
@@ -103,17 +123,16 @@ export const OracleDetail = ( props ) => {
 
   const onPageChange = (page) => {
 
-    // TODO: maybe must be fixed with id with the followings line 
-    // const {
-    //   match: {
-    //     params: { id }
-    //   }
-    // } = props;
+    const {
+      match: {
+        params: { id }
+      }
+    } = props;
 
-    global.drizzle.store.dispatch({
+    global.store.dispatch({
       type: ORACLE_PAGE_CHANGE,
       payload: page,
-      // id
+      id
     });
   };
 
@@ -125,7 +144,7 @@ export const OracleDetail = ( props ) => {
       }
     } = props;
 
-    global.drizzle.store.dispatch({
+    global.store.dispatch({
       type: ORACLE_ORDER_CHANGE,
       payload: { field: field, type: order },
       id
@@ -165,7 +184,7 @@ export const OracleDetail = ( props ) => {
   return typeof params.id !== "undefined" &&
     !(typeof disputeID === "undefined") ? (
     <PageLayout breadcrumbs={breadcrumbs}>
-      {!oracle.updatingList && oracle.list ? (
+      {oracle.list ? (
         <>
           <Main>
             <OraclesTable
@@ -176,8 +195,8 @@ export const OracleDetail = ( props ) => {
               initialPage={pagination.current_page}
               onPageChange={(pageNo) => onPageChange(pageNo)}
               onSortChange={(field, order) => onSortChange(field, order)}
-              contractsPerPage={pagination.per_page}
-              totalContracts={pagination.total}
+              oraclesPerPage={pagination.per_page}
+              totalOracles={pagination.total}
               loading={oracle.updatingList}
               dispute={{
                 name: dispute.current.contractName,

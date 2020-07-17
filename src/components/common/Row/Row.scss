@@ -1,0 +1,24 @@
+.jur-row {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  flex-wrap: wrap;
+
+  &__align {
+    &-center {
+      justify-content: center;
+    }
+    &-space-between {
+      justify-content: space-between;
+    }
+  }
+}
+
+.jur-safe-margin {
+  margin: 30px 30px 0 30px;
+  width: auto;
+
+  &:first-of-type {
+    margin-bottom: 30px;
+  }
+}

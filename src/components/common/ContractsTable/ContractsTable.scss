@@ -15,6 +15,13 @@
 
       .jur-table__row {
         cursor: pointer;
+
+        &.updated-contract-1 {
+          animation: 3s ease-out 0s 1 shineOnAppear-1;
+        }
+        &.updated-contract-2 {
+          animation: 3s ease-out 0s 1 shineOnAppear-2;
+        }
       }
 
       .jur-amount {
@@ -31,5 +38,24 @@
         opacity: .4;
       }
     }
+  }
+}
+
+
+@keyframes shineOnAppear-1 {
+  0% {
+    background-color: #f3f7ff;
+  }
+  100% {
+    background-color: #ffffff;
+  }
+}
+
+@keyframes shineOnAppear-2 {
+  0% {
+    background-color: #f3f7ff;
+  }
+  100% {
+    background-color: #ffffff;
   }
 }

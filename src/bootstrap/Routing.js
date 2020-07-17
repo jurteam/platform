@@ -17,12 +17,19 @@ import Disputes from "../components/sections/Disputes";
 import DisputeDetail from "../components/sections/DisputeDetail";
 import OracleDetail from "../components/sections/OracleDetail";
 
+import OathTakers from "../components/sections/OathTakers";
+import Advocates from "../components/sections/Status/Advocates";
+
 // Helpers
 import { redirect, checkConnection } from "../utils/helpers";
+import AdvocateSection from "../components/sections/Status/AdvocateSection";
+import AdvocatePublic from "../components/sections/Status/AdvocatePublic";
 
-export const createRoutes = (withComponents) => {
+export const createRoutes = withComponents => {
   // handle empty params
-  if (typeof withComponents === "undefined") {withComponents = true;}
+  if (typeof withComponents === "undefined") {
+    withComponents = true;
+  }
   return [
     {
       exact: true,
@@ -94,6 +101,36 @@ export const createRoutes = (withComponents) => {
       onEnter: () => redirect(checkConnection, "/disputes/detail/:id/oracles"),
       component: withComponents && OracleDetail,
       title: i18n.oraclesDetails
+    },
+    {
+      exact: true,
+      path: "/oath-keeper/oath-takers",
+      component: withComponents && OathTakers,
+      title: i18n.oathTakers
+    },
+    {
+      exact: true,
+      path: "/oath-keeper/my-oaths",
+      component: withComponents && Profile,
+      title: i18n.oathTakers
+    },
+    {
+      exact: true,
+      path: "/advocates/my-advocasy",
+      component: withComponents && Profile,
+      title: i18n.advocate
+    },
+    {
+      exact: true,
+      path: "/advocates",
+      component: withComponents && Advocates,
+      title: i18n.list
+    },
+    {
+      exact: true,
+      path: "/advocates/:address",
+      component: withComponents && AdvocatePublic,
+      title: i18n.advocate
     },
     { component: withComponents && NotFound, title: i18n.notFound }
   ];

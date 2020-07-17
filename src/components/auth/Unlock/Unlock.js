@@ -8,6 +8,8 @@ import UserActionBody from "../../../components/common/UserActionBody";
 import UserActionFooter from "../../../components/common/UserActionFooter";
 import Button from "../../../components/common/Button";
 
+import { connector } from "../../../utils/helpers";
+
 const Unlock = () => {
   const context = useContext(AppContext);
 
@@ -22,11 +24,21 @@ const Unlock = () => {
     // log('UnderAuth - _metamask.isUnlocked()', _metamask.isUnlocked());
     shouldUnlock = typeof _comet !== 'undefined';
   }
+  if (typeof window.connex === "object") {
+    shouldUnlock = true;
+  }
 
   const unlock = () => {
     if (shouldUnlock) {
-      const { auth } = context;
-      auth();
+      const { auth, connexAuth } = context;
+
+      const connectorValue = connector()
+      if(connectorValue === 'connex') {
+        connexAuth();
+      }
+      // else if (connectorValue === 'web3') {
+      //   auth();
+      // }
     }
   };
 
@@ -34,9 +46,10 @@ const Unlock = () => {
     <MetaMaskWrapper>
       <UserAction>
         <UserActionHeader variant="error">
-          {labels.cometRequired}
+          <span dangerouslySetInnerHTML={{__html:labels.syncBrowserRequired}}/>
         </UserActionHeader>
-        <UserActionBody dangerouslySetInnerHTML={{__html:labels.cometRequiredDesc}}/>
+
+        <UserActionBody dangerouslySetInnerHTML={{__html:labels.syncRequiredDesc}}/>
         <UserActionFooter>
           {shouldUnlock && (
             <Button
@@ -49,15 +62,24 @@ const Unlock = () => {
               {labels.unlockComet}
             </Button>
           )}
-          <Button
+          {/* <Button
             onClick={() => {
               window.open(labels.cometUrl);
             }}
             size="big"
           >
             {labels.getChromeExtension}
+          </Button> */}
+          <Button color="gradient"
+            onClick={() => {
+              window.open(labels.syncBUrl);
+            }}
+            size="big"
+          >
+            {labels.getSyncBrowser}
           </Button>
         </UserActionFooter>
+
       </UserAction>
     </MetaMaskWrapper>
   );

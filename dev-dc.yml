@@ -1,0 +1,10 @@
+version: "3"
+services:
+  polling_rtr-test:
+    image: node:14.3
+    environment:
+      THOR_CONNECTION_URL: https://sync-testnet.vechain.org
+    volumes:
+      - ./polling-service/node-services:/var/www/html
+    working_dir: /var/www/html
+    command: npm run test -- --watchAll

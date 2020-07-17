@@ -35,7 +35,7 @@ class ContractStatusChanged extends Mailable
     public function build()
     {
         $from = $this->getFromData();
-        $contractUrl = config('jur.url') . "/contacts/detail/{$this->activity->contract_id}";
+        $contractUrl = config('jur.url') . "/contracts/detail/{$this->activity->contract_id}";
 
         return $this
                 ->subject($this->activity->abstract)

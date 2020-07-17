@@ -1,12 +1,14 @@
 import { put, select, takeEvery } from "redux-saga/effects";
 import {
   getAccounts,
+  getUser,
   getDrizzleStatus,
   getJURToken,
   getWallet
 } from "./Selectors";
 import {
   DRIZZLE_INITIALIZED,
+  CONNEX_SETWALLETAPI,
   GOT_CONTRACT_VAR,
   SET_BALANCE,
   SET_WALLET_ADDRESS,
@@ -14,8 +16,12 @@ import {
   LOOKUP_WALLET_BALANCE
 } from "../reducers/types";
 
-import { log } from "../utils/helpers"; // log helper
+import { log, connector } from "../utils/helpers"; // log helper
 import { callToContract /*, checkDrizzleInit*/ } from "../utils/sc";
+
+// Api layouts
+import { connexJURToken } from "../api";
+
 
 // Reset
 export function* resetWallet() {
@@ -23,15 +29,34 @@ export function* resetWallet() {
 }
 
 // set wallet address from data retrievied via blockchain
-export function* setWalletAddress() {
+export function* setWalletAddress(args) {
   log("setWalletAddress", "run");
-  const accounts = yield select(getAccounts);
-  log("setWalletAddress - accounts", accounts);
+
+  let account = '';
+  const connectorValue = connector();
+
+  if (connectorValue === 'web3')
+  {
+    const accounts = yield select(getAccounts);
+    log("setWalletAddress - accounts", accounts);
+    account = accounts[0];
+  }
+  else if (connectorValue === 'connex')
+  {
+    const {address} = args
+    log("setWalletAddress - address", address);
+    account = address;
+  }
+
   const { API } = global;
+  log("setWalletAddress - typeof API", typeof API);
+
   if (typeof API !== 'undefined')
   {
-    API.defaults.headers.common['wallet'] = accounts[0].toLowerCase(); // update wallet in REST API request header
-    yield put({ type: SET_WALLET_ADDRESS, payload: accounts[0] });
+    log("setWalletAddress - API");
+    API.defaults.headers.common['wallet'] = account.toLowerCase(); // update wallet in REST API request header
+    log("setWalletAddress - API.defaults.headers.common['wallet']",API.defaults.headers.common['wallet']);
+    yield put({ type: SET_WALLET_ADDRESS, payload: account });
   }
 }
 
@@ -45,8 +70,23 @@ export function* handleLookupWalletBalance(args) {
 
   const wallet = yield select(getWallet);
 
-  // it will sync automatically token balance using Drizzle fresh data
-  const jurTokenBalance = yield callToContract("JURToken", "balanceOf", [wallet.address]);
+  const connectorValue = connector();
+    log("getBalance - connector()", connectorValue);
+
+  let jurTokenBalance
+
+  if (connectorValue === 'web3') {
+
+    // it will sync automatically token balance using Drizzle fresh data
+     jurTokenBalance = yield callToContract("JURToken", "balanceOf", [wallet.address]);
+  }
+  else if (connectorValue === 'connex')
+  {
+
+    const connexToken = new connexJURToken();
+    jurTokenBalance = yield connexToken.balanceOf(wallet.address);
+
+  }
 
   if (typeof jurTokenBalance !== 'undefined' && jurTokenBalance) {
     yield put({
@@ -64,36 +104,64 @@ export function* getBalance(args) {
   const method = "balanceOf";
 
   // destructuring call params
-  const { type } = args;
+  const { type, payload } = args;
 
   // cache call on address set
-  if (type === SET_WALLET_ADDRESS) {
-    const drizzleStatus = yield select(getDrizzleStatus);
-    log("getBalance - drizzleStatus", drizzleStatus);
+  if (type === 'SET_WALLET_ADDRESS') {
 
-    if (drizzleStatus.initialized && global.drizzle) {
-      const { contracts } = global.drizzle;
 
-      const wallet = yield select(getWallet);
+    const connectorValue = connector();
+    log("getBalance - connector()", connectorValue);
 
-      // Fetch initial value from chain and return cache key for reactive updates.
-      const dataKey = yield contracts[contract].methods[method].cacheCall(
-        wallet.address
-      );
+    if (connectorValue === 'web3') {
+      const drizzleStatus = yield select(getDrizzleStatus);
+      log("getBalance - drizzleStatus", drizzleStatus);
 
-      // If hash retrived and set balanche only if there is already a value in store
-      if (dataKey) {
-        const JURToken = yield select(getJURToken);
+      if (drizzleStatus.initialized && global.drizzle) {
+        const { contracts } = global.drizzle;
 
-        if (JURToken.balanceOf[dataKey]) {
-          yield put({
-            type: SET_BALANCE,
-            amount: JURToken.balanceOf[dataKey].value,
-            argsHash: dataKey
-          });
+        const wallet = yield select(getWallet);
+
+        // Fetch initial value from chain and return cache key for reactive updates.
+        const dataKey = yield contracts[contract].methods[method].cacheCall(
+          wallet.address
+        );
+
+        // If hash retrived and set balanche only if there is already a value in store
+        if (dataKey) {
+          const JURToken = yield select(getJURToken);
+
+          if (JURToken.balanceOf[dataKey]) {
+            yield put({
+              type: SET_BALANCE,
+              amount: JURToken.balanceOf[dataKey].value,
+              argsHash: dataKey
+            });
+          }
         }
       }
     }
+    else if (connectorValue === 'connex')
+    {
+
+      const connexToken = new connexJURToken();
+
+      log('getBalance - payload',payload)
+
+      const address = payload.toLowerCase();
+
+      let userBalance = yield connexToken.balanceOf(address);
+
+      log('getBalance - userBalance',userBalance)
+
+      yield put({
+        type: SET_BALANCE,
+        amount: userBalance,
+        argsHash: null
+      });
+
+    }
+
   }
 
   // when contract var is available
@@ -112,6 +180,7 @@ export function* getBalance(args) {
 export default function* walletSagas() {
   log("run", "walletSagas");
   yield takeEvery(DRIZZLE_INITIALIZED, setWalletAddress);
+  yield takeEvery(CONNEX_SETWALLETAPI, setWalletAddress);
   yield takeEvery(SET_WALLET_ADDRESS, getBalance);
   yield takeEvery(GOT_CONTRACT_VAR, getBalance);
   yield takeEvery(LOOKUP_WALLET_BALANCE, handleLookupWalletBalance);

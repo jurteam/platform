@@ -4,6 +4,7 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Laravel\Lumen\Console\Kernel as ConsoleKernel;
+use \App\Jobs\OathKeeperGenerateAnalytics;
 
 class Kernel extends ConsoleKernel
 {
@@ -18,6 +19,12 @@ class Kernel extends ConsoleKernel
         \App\Console\Commands\Notifications\NotificationMakeCommand::class,
         \App\Console\Commands\Mails\MailMakeCommand::class,
         \App\Console\Commands\ResetDisputeStatusCommand::class,
+        \App\Console\Commands\NotifyPartiesForContractDeadline::class,
+        \App\Console\Commands\NotifyPartyForWaitingPayment::class,
+        \App\Console\Commands\NotifyPartiesForContractExpired::class,
+        \App\Console\Commands\NotifyUsersVotingSessionCommand::class,
+        \App\Console\Commands\NotifyForDisputeVoteDeadline::class,
+        \App\Console\Commands\NotifyForDisputeVoteReachedDeadline::class
     ];
 
     /**
@@ -28,6 +35,25 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        //
+        // Check for party waiting to pay for contract
+        $schedule->command('jur:contract-payment-pending')->daily();
+
+        // Check for ongoing contract near to reach their deadline date
+        $schedule->command('jur:contract-deadline')->daily();
+
+        // Check for ongoing contract thas has reached their deadline date
+        $schedule->command('jur:contract-expired')->daily();
+
+        // Check for open voting session for dispute contracts
+        $schedule->command('jur:dispute-voting-session')->daily();
+
+        // Check for disputes near to vote deadline
+        $schedule->command('jur:dispute-deadline')->daily();
+
+        // Check for disputes that reached the vote deadline
+        $schedule->command('jur:dispute-closed')->daily();
+
+        // Re-Generate Oath-Keeper Analytics
+        $schedule->job(new OathKeeperGenerateAnalytics)->daily();
     }
 }

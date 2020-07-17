@@ -39,7 +39,7 @@
             <td align="center">
                 <table class="container-padding header" width="100%" cellpadding="0" cellspacing="0" role="presentation">
                     @component('mail::header', ['url' => config('app.url')])
-                        <img src="{{config('jur.url')}}/svg/mail_logo.svg" alt="Jur">
+                        <img src="{{config('jur.mail_logo_url')}}" alt="Jur">
                     @endcomponent
 
                     <!-- Email Body -->
@@ -65,7 +65,7 @@
                     @component('mail::footer')
                         <p>
                             <span style="text-align: center; font-size: 11px; padding: 20px 0px 20px; display: block;">©
-                            2017-19 Jur® IS A REGISTERED
+                            2017-{{ date('y') }} Jur® IS A REGISTERED
                             TRADEMARK.</span>
                         </p>
                     @endcomponent

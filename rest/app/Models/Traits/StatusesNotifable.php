@@ -2,14 +2,22 @@
 
 namespace App\Models\Traits;
 
+use App\Jobs\Agreed;
 use App\Models\User;
+use App\Jobs\Ongoing;
 use App\Models\Activity;
+use App\Jobs\OpenDispute;
+use App\Jobs\ContractClosed;
+use App\Jobs\WaitingForPayment;
 use App\Events\NotifyCounterPart;
+use App\Jobs\WaitingForCounterPartyPayment;
 use App\Events\NotifyContractParts;
+use App\Jobs\OpenFriendlyResolution;
+use App\Jobs\WaitingForCounterParty;
 
 trait StatusesNotifable
 {
-    public function notifyCounterPart(Activity $activity)
+    public function notifyParts(Activity $activity)
     {
         if ($activity->isFuture()) {
             return false;
@@ -22,9 +30,22 @@ trait StatusesNotifable
                 event(new NotifyContractParts($activity, $recipients));
             }
         } else {
-            $attributes = $this->getNotifyData($activity);
-            if (! empty($attributes['to']['address'])) {
-                event(new NotifyCounterPart($activity, $attributes));
+            if ($activity->status_code == 1) {
+                dispatch(new WaitingForCounterParty($activity));
+            } elseif ($activity->status_code == 2) {
+                dispatch(new WaitingForPayment($activity));
+            } elseif ($activity->status_code == 3) {
+                dispatch(new WaitingForCounterPartyPayment($activity));
+            } elseif ($activity->status_code == 5) {
+                dispatch(new Ongoing($activity));
+            } elseif ($activity->status_code == 7) {
+                dispatch(new Agreed($activity));
+            } elseif ($activity->status_code == 9) {
+                dispatch(new ContractClosed($activity));
+            } elseif ($activity->status_code == 21) {
+                dispatch(new OpenFriendlyResolution($activity));
+            } elseif ($activity->status_code == 31) {
+                dispatch(new OpenDispute($activity));
             }
         }
     }
@@ -57,17 +78,24 @@ trait StatusesNotifable
         }
     }
 
-    protected function getUserEmail($wallet)
+    public function getUserEmail($wallet)
     {
-        $user = User::byWallet($wallet)->first();
-
-        if ($user) {
-            return $user->email;
+        if ($wallet) {
+            $user = User::byWallet($wallet)->first();
+            
+            if ($user) {
+                return $user->email;
+            }
         }
         return null;
     }
 
-    protected function getContractRecipients()
+    protected function getAllMembersWithEmail()
+    {
+        return User::byEmail()->get();
+    }
+
+    public function getContractRecipients()
     {
         $recipients = [];
         if (! empty($this->part_a_email)) {

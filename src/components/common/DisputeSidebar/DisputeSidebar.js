@@ -8,7 +8,10 @@ import OraclesTablePreview from "../OraclesTablePreview";
 import { AppContext } from "../../../bootstrap/AppProvider"; // context
 
 import "./DisputeSidebar.scss";
-import { CONTRACT_READ_NOTIFICATIONS, DISPUTE_DETAIL_PAGE } from "../../../reducers/types";
+import { 
+  CONTRACT_READ_NOTIFICATIONS, 
+  DISPUTE_DETAIL_PAGE,
+} from "../../../reducers/types";
 
 
 import {
@@ -22,10 +25,13 @@ export const DisputeSidebar = ({
   // formUpdated,
   // feeToPay,
   contract,
+  onWithdraw,
+  onPayout,
   // currentUserCanPay,
   // cases,
   notificationLoading,
   voteCounterparties,
+  payout,
   // selectedOptionId,
   // onSubmit,
   // onSend,
@@ -41,6 +47,7 @@ export const DisputeSidebar = ({
   onVote,
   onView,
   onReject,
+  voteReject,
   // onAccept,
   // onAcceptAmendment,
   // onChangeSelect,
@@ -69,14 +76,14 @@ export const DisputeSidebar = ({
   useEffect(() => {
 
     log('DisputeSidebar - Mount');
-    global.drizzle.store.dispatch({
+    global.store.dispatch({
       type: DISPUTE_DETAIL_PAGE,
       payload: true
     });
 
     return () => {
       log('DisputeSidebar - Unmount');
-      global.drizzle.store.dispatch({
+      global.store.dispatch({
         type: DISPUTE_DETAIL_PAGE,
         payload: false
       });
@@ -85,7 +92,7 @@ export const DisputeSidebar = ({
   }, []);
 
   const readActivities = () => {
-    global.drizzle.store.dispatch({
+    global.store.dispatch({
       type: CONTRACT_READ_NOTIFICATIONS
     });
   };
@@ -116,8 +123,12 @@ export const DisputeSidebar = ({
           currentWallet={currentWallet}
           onVote={onVote}
           earnings={earnings}
+          onWithdraw={onWithdraw}
+          onPayout={onPayout}
+          payout={payout}
           winner={winner}
           onReject={onReject}
+          voteReject={voteReject}
           canVote={canVote(statusId)}
         />
       )}

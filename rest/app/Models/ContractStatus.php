@@ -22,4 +22,11 @@ class ContractStatus extends Model
     {
         return $query->where('code', $code);
     }
+
+    public function shouldUpdate()
+    {
+        $configStatuses = config('jur.statuses');
+
+        return $this->code != $configStatuses[15]['code'];
+    }
 }

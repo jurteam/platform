@@ -6,7 +6,7 @@ import TableRow from "../TableRow";
 import TableCell from "../TableCell";
 import TableBody from "../TableBody";
 import TableHead from "../TableHead";
-import Dropdown from "../Dropown";
+import Dropdown from "../Dropdown";
 import DropdownItem from "../DropdownItem";
 import { EllipsisVIcon } from "../Icons/EllipsisVIcon";
 
@@ -16,35 +16,36 @@ import { AppContext } from "../../../bootstrap/AppProvider"; // context
 import Activity from "../Activity";
 
 import { READ_ACTIVITY, FETCH_ACTIVITIES } from "../../../reducers/types";
-export const UserNotification = ( props ) => {
+export const UserNotification = props => {
   const { user, history, className } = props;
   const { labels, notificationsTableHeaders: headers } = useContext(AppContext);
   const { activities } = user;
 
-  const handleGoTo = (to) => {
+  const handleGoTo = to => {
     history.push(to);
   };
 
   // cDM
   useEffect(() => {
-
-    global.drizzle.store.dispatch({
+    global.store.dispatch({
       type: FETCH_ACTIVITIES
     });
 
     return () => null; // do nothing on unmount
-
   }, []);
 
-  const handleRead = (activityId) => {
-    global.drizzle.store.dispatch({
+  const handleRead = activityId => {
+    global.store.dispatch({
       type: READ_ACTIVITY,
       activityId
     });
   };
 
   return (
-    <div className={`jur-user-notification ${className || ""}`} key="user-notification-list">
+    <div
+      className={`jur-user-notification ${className || ""}`}
+      key="user-notification-list"
+    >
       <h3>{labels.notifications}</h3>
       <Table key="uactivity" className="jur-user-notification__table">
         <TableHead>
@@ -60,27 +61,23 @@ export const UserNotification = ( props ) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {activities.map((activity,idx) => (
+          {activities.map((activity, idx) => (
             <TableRow
-              key={`uactivity-${idx}-${activity.id}${activity.readed ? '' : '-new'}`}
+              key={`uactivity-${idx}-${activity.id}${
+                activity.readed ? "" : "-new"
+              }`}
               className="jur-user-notification__table__row"
             >
-              <TableCell
-                key={`uactivity-${idx}-${activity.id}-status`}
-              >
+              <TableCell key={`uactivity-${idx}-${activity.id}-status`}>
                 {!activity.readed && <Tag statusId={0}>{labels.new}</Tag>}
               </TableCell>
-              <TableCell
-                key={`uactivity-${idx}-${activity.id}-date`}
-              >
+              <TableCell key={`uactivity-${idx}-${activity.id}-date`}>
                 <TimeAgo date={activity.date} />
               </TableCell>
-              <TableCell
-                key={`uactivity-${idx}-${activity.id}-activity`}>
+              <TableCell key={`uactivity-${idx}-${activity.id}-activity`}>
                 <Activity data={activity} hideTime={true} noPreview={true} />
               </TableCell>
-              <TableCell
-                key={`uactivity-${idx}-${activity.id}-opt`}>
+              <TableCell key={`uactivity-${idx}-${activity.id}-opt`}>
                 <Dropdown label={<EllipsisVIcon />}>
                   <DropdownItem
                     onClick={() =>

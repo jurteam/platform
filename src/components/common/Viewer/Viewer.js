@@ -49,6 +49,7 @@ export const Viewer = (props) => {
       currentVote,
       hasError,
       onVote,
+      voteReject,
       current,
       contract,
       shouldHide,
@@ -208,7 +209,7 @@ export const Viewer = (props) => {
                       }
                 </div>
                 <div className="jur-viewer__form__body">
-                  <BlockTitle title={labels.jurTokens} hideIcon />
+                  <BlockTitle title={labels.tokensLabel} hideIcon />
                   <Form.NumericInput
                     initialValue={Number.parseFloat(currentVote.amount).toFixed(2)}
                     step={0.01}
@@ -224,7 +225,7 @@ export const Viewer = (props) => {
                   <Form.TextArea
                     placeholder={labels.insertYourExplanation}
                     name="message"
-                    error={hasError("message") || false}
+                    error={hasError("message") || "false"}
                     initialValue={currentVote.message}
                     onChange={(value) => changeInput("message", value)}
                   />
@@ -281,6 +282,7 @@ export const Viewer = (props) => {
                   earnings={contract.earnings}
                   onReject={onReject}
                   canVote={canVote(statusId)}
+                  voteReject={voteReject}
                 />
               </div>
             </div>

@@ -1,0 +1,55 @@
+@import "../../../../assets/scss/variables";
+
+.jur-box {
+  .jur-bio-box {
+    .jur-bio-text {
+      text-align: left;
+
+      .jur-bio-edit {
+        color: $blue-new;
+        margin-left: 0.5rem;
+        cursor: pointer;
+      }
+
+      .jur-bio-add {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+    textarea {
+      width: 100%;
+      height: 100px;
+      border-radius: 8px;
+      padding: 1rem 1rem;
+      outline: none;
+      border: 1px solid darken($black-haze, 15);
+      margin-bottom: 1rem;
+
+      &:focus {
+        border-color: $blue-new;
+      }
+    }
+
+    textarea.error {
+      border-color: $crimson;
+    }
+
+    .jur-bio-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .error-info {
+        color: $crimson;
+        font-size: 10px;
+      }
+
+      .jur-bio-btn {
+        button {
+          margin-right: 0.8rem;
+        }
+      }
+    }
+  }
+}

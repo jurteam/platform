@@ -153,8 +153,13 @@
 
   &__search {
     position: relative;
+    border: 1px solid $input-border-color;
+    border-radius: 2px;
 
     input {
+      width: calc(100% - 20px);
+      border-width: 0;
+
       &::-webkit-input-placeholder {
         color: $gull-gray;
       }
@@ -205,6 +210,9 @@
 }
 
 .jur-select {
+  &__value-container {
+    min-width: 100px;
+  }
   &--error {
     .jur-select__control,
     .jur-select__control:hover {
@@ -217,4 +225,8 @@
   background-color: transparent;
   color: #002257;
   font-size: 16px;
+}
+
+.react-datepicker-popper {
+  z-index: 1000;
 }

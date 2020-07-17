@@ -47,6 +47,13 @@ export const Logo = () => (
                 "/>
         </g>
     </g>
+		<text
+			transform="matrix(1 0 0 1 106.5746 35.2002)"
+			fill="#0077FF"
+			style={{fontFamily:'ArialMT',fontSize:'9px'}}
+		>
+			v. 0.9.3
+		</text>
     </svg>
   </div>
 );

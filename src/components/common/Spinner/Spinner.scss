@@ -31,7 +31,11 @@
 
     &.table__loading {
       top: 260px;
-      height: 66vh;
+      height: 66vh;      
     }
   }
+}
+
+.jur-oracles-table .jur--spinner.table__loading {
+  top: 190px;
 }

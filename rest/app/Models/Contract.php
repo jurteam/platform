@@ -2,7 +2,10 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
+use App\Models\User;
 use App\Models\Traits\DisputeTrait;
+use App\Models\Traits\VotableTrait;
 use App\Models\Traits\StatusesTrait;
 use App\Models\Traits\HistoriesTrait;
 use App\Models\Traits\ActivitiesTrait;
@@ -13,7 +16,7 @@ use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 
 class Contract extends Model implements HasMedia
 {
-    use HasMediaTrait, ActivitiesTrait, StatusesTrait, UploadableTrait, DisputeTrait, HistoriesTrait;
+    use HasMediaTrait, ActivitiesTrait, StatusesTrait, UploadableTrait, DisputeTrait, HistoriesTrait, VotableTrait;
 
     protected $fillable = [
         'name',
@@ -72,11 +75,6 @@ class Contract extends Model implements HasMedia
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function votes()
-    {
-        return $this->hasMany(ContractVote::class);
-    }
-
     public function details()
     {
         return $this->hasMany(ContractStatusDetail::class);
@@ -85,6 +83,11 @@ class Contract extends Model implements HasMedia
     public function histories()
     {
         return $this->hasMany(ContractStatusHistory::class);
+    }
+
+    public function activities()
+    {
+        return $this->hasMany(Activity::class);
     }
 
     /**
@@ -120,15 +123,21 @@ class Contract extends Model implements HasMedia
             $this->flagAsOpenDispute();
         }
 
-        $activity = $this->recordActivities(array_merge($params->all(), [
-            'status' => $status->label,
-            'status_code' => $status->code,
-            'to_wallet' => $this->getSendTo($params->header('wallet')),
-            'wallet' => $params->header('wallet'),
-            'chain_updated_at' => $chainUpdatedAt
-        ]), $user);
+        if ($params->code != 37) 
+        {
+            $activity = $this->recordActivities(array_merge($params->all(), [
+                'status' => $status->label,
+                'status_code' => $status->code,
+                'to_wallet' => $this->getSendTo($params->header('wallet')),
+                'wallet' => $params->header('wallet'),
+                'chain_updated_at' => $chainUpdatedAt
+            ]), $user);
 
-        $this->notifyCounterPart($activity);
+            if ($activity) {
+                $this->notifyParts($activity);
+            }
+        }
+        
     }
 
     /**
@@ -171,4 +180,144 @@ class Contract extends Model implements HasMedia
         }
         return 0;
     }
+
+    public function getContractUrl()
+    {
+        $hashid = encodeId($this->id);
+        return config('jur.url') . "/contracts/detail/{$hashid}";
+    }
+
+    public function getDisputeUrl()
+    {
+        $hashid = encodeId($this->id);
+        return config('jur.url') . "/disputes/detail/{$hashid}";
+    }
+
+    public function getExpirationDate()
+    {
+        $startingContractHistory = $this->getOpeningDate();
+
+        return $startingContractHistory->custom_status_date
+            ->addDays($this->duration_days)
+            ->addHours($this->duration_hours)
+            ->addMinutes($this->duration_minutes);
+    }
+
+    public function getDisputeExpirationDate()
+    {
+
+
+        return $this->getDisputeEndDate();
+    }
+
+    public static function reachDeadline($reached = false)
+    {
+        return static::all()->filter(function($contract) {
+            $status = $contract->getCurrentStatus();
+            if (!is_null($status)) {
+                return $status->code == 5;
+            }
+            return false;
+        })->filter(function($contract) use($reached) {
+            if (!$reached) {
+                return Carbon::now()->diffInDays(
+                    $contract->getExpirationDate()
+                ) == config('jur.days_before_end') && Carbon::now()->isBefore(
+                    $contract->getExpirationDate()
+                );
+            }
+
+            return Carbon::now()->diffInDays($contract->getExpirationDate()) == 0 && $contract->getExpirationDate()->isPast();
+        });
+    }
+
+    public static function waitingForPayment()
+    {
+        return static::all()->filter(function($contract) 
+        {            
+            $status = $contract->getCurrentStatus();
+            if (!is_null($status)) {
+                return $status->code == 3;
+            }
+            return false;
+        })->filter(function($contract) 
+        {
+            $history = $contract->getCurrentHistory();
+
+            return Carbon::now()->diffInDays(
+                $history->custom_status_date
+            ) == config('jur.days_before_end');
+            
+        });
+    }
+
+    public static function disputeDeadline($reached = false)
+    {
+        return static::disputes()->get()->filter(function($contract) use($reached) {
+            $status = $contract->getCurrentStatus();
+            if (! is_null($status)) {
+                if (!$reached) {
+                    return $status->code == 35;
+                } else {
+                    return $status->code == 39;                    
+                }
+            }
+            return false;
+        })->filter(function($contract) use($reached) {
+            if (!$reached) {
+                return Carbon::now()->diffInDays(
+                    $contract->getDisputeExpirationDate()
+                ) == config('jur.days_before_end');
+            }
+
+            return Carbon::now()->diffInDays($contract->getDisputeExpirationDate()) == 0;
+        });
+    }
+
+    public function getCreator()
+    {
+        return [
+            'address' => $this->part_a_email ?: $this->getUserEmail($this->part_a_wallet),
+            'name' => $this->part_a_name ?: $this->part_a_wallet
+        ];
+    }
+
+    public function getRecipient()
+    {
+        return [
+            'address' => $this->part_b_email ?: $this->getUserEmail($this->part_b_wallet),
+            'name' => $this->part_b_name ?: $this->part_b_wallet
+        ];
+    }
+
+    public function getCounterpartiesAddress()
+    {
+        $addresses = [];
+        $creator = $this->getCreator();
+        $recipient = $this->getRecipient();
+
+        if (!is_null($creator)) {
+            array_push($addresses, $creator);
+        }
+
+        if (!is_null($recipient)) {
+            array_push($addresses, $recipient);
+        }
+
+        return $addresses;
+    }
+
+    public function getUserEmail($wallet)
+    {
+        info('contract --- getUserEmail---wallet:'.$wallet);
+        if ($wallet) {
+            $user = User::byWallet($wallet)->first();
+
+            if ($user) {
+                return $user->email;
+            }
+        }
+        return null;
+    }
+
 }

@@ -39,6 +39,7 @@ export const Activity = ( props ) => {
   };
 
   const [isOpen, setOpen] = useState(false);
+  const [isNow, setNow] = useState(false);
 
   const getMessage = () => {
     switch (Number(status)) {
@@ -103,14 +104,14 @@ export const Activity = ( props ) => {
       case -1: // Rejected
         return (
           <>
-            <span className="alert">{labels.rejected}</span> {contract_name}
+            <span className="alert">{labels.rejected}</span> <span className="contract-name">{contract_name}</span>
           </>
         );
 
       case 8: // Expired
         return (
           <>
-            <span className="alert">{labels.contractExpired}</span> {contract_name}
+            <span className="alert">{labels.contractExpired}</span> <span className="contract-name">{contract_name}</span>
           </>
         );
 
@@ -119,7 +120,7 @@ export const Activity = ( props ) => {
       case 29:
         return (
           <>
-            <span className="alert">{labels.contractClosed}</span> {contract_name}
+            <span className="alert">{labels.contractClosed}</span> <span className="contract-name">{contract_name}</span>
           </>
         );
 
@@ -127,7 +128,7 @@ export const Activity = ( props ) => {
       case 36:
         return (
           <>
-            <span className="alert">{labels.disputeExtended}</span> {labels.for} {contract_name}
+            <span className="alert">{labels.disputeExtended}</span> <span className="contract-name">{labels.for} {contract_name}</span>
           </>
         );
 
@@ -135,7 +136,7 @@ export const Activity = ( props ) => {
       case 38:
         return (
           <>
-            <span className="alert">{labels.disputeExpired}</span> {labels.for} {contract_name}
+            <span className="alert">{labels.disputeExpired}</span> <span className="contract-name">{labels.for} {contract_name}</span>
           </>
         );
 
@@ -143,7 +144,7 @@ export const Activity = ( props ) => {
       case 39:
         return (
           <>
-            <span className="alert">{labels.disputeClosed}</span> {labels.for} {contract_name}
+            <span className="alert">{labels.disputeClosed}</span> <span className="contract-name">{labels.for} {contract_name}</span>
           </>
         );
 
@@ -157,13 +158,27 @@ export const Activity = ( props ) => {
         return abstract;
     }
   };
-
+  
   const forceSystem = (status) => {
     switch (status) {
       case 35: return true;
       default: return false;
     };
   }
+  
+  
+  const whatTimeIs = date => {
+    const d = new Date();
+    const n = d.getTime();
+    
+    setNow(date >= n)
+    if (date >= n) {      
+      return date;
+    } else {
+      return n;
+    }
+
+  };
 
   return (
     <div className="jur-activity">
@@ -181,7 +196,16 @@ export const Activity = ( props ) => {
         <div className="jur-activity__info__details">
           <div className="jur-activity__info__from">
             <span>{getActivityUser(forceSystem(Number(status)))}</span>
-            {!hideTime && <TimeAgo date={date} />}
+
+            {!hideTime &&
+                <>
+                  <span className={`${isNow ? 'hidden' : ''}`}>
+                    <TimeAgo date={date} now={() => whatTimeIs(date)} />
+                  </span>
+                  {isNow && 'now'}
+                </>
+            }
+            
           </div>
           <div className="jur-activity__info__message">{getMessage()}</div>
         </div>

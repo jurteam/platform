@@ -1,6 +1,6 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import AvatarChart from "../AvatarChart";
-import { toCurrencyFormat } from "../../../utils/helpers";
+import { toCurrencyFormat, log } from "../../../utils/helpers";
 import Button from "../Button";
 
 import "./VoteProgress.scss";
@@ -13,8 +13,14 @@ export const VoteProgress = ( props ) => {
     onVote,
     canVote,
     statusId,
-    wins
+    wins,
+    stepsN,
+    durationMS,
   } = props;
+
+  const [percentageS, setPercentageS] = useState(0);
+  const [valueS, setValueS] = useState(0);
+
   const voteOnGoing = [35, 36].indexOf(Number(statusId)) > -1;
   const closedDispute = statusId === 39;
   const votingAllowed = canVote && voteOnGoing;
@@ -31,11 +37,42 @@ export const VoteProgress = ( props ) => {
   const classNames = Object.keys(classes)
     .filter((className) => classes[className])
     .join(" ");
+
+  useEffect(()=>{
+    // animate percentage/value changing
+    let stepsPassed = 0
+
+    const stepPercentage = (counterparty.percentage - percentageS) / stepsN
+    const stepValue = (counterparty.value - valueS) / stepsN
+
+    let newPercentage = percentageS;
+    let newValue = valueS;
+    
+    let interv = setInterval(() => {
+      
+
+      if (stepsPassed<stepsN) {
+        
+        newPercentage = newPercentage + stepPercentage;
+        newValue = newValue + stepValue;
+
+        setPercentageS(newPercentage);
+        setValueS(newValue);
+        
+      } else {
+        clearInterval(interv)
+      }
+      stepsPassed++;
+      
+    }, (durationMS/stepsN));
+
+  },[counterparty.percentage])
+
   return (
     <div className={classNames}>
       <AvatarChart
         seed={counterparty.wallet.toLowerCase()}
-        percentage={counterparty.percentage}
+        percentage={percentageS}
         color={highlightColor}
       />
       <div className="jur-vote-progress__name">
@@ -44,12 +81,12 @@ export const VoteProgress = ( props ) => {
           : counterparty.wallet.toLowerCase()}
       </div>
       <div className="jur-vote-progress__percentage">
-        {counterparty.percentage.toString().indexOf("%") > -1
-          ? counterparty.percentage.toFixed(2)
-          : counterparty.percentage.toFixed(2) + "%"}
+        {percentageS.toString().indexOf("%") > -1
+          ? percentageS.toFixed(2)
+          : percentageS.toFixed(2) + "%"}
       </div>
       <div className="jur-vote-progress__value">
-        {toCurrencyFormat(counterparty.value)}
+        {toCurrencyFormat(valueS)}
       </div>
       {votingAllowed ? (
         <Button

@@ -1,0 +1,76 @@
+[
+  {
+    "assetName": "oathKeeper",
+    "address": "0x4213232275b0228f69a06c37ef9c0186f19e999d",
+    "abi": [
+      {
+        "name": "IHoldYourOathFulfilled",
+        "type": "event",
+        "inputs": [
+          {
+            "name": "_beneficiary",
+            "type": "address",
+            "indexed": true,
+            "internalType": "address"
+          },
+          {
+            "name": "_amount",
+            "type": "uint256",
+            "indexed": true,
+            "internalType": "uint256"
+          },
+          {
+            "name": "_oathIndex",
+            "type": "uint256",
+            "indexed": true,
+            "internalType": "uint256"
+          }
+        ],
+        "anonymous": false
+      },
+      {
+        "name": "OathTaken",
+        "type": "event",
+        "inputs": [
+          {
+            "name": "_beneficiary",
+            "type": "address",
+            "indexed": true,
+            "internalType": "address"
+          },
+          {
+            "name": "_amount",
+            "type": "uint256",
+            "indexed": true,
+            "internalType": "uint256"
+          },
+          {
+            "name": "_lockInPeriod",
+            "type": "uint256",
+            "indexed": true,
+            "internalType": "uint256"
+          },
+          {
+            "name": "_startAt",
+            "type": "uint256",
+            "indexed": false,
+            "internalType": "uint256"
+          },
+          {
+            "name": "_releaseAt",
+            "type": "uint256",
+            "indexed": false,
+            "internalType": "uint256"
+          },
+          {
+            "name": "_oathIndex",
+            "type": "uint256",
+            "indexed": false,
+            "internalType": "uint256"
+          }
+        ],
+        "anonymous": false
+      }
+    ]
+  }
+]

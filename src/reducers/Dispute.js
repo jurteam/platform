@@ -18,7 +18,11 @@ import {
   RESET_DISPUTES,
   RESET_ALL_DISPUTES,
   DISPUTE_DETAIL_PAGE,
-  RESET_VOTE
+  RESET_VOTE,
+  UPDATE_DISPUTE_LIVE,
+  DISPUTES_LIST_PAGE,
+  DISPUTES_UPDATED,
+  DISPUTE_VOTE_OVERLAY
 } from "./types";
 
 import { log } from "../utils/helpers";
@@ -28,6 +32,8 @@ const INITIAL_STATE = {
   updating: false,
   updatingList: true,
   detailPage: false,
+  voteOverlay: false,
+  listPage: false,
   current: {
     statusId: 0,
     statusLabel: "Draft",
@@ -57,7 +63,11 @@ const INITIAL_STATE = {
     attachments: {
       data: []
     },
-    activities: []
+    activities: [],
+    hasWithdrawn: true,
+    hasToGetReward: 0,
+    sumToWithdraw: 0,
+    reward: 0,
   },
   filters: {
     mine: false,
@@ -73,7 +83,7 @@ const INITIAL_STATE = {
     message: null,
     oracle_wallet: null,
     wallet_part: null,
-    amount: 0
+    amount: 0.01
   },
   list: [],
   page: 1,
@@ -87,6 +97,14 @@ export default (state = INITIAL_STATE, action) => {
     case SET_DISPUTE:
       return { ...state, current: action.payload, vote: INITIAL_STATE.vote };
 
+    case UPDATE_DISPUTE_LIVE:
+      return { ...state, 
+        current: {
+          ...state.current,
+          ...action.payload
+        }, 
+      };
+
     case DISPUTES_FETCHED:
       log(DISPUTES_FETCHED, action.payload);
       return {
@@ -96,11 +114,33 @@ export default (state = INITIAL_STATE, action) => {
         updatingList: false
       };
 
+    case DISPUTES_UPDATED:
+      log(DISPUTES_UPDATED, action.payload);
+      return {
+        ...state,
+        list: action.payload,
+        pagination: action.pagination,
+      };
+
     case DISPUTE_DETAIL_PAGE:
       log(DISPUTE_DETAIL_PAGE, action);
       return { 
         ...state, 
         detailPage: action.payload 
+      };
+
+    case DISPUTE_VOTE_OVERLAY:
+      log(DISPUTE_VOTE_OVERLAY, action);
+      return { 
+        ...state, 
+        voteOverlay: action.payload 
+      };
+
+    case DISPUTES_LIST_PAGE:
+      log(DISPUTES_LIST_PAGE, action);
+      return { 
+        ...state, 
+        listPage: action.payload 
       };
 
     case SET_DISPUTE_CURRENT_PAGE:
@@ -141,7 +181,8 @@ export default (state = INITIAL_STATE, action) => {
           ...state.current,
           statusId: action.statusId,
           statusLabel: action.statusLabel,
-          statusUpdatedAt: action.statusUpdatedAt
+          statusUpdatedAt: action.statusUpdatedAt,
+          statusWillEndAt: action.statusWillEndAt
         },
         vote: INITIAL_STATE.vote
       };

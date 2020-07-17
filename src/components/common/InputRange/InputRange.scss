@@ -51,4 +51,10 @@
       box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
     }
   }
+
+  &__value-display {
+    margin-top: 8px;
+    font-size: 11px;
+    text-align: center;
+  }
 }

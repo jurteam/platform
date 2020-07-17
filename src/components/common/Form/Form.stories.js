@@ -2,6 +2,7 @@ import React from "react";
 
 import { storiesOf } from "@storybook/react";
 import { withInfo } from "@storybook/addon-info";
+import { log } from "../../../utils/helpers";
 
 import Form from "./";
 
@@ -58,14 +59,14 @@ storiesOf("Form", module)
         <Form.NumericInput
           label="days"
           value={0}
-          onChange={(value) => log(value)}
+          onChange={value => log(value)}
         />
       </Form.Group>
       <Form.Group>
         <Form.NumericInput
           label="days"
           value={0}
-          onChange={(value) => log(value)}
+          onChange={value => log(value)}
           error
         />
       </Form.Group>
@@ -73,7 +74,7 @@ storiesOf("Form", module)
         <Form.NumericInput
           label="days"
           value={0}
-          onChange={(value) => log(value)}
+          onChange={value => log(value)}
           errorMsg="hello world"
           error
         />
@@ -81,20 +82,20 @@ storiesOf("Form", module)
       <Form.Group>
         <Form.DatePicker
           selectedDate={new Date()}
-          onChange={(value) => log(value)}
+          onChange={value => log(value)}
         />
       </Form.Group>
       <Form.Group>
         <Form.DatePicker
           selectedDate={new Date()}
-          onChange={(value) => log(value)}
+          onChange={value => log(value)}
           error
         />
       </Form.Group>
       <Form.Group>
         <Form.DatePicker
           selectedDate={new Date()}
-          onChange={(value) => log(value)}
+          onChange={value => log(value)}
           errorMsg="hello world"
           error
         />

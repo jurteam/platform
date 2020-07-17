@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useEffect , useContext } from "react";
 
 // Context
 import { AppContext } from "../../../bootstrap/AppProvider";
@@ -24,7 +24,8 @@ import {
   UPDATE_DISPUTE_FILTER,
   API_DELETE_DISPUTE,
   DISPUTE_PAGE_CHANGE,
-  DISPUTE_ORDER_CHANGE
+  DISPUTE_ORDER_CHANGE,
+  DISPUTES_LIST_PAGE
 } from "../../../reducers/types";
 
 export const Disputes = ( props ) => {
@@ -36,10 +37,14 @@ export const Disputes = ( props ) => {
 
   const [myDispute, setMyDispute] = useState(false);
 
-  // // cDM
-  // useEffect(() => {
-  //   global.drizzle.store.dispatch({ type: FETCH_DISPUTES });
-  // }, []);
+  // cDM
+  useEffect(() => {
+    global.store.dispatch({ type: DISPUTES_LIST_PAGE, payload: true });
+    return () => {
+      global.store.dispatch({ type: DISPUTES_LIST_PAGE, payload: false });
+
+    }
+  }, []);
 
   const { dispute } = props;
   log("Disputes - dispute", dispute);
@@ -54,7 +59,7 @@ export const Disputes = ( props ) => {
       setMyDispute(value);
     }
 
-    global.drizzle.store.dispatch({
+    global.store.dispatch({
       type: UPDATE_DISPUTE_FILTER,
       field: type,
       value
@@ -68,7 +73,7 @@ export const Disputes = ( props ) => {
 
   };
   const handleFilterSubmit = () => {
-    global.drizzle.store.dispatch({ type: FETCH_DISPUTES });
+    global.store.dispatch({ type: FETCH_DISPUTES });
   };
 
   const handleArchive = disputeId => {
@@ -81,7 +86,7 @@ export const Disputes = ( props ) => {
   const archive = () => {
     setShowDataLostModal(false);
 
-    global.drizzle.store.dispatch({
+    global.store.dispatch({
       type: API_DELETE_DISPUTE,
       id: disputeToArchive
     });
@@ -89,14 +94,14 @@ export const Disputes = ( props ) => {
   };
 
   const onPageChange = (page) => {
-    global.drizzle.store.dispatch({
+    global.store.dispatch({
       type: DISPUTE_PAGE_CHANGE,
       payload: page
     });
   };
 
   const onSortChange = ( field, order ) => {
-    global.drizzle.store.dispatch({
+    global.store.dispatch({
       type: DISPUTE_ORDER_CHANGE,
       payload: { field: field, type: order }
     });

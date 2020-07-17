@@ -4,11 +4,11 @@ namespace App\Models;
 
 use App\Models\Traits\WalletTrait;
 use Illuminate\Auth\Authenticatable;
-use Laravel\Lumen\Auth\Authorizable;
-use Illuminate\Database\Eloquent\Model;
-use Tymon\JWTAuth\Contracts\JWTSubject;
-use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
+use Illuminate\Database\Eloquent\Model;
+use Laravel\Lumen\Auth\Authorizable;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class User extends Model implements AuthenticatableContract, AuthorizableContract, JWTSubject
 {
@@ -26,10 +26,12 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'birth_date',
         'gender',
         'location',
+        'linkedin',
         'category',
         'show_fullname',
         'accepted_terms',
-        'accepted_disclaimer'
+        'accepted_disclaimer',
+        'url'
     ];
 
     /**
@@ -38,12 +40,22 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var array
      */
     protected $hidden = [
-        'password',
+        'password'
     ];
 
     protected $casts = [
         'show_fullname' => 'boolean'
     ];
+
+    public function scopeByEmail($query)
+    {
+        return $query->whereNotNull('email');
+    }
+
+    public function scopeExceptFromContracts($query, $collection)
+    {
+        return $query->byEmail()->whereNotIn('wallet', $collection->toArray());
+    }
 
     // Rest omitted for brevity
 

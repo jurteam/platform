@@ -1,7 +1,15 @@
-const merge = require('webpack-merge');
+const merge = require("webpack-merge");
+const path = require("path");
 
-module.exports = async ({ config }) => merge(config, {
+module.exports = async ({ config }) =>
+  merge(config, {
     node: {
-      fs: 'empty'
+      fs: "empty"
+    },
+    resolve: {
+      alias: {
+        JurCommon: path.resolve(__dirname, "../src/components/common/"),
+        JurUtils: path.resolve(__dirname, "../src/utils/")
+      }
     }
   });

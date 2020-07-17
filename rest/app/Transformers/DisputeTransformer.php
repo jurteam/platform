@@ -17,12 +17,14 @@ class DisputeTransformer extends TransformerAbstract
     public function transform(Contract $contract)
     {
         $currentStatus = $contract->getCurrentStatus();
+        $wallet = request()->header('wallet');
         
         return [
-            'id' => $contract->id,
+            'id' => encodeId($contract->id),
             'statusId' => $currentStatus ? $currentStatus->code : null,
             'statusLabel' => $currentStatus ? $currentStatus->label : null,
             'statusUpdatedAt' => $contract->getCurrentStatusUpdatedAt(),
+            'statusWillEndAt' => $contract->getNextStatusUpdatedAt(),
             'statusFrom' => $contract->getLastStatusFrom(),
             'statusPart' => $contract->getLastStatusPart(),
             'disputeName' => $this->getDisputeName($contract),
@@ -35,6 +37,7 @@ class DisputeTransformer extends TransformerAbstract
             'value' => $contract->value,
             'balance' => $contract->balance,
             'earnings' => $contract->getEarnings(),
+            'totalWithdraw' => $contract->getTotalWithdraw($wallet),
             'oracle' => $contract->currentWalletIsAnOracle(),
             'hasPenaltyFee' => $contract->has_penalty_fee,
             'partAPenaltyFee' => $contract->part_a_penalty_fee,

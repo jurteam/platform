@@ -4,12 +4,14 @@ import Profile from "./Profile";
 
 // Inner pages
 import ProfileForm from "../../common/ProfileForm";
+import MyOathsSection from "../../app-specific/OathKeeper/MyOathsSection";
 import Privacy from "./Privacy";
 import UserNotification from "../../common/UserNotification";
 import Faq from "./Faq";
 import Terms from "./Terms";
 
 import i18n from "../../../assets/i18n/en/labels.json"; // i18n
+import AdvocateSection from "../Status/AdvocateSection";
 
 // Section Context
 export const ProfileContext = React.createContext();
@@ -25,6 +27,18 @@ class ProfileProvider extends Component {
           component: <ProfileForm />
         },
         {
+          label: i18n.myOaths,
+          to: "/oath-keeper/my-oaths",
+          exact: true,
+          component: <MyOathsSection />
+        },
+        {
+          label: i18n.advocate,
+          to: "/advocates/my-advocasy",
+          exact: true,
+          component: <AdvocateSection />
+        },
+        {
           label: i18n.privacy,
           to: "/profile/privacy",
           component: <Privacy />
@@ -33,7 +47,6 @@ class ProfileProvider extends Component {
           label: i18n.notifications,
           to: "/profile/notifications",
           component: <UserNotification />
-
         },
         { label: i18n.faq, to: "/profile/faq", component: <Faq /> },
         {

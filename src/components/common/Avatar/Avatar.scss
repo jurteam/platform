@@ -6,9 +6,12 @@
     justify-content: center;
     align-content: center;
     overflow: hidden;
+    flex: 0 0 auto;
 
     &--circle {
-      border-radius: 50%;
+      canvas {
+        border-radius: 50%;
+      }
     }
 
     &--xxsmall {

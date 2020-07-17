@@ -2,7 +2,11 @@
 
 return [
 
+    'name' => 'Jur Team',
+
     'url' => env('JUR_FE_URL'),
+
+    'mail_logo_url' => env('JUR_MAIL_LOGO_URL'),
 
     'from' => [
         'address' => env('JUR_MAIL_FROM_ADDRESS', 'hello@example.com'),
@@ -84,6 +88,10 @@ return [
         [
             'label' => 'Dispute Closed',
             'code' => 39
+        ],
+        [
+            'label' => 'Waiting Dispute',
+            'code' => 37
         ]
     ],
 
@@ -154,5 +162,9 @@ return [
                 'label_status' => 'Open Dispute'
             ]
         ]
-    ]
+    ],
+
+    'feedback_url' => env('JUR_FEEDBACK_URL'),
+
+    'days_before_end' => env('JUR_DAYS_BEFORE_END')
 ];

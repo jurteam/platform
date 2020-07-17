@@ -413,16 +413,16 @@ contract Arbitration {
   /**
    * @dev Calculates the current end time of the voting period
    */
-  function calcDisputeEnds() public hasState(State.Dispute) returns(uint256) {
+  function calcDisputeEnds() public view hasState(State.Dispute) returns(uint256, uint256) {
     //Extend dispute period if:
     //  - vote is tied
     //  - more than 5% of votes places in last 30 minutes of dispute period
     if (getNow() < disputeEnds) {
-      return disputeEnds;
+      return (disputeEnds, disputeWindowVotes);
     }
     if (disputeWindowVotes > totalVotes.mul(DISPUTE_WINDOW_MAX).div(10**18)) {
-      disputeWindowVotes = 0;
-      return disputeEnds.add(DISPUTE_EXTENSION);
+      //disputeWindowVotes = 0;
+      return (disputeEnds.add(DISPUTE_EXTENSION), 0);
     }
     uint256 winningVotes = partyVotes[address(0)];
     for (uint8 i = 0; i < allParties.length; i++) {
@@ -440,11 +440,11 @@ contract Arbitration {
       }
     }
     if (countWinners > 1) {
-      disputeWindowVotes = 0;
+      //disputeWindowVotes = 0;
       //New end time is calculated from now
-      return getNow().add(DISPUTE_EXTENSION);
+      return (getNow().add(DISPUTE_EXTENSION), 0);
     }
-    return disputeEnds;
+    return (disputeEnds, disputeWindowVotes);
   }
 
   //Functions to allow voting on disputed agreements
@@ -469,10 +469,11 @@ contract Arbitration {
   }
 
   function _vote(address _sender, address _voteAddress, uint256 _voteAmount) internal hasState(State.Dispute) {
-    uint256 newDisputeEnds = calcDisputeEnds();
+    (uint256 newDisputeEnds, uint256 newDisputeWindowVotes) = calcDisputeEnds();
     if (newDisputeEnds != disputeEnds) {
       emit DisputeEndsAdjusted(newDisputeEnds, disputeEnds);
       disputeEnds = newDisputeEnds;
+      disputeWindowVotes = newDisputeWindowVotes;
     }
     require(getNow() < disputeEnds);
     //Parties are allowed to vote straightaway
@@ -519,10 +520,11 @@ contract Arbitration {
    */
   function payoutVoter(uint256 _start, uint256 _end) public hasState(State.Dispute) {
     //Generally setting _start to 0 and _end to a large number should be fine, but having the option avoids a possible block gas limit issue
-    uint256 newDisputeEnds = calcDisputeEnds();
+    (uint256 newDisputeEnds, uint256 newDisputeWindowVotes) = calcDisputeEnds();
     if (newDisputeEnds != disputeEnds) {
       emit DisputeEndsAdjusted(newDisputeEnds, disputeEnds);
       disputeEnds = newDisputeEnds;
+      disputeWindowVotes = newDisputeWindowVotes;
     }
     require(getNow() >= disputeEnds.add(VOTE_LOCKUP));
     //There should be a clear winner now, otherwise the dispute would have been extended.
@@ -552,6 +554,66 @@ contract Arbitration {
     }
     require(jurToken.transfer(msg.sender, stakedVotes.add(decimalMul(eligableVotes, reward))));
     emit VoterPayout(msg.sender, stakedVotes, decimalMul(eligableVotes, reward));
+  }
+
+
+  /**
+   * @notice Returns a state for vote to be claimed and the amount of reward
+   * 0: reward not due
+   * 1: now is before disputeEnd + vote_lookup
+   * 2: ok! Reward is claimable
+   * 3: reward is already claimed!
+   */
+  function canClaimReward(uint256 _start, uint256 _end) public view returns(uint8,uint256) {
+
+    uint8 status;
+    uint256 amount = 0;
+
+    address winnerParty;
+    address bestMinortyParty;
+    (winnerParty, bestMinortyParty) = getWinnerAndBestMinorty();
+
+
+    if(getNow() < disputeEnds.add(VOTE_LOCKUP)) {
+      status = 1;
+    }
+    else
+    {
+      status = 2;
+    }
+
+    uint256 totalMinorityVotes = totalVotes.sub(partyVotes[winnerParty]);
+    uint256 bestMinorityVotes = partyVotes[bestMinortyParty];
+
+    //If there were no votes on any minority options (all votes on the winner) then there is no payout
+    uint256 reward = 0;
+    if (totalMinorityVotes != 0) {
+      reward = decimalDiv(totalMinorityVotes, bestMinorityVotes);
+    }
+
+    uint256 eligableVotes = 0;
+    uint256 stakedVotes = 0;
+
+    for (uint256 i = _start; i < Math.min256(userVotes[msg.sender][winnerParty].length, _end); i++) {
+      if (userVotes[msg.sender][winnerParty][i].claimed) {
+        status = 3;
+      }
+
+      stakedVotes = stakedVotes.add(userVotes[msg.sender][winnerParty][i].amount);
+      if (userVotes[msg.sender][winnerParty][i].previousVotes < bestMinorityVotes) {
+        eligableVotes = eligableVotes.add(Math.min256(bestMinorityVotes.sub(userVotes[msg.sender][winnerParty][i].previousVotes), userVotes[msg.sender][winnerParty][i].amount));
+      }
+    }
+
+    amount = stakedVotes.add(decimalMul(eligableVotes, reward));
+
+    if (amount == 0)
+    {
+      status = 0;
+    }
+
+    return (status, amount);
+
   }
 
   /**
@@ -589,10 +651,11 @@ contract Arbitration {
    * @dev Allows sender (party) to claim their dispersal tokens
    */
   function payoutParty() public hasState(State.Dispute) onlyParties {
-    uint256 newDisputeEnds = calcDisputeEnds();
+    (uint256 newDisputeEnds, uint256 newDisputeWindowVotes) = calcDisputeEnds();
     if (newDisputeEnds != disputeEnds) {
       emit DisputeEndsAdjusted(newDisputeEnds, disputeEnds);
       disputeEnds = newDisputeEnds;
+      disputeWindowVotes = newDisputeWindowVotes;
     }
     require(getNow() >= disputeEnds);
     require(!hasWithdrawn[msg.sender]);
@@ -601,6 +664,17 @@ contract Arbitration {
     uint256 payout = disputeDispersal[winnerParty][msg.sender];
     require(jurToken.transfer(msg.sender, payout));
     emit PartyPayout(msg.sender, payout);
+  }
+
+  /**
+   * @dev Returns a bool if can withdraw and the amount of withdraw
+   */
+  function canWithdraw() public view returns(bool,uint256) {
+    
+    address winnerParty = getWinner();
+    uint256 payout = disputeDispersal[winnerParty][msg.sender];
+
+    return (hasWithdrawn[msg.sender], payout);
   }
 
   /**

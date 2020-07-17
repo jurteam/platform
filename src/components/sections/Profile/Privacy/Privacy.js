@@ -51,7 +51,7 @@ const Privacy = ( props ) => {
 
   const disclaimerDecline = () => {
 
-    global.drizzle.store.dispatch({
+    global.store.dispatch({
       type: USER_OBLIVION
     });
 
@@ -60,7 +60,7 @@ const Privacy = ( props ) => {
 
   const deleteContracts = () => {
 
-    global.drizzle.store.dispatch({
+    global.store.dispatch({
       type: DELETE_ALL_CONTRACTS
     });
 
@@ -69,7 +69,7 @@ const Privacy = ( props ) => {
 
   const deleteDisputes = () => {
 
-    global.drizzle.store.dispatch({
+    global.store.dispatch({
       type: DELETE_ALL_DISPUTES
     });
 

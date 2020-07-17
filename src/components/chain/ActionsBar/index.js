@@ -1,5 +1,5 @@
 import React from "react"; // eslint-disable-line no-unused-vars
-import { drizzleConnect } from "drizzle-react";
+
 import { ActionsBar } from "./ActionsBar";
 
 const mapStateToProps = (state) => {
@@ -10,4 +10,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default drizzleConnect(ActionsBar, mapStateToProps);
+export default global.connection(ActionsBar, mapStateToProps);

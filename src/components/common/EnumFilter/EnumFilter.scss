@@ -1,0 +1,19 @@
+@import "../../../assets/scss/variables";
+@import "../../../assets/scss/animationMixin";
+
+.jur-enum-filter {
+  @include primary-hover();
+
+  cursor: pointer;
+  display: inline-block;
+  color: $secondary;
+
+  &__selected {
+    color: $primary;
+  }
+
+  &-row {
+    font-family: $font-poppins;
+    font-size: 13px;
+  }
+}

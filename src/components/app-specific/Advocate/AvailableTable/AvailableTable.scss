@@ -1,0 +1,15 @@
+@import "../../../../assets/scss/variables";
+
+.jur-slot {
+  &__sparse {
+    color: $slot-sparse;
+  }
+
+  &__moderate {
+    color: $slot-moderate;
+  }
+
+  &__scarce {
+    color: $slot-scarce;
+  }
+}

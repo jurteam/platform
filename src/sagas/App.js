@@ -2,6 +2,7 @@ import { put, call, takeEvery, takeLatest, select } from "redux-saga/effects";
 import {
   DRIZZLE_INITIALIZING,
   DRIZZLE_INITIALIZED,
+  CONNEX_INITIALIZED,
   SET_WALLET_ADDRESS,
   NETWORK_ID_FAILED,
   NETWORK_UPDATE,
@@ -11,6 +12,8 @@ import {
   FETCH_USER,
   RESET_USER,
   SET_FAQ,
+  FETCH_TRANSACTIONS,
+  CATCH_EVENTS,
   FETCH_FAQ,
   HEARTBEAT,
   FETCH_CONTRACTS,
@@ -18,10 +21,32 @@ import {
   SET_TUTORIAL_VIEWED,
   FETCH_DISPUTES,
   FETCH_ACTIVITIES,
-  API_GET_STATUS_CHANGE
+  API_GET_STATUS_CHANGE,
+  API_GET_DISPUTE_STATUS_CHANGE,
+  API_GET_LIVE_VOTES,
+  UPDATE_LIVE_CONTRACTS,
+  UPDATE_LIVE_DISPUTES,
+  UPDATE_LIVE_ORACLES,
 } from "../reducers/types";
 
-import { getWallet, getContractdetailPage, getDisputedetailPage, getCurrentContract, getCurrentDispute } from "./Selectors"; // selectors
+import {
+  getWallet,
+  getContractdetailPage,
+  getOracleIsListPage,
+  getDisputedetailPage,
+  getOracleListOrder,
+  getOracleListPage,
+  getCurrentContract,
+  getCurrentDispute,
+  getContractIsListPage,
+  getContractFilters,
+  getContractListOrder,
+  getDisputeIsListPage,
+  getContractListPage,
+  getDisputeFilters,
+  getDisputeListOrder,
+  getDisputeListPage,
+} from "./Selectors"; // selectors
 
 // Api layouts
 import { Faq } from "../api";
@@ -119,25 +144,106 @@ export function* handleAppInit() {
 // handles app HeartBeat
 export function* handleHeartBeat() {
 
-  log('handleHeartBeat');  
+  log('handleHeartBeat');
 
   const ContractDetailPage = yield select(getContractdetailPage);
   const DisputeDetailPage = yield select(getDisputedetailPage);
 
+  const ContractIsListPage = yield select(getContractIsListPage);
+  const DisputeIsListPage = yield select(getDisputeIsListPage);
+  const OracleIsListPage = yield select(getOracleIsListPage);
+
   if (ContractDetailPage) {
-    // nella pagina del contratto
-    
+
+    log("handleHeartBeat - ContractDetailPage",ContractDetailPage);
+    // into detail contract page
+
     yield put({ type: API_GET_STATUS_CHANGE });
 
   } else if (DisputeDetailPage) {
-    // nella pagina della disputa
+    // into detail dispute page
     const currDisp = yield select(getCurrentDispute);
-    log("handleHeartBeat",currDisp);
+    log("handleHeartBeat - DisputeDetailPage",currDisp);
 
+    yield put({ type: API_GET_DISPUTE_STATUS_CHANGE });
+
+  } else if (ContractIsListPage) {
+    // into list contracts page
+    log("handleHeartBeat - ContractIsListPage",ContractIsListPage);
+
+    const ContractOrder = yield select(getContractListOrder);
+
+    if (ContractOrder.length === 0) {
+      // if no order is setted
+      const ContractFilter = yield select(getContractFilters);
+
+      if (ContractFilter.status === null &&
+        ContractFilter.fromDate === null &&
+        ContractFilter.toDate === null &&
+        ContractFilter.searchText === null ) {
+        // if no filter is setted
+
+        const contractListPage = yield select (getContractListPage)
+
+        if (contractListPage === 1) {
+          // if is the first page of contracts
+
+          yield put({ type: UPDATE_LIVE_CONTRACTS });
+        }
+      }
+    }
+
+  } else if (DisputeIsListPage) {
+    // into list disputes page
+    log("handleHeartBeat - DisputeIsListPage",DisputeIsListPage);
+
+
+    const DisputeOrder = yield select(getDisputeListOrder);
+
+    if (DisputeOrder.length === 0) {
+      // if no order is setted
+      const DisputeFilter = yield select(getDisputeFilters);
+
+      if (DisputeFilter.status === null &&
+          DisputeFilter.mine === false &&
+          DisputeFilter.category === null &&
+          DisputeFilter.fromDate === null &&
+          DisputeFilter.toDate === null &&
+          DisputeFilter.searchText === null ) {
+        // if no filter is setted
+
+        const disputeListPage = yield select (getDisputeListPage)
+
+        if (disputeListPage === 1) {
+          // if is the first page of Disputes
+
+          yield put({ type: UPDATE_LIVE_DISPUTES });
+        }
+      }
+    }
+
+  } else if (OracleIsListPage) {
+    // into list oracles page
+    log("handleHeartBeat - OracleIsListPage",OracleIsListPage);
+
+
+    const OraclesOrder = yield select(getOracleListOrder);
+
+    if (OraclesOrder.length === 0) {
+      // if no order is setted
+      const oraclesListPage = yield select (getOracleListPage)
+
+      if (oraclesListPage === 1) {
+        // if is the first page of Oracles
+
+        yield put({ type: UPDATE_LIVE_ORACLES });
+      }
+
+    }
   }
 
 
-  
+
 }
 
 // handles app initialization
@@ -148,8 +254,10 @@ export function* handleFetchFaq() {
 }
 
 // handles app ready
-export function* handleAppReady() {
-  yield init();
+export function* handleAppReady(args) {
+  log('handleAppReady')
+  yield init(args);
+  yield put({ type: FETCH_TRANSACTIONS });
   yield put({ type: FETCH_FAQ });
   yield put({ type: FETCH_USER });
   yield put({ type: FETCH_CONTRACTS });
@@ -161,6 +269,7 @@ export function* handleAppReady() {
 export default function* appSagas() {
   yield takeEvery(DRIZZLE_INITIALIZING, handleAppInit);
   yield takeLatest(DRIZZLE_INITIALIZED, handleAppReady);
+  yield takeLatest(CONNEX_INITIALIZED, handleAppReady);
   yield takeEvery(NETWORK_ID_FAILED, disableLoading);
   yield takeLatest(NETWORK_UPDATE, handleNetworkUpdate);
   yield takeLatest(APP_SHOULD_RESET, handleAppReset);

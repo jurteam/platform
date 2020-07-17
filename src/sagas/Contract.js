@@ -1,5 +1,4 @@
 import { call, put, select, takeLatest, takeEvery } from "redux-saga/effects";
-import { getUser } from "./Selectors";
 import {
   RESET_CONTRACT,
   NEW_CONTRACT,
@@ -17,6 +16,7 @@ import {
   CONTRACT_ISSUE,
   API_DELETE_CONTRACT,
   CONTRACTS_FETCHED,
+  CONTRACTS_UPDATED,
   CONTRACT_DELETED,
   API_CATCH,
   READ_NOTIFICATIONS,
@@ -36,29 +36,37 @@ import {
   DELETE_ALL_CONTRACTS,
   RESET_ALL_CONTRACTS,
   DISPUTE_ARBITRATION,
-  AMEND_DISPUTE_ARBITRATION
+  AMEND_DISPUTE_ARBITRATION,
+  UPDATE_LIVE_CONTRACTS,
 } from "../reducers/types";
 
-import { log, arrayColumn } from "../utils/helpers"; // log helper
+
+import { log, arrayColumn, connector } from "../utils/helpers"; // log helper
 
 import contractStatuses from "../assets/i18n/en/status.json";
 
 // Api layouts
-import { Contracts } from "../api";
+import { Contracts, connexArbitrationContract } from "../api";
 
-import {
-  // getWallet,
+import { 
+  getUser, 
+  getWallet,
   getNewContract,
   getCurrentContract,
   getContractListPage,
   getContractListOrder,
   getContractFilters,
   getCurrentProposal,
-  getCurrentContractActivities
+  getCurrentContractActivities,
+  getContractList,
+  getContractPageSize
 } from "./Selectors"; // selector
 
 // Get
-export function* getContract(action) {
+export function* getContract(action)
+{
+  log('getContract - action',action);
+
   let silentLoading = false
   const { id, onSuccess, onError, silent } = action;
   silentLoading = silent
@@ -75,12 +83,39 @@ export function* getContract(action) {
     } = yield call(Contracts.get, { id }); // due missing data TODO: look at the attachments
     const { address } = data;
 
-    // log('getContract ok',data);
+    let fromChain = null;
+
+    log('getContract ok',data);
+    if (data.address && connector() === 'connex')
+    {
+      // get contract details from chain
+      const user = yield select(getUser);
+
+      const walletStore = yield select(getWallet);
+      const { address : userAddress  }  = walletStore;
+
+      log('getContract - user',user);
+
+      const arbitration = new connexArbitrationContract(data.address);
+      log('getContract - arbitration',arbitration);
+
+      const hasWithdrawn = yield arbitration.hasWithdrawn(userAddress);
+      log('getContract - hasWithdrawn',hasWithdrawn);
+      const dispersal = yield arbitration.dispersal(userAddress);
+
+      log('getContract - dispersal',dispersal);
+
+      fromChain = {
+        hasWithdrawn: hasWithdrawn,
+        dispersal: dispersal
+      }
+
+    }
 
 
     yield put({
       type: SET_CONTRACT,
-      payload: { ...data, details: details.data }
+      payload: { ...data, details: details.data, fromChain: fromChain }
     });
     if (address) {
       yield put({ type: CHAIN_GET_CONTRACT, address });
@@ -96,7 +131,7 @@ export function* getContract(action) {
 
     yield put({ type: API_CATCH, error });
 
-    if (error.response.status === 404 && error.response.config.headers.wallet !== null) {
+    if (error.response && error.response.status === 404 && error.response.config.headers.wallet !== null) {
       const { history } = action;
       history.push(`/contracts/`); // go to contracts list
     }
@@ -301,7 +336,8 @@ export function* updateContract(action) {
   if (duration && duration.minutes) {
     toUpdate.append("duration_minutes", duration.minutes);
   }
-  toUpdate.append("has_penalty_fee", hasPenaltyFee ? 1 : 0); // always
+  log('updateContract - hasPenaltyFee',hasPenaltyFee)
+  toUpdate.append("has_penalty_fee", (hasPenaltyFee && hasPenaltyFee !== "0")  ? 1 : 0); // always
   if (hasPenaltyFee) {
     if (partAPenaltyFee) {
       toUpdate.append(
@@ -568,6 +604,7 @@ export function* getContractStatus() {
   const response = yield call(Contracts.getStatusChange, { id: currContr.id });
 
 
+  log("getContractStatus ");
   log("getContractStatus - response", response.data.status );
 
   if (typeof response.data.status === "undefined") {
@@ -578,7 +615,7 @@ export function* getContractStatus() {
       // fetch contract without loading
       log("getContractStatus - response - status diff "+ currContr.statusId, response.data.data.statusId );
 
-      global.drizzle.store.dispatch({
+      global.store.dispatch({
         type: API_GET_CONTRACT,
         id: currContr.id,
         silent: true,
@@ -590,12 +627,79 @@ export function* getContractStatus() {
     }
 
   }
-  
+
   // const {status,statusFrom,statusId,statusLabel,statusPart,statusUpdatedAt} = response.data.data
   // log("getContractStatus - response", status, statusFrom,statusId,statusLabel,statusPart,statusUpdatedAt );
 
 
 }
+
+export function* handleUpdateLiveContracts() {
+  // const currVotes = yield select(getContractsCurrentList);
+  const currContracts = yield select(getContractList);
+
+
+
+
+  const response = yield call(Contracts.list, {
+    page: 1
+  });
+
+  let newContracts = response.data.data;
+
+
+  log('handleUpdateLiveContracts - newContracts',newContracts)
+  log('handleUpdateLiveContracts - currContracts',currContracts)
+  
+
+  let different = false
+  
+  // compare with old results
+  newContracts.forEach((nContr,i) => {
+    
+    
+    
+    let presentOrEqual = false;
+    
+    currContracts.forEach((cContr) => {
+        if (cContr.id === nContr.id
+          && cContr.statusUpdatedAt === nContr.statusUpdatedAt
+          && cContr.statusId === nContr.statusId
+          && cContr.statusLabel === nContr.statusLabel
+          ) {
+          presentOrEqual = true;
+        }
+      })
+
+      if (!presentOrEqual)
+      {
+        
+        log('handleUpdateLiveContracts - newContracts[i]',newContracts[i])
+        log('handleUpdateLiveContracts - currContracts[i]',currContracts[i])
+
+        if (newContracts[i] && currContracts[i])
+        {
+          newContracts[i].new = (currContracts[i].new === 1 ? 2 : 1)
+          different = true
+        }
+      }
+
+    })
+
+
+    if (different) {
+      yield put({
+        type: CONTRACTS_UPDATED,
+        payload: newContracts,
+        pagination: response.data.meta.pagination
+      });
+    }
+
+
+
+
+}
+
 
 // spawn tasks base certain actions
 export default function* contractSagas() {
@@ -622,4 +726,5 @@ export default function* contractSagas() {
   yield takeLatest(CONTRACT_PAGE_CHANGE, onContractPageChange);
   yield takeLatest(CONTRACT_ORDER_CHANGE, onContractSortChange);
   yield takeLatest(DELETE_ALL_CONTRACTS, onDeleteAllContracts);
+  yield takeLatest(UPDATE_LIVE_CONTRACTS, handleUpdateLiveContracts);
 }
