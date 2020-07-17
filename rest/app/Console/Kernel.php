@@ -24,7 +24,8 @@ class Kernel extends ConsoleKernel
         \App\Console\Commands\NotifyPartiesForContractExpired::class,
         \App\Console\Commands\NotifyUsersVotingSessionCommand::class,
         \App\Console\Commands\NotifyForDisputeVoteDeadline::class,
-        \App\Console\Commands\NotifyForDisputeVoteReachedDeadline::class
+        \App\Console\Commands\NotifyForDisputeVoteReachedDeadline::class,
+        \App\Console\Commands\PollingFetchCommand::class
     ];
 
     /**

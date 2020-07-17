@@ -11,6 +11,8 @@ $api->version('v1', function ($api) {
 
         $api->group(['prefix' => 'past-events'], function ($api) {
             $api->get('/blocks/{blockNo}', 'App\Http\Controllers\PastEventController@getBlock');
+            $api->get('/assets/{assetName}', 'App\Http\Controllers\PastEventController@getAsset');
+            $api->get('/contracts/{contractAddress}', 'App\Http\Controllers\PastEventController@getContract');
             $api->get('/tx/{transactionHash}', 'App\Http\Controllers\PastEventController@getTransaction');
             $api->get('/blocks', 'App\Http\Controllers\PastEventController@getBlocks');
         });

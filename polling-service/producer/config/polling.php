@@ -22,6 +22,6 @@ return [
     | when the app needs to get information related to real-time polling service.
     |
      */
-    // Test  https://beeceptor.com/console/as123589
-    'PERHost' => env('PER_HOST', 'https://as123589.free.beeceptor.com')
+
+    'PERHost' => env('PER_HOST', 'http://polling_per:3000')
 ];
