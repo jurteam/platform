@@ -47,7 +47,7 @@ export const getAddressFromUrl = (location = window.location) =>
 export const canWithdraw = ({ dueDate, rewardedOn }) => {
   if (rewardedOn) return false;
 
-  const allowedSince = addSeconds(new Date(Number(dueDate) * 1000));
+  const allowedSince = new Date(Number(dueDate) * 1000);
   if (new Date() < allowedSince) return true;
   return false;
 };
@@ -82,4 +82,17 @@ export function setSlotState(state, { activityScId, slotScId }, slots) {
     }
     return a;
   });
+}
+
+export function isCompleted({ state }) {
+  return state === "Completed";
+}
+
+export function formatWaiting(time) {
+  if (time.unit === "past") return `Refresh to enable withdraw`;
+  return `Withdraw in ${time.value} ${time.unit}`;
+}
+
+export function withdrawTimeOf(dueDate) {
+  return addSeconds(new Date(Number(dueDate) * 1000));
 }

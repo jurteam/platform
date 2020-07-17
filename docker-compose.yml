@@ -1,7 +1,7 @@
 version: "3"
 services:
   jur:
-    image: jur_platform:15JUN2020
+    image: registry.digitalocean.com/jur-jbp/jur_platform:17JUL2020
     working_dir: /var/www/html
     volumes:
       - ./rest:/var/www/html
@@ -18,10 +18,8 @@ services:
   db:
     image: mysql:5.7
     env_file: .env.docker-compose
-    ports:
-      - "3306:3306"
-    #volumes:
-    #  - ./persistent-runtime/mysql:/var/lib/mysql
+    volumes:
+      - ./persistent-runtime/mysql:/var/lib/mysql
 
   polling:
     image: busybox
@@ -54,13 +52,11 @@ services:
   polling_db:
     image: mysql:5.7
     env_file: .env.polling-service
-    ports:
-      - "3308:3306"
-    #volumes:
-    #  - ./persistent-runtime/polling-mysql:/var/lib/mysql
+    volumes:
+      - ./persistent-runtime/polling-mysql:/var/lib/mysql
 
   polling_producer:
-    image: polling_producer:15JUL2020
+    image: registry.digitalocean.com/jur-jbp/polling_producer:17JUL2020
     working_dir: /var/www/html
     volumes:
       - ./polling-service/producer:/var/www/html

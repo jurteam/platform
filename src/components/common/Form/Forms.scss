@@ -153,8 +153,13 @@
 
   &__search {
     position: relative;
+    border: 1px solid $input-border-color;
+    border-radius: 2px;
 
     input {
+      width: calc(100% - 20px);
+      border-width: 0;
+
       &::-webkit-input-placeholder {
         color: $gull-gray;
       }
