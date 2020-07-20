@@ -13,25 +13,29 @@ class RewardTransformer extends TransformerAbstract
     /**
      * Turn this item object into a generic array
      *
-     * @param  \App\Models\Reward $reward
+     * @param  \App\Models\Slot $slot
      * @return array
      */
-    public function transform(Reward $reward)
+    public function transform(Slot $slot)
     {
-        $slot = Slot::where('id', $reward->slot_id)->firstOrFail();
-
-        $rewardActivity = RewardActivity::where('id', $slot->reward_activity_id)->firstOrFail();
+        $reward = $slot->reward;
+        $rewardedOn = $reward ? Carbon::createFromDate($reward->rewarded_on)->timestamp : null;
+        $rewardActivity = $slot->rewardActivity;
+        $name = $rewardActivity ? $rewardActivity->name : null;
+        $sc_activity_id = $rewardActivity ? $rewardActivity->sc_activity_id : null;
+        
 
         return [
-            'id' => $reward->rewardee_wallet,
+            'id' => $slot->assigned_wallet,
             'type' => "advocates",
             'attributes' =>
             [
-                'name' => $rewardActivity->name,
-                'rewardAmount' => $rewardActivity->reward_amount,
+                'slotId'=>$slot->id,
+                'name' => $name,
+                'rewardAmount' => $slot->reward_amount,
                 'dueDate' => Carbon::createFromDate($slot->due_date)->timestamp,
-                'rewardedOn' => Carbon::createFromDate($reward->rewarded_on)->timestamp,
-                'activityScId' => $rewardActivity->sc_activity_id,
+                'rewardedOn' => $rewardedOn,
+                'activityScId' => $sc_activity_id,
                 'slotScId' => $slot->sc_slot_id
             ]
         ];
