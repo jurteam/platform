@@ -2,13 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Libraries\PollingHelper;
 use Illuminate\Http\Request;
-use \App\Models\Advocate;
-use \App\Models\OathKeeper;
-use \App\Models\Reward;
-use \App\Models\RewardActivity;
-use \App\Models\RoleContract;
-use \App\Models\Slot;
 
 class ConsumePollingServiceController extends Controller
 {
@@ -20,20 +15,10 @@ class ConsumePollingServiceController extends Controller
     public function oathKeeper(Request $request)
     {
         // get body of array and convert it to object
-        $payload = array_to_object($request->all());
+        $transaction = array_to_object($request->all());
 
-        // intial status for success
-        $success = false;
-
-        switch ($payload->event_name) {
-            case 'OathTaken':
-                $success = OathKeeper::oathTaken($payload);
-                break;
-
-            case 'IHoldYourOathFulfilled':
-                $success = OathKeeper::iHoldYourOathFulfilled($payload);
-                break;
-        }
+        // process transaction
+        $success = PollingHelper::processOathKeeperEvent($transaction);
 
         // return consume status
         return ['status' => $success];
@@ -47,24 +32,10 @@ class ConsumePollingServiceController extends Controller
     public function advocate(Request $request)
     {
         // get body of array and convert it to object
-        $payload = array_to_object($request->all());
+        $transaction = array_to_object($request->all());
 
-        // intial status for success
-        $success = false;
-
-        switch ($payload->event_name) {
-            case 'AdvocateAdded':
-                $success = Advocate::advocateAdded($payload);
-                break;
-
-            case 'AdvocateStateUpdated':
-                $success = Advocate::advocateStateUpdated($payload);
-                break;
-
-            case 'AdvocateTypeUpdated':
-                $success = Advocate::advocateTypeUpdated($payload);
-                break;
-        }
+        // process transaction
+        $success = PollingHelper::processAdvocateEvent($transaction);
 
         // return consume status
         return ['status' => $success];
@@ -78,36 +49,10 @@ class ConsumePollingServiceController extends Controller
     public function reward(Request $request)
     {
         // get body of array and convert it to object
-        $payload = array_to_object($request->all());
+        $transaction = array_to_object($request->all());
 
-        // intial status for success
-        $success = false;
-
-        switch ($payload->event_name) {
-            case 'RoleContractUpdated':
-                $success = RoleContract::roleContractUpdated($payload);
-                break;
-
-            case 'ActivityCreated':
-                $success = RewardActivity::activityCreated($payload);
-                break;
-
-            case 'ActivityUpdated':
-                $success = RewardActivity::activityUpdated($payload);
-                break;
-
-            case 'SlotAssigned':
-                $success = Slot::slotAssigned($payload);
-                break;
-
-            case 'SlotUpdated':
-                $success = Slot::slotUpdated($payload);
-                break;
-
-            case 'SlotRewarded':
-                $success = Reward::slotRewarded($payload);
-                break;
-        }
+        // process transaction
+        $success = PollingHelper::processRewardEvent($transaction);
 
         // return consume status
         return ['status' => $success];

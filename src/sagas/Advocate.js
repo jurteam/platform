@@ -40,6 +40,7 @@ import {
   ADVOCATE_MESSAGE,
   ADVOCATE_UPDATE_BIO,
   API_CATCH,
+  ADVOCATE_UPDATE_BIO_SUCCEEDED
 } from "../reducers/types";
 import { copyToClipboard } from "../utils/AdvocateHelpers";
 
@@ -89,9 +90,9 @@ function* fetchAdvocates(action) {
   yield put({ type: ADVOCATE_UPDATE_ALL, payload });
 }
 
-function* fetchAvailable() {
+function* fetchAvailable(action) {
   const { address } = yield select(getWallet);
-  const res = yield available(address);
+  const res = yield available(address, action.payload);
 
   const payload = {
     available: res.data,
@@ -101,9 +102,9 @@ function* fetchAvailable() {
   yield put({ type: ADVOCATE_UPDATE_AVAILABLE, payload });
 }
 
-function* fetchYourActivities() {
+function* fetchYourActivities(action) {
   const { address } = yield select(getWallet);
-  const res = yield yourActivities(address);
+  const res = yield yourActivities(address, action.payload);
 
   const payload = {
     yourActivities: res.data,
@@ -121,7 +122,7 @@ function* fetchRewards(action) {
     address = wallet.address;
   }
 
-  const res = yield rewards(address);
+  const res = yield rewards(address, action.payload);
 
   const payload = {
     rewards: res.data,
@@ -208,18 +209,21 @@ function* copy() {
 }
 
 function* updateBioSaga(action) {
-  try{
+  try {
     console.log("action", action);
-    const response = yield call(updateBio, action.payload.bio, action.payload.address);
+    const response = yield call(
+      updateBio,
+      action.payload.bio,
+      action.payload.address
+    );
     console.log("saga response: ", response);
     yield put({
-      type: ADVOCATE_UPDATE_BIO,
+      type: ADVOCATE_UPDATE_BIO_SUCCEEDED,
       payload: response
-    })
-  }catch(error) {
-    yield put({type: API_CATCH, error});
+    });
+  } catch (error) {
+    yield put({ type: API_CATCH, error });
   }
-
 }
 
 export default function* Status() {

@@ -33,18 +33,41 @@ class TransactionState extends Model
             // find the lowest block to read
             $assets = Asset::all();
 
-            $lastBlock = sizeof($assets) > 0 ? $assets[0]->default_from_block : 0;
-
-            foreach ($assets as $asset) {
-                if ($lastBlock > $asset->default_from_block) {
-                    $lastBlock = $asset->default_from_block;
-                }
-            }
+            // get initial block
+            $lastBlock = TransactionState::findInitialBlock();
 
             // create new TransactionState
             $state = new TransactionState;
             $state->last_read_block = $lastBlock;
             $state->save();
+        }
+
+        // retun last block
+        return $lastBlock;
+    }
+
+    /**
+     * Find fist block number of all assets
+     *
+     * @return Number last read block number
+     */
+    public static function findInitialBlock($assetName = null)
+    {
+        // find the lowest block to read
+        $assets;
+
+        if ($assetName == null) {
+            $assets = Asset::all();
+        } else {
+            $assets = Asset::where('asset_name', $assetName)->get();
+        }
+
+        $lastBlock = sizeof($assets) > 0 ? $assets[0]->default_from_block : 0;
+
+        foreach ($assets as $asset) {
+            if ($lastBlock > $asset->default_from_block) {
+                $lastBlock = $asset->default_from_block;
+            }
         }
 
         // retun last block

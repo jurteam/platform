@@ -35,4 +35,10 @@ storiesOf("Timer", module)
       time={new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 20)}
       render={sampleRender}
     />
+  ))
+  .add("Epoch 1594990393", () => (
+    <Timer
+      time={new Date(1594990393 * 1000 + 1594990393)}
+      render={sampleRender}
+    />
   ));

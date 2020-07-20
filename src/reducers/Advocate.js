@@ -18,7 +18,7 @@ import {
   ADVOCATE_TOGGLE_AVAILABLE,
   ADVOCATE_MESSAGE,
   ADVOCATE_FETCH_PROFILE,
-  ADVOCATE_UPDATE_BIO
+  ADVOCATE_UPDATE_BIO_SUCCEEDED
 } from "./types";
 import {
   SOCIAL_NETWORK_OPTIONS,
@@ -141,8 +141,8 @@ export default (state = INITIAL_STATE, action) => {
           [makeKey(action.payload)]: false
         }
       };
-    case ADVOCATE_UPDATE_BIO:
-      return { ...state, advocate: { ...state.advocate, bio: action.payload } }
+    case ADVOCATE_UPDATE_BIO_SUCCEEDED:
+      return { ...state, advocate: { ...state.advocate, bio: action.payload } };
     default:
       return state;
   }

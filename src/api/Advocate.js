@@ -38,18 +38,22 @@ export const advocates = (address = "", params) =>
     .get(addParams(["/advocates/", address].filter(Boolean).join(""), params))
     .then(r => r.data);
 
-export const available = address =>
-  axios.get(`/advocates/${address}/activities/available`).then(r => r.data);
+export const available = (address = "", params) =>
+  axios
+    .get(addParams(`/advocates/${address}/activities/available`, params))
+    .then(r => r.data);
 
-export const yourActivities = address =>
-  axios.get(`/advocates/${address}/activities/ongoing`).then(r => r.data);
+export const yourActivities = (address = "", params) =>
+  axios
+    .get(addParams(`/advocates/${address}/activities/ongoing`, params))
+    .then(r => r.data);
 
-export const rewards = address =>
-  axios.get(`/rewards/${address}`).then(r => r.data);
+export const rewards = (address = "", params) =>
+  axios.get(addParams(`/rewards/${address}`, params)).then(r => r.data);
 
 export const updateBio = (bio, address) => {
   // console.log("bio and address: ", bio, address);return;
   return axios.put(`/advocates/${address}`, {
     bio: bio
-  })
-}
+  });
+};

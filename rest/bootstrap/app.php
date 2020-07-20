@@ -23,6 +23,7 @@ $app = new Laravel\Lumen\Application(
 
 $app->configure('app');
 $app->configure('database');
+$app->configure('polling');
 $app->configure('auth');
 $app->configure('api');
 $app->configure('jur');

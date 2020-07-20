@@ -5,6 +5,7 @@ import AmountFilter from "JurCommon/AmountFilter";
 import Separator from "JurCommon/Separator";
 import { MIN_TOKEN_AMOUNT } from "../../../../api/connex/OathKeeper";
 
+
 const OathTakerAmountFilter = ({ onChange, minAmount, maxAmount }) => (
   <>
     <AmountFilter
