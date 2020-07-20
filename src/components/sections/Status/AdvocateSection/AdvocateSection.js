@@ -42,7 +42,7 @@ const AdvocateSection = ({
     fetchAdvocate(effectiveAddress);
     return resetAdvocate;
   }, [effectiveAddress, fetchAdvocate, resetAdvocate]);
-  console.log("advocasy", advocasy);
+
   return (
     <Section>
       <HeaderBox address={effectiveAddress} isAdvocate={isAdvocate} />
