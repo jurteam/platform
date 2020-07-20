@@ -163,7 +163,10 @@ class AdvocateController extends Controller
 
         // get current activities for the $wallet
         $slots = Slot::where('assigned_wallet', $wallet)
-            ->where('status', '!=', 'Rewarded')
+            ->whereNotIn('status', ['Rewarded', 'Completed'])
+            ->orWhere(function ($query) {
+                $query->where('status', 'Completed')->where('due_date', "<=", Carbon::now()->addSeconds(config('reward.rewardDelay'))->timestamp);
+            })
             ->union($unassignedSlots)
             ->get();
 
