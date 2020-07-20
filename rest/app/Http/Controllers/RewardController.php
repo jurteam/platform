@@ -22,11 +22,14 @@ class RewardController extends Controller
     public function show(Request $request, $wallet)
     {
         $slots = Slot::where('assigned_wallet', $wallet)
-            ->where('status', 'Rewarded')
-            ->orWhere(function ($query) {
+            ->where(function($query) {
                 $query
+                ->where('status', 'Rewarded')
+                ->orWhere(function ($completedQuery) {
+                    $completedQuery
                     ->where('status', 'Completed')
                     ->where('due_date', ">", Carbon::now()->addSeconds(config('reward.rewardDelay'))->timestamp);
+                });
             })
             ->get();
 
