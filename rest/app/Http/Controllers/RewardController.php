@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Traits\CustomPaginationTrait;
 use App\Transformers\RewardTransformer;
+use Carbon\Carbon;
 use Dingo\Api\Routing\Helpers;
 use Illuminate\Http\Request;
 use \App\Models\Reward;
-use \App\Models\Advocate;
 use \App\Models\Slot;
 
 class RewardController extends Controller
@@ -22,13 +22,13 @@ class RewardController extends Controller
     public function show(Request $request, $wallet)
     {
         $slots = Slot::where('assigned_wallet', $wallet)
-        ->where('status', 'Rewarded')
-        ->orWhere(function($query) {
-            $query
-            ->where('status', 'Completed')
-            ->where('due_date', ">", Advocate::rewardDelay());
-        })
-        ->get();
+            ->where('status', 'Rewarded')
+            ->orWhere(function ($query) {
+                $query
+                    ->where('status', 'Completed')
+                    ->where('due_date', ">", Carbon::now()->addSeconds(config('reward.rewardDelay'))->timestamp);
+            })
+            ->get();
 
         return $this->response->paginator(
             $this->customPagination($slots, $request),
