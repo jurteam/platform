@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\RewardActivity;
+use App\Models\Reward;
 use App\Models\RewardUnAssignedSlot;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
@@ -31,6 +32,14 @@ class Slot extends Model
     public function rewardActivity()
     {
         return $this->belongsTo(RewardActivity::class);
+    }
+
+    /**
+     * @return Reward
+     */
+    public function reward()
+    {
+        return $this->hasOne(Reward::class);
     }
 
     /**

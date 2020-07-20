@@ -90,4 +90,10 @@ class Advocate extends Model
 
         return $advocate->save();
     }
+
+    public static function rewardDelay() {
+        // $REWARD_DELAY = env("REWARD_DELAY_IN_SECONDS", 604800);
+        $REWARD_DELAY = env("REWARD_DELAY_IN_SECONDS", 420);
+        return Carbon::now()->addSeconds($REWARD_DELAY)->timestamp;
+    }
 }

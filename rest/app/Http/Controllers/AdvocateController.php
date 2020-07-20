@@ -163,9 +163,12 @@ class AdvocateController extends Controller
 
         // get current activities for the $wallet
         $slots = Slot::where('assigned_wallet', $wallet)
-            ->where('status', '!=', 'Rewarded')
-            ->union($unassignedSlots)
-            ->get();
+        ->whereNotIn('status', ['Rewarded', 'Completed'])
+        ->orWhere(function($query) {
+            $query->where('status', 'Completed')->where('due_date', "<=", Advocate::rewardDelay());
+        })
+        ->union($unassignedSlots)
+        ->get();
 
         // return result
         return $this->response->paginator(

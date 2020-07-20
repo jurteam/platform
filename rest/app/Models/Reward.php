@@ -5,9 +5,18 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Log;
+use App\Models\Slot;
+
 
 class Reward extends Model
 {
+    /**
+     * @return Slot
+     */
+    public function slot()
+    {
+        return $this->belongsTo(Slot::class);
+    }
     /**
      * create Reward when `SlotRewarded` event triggered
      *

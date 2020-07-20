@@ -7,6 +7,8 @@ use App\Transformers\RewardTransformer;
 use Dingo\Api\Routing\Helpers;
 use Illuminate\Http\Request;
 use \App\Models\Reward;
+use \App\Models\Advocate;
+use \App\Models\Slot;
 
 class RewardController extends Controller
 {
@@ -19,10 +21,17 @@ class RewardController extends Controller
      */
     public function show(Request $request, $wallet)
     {
-        $rewards = Reward::where('rewardee_wallet', $wallet)->get();
+        $slots = Slot::where('assigned_wallet', $wallet)
+        ->where('status', 'Rewarded')
+        ->orWhere(function($query) {
+            $query
+            ->where('status', 'Completed')
+            ->where('due_date', ">", Advocate::rewardDelay());
+        })
+        ->get();
 
         return $this->response->paginator(
-            $this->customPagination($rewards, $request),
+            $this->customPagination($slots, $request),
             new RewardTransformer
         );
     }
