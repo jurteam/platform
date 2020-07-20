@@ -63,8 +63,6 @@ const AdvocateBio = ({ advocasy, address, updateBioAction }) => {
     return currentUser.toLowerCase() === address.toLowerCase();
   };
 
-  console.log("logged in user: ", loggedInUser());
-
   return (
     <Box types="spread-out center">
       <div className="jur-bio-box">

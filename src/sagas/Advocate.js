@@ -39,7 +39,8 @@ import {
   ADVOCATE_COPY,
   ADVOCATE_MESSAGE,
   ADVOCATE_UPDATE_BIO,
-  API_CATCH
+  API_CATCH,
+  ADVOCATE_UPDATE_BIO_SUCCEEDED
 } from "../reducers/types";
 import { copyToClipboard } from "../utils/AdvocateHelpers";
 
@@ -217,7 +218,7 @@ function* updateBioSaga(action) {
     );
     console.log("saga response: ", response);
     yield put({
-      type: ADVOCATE_UPDATE_BIO,
+      type: ADVOCATE_UPDATE_BIO_SUCCEEDED,
       payload: response
     });
   } catch (error) {
