@@ -57,4 +57,21 @@ class ConsumePollingServiceController extends Controller
         // return consume status
         return ['status' => $success];
     }
+
+    /**
+     * consume polling service for OathKeeper
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function status(Request $request)
+    {
+        // get body of array and convert it to object
+        $transaction = array_to_object($request->all());
+
+        // process transaction
+        $success = PollingHelper::processStatusEvent($transaction);
+
+        // return consume status
+        return ['status' => $success];
+    }
 }

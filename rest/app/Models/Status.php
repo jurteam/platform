@@ -23,46 +23,16 @@ class Status extends Model
     }
 
     /**
-     * Consume AMQP
+     * create Reward when `StatusAdded` event triggered
      *
-     * @param Object $payload: payload data send by AMQP server
+     * @param Object $payload: payload data send by Polling-Server
      * @return Boolean the success or failure message
      */
-    public static function consumeAMQP($payload)
+    public static function statusAdded($payload)
     {
-        $saved = false;
+        // get data object
+        $data = $payload->data;
 
-        switch ($payload->eventIdentifier) {
-
-            // StatusAdded event
-            case 'StatusAdded':
-                $saved = Status::store($payload->data);
-                break;
-
-            // StateChanged event
-            case 'StateChanged':
-                $saved = Status::updateState($payload->data);
-                break;
-
-            // StatusTypeChanged event
-            case 'StatusTypeChanged':
-                $saved = Status::updateStatusType($payload->data);
-                break;
-
-        }
-
-        // Return process status
-        return $saved;
-    }
-
-    /**
-     * Store status
-     *
-     * @param Object $data: payload data send by AMQP server
-     * @return Boolean the success or failure message
-     */
-    public static function store($data)
-    {
         $exists = Status::where(['wallet' => $data->statusHolder])->first();
 
         info($exists);
@@ -84,13 +54,16 @@ class Status extends Model
     }
 
     /**
-     * Update state of a Status
+     * create Reward when `StateChanged` event triggered
      *
-     * @param Object $data: payload data send by AMQP server
+     * @param Object $payload: payload data send by Polling-Server
      * @return Boolean the success or failure message
      */
-    public static function updateState($data)
+    public static function stateChanged($payload)
     {
+        // get data object
+        $data = $payload->data;
+
         $status = Status::where(['wallet' => $data->statusHolder])->first();
 
         if (!isset($status)) {
@@ -104,13 +77,16 @@ class Status extends Model
     }
 
     /**
-     * Update type of a Status
+     * create Reward when `StatusTypeChanged` event triggered
      *
-     * @param Object $data: payload data send by AMQP server
+     * @param Object $payload: payload data send by Polling-Server
      * @return Boolean the success or failure message
      */
-    public static function updateStatusType($data)
+    public static function statusTypeChanged($payload)
     {
+        // get data object
+        $data = $payload->data;
+
         $status = Status::where(['wallet' => $data->statusHolder])->first();
 
         if (!isset($status)) {

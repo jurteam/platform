@@ -8,6 +8,7 @@ use \App\Models\Reward;
 use \App\Models\RewardActivity;
 use \App\Models\RoleContract;
 use \App\Models\Slot;
+use \App\Models\Status;
 
 class PollingHelper
 {
@@ -103,6 +104,31 @@ class PollingHelper
 
             case 'SlotRewarded':
                 $success = Reward::slotRewarded($transaction);
+                break;
+        }
+
+        return $success;
+    }
+
+    public static function processStatusEvent($transaction)
+    {
+        // intial status for success
+        $success = -1;
+
+        switch ($transaction->event_name) {
+            // StatusAdded event
+            case 'StatusAdded':
+                $success = Status::statusAdded($transaction);
+                break;
+
+            // StateChanged event
+            case 'StateChanged':
+                $success = Status::stateChanged($transaction);
+                break;
+
+            // StatusTypeChanged event
+            case 'StatusTypeChanged':
+                $success = Status::statusTypeChanged($transaction);
                 break;
         }
 

@@ -8,6 +8,7 @@ $api->version('v1', function ($api) {
         $api->post('oath-keeper', 'App\Http\Controllers\ConsumePollingServiceController@oathKeeper');
         $api->post('advocate', 'App\Http\Controllers\ConsumePollingServiceController@advocate');
         $api->post('reward', 'App\Http\Controllers\ConsumePollingServiceController@reward');
+        $api->post('status', 'App\Http\Controllers\ConsumePollingServiceController@status');
     });
 
     $api->group(['middleware' => 'wallet.auth'], function ($api) {
