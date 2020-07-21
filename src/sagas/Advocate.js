@@ -210,13 +210,12 @@ function* copy() {
 
 function* updateBioSaga(action) {
   try {
-    console.log("action", action);
     const response = yield call(
       updateBio,
       action.payload.bio,
       action.payload.address
     );
-    console.log("saga response: ", response);
+
     yield put({
       type: ADVOCATE_UPDATE_BIO_SUCCEEDED,
       payload: response
