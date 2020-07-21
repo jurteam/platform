@@ -1,5 +1,6 @@
 const REWARD_DELAY_IN_SECONDS =
-  process.env.REACT_APP_REWARD_DELAY_IN_SECONDS || 604800; // 604800 seconds = 7 days
+  Number(process.env.REACT_APP_REWARD_DELAY_IN_SECONDS) || 604800; // 604800 seconds = 7 days
+console.log("REWARD_DELAY_IN_SECONDS", REWARD_DELAY_IN_SECONDS);
 
 export const SOCIAL_NETWORK_OPTIONS = [
   { value: "facebook" },
@@ -42,14 +43,6 @@ export const isMyProfile = (myAddress = "", location = window.location) => {
 export const getAddressFromUrl = (location = window.location) =>
   location.pathname.split("/").reverse()[0];
 
-export const canWithdraw = ({ dueDate, rewardedOn }) => {
-  if (rewardedOn) return false;
-
-  const allowedSince = new Date(Number(dueDate) * 1000);
-  if (new Date() > allowedSince) return true;
-  return false;
-};
-
 export const keyScId = (activityScId, slotScId) =>
   [activityScId, slotScId].join("*");
 
@@ -59,10 +52,18 @@ export const keyRead = (states, activityScId, slotScId) => {
 
 export const canMarkComplete = ({ dueDate, state }) => {
   if ("assigned" === state.toLowerCase()) {
-    const allowedSince = addSeconds(new Date(Number(dueDate) * 1000));
+    const allowedSince = new Date(Number(dueDate) * 1000);
     if (new Date() > allowedSince) return true;
   }
 
+  return false;
+};
+
+export const canWithdraw = ({ dueDate, rewardedOn }) => {
+  if (rewardedOn) return false;
+
+  const allowedSince = addSeconds(new Date(Number(dueDate) * 1000));
+  if (new Date() > allowedSince) return true;
   return false;
 };
 
