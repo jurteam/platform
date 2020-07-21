@@ -17,8 +17,6 @@ export const colorSlots = (filled, total) => {
 };
 
 export const copyToClipboard = text => {
-  console.log("copyToClipboard");
-
   const el = document.createElement("textarea");
   el.value = text;
   document.body.appendChild(el);
@@ -72,13 +70,17 @@ export function makeKey({ activityScId, slotScId }) {
   return keyScId(activityScId, slotScId);
 }
 
-export function setSlotState(state, { activityScId, slotScId }, slots) {
+export function setSlotState(state, slot, slots) {
+  const { activityScId, slotScId } = slot;
   return slots.map(a => {
     if (
       a.attributes.activityScId === activityScId &&
       a.attributes.slotScId === slotScId
     ) {
-      return { ...a, attributes: { ...a.attributes, state } };
+      return {
+        ...a,
+        attributes: { ...a.attributes, ...slot, state }
+      };
     }
     return a;
   });

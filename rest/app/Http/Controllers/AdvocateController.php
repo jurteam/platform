@@ -69,6 +69,7 @@ class AdvocateController extends Controller
         // sum amount of Alloted slots
         $totalAlloted = Slot::where('status', '!=', 'Cancelled')
             ->where('status', '!=', 'Unassigned')
+            ->whereNotIn('reward_activity_id', RewardActivity::where('is_active', false)->pluck('id'))
             ->sum('reward_amount');
 
         // get type of request

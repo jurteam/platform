@@ -16,24 +16,21 @@ export class ContractsFilters extends Component {
   };
 
   handleChange = (type, value) => {
-    this.setState((state) => {
+    this.setState(state => {
       const newState = { ...state, [type]: value };
-      value = type === 'searchText' && value === '' ? null : value
-      if (typeof this.props.onChange === "function") this.props.onChange(type, value);
+      value = type === "searchText" && value === "" ? null : value;
+      if (typeof this.props.onChange === "function")
+        this.props.onChange(type, value);
       return newState;
     });
-    log('ContractsFilters handlechange',{type:type,value:value})
-
-
+    log("ContractsFilters handlechange", { type: type, value: value });
   };
 
   handleReset = () => {
     if (typeof this.props.onReset === "function") this.props.onReset();
   };
 
-
   render() {
-    console.log("form date: ", this.state.fromDate);
     return (
       <div
         className={`jur-contracts-filter ${
@@ -43,22 +40,26 @@ export class ContractsFilters extends Component {
         <Form.Select
           placeholder="Filter by Status..."
           value={this.state.status}
-          onChange={(value) => this.handleChange("status", value)}
+          onChange={value => this.handleChange("status", value)}
           options={statusList}
         />
         <CalendarFilter
           name="from"
           selectedDate={Date.parse(this.state.fromDate)}
-          onChange={(value) => this.handleChange("fromDate", getFormattedDate(value))}
+          onChange={value =>
+            this.handleChange("fromDate", getFormattedDate(value))
+          }
         />
         <span className="separator" />
         <CalendarFilter
           name="to"
           selectedDate={Date.parse(this.state.toDate)}
-          onChange={(value) => this.handleChange("toDate", getFormattedDate(value))}
+          onChange={value =>
+            this.handleChange("toDate", getFormattedDate(value))
+          }
         />
         <Form.Search
-          onChange={(value) => this.handleChange("searchText", value)}
+          onChange={value => this.handleChange("searchText", value)}
         />
         {/* <Button
           color="info"
