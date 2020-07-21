@@ -17,8 +17,6 @@ export const colorSlots = (filled, total) => {
 };
 
 export const copyToClipboard = text => {
-  console.log("copyToClipboard");
-
   const el = document.createElement("textarea");
   el.value = text;
   document.body.appendChild(el);

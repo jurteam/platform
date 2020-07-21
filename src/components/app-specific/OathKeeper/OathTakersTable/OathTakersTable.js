@@ -157,9 +157,7 @@ const OathTakersTable = ({
               fetchOathsOf={fetchOathsOf}
               key={`${r.id}-${index}`}
               isSelected={selected === r.id}
-              onClick={() =>
-                console.log("OathTakersTable onClick", r.id, selectRow(r.id))
-              }
+              onClick={() => selectRow(r.id)}
               oaths={r.oaths}
               {...r.attributes}
             />
