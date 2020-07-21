@@ -169,6 +169,7 @@ class AdvocateController extends Controller
                 $query->where('status', 'Completed')->where('due_date', "<=", Carbon::now()->addSeconds(config('reward.rewardDelay'))->timestamp);
             })
             ->union($unassignedSlots)
+            ->orderBy('updated_at', 'desc')
             ->get();
 
         // return result
