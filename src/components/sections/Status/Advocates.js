@@ -28,10 +28,12 @@ const Advocates = ({ resetSorts }) => {
 
   return (
     <PageLayout breadcrumbs={b}>
-      <Main className="jur-safe-margin">
-        <AdvocatesHeader />
-        <AdvocatesIndex />
-        <AdvocatesFooterBox />
+      <Main>
+        <div className="jur-safe-margin">
+          <AdvocatesHeader />
+          <AdvocatesIndex />
+          <AdvocatesFooterBox />
+        </div>
       </Main>
     </PageLayout>
   );
