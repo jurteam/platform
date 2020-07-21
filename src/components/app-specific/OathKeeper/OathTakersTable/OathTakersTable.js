@@ -20,16 +20,16 @@ const OathTakerTableHeaderRow = ({ onSort, ...rest }) => (
       Rank
     </Table.Cell>
     <Table.Cell>Wallet</Table.Cell>
-    <Table.Cell onClick={onSort} fieldName="Amount">
+    <Table.Cell onClick={onSort} fieldName="Amount" size="medium">
       Amount Staked
     </Table.Cell>
-    <Table.Cell onClick={onSort} fieldName="OathCount">
+    <Table.Cell onClick={onSort} fieldName="OathCount" size="small">
       Oaths
     </Table.Cell>
-    <Table.Cell>Amount</Table.Cell>
-    <Table.Cell>Oath Date</Table.Cell>
-    <Table.Cell>Duration</Table.Cell>
-    <Table.Cell>Unlock Date</Table.Cell>
+    <Table.Cell size="small">Amount</Table.Cell>
+    <Table.Cell size="small">Oath Date</Table.Cell>
+    <Table.Cell size="small">Duration</Table.Cell>
+    <Table.Cell size="small">Unlock Date</Table.Cell>
   </Table.Row>
 );
 
