@@ -12,6 +12,7 @@ import {
 } from "../../../../reducers/types";
 import RankBadge from "JurCommon/RankBadge";
 import { i18nDateFormat, oathState } from "../../../../utils/helpers";
+import { orderTosign } from "JurUtils/helpers";
 import { TableCell } from "../../../common/TableCell/TableCell";
 
 const OathTakerTableHeaderRow = ({ onSort, ...rest }) => (
@@ -179,20 +180,8 @@ const fetchOathsOf = address => ({
   payload: address
 });
 
-const orderTosign = order => {
-  switch (order) {
-    case 1:
-      return "+";
-    case 2:
-      return "-";
-    default:
-      return "";
-  }
-};
-
 const onSortChange = (field, order) => {
-  const sign = orderTosign(order);
-  const sortBy = sign ? sign + field : "";
+  const sortBy = orderTosign(order, field);
   return { type: OATH_KEEPER_FETCH_OATH_TAKERS, payload: { sortBy } };
 };
 
