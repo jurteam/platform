@@ -147,7 +147,7 @@ function* withdraw(action) {
     prey.onFound = () => {
       global.store.dispatch({
         type: ADVOCATE_REWARD,
-        payload: action.payload
+        payload: { ...action.payload, rewardedOn: new Date().getTime() / 1000 }
       });
 
       global.store.dispatch({ type: LOOKUP_WALLET_BALANCE });
