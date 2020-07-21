@@ -7,3 +7,16 @@
     color: $primary-hover;
   }
 }
+
+@mixin fadeIn {
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 100%;
+    }
+  }
+
+  animation: fadeIn 300ms ease-in-out;
+}
