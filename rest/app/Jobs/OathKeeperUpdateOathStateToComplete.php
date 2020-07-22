@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use Illuminate\Support\Facades\Mail;
 use \App\Jobs\OathKeeperGenerateAnalytics;
 use \App\Mail\OathKeeper\OathKeeperEmailOathMatured;
 use \App\Models\Oath;

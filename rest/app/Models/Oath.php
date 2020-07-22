@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Mail;
 use Log;
 use \App\Mail\OathKeeper\OathKeeperEmailOathWithdrawn;
 use \App\Models\OathKeeper;
