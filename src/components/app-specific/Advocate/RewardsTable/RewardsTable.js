@@ -17,7 +17,7 @@ const RewardsTable = ({ rows, address, fetchRewards, isPublic }) => {
     <Table>
       <Table.Head>
         <Table.Row>
-          <Table.Cell align="center" size="xsmall" />
+          <Table.Cell align="center" size="xxsmall" />
           <Table.Cell>Activity</Table.Cell>
           <Table.Cell size="small">Reward</Table.Cell>
           <Table.Cell size="small">Date</Table.Cell>

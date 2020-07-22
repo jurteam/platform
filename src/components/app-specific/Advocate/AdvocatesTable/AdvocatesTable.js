@@ -15,7 +15,7 @@ const AdvocatesTable = ({ advocates, onSort }) => (
       <Table.Row>
         <Table.Cell>Wallet</Table.Cell>
         <Table.Cell>Type</Table.Cell>
-        <Table.Cell onClick={onSort} fieldName="TotalEarned">
+        <Table.Cell onClick={onSort} fieldName="TotalEarned" size="medium">
           Total Earned
         </Table.Cell>
         <Table.Cell>Action</Table.Cell>
