@@ -5,23 +5,29 @@ import { ADVOCATE_WITHDRAW } from "../../../../reducers/types";
 import { getAdvocateWithdraws } from "../../../../sagas/Selectors";
 import { keyRead } from "JurUtils/AdvocateHelpers";
 
-const WithdrawButton = ({ activityScId, slotScId, withdraws, onWithdraw }) => {
+const WithdrawButton = ({
+  rewardAmount,
+  activityScId,
+  slotScId,
+  withdraws,
+  onWithdraw
+}) => {
   const inProgress = keyRead(withdraws, activityScId, slotScId);
   return (
     <Button
       className="jur-table__action-button"
       variant="contained"
       disabled={inProgress}
-      onClick={() => onWithdraw(activityScId, slotScId)}
+      onClick={() => onWithdraw(activityScId, slotScId, rewardAmount)}
     >
       {inProgress ? "Withdrawing" : "Withdraw"}
     </Button>
   );
 };
 
-const onWithdraw = (activityScId, slotScId) => ({
+const onWithdraw = (activityScId, slotScId, rewardAmount) => ({
   type: ADVOCATE_WITHDRAW,
-  payload: { activityScId, slotScId }
+  payload: { activityScId, slotScId, rewardAmount }
 });
 
 const mapDispatchToProps = { onWithdraw };
