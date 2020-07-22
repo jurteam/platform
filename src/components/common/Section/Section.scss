@@ -1,7 +1,10 @@
 @import "../../../assets/scss/variables";
+@import "../../../assets/scss/animationMixin";
 
 .jur-section {
   max-width: 920px;
   margin: auto;
   font-family: $font-poppins;
+
+  @include fadeIn();
 }
