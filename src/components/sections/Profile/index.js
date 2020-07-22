@@ -28,13 +28,13 @@ class ProfileProvider extends Component {
         },
         {
           label: i18n.myOaths,
-          to: "/oath-keeper/my-oaths",
+          to: "/profile/my-oaths",
           exact: true,
           component: <MyOathsSection />
         },
         {
           label: i18n.advocate,
-          to: "/advocates/my-advocasy",
+          to: "/profile/my-advocacy",
           exact: true,
           component: <AdvocateSection />
         },

@@ -10,6 +10,7 @@ const RewardsAction = ({ activity, isPublic }) =>
     <WithdrawButton
       activityScId={activity.activityScId}
       slotScId={activity.slotScId}
+      rewardAmount={activity.rewardAmount}
     />
   ) : (
     <span>

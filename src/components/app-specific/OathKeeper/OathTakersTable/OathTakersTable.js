@@ -17,7 +17,7 @@ import { TableCell } from "../../../common/TableCell/TableCell";
 
 const OathTakerTableHeaderRow = ({ onSort, ...rest }) => (
   <Table.Row {...rest}>
-    <Table.Cell align="center" onClick={onSort} fieldName="Rank">
+    <Table.Cell align="center" onClick={onSort} fieldName="Rank" size="xsmall">
       Rank
     </Table.Cell>
     <Table.Cell>Wallet</Table.Cell>

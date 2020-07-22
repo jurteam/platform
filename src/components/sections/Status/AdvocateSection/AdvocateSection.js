@@ -104,9 +104,21 @@ const fetchAdvocate = address => ({
 
 const resetAdvocate = () => ({ type: ADVOCATE_RESET_PROFILE });
 
-const toggleDetails = () => ({
-  type: ADVOCATE_TOGGLE_AVAILABLE
-});
+const toggleDetails = () => {
+  setTimeout(() => {
+    var element = document.querySelector("#jur-advocate__availabe-box");
+    // smooth scroll to element and align it at the bottom
+    element
+      ? element.scrollIntoView({ behavior: "smooth", block: "start" })
+      : document
+          .querySelector(".jur-section")
+          .scrollIntoView({ behavior: "smooth", block: "start" });
+  }, 200);
+
+  return {
+    type: ADVOCATE_TOGGLE_AVAILABLE
+  };
+};
 
 const mapDispatchToProps = { fetchAdvocate, toggleDetails, resetAdvocate };
 

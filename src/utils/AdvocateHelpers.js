@@ -36,7 +36,7 @@ export const statusUrlOf = address =>
 
 export const isMyProfile = (myAddress = "", location = window.location) => {
   const path = location.pathname.toLocaleLowerCase();
-  if (path.endsWith("my-advocasy")) return true;
+  if (path.endsWith("my-advocacy")) return true;
   return myAddress.length && path.endsWith(myAddress.toLocaleLowerCase());
 };
 

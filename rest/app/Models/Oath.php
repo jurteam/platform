@@ -4,7 +4,9 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Mail;
 use Log;
+use \App\Mail\OathKeeper\OathKeeperEmailOathWithdrawn;
 use \App\Models\OathKeeper;
 
 class Oath extends Model
@@ -61,11 +63,18 @@ class Oath extends Model
         $oath = Oath::where([
             'wallet' => $payload->data->_beneficiary,
             'oath_index' => $payload->data->_oathIndex
-        ])->first();
+        ])->where('current_state', '!=', 'withdrawn')->first();
 
-        if (!$oath) {
-            Log::notice("Received an oath's withdraw which is not in the database. _beneficiary:" . $payload->data->_beneficiary . " _oathIndex:" . $payload->data->_oathIndex);
+        if (!isset($oath)) {
             return false;
+        }
+
+        // get user by wallet
+        $user = User::where('wallet', $payload->data->_beneficiary)->first();
+
+        // send a notification mail if user has updated mail id
+        if (isset($user->email)) {
+            Mail::to($user->email)->queue(new OathKeeperEmailOathWithdrawn($user, $oath));
         }
 
         $oath->withdrawn_at = Carbon::createFromTimestamp($payload->timestamp);

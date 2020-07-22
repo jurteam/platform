@@ -96,9 +96,14 @@ export default (state = INITIAL_STATE, action) => {
         }
       };
     case ADVOCATE_REWARD:
+      const rewardAmount = Number(action.payload.rewardAmount);
+      const rewardsBalance = state.advocate.rewardsBalance - rewardAmount;
+      const totalEarned = state.advocate.totalEarned + rewardAmount;
+
       return {
         ...state,
         rewards: setSlotState("Rewarded", action.payload, state.rewards),
+        advocate: { ...state.advocate, rewardsBalance, totalEarned },
         withdraws: {
           ...state.withdraws,
           [makeKey(action.payload)]: false
