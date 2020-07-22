@@ -15,7 +15,7 @@ const Advocates = () => {
   const b = [
     {
       label: labels.advocate,
-      to: "/profile/my-advocasy",
+      to: "/profile/my-advocacy",
       exact: true
     },
     {

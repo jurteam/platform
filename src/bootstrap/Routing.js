@@ -116,7 +116,7 @@ export const createRoutes = withComponents => {
     },
     {
       exact: true,
-      path: "/profile/my-advocasy",
+      path: "/profile/my-advocacy",
       component: withComponents && Profile,
       title: i18n.advocate
     },

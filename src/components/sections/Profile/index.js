@@ -34,7 +34,7 @@ class ProfileProvider extends Component {
         },
         {
           label: i18n.advocate,
-          to: "/profile/my-advocasy",
+          to: "/profile/my-advocacy",
           exact: true,
           component: <AdvocateSection />
         },
