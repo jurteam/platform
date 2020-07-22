@@ -52,12 +52,14 @@ class UserController extends Controller
         $this->validate($request, [
             'accepted_terms' => 'accepted',
             'name' => [
+                'nullable',
                 Rule::unique('users')->ignore($user->id)
             ],
             'email' => [
+                'nullable',
                 Rule::unique('users')->ignore($user->id)
             ],
-            'url' => 'url'
+            'url' => 'nullable|url'
         ]);
 
         $user->update($request->all());
