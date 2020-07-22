@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use App\Models\RewardActivity;
 use App\Models\Reward;
+use App\Models\RewardActivity;
 use App\Models\RewardUnAssignedSlot;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
@@ -110,13 +110,13 @@ class Slot extends Model
             $slot->assigned_wallet = null;
         }
 
+        $slot->save();
+
         if ($data->newState == 'Cancelled') {
             if ($alreadyCancelled == 0) {
                 $rewardActivity->number_of_slots = $rewardActivity->number_of_slots - 1; // reduce number of slots
             }
         }
-
-        $slot->save();
 
         // update assigned slot count
         $rewardActivity->assigned_slots = Slot::whereNotIn('status', ['Unassigned', 'Cancelled'])
