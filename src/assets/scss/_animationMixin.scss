@@ -8,6 +8,14 @@
   }
 }
 
+@mixin secondary-hover {
+  transition: all ease-in-out 400ms;
+
+  &:hover {
+    color: $secondary-hover;
+  }
+}
+
 @mixin fadeIn {
   @keyframes fadeIn {
     0% {
