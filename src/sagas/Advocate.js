@@ -14,7 +14,8 @@ import {
   getWallet,
   getAdvocateRewardsPagination,
   getAdvocateYourActivitiesPagination,
-  getShareText
+  getShareText,
+  getUser
 } from "./Selectors";
 import {
   ADVOCATE_SHARE,
@@ -40,7 +41,8 @@ import {
   ADVOCATE_MESSAGE,
   ADVOCATE_UPDATE_BIO,
   API_CATCH,
-  ADVOCATE_UPDATE_BIO_SUCCEEDED
+  ADVOCATE_UPDATE_BIO_SUCCEEDED,
+  ADVOCATE_SHOW_DISCLAIMER
 } from "../reducers/types";
 import { copyToClipboard } from "../utils/AdvocateHelpers";
 
@@ -57,15 +59,23 @@ function* fetchAdvocate(action) {
     address = wallet.address;
   }
 
-  const res = yield advocates(address);
+  try {
+    const res = yield advocates(address);
 
-  const payload = {
-    advocate: res.data.attributes,
-    advocateMeta: res.meta,
-    shareText: computeShareText(address, wallet, res)
-  };
+    const payload = {
+      advocate: res.data.attributes,
+      advocateMeta: res.meta,
+      shareText: computeShareText(address, wallet, res)
+    };
 
-  yield put({ type: ADVOCATE_UPDATE_PROFILE, payload });
+    yield put({ type: ADVOCATE_UPDATE_PROFILE, payload });
+  } catch (error) {
+    yield put({ type: API_CATCH, error });
+    const user = yield select(getUser);
+    if (!user.disclaimer.optin) {
+      yield put({ type: ADVOCATE_SHOW_DISCLAIMER });
+    }
+  }
 }
 
 function computeShareText(address, wallet, res) {
