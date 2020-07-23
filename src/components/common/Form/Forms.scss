@@ -1,4 +1,5 @@
 @import "../../../assets/scss/variables";
+@import "../../../assets/scss/animationMixin";
 
 .jur-form {
   *,
@@ -224,8 +225,15 @@
 
 .react-datepicker__close-icon::after {
   background-color: transparent;
-  color: #002257;
+  content: $close-icon-svg;
+  color: $secondary;
   font-size: 16px;
+
+  // @include secondary-hover();
+
+  &:hover {
+    content: $close-icon-svg-hover;
+  }
 }
 
 .react-datepicker-popper {

@@ -4,8 +4,15 @@ import Form from "./";
 
 import "react-datepicker/dist/react-datepicker.css";
 
-export const FormDatePicker = ( props ) => {
-  const { selectedDate, error, errorMsg, onChange, ...rest } = props;
+export const FormDatePicker = props => {
+  const {
+    selectedDate,
+    error,
+    errorMsg,
+    onChange,
+    isClearable,
+    ...rest
+  } = props;
   return (
     <>
       <DatePicker
@@ -13,10 +20,14 @@ export const FormDatePicker = ( props ) => {
         selected={selectedDate}
         onChange={onChange}
         dateFormat="dd/MM/yyyy"
-        isClearable
+        isClearable={isClearable}
         {...rest}
       />
       {error && errorMsg && <Form.ErrorMsg msg={errorMsg} />}
     </>
   );
+};
+
+FormDatePicker.defaultProps = {
+  isClearable: true
 };

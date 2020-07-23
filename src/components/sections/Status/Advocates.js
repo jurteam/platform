@@ -17,7 +17,7 @@ const Advocates = ({ resetSorts }) => {
   const b = [
     {
       label: labels.advocate,
-      to: "/advocates/my-advocasy",
+      to: "/profile/my-advocacy",
       exact: true
     },
     {
@@ -28,10 +28,12 @@ const Advocates = ({ resetSorts }) => {
 
   return (
     <PageLayout breadcrumbs={b}>
-      <Main className="jur-safe-margin">
-        <AdvocatesHeader />
-        <AdvocatesIndex />
-        <AdvocatesFooterBox />
+      <Main>
+        <div className="jur-safe-margin">
+          <AdvocatesHeader />
+          <AdvocatesIndex />
+          <AdvocatesFooterBox />
+        </div>
       </Main>
     </PageLayout>
   );

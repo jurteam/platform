@@ -147,7 +147,7 @@ function* withdraw(action) {
     prey.onFound = () => {
       global.store.dispatch({
         type: ADVOCATE_REWARD,
-        payload: action.payload
+        payload: { ...action.payload, rewardedOn: new Date().getTime() / 1000 }
       });
 
       global.store.dispatch({ type: LOOKUP_WALLET_BALANCE });
@@ -210,13 +210,12 @@ function* copy() {
 
 function* updateBioSaga(action) {
   try {
-    console.log("action", action);
     const response = yield call(
       updateBio,
       action.payload.bio,
       action.payload.address
     );
-    console.log("saga response: ", response);
+
     yield put({
       type: ADVOCATE_UPDATE_BIO_SUCCEEDED,
       payload: response

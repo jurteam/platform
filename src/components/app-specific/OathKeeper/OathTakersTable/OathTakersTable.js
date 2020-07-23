@@ -12,24 +12,25 @@ import {
 } from "../../../../reducers/types";
 import RankBadge from "JurCommon/RankBadge";
 import { i18nDateFormat, oathState } from "../../../../utils/helpers";
+import { orderTosign } from "JurUtils/helpers";
 import { TableCell } from "../../../common/TableCell/TableCell";
 
 const OathTakerTableHeaderRow = ({ onSort, ...rest }) => (
   <Table.Row {...rest}>
-    <Table.Cell align="center" onClick={onSort} fieldName="Rank">
+    <Table.Cell align="center" onClick={onSort} fieldName="Rank" size="xsmall">
       Rank
     </Table.Cell>
     <Table.Cell>Wallet</Table.Cell>
-    <Table.Cell onClick={onSort} fieldName="Amount">
+    <Table.Cell onClick={onSort} fieldName="Amount" size="medium">
       Amount Staked
     </Table.Cell>
-    <Table.Cell onClick={onSort} fieldName="OathCount">
+    <Table.Cell onClick={onSort} fieldName="OathCount" size="small">
       Oaths
     </Table.Cell>
-    <Table.Cell>Amount</Table.Cell>
-    <Table.Cell>Oath Date</Table.Cell>
-    <Table.Cell>Duration</Table.Cell>
-    <Table.Cell>Unlock Date</Table.Cell>
+    <Table.Cell size="small">Amount</Table.Cell>
+    <Table.Cell size="small">Oath Date</Table.Cell>
+    <Table.Cell size="small">Duration</Table.Cell>
+    <Table.Cell size="small">Unlock Date</Table.Cell>
   </Table.Row>
 );
 
@@ -157,9 +158,7 @@ const OathTakersTable = ({
               fetchOathsOf={fetchOathsOf}
               key={`${r.id}-${index}`}
               isSelected={selected === r.id}
-              onClick={() =>
-                console.log("OathTakersTable onClick", r.id, selectRow(r.id))
-              }
+              onClick={() => selectRow(r.id)}
               oaths={r.oaths}
               {...r.attributes}
             />
@@ -181,20 +180,8 @@ const fetchOathsOf = address => ({
   payload: address
 });
 
-const orderTosign = order => {
-  switch (order) {
-    case 1:
-      return "+";
-    case 2:
-      return "-";
-    default:
-      return "";
-  }
-};
-
 const onSortChange = (field, order) => {
-  const sign = orderTosign(order);
-  const sortBy = sign ? sign + field : "";
+  const sortBy = orderTosign(order, field);
   return { type: OATH_KEEPER_FETCH_OATH_TAKERS, payload: { sortBy } };
 };
 

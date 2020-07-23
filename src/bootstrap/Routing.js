@@ -110,13 +110,13 @@ export const createRoutes = withComponents => {
     },
     {
       exact: true,
-      path: "/oath-keeper/my-oaths",
+      path: "/profile/my-oaths",
       component: withComponents && Profile,
       title: i18n.oathTakers
     },
     {
       exact: true,
-      path: "/advocates/my-advocasy",
+      path: "/profile/my-advocacy",
       component: withComponents && Profile,
       title: i18n.advocate
     },

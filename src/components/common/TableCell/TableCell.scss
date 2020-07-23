@@ -1,10 +1,18 @@
 .jur-table__cell {
   &-size {
+    &-medium {
+      width: 200px;
+    }
+
     &-small {
       width: 155px;
     }
 
     &-xsmall {
+      width: 100px;
+    }
+
+    &-xxsmall {
       width: 44px;
     }
   }

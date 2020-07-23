@@ -4,17 +4,11 @@ import Box from "JurCommon/Box";
 
 import "./advocate-bio.scss";
 import { ADVOCATE_UPDATE_BIO } from "../../../../reducers/types";
-import { isMyProfile } from "../../../../utils/AdvocateHelpers";
 
 const MAX_CONTENT_LENGTH = 1000;
 
 const AdvocateBio = ({ advocasy, address, updateBioAction }) => {
   const currentUser = global.store.getState().user.wallet;
-
-  console.log(
-    "adressssssssss: ",
-    currentUser.toLowerCase() === address.toLowerCase()
-  );
 
   const [editBox, setEditBox] = useState(false);
   const [error, setError] = useState();
@@ -52,10 +46,6 @@ const AdvocateBio = ({ advocasy, address, updateBioAction }) => {
     if (updatedBio !== undefined) {
       updateBioAction(address, updatedBio);
       setEditBox(false);
-      // global.store.dispatch({
-      //   type: ADVOCATE_UPDATE_BIO,
-      //   payload: {address, updatedBio}
-      // })
     }
   };
 

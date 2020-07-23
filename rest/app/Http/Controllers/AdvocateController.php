@@ -69,6 +69,7 @@ class AdvocateController extends Controller
         // sum amount of Alloted slots
         $totalAlloted = Slot::where('status', '!=', 'Cancelled')
             ->where('status', '!=', 'Unassigned')
+            ->whereNotIn('reward_activity_id', RewardActivity::where('is_active', false)->pluck('id'))
             ->sum('reward_amount');
 
         // get type of request
@@ -168,6 +169,7 @@ class AdvocateController extends Controller
                 $query->where('status', 'Completed')->where('due_date', "<=", Carbon::now()->addSeconds(config('reward.rewardDelay'))->timestamp);
             })
             ->union($unassignedSlots)
+            ->orderBy('updated_at', 'desc')
             ->get();
 
         // return result

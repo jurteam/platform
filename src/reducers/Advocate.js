@@ -27,6 +27,7 @@ import {
 } from "../utils/AdvocateHelpers";
 
 const INITIAL_ADVOCATE_STATE = {
+  isFetching: true,
   advocate: {
     rewardsBalance: "na",
     totalEarned: "na",
@@ -48,7 +49,6 @@ const INITIAL_STATE = {
   yourActivitiesMeta: { pagination: {} },
   withdraws: {},
   slotMarks: {},
-  isFetching: true,
   shareText:
     "I am an Advocate in the Jur ecosystem to support the development of a truly decentralized ecosystem for a new legal framework",
   isSharing: false,
@@ -96,9 +96,14 @@ export default (state = INITIAL_STATE, action) => {
         }
       };
     case ADVOCATE_REWARD:
+      const rewardAmount = Number(action.payload.rewardAmount);
+      const rewardsBalance = state.advocate.rewardsBalance - rewardAmount;
+      const totalEarned = state.advocate.totalEarned + rewardAmount;
+
       return {
         ...state,
         rewards: setSlotState("Rewarded", action.payload, state.rewards),
+        advocate: { ...state.advocate, rewardsBalance, totalEarned },
         withdraws: {
           ...state.withdraws,
           [makeKey(action.payload)]: false

@@ -11,6 +11,7 @@ export const CalendarFilter = ({
   onChange,
   name,
   className,
+  isClearable,
   ...rest
 }) => (
   <div className={`jur-calendar-filter ${className}`}>
@@ -19,6 +20,7 @@ export const CalendarFilter = ({
       onChange={onChange}
       maxDate={new Date()}
       {...rest}
+      isClearable={selectedDate ? isClearable : false}
     />
     {!selectedDate && (
       <div className="jur-calendar-filter__placeholder">
@@ -29,3 +31,7 @@ export const CalendarFilter = ({
     )}
   </div>
 );
+
+CalendarFilter.defaultProps = {
+  isClearable: true
+};

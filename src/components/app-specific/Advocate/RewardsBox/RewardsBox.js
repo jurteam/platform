@@ -1,7 +1,6 @@
 import React from "react";
 import "./RewardsBox.scss";
 import Box from "JurCommon/Box";
-import { ellipsisString } from "JurUtils/helpers";
 import RewardsTable from "../RewardsTable";
 import RewardsPagination from "../RewardsPagination";
 
@@ -14,7 +13,7 @@ const RewardsBox = ({ address, name, isPublic }) => (
 
 function rewardsTitle(address, name, isPublic) {
   if (!isPublic) return "Your Rewards";
-  const display = name || ellipsisString(address);
+  const display = name || address;
   return display + "'s Rewards";
 }
 

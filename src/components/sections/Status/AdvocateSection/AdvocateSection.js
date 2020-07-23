@@ -11,7 +11,8 @@ import {
   getAdvocate,
   getAdvocateMeta,
   getIsAdvocateAvailableShown,
-  getWallet
+  getWallet,
+  getAdvocateIsFetching
 } from "../../../../sagas/Selectors";
 import Text from "JurCommon/Text";
 import Disclaimer, { ModalDiscliamer } from "JurCommon/Disclaimer";
@@ -33,7 +34,7 @@ const AdvocateSection = ({
   isPublic,
   toggleDetails,
   isAdvocate,
-  bio,
+  isFetching,
   resetAdvocate
 }) => {
   const effectiveAddress = address || myAddress;
@@ -44,7 +45,7 @@ const AdvocateSection = ({
   }, [effectiveAddress, fetchAdvocate, resetAdvocate]);
 
   return (
-    <Section>
+    <Section showSpinner={isFetching}>
       <HeaderBox address={effectiveAddress} isAdvocate={isAdvocate} />
       {isAdvocate ? (
         <>
@@ -87,6 +88,7 @@ const AdvocateSection = ({
 const mapStateToProps = state => {
   const myAddress = getWallet(state).address;
   return {
+    isFetching: getAdvocateIsFetching(state),
     advocasy: getAdvocate(state),
     isShown: getIsAdvocateAvailableShown(state),
     myAddress,
@@ -102,9 +104,21 @@ const fetchAdvocate = address => ({
 
 const resetAdvocate = () => ({ type: ADVOCATE_RESET_PROFILE });
 
-const toggleDetails = () => ({
-  type: ADVOCATE_TOGGLE_AVAILABLE
-});
+const toggleDetails = () => {
+  setTimeout(() => {
+    var element = document.querySelector("#jur-advocate__availabe-box");
+    // smooth scroll to element and align it at the bottom
+    element
+      ? element.scrollIntoView({ behavior: "smooth", block: "start" })
+      : document
+          .querySelector(".jur-section")
+          .scrollIntoView({ behavior: "smooth", block: "start" });
+  }, 200);
+
+  return {
+    type: ADVOCATE_TOGGLE_AVAILABLE
+  };
+};
 
 const mapDispatchToProps = { fetchAdvocate, toggleDetails, resetAdvocate };
 

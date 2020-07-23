@@ -70,97 +70,102 @@ class PollingFetchCommand extends Command
         // get artisan argument
         $param = $this->argument('param');
 
-        if (isset($param)) {
+        if (!isset($param)) {
+            $this->sendRequest($url, [
+                'blockchain' => $choice == 'Blockchain'
+            ]);
 
-            // split `=` delimited param
-            $values = explode("=", $param);
+            return;
+        }
 
-            if (sizeof($values) != 2) {
-                abort(422, "wrong argument!");
-            }
+        // split `=` delimited param
+        $values = explode("=", $param);
 
-            switch ($values[0]) {
-                case 'block':
+        if (sizeof($values) != 2) {
+            abort(422, "wrong argument!");
+        }
 
-                    // validate block number
-                    if (!is_numeric($values[1])) {
-                        abort(422, "block should be a number!");
-                    }
+        switch ($values[0]) {
+            case 'block':
 
-                    // set url to get past events by block number
-                    $url = 'blocks/' . $values[1];
+                // validate block number
+                if (!is_numeric($values[1])) {
+                    abort(422, "block should be a number!");
+                }
 
-                    $this->sendRequest($url, [
-                        'blockchain' => $choice == 'Blockchain'
+                // set url to get past events by block number
+                $url = 'blocks/' . $values[1];
+
+                $this->sendRequest($url, [
+                    'blockchain' => $choice == 'Blockchain'
+                ]);
+
+                break;
+
+            case 'asset':
+
+                // set url to get past events by asset name
+                $url = 'assets/' . $values[1];
+
+                $this->sendRequest($url, [
+                    'blockchain' => $choice == 'Blockchain'
+                ]);
+
+                break;
+
+            case 'contract':
+
+                // set url to get past events by contract address
+                $url = 'contracts/' . $values[1];
+
+                $this->sendRequest($url, [
+                    'blockchain' => $choice == 'Blockchain'
+                ]);
+
+                break;
+
+            case 'tx':
+
+                // set url to get past events by transaction address
+                $url = 'tx/' . $values[1];
+
+                $this->sendRequest($url, [
+                    'blockchain' => $choice == 'Blockchain'
+                ]);
+
+                break;
+
+            case 'blocks':
+
+                // split comma delimited value
+                $blocks = explode(",", $values[1]);
+
+                // validate format
+                if (sizeof($blocks) != 2) {
+                    abort(422, "please specify from & to blocks properly!");
+                }
+
+                // validate block number
+                if (!is_numeric($blocks[0]) || !is_numeric($blocks[1])) {
+                    abort(422, "block numbers should be a valid number!");
+                }
+                // set url to get past events by transaction address
+                $url = 'blocks/';
+
+                for ($i = $blocks[0]; $i <= $blocks[1]; $i++) {
+                    $found = $this->sendRequest($url . $i, [
+                        'blockchain' => $choice == 'Blockchain',
+                        'from' => $blocks[0],
+                        'to' => $blocks[1]
                     ]);
 
-                    break;
-
-                case 'asset':
-
-                    // set url to get past events by asset name
-                    $url = 'assets/' . $values[1];
-
-                    $this->sendRequest($url, [
-                        'blockchain' => $choice == 'Blockchain'
-                    ]);
-
-                    break;
-
-                case 'contract':
-
-                    // set url to get past events by contract address
-                    $url = 'contracts/' . $values[1];
-
-                    $this->sendRequest($url, [
-                        'blockchain' => $choice == 'Blockchain'
-                    ]);
-
-                    break;
-
-                case 'tx':
-
-                    // set url to get past events by transaction address
-                    $url = 'tx/' . $values[1];
-
-                    $this->sendRequest($url, [
-                        'blockchain' => $choice == 'Blockchain'
-                    ]);
-
-                    break;
-
-                case 'blocks':
-
-                    // split comma delimited value
-                    $blocks = explode(",", $values[1]);
-
-                    // validate format
-                    if (sizeof($blocks) != 2) {
-                        abort(422, "please specify from & to blocks properly!");
+                    if (!$found) {
+                        $this->line('No transactions found for blockNumber => ' . $i);
+                        continue;
                     }
+                }
 
-                    // validate block number
-                    if (!is_numeric($blocks[0]) || !is_numeric($blocks[1])) {
-                        abort(422, "block numbers should be a valid number!");
-                    }
-                    // set url to get past events by transaction address
-                    $url = 'blocks/';
-
-                    for ($i = $blocks[0]; $i <= $blocks[1]; $i++) {
-                        $found = $this->sendRequest($url . $i, [
-                            'blockchain' => $choice == 'Blockchain',
-                            'from' => $blocks[0],
-                            'to' => $blocks[1]
-                        ]);
-
-                        if (!$found) {
-                            $this->line('No transactions found for blockNumber => ' . $i);
-                            continue;
-                        }
-                    }
-
-                    break;
-            }
+                break;
         }
     }
 
