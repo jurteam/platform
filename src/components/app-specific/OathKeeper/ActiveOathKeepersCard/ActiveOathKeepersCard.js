@@ -12,7 +12,8 @@ import { oathKeeperAnalytics } from "../../../../utils/helpers";
 import {
   getAnalytics,
   getGraphAnalytics,
-  getAnalyticsMeta
+  getAnalyticsMeta,
+  getLabels
 } from "../../../../sagas/Selectors";
 
 const CARD_NAME = oathKeeperAnalytics.cards.ACTIVE_OATH_KEEPER;
@@ -22,10 +23,15 @@ const ActiveOathKeepersCard = ({
   delta,
   graph,
   duration,
-  onEnumFilterChange
+  onEnumFilterChange,
+  labels
 }) => (
   <ChartCard className="jur-oath-keeper-analytics-card">
-    <ChartCard.Title>Active Oath Keepers</ChartCard.Title>
+    <ChartCard.Title
+      description={labels.oathKeeperActiveOathKeepersDescription}
+    >
+      Active Oath Keepers
+    </ChartCard.Title>
     <Row>
       <ChartCard.Metric>
         <Text type="span" className="jur-main-metric">
@@ -46,7 +52,8 @@ const mapStateToProps = state => ({
   value: getAnalytics(state, CARD_NAME).value,
   delta: getAnalytics(state, CARD_NAME).delta,
   graph: getGraphAnalytics(state, CARD_NAME),
-  duration: getAnalyticsMeta(state, CARD_NAME).duration
+  duration: getAnalyticsMeta(state, CARD_NAME).duration,
+  labels: getLabels(state)
 });
 
 const onEnumFilterChange = duration => ({

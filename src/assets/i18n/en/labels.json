@@ -231,5 +231,15 @@
   "url": "URL",
   "urlPlaceholder": "",
   "linkedInUrl": "LinkedIn Profile",
-  "linkedInUrlPlaceholder": ""
+  "linkedInUrlPlaceholder": "",
+  "oathKeeperActiveAmountDescription": "Total JUR actively staked by Oath Keepers",
+  "oathKeeperAmountStakedDescription": "",
+  "oathKeeperAverageAmountDescription": "Average Oath value",
+  "oathKeeperActiveOathKeepersDescription": "Number of active Oath Keepers",
+  "oathKeeperWalletCardDesctiption": "Wallet address with which you have signed in. If you have oaths with another wallet please sign in with that.",
+  "oathKeeperBalanceCardDesctiption": "Your balance of JUR actively under oath",
+  "oathKeeperRankCardDesctiption": "Your position in the Oath Keeper Ranking table, the higher the better!",
+  "advocateRewardsCardDescription": "All activities assigned to the Advocate",
+  "advocateEarnedCardDescription": "All rewards already earned by the Advocate",
+  "advocateAvailableCardDescription": "All rewards an advocate can potentially earn"
 }

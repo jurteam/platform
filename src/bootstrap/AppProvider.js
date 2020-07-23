@@ -9,13 +9,14 @@ import { log, connector } from "../utils/helpers";
 import Comet from "../hooks/Comet";
 import {
   SET_LOADING,
-   APP_EXIT,
-   CATCH_EVENTS,
-   CONNEX_INITIALIZED,
-   CONNEX_SETWALLETAPI,
-   SET_WALLET_ADDRESS,
-   HEARTBEAT
-  } from "../reducers/types.js";
+  APP_EXIT,
+  CATCH_EVENTS,
+  CONNEX_INITIALIZED,
+  CONNEX_SETWALLETAPI,
+  SET_WALLET_ADDRESS,
+  HEARTBEAT,
+  APP_SET_LABELS
+} from "../reducers/types.js";
 
 // Api layouts
 import { connexSign } from "../api";
@@ -35,6 +36,7 @@ class AppProvider extends Component {
     global.exit = this.exit; // available everywhere for sync purposes
 
     this.store = props.store;
+    props.store.dispatch({ type: APP_SET_LABELS, payload: i18n });
 
     global.store = props.store;
     global.API = API;
@@ -49,25 +51,57 @@ class AppProvider extends Component {
       connex: false,
       web3: false,
       notificationsTableHeaders: [
-        {label: "", className: "jur-col--options", key: "status"},
-        {label: i18n.date, sortable: true, className: "jur-col--duration", key: "date"},
-        {label: i18n.message, key: "activity"},
-        {label: "", className: "jur-col--options", key: "opt"}
+        { label: "", className: "jur-col--options", key: "status" },
+        {
+          label: i18n.date,
+          sortable: true,
+          className: "jur-col--duration",
+          key: "date"
+        },
+        { label: i18n.message, key: "activity" },
+        { label: "", className: "jur-col--options", key: "opt" }
       ],
       contractTableHeaders: [
         { label: i18n.status, sortable: false, className: "jur-col--status" },
-        { label: i18n.contractName, fieldName:'name', sortable: true },
-        { label: i18n.duration, sortable: false, className: "jur-col--duration" },
-        { label: i18n.couterpartyDetails, sortable: false, className: "jur-col--wallet" },
-        { label: i18n.contractValue, fieldName:'value', sortable: true, className: "jur-col--amount" },
+        { label: i18n.contractName, fieldName: "name", sortable: true },
+        {
+          label: i18n.duration,
+          sortable: false,
+          className: "jur-col--duration"
+        },
+        {
+          label: i18n.couterpartyDetails,
+          sortable: false,
+          className: "jur-col--wallet"
+        },
+        {
+          label: i18n.contractValue,
+          fieldName: "value",
+          sortable: true,
+          className: "jur-col--amount"
+        },
         { label: "", sortable: false, className: "jur-col--options" } // options
       ],
       disputeTableHeaders: [
         { label: i18n.status, sortable: false, className: "jur-col--status" },
-        { label: i18n.disputeName, fieldName:'name', sortable: true },
-        { label: i18n.duration, sortable: false, className: "jur-col--duration-with-seconds" },
-        { label: i18n.category, fieldName:'category', sortable: true, className: "jur-col--category" },
-        { label: i18n.contractValue, fieldName:'value', sortable: true, className: "jur-col--amount" },
+        { label: i18n.disputeName, fieldName: "name", sortable: true },
+        {
+          label: i18n.duration,
+          sortable: false,
+          className: "jur-col--duration-with-seconds"
+        },
+        {
+          label: i18n.category,
+          fieldName: "category",
+          sortable: true,
+          className: "jur-col--category"
+        },
+        {
+          label: i18n.contractValue,
+          fieldName: "value",
+          sortable: true,
+          className: "jur-col--amount"
+        },
         { label: i18n.earnings, sortable: false, className: "jur-col--amount" },
         { label: "", sortable: false, className: "jur-col--options" } // options
       ],
@@ -80,10 +114,10 @@ class AppProvider extends Component {
       ],
       oraclesFullTableHeaders: [
         { label: i18n.ethAddress, sortable: false },
-        { label: i18n.vote, fieldName:'wallet_part', sortable: true },
+        { label: i18n.vote, fieldName: "wallet_part", sortable: true },
         { label: i18n.msg, sortable: false },
         { label: i18n.evidences, sortable: false },
-        { label: i18n.amount, fieldName:'amount', sortable: true },
+        { label: i18n.amount, fieldName: "amount", sortable: true },
         { label: i18n.time, sortable: false }
       ],
       onNetwork: false,
@@ -94,12 +128,11 @@ class AppProvider extends Component {
   }
 
   componentDidMount() {
-
     const connectorValue = connector();
-    log('AppProvider - componentDidMount',connectorValue)
+    log("AppProvider - componentDidMount", connectorValue);
 
-    if(connectorValue === 'connex') {
-      log('AppProvider - componentDidMount - window.connex',window.connex)
+    if (connectorValue === "connex") {
+      log("AppProvider - componentDidMount - window.connex", window.connex);
       this.connexAuth();
     }
     // else if (connectorValue === 'web3') {
@@ -107,81 +140,73 @@ class AppProvider extends Component {
     //   this.auth();
     // }
     else {
-      log('AppProvider - componentDidMount - else window.web3',window.web3)
+      log("AppProvider - componentDidMount - else window.web3", window.web3);
       this.setState({ cometLoading: false });
       this.store.dispatch({ type: SET_LOADING, payload: false });
     }
   }
 
   componentWillUnmount() {
-    Comet.cancel()
+    Comet.cancel();
   }
 
-  connexAuth()
-  {
-
-    let address='';
+  connexAuth() {
+    let address = "";
 
     this.store.dispatch({ type: SET_LOADING, payload: true });
     this.setState({ cometLoading: true });
 
     // try to connect via connex
-    if(window.connex) {
-
+    if (window.connex) {
       global.dispatcher = this.store.dispatch;
       log("AppProvider - connexAuth", "connex ok");
-      const connex = window.connex
+      const connex = window.connex;
 
       const signApp = new connexSign();
 
-      signApp.signCertIdentification()
-      .then(result=>{
+      signApp
+        .signCertIdentification()
+        .then(result => {
+          log("AppProvider - connexAuth - result", result);
+          log("AppProvider - connexAuth - signer", result.annex.signer);
+          address = result.annex.signer;
 
-          log("AppProvider - connexAuth - result",result)
-          log("AppProvider - connexAuth - signer",result.annex.signer)
-          address = result.annex.signer
-
-          global.dispatcher({type: CONNEX_SETWALLETAPI, address: address });
+          global.dispatcher({ type: CONNEX_SETWALLETAPI, address: address });
 
           global.dispatcher({ type: SET_WALLET_ADDRESS, payload: address });
 
           this.setState({ onNetwork: true, connex: true, connex });
-          global.connector = 'connex'
+          global.connector = "connex";
 
-          this.tickerLoop()
+          this.tickerLoop();
 
-          global.dispatcher({type: CONNEX_INITIALIZED, address: address });
-
-        }).catch(err => {
-          log("AppProvider - connexAuth - catch",err)
+          global.dispatcher({ type: CONNEX_INITIALIZED, address: address });
+        })
+        .catch(err => {
+          log("AppProvider - connexAuth - catch", err);
 
           log("AppProvider", "network connection error!");
           this.setState({ cometLoading: false });
           global.dispatcher({ type: SET_LOADING, payload: false });
-        })
-
+        });
     }
-
   }
 
   tickerLoop() {
-    log('tickerLoop')
-    if(window.connex)
-    {
-      log('tickerLoop - connex')
-      const ticker = window.connex.thor.ticker()
-      ticker.next().then((head)=>{
-        this.tickerLoop()
+    // log('tickerLoop')
+    if (window.connex) {
+      // log('tickerLoop - connex')
+      const ticker = window.connex.thor.ticker();
+      ticker.next().then(head => {
+        this.tickerLoop();
 
-        global.dispatcher({type: CATCH_EVENTS, block: head });
+        global.dispatcher({ type: CATCH_EVENTS, block: head });
 
         if (process.env.REACT_APP_HEARTBEAT_ENABLED === "true") {
-
           global.dispatcher({ type: HEARTBEAT });
-          log("AppProvider - tickerLoop - Heartbeat", "run");
-          
+          // log("AppProvider - tickerLoop - Heartbeat", "run");
         }
-      })
+      });
     }
   }
 
@@ -194,9 +219,7 @@ class AppProvider extends Component {
   //       log("AppProvider", "store should be updated");
   //       log("AppProvider - customProvider", customProvider);
 
-
   //       global.connector = 'web3'
-
 
   //       this.setState({ onNetwork: true, web3: true, customProvider });
   //     },

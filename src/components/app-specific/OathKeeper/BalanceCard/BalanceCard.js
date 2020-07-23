@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 
 import "./BalanceCard.scss";
 import HeaderCard from "JurCommon/HeaderCard";
 import Amount from "JurCommon/Amount";
 import { AngleIcon } from "JurCommon/Icons/AngleIcon";
+import { mapLabelsToProps } from "../../../../utils/helpers";
 
 const IconHandler = ({ isShown, fill }) => (
   <div
@@ -22,8 +23,11 @@ const AmountDisplay = ({ balance }) =>
     <Amount value={balance} />
   );
 
-const BalanceCard = ({ balance, isShown, onViewDetails }) => (
-  <HeaderCard title="Oath Keeper Balance">
+const BalanceCard = ({ balance, isShown, onViewDetails, labels }) => (
+  <HeaderCard
+    title="Oath Keeper Balance"
+    description={labels.oathKeeperBalanceCardDesctiption}
+  >
     <HeaderCard.Hero>
       <AmountDisplay balance={balance} />
     </HeaderCard.Hero>
@@ -44,4 +48,4 @@ const BalanceCard = ({ balance, isShown, onViewDetails }) => (
   </HeaderCard>
 );
 
-export default BalanceCard;
+export default global.connection(BalanceCard, mapLabelsToProps);

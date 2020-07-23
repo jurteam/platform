@@ -57,6 +57,7 @@ export const getTransactionsLastBlock = state =>
 
 // User
 export const getUser = state => state.user;
+export const getLabels = state => state.app.labels;
 
 // Oath Keeper
 export const getNewOath = state => ({

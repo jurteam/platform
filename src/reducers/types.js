@@ -3,6 +3,7 @@ export const APP_REFRESH = "APP_REFRESH";
 export const SET_READY = "SET_READY";
 export const SET_LOADING = "SET_LOADING";
 export const RESET_APP_STATE = "RESET_APP_STATE";
+export const APP_SET_LABELS = "APP_SET_LABELS";
 
 export const SET_TUTORIAL_VIEWED = "SET_TUTORIAL_VIEWED";
 export const APP_SHOULD_RESET = "APP_SHOULD_RESET";
