@@ -20,10 +20,10 @@ class OathKeeperFilters extends Filters
     protected $sortBy = [
         'Rank' => ['rank', 'asc'],
         'Amount' => ['total_amount', 'asc'],
-        'OathCount' => ['active_oath_count', 'asc'],
+        'OathCount' => ['total_oath_count', 'asc'],
         '-Rank' => ['rank', 'desc'],
         '-Amount' => ['total_amount', 'desc'],
-        '-OathCount' => ['active_oath_count', 'desc']
+        '-OathCount' => ['total_oath_count', 'desc']
     ];
 
     protected $defaults = [

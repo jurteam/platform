@@ -75,7 +75,7 @@ const AdvocateSection = ({
           <Text size="large" transform="header">
             List of Advocates
           </Text>
-          <AdvocatesIndex />
+          <AdvocatesIndex size="compact" />
           <AdvocatesFooterBox />
         </>
       )}

@@ -9,16 +9,22 @@ import ViewAdvocateButton from "../ViewAdvocateButton";
 import { ADVOCATE_FETCH_ALL } from "../../../../reducers/types";
 import { orderTosign } from "JurUtils/helpers";
 
-const AdvocatesTable = ({ advocates, onSort }) => (
+const AdvocatesTable = ({ advocates, onSort, size }) => (
   <Table>
     <Table.Head>
       <Table.Row>
         <Table.Cell>Wallet</Table.Cell>
-        <Table.Cell>Type</Table.Cell>
-        <Table.Cell onClick={onSort} fieldName="TotalEarned" size="medium">
+        <Table.Cell size={size === "compact" ? "small" : null}>Type</Table.Cell>
+        <Table.Cell
+          onClick={onSort}
+          fieldName="TotalEarned"
+          size={size === "compact" ? "small" : "medium"}
+        >
           Total Earned
         </Table.Cell>
-        <Table.Cell>Action</Table.Cell>
+        <Table.Cell size={size === "compact" ? "xsmall" : null}>
+          Action
+        </Table.Cell>
       </Table.Row>
     </Table.Head>
     <Table.Body>
