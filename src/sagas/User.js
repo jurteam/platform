@@ -39,8 +39,12 @@ export function* handleDisclaimerOptin(args) {
     if (
       typeof args.shouldSendActions === "undefined" ||
       args.shouldSendActions === true
-    )
+    ) {
       yield put({ type: DISCLAIMER_ACCEPTED }); // dispatch this only if needed
+    } else if (args.shouldSendActions === false) {
+      // Send PUT request to accept disclaimer
+      yield call(User.acceptDisclaimer);
+    }
   }
 }
 
