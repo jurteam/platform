@@ -29,7 +29,7 @@ const BalanceCard = ({ balance, isShown, onViewDetails }) => (
     </HeaderCard.Hero>
     <HeaderCard.Body>
       <a
-        onClick={balance && onViewDetails}
+        onClick={balance ? onViewDetails : null}
         className={`jur-balance-card-view-details jur-balance-card-view-details__${
           balance > 0 ? "active" : "inactive"
         }`}
