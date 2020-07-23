@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import "./MyOathsSection.scss";
 
 import Section from "JurCommon/Section";
-import Disclaimer, { ModalDiscliamer } from "JurCommon/Disclaimer";
+import Disclaimer from "JurCommon/Disclaimer";
 import MyOathsHeaderBox from "../MyOathsHeaderBox";
 import TakeOathBox from "../TakeOathBox";
 import YourOathsBox from "../YourOathsBox";
@@ -38,7 +38,6 @@ const MyOathsSection = ({
       <TakeOathBox />
       <YourOathsBox oaths={oaths} isLoading={isFetchingMyOaths} />
       <MyOathsFooterBox />
-      <ModalDiscliamer />
       <Disclaimer />
     </Section>
   );
