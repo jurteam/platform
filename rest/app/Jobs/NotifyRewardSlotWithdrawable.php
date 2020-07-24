@@ -3,11 +3,11 @@
 namespace App\Jobs;
 
 use Illuminate\Support\Facades\Mail;
-use \App\Mail\Reward\RewardSlotOverDue;
+use \App\Mail\Reward\RewardWithdrawable;
 use \App\Models\Slot;
 use \App\Models\User;
 
-class RewardSlotUpdateStatusToOverDue extends Job
+class NotifyRewardSlotWithdrawable extends Job
 {
 
     private $slot;
@@ -30,7 +30,8 @@ class RewardSlotUpdateStatusToOverDue extends Job
     public function handle()
     {
         // check the assigned slot is still available for the user
-        $slotStillAvailable = Slot::where('id', $this->slot->id)->where('assigned_wallet', $this->slot->assigned_wallet)->first();
+        $slotStillAvailable = Slot::where('id', $this->slot->id)
+            ->where('assigned_wallet', $this->slot->assigned_wallet)->first();
 
         $user = User::where('wallet', $this->slot->assigned_wallet)->first();
 
@@ -38,19 +39,13 @@ class RewardSlotUpdateStatusToOverDue extends Job
             return;
         }
 
-        if ($this->slot->status != 'Assigned') {
+        if (!($this->slot->status == 'OverDue' || $this->slot->status != 'Assigned')) {
             return;
         }
 
-        // Change current-status of the slot
-        $this->slot->status = 'OverDue';
-
-        // Save changes
-        $this->slot->save();
-
         if (isset($user->email)) {
             // send a notification mail if user has updated mail id
-            Mail::to($user->email)->queue(new RewardSlotOverDue($user, $this->slot));
+            Mail::to($user->email)->queue(new RewardWithdrawable($user, $this->slot));
         }
     }
 }

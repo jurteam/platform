@@ -69,12 +69,19 @@ class Slot extends Model
         // Get the time of completion
         $completeAt = Carbon::createFromTimestamp($data->dueDate);
 
-        // find delay
-        $delay = $completeAt->diffInSeconds(Carbon::now());
+        // find delay for over due
+        $OverDueDelay = $completeAt->diffInSeconds(Carbon::now());
 
-        $job = (new RewardSlotUpdateStatusToOverDue($slot))->delay($delay);
+        // find delay for withdraw
+        $withdrawDelay = $OverDueDelay + config('reward.rewardDelay');
 
-        dispatch($job);
+        $jobOverDue = (new RewardSlotUpdateStatusToOverDue($slot))->delay($OverDueDelay);
+
+        $jobWithdraw = (new NotifyRewardSlotWithdrawable($slot))->delay($withdrawDelay);
+
+        dispatch($jobOverDue);
+
+        dispatch($jobWithdraw);
 
         // update assigned slot count
         $rewardActivity->assigned_slots = Slot::whereNotIn('status', ['Unassigned', 'Cancelled'])

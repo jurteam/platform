@@ -8,7 +8,7 @@ use Illuminate\Queue\SerializesModels;
 use \App\Models\Slot;
 use \App\Models\User;
 
-class RewardWithdraw extends Mailable
+class RewardWithdrawable extends Mailable
 {
     use Queueable, SerializesModels;
 
