@@ -92,7 +92,7 @@ const AdvocateBio = ({ advocasy, address, updateBioAction }) => {
                   onClick={e => {
                     handleUpdate(e);
                   }}
-                  disabled={error}
+                  disabled={error || !updatedBio}
                 >
                   Save
                 </Button>
@@ -129,14 +129,18 @@ const AdvocateBio = ({ advocasy, address, updateBioAction }) => {
             ) : (
               <div className="jur-bio-add">
                 {loggedInUser() ? (
-                  <Button
-                    variant="dispute"
-                    onClick={e => {
-                      handleEdit(e);
-                    }}
-                  >
-                    Add bio
-                  </Button>
+                  <p>
+                    <a
+                      className="jur-link"
+                      onClick={e => {
+                        handleEdit(e);
+                      }}
+                    >
+                      Here
+                    </a>
+                    &nbsp;to add a bio about yourself. It will be showed to
+                    users visiting your public profile page
+                  </p>
                 ) : null}
               </div>
             )}
