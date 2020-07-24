@@ -7,6 +7,7 @@ use App\Models\RewardActivity;
 use App\Models\RewardUnAssignedSlot;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use \App\Jobs\RewardSlotUpdateStatusToOverDue;
 
 class Slot extends Model
 {
@@ -64,6 +65,16 @@ class Slot extends Model
         $slot->status = 'Assigned';
         $slot->created_at = Carbon::createFromTimestamp($data->createdAt);
         $slot->save();
+
+        // Get the time of completion
+        $completeAt = Carbon::createFromTimestamp($data->dueDate);
+
+        // find delay
+        $delay = $completeAt->diffInSeconds(Carbon::now());
+
+        $job = (new RewardSlotUpdateStatusToOverDue($slot))->delay($delay);
+
+        dispatch($job);
 
         // update assigned slot count
         $rewardActivity->assigned_slots = Slot::whereNotIn('status', ['Unassigned', 'Cancelled'])
