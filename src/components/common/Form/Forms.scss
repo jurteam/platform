@@ -62,6 +62,10 @@
     }
   }
 
+  textarea[data-error="true"] {
+    border-color: $error;
+  }
+
   &__container {
     &#{$form}__header {
       display: flex;
