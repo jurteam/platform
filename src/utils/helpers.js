@@ -534,3 +534,7 @@ export function toUTCwithTime(value) {
   value.setSeconds(now.getSeconds());
   return value.toUTCString();
 }
+
+export const mapLabelsToProps = state => {
+  return { labels: state.app.labels };
+};

@@ -4,7 +4,8 @@ import {
   SET_TUTORIAL_VIEWED,
   RESET_APP_STATE,
   NETWORK_UPDATE,
-  SET_FAQ
+  SET_FAQ,
+  APP_SET_LABELS
 } from "./types";
 
 const INITIAL_STATE = {
@@ -28,6 +29,9 @@ export default (state = INITIAL_STATE, action) => {
 
     case SET_FAQ:
       return { ...state, faqs: action.payload.faqs };
+
+    case APP_SET_LABELS:
+      return { ...state, labels: action.payload };
 
     // Reset
     case RESET_APP_STATE:

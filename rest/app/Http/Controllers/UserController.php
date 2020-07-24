@@ -68,6 +68,21 @@ class UserController extends Controller
     }
 
     /**
+     * Update accept disclaimer user info.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function acceptDisclaimer(Request $request)
+    {
+        $user = $this->getUser($request);
+
+        $user->update(['accepted_disclaimer' => $request->input('accepted_disclaimer')]);
+
+        return response()->json(compact('user'));
+    }
+
+    /**
      * Delete a user.
      *
      * @param  \Illuminate\Http\Request $request

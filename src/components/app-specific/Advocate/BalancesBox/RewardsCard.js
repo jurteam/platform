@@ -3,13 +3,17 @@ import "./BalancesBox.scss";
 
 import HeaderCard from "JurCommon/HeaderCard";
 import AmountDisplay from "JurCommon/AmountDisplay";
+import { mapLabelsToProps } from "../../../../utils/helpers";
 
-const RewardsCard = ({ balance }) => (
-  <HeaderCard title="Rewards Balance">
+const RewardsCard = ({ balance, labels }) => (
+  <HeaderCard
+    title="Rewards Balance"
+    description={labels.advocateRewardsCardDescription}
+  >
     <HeaderCard.Hero>
       <AmountDisplay balance={balance} />
     </HeaderCard.Hero>
   </HeaderCard>
 );
 
-export default RewardsCard;
+export default global.connection(RewardsCard, mapLabelsToProps);
