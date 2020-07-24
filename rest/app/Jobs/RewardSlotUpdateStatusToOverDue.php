@@ -2,7 +2,10 @@
 
 namespace App\Jobs;
 
+use Illuminate\Support\Facades\Mail;
+use \App\Mail\Reward\RewardSlotOverDue;
 use \App\Models\Slot;
+use \App\Models\User;
 
 class RewardSlotUpdateStatusToOverDue extends Job
 {
@@ -26,9 +29,12 @@ class RewardSlotUpdateStatusToOverDue extends Job
      */
     public function handle()
     {
-        $sameSlot = Slot::where('id', $this->slot->id)->where('assigned_wallet', $this->slot->assigned_wallet)->first();
+        // check the assigned slot is still available for the user
+        $slotStillAvailable = Slot::where('id', $this->slot->id)->where('assigned_wallet', $this->slot->assigned_wallet)->first();
 
-        if (!isset($sameSlot)) {
+        $user = User::where('wallet', $this->slot->assigned_wallet)->first();
+
+        if (!isset($slotStillAvailable) || !isset($user)) {
             return;
         }
 
@@ -36,11 +42,11 @@ class RewardSlotUpdateStatusToOverDue extends Job
         $this->slot->status = 'OverDue';
 
         // Save changes
-        $saved = $this->slot->save();
+        $this->slot->save();
 
-        if ($saved) {
+        if (isset($user->email)) {
             // send a notification mail if user has updated mail id
-            //TODO: send mail
+            Mail::to($user->email)->queue(new RewardSlotOverDue($user, $this->slot));
         }
     }
 }
