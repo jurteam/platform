@@ -2,7 +2,7 @@
 
 <p>Hey {{$username}},<br>
 
-<p>Congratulations on successfully completing the activity <strong>{{$activity_name}}</strong>. You are now eligible to withdraw the reward. 
+<p>Congratulations on successfully completing the activity <strong>{{$activity_name}}</strong>. You are now eligible to withdraw the reward.</p>
 
 <p>Please click on the button below to transact.</p>
 
