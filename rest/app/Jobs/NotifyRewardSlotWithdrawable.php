@@ -39,7 +39,7 @@ class NotifyRewardSlotWithdrawable extends Job
             return;
         }
 
-        if (!($this->slot->status == 'OverDue' || $this->slot->status != 'Assigned')) {
+        if (!($this->slot->status == 'OverDue' || $this->slot->status == 'Assigned')) {
             return;
         }
 
