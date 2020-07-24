@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\RewardActivityRole;
 use Illuminate\Database\Eloquent\Model;
 use Log;
+use \App\Jobs\NotifyNewRewardActivityAvailable;
 
 class RewardActivity extends Model
 {
@@ -69,6 +70,8 @@ class RewardActivity extends Model
 
         // Insert book records
         RewardActivityRole::insert($rewardActivityRoles);
+
+        dispatch((new NotifyNewRewardActivityAvailable($rewardActivity)));
 
         return $saved;
     }
