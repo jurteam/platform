@@ -2,6 +2,8 @@
 
 namespace App\Mail\OathKeeper;
 
+use App\Models\Oath;
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
@@ -19,7 +21,7 @@ class OathKeeperEmailOathWithdrawn extends Mailable
      *
      * @return void
      */
-    public function __construct($user, $oath)
+    public function __construct(User $user, Oath $oath)
     {
         $this->user = $user;
         $this->oath = $oath;
