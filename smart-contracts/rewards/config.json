@@ -1,0 +1,8 @@
+{
+  "mainnet": {
+    "JUR_TOKEN": "0x26baecE1B532C2b560ACd545F8aE08Ec49Ecf621"
+  },
+  "development": {
+    "JUR_TOKEN": "0x602b7A4309b3412D269C6CdDdAd962C0b94494d8"
+  }
+}
