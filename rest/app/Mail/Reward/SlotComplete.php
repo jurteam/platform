@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Mail\Rewards;
+namespace App\Mail\Reward;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
@@ -11,12 +11,12 @@ class SlotComplete extends Mailable
 {
   use Queueable, SerializesModels;
 
-  private $recipient;
+  private $user;
   private $rewardActivity;
 
-  public function __construct($recipient, $slot, $rewardActivity)
+  public function __construct($user, $slot, $rewardActivity)
   {
-    $this->recipient = $recipient;
+    $this->user = $user;
     $this->rewardActivity = $rewardActivity;
   }
 
@@ -24,9 +24,9 @@ class SlotComplete extends Mailable
   {
     return $this
           ->subject('Due date passed. Slot can be completed')
-          ->markdown('emails.advocates.slot.slot-complete', [
-            'recipient' => $this->recipient->name,
-            'link' => env('APP_URL').'/my-advocasy/'.$this->recipient->wallet,
+          ->markdown('emails.rewards.slot.slot-complete', [
+            'recipient' => $this->user->name || $this->user->wallet,
+            'link' => env('APP_URL').'/my-advocasy/'.$this->user->wallet,
             'activity_name' => $rewardActivity->eventName
           ]);
   }

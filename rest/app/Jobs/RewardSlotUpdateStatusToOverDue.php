@@ -3,20 +3,26 @@
 namespace App\Jobs;
 
 use \App\Models\Slot;
+use \App\Models\User;
+use \App\Models\RewardActivity;
+use \App\Mail\Reward\SlotComplete;
+use Illuminate\Support\Facades\Mail;
 
 class RewardSlotUpdateStatusToOverDue extends Job
 {
 
     private $slot;
+    private $rewardActivity;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(Slot $slot)
+    public function __construct(Slot $slot, RewardActivity $rewardActivity)
     {
         $this->slot = $slot;
+        $this->rewardActivity = $rewardActivity;
     }
 
     /**
@@ -41,6 +47,13 @@ class RewardSlotUpdateStatusToOverDue extends Job
         if ($saved) {
             // send a notification mail if user has updated mail id
             //TODO: send mail
+
+            // Get user
+            $user = User::where("wallet", $this->slot->assigned_wallet)->first();
+
+            if(isset($user->email)) {
+              Mail::to($user->email)->queue(new SlotComplete($user, $slot, $rewardActivity));
+            }
         }
     }
 }

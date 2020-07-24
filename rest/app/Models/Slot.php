@@ -72,9 +72,15 @@ class Slot extends Model
         // find delay
         $delay = $completeAt->diffInSeconds(Carbon::now());
 
-        $job = (new RewardSlotUpdateStatusToOverDue($slot))->delay($delay);
+        $job = (new RewardSlotUpdateStatusToOverDue($slot, $rewardActivity))->delay($delay);
 
         dispatch($job);
+
+        // due date passed +7days
+        $delaySevenDays = $slot->due_date->diffInSeconds(Carbon::now()) + env('REWARD_DELAY_IN_SECONDS');
+        $rewardJob = (new RewardSlotUpdateStatusToOverDueSevenDays($slot, $rewardActivity))->delay($delaySevenDays);
+
+        dispatch($rewardJob);
 
         // update assigned slot count
         $rewardActivity->assigned_slots = Slot::whereNotIn('status', ['Unassigned', 'Cancelled'])
@@ -127,6 +133,9 @@ class Slot extends Model
             if ($alreadyCancelled == 0) {
                 $rewardActivity->number_of_slots = $rewardActivity->number_of_slots - 1; // reduce number of slots
             }
+
+            $cancelledJob = (new RewardSlotUpdateStatusToCancelled($slot, $rewardActivity));
+            dispatch($cancelledJob);
         }
 
         // update assigned slot count
