@@ -4,6 +4,7 @@ import "./BalancesBox.scss";
 import HeaderCard from "JurCommon/HeaderCard";
 import AmountDisplay from "JurCommon/AmountDisplay";
 import { AngleIcon } from "JurCommon/Icons/AngleIcon";
+import { mapLabelsToProps } from "../../../../utils/helpers";
 
 const IconHandler = ({ isShown, fill }) => (
   <div
@@ -15,8 +16,11 @@ const IconHandler = ({ isShown, fill }) => (
   </div>
 );
 
-const AvailableCard = ({ balance, isShown, onViewDetails }) => (
-  <HeaderCard title="Activities Available">
+const AvailableCard = ({ balance, isShown, onViewDetails, labels }) => (
+  <HeaderCard
+    title="Activities Available"
+    description={labels.advocateAvailableCardDescription}
+  >
     <HeaderCard.Hero>
       <AmountDisplay balance={balance} />
     </HeaderCard.Hero>
@@ -37,4 +41,4 @@ const AvailableCard = ({ balance, isShown, onViewDetails }) => (
   </HeaderCard>
 );
 
-export default AvailableCard;
+export default global.connection(AvailableCard, mapLabelsToProps);

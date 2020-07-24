@@ -2,11 +2,10 @@
 
 namespace App\Models;
 
+use App\Models\Slot;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Log;
-use App\Models\Slot;
-
 
 class Reward extends Model
 {
@@ -53,14 +52,15 @@ class Reward extends Model
         $reward->reward_amount = $existingRewardActivity->reward_amount;
         $reward->rewarded_on = Carbon::createFromTimestamp($payload->timestamp);
 
-        $reward->save();
+        $success = $reward->save();
 
         $advocate = Advocate::where('wallet', $existingSlot->assigned_wallet)->first();
 
         if (isset($advocate)) {
             $advocate->total_earned = Reward::where('rewardee_wallet', $existingSlot->assigned_wallet)->sum('reward_amount');
+            return $advocate->save();
         }
 
-        return $advocate->save();
+        return $success;
     }
 }

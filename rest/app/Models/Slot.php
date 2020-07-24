@@ -2,11 +2,12 @@
 
 namespace App\Models;
 
-use App\Models\RewardActivity;
 use App\Models\Reward;
+use App\Models\RewardActivity;
 use App\Models\RewardUnAssignedSlot;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use \App\Jobs\RewardSlotUpdateStatusToOverDue;
 
 class Slot extends Model
 {
@@ -65,6 +66,16 @@ class Slot extends Model
         $slot->created_at = Carbon::createFromTimestamp($data->createdAt);
         $slot->save();
 
+        // Get the time of completion
+        $completeAt = Carbon::createFromTimestamp($data->dueDate);
+
+        // find delay
+        $delay = $completeAt->diffInSeconds(Carbon::now());
+
+        $job = (new RewardSlotUpdateStatusToOverDue($slot))->delay($delay);
+
+        dispatch($job);
+
         // update assigned slot count
         $rewardActivity->assigned_slots = Slot::whereNotIn('status', ['Unassigned', 'Cancelled'])
             ->where('reward_activity_id', $rewardActivity->id)->count();
@@ -110,13 +121,13 @@ class Slot extends Model
             $slot->assigned_wallet = null;
         }
 
+        $slot->save();
+
         if ($data->newState == 'Cancelled') {
             if ($alreadyCancelled == 0) {
                 $rewardActivity->number_of_slots = $rewardActivity->number_of_slots - 1; // reduce number of slots
             }
         }
-
-        $slot->save();
 
         // update assigned slot count
         $rewardActivity->assigned_slots = Slot::whereNotIn('status', ['Unassigned', 'Cancelled'])

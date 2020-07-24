@@ -2,7 +2,9 @@
 
 namespace App\Jobs;
 
+use Illuminate\Support\Facades\Mail;
 use \App\Jobs\OathKeeperGenerateAnalytics;
+use \App\Mail\OathKeeper\OathKeeperEmailOathMatured;
 use \App\Models\Oath;
 use \App\Models\OathKeeper;
 
@@ -43,6 +45,14 @@ class OathKeeperUpdateOathStateToComplete extends Job
 
             // find oath-keeper
             $oathKeeper = OathKeeper::where(['wallet' => $this->wallet])->first();
+
+            // get user by wallet
+            $user = User::where('wallet', $this->wallet)->first();
+
+            // send a notification mail if user has updated mail id
+            if (isset($user->email)) {
+                Mail::to($user->email)->queue(new OathKeeperEmailOathMatured($user, $oath));
+            }
 
             // Re-Calculate summary of the oath-keeper
             OathKeeper::calculateSummary($oathKeeper);

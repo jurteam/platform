@@ -7,8 +7,7 @@ const root = "/user";
 export class User {
   static get() {
     const { API } = global;
-    if (typeof API !== "undefined" && API.defaults.headers.common['wallet'])
-    {
+    if (typeof API !== "undefined" && API.defaults.headers.common["wallet"]) {
       return axios.get(root);
     }
   }
@@ -21,12 +20,19 @@ export class User {
   static delete() {
     return axios.delete(root);
   }
-  static getActivities(payload) {
 
+  static acceptDisclaimer() {
+    return axios.put(root + "/disclaimer", { accepted_disclaimer: true });
+  }
+
+  static getActivities(payload) {
     const { API } = global;
-    if (typeof API !== "undefined" && API.defaults.headers.common['wallet'])
-    {
-      return axios.get(`${root}/activities?byDate&orderBy=${payload.orderBy}&perPage=${process.env.REACT_APP_PER_PAGE_NOTIFICATIONS}`)
+    if (typeof API !== "undefined" && API.defaults.headers.common["wallet"]) {
+      return axios.get(
+        `${root}/activities?byDate&orderBy=${payload.orderBy}&perPage=${
+          process.env.REACT_APP_PER_PAGE_NOTIFICATIONS
+        }`
+      );
     }
   }
 }

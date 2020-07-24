@@ -2,8 +2,8 @@ import React from "react";
 import PropTypes from "prop-types";
 import "./Box.scss";
 
-const Box = ({ children, type, types, hide = false, title, isLoading }) => (
-  <section className={boxClass(types || type, hide)}>
+const Box = ({ children, type, types, hide = false, title, isLoading, id }) => (
+  <section className={boxClass(types || type, hide)} id={id}>
     <h2 className="jur-box-title">{title}</h2>
     {isLoading ? "Loading..." : children}
   </section>
@@ -22,7 +22,14 @@ Box.defaultProps = {
 };
 
 Box.propTypes = {
-  type: PropTypes.oneOf(["normal", "hero", "header", "footer", "message"]),
+  type: PropTypes.oneOf([
+    "normal",
+    "hero",
+    "header",
+    "subheader",
+    "footer",
+    "message"
+  ]),
   isLoading: PropTypes.bool
 };
 
