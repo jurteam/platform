@@ -7,6 +7,7 @@ use \App\Jobs\OathKeeperGenerateAnalytics;
 use \App\Mail\OathKeeper\OathKeeperEmailOathMatured;
 use \App\Models\Oath;
 use \App\Models\OathKeeper;
+use \App\Models\User;
 
 class OathKeeperUpdateOathStateToComplete extends Job
 {
