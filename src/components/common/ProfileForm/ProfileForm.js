@@ -138,6 +138,26 @@ export const ProfileForm = props => {
             readOnly
           />
         </Form.Group>
+        <Form.Group>
+          <div className="jur-form__profile__options__show-name mt-2">
+            <Form.Label>
+              <InfoTootip
+                position="top"
+                text={labels.showFullNameTooltipText}
+              />{" "}
+              {labels.showFullName}
+            </Form.Label>
+            <div className="jur-form__profile__options__show-name__input">
+              <Switch
+                name="show_fullname"
+                error={hasError("show_fullname")}
+                onChange={onInputChange}
+                value={show_fullname || false}
+                checked={show_fullname}
+              />
+            </div>
+          </div>
+        </Form.Group>
       </Form.Container>
       <Form.Container>
         <Form.Group>
@@ -279,7 +299,7 @@ export const ProfileForm = props => {
       <FormContainer className="jur-form__footer">
         <Form.Group>
           <div className="jur-form__profile__options">
-            <div className="jur-form__profile__options__show-name">
+            {/* <div className="jur-form__profile__options__show-name">
               <Form.Label>
                 <InfoTootip
                   position="top"
@@ -296,7 +316,7 @@ export const ProfileForm = props => {
                   checked={show_fullname}
                 />
               </div>
-            </div>
+            </div> */}
             <div className="jur-form__profile__options__terms">
               <Form.Label>
                 <Form.Input
