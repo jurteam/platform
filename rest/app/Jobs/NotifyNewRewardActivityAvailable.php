@@ -32,19 +32,20 @@ class NotifyNewRewardActivityAvailable extends Job
     {
         $roleContracts = $this->activity->roleContracts;
 
-        info(sizeof($roleContracts));
-
         // availbale to all users if there are no role contracts
-        if (sizeof($roleContracts) == 0) {
-            $users = User::get();
-            foreach ($users as $user) {
-                if (isset($user->email)) {
-                    // send a notification mail if user has updated mail id
-                    Mail::to($user->email)->queue(new RewardNewActivityAvailable($user, $this->activity));
-                }
-            }
-            return;
-        }
+
+        // TODO: uncomment code to send all users if there are no role contracts
+
+        // if (sizeof($roleContracts) == 0) {
+        //     $users = User::get();
+        //     foreach ($users as $user) {
+        //         if (isset($user->email)) {
+        //             // send a notification mail if user has updated mail id
+        //             Mail::to($user->email)->queue(new RewardNewActivityAvailable($user, $this->activity));
+        //         }
+        //     }
+        //     return;
+        // }
 
         foreach ($roleContracts as $role) {
 
