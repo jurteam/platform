@@ -130,16 +130,17 @@ const AdvocateBio = ({ advocasy, address, updateBioAction }) => {
               <div className="jur-bio-add">
                 {loggedInUser() ? (
                   <p>
+                    Click{" "}
                     <a
                       className="jur-link"
                       onClick={e => {
                         handleEdit(e);
                       }}
                     >
-                      Here
-                    </a>
-                    &nbsp;to add a bio about yourself. It will be showed to
-                    users visiting your public profile page
+                      here
+                    </a>{" "}
+                    to add a bio about yourself. It will be showed to users
+                    visiting your public profile page
                   </p>
                 ) : null}
               </div>
