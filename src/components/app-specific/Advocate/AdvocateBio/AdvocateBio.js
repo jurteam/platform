@@ -7,7 +7,7 @@ import { ADVOCATE_UPDATE_BIO } from "../../../../reducers/types";
 
 const MAX_CONTENT_LENGTH = 1000;
 
-const AdvocateBio = ({ advocasy, address, updateBioAction }) => {
+const AdvocateBio = ({ advocasy, address, updateBioAction, isPublic }) => {
   const currentUser = global.store.getState().user.wallet;
 
   const [editBox, setEditBox] = useState(false);
@@ -56,7 +56,7 @@ const AdvocateBio = ({ advocasy, address, updateBioAction }) => {
   return (
     <Box types="spread-out center">
       <div className="jur-bio-box">
-        {editBox && loggedInUser() ? (
+        {editBox && !isPublic ? (
           <>
             <textarea
               onChange={e => {
@@ -104,7 +104,7 @@ const AdvocateBio = ({ advocasy, address, updateBioAction }) => {
             {currentBio ? (
               <>
                 {currentBio}
-                {loggedInUser() ? (
+                {!isPublic ? (
                   <span
                     className="jur-bio-edit"
                     onClick={e => {
@@ -130,7 +130,7 @@ const AdvocateBio = ({ advocasy, address, updateBioAction }) => {
               </>
             ) : (
               <div className="jur-bio-add">
-                {loggedInUser() ? (
+                {!isPublic ? (
                   <p>
                     Click{" "}
                     <a
