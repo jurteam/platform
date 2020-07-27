@@ -15,6 +15,7 @@ const AdvocatesIndex = ({ advocates, fetchAdvocates, size }) => {
     <>
       <AdvocatesTable advocates={advocates} size={size} />
       <AdvocatesPagination />
+      <div className="jur-safe-margin" />
     </>
   );
 };
