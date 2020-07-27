@@ -4,9 +4,8 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Mail;
 use Log;
-use \App\Mail\OathKeeper\OathKeeperEmailOathWithdrawn;
+use \App\Jobs\NotifyOathWithdrawn;
 use \App\Models\OathKeeper;
 
 class Oath extends Model
@@ -69,13 +68,7 @@ class Oath extends Model
             return false;
         }
 
-        // get user by wallet
-        $user = User::where('wallet', $payload->data->_beneficiary)->first();
-
-        // send a notification mail if user has updated mail id
-        if (isset($user->email)) {
-            Mail::to($user->email)->queue(new OathKeeperEmailOathWithdrawn($user, $oath));
-        }
+        dispatch((new NotifyOathWithdrawn($oath)));
 
         $oath->withdrawn_at = Carbon::createFromTimestamp($payload->timestamp);
         $oath->current_state = 'withdrawn';
