@@ -4,6 +4,7 @@ namespace App\Mail\OathKeeper;
 
 use App\Models\Oath;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
@@ -34,11 +35,15 @@ class OathKeeperEmailOathWithdrawn extends Mailable
      */
     public function build()
     {
+        $start_at = Carbon::createFromDate($this->oath->start_at)->format('l jS \\of F Y h:i A - T');
+        $amount = number_format((float) $this->oath->amount, 2, '.', '');
+
         return $this
-            ->subject('Your oath worth ' . $this->oath->amount . ' JUR taken on ' . $this->oath->start_at . '  has been successfully withdrawn.')
+            ->subject('Your oath worth ' . $amount . ' JUR taken on ' . $start_at . '  has been successfully withdrawn.')
             ->markdown('emails.oath-keeper.withdrawn', [
                 'username' => isset($this->user->name) ? $this->user->name : $this->user->wallet,
-                'oath' => $this->oath
+                'amount' => $amount,
+                'start_at' => $start_at
             ]);
     }
 }

@@ -124,6 +124,9 @@ class Slot extends Model
             $RewardUnAssignedSlot->un_assigned_wallet = $slot->assigned_wallet;
             $RewardUnAssignedSlot->save();
 
+            // send notifications
+            dispatch((new NotifyRewardStatusChanged($slot)));
+
             // remove assigned_wallet from slot
             $slot->assigned_wallet = null;
         }
@@ -132,7 +135,11 @@ class Slot extends Model
 
         if ($data->newState == 'Cancelled') {
             if ($alreadyCancelled == 0) {
-                $rewardActivity->number_of_slots = $rewardActivity->number_of_slots - 1; // reduce number of slots
+                // send notifications
+                dispatch((new NotifyRewardStatusChanged($slot)));
+
+                // reduce number of slots
+                $rewardActivity->number_of_slots = $rewardActivity->number_of_slots - 1;
             }
         }
 
