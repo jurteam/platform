@@ -14,6 +14,12 @@ const validationSchema = [
   {
     name: "linkedin",
     checks: ["isLinkedInUrl"]
+  },
+  {
+    name: "bio",
+    checks: ["compareLength"],
+    operation: "lesser",
+    than: 1001
   }
 ];
 

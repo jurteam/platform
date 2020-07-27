@@ -53,7 +53,11 @@ const AdvocateSection = ({
       <HeaderBox address={effectiveAddress} isAdvocate={isAdvocate} />
       {isAdvocate ? (
         <>
-          <AdvocateBio advocasy={advocasy} address={effectiveAddress} />
+          <AdvocateBio
+            advocasy={advocasy}
+            address={effectiveAddress}
+            isPublic={isPublic}
+          />
           <BalancesBox
             rewardsBalance={advocasy.rewardsBalance}
             totalEarned={advocasy.totalEarned}

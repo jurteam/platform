@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Advocate;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -59,10 +60,17 @@ class UserController extends Controller
                 'nullable',
                 Rule::unique('users')->ignore($user->id)
             ],
-            'url' => 'nullable|url'
+            'url' => 'nullable|url',
+            'bio' => 'nullable|max:1000'
         ]);
 
-        $user->update($request->all());
+        $values = $request->all();
+
+        if (isset($values['bio']) && Advocate::where('wallet', $request->header('wallet'))->count() == 0) {
+            abort(403, "Not an advocate");
+        }
+
+        $user->update($values);
 
         return response()->json(compact('user'));
     }

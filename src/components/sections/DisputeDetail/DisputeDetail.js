@@ -47,7 +47,7 @@ import {
   EXPIRED_CONTRACT,
   DISPUTE_PAYOUT_PARTY,
   DISPUTE_PAYOUT_VOTER,
-  DISPUTE_VOTE_OVERLAY,
+  DISPUTE_VOTE_OVERLAY
   // SUCCESS_ARBITRATION,
   // SEND_TO_COUNTERPARTY,
   // DISCLAIMER_MUST_BE_ACCEPTED,
@@ -55,7 +55,7 @@ import {
 } from "../../../reducers/types";
 import ActionsBar from "../../chain/ActionsBar";
 
-export const DisputeDetail = ( props ) => {
+export const DisputeDetail = props => {
   const { labels } = useContext(AppContext);
 
   const [loaded, setLoaded] = useState(false);
@@ -120,12 +120,10 @@ export const DisputeDetail = ( props ) => {
   }, [wallet.address]);
 
   useEffect(() => {
-    log('useEffect - showVoteOverlay',showVoteOverlay)
+    log("useEffect - showVoteOverlay", showVoteOverlay);
     if (!showVoteOverlay) {
-      changeInput("amount", 0.01)
-    }
-    else
-    {
+      changeInput("amount", 0.01);
+    } else {
       global.store.dispatch({
         type: DISPUTE_VOTE_OVERLAY,
         payload: true
@@ -134,24 +132,24 @@ export const DisputeDetail = ( props ) => {
   }, [showVoteOverlay]);
 
   useEffect(() => {
-    log('useEffect - dispute.voteOverlay',dispute.voteOverlay)
+    log("useEffect - dispute.voteOverlay", dispute.voteOverlay);
 
     if (!dispute.voteOverlay) {
       setShowVoteOverlay(false);
     }
   }, [dispute.voteOverlay]);
 
-
-
   const changeInput = (name, value) => {
-    if (!formUpdated) {setFormUpdated(true);};
+    if (!formUpdated) {
+      setFormUpdated(true);
+    }
     setFormData({ ...dispute.vote, [name]: value });
 
     const { updateVoteField } = props;
     updateVoteField(name, value); // dispatch action
   };
 
-  const onInputChange = (ev) => {
+  const onInputChange = ev => {
     const target = ev.target;
     log("onInputChange", target, ev);
     if (target) {
@@ -162,12 +160,12 @@ export const DisputeDetail = ( props ) => {
     }
   };
 
-  const onFileAdded = (selectedFiles) => {
+  const onFileAdded = selectedFiles => {
     setAttachments(selectedFiles);
     setFormUpdated(true);
   };
 
-  const onFileView = (file) => {
+  const onFileView = file => {
     setFilePath(file.url);
     setOpenPreview(true);
     log("onFileView", file);
@@ -178,8 +176,8 @@ export const DisputeDetail = ( props ) => {
     setOpenPreview(false);
   };
 
-  const onFileError = ( e ) => {
-    log("onFileError", e,-1);
+  const onFileError = e => {
+    log("onFileError", e, -1);
   };
 
   const onExpire = () => {
@@ -191,14 +189,8 @@ export const DisputeDetail = ( props ) => {
     });
   };
 
-
   const onWithdraw = () => {
-
-    const {
-      id,
-      address,
-      hasToWithdraw
-    } = dispute.current;
+    const { id, address, hasToWithdraw } = dispute.current;
 
     global.store.dispatch({
       type: DISPUTE_PAYOUT_PARTY,
@@ -206,16 +198,10 @@ export const DisputeDetail = ( props ) => {
       address,
       history
     });
-
   };
 
   const onPayout = () => {
-
-    const {
-      id,
-      address,
-      hasToWithdraw
-    } = dispute.current;
+    const { id, address, hasToWithdraw } = dispute.current;
 
     global.store.dispatch({
       type: DISPUTE_PAYOUT_VOTER,
@@ -223,7 +209,6 @@ export const DisputeDetail = ( props ) => {
       address,
       history
     });
-
   };
 
   const onVote = (counterparty, idx) => {
@@ -257,12 +242,13 @@ export const DisputeDetail = ( props ) => {
   // };
 
   // form error handling
-  const hasError = (field) =>
+  const hasError = field =>
     typeof errors[field] !== "undefined" &&
     errors[field].length > 0 &&
     formUpdated; // show error only when form is update at least one time
 
-  const currentUserCanPay = dispute.vote.amount <= Number(ethToHuman(wallet.balance));
+  const currentUserCanPay =
+    dispute.vote.amount <= Number(ethToHuman(wallet.balance));
 
   // disable update
   const submitDisabled =
@@ -299,7 +285,7 @@ export const DisputeDetail = ( props ) => {
       winner: false
     };
     const idx = -1;
-    setShowVoteOverlay({counterparty, idx});
+    setShowVoteOverlay({ counterparty, idx });
   };
 
   const breadcrumbs = [
@@ -361,9 +347,9 @@ export const DisputeDetail = ( props ) => {
     typeof counterparties[1] !== "undefined" &&
     typeof counterparties[1].wallet !== "undefined" &&
     typeof wallet !== "undefined" &&
-    typeof wallet.address !== "undefined" && wallet.address !== null
+    typeof wallet.address !== "undefined" &&
+    wallet.address !== null
   ) {
-
     currentPart =
       wallet.address.toLowerCase() === counterparties[1].wallet.toLowerCase()
         ? "b"
@@ -460,7 +446,6 @@ export const DisputeDetail = ( props ) => {
       onExpire
     };
 
-
     common = {
       part_a: contractData.from.wallet,
       part_b: contractData.to.wallet
@@ -481,25 +466,25 @@ export const DisputeDetail = ( props ) => {
       }
     ];
 
-    log('DisputeDetail - rej perc',(100 - percentagePartA - percentagePartB))
-    let rejectPercentage = Math.max((100 - percentagePartA - percentagePartB),0);
-    log('DisputeDetail - rejectPercentage',rejectPercentage)
-    
+    log("DisputeDetail - rej perc", 100 - percentagePartA - percentagePartB);
+    let rejectPercentage = Math.max(100 - percentagePartA - percentagePartB, 0);
+    log("DisputeDetail - rejectPercentage", rejectPercentage);
+
     voteReject = {
       percentage: rejectPercentage,
-      value: totalTokensReject,
-    }
+      value: totalTokensReject
+    };
 
     if (statusId === 39) {
       voteCounterparties.push({
-        wallet: '0x0',
-        name: 'Reject',
+        wallet: "0x0",
+        name: "Reject",
         email: null,
         renderName: true,
         percentage: rejectPercentage,
         value: totalTokensReject,
         winner: false
-      })
+      });
     }
   }
 
@@ -526,7 +511,7 @@ export const DisputeDetail = ( props ) => {
         {!dispute.updating && counterparties ? (
           <>
             <Main>
-            <ActionsBar isDispute={true} />
+              {/* <ActionsBar isDispute={true} /> */}
               <ContractSummary
                 data={{
                   ...contractData,
@@ -582,15 +567,13 @@ export const DisputeDetail = ( props ) => {
                   voteCounterparties={voteCounterparties}
                   onWithdraw={onWithdraw}
                   onPayout={onPayout}
-                  payout={
-                    {
-                      hasWithdrawn: dispute.current.hasWithdrawn,
-                      hasToGetReward: dispute.current.hasToGetReward,
-                      voteLookup: dispute.current.voteLookup,
-                      sumToWithdraw: dispute.current.sumToWithdraw,
-                      reward: dispute.current.reward,
-                    }
-                  }
+                  payout={{
+                    hasWithdrawn: dispute.current.hasWithdrawn,
+                    hasToGetReward: dispute.current.hasToGetReward,
+                    voteLookup: dispute.current.voteLookup,
+                    sumToWithdraw: dispute.current.sumToWithdraw,
+                    reward: dispute.current.reward
+                  }}
                   history={history}
                   oracles={oracle.currentList}
                   onSubmit={onSubmit}

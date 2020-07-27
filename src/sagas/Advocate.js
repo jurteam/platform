@@ -228,7 +228,7 @@ function* updateBioSaga(action) {
 
     yield put({
       type: ADVOCATE_UPDATE_BIO_SUCCEEDED,
-      payload: response
+      payload: action.payload.bio
     });
   } catch (error) {
     yield put({ type: API_CATCH, error });

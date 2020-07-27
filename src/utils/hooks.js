@@ -83,6 +83,20 @@ const FormValidation = {
   },
   duration: (days, hours, minutes) => {
     return days || hours || minutes ? true : false;
+  },
+  compareLength: (field, { operation, than }) => {
+    console.log("hooks compareLength", field, operation, than);
+    if (field === null || field === undefined) return true;
+    const len = field.length;
+    if (typeof len != "number") return false; // can't compare so must be false
+    switch (operation) {
+      case "greater":
+        return len > than;
+      case "lesser":
+        return len < than;
+      default:
+        return false;
+    }
   }
 };
 
@@ -145,7 +159,7 @@ export const useFormValidation = (data, schema) => {
 
             checkPass = FormValidation[checkName](fieldValue, targetFieldValue); // add target field
           } else {
-            checkPass = FormValidation[checkName](fieldValue);
+            checkPass = FormValidation[checkName](fieldValue, field);
           }
 
           if (!checkPass) {
