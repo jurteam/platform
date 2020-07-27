@@ -160,9 +160,11 @@
     position: relative;
     border: 1px solid $input-border-color;
     border-radius: 2px;
+    height: 36px;
 
     input {
       width: calc(100% - 20px);
+      height: 34px;
       border-width: 0;
 
       &::-webkit-input-placeholder {
