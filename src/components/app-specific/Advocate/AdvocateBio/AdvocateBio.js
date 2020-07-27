@@ -12,7 +12,7 @@ const AdvocateBio = ({ advocasy, address, updateBioAction }) => {
 
   const [editBox, setEditBox] = useState(false);
   const [error, setError] = useState();
-  const [currentBio, setCurrentBio] = useState();
+  const [currentBio, setCurrentBio] = useState(advocasy.bio);
   const [updatedBio, setUpdatedBio] = useState();
   const [currentLength, setCurrentLength] = useState();
 
@@ -101,30 +101,32 @@ const AdvocateBio = ({ advocasy, address, updateBioAction }) => {
           </>
         ) : (
           <p className="jur-bio-text">
-            {currentBio && loggedInUser() ? (
+            {currentBio ? (
               <>
                 {currentBio}
-                <span
-                  className="jur-bio-edit"
-                  onClick={e => {
-                    handleEdit(e);
-                  }}
-                >
-                  <svg
-                    width="12"
-                    height="12"
-                    viewBox="0 0 12 12"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
+                {loggedInUser() ? (
+                  <span
+                    className="jur-bio-edit"
+                    onClick={e => {
+                      handleEdit(e);
+                    }}
                   >
-                    <path
-                      fill-rule="evenodd"
-                      clip-rule="evenodd"
-                      d="M11.6705 3.33004L10.3451 4.65542L7.34461 1.65497L8.66999 0.329589C9.10945 -0.109863 9.82218 -0.109863 10.2616 0.329589L11.6705 1.7384C12.1099 2.17785 12.1099 2.89036 11.6705 3.33004ZM3.29929 11.701L0.624152 11.9963C0.266022 12.0359 -0.0365366 11.7331 0.00328875 11.3749L0.300949 8.69792L6.81422 2.18513L9.81467 5.18558L3.29929 11.701Z"
-                      fill="#0077FF"
-                    />
-                  </svg>
-                </span>
+                    <svg
+                      width="12"
+                      height="12"
+                      viewBox="0 0 12 12"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        clip-rule="evenodd"
+                        d="M11.6705 3.33004L10.3451 4.65542L7.34461 1.65497L8.66999 0.329589C9.10945 -0.109863 9.82218 -0.109863 10.2616 0.329589L11.6705 1.7384C12.1099 2.17785 12.1099 2.89036 11.6705 3.33004ZM3.29929 11.701L0.624152 11.9963C0.266022 12.0359 -0.0365366 11.7331 0.00328875 11.3749L0.300949 8.69792L6.81422 2.18513L9.81467 5.18558L3.29929 11.701Z"
+                        fill="#0077FF"
+                      />
+                    </svg>
+                  </span>
+                ) : null}
               </>
             ) : (
               <div className="jur-bio-add">
