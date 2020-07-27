@@ -119,7 +119,6 @@ $api->version('v1', function ($api) {
         $api->get('/{wallet}', 'App\Http\Controllers\AdvocateController@show');
         $api->get('/{wallet}/activities/available', 'App\Http\Controllers\AdvocateController@availableActivities');
         $api->get('/{wallet}/activities/ongoing', 'App\Http\Controllers\AdvocateController@ongoingActivities');
-        $api->put('/{wallet}', 'App\Http\Controllers\AdvocateController@update');
     });
 
     $api->group(['prefix' => 'rewards'], function ($api) {

@@ -31,7 +31,8 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'show_fullname',
         'accepted_terms',
         'accepted_disclaimer',
-        'url'
+        'url',
+        'bio'
     ];
 
     /**
@@ -46,6 +47,18 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     protected $casts = [
         'show_fullname' => 'boolean'
     ];
+
+    protected $appends = ['hasBio'];
+
+    /**
+     * Get the hasBio flag for the user.
+     *
+     * @return bool
+     */
+    public function getHasBioAttribute()
+    {
+        return (bool) Advocate::where('wallet', $this->attributes['wallet'])->count();
+    }
 
     public function scopeByEmail($query)
     {
