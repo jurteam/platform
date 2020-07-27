@@ -3,22 +3,26 @@ import "./YourActivitiesTable.scss";
 import Table from "JurCommon/Table";
 import Amount from "JurCommon/Amount";
 import YourActivitiesAction from "../YourActivitiesAction";
-import { getAdvocateYourActivities } from "../../../../sagas/Selectors";
+import {
+  getAdvocateYourActivities,
+  getLabels
+} from "../../../../sagas/Selectors";
 import { ADVOCATE_FETCH_YOUR_ACTIVITIES } from "../../../../reducers/types";
 import { i18nDateFormatSec } from "../../../../utils/helpers";
 
-const YourActivitiesTable = ({ rows, fetchYourActivities }) => {
+const YourActivitiesTable = ({ rows, fetchYourActivities, labels }) => {
   useEffect(() => {
     fetchYourActivities();
   }, []);
+
   return (
     <Table>
       <Table.Head>
         <Table.Row>
-          <Table.Cell>Activity</Table.Cell>
-          <Table.Cell size="small">Reward</Table.Cell>
-          <Table.Cell size="small">Due Date</Table.Cell>
-          <Table.Cell size="small">Status</Table.Cell>
+          <Table.Cell>{labels.activity}</Table.Cell>
+          <Table.Cell size="small">{labels.reward}</Table.Cell>
+          <Table.Cell size="small">{labels.dueDate}</Table.Cell>
+          <Table.Cell size="small">{labels.status}</Table.Cell>
         </Table.Row>
       </Table.Head>
       <Table.Body>
@@ -44,7 +48,8 @@ YourActivitiesTable.defaultProps = {
 };
 
 const mapStateToProps = state => ({
-  rows: getAdvocateYourActivities(state)
+  rows: getAdvocateYourActivities(state),
+  labels: getLabels(state)
 });
 
 const fetchYourActivities = () => ({ type: ADVOCATE_FETCH_YOUR_ACTIVITIES });

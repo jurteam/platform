@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect  } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import VoteProgress from "../VoteProgress";
 import { toCurrencyFormat, log } from "../../../utils/helpers";
 
@@ -7,7 +7,7 @@ import { AppContext } from "../../../bootstrap/AppProvider"; // context
 import Button from "../Button";
 import TimeAgo from "react-timeago";
 
-export const DisputeVote = ( props ) => {
+export const DisputeVote = props => {
   const {
     payout,
     title,
@@ -17,15 +17,14 @@ export const DisputeVote = ( props ) => {
     statusId,
     onVote,
     canVote,
-    winner,    
+    winner,
     onReject,
-    voteReject    
+    voteReject
   } = props;
- 
+
   let resultNote = "";
   // let resultWaitReward = "";
   const { labels } = useContext(AppContext);
-
 
   const [percentageS, setPercentageS] = useState(0);
   const [valueS, setValueS] = useState(0);
@@ -42,81 +41,75 @@ export const DisputeVote = ( props ) => {
   //   );
   // }
 
-
-  useEffect(()=>{
+  useEffect(() => {
     // animate percentage/value changing
-    let stepsPassed = 0
+    let stepsPassed = 0;
 
-    const stepPercentage = (voteReject.percentage - percentageS) / stepsN
-    const stepValue = (voteReject.value - valueS) / stepsN
+    const stepPercentage = (voteReject.percentage - percentageS) / stepsN;
+    const stepValue = (voteReject.value - valueS) / stepsN;
 
     let newPercentage = percentageS;
     let newValue = valueS;
-    
-    let interv = setInterval(() => {      
 
-      if (stepsPassed<stepsN) {    
-        
+    let interv = setInterval(() => {
+      if (stepsPassed < stepsN) {
         newPercentage = newPercentage + stepPercentage;
         newValue = newValue + stepValue;
 
         setPercentageS(newPercentage);
         setValueS(newValue);
-        
       } else {
-        clearInterval(interv)
+        clearInterval(interv);
       }
       stepsPassed++;
-      
-    }, (durationMS/stepsN));
+    }, durationMS / stepsN);
+  }, [voteReject]);
 
-  },[voteReject])
+  if (
+    statusId === 39 &&
+    (payout.hasWithdrawn ||
+      (payout.hasWithdrawn === false && payout.sumToWithdraw === 0)) &&
+    (payout.hasToGetReward === 3 || payout.hasToGetReward === 0)
+  ) {
+    const earnings = payout.sumToWithdraw + payout.reward;
 
-
-  if (statusId === 39 && (payout.hasWithdrawn || (payout.hasWithdrawn === false && payout.sumToWithdraw === 0)) && 
-    (payout.hasToGetReward === 3 || payout.hasToGetReward === 0)) {
-
-    const earnings = payout.sumToWithdraw + payout.reward
-
-    log('earnings',earnings);
+    log("earnings", earnings);
     if (earnings > 0) {
-      
       resultNote = (
         <span
           dangerouslySetInnerHTML={{
-            __html: labels.gained.replace("%tokens%", toCurrencyFormat(earnings))
+            __html: labels.gained.replace(
+              "%tokens%",
+              toCurrencyFormat(earnings)
+            )
           }}
         />
       );
-    }   
+    }
   }
 
-  const rewardButton = (<Button color="gradient" 
-  variant="gradient" 
-  onClick={onPayout}
-  fullWidth>
-    {labels.reward}
-  </Button>)
+  const rewardButton = (
+    <Button color="gradient" variant="gradient" onClick={onPayout} fullWidth>
+      {labels.getReward}
+    </Button>
+  );
 
   const [isPassed, setPassed] = useState(false);
-
 
   const isPassedTime = date => {
     const d = new Date();
     const n = d.getTime();
-     
-    log('isPassedTime',date < n)
-    setPassed(date < n)
+
+    log("isPassedTime", date < n);
+    setPassed(date < n);
     // if (date < n) {
     //   log('isPassedTime - date')
     //   return date;
     // } else {
     //   log('isPassedTime - n')
-      return n;
+    return n;
     // }
-
   };
-
 
   // if (statusId === 39 && (payout.hasWithdrawn || (payout.hasWithdrawn === false && payout.sumToWithdraw === 0)) && payout.reward > 0 && payout.hasToGetReward === 1) {
   //   resultWaitReward = (
@@ -150,63 +143,71 @@ export const DisputeVote = ( props ) => {
             stepsN={stepsN}
             durationMS={durationMS}
           />
-        ))}         
+        ))}
       </div>
       {canVote && (
         <div className="jur-dispute-vote__note">
           {labels.voteForRejectText}
           <span onClick={onReject}>
-            {labels.voteForReject}<br/>
+            {labels.voteForReject}
+            <br />
             {percentageS.toString().indexOf("%") > -1
-          ? percentageS.toFixed(2)
-          : percentageS.toFixed(2) + "%"} - {toCurrencyFormat(valueS)}
+              ? percentageS.toFixed(2)
+              : percentageS.toFixed(2) + "%"}{" "}
+            - {toCurrencyFormat(valueS)}
           </span>
         </div>
       )}
 
+      {payout && (
+        <>
+          {(payout.hasWithdrawn ||
+            (payout.hasWithdrawn === false && payout.sumToWithdraw === 0)) &&
+            (payout.hasToGetReward === 3 || payout.hasToGetReward === 0) &&
+            statusId === 39 && (
+              <div className="jur-dispute-vote__result-note">{resultNote}</div>
+            )}
 
-      {payout && 
-      <>
+          {payout.hasToGetReward === 1 &&
+            (payout.hasWithdrawn ||
+              (payout.hasWithdrawn === false && payout.sumToWithdraw === 0)) &&
+            statusId === 39 && (
+              <div className="jur-dispute-vote__result-note">
+                <div style={{ display: !isPassed ? `block` : `none` }}>
+                  {labels.rewardWait1}
+                  <TimeAgo
+                    date={payout.voteLookup * 1000}
+                    now={() => isPassedTime(payout.voteLookup * 1000)}
+                  />
+                  {labels.rewardWait2}
+                </div>
 
-        {(payout.hasWithdrawn || (payout.hasWithdrawn === false && payout.sumToWithdraw === 0)) && 
-        (payout.hasToGetReward === 3 || payout.hasToGetReward === 0) && 
-        statusId === 39 &&         
-        (
-          <div className="jur-dispute-vote__result-note">{resultNote}</div>
-        )}
+                {isPassed && rewardButton}
+              </div>
+            )}
 
-        {payout.hasToGetReward === 1 &&
-        (payout.hasWithdrawn || (payout.hasWithdrawn === false && payout.sumToWithdraw === 0)) &&
-        statusId === 39 &&
-        <div className="jur-dispute-vote__result-note">
-          
-          <div style={{display:(!isPassed?`block`:`none`)}}>
-            {labels.rewardWait1}
-            <TimeAgo date={(payout.voteLookup*1000)} now={() => isPassedTime(payout.voteLookup*1000)} />
-            {labels.rewardWait2}
-          </div>
-          
-          {isPassed && rewardButton}
-        </div>}
+          {payout.hasWithdrawn === false && payout.sumToWithdraw > 0 && (
+            <div className="jur-dispute-vote__result-note">
+              <Button
+                color="gradient"
+                variant="gradient"
+                onClick={onWithdraw}
+                fullWidth
+              >
+                {labels.withdraw}
+              </Button>
+            </div>
+          )}
 
-        {(payout.hasWithdrawn === false && payout.sumToWithdraw > 0) &&
-          <div className="jur-dispute-vote__result-note">
-            <Button color="gradient" 
-            variant="gradient" 
-            onClick={onWithdraw} 
-            fullWidth>
-              {labels.withdraw}
-            </Button>
-          </div>}
-
-        {(payout.hasWithdrawn || (payout.hasWithdrawn === false && payout.sumToWithdraw === 0)) && 
-          payout.hasToGetReward === 2 && 
-          <div className="jur-dispute-vote__result-note">
-            {rewardButton}
-          </div>}
-
-      </>}
-
+          {(payout.hasWithdrawn ||
+            (payout.hasWithdrawn === false && payout.sumToWithdraw === 0)) &&
+            payout.hasToGetReward === 2 && (
+              <div className="jur-dispute-vote__result-note">
+                {rewardButton}
+              </div>
+            )}
+        </>
+      )}
     </div>
   );
 };

@@ -7,10 +7,11 @@ import Flag from "JurCommon/Flag";
 import Divide from "JurCommon/Divide";
 import { LinkedInIcon, GlobeIcon } from "JurCommon/Icons";
 import { i18nDateFormatSec } from "JurUtils/helpers";
+import { mapLabelsToProps } from "../../../../utils/helpers";
 
-const AdvocateHeader = ({ country, activationTime, linkedIn, url }) => (
+const AdvocateHeader = ({ country, activationTime, linkedIn, url, labels }) => (
   <>
-    <Text transform="shout">Advocate</Text>
+    <Text transform="shout">{labels.advocate}</Text>
     <Text size="small">Advocate since {i18nDateFormatSec(activationTime)}</Text>
     <Row align="center" className="jur-holder-header__links">
       {country ? (
@@ -41,4 +42,4 @@ const AdvocateHeader = ({ country, activationTime, linkedIn, url }) => (
     </Row>
   </>
 );
-export default AdvocateHeader;
+export default global.connection(AdvocateHeader, mapLabelsToProps);

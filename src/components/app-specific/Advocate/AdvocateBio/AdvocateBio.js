@@ -4,10 +4,17 @@ import Box from "JurCommon/Box";
 
 import "./advocate-bio.scss";
 import { ADVOCATE_UPDATE_BIO } from "../../../../reducers/types";
+import { mapLabelsToProps } from "../../../../utils/helpers";
 
 const MAX_CONTENT_LENGTH = 1000;
 
-const AdvocateBio = ({ advocasy, address, updateBioAction, isPublic }) => {
+const AdvocateBio = ({
+  advocasy,
+  address,
+  updateBioAction,
+  isPublic,
+  labels
+}) => {
   const currentUser = global.store.getState().user.wallet;
 
   const [editBox, setEditBox] = useState(false);
@@ -71,7 +78,7 @@ const AdvocateBio = ({ advocasy, address, updateBioAction, isPublic }) => {
                 {error ? (
                   <span className="error-info">
                     {currentLength} out of {MAX_CONTENT_LENGTH} characters.{" "}
-                    <strong>Please shorten the bio.</strong>
+                    <strong>{labels.bioHelperText}</strong>
                   </span>
                 ) : null}
               </div>
@@ -84,7 +91,7 @@ const AdvocateBio = ({ advocasy, address, updateBioAction, isPublic }) => {
                     handleCancel(e);
                   }}
                 >
-                  Cancel
+                  {labels.cancel}
                 </Button>
                 <Button
                   variant="contained"
@@ -94,7 +101,7 @@ const AdvocateBio = ({ advocasy, address, updateBioAction, isPublic }) => {
                   }}
                   disabled={error || !updatedBio}
                 >
-                  Save
+                  {labels.save}
                 </Button>
               </div>
             </div>
@@ -161,4 +168,8 @@ const updateBioAction = (address, bio) => ({
 
 const mapDispatchToProps = { updateBioAction };
 
-export default global.connection(AdvocateBio, null, mapDispatchToProps);
+export default global.connection(
+  AdvocateBio,
+  mapLabelsToProps,
+  mapDispatchToProps
+);
