@@ -15,6 +15,7 @@ import InfoTootip from "../InfoTooltip";
 import { AppContext } from "../../../bootstrap/AppProvider"; // context
 
 import "./ProfileForm.scss";
+import ProfileBio from "./ProfileBio";
 
 // TODO: eval startup call for this informations in the future
 // TODO: use { translations } param due process.env.REACT_APP_LANGUAGE change
@@ -44,6 +45,8 @@ export const ProfileForm = props => {
     name,
     linkedin,
     url,
+    hasBio,
+    bio,
     gender,
     email,
     updating,
@@ -65,6 +68,7 @@ export const ProfileForm = props => {
   };
 
   const onInputChange = ev => {
+    console.log("ProfileForm onInputChange", ev);
     const { target } = ev;
     if (target) {
       // only if there is a target
@@ -137,6 +141,26 @@ export const ProfileForm = props => {
             disabled
             readOnly
           />
+        </Form.Group>
+        <Form.Group>
+          <div className="jur-form__profile__options__show-name mt-2">
+            <Form.Label>
+              <InfoTootip
+                position="top"
+                text={labels.showFullNameTooltipText}
+              />{" "}
+              {labels.showFullName}
+            </Form.Label>
+            <div className="jur-form__profile__options__show-name__input">
+              <Switch
+                name="show_fullname"
+                error={hasError("show_fullname")}
+                onChange={onInputChange}
+                value={show_fullname || false}
+                checked={show_fullname}
+              />
+            </div>
+          </div>
         </Form.Group>
       </Form.Container>
       <Form.Container>
@@ -276,10 +300,21 @@ export const ProfileForm = props => {
           />
         </Form.Group>
       </Form.Container>
+
+      {hasBio ? (
+        <ProfileBio
+          label={labels.profileBio}
+          error={hasError("bio")}
+          placeholder={labels.profileBioPlaceholder}
+          value={bio}
+          onChange={onInputChange}
+        />
+      ) : null}
+
       <FormContainer className="jur-form__footer">
         <Form.Group>
           <div className="jur-form__profile__options">
-            <div className="jur-form__profile__options__show-name">
+            {/* <div className="jur-form__profile__options__show-name">
               <Form.Label>
                 <InfoTootip
                   position="top"
@@ -296,7 +331,7 @@ export const ProfileForm = props => {
                   checked={show_fullname}
                 />
               </div>
-            </div>
+            </div> */}
             <div className="jur-form__profile__options__terms">
               <Form.Label>
                 <Form.Input

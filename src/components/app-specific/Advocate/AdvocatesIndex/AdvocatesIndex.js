@@ -6,15 +6,16 @@ import AdvocatesPagination from "../AdvocatesPagination";
 import { getAdvocates } from "../../../../sagas/Selectors";
 import { ADVOCATE_FETCH_ALL } from "../../../../reducers/types";
 
-const AdvocatesIndex = ({ advocates, fetchAdvocates }) => {
+const AdvocatesIndex = ({ advocates, fetchAdvocates, size }) => {
   useEffect(() => {
     fetchAdvocates();
   }, []);
 
   return (
     <>
-      <AdvocatesTable advocates={advocates} />
+      <AdvocatesTable advocates={advocates} size={size} />
       <AdvocatesPagination />
+      <div className="jur-safe-margin" />
     </>
   );
 };

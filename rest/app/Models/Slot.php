@@ -7,6 +7,7 @@ use App\Models\RewardActivity;
 use App\Models\RewardUnAssignedSlot;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use \App\Jobs\RewardSlotUpdateStatusToOverDue;
 
 class Slot extends Model
 {
@@ -65,6 +66,23 @@ class Slot extends Model
         $slot->created_at = Carbon::createFromTimestamp($data->createdAt);
         $slot->save();
 
+        // Get the time of completion
+        $completeAt = Carbon::createFromTimestamp($data->dueDate);
+
+        // find delay for over due
+        $OverDueDelay = $completeAt->diffInSeconds(Carbon::now());
+
+        // find delay for withdraw
+        $withdrawDelay = $OverDueDelay + config('reward.rewardDelay');
+
+        $jobOverDue = (new RewardSlotUpdateStatusToOverDue($slot))->delay($OverDueDelay);
+
+        $jobWithdraw = (new NotifyRewardSlotWithdrawable($slot))->delay($withdrawDelay);
+
+        dispatch($jobOverDue);
+
+        dispatch($jobWithdraw);
+
         // update assigned slot count
         $rewardActivity->assigned_slots = Slot::whereNotIn('status', ['Unassigned', 'Cancelled'])
             ->where('reward_activity_id', $rewardActivity->id)->count();
@@ -106,6 +124,9 @@ class Slot extends Model
             $RewardUnAssignedSlot->un_assigned_wallet = $slot->assigned_wallet;
             $RewardUnAssignedSlot->save();
 
+            // send notifications
+            dispatch((new NotifyRewardStatusChanged($slot)));
+
             // remove assigned_wallet from slot
             $slot->assigned_wallet = null;
         }
@@ -114,7 +135,11 @@ class Slot extends Model
 
         if ($data->newState == 'Cancelled') {
             if ($alreadyCancelled == 0) {
-                $rewardActivity->number_of_slots = $rewardActivity->number_of_slots - 1; // reduce number of slots
+                // send notifications
+                dispatch((new NotifyRewardStatusChanged($slot)));
+
+                // reduce number of slots
+                $rewardActivity->number_of_slots = $rewardActivity->number_of_slots - 1;
             }
         }
 

@@ -5,14 +5,16 @@ import Section from "JurCommon/Section";
 import {
   ADVOCATE_FETCH_PROFILE,
   ADVOCATE_TOGGLE_AVAILABLE,
-  ADVOCATE_RESET_PROFILE
+  ADVOCATE_RESET_PROFILE,
+  ADVOCATE_HIDE_DISCLAIMER
 } from "../../../../reducers/types";
 import {
   getAdvocate,
   getAdvocateMeta,
   getIsAdvocateAvailableShown,
   getWallet,
-  getAdvocateIsFetching
+  getAdvocateIsFetching,
+  getAdvocateShowDisclaimer
 } from "../../../../sagas/Selectors";
 import Text from "JurCommon/Text";
 import Disclaimer, { ModalDiscliamer } from "JurCommon/Disclaimer";
@@ -35,7 +37,9 @@ const AdvocateSection = ({
   toggleDetails,
   isAdvocate,
   isFetching,
-  resetAdvocate
+  resetAdvocate,
+  closeDisclaimer,
+  isDisclaimerOpen
 }) => {
   const effectiveAddress = address || myAddress;
 
@@ -49,7 +53,11 @@ const AdvocateSection = ({
       <HeaderBox address={effectiveAddress} isAdvocate={isAdvocate} />
       {isAdvocate ? (
         <>
-          <AdvocateBio advocasy={advocasy} address={effectiveAddress} />
+          <AdvocateBio
+            advocasy={advocasy}
+            address={effectiveAddress}
+            isPublic={isPublic}
+          />
           <BalancesBox
             rewardsBalance={advocasy.rewardsBalance}
             totalEarned={advocasy.totalEarned}
@@ -75,11 +83,15 @@ const AdvocateSection = ({
           <Text size="large" transform="header">
             List of Advocates
           </Text>
-          <AdvocatesIndex />
+          <AdvocatesIndex size="compact" />
           <AdvocatesFooterBox />
         </>
       )}
-      <ModalDiscliamer />
+      <ModalDiscliamer
+        isOpen={isDisclaimerOpen}
+        onAccept={closeDisclaimer}
+        onDecline={closeDisclaimer}
+      />
       <Disclaimer />
     </Section>
   );
@@ -87,15 +99,20 @@ const AdvocateSection = ({
 
 const mapStateToProps = state => {
   const myAddress = getWallet(state).address;
+  const isDisclaimerOpen = getAdvocateShowDisclaimer(state);
+
   return {
     isFetching: getAdvocateIsFetching(state),
     advocasy: getAdvocate(state),
     isShown: getIsAdvocateAvailableShown(state),
     myAddress,
     isPublic: !isMyProfile(myAddress),
-    isAdvocate: getAdvocateMeta(state).isAdvocate
+    isAdvocate: getAdvocateMeta(state).isAdvocate,
+    isDisclaimerOpen
   };
 };
+
+const closeDisclaimer = () => ({ type: ADVOCATE_HIDE_DISCLAIMER });
 
 const fetchAdvocate = address => ({
   type: ADVOCATE_FETCH_PROFILE,
@@ -120,7 +137,12 @@ const toggleDetails = () => {
   };
 };
 
-const mapDispatchToProps = { fetchAdvocate, toggleDetails, resetAdvocate };
+const mapDispatchToProps = {
+  fetchAdvocate,
+  closeDisclaimer,
+  toggleDetails,
+  resetAdvocate
+};
 
 export default global.connection(
   AdvocateSection,

@@ -17,6 +17,7 @@ $api->version('v1', function ($api) {
             $api->get('/', 'App\Http\Controllers\UserController@show');
             $api->post('/', 'App\Http\Controllers\UserController@store');
             $api->put('/', 'App\Http\Controllers\UserController@update');
+            $api->put('/disclaimer', 'App\Http\Controllers\UserController@acceptDisclaimer');
             $api->delete('/', 'App\Http\Controllers\UserController@destroy');
 
             $api->get('activities', 'App\Http\Controllers\ContractActivitiesController@getAllByWallet');
@@ -118,7 +119,6 @@ $api->version('v1', function ($api) {
         $api->get('/{wallet}', 'App\Http\Controllers\AdvocateController@show');
         $api->get('/{wallet}/activities/available', 'App\Http\Controllers\AdvocateController@availableActivities');
         $api->get('/{wallet}/activities/ongoing', 'App\Http\Controllers\AdvocateController@ongoingActivities');
-        $api->put('/{wallet}', 'App\Http\Controllers\AdvocateController@update');
     });
 
     $api->group(['prefix' => 'rewards'], function ($api) {

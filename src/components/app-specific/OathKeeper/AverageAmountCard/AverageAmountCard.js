@@ -12,7 +12,8 @@ import { oathKeeperAnalytics } from "../../../../utils/helpers";
 import {
   getAnalytics,
   getGraphAnalytics,
-  getAnalyticsMeta
+  getAnalyticsMeta,
+  getLabels
 } from "../../../../sagas/Selectors";
 
 const CARD_NAME = oathKeeperAnalytics.cards.AVERAGE_AMOUNT;
@@ -22,10 +23,13 @@ const AverageAmountCard = ({
   delta,
   graph,
   duration,
-  onEnumFilterChange
+  onEnumFilterChange,
+  labels
 }) => (
   <ChartCard className="jur-oath-keeper-analytics-card">
-    <ChartCard.Title>Average Amount Staked</ChartCard.Title>
+    <ChartCard.Title description={labels.oathKeeperAverageAmountDescription}>
+      Average Amount Staked
+    </ChartCard.Title>
     <Row>
       <ChartCard.Metric>
         <Amount value={value} />
@@ -44,7 +48,8 @@ const mapStateToProps = state => ({
   value: getAnalytics(state, CARD_NAME).value,
   delta: getAnalytics(state, CARD_NAME).delta,
   graph: getGraphAnalytics(state, CARD_NAME),
-  duration: getAnalyticsMeta(state, CARD_NAME).duration
+  duration: getAnalyticsMeta(state, CARD_NAME).duration,
+  labels: getLabels(state)
 });
 
 const onEnumFilterChange = duration => ({

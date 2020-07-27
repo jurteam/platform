@@ -88,7 +88,7 @@ class AdvocateController extends Controller
                     'country' => $user->location,
                     'linkedIn' => $user->linkedin,
                     'url' => $user->url,
-                    'bio' => isset($advocate) ? $advocate->bio : null,
+                    'bio' => isset($advocate) ? $user->bio : null,
                     'rewardsBalance' => (float) $rewardsBalance,
                     'totalEarned' => (float) $totalEarned,
                     'totalAvailable' => $isPrivate ? ((float) $totalAmount) - ((float) $totalAlloted) : null
@@ -177,22 +177,5 @@ class AdvocateController extends Controller
             $this->customPagination($slots, $request),
             new SlotOnGoingTransformer
         );
-    }
-
-    /**
-     * PUT update bio of an advocate
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function update(Request $request, $wallet)
-    {
-
-        $advocate = Advocate::where('wallet', $wallet)->firstOrFail();
-
-        $advocate->bio = $request->input('bio');
-
-        $advocate->save();
-
-        return '';
     }
 }

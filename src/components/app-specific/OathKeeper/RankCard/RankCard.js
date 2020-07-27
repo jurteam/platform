@@ -4,9 +4,13 @@ import { NavLink } from "react-router-dom";
 import "./RankCard.scss";
 import HeaderCard from "JurCommon/HeaderCard";
 import RankBadge from "JurCommon/RankBadge";
+import { mapLabelsToProps } from "../../../../utils/helpers";
 
-const RankCard = ({ rank }) => (
-  <HeaderCard title="Oath Keeper Rank">
+const RankCard = ({ rank, labels }) => (
+  <HeaderCard
+    title="Oath Keeper Rank"
+    description={labels.oathKeeperRankCardDesctiption}
+  >
     <HeaderCard.Hero>
       <RankBadge rank={rank} type="hero" />
     </HeaderCard.Hero>
@@ -20,4 +24,4 @@ const RankCard = ({ rank }) => (
     </HeaderCard.Body>
   </HeaderCard>
 );
-export default RankCard;
+export default global.connection(RankCard, mapLabelsToProps);

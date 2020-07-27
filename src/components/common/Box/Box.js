@@ -22,7 +22,14 @@ Box.defaultProps = {
 };
 
 Box.propTypes = {
-  type: PropTypes.oneOf(["normal", "hero", "header", "footer", "message"]),
+  type: PropTypes.oneOf([
+    "normal",
+    "hero",
+    "header",
+    "subheader",
+    "footer",
+    "message"
+  ]),
   isLoading: PropTypes.bool
 };
 

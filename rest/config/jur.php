@@ -6,11 +6,13 @@ return [
 
     'url' => env('JUR_FE_URL'),
 
+    'support_url' => env('JUR_SUPPORT_URL', 'support@jur.io'),
+
     'mail_logo_url' => env('JUR_MAIL_LOGO_URL'),
 
     'from' => [
         'address' => env('JUR_MAIL_FROM_ADDRESS', 'hello@example.com'),
-        'name' => env('JUR_MAIL_FROM_NAME', 'Example'),
+        'name' => env('JUR_MAIL_FROM_NAME', 'Example')
     ],
 
     'part_a_label' => 'a',

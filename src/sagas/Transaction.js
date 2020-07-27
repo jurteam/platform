@@ -1,9 +1,4 @@
-import {
-  put,
-  call,
-  select,
-  takeEvery
-} from "redux-saga/effects";
+import { put, call, select, takeEvery } from "redux-saga/effects";
 
 import {
   CATCH_EVENTS,
@@ -28,7 +23,7 @@ import {
   DISPUTE_VOTE_OVERLAY,
   API_GET_DISPUTE,
   LOCK_TRANSACTION,
-  REMOVE_TRANSACTION,
+  REMOVE_TRANSACTION
 } from "../reducers/types";
 
 import {
@@ -40,14 +35,9 @@ import {
   getCurrentContract,
   getCurrentDispute,
   getTransactionsLockedList
-} from './Selectors'
+} from "./Selectors";
 
-import {
-  log,
-  ethToHuman,
-  connexFromWei,
-  sum
-} from "../utils/helpers";
+import { log, ethToHuman, connexFromWei, sum } from "../utils/helpers";
 
 import {
   Contracts,
@@ -57,45 +47,38 @@ import {
   connexArbitrationContract
 } from "../api";
 
-
 export function* handleFetchTransactions(args) {
   const response = yield call(Transactions.list);
 
-  log('handleFetchTransactions - response', response);
+  log("handleFetchTransactions - response", response);
 
   yield put({
     type: TRANSACTIONS_FETCHED,
     payload: response.data
   });
 
-  log('handleFetchTransactions - TRANSACTIONS_FETCHED');
+  log("handleFetchTransactions - TRANSACTIONS_FETCHED");
 
   const txWaiting = yield select(getTransactionsList);
 
-  log('handleFetchTransactions - txWaiting', txWaiting);
+  log("handleFetchTransactions - txWaiting", txWaiting);
 
   yield put({
     type: CATCH_EVENTS
   });
 
-  log('handleFetchTransactions - CATCH_EVENTS');
-
+  log("handleFetchTransactions - CATCH_EVENTS");
 }
 
 export function* handleAddTransaction(args) {
-  const {
-    txid,
-    event,
-    param,
-    contract_id
-  } = args
+  const { txid, event, param, contract_id } = args;
 
   let params = {
     txid: txid,
     event: event,
     param: JSON.stringify(param),
     contract_id: contract_id
-  }
+  };
 
   if (args.vote_id) {
     params = {
@@ -104,12 +87,12 @@ export function* handleAddTransaction(args) {
       param: JSON.stringify(param),
       contract_id: contract_id,
       vote_id: args.vote_id
-    }
+    };
   }
 
   const response = yield call(Transactions.create, params);
 
-  log('handleAddTransaction - response', response);
+  log("handleAddTransaction - response", response);
 
   yield put({
     type: TRANSACTION_ADDED,
@@ -119,116 +102,102 @@ export function* handleAddTransaction(args) {
   yield put({
     type: CATCH_EVENTS
   });
-
-
 }
 
 export function* handleUnlockTransaction(args) {
-  log('handleUnlockTransaction - args', args);
-  const {
-    id
-  } = args
+  log("handleUnlockTransaction - args", args);
+  const { id } = args;
   yield call(Transactions.unlock, id);
 }
 
 export function* handleUpdateTransaction(args) {
-  log('handleUpdateTransaction - args', args);
+  log("handleUpdateTransaction - args", args);
 
-  const {
-    id,
-    block,
-    time
-  } = args
+  const { id, block, time } = args;
 
-  const response = yield call(Transactions.update, {
-    block: block,
-    time: time
-  }, id);
+  const response = yield call(
+    Transactions.update,
+    {
+      block: block,
+      time: time
+    },
+    id
+  );
 
-  log('handleUpdateTransaction - response', response);
-
+  log("handleUpdateTransaction - response", response);
 
   yield put({
     type: TRANSACTION_UPDATED,
     payload: response.data
   });
 
-  log('handleUpdateTransaction - args', args)
-
+  log("handleUpdateTransaction - args", args);
 }
 
 export function* handleCatchEvents(args) {
-
-
-  let {
-    block
-  } = args
+  let { block } = args;
 
   if (!block) {
-    block = global.connex.thor.status.head
+    block = global.connex.thor.status.head;
   }
 
-  log('handleCatchEvents - block', block)
-  log('handleCatchEvents - block n°' + block.number + ' - (' + new Date(block
-    .timestamp * 1000) + ') ')
+  // log('handleCatchEvents - block', block)
+  // log('handleCatchEvents - block n°' + block.number + ' - (' + new Date(block
+  // .timestamp * 1000) + ') ')
 
-  const lastblock = block.number
-  log('handleCatchEvents - lastblock', lastblock)
+  const lastblock = block.number;
+  // log('handleCatchEvents - lastblock', lastblock)
 
   const state = yield select(getWallet);
   let txWaiting = yield select(getTransactionsList);
 
-  log('handleCatchEvents - state', state)
-  log('handleCatchEvents - txWaiting', txWaiting)
+  // log('handleCatchEvents - state', state)
+  // log('handleCatchEvents - txWaiting', txWaiting)
 
   // if tx not resolved are waiting
 
   if (txWaiting.length > 0) {
-    log('handleCatchEvents - txWaiting.length > 0 - length', txWaiting.length)
+    // log('handleCatchEvents - txWaiting.length > 0 - length', txWaiting.length)
     for (let k = 0; k < txWaiting.length; k++) {
-
-      let txw = txWaiting[k]
-      log('handleCatchEvents - txw', txw)
+      let txw = txWaiting[k];
+      // log('handleCatchEvents - txw', txw)
 
       const thisTx = yield getTxByAddress(txw.txid);
-      log('handleCatchEvents - thisTx', thisTx)
+      // log('handleCatchEvents - thisTx', thisTx)
 
       if (thisTx !== null) {
-        log('handleCatchEvents - thisTx !== null')
-
+        // log('handleCatchEvents - thisTx !== null')
 
         let txLocked = yield select(getTransactionsLockedList);
         // txWaiting = yield select(getTransactionsList);
         // txw = txWaiting[k]
 
-        log('handleCatchEvents - txw [' + txw.id + '] is locked ?', txLocked)
+        // log('handleCatchEvents - txw [' + txw.id + '] is locked ?', txLocked)
         if (txLocked) {
-          log('handleCatchEvents - txw [' + txw.id + '] is locked ?',
-            txLocked[txw.id])
+          // log('handleCatchEvents - txw [' + txw.id + '] is locked ?',
+          // txLocked[txw.id])
         }
         // if is not yet locked
         if (!txLocked || !txLocked[txw.id]) {
-
           const retPut = yield put({
             type: LOCK_TRANSACTION,
             id: txw.id
           });
 
-          log('handleCatchEvents - locked retPut', retPut);
+          // log('handleCatchEvents - locked retPut', retPut);
 
-          log('handleCatchEvents - txw [' + txw.id + '] not locked', txw
-            .locked)
+          // log('handleCatchEvents - txw [' + txw.id + '] not locked', txw
+          // .locked)
 
           // lock this tx to resolve it
           let response = yield call(Transactions.lock, txw.id);
-          log('handleCatchEvents - response', response)
+          // log('handleCatchEvents - response', response)
 
           if (response.data.response) {
             // lock transaction locally
 
-
             // locked by me
-            log('handleCatchEvents - locked by me')
+            // log('handleCatchEvents - locked by me')
 
             // if no one is resolving it, resolve it
             yield put({
@@ -236,18 +205,14 @@ export function* handleCatchEvents(args) {
               txw: txw,
               blockNumber: thisTx.meta.blockNumber,
               timestamp: thisTx.meta.blockTimestamp
-            })
+            });
           }
-
         } else {
-          log('handleCatchEvents - txw [' + txw.id + '] locked', txw.locked)
+          // log('handleCatchEvents - txw [' + txw.id + '] locked', txw.locked)
         }
-
       }
-
     }
   }
-
 }
 
 async function getblockBynumber(i) {
@@ -258,42 +223,43 @@ async function getTxByAddress(txAddress) {
   return await global.connex.thor.transaction(txAddress).getReceipt();
 }
 
-
-
 export function* getEventUpdateTx(args) {
-  const {
-    txw,
-    blockNumber,
-    timestamp
-  } = args
+  const { txw, blockNumber, timestamp } = args;
 
-  log('getEventUpdateTx - txw', txw)
-  log('getEventUpdateTx - txw.param', txw.param)
-  const param = JSON.parse(txw.param)
-  log('getEventUpdateTx - param', param)
+  log("getEventUpdateTx - txw", txw);
+  log("getEventUpdateTx - txw.param", txw.param);
+  const param = JSON.parse(txw.param);
+  log("getEventUpdateTx - param", param);
 
-  log('getEventUpdateTx - blockNumber', blockNumber)
-  log('getEventUpdateTx - timestamp', timestamp)
+  log("getEventUpdateTx - blockNumber", blockNumber);
+  log("getEventUpdateTx - timestamp", timestamp);
 
-  let eventDecoded
+  let eventDecoded;
   // call event
 
   try {
-    if (txw.event === 'ArbitrationCreated') {
+    if (txw.event === "ArbitrationCreated") {
       const factory = new connexArbitrationFactory();
-      eventDecoded = yield factory.EventCatch(param, txw.event, blockNumber,
-        txw.txid);
+      eventDecoded = yield factory.EventCatch(
+        param,
+        txw.event,
+        blockNumber,
+        txw.txid
+      );
     } else {
       const contract = new connexArbitrationContract(txw.contract.address);
-      eventDecoded = yield contract.EventCatch(param, txw.event, blockNumber,
-        txw.txid);
+      eventDecoded = yield contract.EventCatch(
+        param,
+        txw.event,
+        blockNumber,
+        txw.txid
+      );
     }
-    log('getEventUpdateTx - eventDecoded', eventDecoded)
+    log("getEventUpdateTx - eventDecoded", eventDecoded);
 
     if (eventDecoded) {
-
       // manage event
-      yield manageEvent(txw, eventDecoded)
+      yield manageEvent(txw, eventDecoded);
 
       // update tx
       yield put({
@@ -301,25 +267,24 @@ export function* getEventUpdateTx(args) {
         id: txw.id,
         block: blockNumber,
         time: timestamp
-      })
+      });
 
-      log('getEventUpdateTx - transaction updated')
+      log("getEventUpdateTx - transaction updated");
 
       yield postAction(txw);
 
-      log('getEventUpdateTx - post postAction')
+      log("getEventUpdateTx - post postAction");
     } else {
       log(
-        'getEventUpdateTx - eventDecoded is null - event will not be emitted'
-      )
+        "getEventUpdateTx - eventDecoded is null - event will not be emitted"
+      );
       log("tx should be reverted: ", txw);
       log("tx contract: ", txw.contract.address);
-
 
       let thisTx = yield getTxByAddress(txw.txid);
       log("this tx reverted: ", thisTx);
 
-      if(thisTx.reverted) {
+      if (thisTx.reverted) {
         log("Contract is reverted");
         yield manageRevertedContract(txw);
         log("Contract reverted is managed");
@@ -332,42 +297,34 @@ export function* getEventUpdateTx(args) {
 
       yield deleteTransaction(txw.id);
     }
-
   } catch (error) {
-
-    log('getEventUpdateTx - error', error)
+    log("getEventUpdateTx - error", error);
     yield put({
       type: UNLOCK_TRANSACTION,
       id: txw.id
     });
   }
-
-
 }
 
 function* manageRevertedContract(txw) {
+  log("manageRevertedContract - txw", txw);
 
-  log('manageRevertedContract - txw', txw)
-  
   const currDisp = yield select(getCurrentDispute);
   const DisputeDetailPage = yield select(getDisputedetailPage);
-  
-  log('manageRevertedContract - currDisp', currDisp)
-  log('manageRevertedContract - DisputeDetailPage', DisputeDetailPage)
-  
+
+  log("manageRevertedContract - currDisp", currDisp);
+  log("manageRevertedContract - DisputeDetailPage", DisputeDetailPage);
+
   const {
     event,
-    contract: {
-      id
-    }
+    contract: { id }
   } = txw;
-  
-  
-  switch(event) {
+
+  switch (event) {
     case "VoteCast":
-      if(currDisp.id === id) {
-        log('manageRevertedContract - VoteCast')
-        
+      if (currDisp.id === id) {
+        log("manageRevertedContract - VoteCast");
+
         yield put({ type: DISPUTE_UPDATING, payload: false });
         yield put({ type: DISPUTE_SAVING, payload: false });
         global.store.dispatch({
@@ -379,7 +336,6 @@ function* manageRevertedContract(txw) {
     default:
       return txw;
   }
-
 }
 
 function* manageEvent(txw, decoded) {
@@ -394,26 +350,24 @@ function* manageEvent(txw, decoded) {
       part_b_penalty_fee,
       who_pays
     }
-  } = txw
-  log('manageEvent - event', event)
-  log('manageEvent - decoded', decoded)
+  } = txw;
+  log("manageEvent - event", event);
+  log("manageEvent - decoded", decoded);
 
-  let party, code, arbitration, allParties, toUpdate, voter, newDisputeEnds
+  let party, code, arbitration, allParties, toUpdate, voter, newDisputeEnds;
 
   const wallet = yield select(getWallet);
 
   switch (event) {
     case "ArbitrationCreated":
+      const arbitrationAddress = decoded._arbitration;
 
-      const arbitrationAddress = decoded._arbitration
-
-      log('manageEvent - arbitrationAddress', arbitrationAddress)
+      log("manageEvent - arbitrationAddress", arbitrationAddress);
 
       // ============== dispatch event contract created ----------------------
 
-
       if (arbitrationAddress) {
-        log('handleCreateArbitration - arbitrationAddress ok')
+        log("handleCreateArbitration - arbitrationAddress ok");
         // Step .2 - JURToken
 
         // approve
@@ -440,8 +394,7 @@ function* manageEvent(txw, decoded) {
           toUpdate.append("code", 1);
           try {
             response = yield call(Contracts.statusChange, toUpdate, id);
-            log("handleCreateArbitration - contract status updated",
-              response);
+            log("handleCreateArbitration - contract status updated", response);
             const {
               statusId,
               statusLabel,
@@ -480,7 +433,6 @@ function* manageEvent(txw, decoded) {
           });
         }
 
-
         // Read arbitrations
         // const txArbitrations = yield callToContract("ArbitrationFactory", "arbirations", [wallet.address]);
         // log("handleCreateArbitration - txArbitrations", txArbitrations);
@@ -495,60 +447,47 @@ function* manageEvent(txw, decoded) {
         payload: false
       });
 
-
-
       // -----------------------------------------------------
 
       break;
 
     case "ContractSigned":
+      party = decoded._party;
 
-      party = decoded._party
-
-      log('manageEvent - party', party)
+      log("manageEvent - party", party);
 
       // ============== dispatch event contract signed ----------------------
 
-
-
-
       let amount = 0;
 
-      const partAPenaltyFee = part_a_penalty_fee
-      const partBPenaltyFee = part_b_penalty_fee
-      const whoPays = who_pays
+      const partAPenaltyFee = part_a_penalty_fee;
+      const partBPenaltyFee = part_b_penalty_fee;
+      const whoPays = who_pays;
 
-      if (wallet.address.toLowerCase() === counterparties[1].wallet
-        .toLowerCase()) { // is part b
+      if (
+        wallet.address.toLowerCase() === counterparties[1].wallet.toLowerCase()
+      ) {
+        // is part b
 
-        if (typeof partBPenaltyFee !== 'undefined' && partBPenaltyFee)
-          amount = amount + Number(partBPenaltyFee)
-        if (whoPays.toLowerCase() === counterparties[1].wallet
-          .toLowerCase()) {
+        if (typeof partBPenaltyFee !== "undefined" && partBPenaltyFee)
+          amount = amount + Number(partBPenaltyFee);
+        if (whoPays.toLowerCase() === counterparties[1].wallet.toLowerCase()) {
           amount = amount + Number(value);
         }
-
       } else {
-
-        if (typeof partAPenaltyFee !== 'undefined' && partAPenaltyFee)
-          amount = amount + Number(partAPenaltyFee)
-        if (whoPays.toLowerCase() === counterparties[0].wallet
-          .toLowerCase()) {
+        if (typeof partAPenaltyFee !== "undefined" && partAPenaltyFee)
+          amount = amount + Number(partAPenaltyFee);
+        if (whoPays.toLowerCase() === counterparties[0].wallet.toLowerCase()) {
           amount = amount + Number(value);
         }
-
       }
 
-      let totalValue = Number(value) + Number(partAPenaltyFee) + Number(
-        partBPenaltyFee);
-      if (typeof partAPenaltyFee !== 'undefined' && partAPenaltyFee)
+      let totalValue =
+        Number(value) + Number(partAPenaltyFee) + Number(partBPenaltyFee);
+      if (typeof partAPenaltyFee !== "undefined" && partAPenaltyFee)
         totalValue = totalValue + Number(partAPenaltyFee);
-      if (typeof partBPenaltyFee !== 'undefined' && partBPenaltyFee)
+      if (typeof partBPenaltyFee !== "undefined" && partBPenaltyFee)
         totalValue = totalValue + Number(partBPenaltyFee);
-
-
-
-
 
       yield put({
         type: LOOKUP_WALLET_BALANCE
@@ -556,7 +495,6 @@ function* manageEvent(txw, decoded) {
       // TODO: check for wallet balance on connex
 
       code = 3; // still waiting for payment
-
 
       arbitration = new connexArbitrationContract(address);
 
@@ -569,8 +507,7 @@ function* manageEvent(txw, decoded) {
       log("manageEvent (ContractSigned) - partyAHasPayed", partyAHasPayed);
       log("manageEvent (ContractSigned) - partyBHasPayed", partyBHasPayed);
 
-      const fullfilled = partyAHasPayed &&
-        partyBHasPayed; // assuming all party has payed
+      const fullfilled = partyAHasPayed && partyBHasPayed; // assuming all party has payed
       if (fullfilled) {
         code = 5; // ongoing
       }
@@ -583,8 +520,7 @@ function* manageEvent(txw, decoded) {
 
       try {
         const response = yield call(Contracts.statusChange, toUpdate, id);
-        log("manageEvent (ContractSigned) - contract status updated",
-          response);
+        log("manageEvent (ContractSigned) - contract status updated", response);
         const {
           statusId,
           statusLabel,
@@ -630,20 +566,16 @@ function* manageEvent(txw, decoded) {
         });
       }
 
-
-
       // -----------------------------------------------------
 
       break;
 
     case "ContractAgreed":
+      party = decoded._party;
 
-      party = decoded._party
-
-      log('manageEvent - party', party)
+      log("manageEvent - party", party);
 
       // ============== dispatch event contract signed ----------------------
-
 
       code = 7; // still waiting for success
 
@@ -655,8 +587,7 @@ function* manageEvent(txw, decoded) {
       const partyAHasAgreed = yield arbitration.hasAgreed(allParties[0]);
       const partyBHasAgreed = yield arbitration.hasAgreed(allParties[1]);
 
-      const agreed = partyAHasAgreed &&
-        partyBHasAgreed; // assuming all party has payed
+      const agreed = partyAHasAgreed && partyBHasAgreed; // assuming all party has payed
       if (agreed) {
         code = 9; // closed – ready for withdrawn
       }
@@ -713,26 +644,22 @@ function* manageEvent(txw, decoded) {
         });
       }
 
-
-
       // -----------------------------------------------------
 
       break;
 
     case "ContractWithdrawn":
+      party = decoded._party;
 
-      party = decoded._party
-
-      log('manageEvent - party', party)
+      log("manageEvent - party", party);
 
       // ============== dispatch event Contract Withdrawn ----------------------
 
-
-
       arbitration = new connexArbitrationContract(address);
 
-      const dispersal = yield arbitration.dispersal(wallet.address
-        .toLowerCase());
+      const dispersal = yield arbitration.dispersal(
+        wallet.address.toLowerCase()
+      );
 
       yield put({
         type: LOOKUP_WALLET_BALANCE
@@ -748,29 +675,28 @@ function* manageEvent(txw, decoded) {
 
       const partyADispersal = yield arbitration.dispersal(allParties[0]);
       const partyBDispersal = yield arbitration.dispersal(allParties[1]);
-      log("handleWithdrawArbitration - partyADispersal", partyADispersal
-        .toString());
-      log("handleWithdrawArbitration - partyBDispersal", partyBDispersal
-        .toString());
+      log(
+        "handleWithdrawArbitration - partyADispersal",
+        partyADispersal.toString()
+      );
+      log(
+        "handleWithdrawArbitration - partyBDispersal",
+        partyBDispersal.toString()
+      );
 
       // set my witdrawn to true into store
       yield put({
         type: SET_WITHDRAW
       });
 
-      const partyAHasWithdrawn = yield arbitration.hasWithdrawn(allParties[
-        0]);
-      const partyBHasWithdrawn = yield arbitration.hasWithdrawn(allParties[
-        1]);
-      log("handleWithdrawArbitration - partyAHasWithdrawn",
-        partyAHasWithdrawn);
-      log("handleWithdrawArbitration - partyBHasWithdrawn",
-        partyBHasWithdrawn);
+      const partyAHasWithdrawn = yield arbitration.hasWithdrawn(allParties[0]);
+      const partyBHasWithdrawn = yield arbitration.hasWithdrawn(allParties[1]);
+      log("handleWithdrawArbitration - partyAHasWithdrawn", partyAHasWithdrawn);
+      log("handleWithdrawArbitration - partyBHasWithdrawn", partyBHasWithdrawn);
 
-
-      const withdrawn = (partyAHasWithdrawn || partyADispersal.toString() ===
-        '0') && (partyBHasWithdrawn || partyBDispersal.toString() ===
-        '0'); // assuming all party has payed
+      const withdrawn =
+        (partyAHasWithdrawn || partyADispersal.toString() === "0") &&
+        (partyBHasWithdrawn || partyBDispersal.toString() === "0"); // assuming all party has payed
       log("handleWithdrawArbitration - withdrawn", withdrawn);
       if (withdrawn) {
         code = 10; // closed – ready for withdrawn
@@ -779,8 +705,7 @@ function* manageEvent(txw, decoded) {
       // Status update
       let toUpdate = new FormData();
       toUpdate.append("code", code);
-      toUpdate.append("interpolation[value]", ethToHuman(dispersal
-        .toString()));
+      toUpdate.append("interpolation[value]", ethToHuman(dispersal.toString()));
 
       try {
         const response = yield call(Contracts.statusChange, toUpdate, id);
@@ -830,16 +755,14 @@ function* manageEvent(txw, decoded) {
         });
       }
 
-
       // -----------------------------------------------------
 
       break;
 
     case "ContractDisputed":
+      party = decoded._party;
 
-      party = decoded._party
-
-      log('manageEvent - party', party)
+      log("manageEvent - party", party);
 
       // ============== dispatch event Contract Disputed ----------------------
 
@@ -855,29 +778,31 @@ function* manageEvent(txw, decoded) {
       arbitration = new connexArbitrationContract(address);
 
       // future prevision
-      const disputeStartsTx = yield arbitration.disputeStarts()
+      const disputeStartsTx = yield arbitration.disputeStarts();
 
       if (disputeStartsTx) {
-        log("handleDisputeArbitration - disputeStartsTx.toString()",
-          disputeStartsTx.toString());
+        log(
+          "handleDisputeArbitration - disputeStartsTx.toString()",
+          disputeStartsTx.toString()
+        );
         // Status update Ongoing Dispute
         toUpdate = new FormData();
         toUpdate.append("code", 35);
-        toUpdate.append("chain_updated_at", disputeStartsTx
-          .toString()); // * 1000 ?
+        toUpdate.append("chain_updated_at", disputeStartsTx.toString()); // * 1000 ?
 
         yield call(Contracts.statusChange, toUpdate, id);
 
-        const disputeEndsTx = yield arbitration.disputeEnds()
+        const disputeEndsTx = yield arbitration.disputeEnds();
 
         if (disputeEndsTx) {
-          log("handleDisputeArbitration - disputeEndsTx.toString()",
-            disputeEndsTx.toString());
+          log(
+            "handleDisputeArbitration - disputeEndsTx.toString()",
+            disputeEndsTx.toString()
+          );
           // Status update 'Waiting Dispute'
           toUpdate = new FormData();
           toUpdate.append("code", 37);
-          toUpdate.append("chain_updated_at", disputeEndsTx
-            .toString()); // * 1000 ?
+          toUpdate.append("chain_updated_at", disputeEndsTx.toString()); // * 1000 ?
 
           yield call(Contracts.statusChange, toUpdate, id);
         }
@@ -904,20 +829,16 @@ function* manageEvent(txw, decoded) {
         payload: false
       });
 
-
-
       // -----------------------------------------------------
 
       break;
 
     case "ContractDisputeDispersalAmended":
+      party = decoded._party;
 
-      party = decoded._party
-
-      log('manageEvent - party', party)
+      log("manageEvent - party", party);
 
       // ============== dispatch event ContractDisputeDispersalAmended ----------------------
-
 
       yield put({
         type: LOOKUP_WALLET_BALANCE
@@ -928,18 +849,15 @@ function* manageEvent(txw, decoded) {
       break;
 
     case "VoteCast":
+      party = decoded._party;
 
-      party = decoded._party
-
-      log('manageEvent - party', party)
+      log("manageEvent - party", party);
 
       // ============== dispatch event VoteCast ----------------------
-
 
       yield put({
         type: LOOKUP_WALLET_BALANCE
       }); // update wallet balance
-
 
       yield put({
         type: FETCH_CONTRACTS
@@ -957,22 +875,17 @@ function* manageEvent(txw, decoded) {
 
       break;
 
-
     case "DisputeEndsAdjusted":
+      newDisputeEnds = decoded[0];
 
-      newDisputeEnds = decoded[0]
-
-      log('manageEvent - DisputeEndsAdjusted - decoded', decoded)
-      log('manageEvent - DisputeEndsAdjusted - newDisputeEnds',
-        newDisputeEnds)
+      log("manageEvent - DisputeEndsAdjusted - decoded", decoded);
+      log("manageEvent - DisputeEndsAdjusted - newDisputeEnds", newDisputeEnds);
 
       // ============== dispatch event DisputeEndsAdjusted ----------------------
 
-
       toUpdate = new FormData();
       toUpdate.append("code", 37);
-      toUpdate.append("chain_updated_at", newDisputeEnds
-        .toString()); // * 1000 ?
+      toUpdate.append("chain_updated_at", newDisputeEnds.toString()); // * 1000 ?
 
       yield call(Contracts.statusChange, toUpdate, id);
 
@@ -980,13 +893,11 @@ function* manageEvent(txw, decoded) {
 
       break;
 
-
     case "PartyPayout":
+      party = decoded._party;
+      const dispersalAmount = decoded._dispersalAmount;
 
-      party = decoded._party
-      const dispersalAmount = decoded._dispersalAmount
-
-      log('manageEvent - party', party)
+      log("manageEvent - party", party);
 
       // ============== dispatch event PartyPayout ----------------------
 
@@ -999,7 +910,7 @@ function* manageEvent(txw, decoded) {
 
       // const currContr = yield select(getCurrentDispute);
 
-      let sumToWithdraw = connexFromWei(dispersalAmount.toString(), 'ether');
+      let sumToWithdraw = connexFromWei(dispersalAmount.toString(), "ether");
       sumToWithdraw = Number.parseFloat(sumToWithdraw);
 
       withdrawalData.append("amount", sumToWithdraw);
@@ -1009,22 +920,19 @@ function* manageEvent(txw, decoded) {
 
       log(`handlePayoutParty - response`, response);
 
-
-
       // -----------------------------------------------------
 
       break;
 
     case "VoterPayout":
+      voter = decoded._voter;
+      let stakedAmount = decoded._stakedAmount;
+      let rewardAmount = decoded._rewardAmount;
 
-      voter = decoded._voter
-      let stakedAmount = decoded._stakedAmount
-      let rewardAmount = decoded._rewardAmount
+      log("manageEvent - voter", voter);
 
-      log('manageEvent - voter', voter)
-
-      log('manageEvent - VoterPayout -1 stakedAmount', stakedAmount)
-      log('manageEvent - VoterPayout -1 rewardAmount', rewardAmount)
+      log("manageEvent - VoterPayout -1 stakedAmount", stakedAmount);
+      log("manageEvent - VoterPayout -1 rewardAmount", rewardAmount);
 
       // ============== dispatch event VoterPayout ----------------------
 
@@ -1032,15 +940,15 @@ function* manageEvent(txw, decoded) {
         type: LOOKUP_WALLET_BALANCE
       }); // update wallet balance
 
-      stakedAmount = connexFromWei(stakedAmount.toString(), 'ether');
-      rewardAmount = connexFromWei(rewardAmount.toString(), 'ether');
+      stakedAmount = connexFromWei(stakedAmount.toString(), "ether");
+      rewardAmount = connexFromWei(rewardAmount.toString(), "ether");
 
-      const bigReward = sum(stakedAmount,rewardAmount)
+      const bigReward = sum(stakedAmount, rewardAmount);
 
-      log('manageEvent - VoterPayout -2 stakedAmount', stakedAmount)
-      log('manageEvent - VoterPayout -2 rewardAmount', rewardAmount)
+      log("manageEvent - VoterPayout -2 stakedAmount", stakedAmount);
+      log("manageEvent - VoterPayout -2 rewardAmount", rewardAmount);
 
-      log('manageEvent - VoterPayout - bigReward', bigReward)
+      log("manageEvent - VoterPayout - bigReward", bigReward);
 
       let rewardData = new FormData();
 
@@ -1055,16 +963,12 @@ function* manageEvent(txw, decoded) {
 
       break;
 
-
     default:
-
       break;
   }
 
-  return null
-
+  return null;
 }
-
 
 function* postAction(txw) {
   const currContr = yield select(getCurrentContract);
@@ -1075,28 +979,24 @@ function* postAction(txw) {
 
   const {
     event,
-    contract: {
-      id
-    }
-  } = txw
-  log('postAction - txw', txw)
-  log('postAction - event', event)
-  log('postAction - currContr', currContr)
-  log('postAction - currDisp', currDisp)
-  log('postAction - ContractDetailPage', ContractDetailPage)
-  log('postAction - DisputeDetailPage', DisputeDetailPage)
+    contract: { id }
+  } = txw;
+  log("postAction - txw", txw);
+  log("postAction - event", event);
+  log("postAction - currContr", currContr);
+  log("postAction - currDisp", currDisp);
+  log("postAction - ContractDetailPage", ContractDetailPage);
+  log("postAction - DisputeDetailPage", DisputeDetailPage);
 
   switch (event) {
     case "ContractDisputed":
-
       // -----------------------------------------------------
 
       if (ContractDetailPage && currContr.id === id) {
-
         global.store.dispatch({
           type: API_GET_CONTRACT,
           id: currContr.id,
-          silent: false,
+          silent: false
           // onSuccess: pageLoaded,
           // onError: pageLoaded,
           // history
@@ -1110,15 +1010,13 @@ function* postAction(txw) {
       break;
 
     case "ContractDisputeDispersalAmended":
-
       // -----------------------------------------------------
 
       if (ContractDetailPage && currContr.id === id) {
-
         global.store.dispatch({
           type: API_GET_CONTRACT,
           id: currContr.id,
-          silent: false,
+          silent: false
           // onSuccess: pageLoaded,
           // onError: pageLoaded,
           // history
@@ -1132,14 +1030,12 @@ function* postAction(txw) {
       break;
 
     case "VoteCast":
-
       // -----------------------------------------------------
 
-
-      log('postAction - VoteCast')
+      log("postAction - VoteCast");
 
       if (currDisp.id === id) {
-        log('postAction - VoteCast ok')
+        log("postAction - VoteCast ok");
 
         global.store.dispatch({
           type: DISPUTE_VOTE_OVERLAY,
@@ -1154,37 +1050,30 @@ function* postAction(txw) {
       break;
 
     case "PartyPayout":
-
       // -----------------------------------------------------
       if (currDisp.id === id) {
-
         log(`handlePayoutParty - LOOKUP_WALLET_BALANCE`);
         yield put({
           type: API_GET_DISPUTE,
-          id,
+          id
         });
         yield put({ type: DISPUTE_UPDATING, payload: false });
         log(`handlePayoutParty - API_GET_DISPUTE`);
-
       }
       // -----------------------------------------------------
 
       break;
 
     case "VoterPayout":
-
       // -----------------------------------------------------
       if (currDisp.id === id) {
-
-
         log(`handlePayoutParty - LOOKUP_WALLET_BALANCE`);
         yield put({
           type: API_GET_DISPUTE,
-          id,
+          id
         });
         yield put({ type: DISPUTE_UPDATING, payload: false });
         log(`handlePayoutParty - API_GET_DISPUTE`);
-
       }
       // -----------------------------------------------------
 
@@ -1194,25 +1083,23 @@ function* postAction(txw) {
       break;
   }
 
-  return null
+  return null;
 }
 
 function* deleteTransaction(id) {
-  log("delete transaction id: ",id);
-  try{
+  log("delete transaction id: ", id);
+  try {
     const response = yield call(Transactions.delete, id);
 
     log("delete transaction response: ", response);
     yield put({
       type: REMOVE_TRANSACTION,
       id: id
-    })
-
-  }catch(error) {
+    });
+  } catch (error) {
     log("Transaction remove error: ", error);
   }
 }
-
 
 // spawn tasks base certain actions
 export default function* transactionSagas() {

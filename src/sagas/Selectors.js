@@ -57,6 +57,7 @@ export const getTransactionsLastBlock = state =>
 
 // User
 export const getUser = state => state.user;
+export const getLabels = state => state.app.labels;
 
 // Oath Keeper
 export const getNewOath = state => ({
@@ -99,6 +100,7 @@ export const getGraphAnalytics = (state, card, chart = "line") => {
 };
 
 // Advocates
+export const getAdvocateShowDisclaimer = state => state.advocate.showDisclaimer;
 export const getShareNetwork = state => state.advocate.shareNetwork;
 export const getShareText = state => state.advocate.shareText;
 export const getShareIsSharing = state => state.advocate.isSharing;
