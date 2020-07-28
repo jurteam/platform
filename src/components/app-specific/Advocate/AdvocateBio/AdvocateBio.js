@@ -92,7 +92,7 @@ const AdvocateBio = ({ advocasy, address, updateBioAction, isPublic }) => {
                   onClick={e => {
                     handleUpdate(e);
                   }}
-                  disabled={error || !updatedBio}
+                  disabled={error}
                 >
                   Save
                 </Button>
