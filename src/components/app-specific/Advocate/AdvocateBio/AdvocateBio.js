@@ -5,6 +5,7 @@ import Box from "JurCommon/Box";
 import "./advocate-bio.scss";
 import { ADVOCATE_UPDATE_BIO } from "../../../../reducers/types";
 import { mapLabelsToProps } from "../../../../utils/helpers";
+import t from "../../../../utils/template";
 
 const MAX_CONTENT_LENGTH = 1000;
 
@@ -77,8 +78,11 @@ const AdvocateBio = ({
               <div>
                 {error ? (
                   <span className="error-info">
-                    {currentLength} out of {MAX_CONTENT_LENGTH} characters.{" "}
-                    <strong>{labels.bioHelperText}</strong>
+                    {t(labels.bioValidationMessage, {
+                      length: currentLength,
+                      maxLength: MAX_CONTENT_LENGTH
+                    })}
+                    <strong> {labels.bioHelperText} </strong>
                   </span>
                 ) : null}
               </div>
@@ -139,17 +143,18 @@ const AdvocateBio = ({
               <div className="jur-bio-add">
                 {!isPublic ? (
                   <p>
-                    Click{" "}
-                    <a
-                      className="jur-link"
-                      onClick={e => {
-                        handleEdit(e);
-                      }}
-                    >
-                      here
-                    </a>{" "}
-                    to add a bio about yourself. It will be showed to users
-                    visiting your public profile page
+                    {t(labels.addBioCTA, {
+                      link: (
+                        <a
+                          className="jur-link"
+                          onClick={e => {
+                            handleEdit(e);
+                          }}
+                        >
+                          here
+                        </a>
+                      )
+                    })}
                   </p>
                 ) : null}
               </div>

@@ -297,5 +297,11 @@
   "oathNow": "Oath Now",
   "noOathsTaken": "You have not taken any oaths",
   "yourOaths": "Your Oaths",
-  "learnAboutOathKeeper": "Do you want to learn more about the Oath Keeper role?"
+  "learnAboutOathKeeper": "Do you want to learn more about the Oath Keeper role?",
+  "advocateSince": "Advocate since {{date}}",
+  "checkOutArticle": "Check out our article at {{link}}",
+  "addBioCTA": "Click {{link}} to add a bio about yourself. It will be showed to users visiting your public profile page",
+  "bioValidationMessage": "{{length}} out of {{maxLength}} characters.",
+  "tokenAmount": "Token Amount",
+  "begin": "Begin"
 }
