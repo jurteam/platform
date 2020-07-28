@@ -3,13 +3,11 @@ import "./AdvocatesFooterBox.scss";
 
 import Box from "JurCommon/Box";
 import ArticleButton from "../ArticleButton";
+import { mapLabelsToProps } from "../../../../utils/helpers";
 
-const AdvocatesFooterBox = () => (
-  <Box
-    title="Do you want to learn more or apply to become an Advocate?"
-    type="footer"
-  >
+const AdvocatesFooterBox = ({ labels }) => (
+  <Box title={labels.learnAboutAdvocate} type="footer">
     <ArticleButton />
   </Box>
 );
-export default AdvocatesFooterBox;
+export default global.connection(AdvocatesFooterBox, mapLabelsToProps);

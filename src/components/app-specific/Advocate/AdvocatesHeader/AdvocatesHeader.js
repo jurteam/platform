@@ -4,21 +4,19 @@ import "./AdvocatesHeader.scss";
 import Text from "JurCommon/Text";
 import Grid from "JurCommon/Grid";
 import AdvocatesSearchInput from "../AdvocatesSearchInput";
+import { mapLabelsToProps } from "../../../../utils/helpers";
 
-const AdvocatesHeader = () => (
+const AdvocatesHeader = ({ labels }) => (
   <Grid template="auto / auto 212px">
     <Grid.Cell>
       <Text size="large" transform="header">
-        Advocates
+        {labels.advocates}
       </Text>
-      <Text>
-        This is the list of active Jur Advocates licenses that are co-creating
-        the Jur legal automation framework
-      </Text>
+      <Text>{labels.advocateListDescription}</Text>
     </Grid.Cell>
     <Grid.Cell vertical="end">
       <AdvocatesSearchInput />
     </Grid.Cell>
   </Grid>
 );
-export default AdvocatesHeader;
+export default global.connection(AdvocatesHeader, mapLabelsToProps);

@@ -28,7 +28,7 @@ const AverageAmountCard = ({
 }) => (
   <ChartCard className="jur-oath-keeper-analytics-card">
     <ChartCard.Title description={labels.oathKeeperAverageAmountDescription}>
-      Average Amount Staked
+      {labels.averageAmountStaked}
     </ChartCard.Title>
     <Row>
       <ChartCard.Metric>

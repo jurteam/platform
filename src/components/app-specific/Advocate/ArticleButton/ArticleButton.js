@@ -2,10 +2,11 @@ import React from "react";
 import "./ArticleButton.scss";
 
 import Button from "JurCommon/Button";
+import { mapLabelsToProps } from "../../../../utils/helpers";
 
-const ArticleButton = ({ className }) => (
+const ArticleButton = ({ className, labels }) => (
   <Button size="big" variant="contained" className={className}>
-    Check out join.jur.io
+    {labels.checkOutJur}
   </Button>
 );
-export default ArticleButton;
+export default global.connection(ArticleButton, mapLabelsToProps);

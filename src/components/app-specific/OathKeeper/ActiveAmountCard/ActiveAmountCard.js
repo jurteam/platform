@@ -29,7 +29,7 @@ const ActiveAmountCard = ({
   return (
     <ChartCard className="jur-oath-keeper-analytics-card">
       <ChartCard.Title description={labels.oathKeeperActiveAmountDescription}>
-        Active Amount Staked
+        {labels.activeAmountStaked}
       </ChartCard.Title>
       <Row>
         <ChartCard.Metric>
