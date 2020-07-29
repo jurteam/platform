@@ -7,16 +7,16 @@ import Text from "JurCommon/Text";
 import SocialNetworkInput from "../SocialNetworkInput";
 import ShareStatusTextInput from "../ShareStatusTextInput";
 import SubmitShareButton from "../SubmitShareButton";
-import { getAdvocateMessage } from "../../../../sagas/Selectors";
+import { getAdvocateMessage, getLabels } from "../../../../sagas/Selectors";
 import { isMyProfile } from "../../../../utils/AdvocateHelpers";
 
-const ShareModal = ({ address, isOpen, onRequestClose, message }) => {
+const ShareModal = ({ address, isOpen, onRequestClose, message, labels }) => {
   return (
     <Modal isOpen={isOpen} onRequestClose={onRequestClose}>
-      <Modal.Header title={modalTitle(address)} />
+      <Modal.Header title={modalTitle(address, labels)} />
       <Modal.Body>
         <Text weight="bold" size="small">
-          Select a network
+          {labels.selectNetwork}
         </Text>
         <SocialNetworkInput />
         <Message timeOut={2000} type="toast">
@@ -31,14 +31,15 @@ const ShareModal = ({ address, isOpen, onRequestClose, message }) => {
   );
 };
 
-function modalTitle(address) {
+function modalTitle(address, labels) {
   return isMyProfile(address)
-    ? "Share your Advocate Badge"
-    : "Share Advocate Badge";
+    ? labels.shareYourAdvocateBadge
+    : labels.shareAdvocateBadge;
 }
 
 const mapStateToProps = state => ({
-  message: getAdvocateMessage(state)
+  message: getAdvocateMessage(state),
+  labels: getLabels(state)
 });
 
 export default global.connection(ShareModal, mapStateToProps);

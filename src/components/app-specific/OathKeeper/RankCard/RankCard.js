@@ -8,7 +8,7 @@ import { mapLabelsToProps } from "../../../../utils/helpers";
 
 const RankCard = ({ rank, labels }) => (
   <HeaderCard
-    title="Oath Keeper Rank"
+    title={labels.oathKeeperRank}
     description={labels.oathKeeperRankCardDesctiption}
   >
     <HeaderCard.Hero>
@@ -19,7 +19,7 @@ const RankCard = ({ rank, labels }) => (
         to="/oath-keeper/oath-takers"
         className="jur-oath-keeper-rank-link"
       >
-        Check Oathkeeping Ranking
+        {labels.checkOathkeepingRanking}
       </NavLink>
     </HeaderCard.Body>
   </HeaderCard>

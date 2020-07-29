@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Models\Slot;
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Log;
 
@@ -50,7 +49,7 @@ class Reward extends Model
         $reward->slot_id = $existingSlot->id;
         $reward->rewardee_wallet = $existingSlot->assigned_wallet;
         $reward->reward_amount = $existingRewardActivity->reward_amount;
-        $reward->rewarded_on = Carbon::createFromTimestamp($payload->timestamp);
+        $reward->rewarded_on = $payload->timestamp;
 
         $success = $reward->save();
 

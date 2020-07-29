@@ -51,8 +51,9 @@ export const yourActivities = (address = "", params) =>
 export const rewards = (address = "", params) =>
   axios.get(addParams(`/rewards/${address}`, params)).then(r => r.data);
 
-export const updateBio = (bio, address) => {
-  return axios.put(`/advocates/${address}`, {
+export const updateBio = (bio, user) => {
+  return axios.put(`/user`, {
+    ...user,
     bio: bio
   });
 };

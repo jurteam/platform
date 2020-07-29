@@ -42,7 +42,8 @@ import {
   ADVOCATE_UPDATE_BIO,
   API_CATCH,
   ADVOCATE_UPDATE_BIO_SUCCEEDED,
-  ADVOCATE_SHOW_DISCLAIMER
+  ADVOCATE_SHOW_DISCLAIMER,
+  USER_UPDATE
 } from "../reducers/types";
 import { copyToClipboard } from "../utils/AdvocateHelpers";
 
@@ -219,16 +220,18 @@ function* copy() {
 }
 
 function* updateBioSaga(action) {
+  const user = yield select(getUser);
+  const bio = action.payload.bio;
   try {
-    const response = yield call(
-      updateBio,
-      action.payload.bio,
-      action.payload.address
-    );
+    const response = yield call(updateBio, bio, user);
 
     yield put({
       type: ADVOCATE_UPDATE_BIO_SUCCEEDED,
-      payload: action.payload.bio
+      payload: bio
+    });
+    yield put({
+      type: USER_UPDATE,
+      user: { ...user, bio }
     });
   } catch (error) {
     yield put({ type: API_CATCH, error });

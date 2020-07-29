@@ -7,6 +7,8 @@ use App\Models\RewardActivity;
 use App\Models\RewardUnAssignedSlot;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use \App\Jobs\NotifyRewardSlotWithdrawable;
+use \App\Jobs\NotifyRewardStatusChanged;
 use \App\Jobs\RewardSlotUpdateStatusToOverDue;
 
 class Slot extends Model

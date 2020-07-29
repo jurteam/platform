@@ -4,18 +4,22 @@ import "./ActiveOathsTable.scss";
 import Table from "JurCommon/Table";
 import Amount from "JurCommon/Amount";
 import Box from "JurCommon/Box";
-import { oathState, i18nDateFormat } from "../../../../utils/helpers";
+import {
+  oathState,
+  i18nDateFormat,
+  mapLabelsToProps
+} from "../../../../utils/helpers";
 
-const ActiveOathsTable = ({ oaths, isShown }) =>
+const ActiveOathsTable = ({ oaths, isShown, labels }) =>
   isShown ? (
     <Box>
       <Table>
         <Table.Head>
           <Table.Row>
-            <Table.Cell>Token Amount</Table.Cell>
-            <Table.Cell>Begin</Table.Cell>
-            <Table.Cell>Duration</Table.Cell>
-            <Table.Cell>Unlock Date</Table.Cell>
+            <Table.Cell>{labels.tokenAmount}</Table.Cell>
+            <Table.Cell>{labels.begin}</Table.Cell>
+            <Table.Cell>{labels.duration}</Table.Cell>
+            <Table.Cell>{labels.unlockDate}</Table.Cell>
           </Table.Row>
         </Table.Head>
         <Table.Body>
@@ -42,4 +46,4 @@ const ActiveOathsTable = ({ oaths, isShown }) =>
 
 ActiveOathsTable.defaultProps = { oaths: [] };
 
-export default ActiveOathsTable;
+export default global.connection(ActiveOathsTable, mapLabelsToProps);

@@ -33,5 +33,6 @@ export const CalendarFilter = ({
 );
 
 CalendarFilter.defaultProps = {
-  isClearable: true
+  isClearable: true,
+  name: ""
 };
