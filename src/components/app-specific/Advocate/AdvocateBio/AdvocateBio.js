@@ -4,10 +4,18 @@ import Box from "JurCommon/Box";
 
 import "./advocate-bio.scss";
 import { ADVOCATE_UPDATE_BIO } from "../../../../reducers/types";
+import { mapLabelsToProps } from "../../../../utils/helpers";
+import t from "../../../../utils/template";
 
 const MAX_CONTENT_LENGTH = 1000;
 
-const AdvocateBio = ({ advocasy, address, updateBioAction, isPublic }) => {
+const AdvocateBio = ({
+  advocasy,
+  address,
+  updateBioAction,
+  isPublic,
+  labels
+}) => {
   const currentUser = global.store.getState().user.wallet;
 
   const [editBox, setEditBox] = useState(false);
@@ -70,8 +78,11 @@ const AdvocateBio = ({ advocasy, address, updateBioAction, isPublic }) => {
               <div>
                 {error ? (
                   <span className="error-info">
-                    {currentLength} out of {MAX_CONTENT_LENGTH} characters.{" "}
-                    <strong>Please shorten the bio.</strong>
+                    {t(labels.bioValidationMessage, {
+                      length: currentLength,
+                      maxLength: MAX_CONTENT_LENGTH
+                    })}
+                    <strong> {labels.bioHelperText} </strong>
                   </span>
                 ) : null}
               </div>
@@ -84,7 +95,7 @@ const AdvocateBio = ({ advocasy, address, updateBioAction, isPublic }) => {
                     handleCancel(e);
                   }}
                 >
-                  Cancel
+                  {labels.cancel}
                 </Button>
                 <Button
                   variant="contained"
@@ -92,9 +103,9 @@ const AdvocateBio = ({ advocasy, address, updateBioAction, isPublic }) => {
                   onClick={e => {
                     handleUpdate(e);
                   }}
-                  disabled={error || !updatedBio}
+                  disabled={error}
                 >
-                  Save
+                  {labels.save}
                 </Button>
               </div>
             </div>
@@ -132,17 +143,18 @@ const AdvocateBio = ({ advocasy, address, updateBioAction, isPublic }) => {
               <div className="jur-bio-add">
                 {!isPublic ? (
                   <p>
-                    Click{" "}
-                    <a
-                      className="jur-link"
-                      onClick={e => {
-                        handleEdit(e);
-                      }}
-                    >
-                      here
-                    </a>{" "}
-                    to add a bio about yourself. It will be showed to users
-                    visiting your public profile page
+                    {t(labels.addBioCTA, {
+                      link: (
+                        <a
+                          className="jur-link"
+                          onClick={e => {
+                            handleEdit(e);
+                          }}
+                        >
+                          here
+                        </a>
+                      )
+                    })}
                   </p>
                 ) : null}
               </div>
@@ -161,4 +173,8 @@ const updateBioAction = (address, bio) => ({
 
 const mapDispatchToProps = { updateBioAction };
 
-export default global.connection(AdvocateBio, null, mapDispatchToProps);
+export default global.connection(
+  AdvocateBio,
+  mapLabelsToProps,
+  mapDispatchToProps
+);

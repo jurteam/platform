@@ -14,7 +14,8 @@ import {
   getIsAdvocateAvailableShown,
   getWallet,
   getAdvocateIsFetching,
-  getAdvocateShowDisclaimer
+  getAdvocateShowDisclaimer,
+  getLabels
 } from "../../../../sagas/Selectors";
 import Text from "JurCommon/Text";
 import Disclaimer, { ModalDiscliamer } from "JurCommon/Disclaimer";
@@ -39,7 +40,8 @@ const AdvocateSection = ({
   isFetching,
   resetAdvocate,
   closeDisclaimer,
-  isDisclaimerOpen
+  isDisclaimerOpen,
+  labels
 }) => {
   const effectiveAddress = address || myAddress;
 
@@ -81,7 +83,7 @@ const AdvocateSection = ({
       ) : (
         <>
           <Text size="large" transform="header">
-            List of Advocates
+            {labels.listOfAdvocates}
           </Text>
           <AdvocatesIndex size="compact" />
           <AdvocatesFooterBox />
@@ -108,7 +110,8 @@ const mapStateToProps = state => {
     myAddress,
     isPublic: !isMyProfile(myAddress),
     isAdvocate: getAdvocateMeta(state).isAdvocate,
-    isDisclaimerOpen
+    isDisclaimerOpen,
+    labels: getLabels(state)
   };
 };
 

@@ -3,8 +3,9 @@ import "./ShareStatusButton.scss";
 
 import Button from "JurCommon/Button";
 import ShareStatusModal from "./ShareStatusModal";
+import { mapLabelsToProps } from "../../../../utils/helpers";
 
-const ShareStatusButton = ({ address, className }) => {
+const ShareStatusButton = ({ address, className, labels }) => {
   const [isOpen, setOpen] = useState(false);
   const open = () => setOpen(true);
   const close = () => setOpen(false);
@@ -17,7 +18,7 @@ const ShareStatusButton = ({ address, className }) => {
         size="big"
         className={className}
       >
-        Share Advocate Badge
+        {labels.shareAdvocateBadge}
       </Button>
       <ShareStatusModal
         isOpen={isOpen}
@@ -28,4 +29,4 @@ const ShareStatusButton = ({ address, className }) => {
   );
 };
 
-export default ShareStatusButton;
+export default global.connection(ShareStatusButton, mapLabelsToProps);

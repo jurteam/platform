@@ -24,7 +24,7 @@ const Advocates = () => {
       exact: true
     },
     {
-      label: "Details " + address,
+      label: labels.details + " " + address,
       to: "/advocates/" + address
     }
   ];

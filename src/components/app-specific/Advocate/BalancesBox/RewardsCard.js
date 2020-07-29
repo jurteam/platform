@@ -7,7 +7,7 @@ import { mapLabelsToProps } from "../../../../utils/helpers";
 
 const RewardsCard = ({ balance, labels }) => (
   <HeaderCard
-    title="Rewards Balance"
+    title={labels.rewardBalance}
     description={labels.advocateRewardsCardDescription}
   >
     <HeaderCard.Hero>

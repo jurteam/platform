@@ -5,19 +5,24 @@ import Box from "JurCommon/Box";
 import Text from "JurCommon/Text";
 import TakeOathButton from "../TakeOathButton";
 import OathsTimelineView from "../OathsTimelineView";
+import { mapLabelsToProps } from "../../../../utils/helpers";
 
-const EmptyMessage = () => (
+const EmptyMessage = ({ labels }) => (
   <Box>
     <Box type="message">
-      <Text>You have not taken any oaths</Text>
+      <Text>{labels.noOathsTaken}</Text>
     </Box>
     <TakeOathButton type="compact" />
   </Box>
 );
 
-const YourOathsBox = ({ oaths, isLoading }) => (
-  <Box title="Your Oaths" isLoading={isLoading}>
-    {oaths.length ? <OathsTimelineView oaths={oaths} /> : <EmptyMessage />}
+const YourOathsBox = ({ oaths, isLoading, labels }) => (
+  <Box title={labels.yourOaths} isLoading={isLoading}>
+    {oaths.length ? (
+      <OathsTimelineView oaths={oaths} />
+    ) : (
+      <EmptyMessage labels={labels} />
+    )}
   </Box>
 );
 
@@ -25,4 +30,4 @@ YourOathsBox.defaultProps = {
   oaths: []
 };
 
-export default YourOathsBox;
+export default global.connection(YourOathsBox, mapLabelsToProps);

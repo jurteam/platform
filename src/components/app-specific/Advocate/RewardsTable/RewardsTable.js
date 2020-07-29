@@ -4,12 +4,12 @@ import Table from "JurCommon/Table";
 import Amount from "JurCommon/Amount";
 import RewardAction from "../RewardsAction";
 import { JurIcon } from "JurCommon/Icons";
-import { getAdvocateRewards } from "../../../../sagas/Selectors";
+import { getAdvocateRewards, getLabels } from "../../../../sagas/Selectors";
 import { ADVOCATE_FETCH_REWARDS } from "../../../../reducers/types";
 import { i18nDateFormatSec } from "../../../../utils/helpers";
 import EmptyMessage from "./EmptyMessage";
 
-const RewardsTable = ({ rows, address, fetchRewards, isPublic }) => {
+const RewardsTable = ({ rows, address, fetchRewards, isPublic, labels }) => {
   useEffect(() => {
     fetchRewards(address);
   }, []);
@@ -18,10 +18,10 @@ const RewardsTable = ({ rows, address, fetchRewards, isPublic }) => {
       <Table.Head>
         <Table.Row>
           <Table.Cell align="center" size="xxsmall" />
-          <Table.Cell>Activity</Table.Cell>
-          <Table.Cell size="small">Reward</Table.Cell>
-          <Table.Cell size="small">Date</Table.Cell>
-          <Table.Cell size="small">Credited On</Table.Cell>
+          <Table.Cell>{labels.activity}</Table.Cell>
+          <Table.Cell size="small">{labels.reward}</Table.Cell>
+          <Table.Cell size="small">{labels.date}</Table.Cell>
+          <Table.Cell size="small">{labels.creditedOn}</Table.Cell>
         </Table.Row>
       </Table.Head>
       <Table.Body>
@@ -51,7 +51,8 @@ RewardsTable.defaultProps = {
 };
 
 const mapStateToProps = state => ({
-  rows: getAdvocateRewards(state)
+  rows: getAdvocateRewards(state),
+  labels: getLabels(state)
 });
 
 const fetchRewards = address => ({

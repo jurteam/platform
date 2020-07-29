@@ -3,21 +3,22 @@ import "./AvailableTable.scss";
 import Table from "JurCommon/Table";
 import Amount from "JurCommon/Amount";
 import { colorSlots } from "JurUtils/AdvocateHelpers";
-import { getAdvocateAvailable } from "../../../../sagas/Selectors";
+import { getAdvocateAvailable, getLabels } from "../../../../sagas/Selectors";
 import { ADVOCATE_FETCH_AVAILABLE } from "../../../../reducers/types";
 import EmptyMessage from "./EmptyMessage";
 
-const AvailableTable = ({ rows, fetchAvailable }) => {
+const AvailableTable = ({ rows, fetchAvailable, labels }) => {
   useEffect(() => {
     fetchAvailable();
   }, []);
+
   return (
     <Table>
       <Table.Head>
         <Table.Row>
-          <Table.Cell>Activity</Table.Cell>
-          <Table.Cell size="small">Reward</Table.Cell>
-          <Table.Cell size="small">Slots</Table.Cell>
+          <Table.Cell>{labels.activity}</Table.Cell>
+          <Table.Cell size="small">{labels.reward}</Table.Cell>
+          <Table.Cell size="small">{labels.slots}</Table.Cell>
         </Table.Row>
       </Table.Head>
       <Table.Body>
@@ -48,7 +49,8 @@ AvailableTable.defaultProps = {
 };
 
 const mapStateToProps = state => ({
-  rows: getAdvocateAvailable(state)
+  rows: getAdvocateAvailable(state),
+  labels: getLabels(state)
 });
 
 const fetchAvailable = () => ({ type: ADVOCATE_FETCH_AVAILABLE });
