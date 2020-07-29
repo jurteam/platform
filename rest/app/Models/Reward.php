@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\Models\Advocate;
+use App\Models\Reward;
+use App\Models\RewardActivity;
 use App\Models\Slot;
 use Illuminate\Database\Eloquent\Model;
 use Log;
