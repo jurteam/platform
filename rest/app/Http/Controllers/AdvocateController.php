@@ -73,7 +73,7 @@ class AdvocateController extends Controller
             ->sum('reward_amount');
 
         // get type of request
-        $isPrivate = $wallet === $request->header('wallet');
+        $isPrivate = strtolower($wallet) == strtolower($request->header('wallet'));
 
         return [
             'meta' => ['isAdvocate' => isset($advocate)],
@@ -105,7 +105,7 @@ class AdvocateController extends Controller
     public function availableActivities(Request $request, $wallet)
     {
         // get type of request
-        $isPrivate = $wallet === $request->header('wallet');
+        $isPrivate = strtolower($wallet) == strtolower($request->header('wallet'));
 
         if (!$isPrivate) {
             abort(404);
@@ -150,7 +150,7 @@ class AdvocateController extends Controller
     public function ongoingActivities(Request $request, $wallet)
     {
         // get type of request
-        $isPrivate = $wallet === $request->header('wallet');
+        $isPrivate = strtolower($wallet) == strtolower($request->header('wallet'));
 
         if (!$isPrivate) {
             abort(404);
