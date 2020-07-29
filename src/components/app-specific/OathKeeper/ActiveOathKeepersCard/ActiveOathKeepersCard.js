@@ -30,7 +30,7 @@ const ActiveOathKeepersCard = ({
     <ChartCard.Title
       description={labels.oathKeeperActiveOathKeepersDescription}
     >
-      Active Oath Keepers
+      {labels.activeOathKeepers}
     </ChartCard.Title>
     <Row>
       <ChartCard.Metric>

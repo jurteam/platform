@@ -14,23 +14,24 @@ import RankBadge from "JurCommon/RankBadge";
 import { i18nDateFormat, oathState } from "../../../../utils/helpers";
 import { orderTosign } from "JurUtils/helpers";
 import { TableCell } from "../../../common/TableCell/TableCell";
+import { getLabels } from "../../../../sagas/Selectors";
 
-const OathTakerTableHeaderRow = ({ onSort, ...rest }) => (
+const OathTakerTableHeaderRow = ({ onSort, labels, ...rest }) => (
   <Table.Row {...rest}>
     <Table.Cell align="center" onClick={onSort} fieldName="Rank" size="xsmall">
-      Rank
+      {labels.rank}
     </Table.Cell>
-    <Table.Cell>Wallet</Table.Cell>
+    <Table.Cell>{labels.wallet}</Table.Cell>
     <Table.Cell onClick={onSort} fieldName="Amount" size="medium">
-      Amount Staked
+      {labels.amountStaked}
     </Table.Cell>
     <Table.Cell onClick={onSort} fieldName="OathCount" size="small">
-      Oaths
+      {labels.oaths}
     </Table.Cell>
-    <Table.Cell size="small">Amount</Table.Cell>
-    <Table.Cell size="small">Oath Date</Table.Cell>
-    <Table.Cell size="small">Duration</Table.Cell>
-    <Table.Cell size="small">Unlock Date</Table.Cell>
+    <Table.Cell size="small">{labels.amount}</Table.Cell>
+    <Table.Cell size="small">{labels.oathDate}</Table.Cell>
+    <Table.Cell size="small">{labels.duration}</Table.Cell>
+    <Table.Cell size="small">{labels.unlockDate}</Table.Cell>
   </Table.Row>
 );
 
@@ -50,7 +51,7 @@ const OathDetailCell = ({ oaths, property }) => (
   </TableCell>
 );
 
-const OathDetailsRow = ({ address, fetchOathsOf, oaths = [] }) => {
+const OathDetailsRow = ({ address, fetchOathsOf, oaths = [], labels }) => {
   useEffect(() => {
     fetchOathsOf(address);
   }, [address]);
@@ -76,7 +77,9 @@ const OathDetailsRow = ({ address, fetchOathsOf, oaths = [] }) => {
   ) : (
     <>
       <Table.Cell />
-      <Table.Cell>{oaths.length ? "No active oaths" : "Loading..."}</Table.Cell>
+      <Table.Cell>
+        {oaths.length ? labels.noActiveOaths : labels.loading}
+      </Table.Cell>
       <Table.Cell />
       <Table.Cell />
     </>
@@ -91,7 +94,8 @@ const OathTakerTableRow = ({
   oaths,
   isSelected,
   onClick,
-  fetchOathsOf
+  fetchOathsOf,
+  labels
 }) => (
   <Table.Row
     onClick={onClick}
@@ -116,6 +120,7 @@ const OathTakerTableRow = ({
         fetchOathsOf={fetchOathsOf}
         oaths={oaths}
         address={address}
+        labels={labels}
       />
     ) : (
       <>
@@ -134,7 +139,8 @@ const OathTakersTable = ({
   onSortChange,
   selected,
   selectRow,
-  fetchOathsOf
+  fetchOathsOf,
+  labels
 }) => {
   useEffect(() => {
     fetchOathTakers();
@@ -143,7 +149,7 @@ const OathTakersTable = ({
   return (
     <Table className="jur-safe-margin">
       <Table.Head>
-        <OathTakerTableHeaderRow onSort={onSortChange} />
+        <OathTakerTableHeaderRow onSort={onSortChange} labels={labels} />
       </Table.Head>
       <Table.Body>
         {rows.length === 0 ? (
@@ -160,6 +166,7 @@ const OathTakersTable = ({
               isSelected={selected === r.id}
               onClick={() => selectRow(r.id)}
               oaths={r.oaths}
+              labels={labels}
               {...r.attributes}
             />
           ))
@@ -190,7 +197,8 @@ const selectRow = id => ({ type: OATH_KEEPER_SELECT_ROW, payload: id });
 const mapStateToProps = state => ({
   rows: state.oathKeeper.oathTakers,
   isLoading: state.oathKeeper.isFetchingOathTakers,
-  selected: state.oathKeeper.selectedRow
+  selected: state.oathKeeper.selectedRow,
+  labels: getLabels(state)
 });
 
 const mapDispatchToProps = {

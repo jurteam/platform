@@ -8,22 +8,25 @@ import StatusBadge from "../StatusBadge";
 import ViewAdvocateButton from "../ViewAdvocateButton";
 import { ADVOCATE_FETCH_ALL } from "../../../../reducers/types";
 import { orderTosign } from "JurUtils/helpers";
+import { mapLabelsToProps } from "../../../../utils/helpers";
 
-const AdvocatesTable = ({ advocates, onSort, size }) => (
+const AdvocatesTable = ({ advocates, onSort, size, labels }) => (
   <Table>
     <Table.Head>
       <Table.Row>
-        <Table.Cell>Wallet</Table.Cell>
-        <Table.Cell size={size === "compact" ? "small" : null}>Type</Table.Cell>
+        <Table.Cell>{labels.wallet}</Table.Cell>
+        <Table.Cell size={size === "compact" ? "small" : null}>
+          {labels.type}
+        </Table.Cell>
         <Table.Cell
           onClick={onSort}
           fieldName="TotalEarned"
           size={size === "compact" ? "small" : "medium"}
         >
-          Total Earned
+          {labels.totalEarned}
         </Table.Cell>
         <Table.Cell size={size === "compact" ? "xsmall" : null}>
-          Action
+          {labels.action}
         </Table.Cell>
       </Table.Row>
     </Table.Head>
@@ -59,4 +62,8 @@ AdvocatesTable.defaultProps = {
 
 const mapDispatchToProps = { onSort };
 
-export default global.connection(AdvocatesTable, null, mapDispatchToProps);
+export default global.connection(
+  AdvocatesTable,
+  mapLabelsToProps,
+  mapDispatchToProps
+);

@@ -2,16 +2,15 @@ import React from "react";
 import "./NonAdvocateHeader.scss";
 
 import Text from "JurCommon/Text";
+import { mapLabelsToProps } from "../../../../utils/helpers";
 
-const NonAdvocateHeader = () => (
+const NonAdvocateHeader = ({ labels }) => (
   <>
-    <Text transform="shout">Hold On!</Text>
+    <Text transform="shout">{labels.holdOn}</Text>
     <Text size="xsmall" transform="up">
-      Your wallet is not listed as a valid Advocate of the Jur ecosystem
+      {labels.nonAdvocateDescription}
     </Text>
-    <Text size="large">
-      Do you want to learn more or apply to become an Advocate?
-    </Text>
+    <Text size="large">{labels.learnAboutAdvocate}</Text>
   </>
 );
-export default NonAdvocateHeader;
+export default global.connection(NonAdvocateHeader, mapLabelsToProps);

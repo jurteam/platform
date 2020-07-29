@@ -9,7 +9,7 @@ const shorten = string => string.substring(0, 20) + "…";
 
 const WalletCard = ({ address, labels }) => (
   <HeaderCard
-    title="Wallet"
+    title={labels.wallet}
     description={labels.oathKeeperWalletCardDesctiption}
   >
     <HeaderCard.Hero>

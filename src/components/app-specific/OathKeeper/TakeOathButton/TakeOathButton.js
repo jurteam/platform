@@ -7,10 +7,11 @@ import {
   OATH_KEEPER_OPEN,
   OATH_KEEPER_CLOSE
 } from "../../../../reducers/types";
-import { getUser } from "../../../../sagas/Selectors";
+import { getUser, getLabels } from "../../../../sagas/Selectors";
 
 const color = type => (type === "compact" ? "outline" : "gradient");
-const label = type => (type === "compact" ? "New Oath" : "Oath Now");
+const label = (type, labels) =>
+  type === "compact" ? labels.newOath : labels.oathNow;
 const size = type => (type === "compact" ? "small" : undefined);
 
 const TakeOathButton = ({
@@ -19,7 +20,8 @@ const TakeOathButton = ({
   close,
   type,
   message,
-  isDisclaimerAccepted
+  isDisclaimerAccepted,
+  labels
 }) => {
   const [isDisclaimerOpen, openDisclaimer] = useState(false);
   return (
@@ -29,7 +31,7 @@ const TakeOathButton = ({
         size={size(type)}
         onClick={isDisclaimerAccepted ? open : () => openDisclaimer(true)}
       >
-        {label(type)}
+        {label(type, labels)}
       </Button>
       <ModalDiscliamer
         isOpen={isDisclaimerOpen}
@@ -48,7 +50,8 @@ TakeOathButton.defaultProps = {
 const mapStateToProps = state => ({
   isOpen: state.oathKeeper.isModalOpen,
   message: state.oathKeeper.newOathMessage,
-  isDisclaimerAccepted: getUser(state).disclaimer.optin
+  isDisclaimerAccepted: getUser(state).disclaimer.optin,
+  labels: getLabels(state)
 });
 
 const open = () => ({ type: OATH_KEEPER_OPEN });

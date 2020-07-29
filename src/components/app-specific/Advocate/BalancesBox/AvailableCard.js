@@ -18,7 +18,7 @@ const IconHandler = ({ isShown, fill }) => (
 
 const AvailableCard = ({ balance, isShown, onViewDetails, labels }) => (
   <HeaderCard
-    title="Activities Available"
+    title={labels.activitiesAvailable}
     description={labels.advocateAvailableCardDescription}
   >
     <HeaderCard.Hero>
@@ -31,7 +31,7 @@ const AvailableCard = ({ balance, isShown, onViewDetails, labels }) => (
           balance > 0 ? "active" : "inactive"
         }`}
       >
-        View Details{" "}
+        {labels.viewDetails}{" "}
         <IconHandler
           isShown={isShown}
           fill={balance > 0 ? "#0077ff" : undefined}

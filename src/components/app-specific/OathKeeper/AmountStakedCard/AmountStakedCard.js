@@ -30,7 +30,7 @@ const AmountStakedCard = ({
       description={labels.oathKeeperAmountStakedDescription}
       hideIcon={true}
     >
-      Active Amount Staked By Oath Keeper
+      {labels.amountStakedByOathKeeper}
     </ChartCard.Title>
     <Row>
       <ChartCard.Metric>

@@ -25,7 +25,7 @@ const AmountDisplay = ({ balance }) =>
 
 const BalanceCard = ({ balance, isShown, onViewDetails, labels }) => (
   <HeaderCard
-    title="Oath Keeper Balance"
+    title={labels.oathKeeperBalance}
     description={labels.oathKeeperBalanceCardDesctiption}
   >
     <HeaderCard.Hero>
@@ -38,7 +38,7 @@ const BalanceCard = ({ balance, isShown, onViewDetails, labels }) => (
           balance > 0 ? "active" : "inactive"
         }`}
       >
-        View Details{" "}
+        {labels.viewDetails}{" "}
         <IconHandler
           isShown={isShown}
           fill={balance > 0 ? "#0077ff" : undefined}
