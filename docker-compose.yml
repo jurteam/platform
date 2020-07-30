@@ -64,7 +64,7 @@ services:
     working_dir: /var/www/html
     volumes:
       - ./polling-service/producer:/var/www/html
-      - ./environment/nginx/nginx.conf:/etc/nginx/sites-available/default
+      - ./environment/nginx/polling_producer.conf:/etc/nginx/sites-available/default
       - ./environment/php/php.ini:/etc/php/7.2/fpm/php.ini
       - ./environment/supervisor/producer:/etc/supervisor/conf.d
     ports:
