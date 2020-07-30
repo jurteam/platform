@@ -28,3 +28,17 @@
 
   animation: fadeIn 300ms ease-in-out;
 }
+
+@mixin flash {
+  @keyframes flash {
+    0% {
+      box-shadow: 0 0 1rem $primary;
+    }
+
+    100% {
+      box-shadow: none;
+    }
+  }
+
+  animation: flash 3s ease-in-out;
+}

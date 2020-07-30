@@ -8,7 +8,7 @@ import Main from "JurCommon/Main";
 import AdvocateSection from "./AdvocateSection";
 import { getAddressFromUrl } from "../../../utils/AdvocateHelpers";
 
-const Advocates = () => {
+const Advocates = ({ history }) => {
   const { labels } = useContext(AppContext);
   const address = getAddressFromUrl();
 
@@ -33,7 +33,7 @@ const Advocates = () => {
     <PageLayout breadcrumbs={b}>
       <Main>
         <div className="jur-safe-margin">
-          <AdvocateSection address={address} />
+          <AdvocateSection address={address} history={history} />
         </div>
       </Main>
     </PageLayout>

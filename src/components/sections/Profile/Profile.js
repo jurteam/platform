@@ -12,13 +12,15 @@ import Aside from "../../common/Aside";
 import ProfileMenu from "../../common/ProfileMenu";
 import ProfileForm from "../../common/ProfileForm";
 
-const Profile = ( props ) => {
+const Profile = props => {
   const { navigation } = useContext(ProfileContext);
   const { labels } = useContext(AppContext);
   const {
-    location: { pathname }
+    history,
+    location: { pathname, state }
   } = props;
 
+  const passOn = state && state.passOn;
   const profileRootSection = "/profile";
 
   let breadcrumbs = [
@@ -39,7 +41,11 @@ const Profile = ( props ) => {
     });
 
     // fallback to profile settings by default
-    return currentContent.component || <ProfileForm />;
+    return currentContent.component ? (
+      React.cloneElement(currentContent.component, { history, passOn })
+    ) : (
+      <ProfileForm history={history} passOn={passOn} />
+    );
   };
 
   return (

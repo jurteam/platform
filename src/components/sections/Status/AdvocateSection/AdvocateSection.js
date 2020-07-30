@@ -29,6 +29,7 @@ import AdvocatesIndex from "../../../app-specific/Advocate/AdvocatesIndex";
 import AdvocatesFooterBox from "../../../app-specific/Advocate/AdvocatesFooterBox";
 import AdvocateBio from "../../../app-specific/Advocate/AdvocateBio/AdvocateBio";
 const AdvocateSection = ({
+  history,
   fetchAdvocate,
   advocasy,
   isShown,
@@ -59,6 +60,7 @@ const AdvocateSection = ({
             advocasy={advocasy}
             address={effectiveAddress}
             isPublic={isPublic}
+            history={history}
           />
           <BalancesBox
             rewardsBalance={advocasy.rewardsBalance}
