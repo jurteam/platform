@@ -139,6 +139,7 @@ export const ProfileForm = props => {
             id="walletAddress"
             defaultValue={wallet}
             disabled
+            className="jur-input__wallet"
             readOnly
           />
         </Form.Group>
