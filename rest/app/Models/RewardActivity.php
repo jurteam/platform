@@ -48,23 +48,18 @@ class RewardActivity extends Model
         $rewardActivity->is_active = true;
         $saved = $rewardActivity->save();
 
-        // find all Role Contract from databse based on whitelistContractAddresses
-        $roleContracts = RoleContract::whereIn('contract_address', (Array) $data->whitelistContractAddresses)->select('id', 'contract_address')->get()->toArray();
-
         // RewardActivityRole records to be saved
         $rewardActivityRoles = [];
 
         foreach ($data->whitelistContractAddresses as $address) {
 
-            // find Role Contract
-            $roleContract = array_filter($roleContracts, function ($item) use ($address) {
-                return $item['contract_address'] == $address;
-            });
+            // find all Role Contract from databse based on whitelistContractAddresses
+            $roleContract = RoleContract::where('contract_address', $address)->select('id')->firstOrFail();
 
             // Formulate RewardActivityRole record that will be saved
             $rewardActivityRoles[] = [
                 'reward_activity_id' => $rewardActivity->id,
-                'role_contract_id' => isset($roleContract[0]) ? $roleContract[0]['id'] : null
+                'role_contract_id' => $roleContract->id
             ];
         }
 
