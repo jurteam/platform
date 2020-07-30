@@ -52,14 +52,15 @@ class RealTimeEventController extends Controller
         // get all json body
         $block = $request->json()->all();
 
-        // find all transactions based on transaction id of processed block
-        $transactions = Transaction::whereIn('transaction_hash', array_map(function ($data) {
-            return $data['transaction_hash'];
-        }, $block['data']))->pluck('transaction_hash')->toArray();
+        info($block);
 
         foreach ($block['data'] as $transaction) {
-            if (!in_array($transaction['transaction_hash'], $transactions)) {
+            // find the transactions already exists
+            $count = Transaction::where('transaction_hash', $transaction['transaction_hash'])
+                ->where('contract_address', $transaction['contract_address'])
+                ->where('event_name', $transaction['event_name'])->count();
 
+            if ($count == 0) {
                 // create new transaction if not exists
                 $saved = Transaction::store($transaction);
 

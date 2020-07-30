@@ -1,4 +1,5 @@
 @import "../../../assets/scss/variables";
+@import "../../../assets/scss/animationMixin";
 
 .jur-form {
   $form: &;
@@ -128,6 +129,10 @@
         }
       }
 
+      &__flash {
+        @include flash();
+      }
+
       textarea.error {
         border-color: $crimson;
       }
@@ -137,4 +142,10 @@
 
 .mt-2 {
   margin-top: 2rem;
+}
+
+.jur-form__header {
+  .jur-input__wallet {
+    width: 90% !important;
+  }
 }
