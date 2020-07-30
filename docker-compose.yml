@@ -19,9 +19,9 @@ services:
     image: mysql:5.7
     env_file: .env.docker-compose
     ports:
-      - "3306:3306"
-    #volumes:
-    #  - ./persistent-runtime/mysql:/var/lib/mysql
+      - "13306:3306"
+    volumes:
+      - ./persistent-runtime/mysql:/var/lib/mysql
 
   polling:
     image: busybox
@@ -55,9 +55,9 @@ services:
     image: mysql:5.7
     env_file: .env.polling-service
     ports:
-      - "3307:3306"
-    #volumes:
-    #  - ./persistent-runtime/polling-mysql:/var/lib/mysql
+      - "13307:3306"
+    volumes:
+      - ./persistent-runtime/polling-mysql:/var/lib/mysql
 
   polling_producer:
     image: registry.digitalocean.com/jur-jbp/polling_producer:17JUL2020

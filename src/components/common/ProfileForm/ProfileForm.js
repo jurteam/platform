@@ -25,7 +25,7 @@ import categories from "../../../assets/i18n/en/userCategories.json"; // TODO: i
 import { FormContainer } from "../Form/FormContainer";
 
 export const ProfileForm = props => {
-  const { className, user, updateUserField, updateUser } = props;
+  const { className, user, updateUserField, updateUser, passOn } = props;
   const [formUpdated, setFormUpdated] = useState(false);
 
   // validation setup
@@ -139,6 +139,7 @@ export const ProfileForm = props => {
             id="walletAddress"
             defaultValue={wallet}
             disabled
+            className="jur-input__wallet"
             readOnly
           />
         </Form.Group>
@@ -308,6 +309,7 @@ export const ProfileForm = props => {
           placeholder={labels.profileBioPlaceholder}
           value={bio}
           onChange={onInputChange}
+          flashBio={passOn && passOn.flashBio}
         />
       ) : null}
 

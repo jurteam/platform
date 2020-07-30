@@ -61,7 +61,7 @@ class ProfileProvider extends Component {
   render() {
     return (
       <ProfileContext.Provider value={this.state}>
-        <Profile />
+        <Profile history={this.props.history} />
       </ProfileContext.Provider>
     );
   }

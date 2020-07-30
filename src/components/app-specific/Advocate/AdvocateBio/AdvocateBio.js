@@ -6,6 +6,7 @@ import "./advocate-bio.scss";
 import { ADVOCATE_UPDATE_BIO } from "../../../../reducers/types";
 import { mapLabelsToProps } from "../../../../utils/helpers";
 import t from "../../../../utils/template";
+import { getUser, getLabels } from "../../../../sagas/Selectors";
 
 const MAX_CONTENT_LENGTH = 1000;
 
@@ -14,10 +15,10 @@ const AdvocateBio = ({
   address,
   updateBioAction,
   isPublic,
-  labels
+  labels,
+  user,
+  history
 }) => {
-  const currentUser = global.store.getState().user.wallet;
-
   const [editBox, setEditBox] = useState(false);
   const [error, setError] = useState();
   const [currentBio, setCurrentBio] = useState(advocasy.bio);
@@ -30,6 +31,8 @@ const AdvocateBio = ({
   }, [advocasy.bio]);
 
   const handleEdit = () => {
+    if (!user.accepted_terms)
+      return history.push("/profile", { passOn: { flashBio: true } });
     setEditBox(!editBox);
   };
 
@@ -55,10 +58,6 @@ const AdvocateBio = ({
       updateBioAction(address, updatedBio);
       setEditBox(false);
     }
-  };
-
-  const loggedInUser = () => {
-    return currentUser.toLowerCase() === address.toLowerCase();
   };
 
   return (
@@ -173,8 +172,13 @@ const updateBioAction = (address, bio) => ({
 
 const mapDispatchToProps = { updateBioAction };
 
+const mapStateToProps = state => ({
+  user: getUser(state),
+  labels: getLabels(state)
+});
+
 export default global.connection(
   AdvocateBio,
-  mapLabelsToProps,
+  mapStateToProps,
   mapDispatchToProps
 );
