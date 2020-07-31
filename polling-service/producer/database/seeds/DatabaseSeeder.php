@@ -13,7 +13,7 @@ class DatabaseSeeder extends Seeder
     {
         $env = 'Production';
 
-        if (env('APP_ENV') === 'local') {
+        if (env('APP_ENV') == 'local') {
             $env = 'Local';
         }
 
