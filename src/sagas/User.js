@@ -1,4 +1,5 @@
 import { put, call, select, takeEvery, takeLatest } from "redux-saga/effects";
+import { push } from "connected-react-router";
 import { setLoading } from "./App";
 
 import { dateReducer } from "../utils/helpers"; // helpers
@@ -79,8 +80,10 @@ export function* checkUserExist(action) {
       log("checkUserExist - error.response", error.response);
       if (error.response.status === 404) {
         log("checkUserExist - error.response.status", error.response.status);
+        put(push("/"));
         // create a new user if missing
         if (action.type === FETCH_USER) {
+          log("This is fetch_user action type");
           yield put({ type: SET_LOADING, payload: false }); // only dismiss loading
         } else {
           yield put({ type: NEW_USER }); // create a new user

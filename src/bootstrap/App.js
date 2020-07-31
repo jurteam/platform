@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 
-import Init from './Init'
+import Init from "./Init";
 
-import { Provider } from 'react-redux'
+import { Provider } from "react-redux";
 import AppProvider from "./AppProvider"; // App Context
 
 import ErrorBoundary from "./ErrorBoundary"; // Errors
@@ -17,33 +17,31 @@ import Spinner from "../components/common/Spinner";
 import UnderAuth from "./UnderAuth";
 import Initializer from "./Initializer"; // Initializer
 import { log, connector, connection } from "../utils/helpers";
+import Disclaimer, { ModalDiscliamer } from "JurCommon/Disclaimer";
 
-log('App init', process.env);
+log("App init", process.env);
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.connectorValue = connector();
-
   }
 
   componentDidMount() {
-    if (this.connectorValue === 'connex') {
+    if (this.connectorValue === "connex") {
       const { store } = this.props;
-      global.store=store;
+      global.store = store;
     }
   }
 
   render() {
     const { store, history, testElement } = this.props;
-    
+
     // log('connnnnnnnnnection---g---', typeof connection)
-    
-    
 
-    log('App - connector',this.connectorValue)
+    log("App - connector", this.connectorValue);
 
-    if (this.connectorValue === 'web3') {
+    if (this.connectorValue === "web3") {
       return (
         <AppProvider store={store}>
           <ErrorBoundary>
@@ -58,7 +56,7 @@ class App extends Component {
           </ErrorBoundary>
         </AppProvider>
       );
-    } else if (this.connectorValue === 'connex') {
+    } else if (this.connectorValue === "connex") {
       return (
         <AppProvider store={store}>
           <ErrorBoundary>
@@ -67,8 +65,9 @@ class App extends Component {
               <UnderAuth>
                 <Provider store={store}>
                   <Initializer history={history} testElement={testElement} />
+                  <Disclaimer />
                 </Provider>
-              </UnderAuth>              
+              </UnderAuth>
             </>
           </ErrorBoundary>
         </AppProvider>
