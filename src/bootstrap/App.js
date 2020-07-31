@@ -17,7 +17,7 @@ import Spinner from "../components/common/Spinner";
 import UnderAuth from "./UnderAuth";
 import Initializer from "./Initializer"; // Initializer
 import { log, connector, connection } from "../utils/helpers";
-import Disclaimer, { ModalDiscliamer } from "JurCommon/Disclaimer";
+import Disclaimer from "JurCommon/Disclaimer";
 
 log("App init", process.env);
 

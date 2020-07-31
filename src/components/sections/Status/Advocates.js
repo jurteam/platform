@@ -9,7 +9,6 @@ import AdvocatesHeader from "../../app-specific/Advocate/AdvocatesHeader";
 import AdvocatesIndex from "../../app-specific/Advocate/AdvocatesIndex";
 import AdvocatesFooterBox from "../../app-specific/Advocate/AdvocatesFooterBox";
 import { ADVOCATE_RESET_SORTS } from "../../../reducers/types";
-import Disclaimer from "JurCommon/Disclaimer";
 
 const Advocates = ({ resetSorts }) => {
   useEffect(() => resetSorts, []);
@@ -34,7 +33,6 @@ const Advocates = ({ resetSorts }) => {
           <AdvocatesHeader />
           <AdvocatesIndex />
           <AdvocatesFooterBox />
-          <Disclaimer />
         </div>
       </Main>
     </PageLayout>
