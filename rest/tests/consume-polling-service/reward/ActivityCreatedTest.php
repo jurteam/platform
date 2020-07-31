@@ -128,4 +128,23 @@ class ActivityCreatedTest extends TestCase
         $this->seeInDatabase('reward_activity_roles', ['role_contract_id' => $role_contract2->id]);
 
     }
+
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function should_validate_notifications()
+    {
+
+        $this->post('api/v1/polling/reward', $this->roleContractBody1);
+
+        $this->post('api/v1/polling/reward', $this->roleContractBody2);
+
+        // validate notification
+        $this->expectsJobs(App\Jobs\NotifyNewRewardActivityAvailable::class);
+
+        $this->post('api/v1/polling/reward', $this->body);
+
+    }
 }
