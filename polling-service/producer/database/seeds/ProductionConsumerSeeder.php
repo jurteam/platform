@@ -3,7 +3,7 @@
 use App\Models\Consumer;
 use Illuminate\Database\Seeder;
 
-class LocalConsumerSeeder extends Seeder
+class ProductionConsumerSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,7 +14,7 @@ class LocalConsumerSeeder extends Seeder
     {
         {
             Consumer::firstOrCreate([
-                'contract_address' => '0x65F2BCA97cAf8429cBB34e6146197FA12cDDE417',
+                'contract_address' => '0x65f2bca97caf8429cbb34e6146197fa12cdde417',
                 'asset_name' => 'jurAdvocate',
                 'event_name' => 'AdvocateAdded',
                 'consumer_name' => 'Advocate',
@@ -22,7 +22,7 @@ class LocalConsumerSeeder extends Seeder
             ]);
 
             Consumer::firstOrCreate([
-                'contract_address' => '0x65F2BCA97cAf8429cBB34e6146197FA12cDDE417',
+                'contract_address' => '0x65f2bca97caf8429cbb34e6146197fa12cdde417',
                 'asset_name' => 'jurAdvocate',
                 'event_name' => 'AdvocateStateUpdated',
                 'consumer_name' => 'Advocate',
@@ -30,7 +30,7 @@ class LocalConsumerSeeder extends Seeder
             ]);
 
             Consumer::firstOrCreate([
-                'contract_address' => '0x65F2BCA97cAf8429cBB34e6146197FA12cDDE417',
+                'contract_address' => '0x65f2bca97caf8429cbb34e6146197fa12cdde417',
                 'asset_name' => 'jurAdvocate',
                 'event_name' => 'AdvocateTypeUpdated',
                 'consumer_name' => 'Advocate',
@@ -38,7 +38,7 @@ class LocalConsumerSeeder extends Seeder
             ]);
 
             Consumer::firstOrCreate([
-                'contract_address' => '0x8D505E33f4CEC7fC6AB6C6424A0Ce1BbfB920C4a',
+                'contract_address' => '0x517952463df7c7c951faA7cA914d4Ef56DB99498',
                 'asset_name' => 'jurRewards',
                 'event_name' => 'RoleContractUpdated',
                 'consumer_name' => 'Reward',
@@ -46,7 +46,7 @@ class LocalConsumerSeeder extends Seeder
             ]);
 
             Consumer::firstOrCreate([
-                'contract_address' => '0x8D505E33f4CEC7fC6AB6C6424A0Ce1BbfB920C4a',
+                'contract_address' => '0x517952463df7c7c951faA7cA914d4Ef56DB99498',
                 'asset_name' => 'jurRewards',
                 'event_name' => 'ActivityCreated',
                 'consumer_name' => 'Reward',
@@ -54,7 +54,7 @@ class LocalConsumerSeeder extends Seeder
             ]);
 
             Consumer::firstOrCreate([
-                'contract_address' => '0x8D505E33f4CEC7fC6AB6C6424A0Ce1BbfB920C4a',
+                'contract_address' => '0x517952463df7c7c951faA7cA914d4Ef56DB99498',
                 'asset_name' => 'jurRewards',
                 'event_name' => 'SlotAssigned',
                 'consumer_name' => 'Reward',
@@ -62,7 +62,7 @@ class LocalConsumerSeeder extends Seeder
             ]);
 
             Consumer::firstOrCreate([
-                'contract_address' => '0x8D505E33f4CEC7fC6AB6C6424A0Ce1BbfB920C4a',
+                'contract_address' => '0x517952463df7c7c951faA7cA914d4Ef56DB99498',
                 'asset_name' => 'jurRewards',
                 'event_name' => 'ActivityUpdated',
                 'consumer_name' => 'Reward',
@@ -70,7 +70,7 @@ class LocalConsumerSeeder extends Seeder
             ]);
 
             Consumer::firstOrCreate([
-                'contract_address' => '0x8D505E33f4CEC7fC6AB6C6424A0Ce1BbfB920C4a',
+                'contract_address' => '0x517952463df7c7c951faA7cA914d4Ef56DB99498',
                 'asset_name' => 'jurRewards',
                 'event_name' => 'SlotUpdated',
                 'consumer_name' => 'Reward',
@@ -78,7 +78,7 @@ class LocalConsumerSeeder extends Seeder
             ]);
 
             Consumer::firstOrCreate([
-                'contract_address' => '0x8D505E33f4CEC7fC6AB6C6424A0Ce1BbfB920C4a',
+                'contract_address' => '0x517952463df7c7c951faA7cA914d4Ef56DB99498',
                 'asset_name' => 'jurRewards',
                 'event_name' => 'SlotRewarded',
                 'consumer_name' => 'Reward',
@@ -86,7 +86,7 @@ class LocalConsumerSeeder extends Seeder
             ]);
 
             Consumer::firstOrCreate([
-                'contract_address' => '0x26e82BEe7d1369c2969f7Fb9C33fB10926708850',
+                'contract_address' => '0x26e82bee7d1369c2969f7fb9c33fb10926708850',
                 'asset_name' => 'jurStatus',
                 'event_name' => 'StatusAdded',
                 'consumer_name' => 'Status',
@@ -94,7 +94,7 @@ class LocalConsumerSeeder extends Seeder
             ]);
 
             Consumer::firstOrCreate([
-                'contract_address' => '0x26e82BEe7d1369c2969f7Fb9C33fB10926708850',
+                'contract_address' => '0x26e82bee7d1369c2969f7fb9c33fb10926708850',
                 'asset_name' => 'jurStatus',
                 'event_name' => 'StateChanged',
                 'consumer_name' => 'Status',
@@ -102,7 +102,7 @@ class LocalConsumerSeeder extends Seeder
             ]);
 
             Consumer::firstOrCreate([
-                'contract_address' => '0x26e82BEe7d1369c2969f7Fb9C33fB10926708850',
+                'contract_address' => '0x26e82bee7d1369c2969f7fb9c33fb10926708850',
                 'asset_name' => 'jurStatus',
                 'event_name' => 'StatusTypeChanged',
                 'consumer_name' => 'Status',
@@ -110,7 +110,7 @@ class LocalConsumerSeeder extends Seeder
             ]);
 
             Consumer::firstOrCreate([
-                'contract_address' => '0xD689Db4A731cbb216E81C2F6096c583e329A9B48',
+                'contract_address' => '0x8a4C0Ff5C39E0eF5cfbe72a57603b11af3dCfE41',
                 'asset_name' => 'oathKeeper',
                 'event_name' => 'OathTaken',
                 'consumer_name' => 'OathKeeper',
@@ -118,7 +118,7 @@ class LocalConsumerSeeder extends Seeder
             ]);
 
             Consumer::firstOrCreate([
-                'contract_address' => '0xD689Db4A731cbb216E81C2F6096c583e329A9B48',
+                'contract_address' => '0x8a4C0Ff5C39E0eF5cfbe72a57603b11af3dCfE41',
                 'asset_name' => 'oathKeeper',
                 'event_name' => 'IHoldYourOathFulfilled',
                 'consumer_name' => 'OathKeeper',

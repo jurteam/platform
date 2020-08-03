@@ -81,6 +81,8 @@ rest/storage/app/public*
 .DS_Store
 .env.local
 .env.stage
+.env.temp
+.env.test
 .env.demo
 .env.development.local
 .env.test.local
