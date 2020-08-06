@@ -25,6 +25,8 @@ const RewardsAction = ({ activity, isPublic, labels }) => {
       );
     case "rewarded":
       return <span>{i18nDateFormatSec(activity.rewardedOn)}</span>;
+    case "public-waiting":
+      return labels.notCreditedYet;
     case "waiting":
       return (
         <Timer
@@ -39,6 +41,7 @@ const RewardsAction = ({ activity, isPublic, labels }) => {
 const computeDisplay = (activity, isPublic) => {
   if (!isPublic && canWithdraw(activity)) return "withdraw";
   if (activity.rewardedOn) return "rewarded";
+  if (isPublic) return "public-waiting";
   return "waiting";
 };
 
