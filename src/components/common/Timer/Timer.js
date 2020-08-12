@@ -3,9 +3,10 @@ import React, { useEffect, useState } from "react";
 import "./Timer.scss";
 import { remaining } from "./TimerHelpers";
 
-const Timer = ({ render, time }) => {
+const Timer = ({ render, time, onPast }) => {
   const [count, setCount] = useState(0);
   const [till, setTill] = useState(remaining(time));
+  if (till.unit === "past" && onPast) onPast(till);
 
   useEffect(() => {
     if (["minutes", "sec"].includes(till.unit)) {
