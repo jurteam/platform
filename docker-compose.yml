@@ -1,7 +1,7 @@
 version: "3"
 services:
   jur:
-    image: registry.digitalocean.com/jur-jbp/jur_platform:17JUL2020
+    image: registry.digitalocean.com/jur-jbp/jur_platform:12AUG2020
     working_dir: /var/www/html
     volumes:
       - ./rest:/var/www/html
