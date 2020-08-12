@@ -1,6 +1,6 @@
 const REWARD_DELAY_IN_SECONDS =
   Number(process.env.REACT_APP_REWARD_DELAY_IN_SECONDS) || 604800; // 604800 seconds = 7 days
-console.log("REWARD_DELAY_IN_SECONDS", REWARD_DELAY_IN_SECONDS);
+console.log("RDIS", REWARD_DELAY_IN_SECONDS);
 
 export const SOCIAL_NETWORK_OPTIONS = [
   { value: "facebook" },
@@ -51,7 +51,7 @@ export const keyRead = (states, activityScId, slotScId) => {
 };
 
 export const canMarkComplete = ({ dueDate, state }) => {
-  if ("assigned" === state.toLowerCase()) {
+  if (["assigned", "overdue"].includes(state.toLowerCase())) {
     const allowedSince = new Date(Number(dueDate) * 1000);
     if (new Date() > allowedSince) return true;
   }
