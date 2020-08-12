@@ -1,7 +1,7 @@
 version: "3"
 services:
   jur:
-    image: registry.digitalocean.com/jur-jbp/jur_platform:17JUL2020
+    image: registry.digitalocean.com/jur-jbp/jur_platform:13AUG2020
     working_dir: /var/www/html
     volumes:
       - ./rest:/var/www/html
@@ -60,7 +60,7 @@ services:
       - ./persistent-runtime/polling-mysql:/var/lib/mysql
 
   polling_producer:
-    image: registry.digitalocean.com/jur-jbp/polling_producer:17JUL2020
+    image: registry.digitalocean.com/jur-jbp/polling_producer:13AUG2020
     working_dir: /var/www/html
     volumes:
       - ./polling-service/producer:/var/www/html
