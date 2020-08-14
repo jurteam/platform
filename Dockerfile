@@ -68,7 +68,7 @@ RUN (cd /var/www/html/;composer --prefer-dist -vvv install)
 RUN (crontab -l -u root; echo "* * * * * cd /var/www/html/ && php artisan schedule:run >> /dev/null 2>&1") | crontab
 
 # crontab config for file permission
-RUN (crontab -l -u root; echo "0 0 * * * cd /var/www/html/storage/logs && touch  $(date -d 'next day' '+lumen-%Y-%m-%d.log') && chown -R www-data:www-data ./* >> /dev/null 2>&1") | crontab
+RUN (crontab -l -u root; echo '0 0 * * * cd /var/www/html/storage/logs && touch lumen-`date +\%Y-\%m-\%d`.log && chown -R www-data:www-data ./* >> /dev/null 2>&1') | crontab
 
 EXPOSE 80
 CMD cron && service supervisor start && service php7.2-fpm start && nginx -g "daemon off;"
