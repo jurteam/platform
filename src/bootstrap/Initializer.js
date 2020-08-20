@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { PureComponent } from "react";
 import { Route, Switch, Router } from "react-router"; // react-router v4
-
+import { ConnectedRouter } from "connected-react-router";
 import PropTypes from "prop-types";
 
 // Routes
@@ -29,7 +29,7 @@ class Initializer extends PureComponent {
   render() {
     const { history } = this.props;
     return (
-      <Router history={history}>
+      <ConnectedRouter history={history}>
         <>
           <Switch>
             {Routes.map((params, key) => (
@@ -39,7 +39,7 @@ class Initializer extends PureComponent {
 
           {this.renderTestReport()}
         </>
-      </Router>
+      </ConnectedRouter>
     );
   }
 }
