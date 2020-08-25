@@ -37,8 +37,7 @@ trait ActivitiesTrait
             'contract_id' => $this->id
         ]);
 
-        if ($params['status_code'] == 36 || $params['status_code'] == 39)
-        {
+        if ($params['status_code'] == 36 || $params['status_code'] == 39){
             $attributes = array_merge($attributes, [
                 'waiting' => 1
             ]);
@@ -58,9 +57,9 @@ trait ActivitiesTrait
                 $activityUpdated = $activityCreatedFirst->update(array('waiting' => 0));
                 return $activityCreatedFirst;
             }
-            else
-            {
+            else{
                 $activityCreated->delete();
+                return null;
             }
         }
 
