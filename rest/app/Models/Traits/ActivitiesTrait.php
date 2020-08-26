@@ -37,34 +37,33 @@ trait ActivitiesTrait
             'contract_id' => $this->id
         ]);
 
-        if ($params['status_code'] == 36 || $params['status_code'] == 39) 
-        {
+        if ($params['status_code'] == 36 || $params['status_code'] == 39){
             $attributes = array_merge($attributes, [
                 'waiting' => 1
-            ]);           
-        }        
-        
+            ]);
+        }
+
         $activityCreated = Activity::create($attributes);
-        
-        if ($params['status_code'] == 36 || $params['status_code'] == 39) 
+
+        if ($params['status_code'] == 36 || $params['status_code'] == 39)
         {
             $chainDate = Carbon::createFromTimestamp($params['chain_updated_at']);
 
             $activityCreatedFirst = Activity::where(["status_code" => $params['status_code'], "chain_updated_at" => $chainDate, "contract_id" => $attributes['contract_id']])->first();
 
-            
-            if ($activityCreatedFirst->id == $activityCreated->id) 
+
+            if ($activityCreatedFirst->id == $activityCreated->id)
             {
                 $activityUpdated = $activityCreatedFirst->update(array('waiting' => 0));
                 return $activityCreatedFirst;
             }
-            else 
-            {
+            else{
                 $activityCreated->delete();
+                return null;
             }
         }
 
-        return null;
+        return $activityCreated;
     }
 
     public function getSendTo($wallet)
@@ -84,7 +83,7 @@ trait ActivitiesTrait
     {
         $this->load('activities');
         if ($this->activities->count() > 0) {
-            $activity = $this->activities                
+            $activity = $this->activities
                 ->sortByDesc('id')
                 ->first();
 
