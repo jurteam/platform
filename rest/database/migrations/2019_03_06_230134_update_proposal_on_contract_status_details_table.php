@@ -14,12 +14,12 @@ class UpdateProposalOnContractStatusDetailsTable extends Migration
     public function up()
     {
         Schema::table('contract_status_details', function (Blueprint $table) {
-            $table->renameColumn('contract_proposal', 'proposal_part_a');
+            $table->dropColumn('contract_proposal');
         });
 
         Schema::table('contract_status_details', function (Blueprint $table) {
-            $table->decimal('proposal_part_a')->default(0)->change();
-            $table->decimal('proposal_part_b')->default(0)->after('proposal_part_a');
+            $table->decimal('proposal_part_a', 10, 10)->default(0);
+            $table->decimal('proposal_part_b', 10, 10)->default(0)->after('proposal_part_a');
         });
     }
 

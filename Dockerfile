@@ -32,7 +32,7 @@ ADD rest/tests /var/www/html/tests
 # ADD rest/vendor /var/www/html/vendor
 
 # 6. copy fe app config files
-ADD build /var/www/html/public
+# ADD build /var/www/html/public
 
 # 7. copy BE public file
 ADD rest/public/index.php /var/www/html/public/index.php
